@@ -1,0 +1,14 @@
+*.iml
+.idea/
+.DS_Store
+
+android/.DS_Store
+android/android.iml
+android/gradlew
+android/gradlew.bat
+android/local.properties
+
+ios/.DS_Store
+
+build/
+

@@ -1,0 +1,8 @@
+*.iml
+.idea/
+
+.DS_Store
+android/.DS_Store
+ios/.DS_Store
+
+build/

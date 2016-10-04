@@ -1,20 +1,43 @@
 
 {
-  "name": "react-native-instabug-reactnative",
+  "name": "instabug-reactnative",
   "version": "1.0.0",
-  "description": "",
+  "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  }, 
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Instabug/instabug-reactnative.git"
   },
   "keywords": [
-    "react-native"
+    "react-native",   
+    "bug",
+    "reporting",
+    "feedback",
+    "instabug",
+    "sdk"
   ],
-  "author": "",
-  "license": "",
-  "peerDependencies": {
-    "react-native": "^0.29.0",
-    "react-native-windows": "^0.29.0"
-
+  "author": "Hossam Hassan && Yousef Hamza",
+  "license": "MIT",
+    "bugs": {
+    "url": "https://github.com/Instabug/instabug-reactnative/issues"
+  },
+  "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
+  "rnpm": {
+    "android": {
+      "packageInstance": "new RNInstabugReactnativePackage(${androidApplicationToken}, MainApplication.this)"
+    },
+    "params": [
+      {
+        "type": "input",
+        "name": "androidApplicationToken",
+        "message": "What is your Instabug application token for Android (hit <ENTER> to ignore)"
+      }
+    ],
+    "commands": {
+      "postlink": "node node_modules/instabug-reactnative/scripts/postlink/run"
+    }
   }
 }
