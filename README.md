@@ -7,17 +7,18 @@
 
 ### Mostly automatic installation
 
-`$ react-native link instabug-reactnative`
+`$ rnpm link instabug-reactnative`
 
 ### Manual installation
 
 
 #### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `instabug-reactnative` and add `RNInstabugReactnative.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNInstabugReactnative.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+1. Open your app `.xcodeproj` file
+2. Add `instabug.framework` and `instabug.bundle` from 'instabug-reactnative/ios' to the app project directory. 
+3. In XCode, in the project navigator, select your project. Add `instabug.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+4. 3. In XCode, in the project navigator, select your project. Add `instabug.bundle` to your project's `Build Phases` ➜ `Copy Bundle Resources`
+5. Run your project (`Cmd+R`)<
 
 #### Android
 
@@ -34,13 +35,17 @@
       compile project(':instabug-reactnative')
   	```
 
-
 ## Usage
 ```javascript
 import RNInstabugReactnative from 'instabug-reactnative';
 
-// TODO: What do with the module?
-RNInstabugReactnative;
+class testApp extends Component {
+  constructor() {
+    super();
+    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.IBGConstants.invocationEvent.FloatingButton);
+  }
+  ...
+}
 ```
   
 ## License
