@@ -20,15 +20,21 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocatio
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    [Instabug invoke];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Instabug invoke];
+    });
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode) {
-    [Instabug invokeWithInvocationMode:invocationMode];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Instabug invokeWithInvocationMode:invocationMode];
+    });
 }
 
 RCT_EXPORT_METHOD(dismiss) {
-    [Instabug dismiss];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Instabug dismiss];
+    });
 }
 
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
@@ -72,7 +78,9 @@ RCT_EXPORT_METHOD(setPostInvocatioHandler:(RCTResponseSenderBlock)callBack) {
 }
 
 RCT_EXPORT_METHOD(showIntroMessage) {
-    [Instabug showIntroMessage];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Instabug showIntroMessage];
+    });
 }
 
 RCT_EXPORT_METHOD(setUserEmail:(NSString *)userEmail) {
@@ -95,6 +103,10 @@ RCT_EXPORT_METHOD(setInvocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug setInvocationEvent:invocationEvent];
 }
 
+RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
+    [Instabug setPushNotificationsEnabled:isPushNotificationEnabled];
+}
+
 RCT_EXPORT_METHOD(setEmailFieldRequired:(BOOL)isEmailFieldRequired) {
     [Instabug setEmailFieldRequired:isEmailFieldRequired];
 }
@@ -111,20 +123,146 @@ RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOf
     
 }
 
+RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
+    [Instabug setLocale:locale];
+}
+
+RCT_EXPORT_METHOD(setIntroMessageEnabled:(BOOL)isIntroMessageEnabled) {
+    [Instabug setIntroMessageEnabled:isIntroMessageEnabled];
+}
+
+RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
+    [Instabug setColorTheme:colorTheme];
+}
+
+RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
+    [Instabug setPrimaryColor:color];
+}
+
+RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
+    [Instabug appendTags:tags];
+}
+
+RCT_EXPORT_METHOD(resetTags) {
+    [Instabug resetTags];
+}
+
+RCT_EXPORT_METHOD(getTags:(RCTResponseSenderBlock)callBack) {
+    callBack(@[[Instabug getTags]]);
+}
+
+RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(IBGString)key) {
+    [Instabug setString:value withKey:key];
+}
+
+RCT_EXPORT_METHOD(setAttachmentTypesEnabled:(BOOL)screenShot
+                  extraScreenShot:(BOOL)extraScreenShot
+                  galleryImage:(BOOL)galleryImage
+                  voiceNote:(BOOL)voiceNote
+                  screenRecording:(BOOL)screenRecording) {
+    [Instabug setAttachmentTypesEnabledScreenShot:screenShot
+                                  extraScreenShot:extraScreenShot
+                                     galleryImage:galleryImage
+                                        voiceNote:voiceNote
+                                  screenRecording:screenRecording];
+}
+
+RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
+    [Instabug setChatNotificationEnabled:isChatNotificationEnabled];
+}
+
+RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
+    [Instabug setOnNewMessageHandler:callBack];
+}
+
+RCT_EXPORT_METHOD(setPromptOptions:(BOOL)bugReportEnabled
+                  feedback:(BOOL)feedbackEnabled
+                  chat:(BOOL)chatEnabled) {
+    [Instabug setPromptOptionsEnabledWithBug:bugReportEnabled
+                                    feedback:feedbackEnabled
+                                        chat:chatEnabled];
+}
+
+RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification) {
+    [Instabug isInstabugNotification:notification];
+}
+
 - (NSDictionary *)constantsToExport
 {
-  return @{ @"invocationEventNone" : @(IBGInvocationEventNone),
-            @"invocationEventShake" : @(IBGInvocationEventShake),
-            @"invocationEventScreenshot" : @(IBGInvocationEventScreenshot),
-            @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
-            @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
-            @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton),
-            @"invocationModeNA": @(IBGInvocationModeNA),
-            @"invocationModeNewBug": @(IBGInvocationModeNewBug),
-            @"invocationModeNewFeedbac": @(IBGInvocationModeNewFeedback),
-            @"invocationModeNewChat": @(IBGInvocationModeNewChat),
-            @"invocationModeChatsList": @(IBGInvocationModeChatsList)
-            };
+    return @{ @"invocationEventNone" : @(IBGInvocationEventNone),
+              @"invocationEventShake" : @(IBGInvocationEventShake),
+              @"invocationEventScreenshot" : @(IBGInvocationEventScreenshot),
+              @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
+              @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
+              @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton),
+              
+              @"invocationModeNA": @(IBGInvocationModeNA),
+              @"invocationModeNewBug": @(IBGInvocationModeNewBug),
+              @"invocationModeNewFeedbac": @(IBGInvocationModeNewFeedback),
+              @"invocationModeNewChat": @(IBGInvocationModeNewChat),
+              @"invocationModeChatsList": @(IBGInvocationModeChatsList),
+              
+              @"rectMinXEdge": @(CGRectMinXEdge),
+              @"rectMinYEdge": @(CGRectMinYEdge),
+              @"rectMaxXEdge": @(CGRectMaxXEdge),
+              @"rectMaxYEdge": @(CGRectMaxYEdge),
+              
+              @"localeArabic": @(IBGLocaleArabic),
+              @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
+              @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
+              @"localeCzech": @(IBGLocaleCzech),
+              @"localeDanish": @(IBGLocaleDanish),
+              @"localeEnglish": @(IBGLocaleEnglish),
+              @"localeFrench": @(IBGLocaleFrench),
+              @"localeGerman": @(IBGLocaleGerman),
+              @"localeItalian": @(IBGLocaleItalian),
+              @"localeJapanese": @(IBGLocaleJapanese),
+              @"localeKorean": @(IBGLocaleKorean),
+              @"localePolish": @(IBGLocalePolish),
+              @"localePortugueseBrazil": @(IBGLocalePortugueseBrazil),
+              @"localeRussian": @(IBGLocaleRussian),
+              @"localeSpanish": @(IBGLocaleSpanish),
+              @"localeSwedish": @(IBGLocaleSwedish),
+              @"localeTurkish": @(IBGLocaleTurkish),
+              
+              @"colorThemeLight": @(IBGColorThemeLight),
+              @"colorThemeDark": @(IBGColorThemeDark),
+              
+              @"shakeHint": @(IBGShakeHint),
+              @"swipeHint": @(IBGSwipeHint),
+              @"edgeSwipeStartHint": @(IBGEdgeSwipeStartHint),
+              @"startAlertText": @(IBGStartAlertText),
+              @"invalidEmailMessage": @(IBGInvalidEmailMessage),
+              @"invalidEmailTitle": @(IBGInvalidEmailTitle),
+              @"invalidCommentMessage": @(IBGInvalidCommentMessage),
+              @"invalidCommentTitle": @(IBGInvalidCommentTitle),
+              @"invocationHeader": @(IBGInvocationHeader),
+              @"talkToUs": @(IBGTalkToUs),
+              @"reportBug": @(IBGReportBug),
+              @"reportFeedback": @(IBGReportFeedback),
+              @"emailFieldHint": @(IBGEmailFieldHint),
+              @"commentFieldHintForBugReport": @(IBGCommentFieldHintForBugReport),
+              @"commentFieldHintForFeedback": @(IBGCommentFieldHintForFeedback),
+              @"addVideoMessage": @(IBGAddVideoMessage),
+              @"addVoiceMessage": @(IBGAddVoiceMessage),
+              @"addImageFromGallery": @(IBGAddImageFromGallery),
+              @"addExtraScreenshot": @(IBGAddExtraScreenshot),
+              @"audioRecordingPermissionDeniedTitle": @(IBGAudioRecordingPermissionDeniedTitle),
+              @"audioRecordingPermissionDeniedMessage": @(IBGAudioRecordingPermissionDeniedMessage),
+              @"microphonePermissionAlertSettingsButtonText": @(IBGMicrophonePermissionAlertSettingsButtonText),
+              @"recordingMessageToHoldText": @(IBGRecordingMessageToHoldText),
+              @"recordingMessageToReleaseText": @(IBGRecordingMessageToReleaseText),
+              @"conversationsHeaderTitle": @(IBGConversationsHeaderTitle),
+              @"screenshotHeaderTitle": @(IBGScreenshotHeaderTitle),
+              @"chatsNoConversationsHeadlineText": @(IBGChatsNoConversationsHeadlineText),
+              @"doneButtonText": @(IBGDoneButtonText),
+              @"okButtonText": @(IBGOkButtonText),
+              @"cancelButtonText": @(IBGCancelButtonText),
+              @"thankYouText": @(IBGThankYouText),
+              @"audio": @(IBGAudio),
+              @"video": @(IBGVideo),
+              @"image": @(IBGImage)
+              };
 };
 
 @end
