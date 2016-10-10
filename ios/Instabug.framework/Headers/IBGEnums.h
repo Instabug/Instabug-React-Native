@@ -119,72 +119,78 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
  */
 typedef NS_ENUM(NSInteger, IBGString) {
     //"<Shake> your device to talk to us"
-    IBGShakeHint,
+    IBGStringShakeHint,
     //"<Swipe with 2 fingers> to talk to us"
-    IBGSwipeHint,
+    IBGStringSwipeHint,
     //"<Swipe from the edge> to talk to us"
-    IBGEdgeSwipeStartHint,
+    IBGStringEdgeSwipeStartHint,
     //"We love to hear your feedback"
-    IBGStartAlertText,
+    IBGStringStartAlertText,
     //"Please enter a valid email"
-    IBGInvalidEmailMessage,
+    IBGStringInvalidEmailMessage,
     //"Invalid Email"
-    IBGInvalidEmailTitle,
+    IBGStringInvalidEmailTitle,
     //"Please enter a valid comment"
-    IBGInvalidCommentMessage,
+    IBGStringInvalidCommentMessage,
     //"Invalid Comment"
-    IBGInvalidCommentTitle,
+    IBGStringInvalidCommentTitle,
     //"Help & Feedback"
-    IBGInvocationHeader,
+    IBGStringInvocationHeader,
     //"Talk to us"
-    IBGTalkToUs,
+    IBGStringTalkToUs,
     //"Report bug"
-    IBGReportBug,
+    IBGStringReportBug,
     //"Suggest an Improvement"
-    IBGReportFeedback,
+    IBGStringReportFeedback,
     //"Enter your Email"
-    IBGEmailFieldHint,
+    IBGStringEmailFieldHint,
     //"What went wrong?"
-    IBGCommentFieldHintForBugReport,
+    IBGStringCommentFieldHintForBugReport,
     //"How can we improve?"
-    IBGCommentFieldHintForFeedback,
+    IBGStringCommentFieldHintForFeedback,
     //"Record a Video Note"
-    IBGAddVideoMessage,
+    IBGStringAddVideoMessage,
     //"Record a Voice Note"
-    IBGAddVoiceMessage,
+    IBGStringAddVoiceMessage,
     //"Select Image from Gallery"
-    IBGAddImageFromGallery,
+    IBGStringAddImageFromGallery,
     //"Take a Screenshot"
-    IBGAddExtraScreenshot,
+    IBGStringAddExtraScreenshot,
     //"Microphone Access Denied"
-    IBGAudioRecordingPermissionDeniedTitle,
+    IBGStringAudioRecordingPermissionDeniedTitle,
     //"You can enable access in Privacy Settings"
-    IBGAudioRecordingPermissionDeniedMessage,
+    IBGStringAudioRecordingPermissionDeniedMessage,
     //"Settings"
-    IBGMicrophonePermissionAlertSettingsButtonText,
+    IBGStringMicrophonePermissionAlertSettingsButtonTitle,
+    //Conversations
+    IBGStringChatsHeaderTitle,
+    //Team
+    IBGStringTeam,
     //"Press and Hold to Record"
-    IBGRecordingMessageToHoldText,
+    IBGStringRecordingMessageToHoldText,
     //"Release to Attach"
-    IBGRecordingMessageToReleaseText,
-    //"Conversations"
-    IBGConversationsHeaderTitle,
+    IBGStringRecordingMessageToReleaseText,
+    //"%@ new messages from %@"
+    IBGStringMessagesNotification,
+    //%@ new messages from %@ and others
+    IBGStringMessagesNotificationAndOthers,
     //"Draw on screenshot"
-    IBGScreenshotHeaderTitle,
+    IBGStringScreenshotHeaderTitle,
     //"No Conversations Yet"
-    IBGChatsNoConversationsHeadlineText,
+    IBGStringChatsNoConversationsHeadlineText,
     //"Done"
-    IBGDoneButtonText,
+    IBGStringDoneButtonTitle,
     //"OK"
-    IBGOkButtonText,
+    IBGStringOkButtonTitle,
     //"Cancel"
-    IBGCancelButtonText,
+    IBGStringCancelButtonTitle,
     //"Thank you"
-    IBGThankYouText,
+    IBGStringThankYouText,
     //"Audio"
-    IBGAudio,
+    IBGStringAudio,
     //"Video"
-    IBGVideo,
+    IBGStringVideo,
     //"Image"
-    IBGImage
+    IBGStringImage
 };
 //===========================================================================================================================================

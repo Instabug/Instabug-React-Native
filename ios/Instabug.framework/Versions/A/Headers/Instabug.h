@@ -490,7 +490,7 @@ OBJC_EXTERN void IBGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
  
  @see IBGString
  */
-+ (void)setString:(NSString*)value withKey:(IBGString)key;
++ (void)setString:(NSString*)value toKey:(IBGString)key;
 
 /**
  @brief Sets whether attachments in bug reporting and in-app messaging are enabled or not.

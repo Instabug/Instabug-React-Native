@@ -28,16 +28,6 @@
   "rnpm": {
     "android": {
       "packageInstance": "new RNInstabugReactnativePackage(${androidApplicationToken}, MainApplication.this)"
-    },
-    "params": [
-      {
-        "type": "input",
-        "name": "androidApplicationToken",
-        "message": "What is your Instabug application token for Android (hit <ENTER> to ignore)"
-      }
-    ],
-    "commands": {
-      "postlink": "node node_modules/instabug-reactnative/scripts/postlink/run"
     }
   }
 }
