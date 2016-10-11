@@ -354,8 +354,14 @@ module.exports = {
 		Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
 	},
 
-	// On new message handler!
-
+	/**
+	* Sets a block of code that gets executed when a new message is received.
+	* @callback handler - A callback that gets executed when a new message
+	* is received.
+	*/
+	setOnNewMessageHandler: function(handler) {
+		Instabug.setOnNewMessageHandler(handler);
+	},
 
 	/**
 	* Enables/disables prompt options when SDK is invoked.
