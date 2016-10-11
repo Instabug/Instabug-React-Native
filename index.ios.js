@@ -59,7 +59,6 @@ module.exports = {
 	* @param {string} fileLocation Path to a file that's going to be attached
 	* to each report.
 	*/
-	// Not yet testsed
 	setFileAttachment: function(fileLocation) {
 		Instabug.setFileAttachment(fileLocation);
 	},
@@ -79,7 +78,6 @@ module.exports = {
 	* Adds custom logs that will be sent with each report.
 	* @param {string} log Message to be logged.
 	*/
-	// Needs renaming
 	IBGLog: function(log) {
 		Instabug.IBGLog(log);
 	},
@@ -167,7 +165,6 @@ module.exports = {
 	* shown or not. Passing YES will show screenshot view for both feedback and
 	* bug reporting, while passing NO will disable it for both.
 	*/
-	// Doesn't work on existing SDK
 	setWillSkipScreenshotAnnotation: function(willSkipeScreenshotAnnotation) {
 		Instabug.setWillSkipScreenshotAnnotation(willSkipeScreenshotAnnotation);
 	},
@@ -200,7 +197,6 @@ module.exports = {
 	* @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
 	* notifications are enabled or disabled.
 	*/
-	// Not tested
 	setPushNotificationsEnabled: function(isPushNotificationEnabled) {
 		Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
 	},
@@ -354,7 +350,6 @@ module.exports = {
 	* @param {boolean} isChatNotificationEnabled A boolean to set whether
 	* notifications are enabled or disabled.
 	*/
-	// Not tested
 	setChatNotificationEnabled: function(isChatNotificationEnabled) {
 		Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
 	},
@@ -374,7 +369,6 @@ module.exports = {
 	* @param {boolean} chatEnabled A boolean to indicate whether chat is enabled 
 	* or disabled.
 	*/
-// TODO: investigate doing it in more like JS pattern
 	setPromptOptions: function(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled) {
 		Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
 	},

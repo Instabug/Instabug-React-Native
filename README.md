@@ -1,16 +1,11 @@
 
 # instabug-reactnative
 
-## Getting started
+## Installation
 
 `$ npm install https://github.com/Instabug/instabug-reactnative --save`
 
-### Mostly automatic installation
-
 `$ rnpm link instabug-reactnative`
-
-### Manual installation
-
 
 #### iOS
 
@@ -20,7 +15,7 @@
 4. 3. In XCode, in the project navigator, select your project. Add `instabug.bundle` to your project's `Build Phases` ➜ `Copy Bundle Resources`
 5. Run your project (`Cmd+R`)<
 
-#### Android
+#### Android (Pending)
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
   - Add `import com.instabug.reactlibrary.RNInstabugReactnativePackage;` to the imports at the top of the file
