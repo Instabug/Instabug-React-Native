@@ -11,28 +11,35 @@
 
 @implementation InstabugReactBridge
 
+- (NSArray<NSString *> *)supportedEvents {
+    return @[
+             @"IBGpreSendingHandler",
+             @"IBGpreInvocationHandler",
+             @"IBGpostInvocationHandler",
+             @"IBGonNewMessageHandler"
+             ];
+}
+
 RCT_EXPORT_MODULE(Instabug)
+
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug startWithToken:token invocationEvent:invocationEvent];
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Instabug invoke];
-    });
+    [Instabug invoke];
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Instabug invokeWithInvocationMode:invocationMode];
-    });
+    [Instabug invokeWithInvocationMode:invocationMode];
 }
 
 RCT_EXPORT_METHOD(dismiss) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Instabug dismiss];
-    });
+    [Instabug dismiss];
 }
 
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
@@ -48,39 +55,44 @@ RCT_EXPORT_METHOD(IBGLog:(NSString *)log) {
 }
 
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Instabug setUserStepsEnabled:isUserStepsEnabled];
-    });
+    [Instabug setUserStepsEnabled:isUserStepsEnabled];
 }
 
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         [Instabug setPreSendingHandler:^{
-            callBack(@[]);
+            [self sendEventWithName:@"IBGpreSendingHandler" body:nil];
         }];
+    } else {
+        [Instabug setPreSendingHandler:nil];
     }
 }
 
 RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         [Instabug setPreInvocationHandler:^{
-            callBack(@[]);
+            [self sendEventWithName:@"IBGpreInvocationHandler" body:nil];
         }];
+    } else {
+        [Instabug setPreInvocationHandler:nil];
     }
 }
 
 RCT_EXPORT_METHOD(setPostInvocatioHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         [Instabug setPostInvocatioHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
-            callBack(@[@(dismissType), @(reportType)]);
+            [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
+                                                                       @"dismissType": @(dismissType),
+                                                                       @"reportType": @(reportType)
+                                                                       }];
         }];
+    } else {
+        [Instabug setPostInvocatioHandler:nil];
     }
 }
 
 RCT_EXPORT_METHOD(showIntroMessage) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Instabug showIntroMessage];
-    });
+    [Instabug showIntroMessage];
 }
 
 RCT_EXPORT_METHOD(setUserEmail:(NSString *)userEmail) {
@@ -172,7 +184,13 @@ RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
 }
 
 RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
-    [Instabug setOnNewMessageHandler:callBack];
+    if (callBack != nil) {
+        [Instabug setOnNewMessageHandler:^{
+            [self sendEventWithName:@"IBGonNewMessageHandler" body:nil];
+        }];
+    } else {
+        [Instabug setOnNewMessageHandler:nil];
+    }
 }
 
 RCT_EXPORT_METHOD(setPromptOptions:(BOOL)bugReportEnabled
@@ -201,6 +219,13 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
               @"invocationModeNewFeedbac": @(IBGInvocationModeNewFeedback),
               @"invocationModeNewChat": @(IBGInvocationModeNewChat),
               @"invocationModeChatsList": @(IBGInvocationModeChatsList),
+              
+              @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
+              @"dismissTypeCancel": @(IBGDismissTypeCancel),
+              @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
+              
+              @"reportTypeBug": @(IBGReportTypeBug),
+              @"reportTypeFeedback": @(IBGReportTypeFeedback),
               
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),

@@ -4,7 +4,7 @@
  * @flow
  */
 
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeAppEventEmitter } from 'react-native';
 
 let {Instabug} = NativeModules;
 
@@ -59,6 +59,7 @@ module.exports = {
 	* @param {string} fileLocation Path to a file that's going to be attached
 	* to each report.
 	*/
+	// Not yet testsed
 	setFileAttachment: function(fileLocation) {
 		Instabug.setFileAttachment(fileLocation);
 	},
@@ -78,6 +79,7 @@ module.exports = {
 	* Adds custom logs that will be sent with each report.
 	* @param {string} log Message to be logged.
 	*/
+	// Needs renaming
 	IBGLog: function(log) {
 		Instabug.IBGLog(log);
 	},
@@ -103,6 +105,12 @@ module.exports = {
 	* report.
 	*/
 	setPreSendingHandler: function(handler) {
+		Instabug.addListener('IBGpreSendingHandler');
+		NativeAppEventEmitter.addListener(
+			'IBGpreSendingHandler',
+			handler
+		);
+
 		Instabug.setPreSendingHandler(handler);
 	},
 
@@ -113,6 +121,12 @@ module.exports = {
 	* @callback handler - A callback that gets executed before sending each bug report.
 	*/
 	setPreInvocationHandler: function(handler) {
+		Instabug.addListener('IBGpreInvocationHandler');
+		NativeAppEventEmitter.addListener(
+			'IBGpreInvocationHandler',
+			handler
+		);
+
 		Instabug.setPreInvocationHandler(handler);
 	},
 
@@ -121,12 +135,20 @@ module.exports = {
 	* This block is executed on the UI thread. Could be used for performing any
 	* UI changes after the SDK's UI is dismissed.
 	* @callback handler - A callback that gets executed after the SDK's UI is dismissed.
-	* @param {constants.dismissType} How the SDK was dismissed.
-	* @param {constants.reportType} Type of report that has been sent. Will be set 
+	* @param {constants.dismissType} dismissType How the SDK was dismissed.
+	* @param {constants.reportType} reportType Type of report that has been sent. Will be set 
 	* to IBGReportTypeBug in case the SDK has been dismissed without selecting a 
 	* report type, so you might need to check issueState before reportType
 	*/
 	setPostInvocatioHandler: function(handler) {
+		Instabug.addListener('IBGpostInvocationHandler');
+		NativeAppEventEmitter.addListener(
+			'IBGpostInvocationHandler',
+			function(payload) {
+				handler(payload['dismissType'], payload['reportType']);
+			}
+		);
+
 		Instabug.setPostInvocatioHandler(handler);
 	},
 
@@ -165,6 +187,7 @@ module.exports = {
 	* shown or not. Passing YES will show screenshot view for both feedback and
 	* bug reporting, while passing NO will disable it for both.
 	*/
+	// Doesn't work on existing SDK
 	setWillSkipScreenshotAnnotation: function(willSkipeScreenshotAnnotation) {
 		Instabug.setWillSkipScreenshotAnnotation(willSkipeScreenshotAnnotation);
 	},
@@ -197,6 +220,7 @@ module.exports = {
 	* @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
 	* notifications are enabled or disabled.
 	*/
+	// Not tested
 	setPushNotificationsEnabled: function(isPushNotificationEnabled) {
 		Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
 	},
@@ -350,6 +374,7 @@ module.exports = {
 	* @param {boolean} isChatNotificationEnabled A boolean to set whether
 	* notifications are enabled or disabled.
 	*/
+	// Not tested
 	setChatNotificationEnabled: function(isChatNotificationEnabled) {
 		Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
 	},
@@ -360,6 +385,12 @@ module.exports = {
 	* is received.
 	*/
 	setOnNewMessageHandler: function(handler) {
+		Instabug.addListener('IBGonNewMessageHandler');
+		NativeAppEventEmitter.addListener(
+			'IBGonNewMessageHandler',
+			handler
+		);
+
 		Instabug.setOnNewMessageHandler(handler);
 	},
 

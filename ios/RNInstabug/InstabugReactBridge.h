@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "RCTBridgeModule.h"
+#import "RCTEventEmitter.h"
 
-@interface InstabugReactBridge : NSObject <RCTBridgeModule>
+@interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>
 
 @end
