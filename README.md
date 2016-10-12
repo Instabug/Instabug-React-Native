@@ -34,7 +34,7 @@
 
 ## Usage
 ```javascript
-import RNInstabugReactnative from 'instabug-reactnative';
+import Instabug from'instabug-reactnative';
 
 class testApp extends Component {
   constructor() {
