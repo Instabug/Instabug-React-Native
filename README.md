@@ -12,8 +12,10 @@
 1. Open your app `.xcodeproj` file
 2. Add `instabug.framework` and `instabug.bundle` from 'instabug-reactnative/ios' to the app project directory. 
 3. In XCode, in the project navigator, select your project. Add `instabug.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. 3. In XCode, in the project navigator, select your project. Add `instabug.bundle` to your project's `Build Phases` ➜ `Copy Bundle Resources`
-5. Run your project (`Cmd+R`)<
+4. In XCode, in the project navigator, select your project. Add `CoreTelephony.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+5. In XCode, in the project navigator, select your project. Add `CoreMotion.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+6. In XCode, in the project navigator, select your project. Add `instabug.bundle` to your project's `Build Phases` ➜ `Copy Bundle Resources`
+7. Run your project (`Cmd+R`)<
 
 #### Android (Pending)
 
