@@ -39,7 +39,7 @@ import RNInstabugReactnative from 'instabug-reactnative';
 class testApp extends Component {
   constructor() {
     super();
-    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.IBGConstants.invocationEvent.FloatingButton);
+    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.constants.invocationEvent.floatingButton);
   }
   ...
 }
