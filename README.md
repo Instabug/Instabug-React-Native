@@ -1,5 +1,5 @@
 
-# instabug-reactnative
+# instabug-reactnative (Beta)
 
 ## Installation
 
