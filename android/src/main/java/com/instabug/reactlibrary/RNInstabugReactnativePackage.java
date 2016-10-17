@@ -13,8 +13,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-import com.instabug.library.IBGColorTheme;
-import com.instabug.library.IBGInvocationEvent;
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugInvocationEvent;
 import com.instabug.library.Instabug;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
@@ -41,10 +41,10 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 .setDebugEnabled(true)
                 .setEmailFieldRequired(false)
                 .setFloatingButtonOffsetFromTop(400)
-                .setColorTheme(IBGColorTheme.IBGColorThemeDark)
-                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventFloatingButton)
+                .setColorTheme(InstabugColorTheme.InstabugColorThemeDark)
+                .setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventFloatingButton)
                 .setShouldShowIntroDialog(false)
-                //.setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+                //.setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventShake)
                 .build();
 
     }
