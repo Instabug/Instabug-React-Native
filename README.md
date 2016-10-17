@@ -1,23 +1,28 @@
 
-# instabug-reactnative (Beta)
+# instabug-reactnative
+
+## Dependencies
+
+`react-native` version `>0.26`
 
 ## Installation
+
+#### iOS
 
 `$ npm install https://github.com/Instabug/instabug-reactnative --save`
 
 `$ rnpm link instabug-reactnative`
 
-#### iOS
-
 1. Open your app `.xcodeproj` file
-2. Add `instabug.framework` and `instabug.bundle` from 'instabug-reactnative/ios' to the app project directory. 
-3. In XCode, in the project navigator, select your project. Add `instabug.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. In XCode, in the project navigator, select your project. Add `CoreTelephony.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-5. In XCode, in the project navigator, select your project. Add `CoreMotion.framework` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-6. In XCode, in the project navigator, select your project. Add `instabug.bundle` to your project's `Build Phases` ➜ `Copy Bundle Resources`
-7. Run your project (`Cmd+R`)<
+2. Add the following line to your "Podfile": `pod 'Instabug', '~> 6.0.0'`
+3. run `pod install`
+4. Run your project (`Cmd+R`)<
 
 #### Android (Pending)
+
+`$ npm install https://github.com/Instabug/instabug-reactnative --save`
+
+`$ rnpm link instabug-reactnative`
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
   - Add `import com.instabug.reactlibrary.RNInstabugReactnativePackage;` to the imports at the top of the file
