@@ -5,7 +5,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
-
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugInvocationEvent;
 import com.instabug.library.InstabugInvocationMode;
 import com.instabug.library.Instabug;
 
@@ -16,16 +17,39 @@ import android.net.Uri;
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
   private Instabug mInstabug;
+  private String mAndroidApplicationToken;
+  private Instabug.Builder mBuilder;
+  private Application mApplication;
 
-  public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Instabug instabug) {
+  public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    this.mInstabug = instabug;
+    this.mApplication = reactContext;
   }
 
   @Override
   public String getName() {
     return "RNInstabugReactnative";
   }
+
+    /**
+     * start Instabug with default opetions 
+     * default Invocation event Floating button  
+     * @param androidApplicationToken
+     */
+    @ReactMethod
+    public void startInstabugWithTokenForAndroid(String androidApplicationToken)
+    {
+        this.mAndroidApplicationToken = androidApplicationToken;
+
+        mInstagbug = new Instabug.Builder(mApplication, mAndroidApplicationToken)
+                .setDebugEnabled(true)
+                .setEmailFieldRequired(false)
+                .setFloatingButtonOffsetFromTop(400)
+                .setColorTheme(InstabugColorTheme.InstabugColorThemeLight)
+                .setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventFloatingButton)
+                .setShouldShowIntroDialog(false)
+                .build();
+    }
 
   /**
      * Adds tag(s) to issues before sending them

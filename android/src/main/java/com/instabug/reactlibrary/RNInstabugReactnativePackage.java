@@ -19,39 +19,10 @@ import com.instabug.library.Instabug;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
-    private String mToken;
-    private Application mApplication;
-
-    private Instabug mInstagbug;
-    private Instabug.Builder mBuilder;
-
-    public RNInstabugReactnativePackage(Instabug instabug) {
-        this.mInstagbug = instabug;
-    }
-
-    public RNInstabugReactnativePackage(Instabug.Builder builder) {
-        this.mBuilder = builder;
-    }
-
-    public RNInstabugReactnativePackage(String token, Application application) {
-        this.mToken = token;
-        this.mApplication = application;
-
-        mInstagbug = new Instabug.Builder(mApplication, mToken)
-                .setDebugEnabled(true)
-                .setEmailFieldRequired(false)
-                .setFloatingButtonOffsetFromTop(400)
-                .setColorTheme(InstabugColorTheme.InstabugColorThemeDark)
-                .setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventFloatingButton)
-                .setShouldShowIntroDialog(false)
-                //.setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventShake)
-                .build();
-
-    }
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNInstabugReactnativeModule(reactContext, this.mInstagbug));
+        modules.add(new RNInstabugReactnativeModule(reactContext));
         return modules;
     }
 
