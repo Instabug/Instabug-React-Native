@@ -4,7 +4,7 @@
  * @flow
  */
 
-import { NativeModules, NativeAppEventEmitter } from 'react-native';
+import { NativeModules, NativeAppEventEmitter, Platform } from 'react-native';
 
 let {Instabug} = NativeModules;
 
