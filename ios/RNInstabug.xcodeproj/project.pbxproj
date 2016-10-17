@@ -256,6 +256,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
+					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -277,6 +278,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
+					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
