@@ -104,11 +104,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void report(String value) {
-        InstabugInvocationMode mode = InstabugInvocationMode.InstabugInvocationModeNA;
+        InstabugInvocationMode mode = InstabugInvocationMode.PROMPT_OPTION;
         if (value.equals("bug")) {
-            mode = InstabugInvocationMode.InstabugInvocationModeBugReporter;
+            mode = InstabugInvocationMode.NEW_BUG;
         } else if (value.equals("feedback")) {
-            mode = InstabugInvocationMode.InstabugInvocationModeFeedbackSender;
+            mode = InstabugInvocationMode.NEW_FEEDBACK;
         }
 
         mInstabug.invoke(mode);
