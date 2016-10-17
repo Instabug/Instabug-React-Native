@@ -49,6 +49,13 @@ class testApp extends Component {
   ...
 }
 ```
+
+### iOS
+
+If your app doesn't already access the microphone or photo library, you'll need to add the following 2 keys to your app's info.plist file:
+
+    NSMicrophoneUsageDescription
+    NSPhotoLibraryUsageDescription
   
 ## License
 
