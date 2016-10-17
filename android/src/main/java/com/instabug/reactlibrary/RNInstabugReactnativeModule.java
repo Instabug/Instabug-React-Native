@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-import com.instabug.library.IBGInvocationMode;
+import com.instabug.library.InstabugInvocationMode;
 import com.instabug.library.Instabug;
 
 import java.util.Locale;
@@ -80,11 +80,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void report(String value) {
-        IBGInvocationMode mode = IBGInvocationMode.IBGInvocationModeNA;
+        InstabugInvocationMode mode = InstabugInvocationMode.InstabugInvocationModeNA;
         if (value.equals("bug")) {
-            mode = IBGInvocationMode.IBGInvocationModeBugReporter;
+            mode = InstabugInvocationMode.InstabugInvocationModeBugReporter;
         } else if (value.equals("feedback")) {
-            mode = IBGInvocationMode.IBGInvocationModeFeedbackSender;
+            mode = InstabugInvocationMode.InstabugInvocationModeFeedbackSender;
         }
 
         mInstabug.invoke(mode);

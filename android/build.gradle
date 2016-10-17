@@ -2,12 +2,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 22
+        minSdkVersion 10
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         ndk {
@@ -21,7 +21,7 @@ android {
 
 dependencies {
     compile 'com.facebook.react:react-native:0.20.+'
-    compile 'com.instabug.library:instabug:2+'
+    compile 'com.instabug.library:instabug:3+'
 
 }
   
