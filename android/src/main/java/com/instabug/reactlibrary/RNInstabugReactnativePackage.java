@@ -13,9 +13,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugInvocationEvent;
-import com.instabug.library.Instabug;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 

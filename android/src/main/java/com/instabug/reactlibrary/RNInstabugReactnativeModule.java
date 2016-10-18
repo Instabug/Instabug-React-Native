@@ -5,11 +5,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugInvocationEvent;
-import com.instabug.library.InstabugInvocationMode;
 import com.instabug.library.Instabug;
-
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugTrackingDelegate;
+import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import java.util.Locale;
 import android.net.Uri;
 
@@ -46,7 +48,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 .setEmailFieldRequired(false)
                 .setFloatingButtonOffsetFromTop(400)
                 .setColorTheme(InstabugColorTheme.InstabugColorThemeLight)
-                .setInvocationEvent(InstabugInvocationEvent.InstabugInvocationEventFloatingButton)
+                .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
                 .setShouldShowIntroDialog(false)
                 .build();
     }
