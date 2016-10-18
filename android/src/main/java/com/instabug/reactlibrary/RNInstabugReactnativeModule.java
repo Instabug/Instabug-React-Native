@@ -26,7 +26,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
   public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    this.mApplication = reactContext;
+    this.mApplication = reactContext.getApplicationContext();
   }
 
   @Override
