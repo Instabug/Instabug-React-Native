@@ -9,6 +9,47 @@ import { NativeModules, NativeAppEventEmitter, Platform } from 'react-native';
 let {Instabug} = NativeModules;
 
 module.exports = {
+			/**
+	 * Starts the SDK.
+	 * This is the main SDK method that does all the magic. This is the only
+	 * method that SHOULD be called.
+	 * Should be called in constructor of the app registery component
+	 * @param {string} Token The token that identifies the app, you can find
+	 * it on your dashboard.
+	 */
+	startWithToken: function(token) {
+		if( Platform.OS === 'ios') {
+			Instabug.startWithToken(iosToken, Instabug.constants.invocationEvent.floatingButton);
+
+		} else {
+
+			Instabug.startInstabugWithTokenForAndroid(androidToken);
+
+		}
+
+
+	},
+		/**
+	 * Starts the SDK.
+	 * This is the main SDK method that does all the magic. This is the only
+	 * method that SHOULD be called.
+	 * Should be called in constructor of the app registery component
+	 * @param {string} token The token that identifies the app, you can find
+	 * it on your dashboard.
+	 * @param {constants.invocationEvent} invocationEvent The event that invokes
+	 * the SDK's UI.
+	 */
+	startWithToken: function(token, invocationEvent) {
+		if( Platform.OS === 'ios') {
+			Instabug.startWithToken(token, invocationEvent);
+
+		} else {
+			Instabug.startInstabugWithTokenForAndroid(token);
+
+		}
+
+
+	},
 		/**
 	 * Starts the SDK.
 	 * This is the main SDK method that does all the magic. This is the only
@@ -28,27 +69,6 @@ module.exports = {
 		} else {
 
 			Instabug.startInstabugWithTokenForAndroid(androidToken);
-
-		}
-
-
-	},
-	/**
-	 * Starts the SDK.
-	 * This is the main SDK method that does all the magic. This is the only
-	 * method that SHOULD be called.
-	 * Should be called in constructor of the app registery component
-	 * @param {string} token The token that identifies the app, you can find
-	 * it on your dashboard.
-	 * @param {constants.invocationEvent} invocationEvent The event that invokes
-	 * the SDK's UI.
-	 */
-	startWithToken: function(token, invocationEvent) {
-		if( Platform.OS === 'ios') {
-			Instabug.startWithToken(token, invocationEvent);
-
-		} else {
-			Instabug.startInstabugWithTokenForAndroid(token);
 
 		}
 
