@@ -16,10 +16,16 @@ import com.facebook.react.bridge.JavaScriptModule;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
+    Application androidApplication;
+    
+    public RNInstabugReactnativePackage(Application application) {
+        this.androidApplication = application;
+    }
+
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNInstabugReactnativeModule(reactContext));
+        modules.add(new RNInstabugReactnativeModule(reactContext,androidApplication));
         return modules;
     }
 

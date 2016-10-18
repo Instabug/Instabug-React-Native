@@ -22,11 +22,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
   private Instabug mInstabug;
   private String mAndroidApplicationToken;
   private Instabug.Builder mBuilder;
-  private Application mApplication;
+  private Application androidApplication;
 
-  public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
+  public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application androidApplication) {
     super(reactContext);
-    this.mApplication = reactContext.getApplicationContext();
+    this.androidApplication = androidApplication
   }
 
   @Override
@@ -44,7 +44,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     {
         this.mAndroidApplicationToken = androidApplicationToken;
 
-        mInstagbug = new Instabug.Builder(mApplication, mAndroidApplicationToken)
+        mInstagbug = new Instabug.Builder(androidApplication, mAndroidApplicationToken)
                 .setDebugEnabled(true)
                 .setEmailFieldRequired(false)
                 .setFloatingButtonOffsetFromTop(400)
