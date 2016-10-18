@@ -44,14 +44,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     {
         this.mAndroidApplicationToken = androidApplicationToken;
 
-        mInstagbug = new Instabug.Builder(androidApplication, mAndroidApplicationToken)
-                .setDebugEnabled(true)
-                .setEmailFieldRequired(false)
-                .setFloatingButtonOffsetFromTop(400)
-                .setColorTheme(InstabugColorTheme.InstabugColorThemeLight)
-                .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
-                .setShouldShowIntroDialog(false)
-                .build();
+        mInstabug = new Instabug.Builder(androidApplication, mAndroidApplicationToken)
+                    .setEmailFieldRequired(false)
+                    .setFloatingButtonOffsetFromTop(400)
+                    .setTheme(InstabugColorTheme.InstabugColorThemeLight)
+                    .setInvocationEvent(InstabugInvocationEvent.FLOATING_BUTTON)
+                    .setIntroMessageEnabled(false)
+                    .build();
     }
 
   /**
