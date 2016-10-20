@@ -44,7 +44,7 @@ import Instabug from'instabug-reactnative';
 class testApp extends Component {
   constructor() {
     super();
-    Instabug.startWithToken('YOUR_TOKEN', Instabug.constants.invocationEvent.floatingButton);
+    Instabug.startWithToken('YOUR_TOKEN', Instabug.invocationEvent.floatingButton);
   }
   ...
 }

@@ -8,16 +8,20 @@ import { NativeModules, NativeAppEventEmitter, Platform } from 'react-native';
 
 let {Instabug} = NativeModules;
 
+/**
+ * Instabug
+ * @exports Instabug
+ */
 module.exports = {
 
-		/**
+	/**
 	 * Starts the SDK.
 	 * This is the main SDK method that does all the magic. This is the only
 	 * method that SHOULD be called.
 	 * Should be called in constructor of the app registery component
 	 * @param {string} token The token that identifies the app, you can find
 	 * it on your dashboard.
-	 * @param {constants.invocationEvent} invocationEvent The event that invokes
+	 * @param {invocationEvent} invocationEvent The event that invokes
 	 * the SDK's UI.
 	 */
 	startWithToken: function(token, invocationEvent) {
@@ -37,7 +41,7 @@ module.exports = {
 	* Invokes the SDK with a specific mode.
 	* Invokes the SDK and show a specific view, instead of showing a prompt for
 	* users to choose from.
-	* @param {constants.invocationMode} invocationMode Specifies which mode the
+	* @param {invocationMode} invocationMode Specifies which mode the
 	* SDK is going to start with.
 	*/
 	invokeWithInvocationMode: function(invocationMode) {
@@ -80,7 +84,6 @@ module.exports = {
 	* Adds custom logs that will be sent with each report.
 	* @param {string} log Message to be logged.
 	*/
-	// Needs renaming
 	IBGLog: function(log) {
 		Instabug.IBGLog(log);
 	},
@@ -93,64 +96,81 @@ module.exports = {
 	* @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
 	* to being enabled or disabled.
 	*/
-	// Not working
 	setUserStepsEnabled: function(isUserStepsEnabled) {
 		Instabug.setUserStepsEnabled(isUserStepsEnabled);
 	},
 
 	/**
+	* A callback that gets executed before sending each bug report.
+	* @callback preSendingHandler
+	*/
+
+	/**
 	* Sets a block of code to be executed before sending each report.
 	* This block is executed in the background before sending each report. Could
 	* be used for attaching logs and extra data to reports.
-	* @callback handler - A callback that gets executed before sending each bug
+	* @param {preSendingHandler} preSendingHandler - A callback that gets executed before sending each bug
 	* report.
 	*/
-	setPreSendingHandler: function(handler) {
+	setPreSendingHandler: function(preSendingHandler) {
 		Instabug.addListener('IBGpreSendingHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGpreSendingHandler',
-			handler
+			preSendingHandler
 		);
 
-		Instabug.setPreSendingHandler(handler);
+		Instabug.setPreSendingHandler(preSendingHandler);
 	},
 
 	/**
 	* Sets a block of code to be executed just before the SDK's UI is presented.
 	* This block is executed on the UI thread. Could be used for performing any 
 	* UI changes before the SDK's UI is shown.
-	* @callback handler - A callback that gets executed before sending each bug report.
+	* @callback preSendingHandler 
 	*/
-	setPreInvocationHandler: function(handler) {
+
+	/**
+	* Sets a block of code to be executed just before the SDK's UI is presented.
+	* This block is executed on the UI thread. Could be used for performing any 
+	* UI changes before the SDK's UI is shown.
+	* @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before invoking the SDK
+	*/
+	setPreInvocationHandler: function(preInvocationHandler) {
 		Instabug.addListener('IBGpreInvocationHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGpreInvocationHandler',
-			handler
+			preInvocationHandler
 		);
 
-		Instabug.setPreInvocationHandler(handler);
+		Instabug.setPreInvocationHandler(preInvocationHandler);
 	},
+
+	/**
+	* A callback that gets executed after the SDK's UI is dismissed.
+	* @callback postInvocationHandler 
+	* @param {dismissType} dismissType How the SDK was dismissed.
+	* @param {reportType} reportType Type of report that has been sent. Will be set 
+	* to IBGReportTypeBug in case the SDK has been dismissed without selecting a 
+	* report type, so you might need to check issueState before reportType
+	*/
 
 	/**
 	* Sets a block of code to be executed right after the SDK's UI is dismissed.
 	* This block is executed on the UI thread. Could be used for performing any
 	* UI changes after the SDK's UI is dismissed.
-	* @callback handler - A callback that gets executed after the SDK's UI is dismissed.
-	* @param {constants.dismissType} dismissType How the SDK was dismissed.
-	* @param {constants.reportType} reportType Type of report that has been sent. Will be set 
-	* to IBGReportTypeBug in case the SDK has been dismissed without selecting a 
-	* report type, so you might need to check issueState before reportType
+	* @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
+	* dismissing the SDK.
 	*/
-	setPostInvocatioHandler: function(handler) {
+	setPostInvocatioHandler: function(postInvocationHandler) {
 		Instabug.addListener('IBGpostInvocationHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGpostInvocationHandler',
 			function(payload) {
-				handler(payload['dismissType'], payload['reportType']);
+				postInvocationHandler(payload['dismissType'], payload['reportType']);
 			}
 		);
 
-		Instabug.setPostInvocatioHandler(handler);
+		Instabug.setPostInvocatioHandler(postInvocationHandler);
 	},
 
 	/**
@@ -188,27 +208,32 @@ module.exports = {
 	* shown or not. Passing YES will show screenshot view for both feedback and
 	* bug reporting, while passing NO will disable it for both.
 	*/
-	// Doesn't work on existing SDK
 	setWillSkipScreenshotAnnotation: function(willSkipeScreenshotAnnotation) {
 		Instabug.setWillSkipScreenshotAnnotation(willSkipeScreenshotAnnotation);
 	},
 
 	/**
+	* return callback
+	* @callback messageCountCallback
+	* @param{number} responseCount Notifications count, or -1 incase the SDK has 
+	* not been initialized.
+	*/
+
+	/**
 	* Returns the number of unread messages the user currently has.
 	* Use this method to get the number of unread messages the user
 	* has, then possibly notify them about it with your own UI.
-	* @callback responseCallback
-	* @param {number} responseCount Notifications count, or -1 incase the SDK has 
-	* not been initialized.
+	* @param {messageCountCallback} messageCountCallback callback with argument 
+	* Notifications count, or -1 incase the SDK has not been initialized.
 	*/
-	getUnreadMessagesCount: function(responseCallBack) {
-		Instabug.getUnreadMessagesCount(responseCallBack);
+	getUnreadMessagesCount: function(messageCountCallback) {
+		Instabug.getUnreadMessagesCount(messageCountCallback);
 	},
 
 	/**
 	* Sets the event that invoke the feedback form.
 	* Default is set by `Instabug.startWithToken`.
-	* @param {constants.invocattionEvent} invocationEvent Event that invokes the
+	* @param {invocattionEvent} invocationEvent Event that invokes the
 	* feedback form.
 	*/
 	setInvocationEvent: function(invocationEvent) {
@@ -221,7 +246,6 @@ module.exports = {
 	* @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
 	* notifications are enabled or disabled.
 	*/
-	// Not tested
 	setPushNotificationsEnabled: function(isPushNotificationEnabled) {
 		Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
 	},
@@ -261,9 +285,9 @@ module.exports = {
 	/**
 	* Sets the default edge and offset from the top at which the floating button
 	* will be shown. Different orientations are already handled.
-	* Default for `floatingButtonEdge` is `constants.rectEdge.maxX`.
+	* Default for `floatingButtonEdge` is `rectEdge.maxX`.
  	* Default for `floatingButtonOffsetFromTop` is 50
- 	* @param {constants.rectEdge} floatingButtonEdge `maxX` to show on the right,
+ 	* @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
  	* or `minX` to show on the left.
  	* @param {numnber} offsetFromTop floatingButtonOffsetFromTop Top offset for
  	* floating button.
@@ -276,7 +300,7 @@ module.exports = {
 	* Sets the SDK's locale.
 	* Use to change the SDK's UI to different language.
 	* Defaults to the device's current locale.
-	* @param {constants.locale} locale A locale to set the SDK to.
+	* @param {locale} locale A locale to set the SDK to.
 	*/
 	setLocale: function(locale) {
 		Instabug.setLocale(locale);
@@ -295,7 +319,7 @@ module.exports = {
 
 	/**
 	* Sets the color theme of the SDK's whole UI.
-	* @param {contants.colorTheme) colorTheme An `constants.colorTheme` to set
+	* @param {colorTheme) colorTheme An `colorTheme` to set
 	* the SDK's UI to.
 	 */
 	setColorTheme: function(colorTheme) {
@@ -322,9 +346,6 @@ module.exports = {
 		Instabug.appendTags(tags);
 	},
 
-	// TODO: research this: vvvv
-	// + (void)setScreenshotCapturingHandler:(UIImage *(^)())screenshotCapturingHandler;
-
 	/**
 	* Manually removes all tags of reported feedback, bug or crash.
 	*/
@@ -333,19 +354,24 @@ module.exports = {
 	},
 
 	/**
-	* Gets all tags of reported feedback, bug or crash.
-	* @callback responseCallback
+	* return callback
+	* @callback tagsCallback
 	* @param {string[]} tags of reported feedback, bug or crash.
 	*/
-	getTags: function(responseCallBack) {
-		Instabug.getTags(responseCallBack);
+
+	/**
+	* Gets all tags of reported feedback, bug or crash.
+	* @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
+	*/
+	getTags: function(tagsCallback) {
+		Instabug.getTags(tagsCallback);
 	},
 
 	/**
 	* Overrides any of the strings shown in the SDK with custom ones.
 	* Allows you to customize any of the strings shown to users in the SDK.
 	* @param {string} string String value to override the default one.
-	* @param {constants.strings} key Key of string to override.
+	* @param {strings} key Key of string to override.
 	*/
 	setStringToKey: function(string, key) {
 		Instabug.setString(string, key);
@@ -364,7 +390,6 @@ module.exports = {
  	* voiceNote attachments.
  	* @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
 	*/
-	// TODO: investigate doing it in more like JS pattern
 	setAttachmentTypesEnabled: function(screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording) {
 		Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording);
 	},
@@ -375,24 +400,28 @@ module.exports = {
 	* @param {boolean} isChatNotificationEnabled A boolean to set whether
 	* notifications are enabled or disabled.
 	*/
-	// Not tested
 	setChatNotificationEnabled: function(isChatNotificationEnabled) {
 		Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
 	},
 
 	/**
-	* Sets a block of code that gets executed when a new message is received.
-	* @callback handler - A callback that gets executed when a new message
-	* is received.
+	* A callback that gets executed when a new message is received.
+	* @callback onNewMessgaeHandler
 	*/
-	setOnNewMessageHandler: function(handler) {
+
+	/**
+	* Sets a block of code that gets executed when a new message is received.
+	* @param {onNewMessgaeHandler} onNewMessgaeHandler - A callback that gets 
+	* executed when a new message is received.
+	*/
+	setOnNewMessageHandler: function(onNewMessgaeHandler) {
 		Instabug.addListener('IBGonNewMessageHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGonNewMessageHandler',
-			handler
+			onNewMessgaeHandler
 		);
 
-		Instabug.setOnNewMessageHandler(handler);
+		Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
 	},
 
 	/**
@@ -412,136 +441,154 @@ module.exports = {
 	},
 
 	/**
+	* return callback
+	* @callback isInstabugNotificationCallback
+ 	* @param {boolean} isInstabugNotification 
+	*/
+
+	/**
 	* Checks if a notification is from Instabug.
 	* If you are using push notifications, use this method to check whether an
 	* incoming notification is from Instabug or not. If this method returns YES,
 	* you should call didReceiveRemoteNotification: to let the Instabug handle
  	* the notification. Otherwise, handle the notification on your own.
  	* @param {Object} dict Notification's userInfo
- 	* @callback responseCallback
- 	* @param {boolean} isInstabugNotification 
+ 	* @param {isInstabugNotificationCallback} isInstabugNotificationCallback callback with
+ 	* argument isInstabugNotification
 	*/
-	// Not tested 
-	isInstabugNotification: function(dict, responseCallback) {
-		Instabug.isInstabugNotification(dict, responseCallback);
+	isInstabugNotification: function(dict, isInstabugNotificationCallback) {
+		Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
 	},
 
-	constants: {
-		/**
-		 *  The event used to invoke the feedback form
-		 */
-		invocationEvent: {
-			none: Instabug.invocationEventNone,
-			shake: Instabug.invocationEventShake,
-			screenshot: Instabug.invocationEventScreenshot,
-			twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
-			rightEdgePan: Instabug.invocationEventRightEdgePan,
-			floatingButton: Instabug.invocationEventFloatingButton
-		},
-		/**
-		 *  Type of SDK dismiss
-		 */
-		dismissType: {
-			submit: Instabug.dismissTypeSubmit,
-			cancel: Instabug.dismissTypeCancel,
-			addAttachment: Instabug.dismissTypeAddAttachment
-		},
-		/**
-		 *  Type of report to be submit
-		 */
-		reportType: {
-			bug: Instabug.reportTypeBug,
-			feedback: Instabug.reportTypeFeedback
-		},
-		/**
-		 *  The mode used upon invocating the SDK
-		 */
-		invocationMode: {
-			NA: Instabug.invocationModeNA,
-			newBug: Instabug.invocationModeNewBug,
-			newFeedback: Instabug.invocationModeNewFeedback,
-			newChat: Instabug.invocationModeNewChat,
-			chatsList: Instabug.invocationModeChatsList
-		},
-		/**
-		 *  The supported locales
-		 */
-		locale: {
-			arabic: Instabug.localeArabic,
-			chineseSimplified: Instabug.localeChineseSimplified,
-			chineseTraditional: Instabug.localeChineseTraditional,
-			czech: Instabug.localeCzech,
-			danish: Instabug.localeDanish,
-			english: Instabug.localeEnglish,
-			french: Instabug.localeFrench,
-			german: Instabug.localeGerman,
-			italian: Instabug.localeItalian,
-			japanese: Instabug.localeJapanese,
-			polish: Instabug.localePolish,
-			portugueseBrazil: Instabug.localePortugueseBrazil,
-			russian: Instabug.localeRussian,
-			spanish: Instabug.localeSpanish,
-			swedish: Instabug.localeSwedish,
-			turkish: Instabug.localeTurkish
-		},
-		/**
-		 *  The color theme of the different UI elements
-		 */
-		colorTheme: {
-			light: Instabug.colorThemeLight,
-			dark: Instabug.colorThemeDark
-		},
-		/** 
-		*   Rectangle edges
-		*/
-		rectEdge: {
-			minX: Instabug.rectMinXEdge,
-			minY: Instabug.rectMinYEdge,
-			maxX: Instabug.rectMaxXEdge,
-			maxY: Instabug.rectMaxYEdge
-		},
-		/**
-		 *  Instabug strings
-		 */
-		strings: {
-			shakeHint: Instabug.shakeHint,
-			swipeHint: Instabug.swipeHint,
-			edgeSwipeStartHint: Instabug.edgeSwipeStartHint,
-			startAlertText: Instabug.startAlertText,
-			invalidEmailMessage: Instabug.invalidEmailMessage,
-			invalidEmailTitle: Instabug.invalidEmailTitle,
-			invalidCommentMessage: Instabug.invalidCommentMessage,
-			invalidCommentTitle: Instabug.invalidCommentTitle,
-			invocationHeader: Instabug.invocationHeader,
-			talkToUs: Instabug.talkToUs,
-			reportBug: Instabug.reportBug,
-			reportFeedback: Instabug.reportFeedback,
-			emailFieldHint: Instabug.emailFieldHint,
-			commentFieldHintForBugReport: Instabug.commentFieldHintForBugReport,
-			commentFieldHintForFeedback: Instabug.commentFieldHintForFeedback,
-			addVideoMessage: Instabug.addVideoMessage,
-			addVoiceMessage: Instabug.addVoiceMessage,
-			addImageFromGallery: Instabug.addImageFromGallery,
-			addExtraScreenshot: Instabug.addExtraScreenshot,
-			audioRecordingPermissionDeniedTitle: Instabug.audioRecordingPermissionDeniedTitle,
-			audioRecordingPermissionDeniedMessage: Instabug.audioRecordingPermissionDeniedMessage,
-			microphonePermissionAlertSettingsButtonText: Instabug.microphonePermissionAlertSettingsButtonText,
-			recordingMessageToHoldText: Instabug.recordingMessageToHoldText,
-			recordingMessageToReleaseText: Instabug.recordingMessageToReleaseText,
-			conversationsHeaderTitle: Instabug.conversationsHeaderTitle,
-			screenshotHeaderTitle: Instabug.screenshotHeaderTitle,
-			chatsNoConversationsHeadlineText: Instabug.chatsNoConversationsHeadlineText,
-			doneButtonText: Instabug.doneButtonText,
-			okButtonText: Instabug.okButtonText,
-			cancelButtonText: Instabug.cancelButtonText,
-			thankYouText: Instabug.thankYouText,
-			audio: Instabug.audio,
-			video: Instabug.video,
-			image: Instabug.image,
-			chatsHeaderTitle: Instabug.chatsHeaderTitle,
-			team: Instabug.team,
-			messageNotification: Instabug.messageNotification,
-			messagesNotifiactionAndOthers: Instabug.messagesNotifiactionAndOthers
-		}
+	/**
+	 * The event used to invoke the feedback form
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	invocationEvent: {
+		none: Instabug.invocationEventNone,
+		shake: Instabug.invocationEventShake,
+		screenshot: Instabug.invocationEventScreenshot,
+		twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
+		floatingButton: Instabug.invocationEventFloatingButton
+	},
+	/**
+	 * Type of SDK dismiss
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	dismissType: {
+		submit: Instabug.dismissTypeSubmit,
+		cancel: Instabug.dismissTypeCancel,
+		addAttachment: Instabug.dismissTypeAddAttachment
+	},
+	/**
+	 * Type of report to be submit
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	reportType: {
+		bug: Instabug.reportTypeBug,
+		feedback: Instabug.reportTypeFeedback
+	},
+	/**
+	 *  The mode used upon invocating the SDK
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	invocationMode: {
+		NA: Instabug.invocationModeNA,
+		newBug: Instabug.invocationModeNewBug,
+		newFeedback: Instabug.invocationModeNewFeedback,
+		newChat: Instabug.invocationModeNewChat,
+		chatsList: Instabug.invocationModeChatsList
+	},
+	/**
+	 * The supported locales
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	locale: {
+		arabic: Instabug.localeArabic,
+		chineseSimplified: Instabug.localeChineseSimplified,
+		chineseTraditional: Instabug.localeChineseTraditional,
+		czech: Instabug.localeCzech,
+		danish: Instabug.localeDanish,
+		english: Instabug.localeEnglish,
+		french: Instabug.localeFrench,
+		german: Instabug.localeGerman,
+		italian: Instabug.localeItalian,
+		japanese: Instabug.localeJapanese,
+		polish: Instabug.localePolish,
+		portugueseBrazil: Instabug.localePortugueseBrazil,
+		russian: Instabug.localeRussian,
+		spanish: Instabug.localeSpanish,
+		swedish: Instabug.localeSwedish,
+		turkish: Instabug.localeTurkish
+	},
+	/**
+	 * The color theme of the different UI elements
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	colorTheme: {
+		light: Instabug.colorThemeLight,
+		dark: Instabug.colorThemeDark
+	},
+	/** 
+	* Rectangle edges
+	* @readonly
+ 	* @enum {number}
+	*/
+	rectEdge: {
+		minX: Instabug.rectMinXEdge,
+		minY: Instabug.rectMinYEdge,
+		maxX: Instabug.rectMaxXEdge,
+		maxY: Instabug.rectMaxYEdge
+	},
+	/**
+	 * Instabug strings
+	 * @readonly
+ 	 * @enum {number}
+	 */
+	strings: {
+		shakeHint: Instabug.shakeHint,
+		swipeHint: Instabug.swipeHint,
+		edgeSwipeStartHint: Instabug.edgeSwipeStartHint,
+		startAlertText: Instabug.startAlertText,
+		invalidEmailMessage: Instabug.invalidEmailMessage,
+		invalidEmailTitle: Instabug.invalidEmailTitle,
+		invalidCommentMessage: Instabug.invalidCommentMessage,
+		invalidCommentTitle: Instabug.invalidCommentTitle,
+		invocationHeader: Instabug.invocationHeader,
+		talkToUs: Instabug.talkToUs,
+		reportBug: Instabug.reportBug,
+		reportFeedback: Instabug.reportFeedback,
+		emailFieldHint: Instabug.emailFieldHint,
+		commentFieldHintForBugReport: Instabug.commentFieldHintForBugReport,
+		commentFieldHintForFeedback: Instabug.commentFieldHintForFeedback,
+		addVideoMessage: Instabug.addVideoMessage,
+		addVoiceMessage: Instabug.addVoiceMessage,
+		addImageFromGallery: Instabug.addImageFromGallery,
+		addExtraScreenshot: Instabug.addExtraScreenshot,
+		audioRecordingPermissionDeniedTitle: Instabug.audioRecordingPermissionDeniedTitle,
+		audioRecordingPermissionDeniedMessage: Instabug.audioRecordingPermissionDeniedMessage,
+		microphonePermissionAlertSettingsButtonText: Instabug.microphonePermissionAlertSettingsButtonText,
+		recordingMessageToHoldText: Instabug.recordingMessageToHoldText,
+		recordingMessageToReleaseText: Instabug.recordingMessageToReleaseText,
+		conversationsHeaderTitle: Instabug.conversationsHeaderTitle,
+		screenshotHeaderTitle: Instabug.screenshotHeaderTitle,
+		chatsNoConversationsHeadlineText: Instabug.chatsNoConversationsHeadlineText,
+		doneButtonText: Instabug.doneButtonText,
+		okButtonText: Instabug.okButtonText,
+		cancelButtonText: Instabug.cancelButtonText,
+		thankYouText: Instabug.thankYouText,
+		audio: Instabug.audio,
+		video: Instabug.video,
+		image: Instabug.image,
+		chatsHeaderTitle: Instabug.chatsHeaderTitle,
+		team: Instabug.team,
+		messageNotification: Instabug.messageNotification,
+		messagesNotifiactionAndOthers: Instabug.messagesNotifiactionAndOthers
 	}
 }
