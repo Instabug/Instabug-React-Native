@@ -32,11 +32,11 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken,Application application) {
-        this(androidApplicationToken,application,this.invocationEvent);
+        this(androidApplicationToken,application,"button");
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken,Application application,String invocationEventValue) {
-        this(androidApplicationToken,application,invocationEventValue,this.instabugColorThemeValue);
+        this(androidApplicationToken,application,invocationEventValue,"light");
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken,Application application,
