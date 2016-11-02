@@ -22,21 +22,27 @@
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
   - Add 
+
     ```java
     import com.instabug.reactlibrary.RNInstabugReactnativePackage;
     ```
+
    to the imports at the top of the file
   - Add 
+
     ```java
     new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this,"INVOCATION_EVENT");
     ``` 
+
   to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
+
   	```gradle
   	include ':instabug-reactnative'
   	project(':instabug-reactnative').projectDir = new File(rootProject.projectDir, 	'../node_modules/instabug-reactnative/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
+
   	```gradle
       compile project(':instabug-reactnative')
   	```
@@ -105,6 +111,8 @@ The invocation event can be specified as one of the following values:
 | 'none' | InstabugInvocationEvent.NONE | No event will be registered to show the feedback form, you'll need to code your own and call the method invoke. |
 
 The InstabugColorTheme can be specified as one of the following values:
+
+
 | value | native equivalent | description  |
 |:------------:|:-------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | 'light'| InstabugColorTheme.InstabugColorThemeLight |light theme is color theme to use for the SDK's UI|
