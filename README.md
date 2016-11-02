@@ -81,7 +81,9 @@ If your app doesn't already access the microphone or photo library, you'll need 
 
 Usage
 
-To initialize Instabug in your app, you only need to link instabug-reactnative correctly by overriding  "YOUR_ANDROID_TOKEN" text by your android app token,
+To initialize Instabug in your app, you only need to link instabug-reactnative correctly by overriding 
+
+"YOUR_ANDROID_TOKEN" text by your android app token,
 "button" text by your desired invocation event, 
 "light" text by your desired color theme,
 and can take a wide range of optional parameters for configuration.
