@@ -32,19 +32,20 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken,Application application) {
-        this.androidApplication = application;
-        this.mAndroidApplicationToken = androidApplicationToken;
-
-            mInstabug = new Instabug.Builder(androidApplication, mAndroidApplicationToken)
-                    .setEmailFieldRequired(false)
-                    .setFloatingButtonOffsetFromTop(400)
-                    .setTheme(this.instabugColorTheme)
-                    .setInvocationEvent(this.invocationEvent)
-                    .setIntroMessageEnabled(false)
-                    .build();
+        this(androidApplicationToken,application,this.invocationEvent);
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken,Application application,String invocationEventValue) {
+        this(androidApplicationToken,application,invocationEventValue,this.instabugColorThemeValue);
+    }
+
+    public RNInstabugReactnativePackage(String androidApplicationToken,Application application,
+        String invocationEventValue,String instabugColorThemeValue) {
+
+        this.androidApplication = application;
+        this.mAndroidApplicationToken = androidApplicationToken;
+
+            //setting invocation event
             if(invocationEventValue.equals("button")) {
                 this.invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
             } else if(invocationEventValue.equals("swipe")) {
@@ -63,21 +64,23 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 this.invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
             }
 
-            this(androidApplicationToken,application);
+            //setting instabugColorTheme
+            if (instabugColorThemeValue.equals("light")) {
+                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
+            } else if (instabugColorThemeValue.equals("dark")) {
+                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeDark;
+            } else {
+                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
+            }
 
-    }
 
-    public RNInstabugReactnativePackage(String androidApplicationToken,Application application,String invocationEventValue,String instabugColorThemeValue) {
-        if (instabugColorThemeValue.equals("light")) {
-            this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
-        } else if (instabugColorThemeValue.equals("dark")) {
-            this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeDark;
-        } else {
-            this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
-        }
-
-        this(androidApplicationToken,application,invocationEventValue);
-
+            mInstabug = new Instabug.Builder(this.androidApplication,this.mAndroidApplicationToken)
+                    .setEmailFieldRequired(false)
+                    .setFloatingButtonOffsetFromTop(400)
+                    .setTheme(this.instabugColorTheme)
+                    .setInvocationEvent(this.invocationEvent)
+                    .setIntroMessageEnabled(false)
+                    .build();
     }
 
     @Override
