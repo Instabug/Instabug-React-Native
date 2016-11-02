@@ -22,13 +22,11 @@ import java.util.Map;
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
   private Instabug mInstabug;
-  private String mAndroidApplicationToken;
-  private Instabug.Builder mBuilder;
-  private Application androidApplication;
+  private InstabugInvocationEvent invocationEvent;
 
-  public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application androidApplication) {
+  public RNInstabugReactnativeModule(ReactApplicationContext reactContext,Instabug mInstabug) {
     super(reactContext);
-    this.androidApplication = androidApplication;
+    this.mInstabug = mInstabug;
   }
 
   @Override
@@ -36,23 +34,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     return "Instabug";
   }
 
-    /**
-     * start Instabug with default opetions 
-     * default Invocation event Floating button  
-     * @param androidApplicationToken
+  /**
+     * invoke sdk manually
+     *
+     * @param tags
      */
     @ReactMethod
-    public void startWithToken(String androidApplicationToken,InstabugInvocationEvent invocationEvent)
+    public void invoke()
     {
-        this.mAndroidApplicationToken = androidApplicationToken;
-
-        mInstabug = new Instabug.Builder(androidApplication, mAndroidApplicationToken)
-                    .setEmailFieldRequired(false)
-                    .setFloatingButtonOffsetFromTop(400)
-                    .setTheme(InstabugColorTheme.InstabugColorThemeLight)
-                    .setInvocationEvent(invocationEvent)
-                    .setIntroMessageEnabled(false)
-                    .build();
+         mInstabug.invoke();
     }
 
   /**
@@ -194,12 +184,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
-    constants.put("invocationEventFloatingButton", InstabugInvocationEvent.FLOATING_BUTTON);
-    constants.put("invocationEventTwoFingersSwipeLeft", InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFTt);
-    constants.put("invocationEventScreenshot", InstabugInvocationEvent.SCREENSHOT_GESTURE);
-    constants.put("invocationEventShake", InstabugInvocationEvent.SHAKE);
-    constants.put("invocationEventNone", InstabugInvocationEvent.NONE);
-
     return constants;
   }
 }
