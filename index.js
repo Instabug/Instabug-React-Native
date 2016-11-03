@@ -303,7 +303,11 @@ module.exports = {
 	* @param {locale} locale A locale to set the SDK to.
 	*/
 	setLocale: function(locale) {
-		Instabug.setLocale(locale);
+		if (Platform.OS === 'ios') {
+			Instabug.setLocale(locale);
+		} else if (Platform.OS === 'android') {
+			Instabug.changeLocale(locale);
+		}
 	},
 
 	/**
@@ -321,7 +325,7 @@ module.exports = {
 	* Sets the color theme of the SDK's whole UI.
 	* @param {colorTheme) colorTheme An `colorTheme` to set
 	* the SDK's UI to.
-	 */
+	*/
 	setColorTheme: function(colorTheme) {
 		Instabug.setColorTheme(colorTheme);
 	},

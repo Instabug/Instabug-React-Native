@@ -13,8 +13,9 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
-import java.util.Locale;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import android.net.Uri;
 import java.util.Map;
 
@@ -36,13 +37,60 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
   /**
      * invoke sdk manually
-     *
-     * @param tags
+     * 
      */
     @ReactMethod
     public void invoke()
     {
-         mInstabug.invoke();
+        try {
+          mInstabug.invoke();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+  /**
+     * invoke sdk manually with desire invocation mode 
+     *
+     * @param invocation mode
+     */
+    @ReactMethod
+    public void invokeWithInvocationMode(String invocationMode)
+    {
+        InstabugInvocationMode mode = InstabugInvocationMode.PROMPT_OPTION;
+        if (invocationMode.equals("bug")) {
+            mode = InstabugInvocationMode.NEW_BUG;
+        } else if (invocationMode.equals("feedback")) {
+            mode = InstabugInvocationMode.NEW_FEEDBACK;
+        }else if (invocationMode.equals("chat")){
+            mode = InstabugInvocationMode.NEW_CHAT;
+        }else if (invocationMode.equals("chats")){
+            mode = InstabugInvocationMode.CHATS_LIST;
+        }else {
+            mode = InstabugInvocationMode.PROMPT_OPTION;
+        }
+        
+      try {
+          mInstabug.invoke(mode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+
+  /**
+     * Dismisses all visible Instabug views
+     *
+     */
+    @ReactMethod
+    public void dismiss()
+    {
+        try {
+              mInstabug.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
   /**
@@ -67,46 +115,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param languageTag
      */
     @ReactMethod
-    public void changeLocale(String languageTag) {
+    public void changeLocale(Locale languageTag) {
         try {
-            switch (languageTag) {
-                case "CHINA":
-                case "CHINESE":
-                case "PRC":
-                case "SIMPLIFIED_CHINESE":
-                    mInstabug.changeLocale(Locale.CHINESE);
-                    break;
-                case "TAIWAN":
-                case "TRADITIONAL_CHINESE":
-                    mInstabug.changeLocale(Locale.TAIWAN);
-                    break;
-                case "ENGLISH":
-                    mInstabug.changeLocale(Locale.ENGLISH);
-                    break;
-                case "UK":
-                    mInstabug.changeLocale(Locale.UK);
-                    break;
-                case "US":
-                    mInstabug.changeLocale(Locale.US);
-                    break;
-            }
-
+            mInstabug.changeLocale(languageTag);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @ReactMethod
-    public void report(String value) {
-        InstabugInvocationMode mode = InstabugInvocationMode.PROMPT_OPTION;
-        if (value.equals("bug")) {
-            mode = InstabugInvocationMode.NEW_BUG;
-        } else if (value.equals("feedback")) {
-            mode = InstabugInvocationMode.NEW_FEEDBACK;
-        }
-
-        mInstabug.invoke(mode);
-    }
 
     /**
      * The file at filePath will be uploaded along upcoming reports with the name fileNameWithExtension
@@ -180,6 +196,206 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
+    /** Set the primary color that the SDK will use to tint certain UI elements in the SDK
+     *
+     * @param primaryColorValue The value of the primary color ,
+     * whatever this color was parsed from a resource color or hex color or RGB color values
+     */
+    @ReactMethod
+    public void setPrimaryColor(int primaryColor) {
+        try{
+            mInstabug.setPrimaryColor(primaryColor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report. All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run. If you wish to reset the logs, use {@link #clearLog()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message log message
+     */
+    @ReactMethod
+    public void log(String message) {
+        try {
+            mInstabug.log(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return all tags added using {@link #addTags(String...)}
+     * @see #resetTags()
+     */
+    @ReactMethod
+    public ArrayList<String> getTags() {
+        ArrayList<String>  tags = new  ArrayList<String>();
+        try {
+            tags=mInstabug.getTags();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    /**
+     * Reset ALL tags added using {@link #addTags(String...)}
+     *
+     */
+    @ReactMethod
+    public void resetTags() {
+        try {
+            mInstabug.resetTags();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return {@code true} if Instabug is enabled, {@code false} if it's disabled
+     * @see #enable()
+     * @see #disable()
+     */
+    @ReactMethod
+    public boolean isEnabled() {
+        boolean isEnabled=false;
+        try {
+            isEnabled=mInstabug.isEnabled();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isEnabled;
+    }
+
+
+    /**
+     * Enables all Instabug functionality
+     *
+     */
+    @ReactMethod
+    public void enable() {
+        try {
+            mInstabug.enable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Disables all Instabug functionality
+     *
+     */
+    @ReactMethod
+    public void disable() {
+        try {
+            mInstabug.disable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return application token 
+     */
+    @ReactMethod
+    public String getAppToken() {
+        String appToken="";
+        try {
+           appToken = mInstabug.getAppToken();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return appToken;
+    }
+
+
+    /**
+     * Get current unread count of messages for this user
+     *
+     * @return number of messages that are unread for this user
+     */
+    @ReactMethod
+    public int getUnreadMessagesCount() {
+        int unreadMessages = 0 ;
+        try {
+           unreadMessages = mInstabug.getUnreadMessagesCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return unreadMessages;
+    }
+
+    /**
+     * Changes the event used to invoke Instabug SDK
+     *
+     * @param instabugInvocationEvent to be used to invoke SDK
+     * @see InstabugInvocationEvent
+     */
+    @ReactMethod
+    public void changeInvocationEvent(String invocationEventValue) {
+        InstabugInvocationEvent invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
+        try {
+                        //setting invocation event
+            if(invocationEventValue.equals("button")) {
+                invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
+            } else if(invocationEventValue.equals("swipe")) {
+                invocationEvent=InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
+
+            } else if(invocationEventValue.equals("shake")) {
+                invocationEvent=InstabugInvocationEvent.SHAKE;
+
+            } else if(invocationEventValue.equals("screenshot")){
+                invocationEvent=InstabugInvocationEvent.SCREENSHOT_GESTURE;
+
+            } else if(invocationEventValue.equals("none")) {
+                invocationEvent=InstabugInvocationEvent.NONE;
+            } 
+           mInstabug.changeInvocationEvent(invocationEvent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    /**
+     * Enabled/disable chat notification
+     *
+     * @param isChatNotificationEnable whether chat notification is reburied or not
+     */
+    @ReactMethod 
+    public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
+        try {
+           mInstabug.setChatNotificationEnabled(isChatNotificationEnable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Enable/Disable debug logs from Instabug SDK
+     * Default state: disabled
+     *
+     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
+     */
+    @ReactMethod
+    public void setDebugEnabled(boolean isDebugEnabled) {
+        try {
+           mInstabug.setDebugEnabled(isDebugEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        
 
     @Override
     public Map<String, Object> getConstants() {
