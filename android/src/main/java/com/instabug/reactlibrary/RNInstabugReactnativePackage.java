@@ -1,23 +1,25 @@
 
 package com.instabug.reactlibrary;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Collections;
 import android.app.Application;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
+import com.facebook.react.bridge.ReactApplicationContext;
 
 
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
@@ -75,11 +77,18 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
 
             mInstabug = new Instabug.Builder(this.androidApplication,this.mAndroidApplicationToken)
-                    .setEmailFieldRequired(false)
                     .setFloatingButtonOffsetFromTop(400)
                     .setTheme(this.instabugColorTheme)
                     .setInvocationEvent(this.invocationEvent)
                     .setIntroMessageEnabled(false)
+                    .setAttachmentTypesEnabled(true, true, true, true, true)
+                    .setShouldPlayConversationSounds(true)
+                    .setEnableInAppNotificationSound(true)
+                    .setEnableSystemNotificationSound(false)
+                    .setPromptOptionsEnabled(true, true, true)
+                    .setWillSkipScreenshotAnnotation(false)
+                    .setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT)
+                    .setLocale(new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry()))
                     .build();
     }
 
