@@ -23,7 +23,7 @@ RCT_ENUM_CONVERTER(IBGInvocationEvent, (@{
 RCT_ENUM_CONVERTER(IBGInvocationMode, (@{
                                          @"invocationModeNA": @(IBGInvocationModeNA),
                                          @"invocationModeNewBug": @(IBGInvocationModeNewBug),
-                                         @"invocationModeNewFeedbac": @(IBGInvocationModeNewFeedback),
+                                         @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
                                          @"invocationModeNewChat": @(IBGInvocationModeNewChat),
                                          @"invocationModeChatsList": @(IBGInvocationModeChatsList)
                                          }), IBGInvocationModeNA, integerValue);
