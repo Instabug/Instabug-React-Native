@@ -112,12 +112,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Change Locale of Instabug UI elements(defaults to English)
      *
-     * @param languageTag
+     * @param String instabugLocale
      */
     @ReactMethod
-    public void changeLocale(Locale languageTag) {
+    public void changeLocale(String instabugLocale) {
         try {
-            mInstabug.changeLocale(languageTag);
+            mInstabug.changeLocale(getLocaleByKey(instabugLocale));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -395,11 +395,53 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
-        
+
+    private Locale getLocaleByKey(String instabugLocale) {
+        String localeInLowerCase=instabugLocale.toLowerCase();
+        switch (localeInLowerCase){
+            case "arabic":
+                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
+            case "english":
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+            case "czech":
+                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
+            case "french":
+                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
+            case "german":
+                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
+            case "italian":
+                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
+            case "japanese":
+                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
+            case "polish":
+                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
+            case "russian":
+                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
+            case "spanish":
+                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
+            case "swedish":
+                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
+            case "turkish":
+                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
+            case "portuguesebrazil":
+                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
+            case "chinesesimplified":
+                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
+            case "chinesetraditional":
+                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
+            case "korean":
+                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
+            default:
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+
+        }
+    }
 
     @Override
     public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
     return constants;
-  }
+  
+    }
 }
+
