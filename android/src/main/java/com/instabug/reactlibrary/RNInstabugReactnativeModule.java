@@ -22,8 +22,36 @@ import java.util.Map;
 
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
-  private Instabug mInstabug;
-  private InstabugInvocationEvent invocationEvent;
+    private Instabug mInstabug;
+    private InstabugInvocationEvent invocationEvent;
+
+    private final String INVOCATION_EVENT_NONE = "none";
+    private final String INVOCATION_EVENT_SHAKE = "shake";
+    private final String INVOCATION_EVENT_SCREENSHOT = "screenshot";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
+    private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
+
+    private final String INVOCATION_MODE_NEW_BUG = "bug";
+    private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
+    private final String INVOCATION_MODE_NEW_CHAT = "chat";
+    private final String INVOCATION_MODE_CHATS_LIST = "chats";
+
+    private final String LOCALE_ARABIC = "arabic";
+    private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
+    private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
+    private final String LOCALE_CZECH = "czech";
+    private final String LOCALE_ENGLISH = "english";
+    private final String LOCALE_FRENCH = "french";
+    private final String LOCALE_GERMAN = "german";
+    private final String LOCALE_KOREAN = "korean";
+    private final String LOCALE_ITALIAN = "italian";
+    private final String LOCALE_JAPANESE = "japanese";
+    private final String LOCALE_POLISH = "polish";
+    private final String LOCALE_PORTUGUESE_BRAZIL = "portuguesebrazil";
+    private final String LOCALE_RUSSIAN = "russian";
+    private final String LOCALE_SPANISH = "spanish";
+    private final String LOCALE_SWEDISH = "swedish";
+    private final String LOCALE_TURKISH = "turkish";
 
   public RNInstabugReactnativeModule(ReactApplicationContext reactContext,Instabug mInstabug) {
     super(reactContext);
@@ -37,7 +65,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
   /**
      * invoke sdk manually
-     * 
+     *
      */
     @ReactMethod
     public void invoke()
@@ -50,32 +78,32 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
   /**
-     * invoke sdk manually with desire invocation mode 
+     * invoke sdk manually with desire invocation mode
      *
      * @param invocation mode
      */
     @ReactMethod
     public void invokeWithInvocationMode(String invocationMode)
     {
-        InstabugInvocationMode mode = InstabugInvocationMode.PROMPT_OPTION;
-        if (invocationMode.equals("bug")) {
+        InstabugInvocationMode mode;
+
+        if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
             mode = InstabugInvocationMode.NEW_BUG;
-        } else if (invocationMode.equals("feedback")) {
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
             mode = InstabugInvocationMode.NEW_FEEDBACK;
-        }else if (invocationMode.equals("chat")){
+        }else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)){
             mode = InstabugInvocationMode.NEW_CHAT;
-        }else if (invocationMode.equals("chats")){
+        }else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)){
             mode = InstabugInvocationMode.CHATS_LIST;
-        }else {
+        } else {
             mode = InstabugInvocationMode.PROMPT_OPTION;
         }
-        
+
       try {
           mInstabug.invoke(mode);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
     }
 
 
@@ -319,7 +347,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @return application token 
+     * @return application token
      */
     @ReactMethod
     public String getAppToken() {
@@ -361,26 +389,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void changeInvocationEvent(String invocationEventValue) {
         InstabugInvocationEvent invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
         try {
-                        //setting invocation event
-            if(invocationEventValue.equals("button")) {
+            //setting invocation event
+            if(invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
                 invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if(invocationEventValue.equals("swipe")) {
+            } else if(invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE)) {
                 invocationEvent=InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
-
-            } else if(invocationEventValue.equals("shake")) {
+            } else if(invocationEventValue.equals(INVOCATION_EVENT_SHAKE)) {
                 invocationEvent=InstabugInvocationEvent.SHAKE;
-
-            } else if(invocationEventValue.equals("screenshot")){
+            } else if(invocationEventValue.equals(INVOCATION_EVENT_SCREENSHOT)){
                 invocationEvent=InstabugInvocationEvent.SCREENSHOT_GESTURE;
-
-            } else if(invocationEventValue.equals("none")) {
+            } else if(invocationEventValue.equals(INVOCATION_EVENT_NONE)) {
                 invocationEvent=InstabugInvocationEvent.NONE;
-            } 
+            }
+
            mInstabug.changeInvocationEvent(invocationEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
@@ -388,7 +414,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not
      */
-    @ReactMethod 
+    @ReactMethod
     public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
         try {
            mInstabug.setChatNotificationEnabled(isChatNotificationEnable);
@@ -415,50 +441,74 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase=instabugLocale.toLowerCase();
-        switch (localeInLowerCase){
-            case "arabic":
-                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
-            case "english":
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
-            case "czech":
-                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
-            case "french":
-                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
-            case "german":
-                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
-            case "italian":
-                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
-            case "japanese":
-                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
-            case "polish":
-                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
-            case "russian":
-                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
-            case "spanish":
-                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
-            case "swedish":
-                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
-            case "turkish":
-                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
-            case "portuguesebrazil":
-                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
-            case "chinesesimplified":
-                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
-            case "chinesetraditional":
-                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
-            case "korean":
-                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
-            default:
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
-
-        }
+        case LOCALE_ARABIC:
+            return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
+        case LOCALE_ENGLISH:
+            return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+        case LOCALE_CZECH:
+            return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
+        case LOCALE_FRENCH:
+            return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
+        case LOCALE_GERMAN:
+            return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
+        case LOCALE_ITALIAN:
+            return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
+        case LOCALE_JAPANESE:
+            return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
+        case LOCALE_POLISH:
+            return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
+        case LOCALE_RUSSIAN:
+            return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
+        case LOCALE_SPANISH:
+            return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
+        case LOCALE_SWEDISH:
+            return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
+        case LOCALE_TURKISH:
+            return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
+        case LOCALE_PORTUGUESE_BRAZIL:
+            return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
+        case LOCALE_CHINESE_SIMPLIFIED:
+            return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
+        case LOCALE_CHINESE_TRADITIONAL:
+            return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
+        case LOCALE_KOREAN:
+            return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
+        default:
+            return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
     }
 
     @Override
     public Map<String, Object> getConstants() {
-    final Map<String, Object> constants = new HashMap<>();
-    return constants;
-  
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
+        constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
+        constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
+        constants.put("invocationEventTwoFingersSwipe", INVOCATION_EVENT_TWO_FINGERS_SWIPE);
+        constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
+
+        constants.put("invocationModeNewBug", INVOCATION_MODE_NEW_BUG);
+        constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
+        constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
+        constants.put("invocationModeChatsList", INVOCATION_MODE_CHATS_LIST);
+
+        constants.put("localeArabic", LOCALE_ARABIC);
+        constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
+        constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
+        constants.put("localeCzech", LOCALE_CZECH);
+        constants.put("localeEnglish", LOCALE_ENGLISH);
+        constants.put("localeFrench", LOCALE_FRENCH);
+        constants.put("localeGerman", LOCALE_FRENCH);
+        constants.put("localeKorean", LOCALE_KOREAN);
+        constants.put("localeItalian", LOCALE_ITALIAN);
+        constants.put("localeJapanese", LOCALE_JAPANESE);
+        constants.put("localePolish", LOCALE_POLISH);
+        constants.put("localePortugueseBrazil", LOCALE_PORTUGUESE_BRAZIL);
+        constants.put("localeRussian", LOCALE_RUSSIAN);
+        constants.put("localeSpanish", LOCALE_SPANISH);
+        constants.put("localeSwedish", LOCALE_SWEDISH);
+        constants.put("localeTurkish", LOCALE_TURKISH);
+
+        return constants;
     }
 }
 
