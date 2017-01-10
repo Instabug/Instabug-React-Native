@@ -216,7 +216,7 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
               
               @"invocationModeNA": @(IBGInvocationModeNA),
               @"invocationModeNewBug": @(IBGInvocationModeNewBug),
-              @"invocationModeNewFeedbac": @(IBGInvocationModeNewFeedback),
+              @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
               @"invocationModeNewChat": @(IBGInvocationModeNewChat),
               @"invocationModeChatsList": @(IBGInvocationModeChatsList),
               
