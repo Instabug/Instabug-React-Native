@@ -239,7 +239,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param message log message
      */
     @ReactMethod
-    public void log(String message) {
+    public void IBGLog(String message) {
         try {
             mInstabug.log(message);
         } catch (Exception e) {
