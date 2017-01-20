@@ -11,7 +11,7 @@
 
 `$ react-native link instabug-reactnative`
 
-#### iOS Manual installation
+#### iOS installation
 
 1. Open your app `.xcodeproj` file
 2. Add the following line to your "Podfile": `pod 'Instabug', '~> 6.0.0'`
