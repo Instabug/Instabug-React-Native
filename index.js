@@ -64,7 +64,7 @@ module.exports = {
 	* @param {string} fileLocation Path to a file that's going to be attached
 	* to each report.
 	*/
-	// Not yet testsed
+	// Not yet tested
 	setFileAttachment: function(fileLocation) {
 		Instabug.setFileAttachment(fileLocation);
 	},
@@ -124,14 +124,14 @@ module.exports = {
 
 	/**
 	* Sets a block of code to be executed just before the SDK's UI is presented.
-	* This block is executed on the UI thread. Could be used for performing any 
+	* This block is executed on the UI thread. Could be used for performing any
 	* UI changes before the SDK's UI is shown.
-	* @callback preSendingHandler 
+	* @callback preSendingHandler
 	*/
 
 	/**
 	* Sets a block of code to be executed just before the SDK's UI is presented.
-	* This block is executed on the UI thread. Could be used for performing any 
+	* This block is executed on the UI thread. Could be used for performing any
 	* UI changes before the SDK's UI is shown.
 	* @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before invoking the SDK
 	*/
@@ -147,10 +147,10 @@ module.exports = {
 
 	/**
 	* A callback that gets executed after the SDK's UI is dismissed.
-	* @callback postInvocationHandler 
+	* @callback postInvocationHandler
 	* @param {dismissType} dismissType How the SDK was dismissed.
-	* @param {reportType} reportType Type of report that has been sent. Will be set 
-	* to IBGReportTypeBug in case the SDK has been dismissed without selecting a 
+	* @param {reportType} reportType Type of report that has been sent. Will be set
+	* to IBGReportTypeBug in case the SDK has been dismissed without selecting a
 	* report type, so you might need to check issueState before reportType
 	*/
 
@@ -161,7 +161,7 @@ module.exports = {
 	* @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
 	* dismissing the SDK.
 	*/
-	setPostInvocatioHandler: function(postInvocationHandler) {
+	setPostInvocationHandler: function(postInvocationHandler) {
 		Instabug.addListener('IBGpostInvocationHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGpostInvocationHandler',
@@ -170,7 +170,7 @@ module.exports = {
 			}
 		);
 
-		Instabug.setPostInvocatioHandler(postInvocationHandler);
+		Instabug.setPostInvocationHandler(postInvocationHandler);
 	},
 
 	/**
@@ -204,18 +204,18 @@ module.exports = {
 	* Enables/disables screenshot view when reporting a bug/improvement.
 	* By default, screenshot view is shown when reporting a bug, but not when
 	* sending feedback.
-	* @param {boolean} willSkipeScreenshotAnnotation sets whether screenshot view is
+	* @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
 	* shown or not. Passing YES will show screenshot view for both feedback and
 	* bug reporting, while passing NO will disable it for both.
 	*/
-	setWillSkipScreenshotAnnotation: function(willSkipeScreenshotAnnotation) {
-		Instabug.setWillSkipScreenshotAnnotation(willSkipeScreenshotAnnotation);
+	setWillSkipScreenshotAnnotation: function(willSkipScreenshotAnnotation) {
+		Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
 	},
 
 	/**
 	* return callback
 	* @callback messageCountCallback
-	* @param{number} responseCount Notifications count, or -1 incase the SDK has 
+	* @param{number} responseCount Notifications count, or -1 incase the SDK has
 	* not been initialized.
 	*/
 
@@ -223,7 +223,7 @@ module.exports = {
 	* Returns the number of unread messages the user currently has.
 	* Use this method to get the number of unread messages the user
 	* has, then possibly notify them about it with your own UI.
-	* @param {messageCountCallback} messageCountCallback callback with argument 
+	* @param {messageCountCallback} messageCountCallback callback with argument
 	* Notifications count, or -1 incase the SDK has not been initialized.
 	*/
 	getUnreadMessagesCount: function(messageCountCallback) {
@@ -233,7 +233,7 @@ module.exports = {
 	/**
 	* Sets the event that invoke the feedback form.
 	* Default is set by `Instabug.startWithToken`.
-	* @param {invocattionEvent} invocationEvent Event that invokes the
+	* @param {invocationEvent} invocationEvent Event that invokes the
 	* feedback form.
 	*/
 	setInvocationEvent: function(invocationEvent) {
@@ -278,8 +278,8 @@ module.exports = {
  	* @param {number} iPhoneShakingThreshold Threshold for iPhone.
  	* @param {number} iPadShakingThreshold Threshold for iPad.
 	*/
-	setShakingThresholdForiPhone: function(iphoneThreshold, ipadThreshold) {
-		Instabug.setShakingThresholdForiPhone(iphoneThreshold, ipadThreshold);
+	setShakingThresholdForIPhone: function(iPhoneShakingThreshold, iPadShakingThreshold) {
+		Instabug.setShakingThresholdForIPhone(iPhoneShakingThreshold, iPadShakingThreshold);
 	},
 
 	/**
@@ -289,7 +289,7 @@ module.exports = {
  	* Default for `floatingButtonOffsetFromTop` is 50
  	* @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
  	* or `minX` to show on the left.
- 	* @param {numnber} offsetFromTop floatingButtonOffsetFromTop Top offset for
+ 	* @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
  	* floating button.
 	*/
 	setFloatingButtonEdge: function(floatingButtonEdge, offsetFromTop) {
@@ -321,11 +321,11 @@ module.exports = {
 		Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
 	},
 
-	/**
-	* Sets the color theme of the SDK's whole UI.
-	* @param {colorTheme) colorTheme An `colorTheme` to set
-	* the SDK's UI to.
-	*/
+    /**
+     * Sets the color theme of the SDK's whole UI.
+     * the SDK's UI to.
+     * @param colorTheme
+        */
 	setColorTheme: function(colorTheme) {
 		Instabug.setColorTheme(colorTheme);
 	},
@@ -335,7 +335,7 @@ module.exports = {
 	* Sets the color of UI elements indicating interactivity or call to action.
 	* To use, import processColor and pass to it with argument the color hex
 	* as argument.
-	* @param {color} color A color to set the UI elements of the SDK to.
+	* @param {color} primaryColor A color to set the UI elements of the SDK to.
 	*/
 	setPrimaryColor: function(primaryColor) {
 		Instabug.setPrimaryColor(primaryColor);
@@ -383,8 +383,8 @@ module.exports = {
 
 	/**
 	* Sets whether attachments in bug reporting and in-app messaging are enabled or not.
-	* @param {boolean} screenShot A boolean to enable or disable screenshot attachments.
-	* @param {boolean} extraScreenShot A boolean to enable or disable extra
+	* @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+	* @param {boolean} extraScreenshot A boolean to enable or disable extra
 	* screenshot attachments.
  	* @param {boolean} galleryImage A boolean to enable or disable gallery image
  	* attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
@@ -415,10 +415,10 @@ module.exports = {
 
 	/**
 	* Sets a block of code that gets executed when a new message is received.
-	* @param {onNewMessgaeHandler} onNewMessgaeHandler - A callback that gets 
+	* @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
 	* executed when a new message is received.
 	*/
-	setOnNewMessageHandler: function(onNewMessgaeHandler) {
+	setOnNewMessageHandler: function(onNewMessageHandler) {
 		Instabug.addListener('IBGonNewMessageHandler');
 		NativeAppEventEmitter.addListener(
 			'IBGonNewMessageHandler',
@@ -433,11 +433,11 @@ module.exports = {
 	* When only a single option is enabled, it become the default invocation mode.
 	* If all options are disabled, bug reporting becomes the default invocation mode.
 	* By default, all three options are enabled.
-	* @param {boolean} bugReportEnabled  A boolean to indicate whether bug reports
+	* @param {boolean} isBugReportingEnabled  A boolean to indicate whether bug reports
 	* are enabled or disabled.
-	* @param {boolean} feedbackEnabled A boolean to indicate whether feedback is 
+	* @param {boolean} isFeedbackReportingEnabled A boolean to indicate whether feedback is
 	* enabled or disabled.
-	* @param {boolean} chatEnabled A boolean to indicate whether chat is enabled 
+	* @param {boolean} isChatEnabled A boolean to indicate whether chat is enabled
 	* or disabled.
 	*/
 	setPromptOptions: function(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled) {
@@ -447,7 +447,7 @@ module.exports = {
 	/**
 	* return callback
 	* @callback isInstabugNotificationCallback
- 	* @param {boolean} isInstabugNotification 
+ 	* @param {boolean} isInstabugNotification
 	*/
 
 	/**
@@ -539,7 +539,7 @@ module.exports = {
 		light: Instabug.colorThemeLight,
 		dark: Instabug.colorThemeDark
 	},
-	/** 
+	/**
 	* Rectangle edges
 	* @readonly
  	* @enum {number}
@@ -593,6 +593,6 @@ module.exports = {
 		chatsHeaderTitle: Instabug.chatsHeaderTitle,
 		team: Instabug.team,
 		messageNotification: Instabug.messageNotification,
-		messagesNotifiactionAndOthers: Instabug.messagesNotifiactionAndOthers
+		messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers
 	}
 }

@@ -127,8 +127,8 @@ RCT_EXPORT_METHOD(setCommentFieldRequired:(BOOL)isCommentFieldRequired) {
     [Instabug setCommentFieldRequired:isCommentFieldRequired];
 }
 
-RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold foriPad:(double)iPadShakingThreshold) {
-    [Instabug setShakingThresholdForiPhone:iPhoneShakingThreshold foriPad:iPadShakingThreshold];
+RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold forIPad:(double)iPadShakingThreshold) {
+    [Instabug setShakingThresholdForIPhone:iPhoneShakingThreshold forIPad:iPadShakingThreshold];
 }
 
 RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop) {
