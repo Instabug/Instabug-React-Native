@@ -1,25 +1,23 @@
 
 package com.instabug.reactlibrary;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.ArrayList;
-import java.util.Collections;
 import android.app.Application;
 
 import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.NativeModule;
-import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
+import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-
-
+import com.facebook.react.uimanager.ViewManager;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
@@ -27,69 +25,70 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private String mAndroidApplicationToken;
     private Instabug mInstabug;
     private Instabug.Builder mBuilder;
-    private InstabugInvocationEvent invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
-    private InstabugColorTheme instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
+    private InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+    private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
+
     public RNInstabugReactnativePackage(Instabug instabug) {
         this.mInstabug = instabug;
     }
 
-    public RNInstabugReactnativePackage(String androidApplicationToken,Application application) {
-        this(androidApplicationToken,application,"button");
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application application) {
+        this(androidApplicationToken, application, "button");
     }
 
-    public RNInstabugReactnativePackage(String androidApplicationToken,Application application,String invocationEventValue) {
-        this(androidApplicationToken,application,invocationEventValue,"light");
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application application, String invocationEventValue) {
+        this(androidApplicationToken, application, invocationEventValue, "light");
     }
 
-    public RNInstabugReactnativePackage(String androidApplicationToken,Application application,
-        String invocationEventValue,String instabugColorThemeValue) {
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application application,
+                                        String invocationEventValue, String instabugColorThemeValue) {
 
         this.androidApplication = application;
         this.mAndroidApplicationToken = androidApplicationToken;
 
-            //setting invocation event
-            if(invocationEventValue.equals("button")) {
-                this.invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if(invocationEventValue.equals("swipe")) {
-                this.invocationEvent=InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
+        //setting invocation event
+        if (invocationEventValue.equals("button")) {
+            this.invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+        } else if (invocationEventValue.equals("swipe")) {
+            this.invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
 
-            } else if(invocationEventValue.equals("shake")) {
-                this.invocationEvent=InstabugInvocationEvent.SHAKE;
+        } else if (invocationEventValue.equals("shake")) {
+            this.invocationEvent = InstabugInvocationEvent.SHAKE;
 
-            } else if(invocationEventValue.equals("screenshot")){
-                this.invocationEvent=InstabugInvocationEvent.SCREENSHOT_GESTURE;
+        } else if (invocationEventValue.equals("screenshot")) {
+            this.invocationEvent = InstabugInvocationEvent.SCREENSHOT_GESTURE;
 
-            } else if(invocationEventValue.equals("none")) {
-                this.invocationEvent=InstabugInvocationEvent.NONE;
+        } else if (invocationEventValue.equals("none")) {
+            this.invocationEvent = InstabugInvocationEvent.NONE;
 
-            } else {
-                this.invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
-            }
+        } else {
+            this.invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+        }
 
-            //setting instabugColorTheme
-            if (instabugColorThemeValue.equals("light")) {
-                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
-            } else if (instabugColorThemeValue.equals("dark")) {
-                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeDark;
-            } else {
-                this.instabugColorTheme=InstabugColorTheme.InstabugColorThemeLight;
-            }
+        //setting instabugColorTheme
+        if (instabugColorThemeValue.equals("light")) {
+            this.instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
+        } else if (instabugColorThemeValue.equals("dark")) {
+            this.instabugColorTheme = InstabugColorTheme.InstabugColorThemeDark;
+        } else {
+            this.instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
+        }
 
 
-            mInstabug = new Instabug.Builder(this.androidApplication,this.mAndroidApplicationToken)
-                    .setFloatingButtonOffsetFromTop(400)
-                    .setTheme(this.instabugColorTheme)
-                    .setInvocationEvent(this.invocationEvent)
-                    .setIntroMessageEnabled(false)
-                    .setAttachmentTypesEnabled(true, true, true, true, true)
-                    .setShouldPlayConversationSounds(true)
-                    .setEnableInAppNotificationSound(true)
-                    .setEnableSystemNotificationSound(false)
-                    .setPromptOptionsEnabled(true, true, true)
-                    .setWillSkipScreenshotAnnotation(false)
-                    .setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT)
-                    .setLocale(new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry()))
-                    .build();
+        mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
+                .setFloatingButtonOffsetFromTop(400)
+                .setTheme(this.instabugColorTheme)
+                .setInvocationEvent(this.invocationEvent)
+                .setIntroMessageEnabled(false)
+                .setAttachmentTypesEnabled(true, true, true, true, true)
+                .setShouldPlayConversationSounds(true)
+                .setEnableInAppNotificationSound(true)
+                .setEnableSystemNotificationSound(false)
+                .setPromptOptionsEnabled(true, true, true)
+                .setWillSkipScreenshotAnnotation(false)
+                .setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT)
+                .setLocale(new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry()))
+                .build();
     }
 
     @Override
@@ -101,12 +100,12 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
     @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
-      return Collections.emptyList();
+        return Collections.emptyList();
     }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-      return Collections.emptyList();
+        return Collections.emptyList();
     }
 
 }
