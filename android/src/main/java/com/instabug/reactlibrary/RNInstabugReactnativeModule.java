@@ -371,13 +371,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Changes the event used to invoke Instabug SDK
+     * Sets the event used to invoke Instabug SDK
      *
      * @param instabugInvocationEvent to be used to invoke SDK
      * @see InstabugInvocationEvent
      */
     @ReactMethod
-    public void changeInvocationEvent(String invocationEventValue) {
+    public void setInvocationEvent(String invocationEventValue) {
         InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
         try {
             //setting invocation event
