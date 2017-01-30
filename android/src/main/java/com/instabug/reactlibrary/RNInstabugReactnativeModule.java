@@ -432,40 +432,42 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
-        case LOCALE_ARABIC:
-        return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
-        case LOCALE_ENGLISH:
-        return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
-        case LOCALE_CZECH:
-        return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
-        case LOCALE_FRENCH:
-        return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
-        case LOCALE_GERMAN:
-        return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
-        case LOCALE_ITALIAN:
-        return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
-        case LOCALE_JAPANESE:
-        return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
-        case LOCALE_POLISH:
-        return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
-        case LOCALE_RUSSIAN:
-        return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
-        case LOCALE_SPANISH:
-        return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
-        case LOCALE_SWEDISH:
-        return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
-        case LOCALE_TURKISH:
-        return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
-        case LOCALE_PORTUGUESE_BRAZIL:
-        return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
-        case LOCALE_CHINESE_SIMPLIFIED:
-        return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
-        case LOCALE_CHINESE_TRADITIONAL:
-        return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
-        case LOCALE_KOREAN:
-        return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
-        default:
-        return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+        switch (localeInLowerCase) {
+            case LOCALE_ARABIC:
+                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
+            case LOCALE_ENGLISH:
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+            case LOCALE_CZECH:
+                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
+            case LOCALE_FRENCH:
+                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
+            case LOCALE_GERMAN:
+                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
+            case LOCALE_ITALIAN:
+                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
+            case LOCALE_JAPANESE:
+                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
+            case LOCALE_POLISH:
+                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
+            case LOCALE_RUSSIAN:
+                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
+            case LOCALE_SPANISH:
+                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
+            case LOCALE_SWEDISH:
+                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
+            case LOCALE_TURKISH:
+                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
+            case LOCALE_PORTUGUESE_BRAZIL:
+                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
+            case LOCALE_CHINESE_SIMPLIFIED:
+                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
+            case LOCALE_CHINESE_TRADITIONAL:
+                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
+            case LOCALE_KOREAN:
+                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
+            default:
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+        }
     }
 
     @Override
