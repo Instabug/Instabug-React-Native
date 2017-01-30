@@ -1,18 +1,17 @@
-
 {
   "name": "instabug-reactnative",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }, 
-   "repository": {
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/Instabug/instabug-reactnative.git"
   },
   "keywords": [
-    "react-native",   
+    "react-native",
     "bug",
     "reporting",
     "feedback",
@@ -21,7 +20,7 @@
   ],
   "author": "Hossam Hassan && Yousef Hamza",
   "license": "MIT",
-    "bugs": {
+  "bugs": {
     "url": "https://github.com/Instabug/instabug-reactnative/issues"
   },
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",

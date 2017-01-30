@@ -3,11 +3,9 @@
 //  instabugDemo
 //
 //  Created by Yousef Hamza on 9/29/16.
-//  Copyright © 2016 Facebook. All rights reserved.
-//
 
 #import "InstabugReactBridge.h"
-#import <Instabug/Instabug.h>
+#import "Instabug.h"
 
 @implementation InstabugReactBridge
 
@@ -78,16 +76,16 @@ RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
     }
 }
 
-RCT_EXPORT_METHOD(setPostInvocatioHandler:(RCTResponseSenderBlock)callBack) {
+RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPostInvocatioHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
+        [Instabug setPostInvocationHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
             [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
                                                                        @"dismissType": @(dismissType),
                                                                        @"reportType": @(reportType)
                                                                        }];
         }];
     } else {
-        [Instabug setPostInvocatioHandler:nil];
+        [Instabug setPostInvocationHandler:nil];
     }
 }
 
@@ -127,8 +125,8 @@ RCT_EXPORT_METHOD(setCommentFieldRequired:(BOOL)isCommentFieldRequired) {
     [Instabug setCommentFieldRequired:isCommentFieldRequired];
 }
 
-RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold foriPad:(double)iPadShakingThreshold) {
-    [Instabug setShakingThresholdForiPhone:iPhoneShakingThreshold foriPad:iPadShakingThreshold];
+RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold forIPad:(double)iPadShakingThreshold) {
+    [Instabug setShakingThresholdForIPhone:iPhoneShakingThreshold forIPad:iPadShakingThreshold];
 }
 
 RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop) {

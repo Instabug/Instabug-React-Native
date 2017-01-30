@@ -1,99 +1,119 @@
 
 package com.instabug.reactlibrary;
 
+import android.net.Uri;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
-import android.app.Application;
 import com.instabug.library.Instabug;
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugTrackingDelegate;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
-import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import android.net.Uri;
 import java.util.Map;
 
 
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
-  private Instabug mInstabug;
-  private InstabugInvocationEvent invocationEvent;
+    private Instabug mInstabug;
+    private InstabugInvocationEvent invocationEvent;
 
-  public RNInstabugReactnativeModule(ReactApplicationContext reactContext,Instabug mInstabug) {
-    super(reactContext);
-    this.mInstabug = mInstabug;
-  }
+    private final String INVOCATION_EVENT_NONE = "none";
+    private final String INVOCATION_EVENT_SHAKE = "shake";
+    private final String INVOCATION_EVENT_SCREENSHOT = "screenshot";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
+    private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
 
-  @Override
-  public String getName() {
-    return "Instabug";
-  }
+    private final String INVOCATION_MODE_NEW_BUG = "bug";
+    private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
+    private final String INVOCATION_MODE_NEW_CHAT = "chat";
+    private final String INVOCATION_MODE_CHATS_LIST = "chats";
 
-  /**
+    private final String LOCALE_ARABIC = "arabic";
+    private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
+    private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
+    private final String LOCALE_CZECH = "czech";
+    private final String LOCALE_ENGLISH = "english";
+    private final String LOCALE_FRENCH = "french";
+    private final String LOCALE_GERMAN = "german";
+    private final String LOCALE_KOREAN = "korean";
+    private final String LOCALE_ITALIAN = "italian";
+    private final String LOCALE_JAPANESE = "japanese";
+    private final String LOCALE_POLISH = "polish";
+    private final String LOCALE_PORTUGUESE_BRAZIL = "portuguesebrazil";
+    private final String LOCALE_RUSSIAN = "russian";
+    private final String LOCALE_SPANISH = "spanish";
+    private final String LOCALE_SWEDISH = "swedish";
+    private final String LOCALE_TURKISH = "turkish";
+
+    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Instabug mInstabug) {
+        super(reactContext);
+        this.mInstabug = mInstabug;
+    }
+
+    @Override
+    public String getName() {
+        return "Instabug";
+    }
+
+    /**
      * invoke sdk manually
-     * 
      */
     @ReactMethod
-    public void invoke()
-    {
+    public void invoke() {
         try {
-          mInstabug.invoke();
+            mInstabug.invoke();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-  /**
-     * invoke sdk manually with desire invocation mode 
+    /**
+     * invoke sdk manually with desire invocation mode
      *
      * @param invocation mode
      */
     @ReactMethod
-    public void invokeWithInvocationMode(String invocationMode)
-    {
-        InstabugInvocationMode mode = InstabugInvocationMode.PROMPT_OPTION;
-        if (invocationMode.equals("bug")) {
+    public void invokeWithInvocationMode(String invocationMode) {
+        InstabugInvocationMode mode;
+
+        if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
             mode = InstabugInvocationMode.NEW_BUG;
-        } else if (invocationMode.equals("feedback")) {
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
             mode = InstabugInvocationMode.NEW_FEEDBACK;
-        }else if (invocationMode.equals("chat")){
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)) {
             mode = InstabugInvocationMode.NEW_CHAT;
-        }else if (invocationMode.equals("chats")){
+        } else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)) {
             mode = InstabugInvocationMode.CHATS_LIST;
-        }else {
+        } else {
             mode = InstabugInvocationMode.PROMPT_OPTION;
         }
-        
-      try {
-          mInstabug.invoke(mode);
+
+        try {
+            mInstabug.invoke(mode);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
     }
 
 
-  /**
+    /**
      * Dismisses all visible Instabug views
-     *
      */
     @ReactMethod
-    public void dismiss()
-    {
+    public void dismiss() {
         try {
-              mInstabug.dismiss();
+            mInstabug.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-  /**
+    /**
      * Adds tag(s) to issues before sending them
      *
      * @param tags
@@ -197,14 +217,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    /** Set the primary color that the SDK will use to tint certain UI elements in the SDK
+    /**
+     * Set the primary color that the SDK will use to tint certain UI elements in the SDK
      *
      * @param primaryColorValue The value of the primary color ,
-     * whatever this color was parsed from a resource color or hex color or RGB color values
+     *                          whatever this color was parsed from a resource color or hex color or RGB color values
      */
     @ReactMethod
     public void setPrimaryColor(int primaryColor) {
-        try{
+        try {
             mInstabug.setPrimaryColor(primaryColor);
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,6 +234,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+     *
      * @param {boolean} screenShot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
      * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
@@ -239,7 +261,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param message log message
      */
     @ReactMethod
-    public void log(String message) {
+    public void IBGLog(String message) {
         try {
             mInstabug.log(message);
         } catch (Exception e) {
@@ -253,9 +275,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public ArrayList<String> getTags() {
-        ArrayList<String>  tags = new  ArrayList<String>();
+        ArrayList<String> tags = new ArrayList<String>();
         try {
-            tags=mInstabug.getTags();
+            tags = mInstabug.getTags();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -264,7 +286,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Reset ALL tags added using {@link #addTags(String...)}
-     *
      */
     @ReactMethod
     public void resetTags() {
@@ -282,9 +303,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public boolean isEnabled() {
-        boolean isEnabled=false;
+        boolean isEnabled = false;
         try {
-            isEnabled=mInstabug.isEnabled();
+            isEnabled = mInstabug.isEnabled();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -294,7 +315,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Enables all Instabug functionality
-     *
      */
     @ReactMethod
     public void enable() {
@@ -307,7 +327,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Disables all Instabug functionality
-     *
      */
     @ReactMethod
     public void disable() {
@@ -319,13 +338,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @return application token 
+     * @return application token
      */
     @ReactMethod
     public String getAppToken() {
-        String appToken="";
+        String appToken = "";
         try {
-           appToken = mInstabug.getAppToken();
+            appToken = mInstabug.getAppToken();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -341,9 +360,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public int getUnreadMessagesCount() {
-        int unreadMessages = 0 ;
+        int unreadMessages = 0;
         try {
-           unreadMessages = mInstabug.getUnreadMessagesCount();
+            unreadMessages = mInstabug.getUnreadMessagesCount();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -352,35 +371,33 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Changes the event used to invoke Instabug SDK
+     * Sets the event used to invoke Instabug SDK
      *
      * @param instabugInvocationEvent to be used to invoke SDK
      * @see InstabugInvocationEvent
      */
     @ReactMethod
-    public void changeInvocationEvent(String invocationEventValue) {
-        InstabugInvocationEvent invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
+    public void setInvocationEvent(String invocationEventValue) {
+        InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
         try {
-                        //setting invocation event
-            if(invocationEventValue.equals("button")) {
-                invocationEvent=InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if(invocationEventValue.equals("swipe")) {
-                invocationEvent=InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
+            //setting invocation event
+            if (invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
+                invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE)) {
+                invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_SHAKE)) {
+                invocationEvent = InstabugInvocationEvent.SHAKE;
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_SCREENSHOT)) {
+                invocationEvent = InstabugInvocationEvent.SCREENSHOT_GESTURE;
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_NONE)) {
+                invocationEvent = InstabugInvocationEvent.NONE;
+            }
 
-            } else if(invocationEventValue.equals("shake")) {
-                invocationEvent=InstabugInvocationEvent.SHAKE;
-
-            } else if(invocationEventValue.equals("screenshot")){
-                invocationEvent=InstabugInvocationEvent.SCREENSHOT_GESTURE;
-
-            } else if(invocationEventValue.equals("none")) {
-                invocationEvent=InstabugInvocationEvent.NONE;
-            } 
-           mInstabug.changeInvocationEvent(invocationEvent);
+            mInstabug.changeInvocationEvent(invocationEvent);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
@@ -388,10 +405,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not
      */
-    @ReactMethod 
+    @ReactMethod
     public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
         try {
-           mInstabug.setChatNotificationEnabled(isChatNotificationEnable);
+            mInstabug.setChatNotificationEnabled(isChatNotificationEnable);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -407,58 +424,84 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setDebugEnabled(boolean isDebugEnabled) {
         try {
-           mInstabug.setDebugEnabled(isDebugEnabled);
+            mInstabug.setDebugEnabled(isDebugEnabled);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private Locale getLocaleByKey(String instabugLocale) {
-        String localeInLowerCase=instabugLocale.toLowerCase();
-        switch (localeInLowerCase){
-            case "arabic":
+        String localeInLowerCase = instabugLocale.toLowerCase();
+        switch (localeInLowerCase) {
+            case LOCALE_ARABIC:
                 return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
-            case "english":
+            case LOCALE_ENGLISH:
                 return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
-            case "czech":
+            case LOCALE_CZECH:
                 return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
-            case "french":
+            case LOCALE_FRENCH:
                 return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
-            case "german":
+            case LOCALE_GERMAN:
                 return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
-            case "italian":
+            case LOCALE_ITALIAN:
                 return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
-            case "japanese":
+            case LOCALE_JAPANESE:
                 return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
-            case "polish":
+            case LOCALE_POLISH:
                 return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
-            case "russian":
+            case LOCALE_RUSSIAN:
                 return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
-            case "spanish":
+            case LOCALE_SPANISH:
                 return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
-            case "swedish":
+            case LOCALE_SWEDISH:
                 return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
-            case "turkish":
+            case LOCALE_TURKISH:
                 return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
-            case "portuguesebrazil":
+            case LOCALE_PORTUGUESE_BRAZIL:
                 return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
-            case "chinesesimplified":
+            case LOCALE_CHINESE_SIMPLIFIED:
                 return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
-            case "chinesetraditional":
+            case LOCALE_CHINESE_TRADITIONAL:
                 return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
-            case "korean":
+            case LOCALE_KOREAN:
                 return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
             default:
                 return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
-
         }
     }
 
     @Override
     public Map<String, Object> getConstants() {
-    final Map<String, Object> constants = new HashMap<>();
-    return constants;
-  
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
+        constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
+        constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
+        constants.put("invocationEventTwoFingersSwipe", INVOCATION_EVENT_TWO_FINGERS_SWIPE);
+        constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
+
+        constants.put("invocationModeNewBug", INVOCATION_MODE_NEW_BUG);
+        constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
+        constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
+        constants.put("invocationModeChatsList", INVOCATION_MODE_CHATS_LIST);
+
+        constants.put("localeArabic", LOCALE_ARABIC);
+        constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
+        constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
+        constants.put("localeCzech", LOCALE_CZECH);
+        constants.put("localeEnglish", LOCALE_ENGLISH);
+        constants.put("localeFrench", LOCALE_FRENCH);
+        constants.put("localeGerman", LOCALE_FRENCH);
+        constants.put("localeKorean", LOCALE_KOREAN);
+        constants.put("localeItalian", LOCALE_ITALIAN);
+        constants.put("localeJapanese", LOCALE_JAPANESE);
+        constants.put("localePolish", LOCALE_POLISH);
+        constants.put("localePortugueseBrazil", LOCALE_PORTUGUESE_BRAZIL);
+        constants.put("localeRussian", LOCALE_RUSSIAN);
+        constants.put("localeSpanish", LOCALE_SPANISH);
+        constants.put("localeSwedish", LOCALE_SWEDISH);
+        constants.put("localeTurkish", LOCALE_TURKISH);
+
+        return constants;
     }
 }
 
