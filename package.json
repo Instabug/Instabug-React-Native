@@ -28,5 +28,8 @@
     "android": {
       "packageInstance": "new RNInstabugReactnativePackage(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this,\"button\")"
     }
+  },
+  "dependencies": {
+    "stacktrace-parser": "0.1.3"
   }
 }

@@ -430,6 +430,36 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Report a caught exception to Instabug dashboard
+     *
+     * @param throwable the exception to be reported
+     */
+    @ReactMethod
+    public void reportJsException(ReadableArray stackTraceArray, String message, String errorIdentifier) {
+        try {
+            int size = stack != null ? stack.size() : 0;
+            StackTraceElement[] stackTraceElements = new StackTraceElement[size];
+            for (int i = 0; i < size; i++) {
+                ReadableMap frame = stack.getMap(i);
+                String methodName = frame.getString("methodName");
+                String fileName = frame.getString("file");
+                int lineNumber = frame.getInt("lineNumber");
+
+                stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName, lineNumber);
+            }
+            Throwable throwable = new Throwable(message);
+            throwable.setStacktrace(stackTraceElements);
+            if (errorIdentifier != null)
+                mInstabug.reportException(throwable);
+            else
+                mInstabug.reportException(throwable, errorIdentifier);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
