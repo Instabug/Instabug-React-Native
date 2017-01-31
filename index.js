@@ -464,11 +464,14 @@ module.exports = {
         Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
     },
 
-    reportJsException: function (error, errorIdentifier = undefined) {
+    reportJsException: function (error, errorIdentifier) {
+        if (!error || !error instanceof Error)
+            throw new Error("You should pass an error object");
+
         let jsStackTrace = instabugParser(error);
-        if (errorIdentifier instanceof undefined && error instanceof Error)
+        if (!errorIdentifier)
             Instabug.reportJsException(jsStackTrace, error.message, null);
-        else if (errorIdentifier != null && error instanceof Error) {
+        else if (errorIdentifier) {
             Instabug.reportJsException(jsStackTrace, error.message, errorIdentifier);
         }
     },
