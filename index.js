@@ -465,7 +465,7 @@ module.exports = {
     },
 
     reportJsException: function (error, errorIdentifier = undefined) {
-        jsStackTrace = instabugParser.parseErrorStack(error);
+        let jsStackTrace = instabugParser(error);
         if (message instanceof undefined && error instanceof Error)
             Instabug.reportJsException(jsStackTrace, error.message, null);
         else if (message != null && error instanceof Error) {
