@@ -6,6 +6,9 @@ import android.net.Uri;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -436,7 +439,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param throwable the exception to be reported
      */
     @ReactMethod
-    public void reportJsException(ReadableArray stackTraceArray, String message, String errorIdentifier) {
+    public void reportJsException(ReadableArray stack, String message, String errorIdentifier) {
         try {
             int size = stack != null ? stack.size() : 0;
             StackTraceElement[] stackTraceElements = new StackTraceElement[size];
@@ -449,7 +452,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName, lineNumber);
             }
             Throwable throwable = new Throwable(message);
-            throwable.setStacktrace(stackTraceElements);
+            throwable.setStackTrace(stackTraceElements);
             if (errorIdentifier != null)
                 mInstabug.reportException(throwable);
             else
