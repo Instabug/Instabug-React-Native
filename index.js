@@ -5,8 +5,8 @@
  */
 
 import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
-
 let {Instabug} = NativeModules;
+import instabugParser from './utils/instabugParser.js';
 
 /**
  * Instabug
@@ -462,6 +462,18 @@ module.exports = {
      */
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
         Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
+    },
+
+    reportJsException: function (error, errorIdentifier) {
+        if (!error || !error instanceof Error)
+            throw new Error("You should pass an error object");
+
+        let jsStackTrace = instabugParser(error);
+        if (!errorIdentifier)
+            Instabug.reportJsException(jsStackTrace, error.message, null);
+        else if (errorIdentifier) {
+            Instabug.reportJsException(jsStackTrace, error.message, errorIdentifier);
+        }
     },
 
     /**
