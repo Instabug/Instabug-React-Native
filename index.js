@@ -623,6 +623,19 @@ module.exports = {
     },
 
     /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    setUserAttribute(key, value){
+        if (!key || !value)return;
+        if (Platform.OS === 'android') {
+            Instabug.setUserAttribute(key, value);
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}

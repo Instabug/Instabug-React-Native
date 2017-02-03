@@ -533,6 +533,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    @ReactMethod
+    public static void setUserAttribute(String key, String value) {
+        try {
+            mInstabug.setUserAttribute(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
