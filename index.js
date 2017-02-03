@@ -493,6 +493,136 @@ module.exports = {
     },
 
     /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logV(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("v", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logI(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("i", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logD(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("d", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logE(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("e", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logW(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("w", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logWTF(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("wtf", message);
+        }
+    },
+
+    /**
+     * Clears Instabug internal log
+     *
+     */
+    clearLogs(){
+        if (Platform.OS === 'android') {
+            Instabug.clearLogs();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}

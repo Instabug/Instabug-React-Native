@@ -8,11 +8,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.logging.InstabugLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +20,9 @@ import java.util.Locale;
 import java.util.Map;
 
 
+/**
+ * The type Rn instabug reactnative module.
+ */
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private Instabug mInstabug;
@@ -53,6 +56,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_SWEDISH = "swedish";
     private final String LOCALE_TURKISH = "turkish";
 
+    /**
+     * Instantiates a new Rn instabug reactnative module.
+     *
+     * @param reactContext the react context
+     * @param mInstabug    the m instabug
+     */
     public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Instabug mInstabug) {
         super(reactContext);
         this.mInstabug = mInstabug;
@@ -78,7 +87,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * invoke sdk manually with desire invocation mode
      *
-     * @param invocation mode
+     * @param invocationMode the invocation mode
      */
     @ReactMethod
     public void invokeWithInvocationMode(String invocationMode) {
@@ -150,8 +159,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * The file at filePath will be uploaded along upcoming reports with the name fileNameWithExtension
      *
-     * @param fileUri
-     * @param fileNameWithExtension
+     * @param fileUri               the file uri
+     * @param fileNameWithExtension the file name with extension
      */
     @ReactMethod
     public void setFileAttachment(String fileUri, String fileNameWithExtension) {
@@ -167,7 +176,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * If your app already acquires the user's email address and you provide it to this method,
      * Instabug will pre-fill the user email in reports.
      *
-     * @param userEmail
+     * @param userEmail the user email
      */
     @ReactMethod
     public void setUserEmail(String userEmail) {
@@ -181,7 +190,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets the user name that is used in the dashboard's contacts.
      *
-     * @param username
+     * @param username the username
      */
     @ReactMethod
     public void setUsername(String username) {
@@ -273,6 +282,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Gets tags.
+     *
      * @return all tags added using {@link #addTags(String...)}
      * @see #resetTags()
      */
@@ -300,6 +311,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Is enabled boolean.
+     *
      * @return {@code true} if Instabug is enabled, {@code false} if it's disabled
      * @see #enable()
      * @see #disable()
@@ -376,7 +389,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets the event used to invoke Instabug SDK
      *
-     * @param instabugInvocationEvent to be used to invoke SDK
+     * @param invocationEventValue the invocation event value
      * @see InstabugInvocationEvent
      */
     @ReactMethod
@@ -458,6 +471,63 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             else
                 mInstabug.reportException(throwable, errorIdentifier);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run. If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param logMessage The message you would like logged
+     * @param level      the level
+     * @param message    the message
+     */
+    @ReactMethod
+    public void log(String level, String message) {
+        try {
+            switch (level) {
+                case "v":
+                    InstabugLog.v(message);
+                    break;
+                case "i":
+                    InstabugLog.i(message);
+                    break;
+                case "d":
+                    InstabugLog.d(message);
+                    break;
+                case "e":
+                    InstabugLog.e(message);
+                    break;
+                case "w":
+                    InstabugLog.w(message);
+                    break;
+                case "wtf":
+                    InstabugLog.wtf(message);
+                    break;
+                default:
+                    InstabugLog.d(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clears Instabug internal log
+     */
+    @ReactMethod
+    public void clearLogs() {
+        try {
+            InstabugLog.clearLogs();
         } catch (Exception e) {
             e.printStackTrace();
         }
