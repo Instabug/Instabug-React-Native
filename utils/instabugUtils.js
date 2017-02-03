@@ -1,5 +1,5 @@
 'use strict';
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 let {Instabug} = NativeModules;
 let stacktraceParser = require('stacktrace-parser');
 
@@ -11,22 +11,6 @@ let parseErrorStack = (error) => {
         stacktraceParser.parse(error.stack);
 };
 
-let issue = (e, isFatal, originalHandler) => {
-    stacktraceParser.fromError(e, {offline: true}).then((stack) => (
-        stack.map((row) => {
-            let {lineNumber} = row;
-            const {source} = row;
-            if (!lineNumber) {
-                lineNumber = parseInt(source.split(':').slice(-2, -1), 10) || 0;
-            }
-            return {fileName: e.message, lineNumber, functionName: source};
-        })
-    )).then((stack) => {
-        Instabug.reportJsException(stack, e.message, null);
-        originalHandler(e, isFatal, originalHandler);
-    });
-};
-
 let init = () => {
     if (__DEV__) {
         return;
@@ -35,8 +19,9 @@ let init = () => {
     const originalHandler = global.ErrorUtils.getGlobalHandler();
 
     function errorHandler(e, isFatal) {
+        let jsStackTrace = parseErrorStack(error);
+        Instabug.reportJsException(jsStackTrace, e.message, "unhandled");
         if (originalHandler) {
-            issue(e, isFatal, originalHandler);
             if (Platform.OS === 'ios') {
                 originalHandler(e, isFatal);
             } else {
@@ -45,7 +30,6 @@ let init = () => {
                 }, 500);
             }
         }
-        issue(e);
     }
 
     global.ErrorUtils.setGlobalHandler(errorHandler);
