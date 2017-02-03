@@ -521,6 +521,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Clears Instabug internal log
+     */
+    @ReactMethod
+    public void clearLogs() {
+        try {
+            InstabugLog.clearLogs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {

@@ -613,6 +613,16 @@ module.exports = {
     },
 
     /**
+     * Clears Instabug internal log
+     *
+     */
+    clearLogs(){
+        if (Platform.OS === 'android') {
+            Instabug.clearLogs();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
