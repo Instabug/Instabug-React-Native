@@ -548,6 +548,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Gets specific user attribute.
+     *
+     * @param key the attribute key as string
+     * @return the desired user attribute
+     */
+    @ReactMethod
+    public static String getUserAttribute(String key) {
+        try {
+            return mInstabug.getUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {

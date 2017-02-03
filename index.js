@@ -636,6 +636,19 @@ module.exports = {
     },
 
     /**
+     * Gets specific user attribute.
+     *
+     * @param key the attribute key as string
+     * @return the desired user attribute
+     */
+    getUserAttribute(key){
+        if (!key) throw new TypeError("Invalid param type, Expected String");
+        if (Platform.OS === 'android') {
+            return Instabug.getUserAttribute(key);
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
