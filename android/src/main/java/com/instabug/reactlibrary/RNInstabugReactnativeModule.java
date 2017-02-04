@@ -533,6 +533,74 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    @ReactMethod
+    public void setUserAttribute(String key, String value) {
+        try {
+            mInstabug.setUserAttribute(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets specific user attribute.
+     *
+     * @param key the attribute key as string
+     * @return the desired user attribute
+     */
+    @ReactMethod
+    public String getUserAttribute(String key) {
+        try {
+            return mInstabug.getUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    @ReactMethod
+    public void removeUserAttribute(String key) {
+        try {
+            mInstabug.removeUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets all saved user attributes.
+     *
+     * @return all user attributes as HashMap<String, String>
+     */
+    @ReactMethod
+    public HashMap<String, String> getAllUserAttributes() {
+        return mInstabug.getAllUserAttributes();
+    }
+
+    /**
+     * Clears all user attributes if exists.
+     */
+    @ReactMethod
+    public void clearAllUserAttributes() {
+        try {
+            mInstabug.clearAllUserAttributes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
