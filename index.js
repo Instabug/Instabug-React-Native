@@ -676,6 +676,15 @@ module.exports = {
     },
 
     /**
+     * Clears all user attributes if exists.
+     */
+    clearAllUserAttributes(){
+        if (Platform.OS === 'android') {
+            Instabug.clearAllUserAttributes();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
@@ -686,7 +695,8 @@ module.exports = {
         screenshot: Instabug.invocationEventScreenshot,
         twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
         floatingButton: Instabug.invocationEventFloatingButton
-    },
+    }
+    ,
     /**
      * Type of SDK dismiss
      * @readonly
@@ -696,7 +706,8 @@ module.exports = {
         submit: Instabug.dismissTypeSubmit,
         cancel: Instabug.dismissTypeCancel,
         addAttachment: Instabug.dismissTypeAddAttachment
-    },
+    }
+    ,
     /**
      * Type of report to be submit
      * @readonly
@@ -705,7 +716,8 @@ module.exports = {
     reportType: {
         bug: Instabug.reportTypeBug,
         feedback: Instabug.reportTypeFeedback
-    },
+    }
+    ,
     /**
      *  The mode used upon invocating the SDK
      * @readonly
@@ -717,7 +729,8 @@ module.exports = {
         newFeedback: Instabug.invocationModeNewFeedback,
         newChat: Instabug.invocationModeNewChat,
         chatsList: Instabug.invocationModeChatsList
-    },
+    }
+    ,
     /**
      * The supported locales
      * @readonly
@@ -740,7 +753,8 @@ module.exports = {
         spanish: Instabug.localeSpanish,
         swedish: Instabug.localeSwedish,
         turkish: Instabug.localeTurkish
-    },
+    }
+    ,
     /**
      * The color theme of the different UI elements
      * @readonly
@@ -749,7 +763,8 @@ module.exports = {
     colorTheme: {
         light: Instabug.colorThemeLight,
         dark: Instabug.colorThemeDark
-    },
+    }
+    ,
     /**
      * Rectangle edges
      * @readonly
@@ -760,7 +775,8 @@ module.exports = {
         minY: Instabug.rectMinYEdge,
         maxX: Instabug.rectMaxXEdge,
         maxY: Instabug.rectMaxYEdge
-    },
+    }
+    ,
     /**
      * Instabug strings
      * @readonly
@@ -806,4 +822,5 @@ module.exports = {
         messageNotification: Instabug.messageNotification,
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers
     }
-};
+}
+;

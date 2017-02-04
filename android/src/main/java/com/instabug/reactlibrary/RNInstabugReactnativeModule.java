@@ -589,6 +589,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return mInstabug.getAllUserAttributes();
     }
 
+    /**
+     * Clears all user attributes if exists.
+     */
+    @ReactMethod
+    public void clearAllUserAttributes() {
+        try {
+            mInstabug.clearAllUserAttributes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
