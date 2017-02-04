@@ -651,6 +651,20 @@ module.exports = {
     },
 
     /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    removeUserAttribute(key){
+        if (!key || typeof key !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        if (Platform.OS === 'android') {
+            Instabug.removeUserAttribute(key);
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}

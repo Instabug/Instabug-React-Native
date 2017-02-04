@@ -540,7 +540,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param value the value
      */
     @ReactMethod
-    public static void setUserAttribute(String key, String value) {
+    public void setUserAttribute(String key, String value) {
         try {
             mInstabug.setUserAttribute(key, value);
         } catch (Exception e) {
@@ -555,12 +555,27 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return the desired user attribute
      */
     @ReactMethod
-    public static String getUserAttribute(String key) {
+    public String getUserAttribute(String key) {
         try {
             return mInstabug.getUserAttribute(key);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    @ReactMethod
+    public void removeUserAttribute(String key) {
+        try {
+            mInstabug.removeUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
