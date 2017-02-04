@@ -629,7 +629,8 @@ module.exports = {
      * @param value the value
      */
     setUserAttribute(key, value){
-        if (!key || !value)return;
+        if (!key || !value || typeof key !== "string" || typeof value !== "string")
+            throw new TypeError("Invalid param, Expected String");
         if (Platform.OS === 'android') {
             Instabug.setUserAttribute(key, value);
         }
@@ -642,7 +643,8 @@ module.exports = {
      * @return the desired user attribute
      */
     getUserAttribute(key){
-        if (!key) throw new TypeError("Invalid param type, Expected String");
+        if (!key || typeof key !== "string")
+            throw new TypeError("Invalid param, Expected String");
         if (Platform.OS === 'android') {
             return Instabug.getUserAttribute(key);
         }
