@@ -579,6 +579,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Gets all saved user attributes.
+     *
+     * @return all user attributes as HashMap<String, String>
+     */
+    @ReactMethod
+    public HashMap<String, String> getAllUserAttributes() {
+        return mInstabug.getAllUserAttributes();
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {

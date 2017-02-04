@@ -665,6 +665,17 @@ module.exports = {
     },
 
     /**
+     * Gets all saved user attributes.
+     *
+     * @return all user attributes as HashMap<String, String>
+     */
+    getAllUserAttributes(){
+        if (Platform.OS === 'android') {
+            return Instabug.getAllUserAttributes();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
