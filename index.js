@@ -25,7 +25,8 @@ module.exports = {
      * the SDK's UI.
      */
     startWithToken: function (token, invocationEvent) {
-        Instabug.startWithToken(token, invocationEvent);
+        if (Platform.OS === 'ios')
+            Instabug.startWithToken(token, invocationEvent);
     },
 
     /**
@@ -97,7 +98,8 @@ module.exports = {
      * to being enabled or disabled.
      */
     setUserStepsEnabled: function (isUserStepsEnabled) {
-        Instabug.setUserStepsEnabled(isUserStepsEnabled);
+        if (Platform.OS === 'ios')
+            Instabug.setUserStepsEnabled(isUserStepsEnabled);
     },
 
     /**
@@ -113,13 +115,15 @@ module.exports = {
      * report.
      */
     setPreSendingHandler: function (preSendingHandler) {
-        Instabug.addListener('IBGpreSendingHandler');
-        NativeAppEventEmitter.addListener(
-            'IBGpreSendingHandler',
-            preSendingHandler
-        );
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGpreSendingHandler');
+            NativeAppEventEmitter.addListener(
+                'IBGpreSendingHandler',
+                preSendingHandler
+            );
 
-        Instabug.setPreSendingHandler(preSendingHandler);
+            Instabug.setPreSendingHandler(preSendingHandler);
+        }
     },
 
     /**
@@ -136,13 +140,15 @@ module.exports = {
      * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before invoking the SDK
      */
     setPreInvocationHandler: function (preInvocationHandler) {
-        Instabug.addListener('IBGpreInvocationHandler');
-        NativeAppEventEmitter.addListener(
-            'IBGpreInvocationHandler',
-            preInvocationHandler
-        );
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGpreInvocationHandler');
+            NativeAppEventEmitter.addListener(
+                'IBGpreInvocationHandler',
+                preInvocationHandler
+            );
 
-        Instabug.setPreInvocationHandler(preInvocationHandler);
+            Instabug.setPreInvocationHandler(preInvocationHandler);
+        }
     },
 
     /**
@@ -162,15 +168,17 @@ module.exports = {
      * dismissing the SDK.
      */
     setPostInvocationHandler: function (postInvocationHandler) {
-        Instabug.addListener('IBGpostInvocationHandler');
-        NativeAppEventEmitter.addListener(
-            'IBGpostInvocationHandler',
-            function (payload) {
-                postInvocationHandler(payload['dismissType'], payload['reportType']);
-            }
-        );
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGpostInvocationHandler');
+            NativeAppEventEmitter.addListener(
+                'IBGpostInvocationHandler',
+                function (payload) {
+                    postInvocationHandler(payload['dismissType'], payload['reportType']);
+                }
+            );
 
-        Instabug.setPostInvocationHandler(postInvocationHandler);
+            Instabug.setPostInvocationHandler(postInvocationHandler);
+        }
     },
 
     /**
@@ -209,7 +217,9 @@ module.exports = {
      * bug reporting, while passing NO will disable it for both.
      */
     setWillSkipScreenshotAnnotation: function (willSkipScreenshotAnnotation) {
-        Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
+        if (Platform.OS === 'ios') {
+            Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
+        }
     },
 
     /**
@@ -247,7 +257,8 @@ module.exports = {
      * notifications are enabled or disabled.
      */
     setPushNotificationsEnabled: function (isPushNotificationEnabled) {
-        Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
+        if (Platform.OS === 'ios')
+            Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
     },
 
     /**
@@ -258,7 +269,8 @@ module.exports = {
      * field is required or not.
      */
     setEmailFieldRequired: function (isEmailFieldRequired) {
-        Instabug.setEmailFieldRequired(isEmailFieldRequired);
+        if (Platform.OS === 'ios')
+            Instabug.setEmailFieldRequired(isEmailFieldRequired);
     },
 
     /**
@@ -268,7 +280,8 @@ module.exports = {
      * field is required or not.
      */
     setCommentFieldRequired: function (isCommentFieldRequired) {
-        Instabug.setCommentFieldRequired(isCommentFieldRequired);
+        if (Platform.OS === 'ios')
+            Instabug.setCommentFieldRequired(isCommentFieldRequired);
     },
 
     /**
@@ -279,7 +292,8 @@ module.exports = {
      * @param {number} iPadShakingThreshold Threshold for iPad.
      */
     setShakingThresholdForIPhone: function (iPhoneShakingThreshold, iPadShakingThreshold) {
-        Instabug.setShakingThresholdForIPhone(iPhoneShakingThreshold, iPadShakingThreshold);
+        if (Platform.OS === 'ios')
+            Instabug.setShakingThresholdForIPhone(iPhoneShakingThreshold, iPadShakingThreshold);
     },
 
     /**
@@ -293,7 +307,8 @@ module.exports = {
      * floating button.
      */
     setFloatingButtonEdge: function (floatingButtonEdge, offsetFromTop) {
-        Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
+        if (Platform.OS === 'ios')
+            Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
     },
 
     /**
@@ -318,7 +333,8 @@ module.exports = {
      * intro message is enabled or not.
      */
     setIntroMessageEnabled: function (isIntroMessageEnabled) {
-        Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
+        if (Platform.OS === 'ios')
+            Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
     },
 
     /**
@@ -327,7 +343,8 @@ module.exports = {
      * @param colorTheme
      */
     setColorTheme: function (colorTheme) {
-        Instabug.setColorTheme(colorTheme);
+        if (Platform.OS === 'ios')
+            Instabug.setColorTheme(colorTheme);
     },
 
     /**
@@ -347,7 +364,9 @@ module.exports = {
      * @param {string[]} tags An array of tags to append to current tags.
      */
     appendTags: function (tags) {
-        Instabug.appendTags(tags);
+        if (Platform.OS === 'ios')
+            Instabug.appendTags(tags);
+
     },
 
     /**
@@ -378,7 +397,8 @@ module.exports = {
      * @param {strings} key Key of string to override.
      */
     setStringToKey: function (string, key) {
-        Instabug.setString(string, key);
+        if (Platform.OS === 'ios')
+            Instabug.setString(string, key);
     },
 
     /**
@@ -419,13 +439,15 @@ module.exports = {
      * executed when a new message is received.
      */
     setOnNewMessageHandler: function (onNewMessageHandler) {
-        Instabug.addListener('IBGonNewMessageHandler');
-        NativeAppEventEmitter.addListener(
-            'IBGonNewMessageHandler',
-            onNewMessgaeHandler
-        );
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGonNewMessageHandler');
+            NativeAppEventEmitter.addListener(
+                'IBGonNewMessageHandler',
+                onNewMessgaeHandler
+            );
 
-        Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
+            Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
+        }
     },
 
     /**
@@ -441,7 +463,8 @@ module.exports = {
      * or disabled.
      */
     setPromptOptions: function (isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled) {
-        Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
+        if (Platform.OS === 'ios')
+            Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
     },
 
     /**
@@ -461,7 +484,8 @@ module.exports = {
      * argument isInstabugNotification
      */
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
-        Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
+        if (Platform.OS === 'ios')
+            Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
     },
 
     /**
@@ -595,4 +619,4 @@ module.exports = {
         messageNotification: Instabug.messageNotification,
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers
     }
-}
+};
