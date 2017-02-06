@@ -78,14 +78,14 @@ RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
 
 RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPostInvocatioHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
+        [Instabug setPostInvocationHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
             [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
                                                                        @"dismissType": @(dismissType),
                                                                        @"reportType": @(reportType)
                                                                        }];
         }];
     } else {
-        [Instabug setPostInvocatioHandler:nil];
+        [Instabug setPostInvocationHandler:nil];
     }
 }
 
