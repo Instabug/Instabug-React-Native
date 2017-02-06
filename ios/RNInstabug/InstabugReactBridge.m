@@ -5,7 +5,7 @@
 //  Created by Yousef Hamza on 9/29/16.
 
 #import "InstabugReactBridge.h"
-#import "Instabug.h"
+#import <Instabug/Instabug.h>
 
 @implementation InstabugReactBridge
 
@@ -78,14 +78,14 @@ RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
 
 RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPostInvocationHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
+        [Instabug setPostInvocatioHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
             [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
                                                                        @"dismissType": @(dismissType),
                                                                        @"reportType": @(reportType)
                                                                        }];
         }];
     } else {
-        [Instabug setPostInvocationHandler:nil];
+        [Instabug setPostInvocatioHandler:nil];
     }
 }
 
@@ -126,7 +126,8 @@ RCT_EXPORT_METHOD(setCommentFieldRequired:(BOOL)isCommentFieldRequired) {
 }
 
 RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold forIPad:(double)iPadShakingThreshold) {
-    [Instabug setShakingThresholdForIPhone:iPhoneShakingThreshold forIPad:iPadShakingThreshold];
+    [Instabug setShakingThresholdForiPhone:iPadShakingThreshold
+                                   foriPad:iPadShakingThreshold];
 }
 
 RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop) {
