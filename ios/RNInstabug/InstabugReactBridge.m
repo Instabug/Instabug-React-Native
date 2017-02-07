@@ -205,7 +205,7 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
 }
 
 RCT_EXPORT_METHOD(addFileAttachmentWithURL:(NSString *)fileURLString) {
-    [Instabug addFileAttachmentWithURL:[NSURL URLWithString:fileURL]];
+    [Instabug addFileAttachmentWithURL:[NSURL URLWithString:fileURLString]];
 }
 
 RCT_EXPORT_METHOD(clearFileAttachments) {
