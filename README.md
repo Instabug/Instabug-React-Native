@@ -7,7 +7,7 @@
 
 ## Installation
 
-`$ npm install https://github.com/Instabug/instabug-reactnative --save`
+`$ npm install https://github.com/Instabug/instabug-reactnative#master --save`
 
 `$ react-native link instabug-reactnative`
 
