@@ -6,10 +6,13 @@ import android.net.Uri;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.logging.InstabugLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +20,9 @@ import java.util.Locale;
 import java.util.Map;
 
 
+/**
+ * The type Rn instabug reactnative module.
+ */
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private Instabug mInstabug;
@@ -50,6 +56,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_SWEDISH = "swedish";
     private final String LOCALE_TURKISH = "turkish";
 
+    /**
+     * Instantiates a new Rn instabug reactnative module.
+     *
+     * @param reactContext the react context
+     * @param mInstabug    the m instabug
+     */
     public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Instabug mInstabug) {
         super(reactContext);
         this.mInstabug = mInstabug;
@@ -75,7 +87,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * invoke sdk manually with desire invocation mode
      *
-     * @param invocation mode
+     * @param invocationMode the invocation mode
      */
     @ReactMethod
     public void invokeWithInvocationMode(String invocationMode) {
@@ -147,8 +159,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * The file at filePath will be uploaded along upcoming reports with the name fileNameWithExtension
      *
-     * @param fileUri
-     * @param fileNameWithExtension
+     * @param fileUri               the file uri
+     * @param fileNameWithExtension the file name with extension
      */
     @ReactMethod
     public void setFileAttachment(String fileUri, String fileNameWithExtension) {
@@ -164,7 +176,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * If your app already acquires the user's email address and you provide it to this method,
      * Instabug will pre-fill the user email in reports.
      *
-     * @param userEmail
+     * @param userEmail the user email
      */
     @ReactMethod
     public void setUserEmail(String userEmail) {
@@ -178,7 +190,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets the user name that is used in the dashboard's contacts.
      *
-     * @param username
+     * @param username the username
      */
     @ReactMethod
     public void setUsername(String username) {
@@ -270,6 +282,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Gets tags.
+     *
      * @return all tags added using {@link #addTags(String...)}
      * @see #resetTags()
      */
@@ -297,6 +311,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Is enabled boolean.
+     *
      * @return {@code true} if Instabug is enabled, {@code false} if it's disabled
      * @see #enable()
      * @see #disable()
@@ -373,7 +389,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets the event used to invoke Instabug SDK
      *
-     * @param instabugInvocationEvent to be used to invoke SDK
+     * @param invocationEventValue the invocation event value
      * @see InstabugInvocationEvent
      */
     @ReactMethod
@@ -425,6 +441,161 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setDebugEnabled(boolean isDebugEnabled) {
         try {
             mInstabug.setDebugEnabled(isDebugEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Report a caught exception to Instabug dashboard
+     *
+     * @param throwable the exception to be reported
+     */
+    @ReactMethod
+    public void reportJsException(ReadableArray stack, String message, String errorIdentifier) {
+        try {
+            int size = stack != null ? stack.size() : 0;
+            StackTraceElement[] stackTraceElements = new StackTraceElement[size];
+            for (int i = 0; i < size; i++) {
+                ReadableMap frame = stack.getMap(i);
+                String methodName = frame.getString("methodName");
+                String fileName = frame.getString("file");
+                int lineNumber = frame.getInt("lineNumber");
+
+                stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName, lineNumber);
+            }
+            Throwable throwable = new Throwable(message);
+            throwable.setStackTrace(stackTraceElements);
+            if (errorIdentifier != null)
+                mInstabug.reportException(throwable);
+            else
+                mInstabug.reportException(throwable, errorIdentifier);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run. If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param logMessage The message you would like logged
+     * @param level      the level
+     * @param message    the message
+     */
+    @ReactMethod
+    public void log(String level, String message) {
+        try {
+            switch (level) {
+                case "v":
+                    InstabugLog.v(message);
+                    break;
+                case "i":
+                    InstabugLog.i(message);
+                    break;
+                case "d":
+                    InstabugLog.d(message);
+                    break;
+                case "e":
+                    InstabugLog.e(message);
+                    break;
+                case "w":
+                    InstabugLog.w(message);
+                    break;
+                case "wtf":
+                    InstabugLog.wtf(message);
+                    break;
+                default:
+                    InstabugLog.d(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clears Instabug internal log
+     */
+    @ReactMethod
+    public void clearLogs() {
+        try {
+            InstabugLog.clearLogs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    @ReactMethod
+    public void setUserAttribute(String key, String value) {
+        try {
+            mInstabug.setUserAttribute(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets specific user attribute.
+     *
+     * @param key the attribute key as string
+     * @return the desired user attribute
+     */
+    @ReactMethod
+    public String getUserAttribute(String key) {
+        try {
+            return mInstabug.getUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    @ReactMethod
+    public void removeUserAttribute(String key) {
+        try {
+            mInstabug.removeUserAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets all saved user attributes.
+     *
+     * @return all user attributes as HashMap<String, String>
+     */
+    @ReactMethod
+    public HashMap<String, String> getAllUserAttributes() {
+        return mInstabug.getAllUserAttributes();
+    }
+
+    /**
+     * Clears all user attributes if exists.
+     */
+    @ReactMethod
+    public void clearAllUserAttributes() {
+        try {
+            mInstabug.clearAllUserAttributes();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,8 +5,8 @@
  */
 
 import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
-
 let {Instabug} = NativeModules;
+import instabugUtils from './utils/instabugUtils.js';
 
 /**
  * Instabug
@@ -489,6 +489,226 @@ module.exports = {
     },
 
     /**
+     * Report a caught exception to Instabug dashboard
+     *
+     * @param error           the error to be reported
+     * @param errorIdentifier used to group issues manually reported
+     * @throws Error if error param type wasn't Error
+     */
+    reportJsException: function (error, errorIdentifier) {
+        if (!error || !error instanceof Error)
+            throw new TypeError("Invalid param type at param1, Expected Error");
+
+        let jsStackTrace = instabugUtils.parseErrorStack(error);
+        if (!errorIdentifier)
+            Instabug.reportJsException(jsStackTrace, error.message, null);
+        else if (errorIdentifier) {
+            Instabug.reportJsException(jsStackTrace, error.message, errorIdentifier);
+        }
+    },
+
+    /**
+     * Report un-caught exceptions to Instabug dashboard
+     * We don't send exceptions from __DEV__, since it's way too noisy!
+     */
+    captureJsErrors(){
+        if (Platform.OS === 'android')
+            instabugUtils.captureJsErrors();
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logV(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("v", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logI(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("i", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logD(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("d", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logE(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("e", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logW(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("w", message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logWTF(message){
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("wtf", message);
+        }
+    },
+
+    /**
+     * Clears Instabug internal log
+     *
+     */
+    clearLogs(){
+        if (Platform.OS === 'android') {
+            Instabug.clearLogs();
+        }
+    },
+
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    setUserAttribute(key, value){
+        if (!key || !value || typeof key !== "string" || typeof value !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        if (Platform.OS === 'android') {
+            Instabug.setUserAttribute(key, value);
+        }
+    },
+
+    /**
+     * Gets specific user attribute.
+     *
+     * @param key the attribute key as string
+     * @return the desired user attribute
+     */
+    getUserAttribute(key){
+        if (!key || typeof key !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        if (Platform.OS === 'android') {
+            return Instabug.getUserAttribute(key);
+        }
+    },
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    removeUserAttribute(key){
+        if (!key || typeof key !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        if (Platform.OS === 'android') {
+            Instabug.removeUserAttribute(key);
+        }
+    },
+
+    /**
+     * Gets all saved user attributes.
+     *
+     * @return all user attributes as HashMap<String, String>
+     */
+    getAllUserAttributes(){
+        if (Platform.OS === 'android') {
+            return Instabug.getAllUserAttributes();
+        }
+    },
+
+    /**
+     * Clears all user attributes if exists.
+     */
+    clearAllUserAttributes(){
+        if (Platform.OS === 'android') {
+            Instabug.clearAllUserAttributes();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
@@ -500,6 +720,7 @@ module.exports = {
         twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
         floatingButton: Instabug.invocationEventFloatingButton
     },
+
     /**
      * Type of SDK dismiss
      * @readonly
@@ -510,6 +731,7 @@ module.exports = {
         cancel: Instabug.dismissTypeCancel,
         addAttachment: Instabug.dismissTypeAddAttachment
     },
+
     /**
      * Type of report to be submit
      * @readonly
@@ -519,6 +741,7 @@ module.exports = {
         bug: Instabug.reportTypeBug,
         feedback: Instabug.reportTypeFeedback
     },
+
     /**
      *  The mode used upon invocating the SDK
      * @readonly
@@ -531,6 +754,7 @@ module.exports = {
         newChat: Instabug.invocationModeNewChat,
         chatsList: Instabug.invocationModeChatsList
     },
+
     /**
      * The supported locales
      * @readonly
@@ -554,6 +778,7 @@ module.exports = {
         swedish: Instabug.localeSwedish,
         turkish: Instabug.localeTurkish
     },
+
     /**
      * The color theme of the different UI elements
      * @readonly
@@ -563,6 +788,7 @@ module.exports = {
         light: Instabug.colorThemeLight,
         dark: Instabug.colorThemeDark
     },
+
     /**
      * Rectangle edges
      * @readonly
@@ -574,6 +800,7 @@ module.exports = {
         maxX: Instabug.rectMaxXEdge,
         maxY: Instabug.rectMaxYEdge
     },
+
     /**
      * Instabug strings
      * @readonly
