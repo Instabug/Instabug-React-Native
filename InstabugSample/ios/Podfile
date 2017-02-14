@@ -1,0 +1,3 @@
+target 'InstabugSample' do
+	pod 'Instabug', '~> 7.0.0'
+end

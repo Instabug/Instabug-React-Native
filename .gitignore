@@ -7,3 +7,8 @@ ios/.DS_Store
 
 build/
 /android/src/main/java/com/instabug/reactlibrary/wrappedAPIs
+
+
+*node_modules/
+*Pods/
+*Podfile.lock

@@ -1,0 +1,5 @@
+rootProject.name = 'InstabugSample'
+include ':instabug-reactnative'
+project(':instabug-reactnative').projectDir = new File(rootProject.projectDir, '../node_modules/instabug-reactnative/android')
+
+include ':app'
