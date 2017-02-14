@@ -517,6 +517,127 @@ module.exports = {
     },
 
     /**
+    * Add file to attached files with each report being sent.
+    * A new copy of the file at fileURL will be attached with each bug report being sent. The file is only copied
+    * at the time of sending the report, so you could safely call this API whenever the file is available on disk, and the copy
+    * attached to your bug reports will always contain that latest changes at the time of sending the report.
+    *
+    * Each call to this method adds the file to the files attached, until a maximum of 3 then it overrides the first file. 
+    * The file has to be available locally at the provided path when the report is being sent.
+    * @param {string} stringURL Path to a file that's going to be attached to each report.
+    */
+
+    // addFileAttachment: function(stringURL) {
+    //     if (Platform.OS == 'ios') {
+    //         Instabug.addFileAttachment(stringURL);   
+    //     }
+    // },
+
+    /**
+    * Clear list of files to be attached with each report.
+    * This method doesn't delete any files from the file system. It will just removes them for the list of files
+    * to be attached with each report.
+    */
+    
+    // clearFileAttachments: function() {
+    //     if (Platform.OS == 'ios') {
+    //         Instabug.clearFileAttachments();   
+    //     }
+    // },
+
+    /**
+    * Shows/Hides email field.
+    * Defaults to show email field.
+    * @param {boolean} shouldShowEmailField true to show the email field, false to hide it.
+    */
+    setShowEmailField: function(shouldShowEmailField) {
+        if (Platform.OS == 'ios') {
+            Instabug.setShowEmailField();   
+        }
+    },
+
+    /**
+    * Sets the default value of the user's email and hides the email field from the reporting UI 
+    * and set the user's name to be included with all reports.
+    * It also reset the chats on device to that email and removes user attributes, user data and completed surveys.
+    * @param {string} email Email address to be set as the user's email.
+    * @param {string} name Name of the user to be set.
+    */
+    identifyUserWithEmail: function(email, name) {
+        if (Platform.OS == 'ios') {
+            Instabug.identifyUserWithEmail(email, name);   
+        }
+    },
+
+    /**
+    * Sets the default value of the user's email to nil and show email field and remove user name from all reports
+    * It also reset the chats on device and removes user attributes, user data and completed surveys.
+    */
+    logOut: function() {
+        if (Platform.OS == 'ios') {
+            Instabug.logOut();   
+        }
+    },
+
+    /**
+    * Sets whether to show a "Thank You" dialog after a bug report is sent or not.
+    * Defaults to YES.
+    * @param {boolean} isPostSendingDialogEnabled A boolean to indicate whether the dialog is enabled or not.
+    */
+    setPostSendingDialogEnabled: function(isPostSendingDialogEnabled) {
+        if (Platform.OS == 'ios') {
+            Instabug.setPostSendingDialogEnabled(isPostSendingDialogEnabled); 
+        }
+    },
+
+    /**
+    * Sets an array of report categories to be shown for users to select from before reporting a bug or sending 
+    * feedback.
+    * Use this method to give users a list of choices of categories their bug report or feedback might be related
+    * to. Selected category will be shown as a tag on your dashboard.
+    * @param {array} titles titles to be shown in the list.
+    * @param {array} name names of icons to be shown along with titles. Use the same names you would use
+    */
+    setReportCategories: function(titles, names) {
+        if (Platform.OS == 'ios') {
+            Instabug.setReportCategories(titles, names); 
+        }
+    },
+
+    /**
+    * Enables/disables inspect view hierarchy when reporting a bug/feedback.
+    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+    */
+    setViewHierarchyEnabled: function(viewHierarchyEnabled) {
+        if (Platform.OS == 'ios') {
+            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled); 
+        }
+    },
+
+    /**
+    * Logs a user event that happens through the lifecycle of the application.
+    * Logged user events are going to be sent with each report, as well as at the end of a session.
+    * @param {string} name Event name.
+    */
+    logUserEventWithName: function(name) {
+        if (Platform.OS == 'ios') {
+            Instabug.logUserEventWithName(name); 
+        }
+    },
+
+    /**
+    * Logs a user event that happens through the lifecycle of the application.
+    * Logged user events are going to be sent with each report, as well as at the end of a session.
+    * @param {string} name Event name.
+    * @param {Object} params An optional dictionary or parameters to be associated with the event.
+    */
+    logUserEventWithNameAndParams: function(name, params) {
+        if (Platform.OS == 'ios') {
+            Instabug.logUserEventWithNameAndParams(name, params); 
+        }
+    },
+
+    /**
      * Appends a log message to Instabug internal log
      * <p>
      * These logs are then sent along the next uploaded report.
@@ -529,10 +650,12 @@ module.exports = {
      *
      * @param message    the message
      */
-    logV(message){
+    logVerbose: function(message){
         if (!message)return;
         if (Platform.OS === 'android') {
             Instabug.log("v", message);
+        } else {
+            Instabug.logVerbose(message);
         }
     },
 
@@ -549,10 +672,12 @@ module.exports = {
      *
      * @param message    the message
      */
-    logI(message){
+    logInfo: function(message){
         if (!message)return;
         if (Platform.OS === 'android') {
             Instabug.log("i", message);
+        } else {
+            Instabug.logInfo(message);
         }
     },
 
@@ -569,10 +694,12 @@ module.exports = {
      *
      * @param message    the message
      */
-    logD(message){
+    logDebug: function(message){
         if (!message)return;
         if (Platform.OS === 'android') {
             Instabug.log("d", message);
+        } else {
+            Instabug.logDebug(message);
         }
     },
 
@@ -589,10 +716,12 @@ module.exports = {
      *
      * @param message    the message
      */
-    logE(message){
+    logError: function(message){
         if (!message)return;
         if (Platform.OS === 'android') {
             Instabug.log("e", message);
+        } else {
+            Instabug.logError(message);
         }
     },
 
@@ -609,10 +738,12 @@ module.exports = {
      *
      * @param message    the message
      */
-    logW(message){
+    logWarn: function(message){
         if (!message)return;
         if (Platform.OS === 'android') {
             Instabug.log("w", message);
+        } else {
+            Instabug.logWarn(message);
         }
     },
 
@@ -640,7 +771,7 @@ module.exports = {
      * Clears Instabug internal log
      *
      */
-    clearLogs(){
+    clearLogs: function(){
         if (Platform.OS === 'android') {
             Instabug.clearLogs();
         }
@@ -652,7 +783,7 @@ module.exports = {
      * @param key   the attribute
      * @param value the value
      */
-    setUserAttribute(key, value){
+    setUserAttribute: function(key, value){
         if (!key || !value || typeof key !== "string" || typeof value !== "string")
             throw new TypeError("Invalid param, Expected String");
         if (Platform.OS === 'android') {
@@ -661,16 +792,20 @@ module.exports = {
     },
 
     /**
-     * Gets specific user attribute.
-     *
-     * @param key the attribute key as string
-     * @return the desired user attribute
+     * return callback
+     * @callback userAttributeCallback
+     * @param {string} value for key in user attributes.
      */
-    getUserAttribute(key){
-        if (!key || typeof key !== "string")
-            throw new TypeError("Invalid param, Expected String");
-        if (Platform.OS === 'android') {
-            return Instabug.getUserAttribute(key);
+
+    /**
+     * Returns the user attribute associated with a given key.
+ aKey
+     * @param {string} key The attribute key as string
+     * @param {userAttributeCallback} userAttributeCallback callback with argument as the desired user attribute value 
+     */
+    getUserAttribute: function(key, userAttributeCallback){
+        if (Platform.OS === 'ios') {
+            return Instabug.getUserAttribute(key, userAttributeCallback);
         }
     },
 
@@ -680,7 +815,7 @@ module.exports = {
      * @param key the attribute key as string
      * @see #setUserAttribute(String, String)
      */
-    removeUserAttribute(key){
+    removeUserAttribute: function(key){
         if (!key || typeof key !== "string")
             throw new TypeError("Invalid param, Expected String");
         if (Platform.OS === 'android') {
@@ -689,20 +824,26 @@ module.exports = {
     },
 
     /**
-     * Gets all saved user attributes.
-     *
-     * @return all user attributes as HashMap<String, String>
+     * return callback
+     * @callback userAttributesCallback
+     * @param{Object} userAttributes Dictionary of the user attributes.
      */
-    getAllUserAttributes(){
-        if (Platform.OS === 'android') {
-            return Instabug.getAllUserAttributes();
+
+    /**
+     * @summary Returns all user attributes.
+     * @param {userAttributesCallback} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
+     * or an empty dictionary if no user attributes have been set.
+     */
+    getAllUserAttributes: function(userAttributesCallback){
+        if (Platform.OS === 'ios') {
+            return Instabug.getAllUserAttributes(userAttributesCallback);
         }
     },
 
     /**
      * Clears all user attributes if exists.
      */
-    clearAllUserAttributes(){
+    clearAllUserAttributes: function(){
         if (Platform.OS === 'android') {
             Instabug.clearAllUserAttributes();
         }
@@ -717,7 +858,7 @@ module.exports = {
         none: Instabug.invocationEventNone,
         shake: Instabug.invocationEventShake,
         screenshot: Instabug.invocationEventScreenshot,
-        twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
+        twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
         floatingButton: Instabug.invocationEventFloatingButton
     },
 

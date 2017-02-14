@@ -163,7 +163,7 @@ RCT_EXPORT_METHOD(getTags:(RCTResponseSenderBlock)callBack) {
 }
 
 RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(IBGString)key) {
-    [Instabug setValue:value forStringWithKey:key];
+    [Instabug setString:value toKey:key];
 }
 
 RCT_EXPORT_METHOD(setAttachmentTypesEnabled:(BOOL)screenShot
@@ -204,7 +204,7 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
     callBack(@[@([Instabug isInstabugNotification:notification])]);
 }
 
-RCT_EXPORT_METHOD(addFileAttachmentWithURL:(NSString *)fileURLString) {
+RCT_EXPORT_METHOD(addFileAttachment:(NSString *)fileURLString) {
     [Instabug addFileAttachmentWithURL:[NSURL URLWithString:fileURLString]];
 }
 
@@ -373,6 +373,11 @@ RCT_EXPORT_METHOD(logError:(NSString *)log) {
               @"audio": @(IBGStringAudio),
               @"screenRecording": @(IBGStringScreenRecording),
               @"image": @(IBGStringImage),
+              @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
+              @"surveyNoAnswerTitle": @(kIBGStringSurveyNoAnswerTitle),
+              @"surveyNoAnswerMessage": @(kIBGStringSurveyNoAnswerMessage),
+              @"surveySubmitTitle": @(kIBGStringSurveySubmitTitle),
+              @"videPressRecord": @(kIBGStringVideoPressRecordTitle)
               };
 };
 
