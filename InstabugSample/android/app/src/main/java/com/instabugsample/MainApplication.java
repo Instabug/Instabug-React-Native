@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 import com.instabug.reactlibrary.RNInstabugReactnativePackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -26,7 +27,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this,"button")
+            new ReactNativeDialogsPackage(),
+            new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",
+            MainApplication.this,"button")
+
       );
     }
   };
