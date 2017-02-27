@@ -1,6 +1,6 @@
-
 package com.instabug.reactlibrary;
 
+import android.app.Application;
 import android.net.Uri;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -25,20 +25,18 @@ import java.util.Map;
  */
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
-    private Instabug mInstabug;
-    private InstabugInvocationEvent invocationEvent;
-
+    //InvocationEvents
     private final String INVOCATION_EVENT_NONE = "none";
     private final String INVOCATION_EVENT_SHAKE = "shake";
     private final String INVOCATION_EVENT_SCREENSHOT = "screenshot";
     private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
     private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
-
+    //InvocationModes
     private final String INVOCATION_MODE_NEW_BUG = "bug";
     private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
     private final String INVOCATION_MODE_NEW_CHAT = "chat";
     private final String INVOCATION_MODE_CHATS_LIST = "chats";
-
+    //locales
     private final String LOCALE_ARABIC = "arabic";
     private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
     private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
@@ -56,20 +54,32 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_SWEDISH = "swedish";
     private final String LOCALE_TURKISH = "turkish";
 
+    private Application androidApplication;
+    private Instabug mInstabug;
+    private InstabugInvocationEvent invocationEvent;
+
     /**
      * Instantiates a new Rn instabug reactnative module.
      *
      * @param reactContext the react context
      * @param mInstabug    the m instabug
      */
-    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Instabug mInstabug) {
+    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application androidApplication) {
         super(reactContext);
-        this.mInstabug = mInstabug;
+        this.androidApplication = androidApplication;
     }
 
     @Override
     public String getName() {
         return "Instabug";
+    }
+
+    @ReactMethod
+    public void startWithToken(String androidToken, String invocationEvent) {
+        mInstabug = new Instabug.Builder(this.androidApplication, androidToken)
+                .setIntroMessageEnabled(false)
+                .setInvocationEvent(getInvocationEventById(invocationEvent))
+                .build();
     }
 
     /**
@@ -154,7 +164,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
-
 
     /**
      * The file at filePath will be uploaded along upcoming reports with the name fileNameWithExtension
@@ -394,9 +403,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvent(String invocationEventValue) {
-        InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
         try {
-            //setting invocation event
+            mInstabug.changeInvocationEvent(getInvocationEventById(invocationEventValue));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private InstabugInvocationEvent getInvocationEventById(String invocationEventValue) {
+        InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.SHAKE;
+        try {
             if (invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
                 invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
             } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE)) {
@@ -409,11 +425,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 invocationEvent = InstabugInvocationEvent.NONE;
             }
 
-            mInstabug.changeInvocationEvent(invocationEvent);
+            return invocationEvent;
         } catch (Exception e) {
             e.printStackTrace();
+            return invocationEvent;
         }
-
     }
 
     /**

@@ -26,7 +26,7 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "android": {
-      "packageInstance": "new RNInstabugReactnativePackage(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this,\"button\")"
+      "packageInstance": "new RNInstabugReactnativePackage(MainApplication.this)"
     }
   },
   "dependencies": {
