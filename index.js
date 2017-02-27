@@ -25,7 +25,6 @@ module.exports = {
      * the SDK's UI.
      */
     startWithToken: function (token, invocationEvent) {
-        if (Platform.OS === 'ios')
             Instabug.startWithToken(token, invocationEvent);
     },
 
@@ -152,15 +151,6 @@ module.exports = {
     },
 
     /**
-     * A callback that gets executed after the SDK's UI is dismissed.
-     * @callback postInvocationHandler
-     * @param {dismissType} dismissType How the SDK was dismissed.
-     * @param {reportType} reportType Type of report that has been sent. Will be set
-     * to IBGReportTypeBug in case the SDK has been dismissed without selecting a
-     * report type, so you might need to check issueState before reportType
-     */
-
-    /**
      * Sets a block of code to be executed right after the SDK's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes after the SDK's UI is dismissed.
@@ -221,13 +211,6 @@ module.exports = {
             Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
         }
     },
-
-    /**
-     * return callback
-     * @callback messageCountCallback
-     * @param{number} responseCount Notifications count, or -1 incase the SDK has
-     * not been initialized.
-     */
 
     /**
      * Returns the number of unread messages the user currently has.
