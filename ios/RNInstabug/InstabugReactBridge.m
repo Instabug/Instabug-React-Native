@@ -26,6 +26,8 @@ RCT_EXPORT_MODULE(Instabug)
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug startWithToken:token invocationEvent:invocationEvent];
+    [Instabug setCrashReportingEnabled:NO];
+    [Instabug setNetworkLoggingEnabled:NO];
 }
 
 RCT_EXPORT_METHOD(invoke) {

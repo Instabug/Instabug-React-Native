@@ -527,9 +527,9 @@ module.exports = {
      * @param {array} titles titles to be shown in the list.
      * @param {array} name names of icons to be shown along with titles. Use the same names you would use
      */
-    setReportCategories: function (titles, names) {
+    setReportCategories: function (titles) {
         if (Platform.OS == 'ios') {
-            Instabug.setReportCategories(titles, names);
+            Instabug.setReportCategories(titles, null);
         }
     },
 
