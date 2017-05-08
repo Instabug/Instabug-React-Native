@@ -6,7 +6,6 @@
 
 import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
 let {Instabug} = NativeModules;
-import instabugUtils from './utils/instabugUtils.js';
 
 /**
  * Instabug
@@ -473,34 +472,6 @@ module.exports = {
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
         if (Platform.OS === 'ios')
             Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
-    },
-
-    /**
-     * Report a caught exception to Instabug dashboard
-     *
-     * @param error           the error to be reported
-     * @param errorIdentifier used to group issues manually reported
-     * @throws Error if error param type wasn't Error
-     */
-    reportJsException: function (error, errorIdentifier) {
-        if (!error || !error instanceof Error)
-            throw new TypeError("Invalid param type at param1, Expected Error");
-
-        let jsStackTrace = instabugUtils.parseErrorStack(error);
-        if (!errorIdentifier)
-            Instabug.reportJsException(jsStackTrace, error.message, null);
-        else if (errorIdentifier) {
-            Instabug.reportJsException(jsStackTrace, error.message, errorIdentifier);
-        }
-    },
-
-    /**
-     * Report un-caught exceptions to Instabug dashboard
-     * We don't send exceptions from __DEV__, since it's way too noisy!
-     */
-    captureJsErrors(){
-        if (Platform.OS === 'android')
-            instabugUtils.captureJsErrors();
     },
 
     /**
