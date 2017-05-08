@@ -8,11 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		248766471DA3E8ED00D93EDA /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; };
+		2490B8CB1EC0B17A00D60098 /* Instabug.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */; };
 		24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2490B8CA1EC0B17400D60098 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2490B8CB1EC0B17A00D60098 /* Instabug.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		24DF11EB1DA3A2B90056F77C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -25,7 +36,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		248766441DA3E8ED00D93EDA /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
 		248766451DA3E8ED00D93EDA /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
 		24DF11ED1DA3A2B90056F77C /* libRNInstabug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNInstabug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		24DF11F91DA3A2F30056F77C /* InstabugReactBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstabugReactBridge.h; sourceTree = "<group>"; };
@@ -49,7 +59,6 @@
 		248766431DA3E8EC00D93EDA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				248766441DA3E8ED00D93EDA /* Instabug.bundle */,
 				248766451DA3E8ED00D93EDA /* Instabug.framework */,
 			);
 			name = Frameworks;
@@ -93,6 +102,7 @@
 				24DF11E91DA3A2B90056F77C /* Sources */,
 				24DF11EA1DA3A2B90056F77C /* Frameworks */,
 				24DF11EB1DA3A2B90056F77C /* CopyFiles */,
+				2490B8CA1EC0B17400D60098 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -253,11 +263,7 @@
 		24DF11F71DA3A2B90056F77C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../../../ios/Frameworks",
-					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
@@ -275,11 +281,7 @@
 		24DF11F81DA3A2B90056F77C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../../../ios/Frameworks",
-					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/**",
