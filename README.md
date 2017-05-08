@@ -7,14 +7,14 @@
 
 ## Installation
 
-`$ npm install https://github.com/Instabug/instabug-reactnative --save`
+`$ npm install https://github.com/Instabug/instabug-reactnative#master --save`
 
 `$ react-native link instabug-reactnative`
 
 #### iOS installation
 
 1. Open your app `.xcodeproj` file
-2. Add the following line to your "Podfile": `pod 'Instabug', '~> 7.0.0'`
+2. Add the following line to your "Podfile": `pod 'Instabug', '~> 7.0'`
 3. run `pod install`
 4. Run your project (`Cmd+R`)<
 
