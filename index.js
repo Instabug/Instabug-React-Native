@@ -475,35 +475,6 @@ module.exports = {
     },
 
     /**
-     * Add file to attached files with each report being sent.
-     * A new copy of the file at fileURL will be attached with each bug report being sent. The file is only copied
-     * at the time of sending the report, so you could safely call this API whenever the file is available on disk, and the copy
-     * attached to your bug reports will always contain that latest changes at the time of sending the report.
-     *
-     * Each call to this method adds the file to the files attached, until a maximum of 3 then it overrides the first file.
-     * The file has to be available locally at the provided path when the report is being sent.
-     * @param {string} stringURL Path to a file that's going to be attached to each report.
-     */
-
-    // addFileAttachment: function(stringURL) {
-    //     if (Platform.OS == 'ios') {
-    //         Instabug.addFileAttachment(stringURL);
-    //     }
-    // },
-
-    /**
-     * Clear list of files to be attached with each report.
-     * This method doesn't delete any files from the file system. It will just removes them for the list of files
-     * to be attached with each report.
-     */
-
-    // clearFileAttachments: function() {
-    //     if (Platform.OS == 'ios') {
-    //         Instabug.clearFileAttachments();
-    //     }
-    // },
-
-    /**
      * Shows/Hides email field.
      * Defaults to show email field.
      * @param {boolean} shouldShowEmailField true to show the email field, false to hide it.

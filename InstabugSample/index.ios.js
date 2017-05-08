@@ -27,7 +27,7 @@ export default class InstabugSample extends Component {
 
   constructor(props) {
     super(props);
-    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.invocationEvent.floatingButton);
+    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.invocationEvent.shake);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows(this._genRows({})),
