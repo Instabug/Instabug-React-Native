@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
 let {Instabug} = NativeModules;
 import instabugUtils from './utils/instabugUtils.js';
