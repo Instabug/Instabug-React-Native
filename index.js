@@ -1,4 +1,4 @@
-import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
+import {NativeModules, NativeAppEventEmitter, Platform} from "react-native";
 let {Instabug} = NativeModules;
 
 /**
@@ -18,7 +18,7 @@ module.exports = {
      * the SDK's UI.
      */
     startWithToken: function (token, invocationEvent) {
-            Instabug.startWithToken(token, invocationEvent);
+        Instabug.startWithToken(token, invocationEvent);
     },
 
     /**
@@ -500,7 +500,7 @@ module.exports = {
     setReportCategories: function (titles) {
         if (Platform.OS == 'ios') {
             Instabug.setReportCategories(titles, null);
-        }else if(Platform.OS == 'android') {
+        } else if (Platform.OS == 'android') {
             Instabug.setReportCategories(titles);
         }
     },
