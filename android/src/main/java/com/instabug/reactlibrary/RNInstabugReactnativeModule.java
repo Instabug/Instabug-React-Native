@@ -627,6 +627,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Allows you to show a predefined set of categories for users to choose
+     * from when reporting a bug or sending feedback. Selected category
+     * shows up on your Instabug dashboard as a tag to make filtering
+     * through issues easier.
+     *
+     * @param reportCategories the report categories list which is a list of ReportCategory model
+     */
+    @ReactMethod
     public void setReportCategories(String... categoriesTitles) {
         try {
             ArrayList<ReportCategory> bugCategories = new ArrayList<>();
