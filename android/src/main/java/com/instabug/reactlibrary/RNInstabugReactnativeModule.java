@@ -8,11 +8,13 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.logging.InstabugLog;
+import com.instabug.library.bugreporting.model.ReportCategory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -612,6 +614,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void clearAllUserAttributes() {
         try {
             mInstabug.clearAllUserAttributes();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setReportCategories(String... categoriesTitles) {
+        try {
+            ArrayList<ReportCategory> bugCategories = new ArrayList<>();
+
+            for (String category : categoriesTitles) {
+                bugCategories.add(ReportCategory.getInstance().withLabel(category);
+            }
+
+            Instabug.setReportCategories(bugCategories);
         } catch (Exception e) {
             e.printStackTrace();
         }
