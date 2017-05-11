@@ -95,11 +95,6 @@ module.exports = {
     },
 
     /**
-     * A callback that gets executed before sending each bug report.
-     * @callback preSendingHandler
-     */
-
-    /**
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
@@ -117,13 +112,6 @@ module.exports = {
             Instabug.setPreSendingHandler(preSendingHandler);
         }
     },
-
-    /**
-     * Sets a block of code to be executed just before the SDK's UI is presented.
-     * This block is executed on the UI thread. Could be used for performing any
-     * UI changes before the SDK's UI is shown.
-     * @callback preSendingHandler
-     */
 
     /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
@@ -409,11 +397,6 @@ module.exports = {
     },
 
     /**
-     * A callback that gets executed when a new message is received.
-     * @callback onNewMessgaeHandler
-     */
-
-    /**
      * Sets a block of code that gets executed when a new message is received.
      * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
      * executed when a new message is received.
@@ -446,12 +429,6 @@ module.exports = {
         if (Platform.OS === 'ios')
             Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
     },
-
-    /**
-     * return callback
-     * @callback isInstabugNotificationCallback
-     * @param {boolean} isInstabugNotification
-     */
 
     /**
      * Checks if a notification is from Instabug.
@@ -714,12 +691,6 @@ module.exports = {
     },
 
     /**
-     * return callback
-     * @callback userAttributeCallback
-     * @param {string} value for key in user attributes.
-     */
-
-    /**
      * Returns the user attribute associated with a given key.
      aKey
      * @param {string} key The attribute key as string
@@ -744,12 +715,6 @@ module.exports = {
             Instabug.removeUserAttribute(key);
         }
     },
-
-    /**
-     * return callback
-     * @callback userAttributesCallback
-     * @param{Object} userAttributes Dictionary of the user attributes.
-     */
 
     /**
      * @summary Returns all user attributes.
