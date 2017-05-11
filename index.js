@@ -519,7 +519,6 @@ module.exports = {
      * Use this method to give users a list of choices of categories their bug report or feedback might be related
      * to. Selected category will be shown as a tag on your dashboard.
      * @param {array} titles titles to be shown in the list.
-     * @param {array} name names of icons to be shown along with titles. Use the same names you would use
      */
     setReportCategories: function (titles) {
         if (Platform.OS == 'ios') {
