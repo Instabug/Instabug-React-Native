@@ -500,6 +500,8 @@ module.exports = {
     setReportCategories: function (titles) {
         if (Platform.OS == 'ios') {
             Instabug.setReportCategories(titles, null);
+        }else if(Platform.OS == 'android') {
+            Instabug.setReportCategories(titles);
         }
     },
 
