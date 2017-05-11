@@ -632,7 +632,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             ArrayList<ReportCategory> bugCategories = new ArrayList<>();
 
             for (String category : categoriesTitles) {
-                bugCategories.add(ReportCategory.getInstance().withLabel(category);
+                bugCategories.add(ReportCategory.getInstance().withLabel(category));
             }
 
             Instabug.setReportCategories(bugCategories);
