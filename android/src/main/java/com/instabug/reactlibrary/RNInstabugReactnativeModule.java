@@ -8,11 +8,13 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.logging.InstabugLog;
+import com.instabug.library.bugreporting.model.ReportCategory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +66,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param reactContext the react context
      * @param mInstabug    the m instabug
      */
-    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application androidApplication) {
+    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application
+            androidApplication) {
         super(reactContext);
         this.androidApplication = androidApplication;
     }
@@ -166,7 +169,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * The file at filePath will be uploaded along upcoming reports with the name fileNameWithExtension
+     * The file at filePath will be uploaded along upcoming reports with the name
+     * fileNameWithExtension
      *
      * @param fileUri               the file uri
      * @param fileNameWithExtension the file name with extension
@@ -204,7 +208,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setUserName(String username) {
         try {
-            mInstabug.setUserName(username);
+            mInstabug.setUsername(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,7 +246,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Set the primary color that the SDK will use to tint certain UI elements in the SDK
      *
      * @param primaryColorValue The value of the primary color ,
-     *                          whatever this color was parsed from a resource color or hex color or RGB color values
+     *                          whatever this color was parsed from a resource color or hex color
+     *                          or RGB color values
      */
     @ReactMethod
     public void setPrimaryColor(int primaryColor) {
@@ -263,9 +268,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
-    public void setAttachmentTypesEnabled(boolean screenshot, boolean extraScreenshot, boolean galleryImage, boolean voiceNote, boolean screenRecording) {
+    public void setAttachmentTypesEnabled(boolean screenshot, boolean extraScreenshot, boolean
+            galleryImage, boolean voiceNote, boolean screenRecording) {
         try {
-            mInstabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording);
+            mInstabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                    voiceNote, screenRecording);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -274,8 +281,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Appends a log message to Instabug internal log
      * <p>
-     * These logs are then sent along the next uploaded report. All log messages are timestamped <br/>
-     * Logs aren't cleared per single application run. If you wish to reset the logs, use {@link #clearLog()}
+     * These logs are then sent along the next uploaded report. All log messages are timestamped
+     * <br/>
+     * Logs aren't cleared per single application run. If you wish to reset the logs, use
+     * {@link #clearLog()}
      * </p>
      * Note: logs passed to this method are <b>NOT</b> printed to Logcat
      *
@@ -478,7 +487,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 String fileName = frame.getString("file");
                 int lineNumber = frame.getInt("lineNumber");
 
-                stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName, lineNumber);
+                stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName,
+                        lineNumber);
             }
             Throwable throwable = new Throwable(message);
             throwable.setStackTrace(stackTraceElements);
@@ -617,43 +627,84 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Allows you to show a predefined set of categories for users to choose
+     * from when reporting a bug or sending feedback. Selected category
+     * shows up on your Instabug dashboard as a tag to make filtering
+     * through issues easier.
+     *
+     * @param reportCategories the report categories list which is a list of ReportCategory model
+     */
+    @ReactMethod
+    public void setReportCategories(ReadableArray categoriesTitles) {
+        try {
+            ArrayList<ReportCategory> bugCategories = new ArrayList<>();
+            int size = categoriesTitles != null ? categoriesTitles.size() : 0;
+            if (size == 0) return;
+            for (int i = 0; i < size; i++) {
+                bugCategories.add(ReportCategory.getInstance().withLabel(categoriesTitles.getString(i)));
+            }
+
+            Instabug.setReportCategories(bugCategories);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
             case LOCALE_ARABIC:
-                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC.getCountry());
+                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC
+                        .getCountry());
             case LOCALE_ENGLISH:
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
+                        .getCountry());
             case LOCALE_CZECH:
-                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry());
+                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry
+                        ());
             case LOCALE_FRENCH:
-                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH.getCountry());
+                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH
+                        .getCountry());
             case LOCALE_GERMAN:
-                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN.getCountry());
+                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN
+                        .getCountry());
             case LOCALE_ITALIAN:
-                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN.getCountry());
+                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN
+                        .getCountry());
             case LOCALE_JAPANESE:
-                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE.getCountry());
+                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE
+                        .getCountry());
             case LOCALE_POLISH:
-                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH.getCountry());
+                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH
+                        .getCountry());
             case LOCALE_RUSSIAN:
-                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN.getCountry());
+                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN
+                        .getCountry());
             case LOCALE_SPANISH:
-                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH.getCountry());
+                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH
+                        .getCountry());
             case LOCALE_SWEDISH:
-                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH.getCountry());
+                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH
+                        .getCountry());
             case LOCALE_TURKISH:
-                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH.getCountry());
+                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH
+                        .getCountry());
             case LOCALE_PORTUGUESE_BRAZIL:
-                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale.PORTUGUESE_BRAZIL.getCountry());
+                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale
+                        .PORTUGUESE_BRAZIL.getCountry());
             case LOCALE_CHINESE_SIMPLIFIED:
-                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale.SIMPLIFIED_CHINESE.getCountry());
+                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale
+                        .SIMPLIFIED_CHINESE.getCountry());
             case LOCALE_CHINESE_TRADITIONAL:
-                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale.TRADITIONAL_CHINESE.getCountry());
+                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale
+                        .TRADITIONAL_CHINESE.getCountry());
             case LOCALE_KOREAN:
-                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN.getCountry());
+                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN
+                        .getCountry());
             default:
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH.getCountry());
+                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
+                        .getCountry());
         }
     }
 

@@ -34,7 +34,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     }
 
     @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application application
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application application,
                                         String invocationEventValue) {
         this(androidApplicationToken, application, invocationEventValue, "light");
     }
