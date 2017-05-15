@@ -636,12 +636,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param reportCategories the report categories list which is a list of ReportCategory model
      */
     @ReactMethod
-    public void setReportCategories(String... categoriesTitles) {
+    public void setReportCategories(ReadableArray categoriesTitles) {
         try {
             ArrayList<ReportCategory> bugCategories = new ArrayList<>();
-
-            for (String category : categoriesTitles) {
-                bugCategories.add(ReportCategory.getInstance().withLabel(category));
+            int size = categoriesTitles != null ? categoriesTitles.size() : 0;
+            if (size == 0) return;
+            for (int i = 0; i < size; i++) {
+                bugCategories.add(ReportCategory.getInstance().withLabel(categoriesTitles.getString(i)));
             }
 
             Instabug.setReportCategories(bugCategories);

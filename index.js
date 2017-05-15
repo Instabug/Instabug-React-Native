@@ -497,7 +497,7 @@ module.exports = {
      * to. Selected category will be shown as a tag on your dashboard.
      * @param {array} titles titles to be shown in the list.
      */
-    setReportCategories: function (titles) {
+    setReportCategories: function (... titles) {
         if (Platform.OS == 'ios') {
             Instabug.setReportCategories(titles, null);
         } else if (Platform.OS == 'android') {
