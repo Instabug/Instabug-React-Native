@@ -414,23 +414,6 @@ module.exports = {
     },
 
     /**
-     * Enables/disables prompt options when SDK is invoked.
-     * When only a single option is enabled, it become the default invocation mode.
-     * If all options are disabled, bug reporting becomes the default invocation mode.
-     * By default, all three options are enabled.
-     * @param {boolean} isBugReportingEnabled  A boolean to indicate whether bug reports
-     * are enabled or disabled.
-     * @param {boolean} isFeedbackReportingEnabled A boolean to indicate whether feedback is
-     * enabled or disabled.
-     * @param {boolean} isChatEnabled A boolean to indicate whether chat is enabled
-     * or disabled.
-     */
-    setPromptOptions: function (isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled) {
-        if (Platform.OS === 'ios')
-            Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
-    },
-
-    /**
      * Checks if a notification is from Instabug.
      * If you are using push notifications, use this method to check whether an
      * incoming notification is from Instabug or not. If this method returns YES,
@@ -443,17 +426,6 @@ module.exports = {
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
         if (Platform.OS === 'ios')
             Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
-    },
-
-    /**
-     * Shows/Hides email field.
-     * Defaults to show email field.
-     * @param {boolean} shouldShowEmailField true to show the email field, false to hide it.
-     */
-    setShowEmailField: function (shouldShowEmailField) {
-        if (Platform.OS == 'ios') {
-            Instabug.setShowEmailField();
-        }
     },
 
     /**
@@ -480,17 +452,6 @@ module.exports = {
     },
 
     /**
-     * Sets whether to show a "Thank You" dialog after a bug report is sent or not.
-     * Defaults to YES.
-     * @param {boolean} isPostSendingDialogEnabled A boolean to indicate whether the dialog is enabled or not.
-     */
-    setPostSendingDialogEnabled: function (isPostSendingDialogEnabled) {
-        if (Platform.OS == 'ios') {
-            Instabug.setPostSendingDialogEnabled(isPostSendingDialogEnabled);
-        }
-    },
-
-    /**
      * Sets an array of report categories to be shown for users to select from before reporting a bug or sending
      * feedback.
      * Use this method to give users a list of choices of categories their bug report or feedback might be related
@@ -502,16 +463,6 @@ module.exports = {
             Instabug.setReportCategories(titles, null);
         } else if (Platform.OS == 'android') {
             Instabug.setReportCategories(titles);
-        }
-    },
-
-    /**
-     * Enables/disables inspect view hierarchy when reporting a bug/feedback.
-     * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
-     */
-    setViewHierarchyEnabled: function (viewHierarchyEnabled) {
-        if (Platform.OS == 'ios') {
-            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
         }
     },
 
@@ -649,36 +600,6 @@ module.exports = {
     },
 
     /**
-     * Appends a log message to Instabug internal log
-     * <p>
-     * These logs are then sent along the next uploaded report.
-     * All log messages are timestamped <br/>
-     * Logs aren't cleared per single application run.
-     * If you wish to reset the logs,
-     * use {@link #clearLogs()} ()}
-     * </p>
-     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
-     *
-     * @param message    the message
-     */
-    logWTF(message){
-        if (!message)return;
-        if (Platform.OS === 'android') {
-            Instabug.log("wtf", message);
-        }
-    },
-
-    /**
-     * Clears Instabug internal log
-     *
-     */
-    clearLogs: function () {
-        if (Platform.OS === 'android') {
-            Instabug.clearLogs();
-        }
-    },
-
-    /**
      * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
      *
      * @param key   the attribute
@@ -687,9 +608,7 @@ module.exports = {
     setUserAttribute: function (key, value) {
         if (!key || !value || typeof key !== "string" || typeof value !== "string")
             throw new TypeError("Invalid param, Expected String");
-        if (Platform.OS === 'android') {
-            Instabug.setUserAttribute(key, value);
-        }
+        Instabug.setUserAttribute(key, value);
     },
 
     /**
@@ -713,9 +632,7 @@ module.exports = {
     removeUserAttribute: function (key) {
         if (!key || typeof key !== "string")
             throw new TypeError("Invalid param, Expected String");
-        if (Platform.OS === 'android') {
-            Instabug.removeUserAttribute(key);
-        }
+        Instabug.removeUserAttribute(key);
     },
 
     /**
@@ -733,9 +650,7 @@ module.exports = {
      * Clears all user attributes if exists.
      */
     clearAllUserAttributes: function () {
-        if (Platform.OS === 'android') {
-            Instabug.clearAllUserAttributes();
-        }
+        Instabug.clearAllUserAttributes();
     },
 
     /**
