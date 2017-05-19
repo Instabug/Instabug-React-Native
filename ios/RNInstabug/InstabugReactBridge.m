@@ -5,7 +5,7 @@
 //  Created by Yousef Hamza on 9/29/16.
 
 #import "InstabugReactBridge.h"
-#import <Instabug/Instabug.h>
+#import "Instabug.h"
 
 @implementation InstabugReactBridge
 
