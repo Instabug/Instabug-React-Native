@@ -183,7 +183,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setUserName(String username) {
         try {
-            mInstabug.setUserName(username);
+            mInstabug.setUsername(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
