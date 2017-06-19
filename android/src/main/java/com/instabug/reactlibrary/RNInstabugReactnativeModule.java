@@ -13,6 +13,7 @@ import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
+import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 
@@ -55,6 +56,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_SPANISH = "spanish";
     private final String LOCALE_SWEDISH = "swedish";
     private final String LOCALE_TURKISH = "turkish";
+
+    //Theme colors
+    private final String COLOR_THEME_LIGHT = "light";
+    private final String COLOR_THEME_DARK = "dark";
 
     private Application androidApplication;
     private Instabug mInstabug;
@@ -628,6 +633,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets InstabugSDK theme color.
+     *
+     * @param theme which is a constant String "light" or "dark"
+     */
+    @ReactMethod
+    public void setColorTheme(String theme) {
+        try {
+            if (theme.equals(COLOR_THEME_LIGHT)) {
+                mInstabug.setTheme(InstabugColorTheme.InstabugColorThemeLight);
+
+            } else if (theme.equals(COLOR_THEME_DARK)) {
+                mInstabug.setTheme(InstabugColorTheme.InstabugColorThemeDark);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Allows you to show a predefined set of categories for users to choose
      * from when reporting a bug or sending feedback. Selected category
      * shows up on your Instabug dashboard as a tag to make filtering
@@ -642,7 +666,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             int size = categoriesTitles != null ? categoriesTitles.size() : 0;
             if (size == 0) return;
             for (int i = 0; i < size; i++) {
-                bugCategories.add(ReportCategory.getInstance().withLabel(categoriesTitles.getString(i)));
+                bugCategories.add(ReportCategory.getInstance().withLabel(categoriesTitles
+                        .getString(i)));
             }
 
             Instabug.setReportCategories(bugCategories);
@@ -716,6 +741,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
         constants.put("invocationEventTwoFingersSwipe", INVOCATION_EVENT_TWO_FINGERS_SWIPE);
         constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
+
+        constants.put("colorThemeLight", COLOR_THEME_LIGHT);
+        constants.put("colorThemeDark", COLOR_THEME_DARK);
 
         constants.put("invocationModeNewBug", INVOCATION_MODE_NEW_BUG);
         constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
