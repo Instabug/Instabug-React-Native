@@ -321,6 +321,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Set the user identity.
+     * Instabug will pre-fill the user email in reports.
+     *
+     * @param username Username.
+     * @param email    User's default email
+     */
+    @ReactMethod
+    public void identifyUser(String userName, String userEmail) {
+        try {
+            mInstabug.identifyUser(userName, userEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Reset ALL tags added using {@link #addTags(String...)}
      */
     @ReactMethod

@@ -437,6 +437,8 @@ module.exports = {
     identifyUserWithEmail: function (email, name) {
         if (Platform.OS == 'ios') {
             Instabug.identifyUserWithEmail(email, name);
+        } else if ('android') {
+            Instabug.identifyUser(name, email);
         }
     },
 
