@@ -689,6 +689,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         mInstabug.setEmailFieldRequired(isEmailFieldRequired);
     }
 
+    /**
+     * Sets whether users are required to enter a comment or not when sending reports.
+     * Defaults to NO.
+     * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
+     * field is required or not.
+     */
+    @ReactMethod
+    public void setCommentFieldRequired(boolean isCommentFieldRequired) {
+        mInstabug.setCommentFieldRequired(isCommentFieldRequired);
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {

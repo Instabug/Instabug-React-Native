@@ -247,7 +247,6 @@ module.exports = {
      * field is required or not.
      */
     setCommentFieldRequired: function (isCommentFieldRequired) {
-        if (Platform.OS === 'ios')
             Instabug.setCommentFieldRequired(isCommentFieldRequired);
     },
 
