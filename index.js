@@ -237,7 +237,7 @@ module.exports = {
      * field is required or not.
      */
     setEmailFieldRequired: function (isEmailFieldRequired) {
-            Instabug.setEmailFieldRequired(isEmailFieldRequired);
+        Instabug.setEmailFieldRequired(isEmailFieldRequired);
     },
 
     /**
@@ -247,7 +247,7 @@ module.exports = {
      * field is required or not.
      */
     setCommentFieldRequired: function (isCommentFieldRequired) {
-            Instabug.setCommentFieldRequired(isCommentFieldRequired);
+        Instabug.setCommentFieldRequired(isCommentFieldRequired);
     },
 
     /**
@@ -329,9 +329,7 @@ module.exports = {
      * @param {string[]} tags An array of tags to append to current tags.
      */
     appendTags: function (tags) {
-        if (Platform.OS === 'ios')
-            Instabug.appendTags(tags);
-
+        Instabug.appendTags(tags);
     },
 
     /**
@@ -352,7 +350,11 @@ module.exports = {
      * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
      */
     getTags: function (tagsCallback) {
-        Instabug.getTags(tagsCallback);
+        if (Platform.OS === 'ios') {
+            Instabug.getTags(tagsCallback);
+        } else if (Platform.OS === 'android') {
+            Instabug.getTags();
+        }
     },
 
     /**

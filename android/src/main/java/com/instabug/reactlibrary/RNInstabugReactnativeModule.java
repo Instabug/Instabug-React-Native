@@ -149,10 +149,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param tags
      */
     @ReactMethod
-    public void addTags(String tags) {
+    public void appendTags(String tags) {
         try {
             String[] result = tags.split(",");
-            mInstabug.resetTags(); //clear last commit tags
             mInstabug.addTags(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -692,8 +691,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
+     *
      * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
-     * field is required or not.
+     *                  field is required or not.
      */
     @ReactMethod
     public void setCommentFieldRequired(boolean isCommentFieldRequired) {
