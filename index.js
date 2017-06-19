@@ -237,7 +237,6 @@ module.exports = {
      * field is required or not.
      */
     setEmailFieldRequired: function (isEmailFieldRequired) {
-        if (Platform.OS === 'ios')
             Instabug.setEmailFieldRequired(isEmailFieldRequired);
     },
 
