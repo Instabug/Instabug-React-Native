@@ -16,6 +16,7 @@ import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
+import com.instabug.library.InstabugCustomTextPlaceHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,9 +62,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String COLOR_THEME_LIGHT = "light";
     private final String COLOR_THEME_DARK = "dark";
 
+    edgeSwipeStartHint:Instabug.edgeSwipeStartHint,
+
+    startAlertText:Instabug.startAlertText,
+
+
+    microphonePermissionAlertSettingsButtonText:Instabug
+            .microphonePermissionAlertSettingsButtonText,
+
+    conversationsHeaderTitle:Instabug.conversationsHeaderTitle,
+
+    screenshotHeaderTitle:Instabug.screenshotHeaderTitle,
+
+    //CustomTextPlaceHolders
+    private final String SHAKE_HINT = "shakeHint";
+    private final String SWIPE_HINT = "swipeHint";
+    private final String INVALID_EMAIL_MESSAGE = "invalidEmailMessage";
+    private final String INVALID_COMMENT_MESSAGE = "invalidCommentMessage";
+    private final String EMAIL_FIELD_HINT = "emailFieldHint";
+    private final String COMMENT_FIELD_HINT_FOR_BUG_REPORT = "commentFieldHintForBugReport";
+    private final String COMMENT_FIELD_HINT_FOR_FEEDBACK = "commentFieldHintForFeedback";
+
+    private final String INVOCATION_HEADER = "invocationHeader";
+    private final String START_CHATS = "talkToUs";
+    private final String REPORT_BUG = "reportBug";
+    private final String REPORT_FEEDBACK = "reportFeedback";
+
+    private final String CONVERSATIONS_LIST_TITLE = "conversationsHeaderTitle";
+
+    private final String ADD_VOICE_MESSAGE = "addVoiceMessage";
+    private final String ADD_IMAGE_FROM_GALLERY = "addImageFromGallery";
+    private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
+    private final String ADD_VIDEO = "addVideoMessage";
+
+    private final String AUDIO_RECORDING_PERMISSION_DENIED =
+            "audioRecordingPermissionDeniedMessage";
+
+    private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "recordingMessageToHoldText";
+    private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";
+
+    private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
+    private final String VIDEO_PLAYER_TITLE = "video";
+
     private Application androidApplication;
     private Instabug mInstabug;
     private InstabugInvocationEvent invocationEvent;
+    private InstabugCustomTextPlaceHolder placeHolders;
 
     /**
      * Instantiates a new Rn instabug reactnative module.
@@ -88,6 +132,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 .setIntroMessageEnabled(false)
                 .setInvocationEvent(getInvocationEventById(invocationEvent))
                 .build();
+        //init placHolders
+        placeHolders = new InstabugCustomTextPlaceHolder();
+
     }
 
     /**
@@ -701,7 +748,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEmailFieldRequired(boolean isEmailFieldRequired) {
-        mInstabug.setEmailFieldRequired(isEmailFieldRequired);
+        try {
+            mInstabug.setEmailFieldRequired(isEmailFieldRequired);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
@@ -713,7 +764,80 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setCommentFieldRequired(boolean isCommentFieldRequired) {
-        mInstabug.setCommentFieldRequired(isCommentFieldRequired);
+        try {
+            mInstabug.setCommentFieldRequired(isCommentFieldRequired);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Overrides any of the strings shown in the SDK with custom ones.
+     * Allows you to customize any of the strings shown to users in the SDK.
+     *
+     * @param {string}  string String value to override the default one.
+     * @param {strings} key Key of string to override.
+     */
+    @ReactMethod
+    public void setStringToKey(String string, String key) {
+        try {
+            placeHolders.set(getStringToKeyConstant(key), string);
+            Instabug.setCustomTextPlaceHolders(placeHolders);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private String getStringToKeyConstant(String key) {
+        String keyInLowerCase = key.toLowerCase();
+        switch (localeInLowerCase) {
+            case SHAKE_HINT:
+                return InstabugCustomTextPlaceHolder.Key.SHAKE_HINT;
+            case SWIPE_HINT:
+                return InstabugCustomTextPlaceHolder.Key.SWIPE_HINT;
+            case INVALID_EMAIL_MESSAGE:
+                return InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE;
+            case INVALID_COMMENT_MESSAGE:
+                return InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE;
+            case EMAIL_FIELD_HINT:
+                return InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT;
+            case COMMENT_FIELD_HINT_FOR_BUG_REPORT:
+                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT;
+            case COMMENT_FIELD_HINT_FOR_FEEDBACK:
+                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK;
+            case INVOCATION_HEADER:
+                return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
+            case START_CHATS:
+                return InstabugCustomTextPlaceHolder.Key.START_CHATS;
+            case REPORT_BUG:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_BUG;
+            case REPORT_FEEDBACK:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK;
+            case CONVERSATIONS_LIST_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE;
+            case ADD_VOICE_MESSAGE:
+                return InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE;
+            case ADD_IMAGE_FROM_GALLERY:
+                return InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY;
+            case ADD_EXTRA_SCREENSHOT:
+                return InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT;
+            case ADD_VIDEO:
+                return InstabugCustomTextPlaceHolder.Key.ADD_VIDEO;
+            case AUDIO_RECORDING_PERMISSION_DENIED:
+                return InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED;
+            case VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD:
+                return InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD;
+            case VOICE_MESSAGE_RELEASE_TO_ATTACH:
+                return InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH;
+            case CONVERSATION_TEXT_FIELD_HINT:
+                return InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT;
+            case REPORT_SUCCESSFULLY_SENT:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
+            case VIDEO_PLAYER_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
+            default:
+                return null;
+        }
     }
 
     private Locale getLocaleByKey(String instabugLocale) {
@@ -806,6 +930,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeSpanish", LOCALE_SPANISH);
         constants.put("localeSwedish", LOCALE_SWEDISH);
         constants.put("localeTurkish", LOCALE_TURKISH);
+
 
         return constants;
     }

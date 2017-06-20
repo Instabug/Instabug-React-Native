@@ -364,7 +364,6 @@ module.exports = {
      * @param {strings} key Key of string to override.
      */
     setStringToKey: function (string, key) {
-        if (Platform.OS === 'ios')
             Instabug.setString(string, key);
     },
 
