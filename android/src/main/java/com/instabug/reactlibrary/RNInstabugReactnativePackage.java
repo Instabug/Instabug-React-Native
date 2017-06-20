@@ -42,6 +42,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     @Deprecated
     public RNInstabugReactnativePackage(String androidApplicationToken, Application application,
                                         String invocationEventValue, String instabugColorThemeValue) {
+        this.androidApplication = application;
     }
 
     @Override
