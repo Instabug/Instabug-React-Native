@@ -364,7 +364,7 @@ module.exports = {
      * @param {strings} key Key of string to override.
      */
     setStringToKey: function (string, key) {
-            Instabug.setString(string, key);
+        Instabug.setString(string, key);
     },
 
     /**
@@ -620,6 +620,8 @@ module.exports = {
     getUserAttribute: function (key, userAttributeCallback) {
         if (Platform.OS === 'ios') {
             return Instabug.getUserAttribute(key, userAttributeCallback);
+        } else if (Platform.OS === 'android') {
+            return Instabug.getUserAttribute(key);
         }
     },
 
@@ -643,6 +645,8 @@ module.exports = {
     getAllUserAttributes: function (userAttributesCallback) {
         if (Platform.OS === 'ios') {
             return Instabug.getAllUserAttributes(userAttributesCallback);
+        } else if (Platform.OS === 'android') {
+            return Instabug.getAllUserAttributes();
         }
     },
 
