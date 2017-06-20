@@ -657,6 +657,42 @@ module.exports = {
         Instabug.clearAllUserAttributes();
     },
 
+    setViewHirearchyEnabled: function (viewHirearchyEnabled) {
+        Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
+    },
+
+    setSurveysEnabled: function(surveysEnabled) {
+        Instabug.setSurveysEnabled(surveysEnabled)
+    },
+
+    showSurveysIfAvailable: function() {
+        Instabug.showSurveysIfAvailable()
+    },
+
+    setWillShowSurveyHandler: function (willShowSurveyHandler) {
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGWillShowSurvey');
+            NativeAppEventEmitter.addListener(
+                'IBGWillShowSurvey',
+                willShowSurveyHandler
+            );
+
+            Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+        }
+    },
+
+    setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGDidDismissSurvey');
+            NativeAppEventEmitter.addListener(
+                'IBGDidDismissSurvey',
+                didDismissSurveyHandler
+            );
+
+            Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+        }
+    }
+
     /**
      * The event used to invoke the feedback form
      * @readonly
