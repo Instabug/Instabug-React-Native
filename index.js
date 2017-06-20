@@ -661,11 +661,11 @@ module.exports = {
         Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
     },
 
-    setSurveysEnabled: function(surveysEnabled) {
+    setSurveysEnabled: function (surveysEnabled) {
         Instabug.setSurveysEnabled(surveysEnabled)
     },
 
-    showSurveysIfAvailable: function() {
+    showSurveysIfAvailable: function () {
         Instabug.showSurveysIfAvailable()
     },
 
@@ -691,7 +691,7 @@ module.exports = {
 
             Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
         }
-    }
+    },
 
     /**
      * The event used to invoke the feedback form
