@@ -62,18 +62,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String COLOR_THEME_LIGHT = "light";
     private final String COLOR_THEME_DARK = "dark";
 
-    edgeSwipeStartHint:Instabug.edgeSwipeStartHint,
-
-    startAlertText:Instabug.startAlertText,
-
-
-    microphonePermissionAlertSettingsButtonText:Instabug
-            .microphonePermissionAlertSettingsButtonText,
-
-    conversationsHeaderTitle:Instabug.conversationsHeaderTitle,
-
-    screenshotHeaderTitle:Instabug.screenshotHeaderTitle,
-
     //CustomTextPlaceHolders
     private final String SHAKE_HINT = "shakeHint";
     private final String SWIPE_HINT = "swipeHint";
