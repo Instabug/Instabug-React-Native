@@ -829,6 +829,7 @@ module.exports = {
         chatsHeaderTitle: Instabug.chatsHeaderTitle,
         team: Instabug.team,
         messageNotification: Instabug.messageNotification,
-        messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers
+        messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
+        conversationTextFieldHint: Instabug.conversationTextFieldHint
     }
 };

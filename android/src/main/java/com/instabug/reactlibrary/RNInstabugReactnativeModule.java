@@ -92,6 +92,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
     private final String VIDEO_PLAYER_TITLE = "video";
 
+    private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
+
     private Application androidApplication;
     private Instabug mInstabug;
     private InstabugInvocationEvent invocationEvent;
@@ -918,6 +920,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeSpanish", LOCALE_SPANISH);
         constants.put("localeSwedish", LOCALE_SWEDISH);
         constants.put("localeTurkish", LOCALE_TURKISH);
+
+        constants.put("shakeHint", SHAKE_HINT);
+        constants.put("swipeHint", SWIPE_HINT);
+        constants.put("invalidEmailMessage", INVALID_EMAIL_MESSAGE);
+        constants.put("invalidCommentMessage", INVALID_COMMENT_MESSAGE);
+        constants.put("emailFieldHint", EMAIL_FIELD_HINT);
+        constants.put("commentFieldHintForBugReport", COMMENT_FIELD_HINT_FOR_BUG_REPORT);
+        constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
+        constants.put("invocationHeader", INVOCATION_HEADER);
+        constants.put("talkToUs", START_CHATS);
+        constants.put("reportBug", REPORT_BUG);
+        constants.put("reportFeedback", REPORT_FEEDBACK);
+        constants.put("conversationsHeaderTitle", CONVERSATIONS_LIST_TITLE);
+        constants.put("addVoiceMessage", ADD_VOICE_MESSAGE);
+        constants.put("addImageFromGallery", ADD_IMAGE_FROM_GALLERY);
+        constants.put("addExtraScreenshot", ADD_EXTRA_SCREENSHOT);
+        constants.put("addVideoMessage", ADD_VIDEO);
+        constants.put("audioRecordingPermissionDeniedMessage", AUDIO_RECORDING_PERMISSION_DENIED);
+        constants.put("recordingMessageToHoldText", VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
+        constants.put("recordingMessageToReleaseText", VOICE_MESSAGE_RELEASE_TO_ATTACH);
+        constants.put("thankYouText", REPORT_SUCCESSFULLY_SENT);
+        constants.put("video", VIDEO_PLAYER_TITLE);
+        constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
 
 
         return constants;
