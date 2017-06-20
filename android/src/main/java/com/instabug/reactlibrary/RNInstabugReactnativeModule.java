@@ -776,9 +776,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private String getStringToKeyConstant(String key) {
+    private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
-        switch (localeInLowerCase) {
+        switch (keyInLowerCase) {
             case SHAKE_HINT:
                 return InstabugCustomTextPlaceHolder.Key.SHAKE_HINT;
             case SWIPE_HINT:
