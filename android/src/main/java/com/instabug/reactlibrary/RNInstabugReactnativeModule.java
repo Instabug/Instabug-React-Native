@@ -22,6 +22,7 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
+import com.instabug.library.user.UserEventParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -843,6 +844,66 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     *
+     * @param {string} name Event name.
+     * @param {ReadableMap} params An optional ReadableMap to be associated with the event.
+     */
+    @ReactMethod
+    public void logUserEventWithNameAndParams(String name, ReadableMap params) {
+        try {
+            Map paramsMap = toMap(params);
+            UserEventParam[] userEventParams = new UserEventParam[paramsMap.size()];
+            int index = 0;
+            UserEventParam userEventParam;
+            for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+                userEventParam = new UserEventParam().setKey(entry.getKey())
+                        .setValue(entry.getValue());
+                userEventParams[index] = userEventParam;
+                index++;
+            }
+
+            mInstabug.logUserEvent(name, userEventParams);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private Map<String, Object> toMap(ReadableMap readableMap) {
+        Map<String, Object> map = new HashMap<>();
+        ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+
+        while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            ReadableType type = readableMap.getType(key);
+
+            switch (type) {
+                case Null:
+                    map.put(key, null);
+                    break;
+                case Boolean:
+                    map.put(key, readableMap.getBoolean(key));
+                    break;
+                case Number:
+                    map.put(key, readableMap.getDouble(key));
+                    break;
+                case String:
+                    map.put(key, readableMap.getString(key));
+                    break;
+                case Map:
+                    map.put(key, MapUtil.toMap(readableMap.getMap(key)));
+                    break;
+                case cluster:
+                    map.put(key, ArrayUtil.toArray(readableMap.getArray(key)));
+                    break;
+            }
+        }
+
+        return map;
     }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
