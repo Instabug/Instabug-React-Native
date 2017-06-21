@@ -806,7 +806,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void logOut() {
         try {
-            Instabug.logoutUser();
+            mInstabug.logoutUser();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Enables/disables screenshot view when reporting a bug/improvement.
+     * By default, screenshot view is shown when reporting a bug, but not when
+     * sending feedback.
+     *
+     * @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
+     *                  shown or not. Passing YES will show screenshot view for both feedback and
+     *                  bug reporting, while passing NO will disable it for both.
+     */
+    @ReactMethod
+    public void setWillSkipScreenshotAnnotation(boolean willSkipScreenshotAnnotation) {
+        try {
+            mInstabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }

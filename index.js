@@ -188,9 +188,7 @@ module.exports = {
      * bug reporting, while passing NO will disable it for both.
      */
     setWillSkipScreenshotAnnotation: function (willSkipScreenshotAnnotation) {
-        if (Platform.OS === 'ios') {
-            Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
-        }
+        Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
     },
 
     /**
