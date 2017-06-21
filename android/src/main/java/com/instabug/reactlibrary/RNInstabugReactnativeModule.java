@@ -10,6 +10,8 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.instabug.library.Instabug;
@@ -676,8 +678,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return all user attributes as HashMap<String, String>
      */
     @ReactMethod
-    public HashMap<String, String> getAllUserAttributes() {
-        return mInstabug.getAllUserAttributes();
+    public void getAllUserAttributes(Callback userAttributesCallback) {
+        WritableMap writableMap = new WritableNativeMap();
+        try {
+            HashMap<String, String> map = mInstabug.getAllUserAttributes();
+            for (HashMap.Entry<String, String> entry : map.entrySet()) {
+                writableMap.putString(entry.getKey(), entry.getValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        userAttributesCallback.invoke(writableMap);
     }
 
     /**

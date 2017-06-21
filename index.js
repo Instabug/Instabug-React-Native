@@ -631,11 +631,7 @@ module.exports = {
      * or an empty dictionary if no user attributes have been set.
      */
     getAllUserAttributes: function (userAttributesCallback) {
-        if (Platform.OS === 'ios') {
-            return Instabug.getAllUserAttributes(userAttributesCallback);
-        } else if (Platform.OS === 'android') {
-            return Instabug.getAllUserAttributes();
-        }
+        Instabug.getAllUserAttributes(userAttributesCallback);
     },
 
     /**
