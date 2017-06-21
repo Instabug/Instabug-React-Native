@@ -438,9 +438,7 @@ module.exports = {
      * It also reset the chats on device and removes user attributes, user data and completed surveys.
      */
     logOut: function () {
-        if (Platform.OS == 'ios') {
-            Instabug.logOut();
-        }
+        Instabug.logOut();
     },
 
     /**

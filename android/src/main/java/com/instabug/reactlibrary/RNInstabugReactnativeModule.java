@@ -797,6 +797,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets the default value of the user's email to null and show email field and remove user
+     * name from all reports
+     * It also reset the chats on device and removes user attributes, user data and completed
+     * surveys.
+     */
+    @ReactMethod
+    public void logOut() {
+        try {
+            Instabug.logoutUser();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
         switch (keyInLowerCase) {
