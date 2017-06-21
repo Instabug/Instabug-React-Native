@@ -610,11 +610,7 @@ module.exports = {
      * @param {userAttributeCallback} userAttributeCallback callback with argument as the desired user attribute value
      */
     getUserAttribute: function (key, userAttributeCallback) {
-        if (Platform.OS === 'ios') {
-            return Instabug.getUserAttribute(key, userAttributeCallback);
-        } else if (Platform.OS === 'android') {
-            return Instabug.getUserAttribute(key);
-        }
+        Instabug.getUserAttribute(key, userAttributeCallback);
     },
 
     /**

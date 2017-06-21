@@ -645,13 +645,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return the desired user attribute
      */
     @ReactMethod
-    public String getUserAttribute(String key) {
+    public void getUserAttribute(String key, Callback userAttributeCallback) {
+        String userAttribute;
         try {
-            return mInstabug.getUserAttribute(key);
+            userAttribute = mInstabug.getUserAttribute(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        userAttributeCallback.invoke(userAttribute);
     }
 
     /**
