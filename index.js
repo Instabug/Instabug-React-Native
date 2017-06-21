@@ -641,18 +641,41 @@ module.exports = {
         Instabug.clearAllUserAttributes();
     },
 
+    /**
+     * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
+     * @param {boolean} viewHirearchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+     */
     setViewHirearchyEnabled: function (viewHirearchyEnabled) {
         Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
     },
 
+    /**
+     * @summary Sets whether surveys are enabled or not.
+     * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
+     * those surveys are still going to be sent to the device, but are not going to be shown automatically.
+     * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
+     * Defaults to `true`.
+     * @param {boolean} viewHirearchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+     */
     setSurveysEnabled: function (surveysEnabled) {
         Instabug.setSurveysEnabled(surveysEnabled)
     },
 
+    /**
+     * @summary Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.
+     * Does nothing if there are no available surveys or if a survey has already been shown in the current session.
+     */
     showSurveysIfAvailable: function () {
         Instabug.showSurveysIfAvailable()
     },
 
+    /**
+     * @summary Sets a block of code to be executed just before the survey's UI is presented.
+     * This block is executed on the UI thread. Could be used for performing any UI changes before
+     * the survey's UI is shown.
+     * @param {willShowSurveyHandler} willShowSurveyHandler - A block of code that gets executed before presenting the survey's UI.
+     * report.
+     */
     setWillShowSurveyHandler: function (willShowSurveyHandler) {
         if (Platform.OS === 'ios') {
             Instabug.addListener('IBGWillShowSurvey');
@@ -665,6 +688,12 @@ module.exports = {
         }
     },
 
+    /**
+     * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
+     * This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
+     * is dismissed.
+     * @param {didDismissSurveyHandler} didDismissSurveyHandler - A block of code that gets executed after the survey's UI is dismissed.
+     */
     setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
         if (Platform.OS === 'ios') {
             Instabug.addListener('IBGDidDismissSurvey');
