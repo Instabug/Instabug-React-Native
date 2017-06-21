@@ -198,14 +198,10 @@ module.exports = {
      * Use this method to get the number of unread messages the user
      * has, then possibly notify them about it with your own UI.
      * @param {messageCountCallback} messageCountCallback callback with argument
-     * Notifications count, or -1 incase the SDK has not been initialized.
+     * Notifications count, or -1 in case the SDK has not been initialized.
      */
     getUnreadMessagesCount: function (messageCountCallback) {
-        if (Platform.OS === 'ios') {
-            Instabug.getUnreadMessagesCount(messageCountCallback);
-        } else if (Platform.OS === 'android') {
-            Instabug.getUnreadMessagesCount();
-        }
+        Instabug.getUnreadMessagesCount(messageCountCallback);
     },
 
     /**

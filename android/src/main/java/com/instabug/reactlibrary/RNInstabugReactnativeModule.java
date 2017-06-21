@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.Callback;
 
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -450,7 +451,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return number of messages that are unread for this user
      */
     @ReactMethod
-    public int getUnreadMessagesCount() {
+    public void getUnreadMessagesCount(Callback messageCountCallback) {
         int unreadMessages = 0;
         try {
             unreadMessages = mInstabug.getUnreadMessagesCount();
@@ -458,7 +459,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
 
-        return unreadMessages;
+        messageCountCallback.invoke(unreadMessages);
     }
 
     /**

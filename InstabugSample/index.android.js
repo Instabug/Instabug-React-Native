@@ -3,8 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {
     AppRegistry,
     StyleSheet,
@@ -17,10 +16,9 @@ import {
     Image,
     ListView,
     TouchableHighlight,
-    RecyclerViewBackedScrollView,
-} from 'react-native';
-
-import Instabug from'instabug-reactnative';
+    RecyclerViewBackedScrollView
+} from "react-native";
+import Instabug from "instabug-reactnative";
 let DialogAndroid = require('react-native-dialogs');
 
 export default class InstabugSample extends Component {
@@ -77,8 +75,11 @@ export default class InstabugSample extends Component {
         } else if (rowID == 3) {
             Instabug.showIntroMessage();
         } else if (rowID == 4) {
-            Alert.alert("UnReadMessages", "Messages: " +
-                Instabug.getUnreadMessagesCount());
+
+            Instabug.getUnreadMessagesCount((count) => {
+                Alert.alert("UnReadMessages", "Messages: " + count);
+            });
+
         } else if (rowID == 5) {
             this._showLocaleActionSheet();
         } else if (rowID == 6) {
