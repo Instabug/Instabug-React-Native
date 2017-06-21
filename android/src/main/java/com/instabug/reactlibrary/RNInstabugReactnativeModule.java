@@ -8,6 +8,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.Callback;
 
 import com.instabug.library.Instabug;
@@ -348,14 +350,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @see #resetTags()
      */
     @ReactMethod
-    public ArrayList<String> getTags() {
-        ArrayList<String> tags = new ArrayList<String>();
+    public void getTags(Callback tagsCallback) {
+        private WritableArray tagsArray;
         try {
-            tags = mInstabug.getTags();
+            ArrayList<String> tags = mInstabug.getTags();
+            tagsArray = new WritableNativeArray();
+            for (int i = 0; i < tags.size(); i++) {
+                tagsArray.pushString(tags.get(i));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return tags;
+        tagsCallback.invoke(tagsArray);
     }
 
     /**

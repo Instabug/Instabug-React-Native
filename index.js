@@ -346,11 +346,7 @@ module.exports = {
      * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
      */
     getTags: function (tagsCallback) {
-        if (Platform.OS === 'ios') {
-            Instabug.getTags(tagsCallback);
-        } else if (Platform.OS === 'android') {
-            Instabug.getTags();
-        }
+        Instabug.getTags(tagsCallback);
     },
 
     /**
