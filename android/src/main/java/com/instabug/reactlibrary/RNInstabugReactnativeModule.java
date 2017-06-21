@@ -830,6 +830,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     *
+     * @param {string} name Event name.
+     */
+    @ReactMethod
+    public void logUserEventWithName(String name) {
+        try {
+            mInstabug.logUserEvent(name);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
         switch (keyInLowerCase) {

@@ -460,9 +460,7 @@ module.exports = {
      * @param {string} name Event name.
      */
     logUserEventWithName: function (name) {
-        if (Platform.OS == 'ios') {
-            Instabug.logUserEventWithName(name);
-        }
+        Instabug.logUserEventWithName(name);
     },
 
     /**
@@ -472,9 +470,7 @@ module.exports = {
      * @param {Object} params An optional dictionary or parameters to be associated with the event.
      */
     logUserEventWithNameAndParams: function (name, params) {
-        if (Platform.OS == 'ios') {
-            Instabug.logUserEventWithNameAndParams(name, params);
-        }
+        Instabug.logUserEventWithNameAndParams(name, params);
     },
 
     /**
