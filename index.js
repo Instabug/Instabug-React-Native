@@ -49,20 +49,6 @@ module.exports = {
     },
 
     /**
-     * Attaches a file to each report being sent.
-     * A new copy of the file at fileLocation will be attached with each bug
-     * report being sent.
-     * Each call to this method overrides the file to be attached.
-     * The file has to be available locally at the provided path.
-     * @param {string} fileLocation Path to a file that's going to be attached
-     * to each report.
-     */
-    // Not yet tested
-    setFileAttachment: function (fileLocation) {
-        Instabug.setFileAttachment(fileLocation);
-    },
-
-    /**
      * Attaches user data to each report being sent.
      * Each call to this method overrides the user data to be attached.
      * Maximum size of the string is 1,000 characters.
@@ -718,14 +704,6 @@ module.exports = {
      * */
     setPromptOptionsEnabled: function (chat, bug, feedback) {
         Instabug.setPromptOptionsEnabled(chat, bug, feedback);
-    },
-
-    /**
-     * Clears all Uris of the attached files.
-     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
-     */
-    clearFileAttachment: function () {
-        Instabug.clearFileAttachment();
     },
 
     /**

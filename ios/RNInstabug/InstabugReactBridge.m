@@ -196,7 +196,7 @@ RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
     }
 }
 
-RCT_EXPORT_METHOD(setPromptOptions:(BOOL)bugReportEnabled
+RCT_EXPORT_METHOD(setPromptOptionsEnabled:(BOOL)bugReportEnabled
                   feedback:(BOOL)feedbackEnabled
                   chat:(BOOL)chatEnabled) {
     [Instabug setPromptOptionsEnabledWithBug:bugReportEnabled
