@@ -49,6 +49,20 @@ module.exports = {
     },
 
     /**
+     * Attaches a file to each report being sent.
+     * A new copy of the file at fileLocation will be attached with each bug
+     * report being sent.
+     * Each call to this method overrides the file to be attached.
+     * The file has to be available locally at the provided path.
+     * @param {string} fileLocation Path to a file that's going to be attached
+     * to each report.
+     */
+    // Not yet tested
+    setFileAttachment: function (fileLocation) {
+        Instabug.setFileAttachment(fileLocation);
+    },
+
+    /**
      * Attaches user data to each report being sent.
      * Each call to this method overrides the user data to be attached.
      * Maximum size of the string is 1,000 characters.
@@ -84,7 +98,7 @@ module.exports = {
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
-     * @param {function} preSendingHandler - A callback that gets executed before sending each bug
+     * @param {preSendingHandler} preSendingHandler - A callback that gets executed before sending each bug
      * report.
      */
     setPreSendingHandler: function (preSendingHandler) {
@@ -105,7 +119,7 @@ module.exports = {
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
-     * @param {function} preInvocationHandler - A callback that gets executed before invoking the SDK
+     * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before invoking the SDK
      */
     setPreInvocationHandler: function (preInvocationHandler) {
         if (Platform.OS === 'ios') {
@@ -124,7 +138,7 @@ module.exports = {
      * Sets a block of code to be executed right after the SDK's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes after the SDK's UI is dismissed.
-     * @param {function} postInvocationHandler - A callback to get executed after
+     * @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
      * dismissing the SDK.
      */
     setPostInvocationHandler: function (postInvocationHandler) {
@@ -376,7 +390,7 @@ module.exports = {
 
     /**
      * Sets a block of code that gets executed when a new message is received.
-     * @param {function} onNewMessageHandler - A callback that gets
+     * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
      * executed when a new message is received.
      */
     setOnNewMessageHandler: function (onNewMessageHandler) {
@@ -384,7 +398,7 @@ module.exports = {
             Instabug.addListener('IBGonNewMessageHandler');
             NativeAppEventEmitter.addListener(
                 'IBGonNewMessageHandler',
-                onNewMessageHandler
+                onNewMessgaeHandler
             );
         }
 
@@ -399,7 +413,7 @@ module.exports = {
      * you should call didReceiveRemoteNotification: to let the Instabug handle
      * the notification. Otherwise, handle the notification on your own.
      * @param {Object} dict Notification's userInfo
-     * @param {function} isInstabugNotificationCallback callback with
+     * @param {isInstabugNotificationCallback} isInstabugNotificationCallback callback with
      * argument isInstabugNotification
      */
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
@@ -435,7 +449,7 @@ module.exports = {
      * feedback.
      * Use this method to give users a list of choices of categories their bug report or feedback might be related
      * to. Selected category will be shown as a tag on your dashboard.
-     * @param {Array} titles titles to be shown in the list.
+     * @param {array} titles titles to be shown in the list.
      */
     setReportCategories: function (...titles) {
         if (Platform.OS == 'ios') {
@@ -590,7 +604,7 @@ module.exports = {
      * Returns the user attribute associated with a given key.
      aKey
      * @param {string} key The attribute key as string
-     * @param {function} userAttributeCallback callback with argument as the desired user attribute value
+     * @param {userAttributeCallback} userAttributeCallback callback with argument as the desired user attribute value
      */
     getUserAttribute: function (key, userAttributeCallback) {
         Instabug.getUserAttribute(key, userAttributeCallback);
@@ -610,7 +624,7 @@ module.exports = {
 
     /**
      * @summary Returns all user attributes.
-     * @param {function} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
+     * @param {userAttributesCallback} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
      * or an empty dictionary if no user attributes have been set.
      */
     getAllUserAttributes: function (userAttributesCallback) {
@@ -624,43 +638,18 @@ module.exports = {
         Instabug.clearAllUserAttributes();
     },
 
-    /**
-     * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
-     * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
-     */
-    setViewHierarchyEnabled: function (viewHierarchyEnabled) {
-        if (Platform.OS === 'ios') {
-            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
-        }
+    setViewHirearchyEnabled: function (viewHirearchyEnabled) {
+        Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
     },
 
-    /**
-     * @summary Sets whether surveys are enabled or not.
-     * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
-     * those surveys are still going to be sent to the device, but are not going to be shown automatically.
-     * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
-     * Defaults to `true`.
-     * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
-     */
     setSurveysEnabled: function (surveysEnabled) {
         Instabug.setSurveysEnabled(surveysEnabled)
     },
 
-    /**
-     * @summary Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.
-     * Does nothing if there are no available surveys or if a survey has already been shown in the current session.
-     */
     showSurveysIfAvailable: function () {
         Instabug.showSurveysIfAvailable()
     },
 
-    /**
-     * @summary Sets a block of code to be executed just before the survey's UI is presented.
-     * This block is executed on the UI thread. Could be used for performing any UI changes before
-     * the survey's UI is shown.
-     * @param {function} willShowSurveyHandler - A block of code that gets executed before presenting the survey's UI.
-     * report.
-     */
     setWillShowSurveyHandler: function (willShowSurveyHandler) {
         if (Platform.OS === 'ios') {
             Instabug.addListener('IBGWillShowSurvey');
@@ -674,12 +663,6 @@ module.exports = {
 
     },
 
-    /**
-     * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
-     * This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
-     * is dismissed.
-     * @param {function} didDismissSurveyHandler - A block of code that gets executed after the survey's UI is dismissed.
-     */
     setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
         if (Platform.OS === 'ios') {
             Instabug.addListener('IBGDidDismissSurvey');
@@ -706,6 +689,14 @@ module.exports = {
      * */
     setPromptOptionsEnabled: function (chat, bug, feedback) {
         Instabug.setPromptOptionsEnabled(chat, bug, feedback);
+    },
+
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    clearFileAttachment: function () {
+        Instabug.clearFileAttachment();
     },
 
     /**

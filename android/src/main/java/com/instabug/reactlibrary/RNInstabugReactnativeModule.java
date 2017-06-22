@@ -1062,7 +1062,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets a block of code that gets executed when a new message is received.
      *
-     * @param {onNewMessageHandler} onNewMessageHandler - A callback that gets
+     * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
      *                              executed when a new message is received.
      */
     @ReactMethod
