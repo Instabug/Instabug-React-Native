@@ -25,7 +25,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.OnSdkDismissedCallback;
 import com.instabug.library.bugreporting.model.Bug;
-import com.instabug.library.temp.InstabugSurvey;
+import com.instabug.survey.InstabugSurvey;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
