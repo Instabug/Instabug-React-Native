@@ -400,9 +400,10 @@ module.exports = {
                 'IBGonNewMessageHandler',
                 onNewMessgaeHandler
             );
-
-            Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
         }
+
+        Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
+
     },
 
     /**

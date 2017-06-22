@@ -1056,8 +1056,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    },
+    }
 
+
+    /**
+     * Sets a block of code that gets executed when a new message is received.
+     *
+     * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
+     *                              executed when a new message is received.
+     */
+    @ReactMethod
+    public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
+        try {
+            Runnable onNewMessageRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    onNewMessageHandler.invoke();
+                }
+            };
+            mInstabug.setNewMessageHandler(onNewMessageRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
