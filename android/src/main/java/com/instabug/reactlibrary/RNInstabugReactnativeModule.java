@@ -354,17 +354,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getTags(Callback tagsCallback) {
-        private WritableArray tagsArray;
+        WritableArray tagsArray;
         try {
             ArrayList<String> tags = mInstabug.getTags();
             tagsArray = new WritableNativeArray();
             for (int i = 0; i < tags.size(); i++) {
                 tagsArray.pushString(tags.get(i));
             }
+            tagsCallback.invoke(tagsArray);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tagsCallback.invoke(tagsArray);
     }
 
     /**
@@ -652,10 +653,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         String userAttribute;
         try {
             userAttribute = mInstabug.getUserAttribute(key);
+            userAttributeCallback.invoke(userAttribute);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        userAttributeCallback.invoke(userAttribute);
     }
 
     /**
@@ -848,21 +849,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Logs a user event that happens through the lifecycle of the application.
-     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     * Logged user events are going to be sent with each report, as well as at the end of a
+     * session.
      *
-     * @param {string} name Event name.
+     * @param {string}      name Event name.
      * @param {ReadableMap} params An optional ReadableMap to be associated with the event.
      */
     @ReactMethod
     public void logUserEventWithNameAndParams(String name, ReadableMap params) {
         try {
-            Map paramsMap = toMap(params);
+            Map<String, Object> paramsMap = MapUtil.toMap(params);
             UserEventParam[] userEventParams = new UserEventParam[paramsMap.size()];
             int index = 0;
             UserEventParam userEventParam;
-            for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
                 userEventParam = new UserEventParam().setKey(entry.getKey())
-                        .setValue(entry.getValue());
+                        .setValue((entry.getValue()).toString());
                 userEventParams[index] = userEventParam;
                 index++;
             }
@@ -873,38 +875,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private Map<String, Object> toMap(ReadableMap readableMap) {
-        Map<String, Object> map = new HashMap<>();
-        ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
 
-        while (iterator.hasNextKey()) {
-            String key = iterator.nextKey();
-            ReadableType type = readableMap.getType(key);
-
-            switch (type) {
-                case Null:
-                    map.put(key, null);
-                    break;
-                case Boolean:
-                    map.put(key, readableMap.getBoolean(key));
-                    break;
-                case Number:
-                    map.put(key, readableMap.getDouble(key));
-                    break;
-                case String:
-                    map.put(key, readableMap.getString(key));
-                    break;
-                case Map:
-                    map.put(key, MapUtil.toMap(readableMap.getMap(key)));
-                    break;
-                case cluster:
-                    map.put(key, ArrayUtil.toArray(readableMap.getArray(key)));
-                    break;
-            }
-        }
-
-        return map;
-    }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
