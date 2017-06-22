@@ -109,8 +109,10 @@ module.exports = {
                 preSendingHandler
             );
 
-            Instabug.setPreSendingHandler(preSendingHandler);
         }
+
+        Instabug.setPreSendingHandler(preSendingHandler);
+
     },
 
     /**

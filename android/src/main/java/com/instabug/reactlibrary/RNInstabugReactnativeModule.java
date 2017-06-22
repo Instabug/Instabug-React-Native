@@ -901,6 +901,30 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets a block of code to be executed before sending each report.
+     * This block is executed in the background before sending each report. Could
+     * be used for attaching logs and extra data to reports.
+     *
+     * @param {preSendingHandler} preSendingHandler - A callback that gets executed before
+     *                            sending each bug
+     *                            report.
+     */
+    @ReactMethod
+    public void setPreSendingHandler(final Callback preSendingHandler) {
+        try {
+            Runnable preSendingRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    preSendingHandler.invoke();
+                }
+            };
+            mInstabug.setPreSendingRunnable(preSendingRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
         switch (keyInLowerCase) {
