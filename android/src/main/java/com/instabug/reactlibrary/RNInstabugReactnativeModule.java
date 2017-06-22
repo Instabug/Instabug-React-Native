@@ -1032,10 +1032,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * none is enabled, Bug
      * reporting becomes the default invocation option.
      *
-     * @param  {boolean} chat      weather Talk to us is enable or not
-     * @param  {boolean} bug       weather Report a Problem is enable or not
-     * @param  {boolean} feedback  weather General Feedback  is enable or not
-     * */
+     * @param {boolean} chat      weather Talk to us is enable or not
+     * @param {boolean} bug       weather Report a Problem is enable or not
+     * @param {boolean} feedback  weather General Feedback  is enable or not
+     */
     @ReactMethod
     public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
         try {
@@ -1044,6 +1044,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    @ReactMethod
+    public void clearFileAttachment() {
+        try {
+            mInstabug.clearFileAttachment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    },
+
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();

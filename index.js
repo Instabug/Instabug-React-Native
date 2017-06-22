@@ -690,6 +690,13 @@ module.exports = {
         Instabug.setPromptOptionsEnabled(chat, bug, feedback);
     },
 
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    clearFileAttachment: function () {
+        Instabug.clearFileAttachment();
+    },
 
     /**
      * The event used to invoke the feedback form
