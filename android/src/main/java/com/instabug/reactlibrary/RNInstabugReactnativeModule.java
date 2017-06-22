@@ -25,6 +25,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.OnSdkDismissedCallback;
 import com.instabug.library.bugreporting.model.Bug;
+import com.instabug.library.temp.InstabugSurvey;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
@@ -946,6 +947,79 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             });
 
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Show any valid survey if exist
+     *
+     * @return return true if a valid survey was shown otherwise false
+     */
+    @ReactMethod
+    public void showSurveysIfAvailable() {
+        try {
+            mInstabug.showValidSurvey();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Show any valid survey if exist
+     *
+     * @return return true if a valid survey was shown otherwise false
+     */
+    @ReactMethod
+    public void setSurveysEnabled(boolean surveysEnabled) {
+        try {
+            InstabugSurvey.setSurveysAutoShowing(surveysEnabled);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Sets the runnable that gets executed just before showing any valid survey<br/>
+     * WARNING: This runs on your application's main UI thread. Please do not include
+     * any blocking operations to avoid ANRs.
+     *
+     * @param preShowingSurveyRunnable to run on the UI thread before showing any valid survey
+     */
+    @ReactMethod
+    public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
+        try {
+            Runnable willShowSurveyRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    willShowSurveyHandler.invoke();
+                }
+            };
+            mInstabug.setPreShowingSurveyRunnable(willShowSurveyRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the runnable that gets executed just after showing any valid survey<br/>
+     * WARNING: This runs on your application's main UI thread. Please do not include
+     * any blocking operations to avoid ANRs.
+     *
+     * @param afterShowingSurveyRunnable to run on the UI thread after showing any valid survey
+     */
+    @ReactMethod
+    public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
+        try {
+            Runnable didDismissSurveyRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    didDismissSurveyHandler.invoke();
+                }
+            };
+            mInstabug.setAfterShowingSurveyRunnable(didDismissSurveyRunnable);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }

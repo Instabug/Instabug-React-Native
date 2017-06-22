@@ -656,9 +656,10 @@ module.exports = {
                 'IBGWillShowSurvey',
                 willShowSurveyHandler
             );
-
-            Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
         }
+
+        Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+
     },
 
     setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
@@ -668,9 +669,10 @@ module.exports = {
                 'IBGDidDismissSurvey',
                 didDismissSurveyHandler
             );
-
-            Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
         }
+
+        Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+
     },
 
     /**
