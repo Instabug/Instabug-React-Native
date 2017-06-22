@@ -24,6 +24,9 @@ import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 
+import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.MapUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -875,7 +878,28 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-
+    /**
+     * Sets a block of code to be executed just before the SDK's UI is presented.
+     * This block is executed on the UI thread. Could be used for performing any
+     * UI changes before the SDK's UI is shown.
+     *
+     * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before
+     *                               invoking the SDK
+     */
+    @ReactMethod
+    public void setPreInvocationHandler(final Callback preInvocationHandler) {
+        try {
+            Runnable preInvocationRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    preInvocationHandler.invoke();
+                }
+            };
+            mInstabug.setPreInvocation(preInvocationRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();

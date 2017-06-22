@@ -126,9 +126,10 @@ module.exports = {
                 'IBGpreInvocationHandler',
                 preInvocationHandler
             );
-
-            Instabug.setPreInvocationHandler(preInvocationHandler);
         }
+
+        Instabug.setPreInvocationHandler(preInvocationHandler);
+
     },
 
     /**
