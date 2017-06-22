@@ -150,9 +150,10 @@ module.exports = {
                     postInvocationHandler(payload['dismissType'], payload['reportType']);
                 }
             );
-
-            Instabug.setPostInvocationHandler(postInvocationHandler);
         }
+
+        Instabug.setPostInvocationHandler(postInvocationHandler);
+
     },
 
     /**

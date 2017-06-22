@@ -23,6 +23,8 @@ import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
+import com.instabug.library.OnSdkDismissedCallback;
+import com.instabug.library.bugreporting.model.Bug;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
@@ -920,6 +922,30 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             };
             mInstabug.setPreSendingRunnable(preSendingRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed right after the SDK's UI is dismissed.
+     * This block is executed on the UI thread. Could be used for performing any
+     * UI changes after the SDK's UI is dismissed.
+     *
+     * @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
+     *                                dismissing the SDK.
+     */
+    @ReactMethod
+    public void setPostInvocationHandler(final Callback postInvocationHandler) {
+        try {
+
+            mInstabug.setOnSdkDismissedCallback(new OnSdkDismissedCallback() {
+                @Override
+                public void onSdkDismissed(DismissType issueState, Bug.Type bugType) {
+                    postInvocationHandler.invoke();
+                }
+            });
+
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
