@@ -28,6 +28,7 @@ export default class InstabugSample extends Component {
   constructor(props) {
     super(props);
     Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.invocationEvent.shake);
+
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows(this._genRows({})),
@@ -61,7 +62,8 @@ export default class InstabugSample extends Component {
       "Unread messages count",
       "Set locale",
       "Set color theme",
-      "Set primary color"
+      "Set primary color",
+      "Show surveys"
     ];
     return dataBlob;
   }
@@ -85,6 +87,8 @@ export default class InstabugSample extends Component {
       this._showColorThemeActionSheet();
     } else if (rowID == 7) {
       this._showPrimaryColorActionSheet();
+    } else if (rowID == 8) {
+      this._showSurveys();
     }
   }
 
@@ -223,6 +227,11 @@ export default class InstabugSample extends Component {
           Instabug.setInvocationEvent(Instabug.invocationEvent.floatingButton);
         }
       });
+  }
+
+  _showSurveys() {
+    console.log("show surveys")
+    Instabug.showSurveysIfAvailable()
   }
 
   _renderSeparator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {

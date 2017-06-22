@@ -14,7 +14,9 @@
              @"IBGpreSendingHandler",
              @"IBGpreInvocationHandler",
              @"IBGpostInvocationHandler",
-             @"IBGonNewMessageHandler"
+             @"IBGonNewMessageHandler",
+             @"IBGWillShowSurvey",
+             @"IBGDidDismissSurvey"
              ];
 }
 
@@ -194,7 +196,7 @@ RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
     }
 }
 
-RCT_EXPORT_METHOD(setPromptOptions:(BOOL)bugReportEnabled
+RCT_EXPORT_METHOD(setPromptOptionsEnabled:(BOOL)bugReportEnabled
                   feedback:(BOOL)feedbackEnabled
                   chat:(BOOL)chatEnabled) {
     [Instabug setPromptOptionsEnabledWithBug:bugReportEnabled
@@ -290,6 +292,38 @@ RCT_EXPORT_METHOD(logWarn:(NSString *)log) {
 
 RCT_EXPORT_METHOD(logError:(NSString *)log) {
     [Instabug logError:log];
+}
+
+RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
+    [Instabug setSurveysEnabled:surveysEnabled];
+}
+
+RCT_EXPORT_METHOD(showSurveysIfAvailable) {
+    [Instabug showSurveyIfAvailable];
+}
+
+RCT_EXPORT_METHOD(setWillShowSurveyHandler:(RCTResponseSenderBlock)callBack) {
+    if (callBack != nil) {
+        [Instabug setWillShowSurveyHandler:^{
+            [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
+        }];
+    } else {
+        [Instabug setWillShowSurveyHandler:nil];
+    }
+}
+
+RCT_EXPORT_METHOD(setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack) {
+    if (callBack != nil) {
+        [Instabug setDidDismissSurveyHandler:^{
+            [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
+        }];
+    } else {
+        [Instabug setDidDismissSurveyHandler:nil];
+    }
+}
+
+RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
+    [Instabug setViewHierarchyEnabled:viewHirearchyEnabled];
 }
 
 - (NSDictionary *)constantsToExport
