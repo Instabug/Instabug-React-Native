@@ -84,7 +84,7 @@ module.exports = {
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
-     * @param {preSendingHandler} preSendingHandler - A callback that gets executed before sending each bug
+     * @param {function} preSendingHandler - A callback that gets executed before sending each bug
      * report.
      */
     setPreSendingHandler: function (preSendingHandler) {
@@ -105,7 +105,7 @@ module.exports = {
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
-     * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before invoking the SDK
+     * @param {function} preInvocationHandler - A callback that gets executed before invoking the SDK
      */
     setPreInvocationHandler: function (preInvocationHandler) {
         if (Platform.OS === 'ios') {
@@ -124,7 +124,7 @@ module.exports = {
      * Sets a block of code to be executed right after the SDK's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes after the SDK's UI is dismissed.
-     * @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
+     * @param {function} postInvocationHandler - A callback to get executed after
      * dismissing the SDK.
      */
     setPostInvocationHandler: function (postInvocationHandler) {
@@ -376,7 +376,7 @@ module.exports = {
 
     /**
      * Sets a block of code that gets executed when a new message is received.
-     * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
+     * @param {function} onNewMessageHandler - A callback that gets
      * executed when a new message is received.
      */
     setOnNewMessageHandler: function (onNewMessageHandler) {
@@ -384,7 +384,7 @@ module.exports = {
             Instabug.addListener('IBGonNewMessageHandler');
             NativeAppEventEmitter.addListener(
                 'IBGonNewMessageHandler',
-                onNewMessgaeHandler
+                onNewMessageHandler
             );
         }
 
@@ -399,7 +399,7 @@ module.exports = {
      * you should call didReceiveRemoteNotification: to let the Instabug handle
      * the notification. Otherwise, handle the notification on your own.
      * @param {Object} dict Notification's userInfo
-     * @param {isInstabugNotificationCallback} isInstabugNotificationCallback callback with
+     * @param {function} isInstabugNotificationCallback callback with
      * argument isInstabugNotification
      */
     isInstabugNotification: function (dict, isInstabugNotificationCallback) {
@@ -435,7 +435,7 @@ module.exports = {
      * feedback.
      * Use this method to give users a list of choices of categories their bug report or feedback might be related
      * to. Selected category will be shown as a tag on your dashboard.
-     * @param {array} titles titles to be shown in the list.
+     * @param {Array} titles titles to be shown in the list.
      */
     setReportCategories: function (...titles) {
         if (Platform.OS == 'ios') {
@@ -590,7 +590,7 @@ module.exports = {
      * Returns the user attribute associated with a given key.
      aKey
      * @param {string} key The attribute key as string
-     * @param {userAttributeCallback} userAttributeCallback callback with argument as the desired user attribute value
+     * @param {function} userAttributeCallback callback with argument as the desired user attribute value
      */
     getUserAttribute: function (key, userAttributeCallback) {
         Instabug.getUserAttribute(key, userAttributeCallback);
@@ -610,7 +610,7 @@ module.exports = {
 
     /**
      * @summary Returns all user attributes.
-     * @param {userAttributesCallback} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
+     * @param {function} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
      * or an empty dictionary if no user attributes have been set.
      */
     getAllUserAttributes: function (userAttributesCallback) {
@@ -626,10 +626,12 @@ module.exports = {
 
     /**
      * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
-     * @param {boolean} viewHirearchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+     * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
      */
-    setViewHirearchyEnabled: function (viewHirearchyEnabled) {
-        Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
+    setViewHierarchyEnabled: function (viewHierarchyEnabled) {
+        if (Platform.OS === 'ios') {
+            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
+        }
     },
 
     /**
@@ -638,7 +640,7 @@ module.exports = {
      * those surveys are still going to be sent to the device, but are not going to be shown automatically.
      * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
      * Defaults to `true`.
-     * @param {boolean} viewHirearchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+     * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
      */
     setSurveysEnabled: function (surveysEnabled) {
         Instabug.setSurveysEnabled(surveysEnabled)
@@ -656,7 +658,7 @@ module.exports = {
      * @summary Sets a block of code to be executed just before the survey's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any UI changes before
      * the survey's UI is shown.
-     * @param {willShowSurveyHandler} willShowSurveyHandler - A block of code that gets executed before presenting the survey's UI.
+     * @param {function} willShowSurveyHandler - A block of code that gets executed before presenting the survey's UI.
      * report.
      */
     setWillShowSurveyHandler: function (willShowSurveyHandler) {
@@ -676,7 +678,7 @@ module.exports = {
      * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
      * is dismissed.
-     * @param {didDismissSurveyHandler} didDismissSurveyHandler - A block of code that gets executed after the survey's UI is dismissed.
+     * @param {function} didDismissSurveyHandler - A block of code that gets executed after the survey's UI is dismissed.
      */
     setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
         if (Platform.OS === 'ios') {
