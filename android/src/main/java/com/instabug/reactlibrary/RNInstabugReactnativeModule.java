@@ -22,6 +22,13 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
+import com.instabug.library.user.UserEventParam;
+import com.instabug.library.OnSdkDismissedCallback;
+import com.instabug.library.bugreporting.model.Bug;
+import com.instabug.survey.InstabugSurvey;
+
+import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.MapUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -353,17 +360,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getTags(Callback tagsCallback) {
-        private WritableArray tagsArray;
+        WritableArray tagsArray;
         try {
             ArrayList<String> tags = mInstabug.getTags();
             tagsArray = new WritableNativeArray();
             for (int i = 0; i < tags.size(); i++) {
                 tagsArray.pushString(tags.get(i));
             }
+            tagsCallback.invoke(tagsArray);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tagsCallback.invoke(tagsArray);
     }
 
     /**
@@ -651,10 +659,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         String userAttribute;
         try {
             userAttribute = mInstabug.getUserAttribute(key);
+            userAttributeCallback.invoke(userAttribute);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        userAttributeCallback.invoke(userAttribute);
     }
 
     /**
@@ -792,6 +800,281 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             placeHolders.set(getStringToKeyConstant(key), string);
             Instabug.setCustomTextPlaceHolders(placeHolders);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the default value of the user's email to null and show email field and remove user
+     * name from all reports
+     * It also reset the chats on device and removes user attributes, user data and completed
+     * surveys.
+     */
+    @ReactMethod
+    public void logOut() {
+        try {
+            mInstabug.logoutUser();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Enables/disables screenshot view when reporting a bug/improvement.
+     * By default, screenshot view is shown when reporting a bug, but not when
+     * sending feedback.
+     *
+     * @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
+     *                  shown or not. Passing YES will show screenshot view for both feedback and
+     *                  bug reporting, while passing NO will disable it for both.
+     */
+    @ReactMethod
+    public void setWillSkipScreenshotAnnotation(boolean willSkipScreenshotAnnotation) {
+        try {
+            mInstabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     *
+     * @param {string} name Event name.
+     */
+    @ReactMethod
+    public void logUserEventWithName(String name) {
+        try {
+            mInstabug.logUserEvent(name);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a
+     * session.
+     *
+     * @param {string}      name Event name.
+     * @param {ReadableMap} params An optional ReadableMap to be associated with the event.
+     */
+    @ReactMethod
+    public void logUserEventWithNameAndParams(String name, ReadableMap params) {
+        try {
+            Map<String, Object> paramsMap = MapUtil.toMap(params);
+            UserEventParam[] userEventParams = new UserEventParam[paramsMap.size()];
+            int index = 0;
+            UserEventParam userEventParam;
+            for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+                userEventParam = new UserEventParam().setKey(entry.getKey())
+                        .setValue((entry.getValue()).toString());
+                userEventParams[index] = userEventParam;
+                index++;
+            }
+
+            mInstabug.logUserEvent(name, userEventParams);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed just before the SDK's UI is presented.
+     * This block is executed on the UI thread. Could be used for performing any
+     * UI changes before the SDK's UI is shown.
+     *
+     * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before
+     *                               invoking the SDK
+     */
+    @ReactMethod
+    public void setPreInvocationHandler(final Callback preInvocationHandler) {
+        try {
+            Runnable preInvocationRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    preInvocationHandler.invoke();
+                }
+            };
+            mInstabug.setPreInvocation(preInvocationRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed before sending each report.
+     * This block is executed in the background before sending each report. Could
+     * be used for attaching logs and extra data to reports.
+     *
+     * @param {preSendingHandler} preSendingHandler - A callback that gets executed before
+     *                            sending each bug
+     *                            report.
+     */
+    @ReactMethod
+    public void setPreSendingHandler(final Callback preSendingHandler) {
+        try {
+            Runnable preSendingRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    preSendingHandler.invoke();
+                }
+            };
+            mInstabug.setPreSendingRunnable(preSendingRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets a block of code to be executed right after the SDK's UI is dismissed.
+     * This block is executed on the UI thread. Could be used for performing any
+     * UI changes after the SDK's UI is dismissed.
+     *
+     * @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
+     *                                dismissing the SDK.
+     */
+    @ReactMethod
+    public void setPostInvocationHandler(final Callback postInvocationHandler) {
+        try {
+
+            mInstabug.setOnSdkDismissedCallback(new OnSdkDismissedCallback() {
+                @Override
+                public void onSdkDismissed(DismissType issueState, Bug.Type bugType) {
+                    postInvocationHandler.invoke();
+                }
+            });
+
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Show any valid survey if exist
+     *
+     * @return return true if a valid survey was shown otherwise false
+     */
+    @ReactMethod
+    public void showSurveysIfAvailable() {
+        try {
+            mInstabug.showValidSurvey();
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Show any valid survey if exist
+     *
+     * @return return true if a valid survey was shown otherwise false
+     */
+    @ReactMethod
+    public void setSurveysEnabled(boolean surveysEnabled) {
+        try {
+            InstabugSurvey.setSurveysAutoShowing(surveysEnabled);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Sets the runnable that gets executed just before showing any valid survey<br/>
+     * WARNING: This runs on your application's main UI thread. Please do not include
+     * any blocking operations to avoid ANRs.
+     *
+     * @param preShowingSurveyRunnable to run on the UI thread before showing any valid survey
+     */
+    @ReactMethod
+    public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
+        try {
+            Runnable willShowSurveyRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    willShowSurveyHandler.invoke();
+                }
+            };
+            mInstabug.setPreShowingSurveyRunnable(willShowSurveyRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the runnable that gets executed just after showing any valid survey<br/>
+     * WARNING: This runs on your application's main UI thread. Please do not include
+     * any blocking operations to avoid ANRs.
+     *
+     * @param afterShowingSurveyRunnable to run on the UI thread after showing any valid survey
+     */
+    @ReactMethod
+    public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
+        try {
+            Runnable didDismissSurveyRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    didDismissSurveyHandler.invoke();
+                }
+            };
+            mInstabug.setAfterShowingSurveyRunnable(didDismissSurveyRunnable);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
+     * becomes the default
+     * invocation option that SDK gets invoked with and prompt options screen will not show. When
+     * none is enabled, Bug
+     * reporting becomes the default invocation option.
+     *
+     * @param {boolean} chat      weather Talk to us is enable or not
+     * @param {boolean} bug       weather Report a Problem is enable or not
+     * @param {boolean} feedback  weather General Feedback  is enable or not
+     */
+    @ReactMethod
+    public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
+        try {
+            mInstabug.setPromptOptionsEnabled(chat, bug, feedback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    @ReactMethod
+    public void clearFileAttachment() {
+        try {
+            mInstabug.clearFileAttachment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Sets a block of code that gets executed when a new message is received.
+     *
+     * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
+     *                              executed when a new message is received.
+     */
+    @ReactMethod
+    public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
+        try {
+            Runnable onNewMessageRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    onNewMessageHandler.invoke();
+                }
+            };
+            mInstabug.setNewMessageHandler(onNewMessageRunnable);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }

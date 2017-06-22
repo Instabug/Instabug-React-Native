@@ -109,8 +109,10 @@ module.exports = {
                 preSendingHandler
             );
 
-            Instabug.setPreSendingHandler(preSendingHandler);
         }
+
+        Instabug.setPreSendingHandler(preSendingHandler);
+
     },
 
     /**
@@ -126,9 +128,10 @@ module.exports = {
                 'IBGpreInvocationHandler',
                 preInvocationHandler
             );
-
-            Instabug.setPreInvocationHandler(preInvocationHandler);
         }
+
+        Instabug.setPreInvocationHandler(preInvocationHandler);
+
     },
 
     /**
@@ -147,9 +150,10 @@ module.exports = {
                     postInvocationHandler(payload['dismissType'], payload['reportType']);
                 }
             );
-
-            Instabug.setPostInvocationHandler(postInvocationHandler);
         }
+
+        Instabug.setPostInvocationHandler(postInvocationHandler);
+
     },
 
     /**
@@ -188,9 +192,7 @@ module.exports = {
      * bug reporting, while passing NO will disable it for both.
      */
     setWillSkipScreenshotAnnotation: function (willSkipScreenshotAnnotation) {
-        if (Platform.OS === 'ios') {
-            Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
-        }
+        Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
     },
 
     /**
@@ -398,9 +400,10 @@ module.exports = {
                 'IBGonNewMessageHandler',
                 onNewMessgaeHandler
             );
-
-            Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
         }
+
+        Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
+
     },
 
     /**
@@ -438,9 +441,7 @@ module.exports = {
      * It also reset the chats on device and removes user attributes, user data and completed surveys.
      */
     logOut: function () {
-        if (Platform.OS == 'ios') {
-            Instabug.logOut();
-        }
+        Instabug.logOut();
     },
 
     /**
@@ -464,9 +465,7 @@ module.exports = {
      * @param {string} name Event name.
      */
     logUserEventWithName: function (name) {
-        if (Platform.OS == 'ios') {
-            Instabug.logUserEventWithName(name);
-        }
+        Instabug.logUserEventWithName(name);
     },
 
     /**
@@ -476,9 +475,7 @@ module.exports = {
      * @param {Object} params An optional dictionary or parameters to be associated with the event.
      */
     logUserEventWithNameAndParams: function (name, params) {
-        if (Platform.OS == 'ios') {
-            Instabug.logUserEventWithNameAndParams(name, params);
-        }
+        Instabug.logUserEventWithNameAndParams(name, params);
     },
 
     /**
@@ -683,9 +680,10 @@ module.exports = {
                 'IBGWillShowSurvey',
                 willShowSurveyHandler
             );
-
-            Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
         }
+
+        Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+
     },
 
     /**
@@ -701,9 +699,33 @@ module.exports = {
                 'IBGDidDismissSurvey',
                 didDismissSurveyHandler
             );
-
-            Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
         }
+
+        Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+
+    },
+
+    /**
+     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
+     * becomes the default
+     * invocation option that SDK gets invoked with and prompt options screen will not show. When
+     * none is enabled, Bug
+     * reporting becomes the default invocation option.
+     *
+     * @param  {boolean} chat      weather Talk to us is enable or not
+     * @param  {boolean} bug       weather Report a Problem is enable or not
+     * @param  {boolean} feedback  weather General Feedback  is enable or not
+     * */
+    setPromptOptionsEnabled: function (chat, bug, feedback) {
+        Instabug.setPromptOptionsEnabled(chat, bug, feedback);
+    },
+
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    clearFileAttachment: function () {
+        Instabug.clearFileAttachment();
     },
 
     /**
