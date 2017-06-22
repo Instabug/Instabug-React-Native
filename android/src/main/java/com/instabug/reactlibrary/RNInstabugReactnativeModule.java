@@ -1025,6 +1025,26 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
+     * becomes the default
+     * invocation option that SDK gets invoked with and prompt options screen will not show. When
+     * none is enabled, Bug
+     * reporting becomes the default invocation option.
+     *
+     * @param  {boolean} chat      weather Talk to us is enable or not
+     * @param  {boolean} bug       weather Report a Problem is enable or not
+     * @param  {boolean} feedback  weather General Feedback  is enable or not
+     * */
+    @ReactMethod
+    public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
+        try {
+            mInstabug.setPromptOptionsEnabled(chat, bug, feedback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         String keyInLowerCase = key.toLowerCase();
         switch (keyInLowerCase) {
