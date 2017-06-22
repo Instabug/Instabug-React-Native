@@ -1,5 +1,4 @@
-import {NativeModules, NativeAppEventEmitter, Platform} from 'react-native';
-
+import {NativeModules, NativeAppEventEmitter, Platform} from "react-native";
 let {Instabug} = NativeModules;
 
 /**
@@ -19,8 +18,7 @@ module.exports = {
      * the SDK's UI.
      */
     startWithToken: function (token, invocationEvent) {
-        if (Platform.OS === 'ios')
-            Instabug.startWithToken(token, invocationEvent);
+        Instabug.startWithToken(token, invocationEvent);
     },
 
     /**
@@ -97,11 +95,6 @@ module.exports = {
     },
 
     /**
-     * A callback that gets executed before sending each bug report.
-     * @callback preSendingHandler
-     */
-
-    /**
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
@@ -116,16 +109,11 @@ module.exports = {
                 preSendingHandler
             );
 
-            Instabug.setPreSendingHandler(preSendingHandler);
         }
-    },
 
-    /**
-     * Sets a block of code to be executed just before the SDK's UI is presented.
-     * This block is executed on the UI thread. Could be used for performing any
-     * UI changes before the SDK's UI is shown.
-     * @callback preSendingHandler
-     */
+        Instabug.setPreSendingHandler(preSendingHandler);
+
+    },
 
     /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
@@ -140,19 +128,11 @@ module.exports = {
                 'IBGpreInvocationHandler',
                 preInvocationHandler
             );
-
-            Instabug.setPreInvocationHandler(preInvocationHandler);
         }
-    },
 
-    /**
-     * A callback that gets executed after the SDK's UI is dismissed.
-     * @callback postInvocationHandler
-     * @param {dismissType} dismissType How the SDK was dismissed.
-     * @param {reportType} reportType Type of report that has been sent. Will be set
-     * to IBGReportTypeBug in case the SDK has been dismissed without selecting a
-     * report type, so you might need to check issueState before reportType
-     */
+        Instabug.setPreInvocationHandler(preInvocationHandler);
+
+    },
 
     /**
      * Sets a block of code to be executed right after the SDK's UI is dismissed.
@@ -170,9 +150,10 @@ module.exports = {
                     postInvocationHandler(payload['dismissType'], payload['reportType']);
                 }
             );
-
-            Instabug.setPostInvocationHandler(postInvocationHandler);
         }
+
+        Instabug.setPostInvocationHandler(postInvocationHandler);
+
     },
 
     /**
@@ -211,24 +192,15 @@ module.exports = {
      * bug reporting, while passing NO will disable it for both.
      */
     setWillSkipScreenshotAnnotation: function (willSkipScreenshotAnnotation) {
-        if (Platform.OS === 'ios') {
-            Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
-        }
+        Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
     },
-
-    /**
-     * return callback
-     * @callback messageCountCallback
-     * @param{number} responseCount Notifications count, or -1 incase the SDK has
-     * not been initialized.
-     */
 
     /**
      * Returns the number of unread messages the user currently has.
      * Use this method to get the number of unread messages the user
      * has, then possibly notify them about it with your own UI.
      * @param {messageCountCallback} messageCountCallback callback with argument
-     * Notifications count, or -1 incase the SDK has not been initialized.
+     * Notifications count, or -1 in case the SDK has not been initialized.
      */
     getUnreadMessagesCount: function (messageCountCallback) {
         Instabug.getUnreadMessagesCount(messageCountCallback);
@@ -263,8 +235,7 @@ module.exports = {
      * field is required or not.
      */
     setEmailFieldRequired: function (isEmailFieldRequired) {
-        if (Platform.OS === 'ios')
-            Instabug.setEmailFieldRequired(isEmailFieldRequired);
+        Instabug.setEmailFieldRequired(isEmailFieldRequired);
     },
 
     /**
@@ -274,8 +245,7 @@ module.exports = {
      * field is required or not.
      */
     setCommentFieldRequired: function (isCommentFieldRequired) {
-        if (Platform.OS === 'ios')
-            Instabug.setCommentFieldRequired(isCommentFieldRequired);
+        Instabug.setCommentFieldRequired(isCommentFieldRequired);
     },
 
     /**
@@ -337,8 +307,7 @@ module.exports = {
      * @param colorTheme
      */
     setColorTheme: function (colorTheme) {
-        if (Platform.OS === 'ios')
-            Instabug.setColorTheme(colorTheme);
+        Instabug.setColorTheme(colorTheme);
     },
 
     /**
@@ -358,9 +327,7 @@ module.exports = {
      * @param {string[]} tags An array of tags to append to current tags.
      */
     appendTags: function (tags) {
-        if (Platform.OS === 'ios')
-            Instabug.appendTags(tags);
-
+        Instabug.appendTags(tags);
     },
 
     /**
@@ -391,8 +358,7 @@ module.exports = {
      * @param {strings} key Key of string to override.
      */
     setStringToKey: function (string, key) {
-        if (Platform.OS === 'ios')
-            Instabug.setString(string, key);
+        Instabug.setString(string, key);
     },
 
     /**
@@ -423,11 +389,6 @@ module.exports = {
     },
 
     /**
-     * A callback that gets executed when a new message is received.
-     * @callback onNewMessgaeHandler
-     */
-
-    /**
      * Sets a block of code that gets executed when a new message is received.
      * @param {onNewMessgaeHandler} onNewMessageHandler - A callback that gets
      * executed when a new message is received.
@@ -439,33 +400,11 @@ module.exports = {
                 'IBGonNewMessageHandler',
                 onNewMessgaeHandler
             );
-
-            Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
         }
-    },
 
-    /**
-     * Enables/disables prompt options when SDK is invoked.
-     * When only a single option is enabled, it become the default invocation mode.
-     * If all options are disabled, bug reporting becomes the default invocation mode.
-     * By default, all three options are enabled.
-     * @param {boolean} isBugReportingEnabled  A boolean to indicate whether bug reports
-     * are enabled or disabled.
-     * @param {boolean} isFeedbackReportingEnabled A boolean to indicate whether feedback is
-     * enabled or disabled.
-     * @param {boolean} isChatEnabled A boolean to indicate whether chat is enabled
-     * or disabled.
-     */
-    setPromptOptions: function (isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled) {
-        if (Platform.OS === 'ios')
-            Instabug.setPromptOptions(isBugReportingEnabled, isFeedbackReportingEnabled, isChatEnabled);
-    },
+        Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
 
-    /**
-     * return callback
-     * @callback isInstabugNotificationCallback
-     * @param {boolean} isInstabugNotification
-     */
+    },
 
     /**
      * Checks if a notification is from Instabug.
@@ -483,6 +422,284 @@ module.exports = {
     },
 
     /**
+     * Sets the default value of the user's email and hides the email field from the reporting UI
+     * and set the user's name to be included with all reports.
+     * It also reset the chats on device to that email and removes user attributes, user data and completed surveys.
+     * @param {string} email Email address to be set as the user's email.
+     * @param {string} name Name of the user to be set.
+     */
+    identifyUserWithEmail: function (email, name) {
+        if (Platform.OS == 'ios') {
+            Instabug.identifyUserWithEmail(email, name);
+        } else if ('android') {
+            Instabug.identifyUser(name, email);
+        }
+    },
+
+    /**
+     * Sets the default value of the user's email to nil and show email field and remove user name from all reports
+     * It also reset the chats on device and removes user attributes, user data and completed surveys.
+     */
+    logOut: function () {
+        Instabug.logOut();
+    },
+
+    /**
+     * Sets an array of report categories to be shown for users to select from before reporting a bug or sending
+     * feedback.
+     * Use this method to give users a list of choices of categories their bug report or feedback might be related
+     * to. Selected category will be shown as a tag on your dashboard.
+     * @param {array} titles titles to be shown in the list.
+     */
+    setReportCategories: function (...titles) {
+        if (Platform.OS == 'ios') {
+            Instabug.setReportCategories(titles, null);
+        } else if (Platform.OS == 'android') {
+            Instabug.setReportCategories(titles);
+        }
+    },
+
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     * @param {string} name Event name.
+     */
+    logUserEventWithName: function (name) {
+        Instabug.logUserEventWithName(name);
+    },
+
+    /**
+     * Logs a user event that happens through the lifecycle of the application.
+     * Logged user events are going to be sent with each report, as well as at the end of a session.
+     * @param {string} name Event name.
+     * @param {Object} params An optional dictionary or parameters to be associated with the event.
+     */
+    logUserEventWithNameAndParams: function (name, params) {
+        Instabug.logUserEventWithNameAndParams(name, params);
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logVerbose: function (message) {
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("v", message);
+        } else {
+            Instabug.logVerbose(message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logInfo: function (message) {
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("i", message);
+        } else {
+            Instabug.logInfo(message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logDebug: function (message) {
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("d", message);
+        } else {
+            Instabug.logDebug(message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logError: function (message) {
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("e", message);
+        } else {
+            Instabug.logError(message);
+        }
+    },
+
+    /**
+     * Appends a log message to Instabug internal log
+     * <p>
+     * These logs are then sent along the next uploaded report.
+     * All log messages are timestamped <br/>
+     * Logs aren't cleared per single application run.
+     * If you wish to reset the logs,
+     * use {@link #clearLogs()} ()}
+     * </p>
+     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
+     *
+     * @param message    the message
+     */
+    logWarn: function (message) {
+        if (!message)return;
+        if (Platform.OS === 'android') {
+            Instabug.log("w", message);
+        } else {
+            Instabug.logWarn(message);
+        }
+    },
+
+    /**
+     * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
+     *
+     * @param key   the attribute
+     * @param value the value
+     */
+    setUserAttribute: function (key, value) {
+        if (!key || !value || typeof key !== "string" || typeof value !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        Instabug.setUserAttribute(key, value);
+    },
+
+    /**
+     * Returns the user attribute associated with a given key.
+     aKey
+     * @param {string} key The attribute key as string
+     * @param {userAttributeCallback} userAttributeCallback callback with argument as the desired user attribute value
+     */
+    getUserAttribute: function (key, userAttributeCallback) {
+        Instabug.getUserAttribute(key, userAttributeCallback);
+    },
+
+    /**
+     * Removes user attribute if exists.
+     *
+     * @param key the attribute key as string
+     * @see #setUserAttribute(String, String)
+     */
+    removeUserAttribute: function (key) {
+        if (!key || typeof key !== "string")
+            throw new TypeError("Invalid param, Expected String");
+        Instabug.removeUserAttribute(key);
+    },
+
+    /**
+     * @summary Returns all user attributes.
+     * @param {userAttributesCallback} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
+     * or an empty dictionary if no user attributes have been set.
+     */
+    getAllUserAttributes: function (userAttributesCallback) {
+        Instabug.getAllUserAttributes(userAttributesCallback);
+    },
+
+    /**
+     * Clears all user attributes if exists.
+     */
+    clearAllUserAttributes: function () {
+        Instabug.clearAllUserAttributes();
+    },
+
+    setViewHirearchyEnabled: function (viewHirearchyEnabled) {
+        Instabug.setViewHirearchyEnabled(viewHirearchyEnabled);
+    },
+
+    setSurveysEnabled: function (surveysEnabled) {
+        Instabug.setSurveysEnabled(surveysEnabled)
+    },
+
+    showSurveysIfAvailable: function () {
+        Instabug.showSurveysIfAvailable()
+    },
+
+    setWillShowSurveyHandler: function (willShowSurveyHandler) {
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGWillShowSurvey');
+            NativeAppEventEmitter.addListener(
+                'IBGWillShowSurvey',
+                willShowSurveyHandler
+            );
+        }
+
+        Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+
+    },
+
+    setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
+        if (Platform.OS === 'ios') {
+            Instabug.addListener('IBGDidDismissSurvey');
+            NativeAppEventEmitter.addListener(
+                'IBGDidDismissSurvey',
+                didDismissSurveyHandler
+            );
+        }
+
+        Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+
+    },
+
+    /**
+     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
+     * becomes the default
+     * invocation option that SDK gets invoked with and prompt options screen will not show. When
+     * none is enabled, Bug
+     * reporting becomes the default invocation option.
+     *
+     * @param  {boolean} chat      weather Talk to us is enable or not
+     * @param  {boolean} bug       weather Report a Problem is enable or not
+     * @param  {boolean} feedback  weather General Feedback  is enable or not
+     * */
+    setPromptOptionsEnabled: function (chat, bug, feedback) {
+        Instabug.setPromptOptionsEnabled(chat, bug, feedback);
+    },
+
+    /**
+     * Clears all Uris of the attached files.
+     * The URIs which added via {@link Instabug#addFileAttachment} API not the physical files.
+     */
+    clearFileAttachment: function () {
+        Instabug.clearFileAttachment();
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
@@ -491,9 +708,10 @@ module.exports = {
         none: Instabug.invocationEventNone,
         shake: Instabug.invocationEventShake,
         screenshot: Instabug.invocationEventScreenshot,
-        twoFingersSwipe: Instabug.invocationEventTwoFingersSwipe,
+        twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
         floatingButton: Instabug.invocationEventFloatingButton
     },
+
     /**
      * Type of SDK dismiss
      * @readonly
@@ -504,6 +722,7 @@ module.exports = {
         cancel: Instabug.dismissTypeCancel,
         addAttachment: Instabug.dismissTypeAddAttachment
     },
+
     /**
      * Type of report to be submit
      * @readonly
@@ -513,6 +732,7 @@ module.exports = {
         bug: Instabug.reportTypeBug,
         feedback: Instabug.reportTypeFeedback
     },
+
     /**
      *  The mode used upon invocating the SDK
      * @readonly
@@ -525,6 +745,7 @@ module.exports = {
         newChat: Instabug.invocationModeNewChat,
         chatsList: Instabug.invocationModeChatsList
     },
+
     /**
      * The supported locales
      * @readonly
@@ -548,6 +769,7 @@ module.exports = {
         swedish: Instabug.localeSwedish,
         turkish: Instabug.localeTurkish
     },
+
     /**
      * The color theme of the different UI elements
      * @readonly
@@ -557,6 +779,7 @@ module.exports = {
         light: Instabug.colorThemeLight,
         dark: Instabug.colorThemeDark
     },
+
     /**
      * Rectangle edges
      * @readonly
@@ -568,6 +791,7 @@ module.exports = {
         maxX: Instabug.rectMaxXEdge,
         maxY: Instabug.rectMaxYEdge
     },
+
     /**
      * Instabug strings
      * @readonly
@@ -611,6 +835,7 @@ module.exports = {
         chatsHeaderTitle: Instabug.chatsHeaderTitle,
         team: Instabug.team,
         messageNotification: Instabug.messageNotification,
-        messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers
+        messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
+        conversationTextFieldHint: Instabug.conversationTextFieldHint
     }
 };

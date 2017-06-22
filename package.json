@@ -3,9 +3,6 @@
   "version": "1.0.8",
   "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Instabug/instabug-reactnative.git"
@@ -26,7 +23,7 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "android": {
-      "packageInstance": "new RNInstabugReactnativePackage(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this,\"button\")"
+      "packageInstance": "new RNInstabugReactnativePackage(MainApplication.this)"
     }
   }
 }

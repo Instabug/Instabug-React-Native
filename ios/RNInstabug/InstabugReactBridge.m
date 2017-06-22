@@ -26,6 +26,8 @@ RCT_EXPORT_MODULE(Instabug)
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug startWithToken:token invocationEvent:invocationEvent];
+    [Instabug setCrashReportingEnabled:NO];
+    [Instabug setNetworkLoggingEnabled:NO];
 }
 
 RCT_EXPORT_METHOD(invoke) {
@@ -204,6 +206,92 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
     callBack(@[@([Instabug isInstabugNotification:notification])]);
 }
 
+RCT_EXPORT_METHOD(addFileAttachment:(NSString *)fileURLString) {
+    [Instabug addFileAttachmentWithURL:[NSURL URLWithString:fileURLString]];
+}
+
+RCT_EXPORT_METHOD(clearFileAttachments) {
+    [Instabug clearFileAttachments];
+}
+
+RCT_EXPORT_METHOD(setShowEmailField:(BOOL)shouldShowEmailField) {
+    [Instabug setShowEmailField:shouldShowEmailField];
+}
+
+RCT_EXPORT_METHOD(identifyUserWithEmail:(NSString *)email name:(NSString *)name) {
+    [Instabug identifyUserWithEmail:email name:name];
+}
+
+RCT_EXPORT_METHOD(logout) {
+    [Instabug logOut];
+}
+
+RCT_EXPORT_METHOD(setPostSendingDialogEnabled:(BOOL)isPostSendingDialogEnabled) {
+    [Instabug setPostSendingDialogEnabled:isPostSendingDialogEnabled];
+}
+
+RCT_EXPORT_METHOD(setReportCategories:(NSArray<NSString *> *)titles iconNames:(NSArray<NSString *> *)names) {
+    [Instabug setReportCategoriesWithTitles:titles iconNames:names];
+}
+
+RCT_EXPORT_METHOD(setUserAttribute:(NSString *)value withKey:(NSString *)key) {
+    [Instabug setUserAttribute:value withKey:key];
+}
+
+RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key callback:(RCTResponseSenderBlock)callback) {
+    callback(@[[Instabug userAttributeForKey:key]]);
+}
+
+RCT_EXPORT_METHOD(removeUserAttribute:(NSString *)key) {
+    [Instabug removeUserAttributeForKey:key];
+}
+
+RCT_EXPORT_METHOD(getAllUserAttributes:(RCTResponseSenderBlock)callback) {
+    callback(@[[Instabug userAttributes]]);
+}
+
+RCT_EXPORT_METHOD(clearAllUserAttributes) {
+    for (NSString *key in [Instabug userAttributes].allKeys) {
+        [Instabug removeUserAttributeForKey:key];
+    }
+}
+
+RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
+    [Instabug setViewHierarchyEnabled:viewHierarchyEnabled];
+}
+
+RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
+    [Instabug logUserEventWithName:name];
+}
+
+RCT_EXPORT_METHOD(logUserEventWithNameAndParams:(NSString *)name params:(nullable NSDictionary *)params) {
+    [Instabug logUserEventWithName:name params:params];
+}
+
+RCT_EXPORT_METHOD(log:(NSString *)log) {
+    [Instabug IBGLog:log];
+}
+
+RCT_EXPORT_METHOD(logVerbose:(NSString *)log) {
+    [Instabug logVerbose:log];
+}
+
+RCT_EXPORT_METHOD(logDebug:(NSString *)log) {
+    [Instabug logDebug:log];
+}
+
+RCT_EXPORT_METHOD(logInfo:(NSString *)log) {
+    [Instabug logInfo:log];
+}
+
+RCT_EXPORT_METHOD(logWarn:(NSString *)log) {
+    [Instabug logWarn:log];
+}
+
+RCT_EXPORT_METHOD(logError:(NSString *)log) {
+    [Instabug logError:log];
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{ @"invocationEventNone" : @(IBGInvocationEventNone),
@@ -287,6 +375,11 @@ RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(
               @"audio": @(IBGStringAudio),
               @"screenRecording": @(IBGStringScreenRecording),
               @"image": @(IBGStringImage),
+              @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
+              @"surveyNoAnswerTitle": @(kIBGStringSurveyNoAnswerTitle),
+              @"surveyNoAnswerMessage": @(kIBGStringSurveyNoAnswerMessage),
+              @"surveySubmitTitle": @(kIBGStringSurveySubmitTitle),
+              @"videPressRecord": @(kIBGStringVideoPressRecordTitle)
               };
 };
 
