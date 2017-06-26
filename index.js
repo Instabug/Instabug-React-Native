@@ -47,6 +47,13 @@ module.exports = {
     dismiss: function () {
         Instabug.dismiss();
     },
+    
+    /**
+     * Disables all Instabug functionality
+     */
+    disable: function() {
+        Instabug.disable();
+    },
 
     /**
      * Attaches user data to each report being sent.
