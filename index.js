@@ -247,6 +247,18 @@ module.exports = {
     },
 
     /**
+     * Sets the threshold value of the shake gesture for android devices.
+     * Default for android is an integer value equals 350.
+     * you could increase the shaking difficulty level by
+     * increasing the `350` value and vice versa
+     * @param {number} androidThreshold Threshold for android devices.
+     */
+    setShakingThresholdForAndroid: function (androidThreshold) {
+        if (Platform.OS === 'android')
+            Instabug.setShakingThresholdForAndroid(androidThreshold);
+    },
+
+    /**
      * Sets the default edge and offset from the top at which the floating button
      * will be shown. Different orientations are already handled.
      * Default for `floatingButtonEdge` is `rectEdge.maxX`.

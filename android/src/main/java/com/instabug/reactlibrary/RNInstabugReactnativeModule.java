@@ -1058,6 +1058,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets the threshold value of the shake gesture for android devices.
+     * Default for android is an integer value equals 350.
+     * you could increase the shaking difficulty level by
+     * increasing the `350` value and vice versa.
+     *
+     * @param {number} androidThreshold Threshold for android devices.
+     */
+    @ReactMethod
+    public void setShakingThresholdForAndroid(androidThreshold) {
+        try {
+            mInstabug.setShakingThreshold(androidThreshold);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Sets a block of code that gets executed when a new message is received.
