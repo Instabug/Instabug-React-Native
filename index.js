@@ -709,6 +709,26 @@ module.exports = {
     },
 
     /**
+     * Enables all Instabug functionality
+     * It works on android only
+     */
+    enable: function () {
+        if (Platform.OS === 'android') {
+            Instabug.enable();
+        }
+    },
+
+    /**
+     * Disables all Instabug functionality
+     * It works on android only
+     */
+    disable: function () {
+        if (Platform.OS === 'android') {
+            Instabug.disable();
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
