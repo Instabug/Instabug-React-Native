@@ -27,16 +27,14 @@ export default class InstabugSample extends Component {
 
   constructor(props) {
     super(props);
-  
+
     Instabug.isRunningLive(function (isLive) {
       if (isLive) {
-        console.log("live");
+        Instabug.startWithToken('LIVE_TOKEN', Instabug.invocationEvent.shake);
       } else {
-        console.log("not live");
+        Instabug.startWithToken('BETA_TOKEN', Instabug.invocationEvent.shake);
       }
     });
-
-    Instabug.startWithToken('0f0dc916bd9175e3b5d2fdf0cfa49a69', Instabug.invocationEvent.shake);
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
