@@ -712,9 +712,9 @@ module.exports = {
      * none is enabled, Bug
      * reporting becomes the default invocation option.
      *
-     * @param  {boolean} chat      weather Talk to us is enable or not
-     * @param  {boolean} bug       weather Report a Problem is enable or not
-     * @param  {boolean} feedback  weather General Feedback  is enable or not
+     * @param  {boolean} chat      whether Talk to us is enable or not
+     * @param  {boolean} bug       whether Report a Problem is enable or not
+     * @param  {boolean} feedback  whether General Feedback  is enable or not
      * */
     setPromptOptionsEnabled: function (chat, bug, feedback) {
         Instabug.setPromptOptionsEnabled(chat, bug, feedback);
@@ -737,6 +737,19 @@ module.exports = {
     disable: function () {
         if (Platform.OS === 'android') {
             Instabug.disable();
+        }
+    },
+
+    /**
+     * @summary Checks whether app is development/Beta testing OR live
+     * Note: This API is iOS only
+     * It returns in the callback false if in development or beta testing on Test Flight, and true if app is live on the
+     * app store.
+     * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
+     */
+    isRunningLive: function(runningLiveCallBack) {
+        if (Platform.OS === 'ios') {
+            Instabug.isRunningLive(runningLiveCallBack)
         }
     },
 

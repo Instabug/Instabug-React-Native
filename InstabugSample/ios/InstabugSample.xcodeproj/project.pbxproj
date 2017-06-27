@@ -442,6 +442,7 @@
 		24ED9F161EFA6BE300D771DA /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				5632439F28464ECB86D23318 /* libRNInstabug.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";

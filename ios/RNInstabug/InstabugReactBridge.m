@@ -326,6 +326,22 @@ RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
     [Instabug setViewHierarchyEnabled:viewHirearchyEnabled];
 }
 
+RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
+  BOOL result = NO;
+#if TARGET_OS_SIMULATOR
+    result = NO;
+#else
+    BOOL isRunningTestFlightBeta = [[[[NSBundle mainBundle] appStoreReceiptURL] lastPathComponent] isEqualToString:@"sandboxReceipt"];
+    BOOL hasEmbeddedMobileProvision = !![[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"];
+    if (isRunningTestFlightBeta || hasEmbeddedMobileProvision)
+    {
+        result = NO;
+    }
+    result = YES;
+#endif
+    callback(@[[NSNumber numberWithBool:result]]);
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{ @"invocationEventNone" : @(IBGInvocationEventNone),
