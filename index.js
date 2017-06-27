@@ -740,8 +740,17 @@ module.exports = {
         }
     },
 
+    /**
+     * @summary Checks wether app is development/Beta testing OR live
+     * Note: This API is iOS only
+     * It reutrns in the callback false if in development or beta testing on Test Flight, and true if app is live on the
+     * app store.
+     * @param {function} isInstabugNotificationCallback callback with argument as return value 'isLive'
+     */
     isRunningLive: function(runningLiveCallBack) {
-        Instabug.isRunningLive(runningLiveCallBack)
+        if (Platform.OS === 'ios') {
+            Instabug.isRunningLive(runningLiveCallBack)
+        }
     },
 
     /**
