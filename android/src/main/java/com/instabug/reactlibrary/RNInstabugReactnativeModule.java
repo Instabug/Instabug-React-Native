@@ -1067,7 +1067,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {number} androidThreshold Threshold for android devices.
      */
     @ReactMethod
-    public void setShakingThresholdForAndroid(androidThreshold) {
+    public void setShakingThresholdForAndroid(int androidThreshold) {
         try {
             mInstabug.setShakingThreshold(androidThreshold);
         } catch (Exception e) {
