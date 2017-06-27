@@ -740,6 +740,10 @@ module.exports = {
         }
     },
 
+    isRunningLive: function(runningLiveCallBack) {
+        Instabug.isRunningLive(runningLiveCallBack)
+    },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
