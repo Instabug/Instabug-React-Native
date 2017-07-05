@@ -10,6 +10,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
+import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,11 +25,37 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication) {
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
+                                        String invocationEventValue, String primaryColor) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
+
+        //setting invocation event
+                if (invocationEventValue.equals("button")) {
+                    this.invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+                } else if (invocationEventValue.equals("swipe")) {
+                    this.invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
+
+                } else if (invocationEventValue.equals("shake")) {
+                    this.invocationEvent = InstabugInvocationEvent.SHAKE;
+
+                } else if (invocationEventValue.equals("screenshot")) {
+                    this.invocationEvent = InstabugInvocationEvent.SCREENSHOT_GESTURE;
+
+                } else if (invocationEventValue.equals("none")) {
+                    this.invocationEvent = InstabugInvocationEvent.NONE;
+
+                } else {
+                    this.invocationEvent = InstabugInvocationEvent.SHAKE;
+                }
+
+
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
+                .setInvocationEvent(this.invocationEvent)
                 .build();
+
+        Instabug.setPrimaryColor(Color.parseColor(primaryColor));
+
     }
 
     @Deprecated
