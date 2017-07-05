@@ -58,18 +58,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
     }
 
-    @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
-                                        String invocationEventValue) {
-        this(androidApplicationToken, androidApplication);
-    }
-
-    @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
-                                        String invocationEventValue, String instabugColorThemeValue) {
-        this(androidApplicationToken, androidApplication);
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
