@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "instabug-reactnative": "file:../",
+    "instabug-reactnative": "file:..",
     "react": "15.4.2",
     "react-native": "^0.41.2",
     "react-native-dialogs": "0.0.19"

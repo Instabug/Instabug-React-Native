@@ -1,6 +1,6 @@
 {
   "name": "instabug-reactnative",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
   "repository": {
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "android": {
-      "packageInstance": "new RNInstabugReactnativePackage(MainApplication.this)"
+      "packageInstance": "new RNInstabugReactnativePackage(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this)"
     }
   }
 }

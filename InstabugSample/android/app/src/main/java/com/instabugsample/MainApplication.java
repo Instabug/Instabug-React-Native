@@ -28,9 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new ReactNativeDialogsPackage(),
-            new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",
-            MainApplication.this,"button")
-
+            new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this)
       );
     }
   };

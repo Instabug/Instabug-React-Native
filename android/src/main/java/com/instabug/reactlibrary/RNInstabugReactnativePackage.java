@@ -24,31 +24,29 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
-    public RNInstabugReactnativePackage(Application androidApplication) {
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication) {
         this.androidApplication = androidApplication;
+        this.mAndroidApplicationToken = androidApplicationToken;
+        mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
+                .build();
     }
 
     @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application application) {
-        this(androidApplicationToken, application, "button");
-    }
-
-    @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application application,
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String invocationEventValue) {
-        this(androidApplicationToken, application, invocationEventValue, "light");
+        this(androidApplicationToken, androidApplication);
     }
 
     @Deprecated
-    public RNInstabugReactnativePackage(String androidApplicationToken, Application application,
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String invocationEventValue, String instabugColorThemeValue) {
-        this.androidApplication = application;
+        this(androidApplicationToken, androidApplication);
     }
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNInstabugReactnativeModule(reactContext, this.androidApplication));
+        modules.add(new RNInstabugReactnativeModule(reactContext, this.androidApplication, this.mInstabug));
         return modules;
     }
 
