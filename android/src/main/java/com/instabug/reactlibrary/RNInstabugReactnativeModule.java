@@ -122,6 +122,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.androidApplication = androidApplication;
         this.mInstabug = mInstabug;
+        Instabug.invoke();
     }
 
     @Override
