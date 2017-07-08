@@ -124,6 +124,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         this.mInstabug = mInstabug;
         try {
             Instabug.invoke();
+            Instabug.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
