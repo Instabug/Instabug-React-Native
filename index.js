@@ -18,7 +18,8 @@ module.exports = {
      * the SDK's UI.
      */
     startWithToken: function (token, invocationEvent) {
-        Instabug.startWithToken(token, invocationEvent);
+        if (Platform.OS === 'ios')
+            Instabug.startWithToken(token, invocationEvent);
     },
 
     /**
