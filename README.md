@@ -1,124 +1,60 @@
 
 # instabug-reactnative
 
-## Dependencies
-
-`react-native` version `>0.26`
-
 ## Installation
+This section explains how to install Instabug SDK into your React Native application.
 
-`$ npm install https://github.com/Instabug/instabug-reactnative#master --save`
+1. Open the terminal and navigate to your React Native Directory. Then run the following command.
 
-`$ react-native link instabug-reactnative`
-
-#### iOS installation
-
-1. Open your app `.xcodeproj` file
-2. Add the following line to your "Podfile": `pod 'Instabug', '~> 7.0'`
-3. run `pod install`
-4. Run your project (`Cmd+R`)<
-
-#### Android Manual installation
-
-1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-  - Add 
-
-    ```java
-    import com.instabug.reactlibrary.RNInstabugReactnativePackage;
-    ```
-
-   to the imports at the top of the file
-  - Add 
-
-    ```java
-    new RNInstabugReactnativePackage("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this,"INVOCATION_EVENT");
-    ``` 
-
-  to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-
-  	```gradle
-  	include ':instabug-reactnative'
-  	project(':instabug-reactnative').projectDir = new File(rootProject.projectDir, 	'../node_modules/instabug-reactnative/android')
-  	```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-
-  	```gradle
-      compile project(':instabug-reactnative')
-  	```
-
-## Usage 
-
-  ```javascript
-
-  import Instabug from'instabug-reactnative';
-
-  ```
-
-
-### iOS Example 
-
-```javascript
-class testApp extends Component {
-  constructor() {
-    super();
-    Instabug.startWithToken('YOUR_TOKEN', Instabug.invocationEvent.floatingButton);
-  }
-  ...
-}
+```bash
+npm install instabug-reactnative
 ```
 
-You can check the rest of the APIs here [Wiki](https://github.com/Instabug/instabug-reactnative/wiki).
+2. Link the bridging files in the npm package to the ios project use the following command.
+```bash
+react-native link instabug-reactnative
+```
+3. Add Instabug SDK to your iOS project by adding this to your [**Podfile**](https://guides.cocoapods.org/syntax/podfile.html) (You can skip this step if you are building an Android app only).
+```bash
+pod 'Instabug', '~> 7.0'
+```
+4.Then run the following command (You can skip this step if you are building an Android app only).
+```bash
+pod install
+```
+CocoaPods will download and install the SDK and add all the required dependencies into your ios project.
+
+## Using Instabug
+1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
+
+```javascript
+import Instabug from 'instabug-reactnative';
+```
+2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs (You can skip this step if you are building an Android app only).
+
+```javascript
+Instabug.startWithToken('IOS_APP_TOKEN', Instabug.invocationEvent.shake);
+```
+3. Open `android/app/src/main/java/[...]/MainApplication.java`
+   You should find the getPackages method looks like the following snippet. You just need to add your Android app token (You can skip this step if you are building an iOS app only).
+```javascript
+@Override
+protected List<ReactPackage> getPackages() {
+	return Arrays.<ReactPackage>asList(
+	new MainReactPackage(),
+	new RNInstabugReactnativePackage("ANDROID_APP_TOKEN",MainApplication.this,"shake","#1D82DC"));
+}
+```
+You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
+
+## Documentation
+For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
 
-If your app doesn't already access the microphone or photo library, you'll need to add the following 2 keys to your app's info.plist file:
-
-    NSMicrophoneUsageDescription
-    NSPhotoLibraryUsageDescription
-
-### Android Example
+## Contact US 
+If you have any questions or feedback don't hesitate to get in touch. You can reach us at any time through **support@instabug.com**.
 
 
-Usage
-
-To initialize Instabug in your app, you only need to link instabug-reactnative correctly by overwriting 
-
-"YOUR_ANDROID_TOKEN" text by your android app token,
-"button" text by your desired invocation event, 
-"light" text by your desired color theme,
-and can take a wide range of optional parameters for configuration.
-
-1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-
-after linking the plugin, you should find the getPackages method looks like 
-
-  ```java
-      @Override
-      protected List<ReactPackage> getPackages() {
-        return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-              new RNInstabugReactnativePackage("YOUR_ANDROID_TOKEN",MainApplication.this,"button","light")
-        );
-      }
-  ```
-The invocation event can be specified as one of the following values:
-
-
-| value | native equivalent | description  |
-|:------------:|:-------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| 'shake' | InstabugInvocationEvent.SHAKE | Shaking the device while in any screen to show the feedback form. |
-| 'button' | InstabugInvocationEvent.FLOATING_BUTTON | Shows a floating button on top of all views, when pressed it takes a screenshot. |
-| 'screenshot' | InstabugInvocationEvent.SCREENSHOT_GESTURE | Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form, substituted with IBGInvocationEventShake on iOS 6.1.3 and earlier. |
-| 'swipe' | InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT | Swiping two fingers left while in any screen to show the feedback form. |
-| 'none' | InstabugInvocationEvent.NONE | No event will be registered to show the feedback form, you'll need to code your own and call the method invoke. |
-
-The InstabugColorTheme can be specified as one of the following values:
-
-
-| value | native equivalent | description  |
-|:------------:|:-------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| 'light'| InstabugColorTheme.InstabugColorThemeLight |light theme is color theme to use for the SDK's UI|
-| 'dark'| InstabugColorTheme.InstabugColorThemeDark |Dark theme is color theme to use for the SDK's UI|
 
 ## License
 
