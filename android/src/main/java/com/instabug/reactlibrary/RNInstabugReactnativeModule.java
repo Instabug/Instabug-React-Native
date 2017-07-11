@@ -118,9 +118,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param mInstabug    the m instabug
      */
     public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application
-            androidApplication) {
+            androidApplication, Instabug mInstabug) {
         super(reactContext);
         this.androidApplication = androidApplication;
+        this.mInstabug = mInstabug;
+        try {
+            Instabug.invoke();
+            Instabug.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1067,7 +1074,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {number} androidThreshold Threshold for android devices.
      */
     @ReactMethod
-    public void setShakingThresholdForAndroid(androidThreshold) {
+    public void setShakingThresholdForAndroid(int androidThreshold) {
         try {
             mInstabug.setShakingThreshold(androidThreshold);
         } catch (Exception e) {

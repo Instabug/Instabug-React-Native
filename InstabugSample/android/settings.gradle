@@ -1,6 +1,4 @@
 rootProject.name = 'InstabugSample'
-include ':react-native-dialogs'
-project(':react-native-dialogs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-dialogs/android')
 include ':instabug-reactnative'
 project(':instabug-reactnative').projectDir = new File(rootProject.projectDir, '../node_modules/instabug-reactnative/android')
 
