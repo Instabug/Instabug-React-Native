@@ -728,7 +728,9 @@ module.exports = {
      * @param isDebugEnabled whether debug logs should be printed or not into LogCat
      */
     setDebugEnabled: function(isDebugEnabled) {
-        Instabug.setDebugEnabled(isDebugEnabled);
+        if (Platform.OS === 'android') {
+            Instabug.setDebugEnabled(isDebugEnabled);
+        }
     },
 
     /**
