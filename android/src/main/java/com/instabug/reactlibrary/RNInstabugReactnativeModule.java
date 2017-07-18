@@ -2,6 +2,8 @@ package com.instabug.reactlibrary;
 
 import android.app.Application;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -122,12 +124,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.androidApplication = androidApplication;
         this.mInstabug = mInstabug;
-        try {
-            Instabug.invoke();
-            Instabug.dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //init placHolders
+        placeHolders = new InstabugCustomTextPlaceHolder();
     }
 
     @Override
@@ -152,7 +150,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void invoke() {
         try {
-            mInstabug.invoke();
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mInstabug.invoke();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1104,8 +1108,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
-        String keyInLowerCase = key.toLowerCase();
-        switch (keyInLowerCase) {
+        switch (key) {
             case SHAKE_HINT:
                 return InstabugCustomTextPlaceHolder.Key.SHAKE_HINT;
             case SWIPE_HINT:
