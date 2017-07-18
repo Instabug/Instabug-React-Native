@@ -722,6 +722,16 @@ module.exports = {
     },
 
     /**
+     * Enable/Disable debug logs from Instabug SDK
+     * Default state: disabled
+     *
+     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
+     */
+    setDebugEnabled: function(isDebugEnabled) {
+        Instabug.setDebugEnabled(isDebugEnabled);
+    },
+
+    /**
      * Enables all Instabug functionality
      * It works on android only
      */
