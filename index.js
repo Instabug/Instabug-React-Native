@@ -852,11 +852,9 @@ module.exports = {
      * @readonly
      * @enum {number}
      */
-    rectEdge: {
-        minX: Instabug.rectMinXEdge,
-        minY: Instabug.rectMinYEdge,
-        maxX: Instabug.rectMaxXEdge,
-        maxY: Instabug.rectMaxYEdge
+    floatingButtonEdge: {
+        left: Instabug.rectMinXEdge,
+        right: Instabug.rectMaxXEdge,
     },
 
     /**
