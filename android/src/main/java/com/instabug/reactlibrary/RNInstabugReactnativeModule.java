@@ -54,6 +54,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
     private final String INVOCATION_MODE_NEW_CHAT = "chat";
     private final String INVOCATION_MODE_CHATS_LIST = "chats";
+    //FloatingButtonEdge
+    private final String FLOATING_BUTTON_EDGE_RIGHT = "right";
+    private final String FLOATING_BUTTON_EDGE_LEFT = "left";
     //locales
     private final String LOCALE_ARABIC = "arabic";
     private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
@@ -991,6 +994,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets the default value of the intro message guide that gets shown on launching the app
+     *
+     * @param enabled true to show intro message guide
+     */
+    @ReactMethod
+    public void setIntroMessageEnabled(boolean enabled) {
+        try {
+            mInstabug.setIntroMessageEnabled(enabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Sets the runnable that gets executed just before showing any valid survey<br/>
@@ -1231,6 +1248,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
         constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
         constants.put("invocationModeChatsList", INVOCATION_MODE_CHATS_LIST);
+
+        constants.put("floatingButtonEdgeLeft",FLOATING_BUTTON_EDGE_LEFT);
+        constants.put("floatingButtonEdgeRight",FLOATING_BUTTON_EDGE_RIGHT);
 
         constants.put("localeArabic", LOCALE_ARABIC);
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);

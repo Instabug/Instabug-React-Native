@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "android": {
-      "packageInstance": "new RNInstabugReactnativePackage(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this,\"shake\",\"#1D82DC\")"
+      "packageInstance": "new RNInstabugReactnativePackage.Builder(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this)\n.setInvocationEvent(\"shake\")\n.setPrimaryColor(\"#1D82DC\")\n.setFloatingEdge(\"left\")\n.setFloatingButtonOffsetFromTop(250)\n.build()"
     }
   }
 }

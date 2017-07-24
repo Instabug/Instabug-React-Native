@@ -10,6 +10,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
-                                        String invocationEventValue, String primaryColor) {
+                                        String invocationEventValue, String primaryColor,
+                                        InstabugFloatingButtonEdge floatingButtonEdge, int offset) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
@@ -55,7 +57,73 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 .build();
 
         Instabug.setPrimaryColor(Color.parseColor(primaryColor));
+        Instabug.setFloatingButtonEdge(floatingButtonEdge);
+        Instabug.setFloatingButtonOffsetFromTop(offset);
 
+    }
+
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
+                                        String invocationEventValue, String primaryColor) {
+        new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValue,primaryColor,
+                InstabugFloatingButtonEdge.LEFT,250);
+    }
+
+    public static class Builder {
+        //FloatingButtonEdge
+        private final String FLOATING_BUTTON_EDGE_RIGHT = "right";
+        private final String FLOATING_BUTTON_EDGE_LEFT = "left";
+
+        String androidApplicationToken;
+        Application application;
+        String invocationEvent;
+        String primaryColor;
+        InstabugFloatingButtonEdge floatingButtonEdge;
+        int offset;
+
+        public Builder(String androidApplicationToken, Application application) {
+            this.androidApplicationToken = androidApplicationToken;
+            this.application = application;
+        }
+
+        public Builder setInvocationEvent(String invocationEvent) {
+            this.invocationEvent = invocationEvent;
+            return this;
+        }
+
+        public Builder setPrimaryColor(String primaryColor) {
+            this.primaryColor = primaryColor;
+            return this;
+        }
+
+        public Builder setFloatingEdge(String floatingEdge) {
+            this.floatingButtonEdge = getFloatingButtonEdge(floatingEdge);
+            return this;
+        }
+
+        public Builder setFloatingButtonOffsetFromTop(int offset) {
+            this.offset = offset;
+            return this;
+        }
+
+        public RNInstabugReactnativePackage build() {
+            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvent,primaryColor,floatingButtonEdge,offset);
+        }
+
+        private InstabugFloatingButtonEdge getFloatingButtonEdge(String floatingButtonEdgeValue) {
+            InstabugFloatingButtonEdge floatingButtonEdge = InstabugFloatingButtonEdge.RIGHT;
+            try {
+                if (floatingButtonEdgeValue.equals(FLOATING_BUTTON_EDGE_LEFT)) {
+                    floatingButtonEdge = InstabugFloatingButtonEdge.LEFT;
+                } else if (floatingButtonEdgeValue.equals(FLOATING_BUTTON_EDGE_RIGHT)) {
+                    floatingButtonEdge = InstabugFloatingButtonEdge.RIGHT;
+                }
+                return floatingButtonEdge;
+
+            } catch(Exception e) {
+                e.printStackTrace();
+                return floatingButtonEdge;
+            }
+        }
     }
 
     @Override

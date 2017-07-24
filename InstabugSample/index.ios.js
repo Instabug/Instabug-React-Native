@@ -19,6 +19,7 @@ import {
   TouchableHighlight,
   RecyclerViewBackedScrollView,
   ActionSheetIOS,
+  TextInput
 } from 'react-native';
 
 import Instabug from'instabug-reactnative';
@@ -35,6 +36,8 @@ export default class InstabugSample extends Component {
         Instabug.startWithToken('BETA_TOKEN', Instabug.invocationEvent.shake);
       }
     });
+
+    
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
@@ -256,12 +259,18 @@ export default class InstabugSample extends Component {
   render() {
     console.log(JSON.stringify(this.state));
     return (
+    <View>
       <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
           renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
           style={styles.listView}
       />
+      <TextInput 
+        style={{height: 40}}
+        placeholder="Type here to translate!"
+      />
+      </View>
     );
   }
 }
