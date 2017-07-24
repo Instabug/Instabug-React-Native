@@ -530,38 +530,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Sets the default edge at which the floating button will be shown
-     *
-     * @param instabugFloatingButtonEdge edge to stick Floating button to
-     * @see InstabugFloatingButtonEdge
-     */
-
-    @ReactMethod
-    public void setFloatingButtonEdge(String floatingButtonEdgeValue) {
-        try {
-            mInstabug.setFloatingButtonEdge(getFloatingButtonEdge(floatingButtonEdgeValue));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private InstabugFloatingButtonEdge getFloatingButtonEdge(String floatingButtonEdgeValue) {
-        InstabugFloatingButtonEdge floatingButtonEdge = InstabugFloatingButtonEdge.RIGHT;
-        try {
-            if (floatingButtonEdgeValue.equals(FLOATING_BUTTON_EDGE_LEFT)) {
-                floatingButtonEdge = InstabugFloatingButtonEdge.LEFT;
-            } else if (floatingButtonEdgeValue.equals(FLOATING_BUTTON_EDGE_RIGHT)) {
-                floatingButtonEdge = InstabugFloatingButtonEdge.RIGHT;
-            }
-
-            return invocationEvent;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return invocationEvent;
-        }
-    }
-
-    /**
      * Enabled/disable chat notification
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not
