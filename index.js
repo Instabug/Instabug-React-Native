@@ -296,8 +296,7 @@ module.exports = {
      * intro message is enabled or not.
      */
     setIntroMessageEnabled: function (isIntroMessageEnabled) {
-        if (Platform.OS === 'ios')
-            Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
+        Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
     },
 
     /**
