@@ -62,6 +62,12 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
     }
 
+    public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
+                                        String invocationEventValue, String primaryColor) {
+        new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValue,primaryColor,
+                InstabugFloatingButtonEdge.RIGHT,250);
+    }
+
     public static class Builder {
         //FloatingButtonEdge
         private final String FLOATING_BUTTON_EDGE_RIGHT = "right";
