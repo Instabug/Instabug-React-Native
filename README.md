@@ -9,6 +9,11 @@ This section explains how to install Instabug SDK into your React Native applica
 ```bash
 npm install instabug-reactnative
 ```
+or
+
+```bash
+yarn add instabug-reactnative
+```
 
 2. Link the bridging files in the npm package to the ios project use the following command.
 ```bash
