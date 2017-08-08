@@ -95,7 +95,8 @@ module.exports = {
                 'IBGpreSendingHandler',
                 preSendingHandler
             );
-
+        } else {
+            DeviceEventEmitter.addListener('IBGpreSendingHandler', preSendingHandler);
         }
 
         Instabug.setPreSendingHandler(preSendingHandler);
@@ -115,6 +116,8 @@ module.exports = {
                 'IBGpreInvocationHandler',
                 preInvocationHandler
             );
+        } else {
+            DeviceEventEmitter.addListener('IBGpreInvocationHandler', preInvocationHandler);
         }
 
         Instabug.setPreInvocationHandler(preInvocationHandler);
@@ -137,6 +140,10 @@ module.exports = {
                     postInvocationHandler(payload['dismissType'], payload['reportType']);
                 }
             );
+        } else {
+            DeviceEventEmitter.addListener('IBGpostInvocationHandler', function(payload) {
+                postInvocationHandler(payload.issueState, payload.bugType);
+            });
         }
 
         Instabug.setPostInvocationHandler(postInvocationHandler);
@@ -316,7 +323,9 @@ module.exports = {
      * @param {color} primaryColor A color to set the UI elements of the SDK to.
      */
     setPrimaryColor: function (primaryColor) {
-        Instabug.setPrimaryColor(primaryColor);
+        if(Platform.OS == "ios") {
+            Instabug.setPrimaryColor(primaryColor);
+        }
     },
 
     /**
@@ -398,9 +407,11 @@ module.exports = {
                 'IBGonNewMessageHandler',
                 onNewMessageHandler
             );
+        } else {
+            DeviceEventEmitter.addListener('IBGonNewMessageHandler', onNewMessageHandler);
         }
 
-        Instabug.setOnNewMessageHandler(onNewMessgaeHandler);
+        Instabug.setOnNewMessageHandler(onNewMessageHandler);
 
     },
 
@@ -680,6 +691,8 @@ module.exports = {
                 'IBGWillShowSurvey',
                 willShowSurveyHandler
             );
+        } else {
+            DeviceEventEmitter.addListener('IBGWillShowSurvey', willShowSurveyHandler);
         }
 
         Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
@@ -699,6 +712,8 @@ module.exports = {
                 'IBGDidDismissSurvey',
                 didDismissSurveyHandler
             );
+        } else {
+            DeviceEventEmitter.addListener('IBGDidDismissSurvey', didDismissSurveyHandler);
         }
 
         Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
