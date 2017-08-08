@@ -909,7 +909,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Runnable preInvocationRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    preInvocationHandler.invoke();
+                    sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
                 }
             };
             mInstabug.setPreInvocation(preInvocationRunnable);
@@ -933,7 +933,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Runnable preSendingRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    preSendingHandler.invoke();
+                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", null);
                 }
             };
             mInstabug.setPreSendingRunnable(preSendingRunnable);
@@ -957,7 +957,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             mInstabug.setOnSdkDismissedCallback(new OnSdkDismissedCallback() {
                 @Override
                 public void onSdkDismissed(DismissType issueState, Bug.Type bugType) {
-                    postInvocationHandler.invoke();
+                    WritableMap params = Arguments.createMap();
+                    params.putString("issueState",issueState.toString());
+                    params.putString("bugType",bugType.toString());
+                    sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
                 }
             });
 
@@ -1022,7 +1025,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Runnable willShowSurveyRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    willShowSurveyHandler.invoke();
+                    sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
                 }
             };
             mInstabug.setPreShowingSurveyRunnable(willShowSurveyRunnable);
@@ -1044,7 +1047,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Runnable didDismissSurveyRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    didDismissSurveyHandler.invoke();
+                    sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
                 }
             };
             mInstabug.setAfterShowingSurveyRunnable(didDismissSurveyRunnable);
@@ -1115,7 +1118,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Runnable onNewMessageRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    onNewMessageHandler.invoke();
+                    sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
                 }
             };
             mInstabug.setNewMessageHandler(onNewMessageRunnable);
