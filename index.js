@@ -323,7 +323,9 @@ module.exports = {
      * @param {color} primaryColor A color to set the UI elements of the SDK to.
      */
     setPrimaryColor: function (primaryColor) {
-        Instabug.setPrimaryColor(primaryColor);
+        if(Platform.OS == "ios") {
+            Instabug.setPrimaryColor(primaryColor);
+        }
     },
 
     /**
