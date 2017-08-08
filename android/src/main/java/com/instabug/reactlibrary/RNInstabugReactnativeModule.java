@@ -212,9 +212,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param tags
      */
     @ReactMethod
-    public void appendTags(String tags) {
+    public void appendTags(ReadableArray tags) {
         try {
-            String[] result = tags.split(",");
+            String[] result = new String[tags.size()];
+            for(int i = 0; i < tags.size(); i++) {
+                result[i] = tags.getString(i);
+            }
             mInstabug.addTags(result);
         } catch (Exception e) {
             e.printStackTrace();
