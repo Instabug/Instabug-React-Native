@@ -33,6 +33,7 @@ import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -214,11 +215,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void appendTags(ReadableArray tags) {
         try {
-            String[] result = new String[tags.size()];
-            for(int i = 0; i < tags.size(); i++) {
-                result[i] = tags.getString(i);
-            }
-            mInstabug.addTags(result);
+            Object[] objectArray = ArrayUtil.toArray(tags);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            mInstabug.addTags(stringArray);
         } catch (Exception e) {
             e.printStackTrace();
         }
