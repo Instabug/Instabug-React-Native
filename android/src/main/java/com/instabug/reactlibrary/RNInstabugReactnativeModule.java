@@ -960,8 +960,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 @Override
                 public void onSdkDismissed(DismissType issueState, Bug.Type bugType) {
                     WritableMap params = Arguments.createMap();
-                    params.putString("issueState",issueState.toString());
-                    params.putString("bugType",bugType.toString());
+                    params.putString("issueState", issueState.toString());
+                    params.putString("bugType", bugType.toString());
                     sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
                 }
             });
