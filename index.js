@@ -1,4 +1,4 @@
-import {NativeModules, NativeAppEventEmitter, Platform} from "react-native";
+import {NativeModules, NativeAppEventEmitter, DeviceEventEmitter, Platform} from "react-native";
 let {Instabug} = NativeModules;
 
 /**
