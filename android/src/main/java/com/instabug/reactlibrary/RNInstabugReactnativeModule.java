@@ -1012,7 +1012,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
-
+    private void sendEvent(ReactContext reactContext,
+                        String eventName,
+                        @Nullable WritableMap params) {
+        reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
+    }
 
     /**
      * Sets the runnable that gets executed just before showing any valid survey<br/>
