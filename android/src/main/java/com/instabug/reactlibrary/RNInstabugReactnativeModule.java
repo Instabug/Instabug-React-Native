@@ -1015,13 +1015,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
-    private void sendEvent(ReactApplicationContext reactContext,
-                        String eventName,
-                        @Nullable WritableMap params) {
-        reactContext
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(eventName, params);
-    }
 
     /**
      * Sets the runnable that gets executed just before showing any valid survey<br/>
@@ -1246,6 +1239,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private void sendEvent(ReactApplicationContext reactContext,
+                        String eventName,
+                        @Nullable WritableMap params) {
+        reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
+    }
+    
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
