@@ -30,6 +30,11 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocatio
     [Instabug startWithToken:token invocationEvent:invocationEvent];
     [Instabug setCrashReportingEnabled:NO];
     [Instabug setNetworkLoggingEnabled:NO];
+
+    SEL setupForGoogleSEL = @selector(setupForGoogle);
+    if ([[Instabug class] respondsToSelector:setupForGoogleSEL]) {
+        [[Instabug class] performSelector:setupForGoogleSEL];
+    }
 }
 
 RCT_EXPORT_METHOD(invoke) {
