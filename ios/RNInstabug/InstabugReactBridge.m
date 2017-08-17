@@ -236,7 +236,7 @@ RCT_EXPORT_METHOD(setReportCategories:(NSArray<NSString *> *)titles iconNames:(N
     [Instabug setReportCategoriesWithTitles:titles iconNames:names];
 }
 
-RCT_EXPORT_METHOD(setUserAttribute:(NSString *)value withKey:(NSString *)key) {
+RCT_EXPORT_METHOD(setUserAttribute:(NSString *)key withValue:(NSString *)value) {
     [Instabug setUserAttribute:value withKey:key];
 }
 
