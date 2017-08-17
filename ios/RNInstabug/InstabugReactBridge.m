@@ -228,7 +228,7 @@ RCT_EXPORT_METHOD(logout) {
     [Instabug logOut];
 }
 
-RCT_EXPORT_METHOD(setPostSendingDialogEnabled:(BOOL)isPostSendingDialogEnabled) {
+RCT_EXPORT_METHOD(setSuccessDialogEnabled:(BOOL)isPostSendingDialogEnabled) {
     [Instabug setPostSendingDialogEnabled:isPostSendingDialogEnabled];
 }
 

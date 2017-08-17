@@ -781,6 +781,14 @@ module.exports = {
     },
 
     /**
+     * @param enabled true to show success dialog after submitting a bug report
+     * 
+     */
+    setSuccessDialogEnabled: function(enabled) {
+        Instabug.setSuccessDialogEnabled(enabled);
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}

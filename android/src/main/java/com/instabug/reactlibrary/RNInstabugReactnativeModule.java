@@ -1131,6 +1131,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * @param enabled true to show success dialog after submitting a bug report
+     *
+     */
+    @ReactMethod
+    public void setSuccessDialogEnabled(boolean enabled) {
+        try {
+            mInstabug.setSuccessDialogEnabled(enabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:
