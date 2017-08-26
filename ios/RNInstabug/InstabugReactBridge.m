@@ -6,6 +6,9 @@
 
 #import "InstabugReactBridge.h"
 #import <Instabug/Instabug.h>
+#import <asl.h>
+#import <React/RCTLog.h>
+#import <os/log.h>
 
 @implementation InstabugReactBridge
 
@@ -28,6 +31,8 @@ RCT_EXPORT_MODULE(Instabug)
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug startWithToken:token invocationEvent:invocationEvent];
+    RCTAddLogFunction(InstabugReactLogFunction);
+    RCTSetLogThreshold(RCTLogLevelInfo);
     [Instabug setCrashReportingEnabled:NO];
     [Instabug setNetworkLoggingEnabled:NO];
 }
@@ -431,6 +436,64 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"surveySubmitTitle": @(kIBGStringSurveySubmitTitle),
               @"videPressRecord": @(kIBGStringVideoPressRecordTitle)
               };
+};
+
++ (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
+    return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
+};
+
+RCTLogFunction InstabugReactLogFunction = ^(
+                                               RCTLogLevel level,
+                                               __unused RCTLogSource source,
+                                               NSString *fileName,
+                                               NSNumber *lineNumber,
+                                               NSString *message
+                                               )
+{
+  NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
+
+
+  NSLog(@"Instabug - REACT LOG: %s", log.UTF8String);
+    
+    if([InstabugReactBridge iOSVersionIsLessThan:@"10.0"]) {
+        int aslLevel;
+        switch(level) {
+            case RCTLogLevelTrace:
+                aslLevel = ASL_LEVEL_DEBUG;
+                break;
+            case RCTLogLevelInfo:
+                aslLevel = ASL_LEVEL_NOTICE;
+                break;
+            case RCTLogLevelWarning:
+                aslLevel = ASL_LEVEL_WARNING;
+                break;
+            case RCTLogLevelError:
+                aslLevel = ASL_LEVEL_ERR;
+                break;
+            case RCTLogLevelFatal:
+                aslLevel = ASL_LEVEL_CRIT;
+                break;
+        }
+        asl_log(NULL, NULL, aslLevel, "%s", message.UTF8String);
+    } else {
+        switch(level) {
+            case RCTLogLevelTrace:
+                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                break;
+            case RCTLogLevelInfo:
+                os_log_with_type(OS_LOG_DEFAULT, OS_LOG_TYPE_INFO, "%s", [message UTF8String]);
+                break;
+            case RCTLogLevelWarning:
+                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                break;
+            case RCTLogLevelError:
+                os_log_error(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                break;
+            case RCTLogLevelFatal:
+                os_log_fault(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                break;
+        }
+    }
 };
 
 @end
