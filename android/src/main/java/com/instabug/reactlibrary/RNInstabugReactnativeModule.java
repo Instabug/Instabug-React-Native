@@ -1131,6 +1131,35 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * @param enabled true to show success dialog after submitting a bug report
+     *
+     */
+    @ReactMethod
+    public void setSuccessDialogEnabled(boolean enabled) {
+        try {
+            mInstabug.setSuccessDialogEnabled(enabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set whether new in app notification received will play a small sound notification
+     * or not (Default is {@code false})
+     *
+     * @param shouldPlaySound desired state of conversation sounds
+     * @since 4.1.0
+     */
+    @ReactMethod
+    public void setEnableInAppNotificationSound(boolean shouldPlaySound) {
+        try {
+            mInstabug.setEnableInAppNotificationSound(shouldPlaySound);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:

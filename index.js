@@ -781,6 +781,27 @@ module.exports = {
     },
 
     /**
+     * @param enabled true to show success dialog after submitting a bug report
+     * 
+     */
+    setSuccessDialogEnabled: function(enabled) {
+        Instabug.setSuccessDialogEnabled(enabled);
+    },
+
+    /**
+     * Set whether new in app notification received will play a small sound notification
+     * or not (Default is {@code false})
+     *
+     * @param shouldPlaySound desired state of conversation sounds
+     * @since 4.1.0
+     */
+    setEnableInAppNotificationSound: function(shouldPlaySound) {
+        if(Platform.OS === 'android') {
+            Instabug.setEnableInAppNotificationSound(shouldPlaySound);
+        }
+    },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
