@@ -4,7 +4,12 @@
 ## Installation
 This section explains how to install Instabug SDK into your React Native application.
 
-1. Open the terminal and navigate to your React Native Directory. Then run the following command.
+1. Add Instabug SDK to your iOS project by adding this to your [**Podfile**](https://guides.cocoapods.org/syntax/podfile.html) (You can skip this step if you are building an Android app only).
+```bash
+pod 'Instabug', '~> 7.0'
+```
+
+2. Open the terminal and navigate to your React Native Directory. Then run the following command.
 
 ```bash
 npm install instabug-reactnative
@@ -15,19 +20,10 @@ or
 yarn add instabug-reactnative
 ```
 
-2. Link the bridging files in the npm package to the ios project use the following command.
+3. Link the bridging files in the npm package to the ios project use the following command.
 ```bash
 react-native link instabug-reactnative
 ```
-3. Add Instabug SDK to your iOS project by adding this to your [**Podfile**](https://guides.cocoapods.org/syntax/podfile.html) (You can skip this step if you are building an Android app only).
-```bash
-pod 'Instabug', '~> 7.0'
-```
-4.Then run the following command (You can skip this step if you are building an Android app only).
-```bash
-pod install
-```
-CocoaPods will download and install the SDK and add all the required dependencies into your ios project.
 
 ## Using Instabug
 1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
