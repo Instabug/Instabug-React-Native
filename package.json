@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "commands": {
-      "postlink": "ruby ./node_modules/instabug-reactnative/link.rb"
+      "postlink": "ruby ./node_modules/instabug-reactnative/link.rb || echo \"Ruby doesn't exist, if you're building this for Android only, then feel free to ignore this error, otherwise please install Ruby and run 'react-native link instabug-reactnative' again\""
     },
     "android": {
       "packageInstance": "\t\tnew RNInstabugReactnativePackage.Builder(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this)\n\t\t\t\t\t\t\t.setInvocationEvent(\"shake\")\n\t\t\t\t\t\t\t.setPrimaryColor(\"#1D82DC\")\n\t\t\t\t\t\t\t.setFloatingEdge(\"left\")\n\t\t\t\t\t\t\t.setFloatingButtonOffsetFromTop(250)\n\t\t\t\t\t\t\t.build()"

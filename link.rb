@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
-require 'xcodeproj'
+begin
+	require 'xcodeproj'
+rescue LoadError
+	puts('xcodeproj doesn\'t exist')
+	Kernel.exit(0)
+end
 require 'fileutils'
 
 # Replace these with your values
