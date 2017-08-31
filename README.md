@@ -15,7 +15,9 @@ or
 yarn add instabug-reactnative
 ```
 
-2. Link the bridging files in the npm package to the ios project use the following command.
+2. Install [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/). (You can skip this step if you're building for Android only)
+
+3. Link the bridging files in the npm package to the ios project use the following command.
 ```bash
 react-native link instabug-reactnative
 ```
