@@ -16,6 +16,11 @@ target_name = file_name
 framework_root = '../node_modules/instabug-reactnative/ios'
 framework_name = 'Instabug.framework'
 
+INSTABUG_PHASE_NAME = "Strip Frameworks"
+INSTABUG_PHASE_SCRIPT = <<-SCRIPTEND
+bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/Instabug.bundle/strip-frameworks.sh"
+  SCRIPTEND
+
 # Get useful variables
 project = Xcodeproj::Project.open(project_location)
 frameworks_group = project.groups.find { |group| group.display_name == 'Frameworks' }
@@ -42,6 +47,10 @@ framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
 build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
 frameworks_build_phase.add_file_reference(framework_ref)
 build_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
+
+#Add New Run Script Phase to Build Phases
+phase = target.new_shell_script_build_phase(INSTABUG_PHASE_NAME)
+phase.shell_script = INSTABUG_PHASE_SCRIPT
 
 # Save Xcode project
 project.save
