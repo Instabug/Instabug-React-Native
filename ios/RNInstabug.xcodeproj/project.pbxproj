@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		248766471DA3E8ED00D93EDA /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; };
+		133CC8091F578E5C00CF3492 /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; };
 		24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */; };
 		24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */; };
 /* End PBXBuildFile section */
@@ -39,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				248766471DA3E8ED00D93EDA /* Instabug.framework in Frameworks */,
+				133CC8091F578E5C00CF3492 /* Instabug.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +257,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
 					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
@@ -279,6 +280,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
 					"$(PROJECT_DIR)/../../../ios/Pods/Instabug",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../node_modules/react-native/React/**",
