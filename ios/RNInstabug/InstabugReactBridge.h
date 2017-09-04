@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 #import "RCTEventEmitter.h"
 
 @interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>
