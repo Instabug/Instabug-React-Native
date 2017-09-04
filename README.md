@@ -75,11 +75,11 @@ npm install instabug-reactnative
 pod install
 ```
 
-4. Run this command from your root project's directory
+4. Run this command from your root project's directory. Make sure you have [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/) installed before running this last command. (You can skip installing Ruby if you're building an Android app only)
+
  ```bash
 react-native link instabug-reactnative
 ``` 
-(Make sure you have [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/) installed before running this last command. (You can skip installing Ruby if you're building an Android app only))
 
 ## Documentation
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
