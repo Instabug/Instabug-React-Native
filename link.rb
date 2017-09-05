@@ -38,8 +38,15 @@ target.build_phases << embed_frameworks_build_phase
 
 # Add framework search path to target
 ['Debug', 'Release'].each do |config|
-  paths = ['$(inherited)', framework_root]
-  target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] = paths
+  paths = ['$(inherited', framework_root]
+  if target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] == nil
+    target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] = paths
+  elsif target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].kind_of?(Array)
+    target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] << framework_root unless target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].include? framework_root
+  else 
+    paths = [target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'], framework_root]
+    target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] = paths
+  end
 end
 
 # Add framework to target as "Embedded Frameworks"
