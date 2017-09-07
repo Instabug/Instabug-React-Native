@@ -450,11 +450,12 @@ RCTLogFunction InstabugReactLogFunction = ^(
                                                NSString *message
                                                )
 {
-  NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-
-
-  NSLog(@"Instabug - REACT LOG: %s", log.UTF8String);
+    NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
+    NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
     
+    va_list arg_list;
+    
+    IBGNSLog(compeleteLog, arg_list);
     if([InstabugReactBridge iOSVersionIsLessThan:@"10.0"]) {
         int aslLevel;
         switch(level) {
@@ -474,23 +475,25 @@ RCTLogFunction InstabugReactLogFunction = ^(
                 aslLevel = ASL_LEVEL_CRIT;
                 break;
         }
-        asl_log(NULL, NULL, aslLevel, "%s", message.UTF8String);
+        asl_log(NULL, NULL, aslLevel, "%s", log.UTF8String);
     } else {
+        os_log_t newlog = os_log_create("Default", "Instabug");
+        
         switch(level) {
             case RCTLogLevelTrace:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                os_log(newlog, "%s", [message UTF8String]);
                 break;
             case RCTLogLevelInfo:
-                os_log_with_type(OS_LOG_DEFAULT, OS_LOG_TYPE_INFO, "%s", [message UTF8String]);
+                os_log_with_type(newlog, OS_LOG_TYPE_INFO, "%s", [message UTF8String]);
                 break;
             case RCTLogLevelWarning:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                os_log(newlog, "%s", [message UTF8String]);
                 break;
             case RCTLogLevelError:
-                os_log_error(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                os_log_error(newlog, "%s", [message UTF8String]);
                 break;
             case RCTLogLevelFatal:
-                os_log_fault(OS_LOG_DEFAULT, "%s", [message UTF8String]);
+                os_log_fault(newlog, "%s", [message UTF8String]);
                 break;
         }
     }
