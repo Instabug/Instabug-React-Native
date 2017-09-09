@@ -51,7 +51,9 @@ end
 
 # Add framework to target as "Embedded Frameworks"
 framework_ref = frameworks_group.files.find { |file_reference| file_reference.path == "#{framework_root}/#{framework_name}"}
+is_linked = true
 if framework_ref == nil
+  is_linked = false
   framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
   build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
   frameworks_build_phase.add_file_reference(framework_ref)
@@ -66,4 +68,4 @@ if shell_script_build_phase == nil
 end
 
 # Save Xcode project
-project.save
+project.save unless is_linked

@@ -27,9 +27,12 @@ frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to
 embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Frameworks'}
 target.build_phases.delete(embed_frameworks_build_phase) if embed_frameworks_build_phase
 
+is_string = false;
+
 # Remove framework search path from target
 ['Debug', 'Release'].each do |config|
-  target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
+	is_string ||= target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].is_a? String 
+	target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
 end
 
 # Remove framework from target from "Embedded Frameworks"
@@ -42,4 +45,4 @@ shell_script_build_phase = target.shell_script_build_phases.find { |build_phase|
 target.build_phases.delete(shell_script_build_phase) if shell_script_build_phase
 
 # Save Xcode project
-project.save
+project.save unless is_string
