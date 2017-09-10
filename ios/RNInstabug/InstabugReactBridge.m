@@ -450,50 +450,12 @@ RCTLogFunction InstabugReactLogFunction = ^(
                                                NSString *message
                                                )
 {
-  NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-
-
-  NSLog(@"Instabug - REACT LOG: %s", log.UTF8String);
+    NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
+    NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
     
-    if([InstabugReactBridge iOSVersionIsLessThan:@"10.0"]) {
-        int aslLevel;
-        switch(level) {
-            case RCTLogLevelTrace:
-                aslLevel = ASL_LEVEL_DEBUG;
-                break;
-            case RCTLogLevelInfo:
-                aslLevel = ASL_LEVEL_NOTICE;
-                break;
-            case RCTLogLevelWarning:
-                aslLevel = ASL_LEVEL_WARNING;
-                break;
-            case RCTLogLevelError:
-                aslLevel = ASL_LEVEL_ERR;
-                break;
-            case RCTLogLevelFatal:
-                aslLevel = ASL_LEVEL_CRIT;
-                break;
-        }
-        asl_log(NULL, NULL, aslLevel, "%s", message.UTF8String);
-    } else {
-        switch(level) {
-            case RCTLogLevelTrace:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelInfo:
-                os_log_with_type(OS_LOG_DEFAULT, OS_LOG_TYPE_INFO, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelWarning:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelError:
-                os_log_error(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelFatal:
-                os_log_fault(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-        }
-    }
+    va_list arg_list;
+    
+    IBGNSLog(compeleteLog, arg_list);
 };
 
 @end
