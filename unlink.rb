@@ -24,7 +24,7 @@ target = project.targets.find { |target| target.to_s == target_name }
 frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'FrameworksBuildPhase' }
 
 # Remove "Embed Frameworks" build phase to target
-embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Frameworks'}
+embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
 Kernel.exit(0) unless embed_frameworks_build_phase
 target.build_phases.delete(embed_frameworks_build_phase)
 
