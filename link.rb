@@ -30,16 +30,19 @@ frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to
 
 # Add new "Embed Frameworks" build phase to target
 embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Frameworks'}
+is_linked = true
 if embed_frameworks_build_phase == nil
+  is_linked = false
   embed_frameworks_build_phase = project.new(Xcodeproj::Project::Object::PBXCopyFilesBuildPhase)
   embed_frameworks_build_phase.name = 'Embed Frameworks'
   embed_frameworks_build_phase.symbol_dst_subfolder_spec = :frameworks
   target.build_phases << embed_frameworks_build_phase
 end
 
+Kernel.exit(0) if is_linked 
+
 # Add framework search path to target
 ['Debug', 'Release'].each do |config|
-  paths = ['$(inherited)', framework_root]
   framework_search_paths = target.build_settings(config)['FRAMEWORK_SEARCH_PATHS']
   
   framework_search_paths ||= ['$(inherited)']
@@ -51,9 +54,8 @@ end
 
 # Add framework to target as "Embedded Frameworks"
 framework_ref = frameworks_group.files.find { |file_reference| file_reference.path == "#{framework_root}/#{framework_name}"}
-is_linked = true
+
 if framework_ref == nil
-  is_linked = false
   framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
   build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
   frameworks_build_phase.add_file_reference(framework_ref)
@@ -68,4 +70,4 @@ if shell_script_build_phase == nil
 end
 
 # Save Xcode project
-project.save unless is_linked
+project.save
