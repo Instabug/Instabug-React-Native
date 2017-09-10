@@ -26,22 +26,21 @@ frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to
 # Remove "Embed Frameworks" build phase to target
 embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Frameworks'}
 Kernel.exit(0) unless embed_frameworks_build_phase
-target.build_phases.delete(embed_frameworks_build_phase) if embed_frameworks_build_phase
+target.build_phases.delete(embed_frameworks_build_phase)
 
 # Remove framework search path from target
 ['Debug', 'Release'].each do |config|
-	# is_string ||= target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].is_a? String 
-	target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root) if target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].is_a? Array
+	target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
 end
 
 # Remove framework from target from "Embedded Frameworks"
 framework_ref = frameworks_group.files.find { |file_reference| file_reference.path == "#{framework_root}/#{framework_name}"}
 frameworks_build_phase.remove_file_reference(framework_ref)
-framework_ref.remove_from_project if framework_ref
+framework_ref.remove_from_project
 
 #Delete New Run Script Phase from Build Phases
 shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_PHASE_NAME }
-target.build_phases.delete(shell_script_build_phase) if shell_script_build_phase
+target.build_phases.delete(shell_script_build_phase)
 
 # Save Xcode project
 project.save
