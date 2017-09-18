@@ -355,25 +355,25 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
               @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
               @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton),
-              
+
               @"invocationModeNA": @(IBGInvocationModeNA),
               @"invocationModeNewBug": @(IBGInvocationModeNewBug),
               @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
               @"invocationModeNewChat": @(IBGInvocationModeNewChat),
               @"invocationModeChatsList": @(IBGInvocationModeChatsList),
-              
+
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
-              
+
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),
-              
+
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),
               @"rectMaxXEdge": @(CGRectMaxXEdge),
               @"rectMaxYEdge": @(CGRectMaxYEdge),
-              
+
               @"localeArabic": @(IBGLocaleArabic),
               @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
@@ -391,10 +391,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeSpanish": @(IBGLocaleSpanish),
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
-              
+
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
-              
+
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),
               @"edgeSwipeStartHint": @(IBGStringEdgeSwipeStartHint),
@@ -452,10 +452,26 @@ RCTLogFunction InstabugReactLogFunction = ^(
 {
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
     NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
-    
+
     va_list arg_list;
-    
-    IBGNSLog(compeleteLog, arg_list);
+
+    switch(level) {
+        case RCTLogLevelTrace:
+            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelTrace);
+            break;
+        case RCTLogLevelInfo:
+            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelInfo);
+            break;
+        case RCTLogLevelWarning:
+            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelWarning);
+            break;
+        case RCTLogLevelError:
+            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelError);
+            break;
+        case RCTLogLevelFatal:
+            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelFatal);
+            break;
+    }
 };
 
 @end
