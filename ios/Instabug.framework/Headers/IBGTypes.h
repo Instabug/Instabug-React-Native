@@ -257,3 +257,16 @@ typedef NS_ENUM(NSInteger, IBGPromptOption) {
     IBGPromptOptionBug,
     IBGPromptOptionFeedback
 };
+
+/**
+ The Conosle Log Level.
+ */
+typedef NS_ENUM(NSInteger, IBGLogLevel) {
+    IBGLogLevelDefault,
+    IBGLogLevelTrace,
+    IBGLogLevelInfo,
+    IBGLogLevelWarning,
+    IBGLogLevelError,
+    IBGLogLevelFatal
+};
+
