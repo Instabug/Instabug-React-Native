@@ -452,26 +452,28 @@ RCTLogFunction InstabugReactLogFunction = ^(
 {
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
     NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
-
-    va_list arg_list;
-
-    switch(level) {
-        case RCTLogLevelTrace:
-            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelTrace);
-            break;
-        case RCTLogLevelInfo:
-            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelInfo);
-            break;
-        case RCTLogLevelWarning:
-            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelWarning);
-            break;
-        case RCTLogLevelError:
-            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelError);
-            break;
-        case RCTLogLevelFatal:
-            IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelFatal);
-            break;
-    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        va_list arg_list;
+        
+        switch(level) {
+            case RCTLogLevelTrace:
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelTrace);
+                break;
+            case RCTLogLevelInfo:
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelInfo);
+                break;
+            case RCTLogLevelWarning:
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelWarning);
+                break;
+            case RCTLogLevelError:
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelError);
+                break;
+            case RCTLogLevelFatal:
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelFatal);
+                break;
+        }
+    });
 };
 
 @end
