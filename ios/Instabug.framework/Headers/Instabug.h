@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
 
- Version:    7.3.7
+ Version:    7.3.8
  */
 
 #import <Foundation/Foundation.h>
@@ -865,12 +865,23 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 /**
  @brief Used to reroute all your NSLogs to Instabug to be able to automatically include them with reports.
  
- @discussion For details on how to reroute your NSLogs to Instabug, see http://docs.instabug.com/docs/logging
+ @discussion For details on how to reroute your NSLogs to Instabug, see https://docs.instabug.com/docs/ios-logging
  
  @param format Format string.
  @param args Arguments list.
  */
-OBJC_EXTERN void IBGNSLog(NSString *format, va_list args);
+OBJC_EXTERN void IBGNSLog(NSString *format, va_list args) DEPRECATED_MSG_ATTRIBUTE("Use IBGNSLogWithLevel instead");
+
+/**
+ @brief Used to reroute all your NSLogs to Instabug with their log level to be able to automatically include them with reports.
+ 
+ @discussion For details on how to reroute your NSLogs to Instabug, see https://docs.instabug.com/docs/ios-logging
+ 
+ @param format Format string.
+ @param args Arguments list.
+ @param logLevel log level.
+ */
+OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel logLevel);
 
 /**
  @brief Adds custom logs that will be sent with each report. Logs are added with the debug log level.
