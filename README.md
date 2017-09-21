@@ -1,6 +1,8 @@
 
 # instabug-reactnative
 
+Upgrading? Check the [Upgrade Guide](#upgrading-guide) before bumping to a new major version.
+
 ## Installation
 This section explains how to install Instabug SDK into your React Native application.
 
@@ -15,19 +17,12 @@ or
 yarn add instabug-reactnative
 ```
 
-2. Link the bridging files in the npm package to the ios project use the following command.
+2. Install [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/). (You can skip this step if you're building for Android only)
+
+3. Link the bridging files in the npm package to the ios project use the following command.
 ```bash
 react-native link instabug-reactnative
 ```
-3. Add Instabug SDK to your iOS project by adding this to your [**Podfile**](https://guides.cocoapods.org/syntax/podfile.html) (You can skip this step if you are building an Android app only).
-```bash
-pod 'Instabug', '~> 7.0'
-```
-4.Then run the following command (You can skip this step if you are building an Android app only).
-```bash
-pod install
-```
-CocoaPods will download and install the SDK and add all the required dependencies into your ios project.
 
 ## Using Instabug
 1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
@@ -57,6 +52,34 @@ protected List<ReactPackage> getPackages() {
 }
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
+
+## Upgrading guide
+
+Version 2.0.0
+
+- **removes dependency on Cocoapods** when installing Instabug
+- **ensures consistency** between the React Native SDK, and the Native SDK
+
+### Upgrading from 1.x.x
+
+When upgrading from version 1.x.x please make sure you do the following steps: 
+
+1. Run 
+```bash
+npm install instabug-reactnative
+```
+2. Open your Pod file and delete this line ```pod 'Instabug', '~> 7.0'```
+
+3. Run this command from inside the ```ios``` directory inside your root project's directory
+```bash
+pod install
+```
+
+4. Run this command from your root project's directory. Make sure you have [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/) installed before running this last command. (You can skip installing Ruby if you're building an Android app only)
+
+ ```bash
+react-native link instabug-reactnative
+``` 
 
 ## Documentation
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).

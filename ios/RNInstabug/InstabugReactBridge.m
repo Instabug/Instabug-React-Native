@@ -229,7 +229,7 @@ RCT_EXPORT_METHOD(identifyUserWithEmail:(NSString *)email name:(NSString *)name)
     [Instabug identifyUserWithEmail:email name:name];
 }
 
-RCT_EXPORT_METHOD(logout) {
+RCT_EXPORT_METHOD(logOut) {
     [Instabug logOut];
 }
 
@@ -355,25 +355,25 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
               @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
               @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton),
-              
+
               @"invocationModeNA": @(IBGInvocationModeNA),
               @"invocationModeNewBug": @(IBGInvocationModeNewBug),
               @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
               @"invocationModeNewChat": @(IBGInvocationModeNewChat),
               @"invocationModeChatsList": @(IBGInvocationModeChatsList),
-              
+
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
-              
+
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),
-              
+
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),
               @"rectMaxXEdge": @(CGRectMaxXEdge),
               @"rectMaxYEdge": @(CGRectMaxYEdge),
-              
+
               @"localeArabic": @(IBGLocaleArabic),
               @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
@@ -391,10 +391,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeSpanish": @(IBGLocaleSpanish),
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
-              
+
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
-              
+
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),
               @"edgeSwipeStartHint": @(IBGStringEdgeSwipeStartHint),
@@ -450,50 +450,30 @@ RCTLogFunction InstabugReactLogFunction = ^(
                                                NSString *message
                                                )
 {
-  NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-
-
-  NSLog(@"Instabug - REACT LOG: %s", log.UTF8String);
+    NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
+    NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
     
-    if([InstabugReactBridge iOSVersionIsLessThan:@"10.0"]) {
-        int aslLevel;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        va_list arg_list;
+        
         switch(level) {
             case RCTLogLevelTrace:
-                aslLevel = ASL_LEVEL_DEBUG;
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelTrace);
                 break;
             case RCTLogLevelInfo:
-                aslLevel = ASL_LEVEL_NOTICE;
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelInfo);
                 break;
             case RCTLogLevelWarning:
-                aslLevel = ASL_LEVEL_WARNING;
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelWarning);
                 break;
             case RCTLogLevelError:
-                aslLevel = ASL_LEVEL_ERR;
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelError);
                 break;
             case RCTLogLevelFatal:
-                aslLevel = ASL_LEVEL_CRIT;
+                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelFatal);
                 break;
         }
-        asl_log(NULL, NULL, aslLevel, "%s", message.UTF8String);
-    } else {
-        switch(level) {
-            case RCTLogLevelTrace:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelInfo:
-                os_log_with_type(OS_LOG_DEFAULT, OS_LOG_TYPE_INFO, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelWarning:
-                os_log(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelError:
-                os_log_error(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-            case RCTLogLevelFatal:
-                os_log_fault(OS_LOG_DEFAULT, "%s", [message UTF8String]);
-                break;
-        }
-    }
+    });
 };
 
 @end
