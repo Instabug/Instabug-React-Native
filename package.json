@@ -2,9 +2,6 @@
   "name": "instabug-reactnative",
   "version": "1.2.4",
   "description": "React Native plugin for integrating the Instabug SDK",
-  "scripts": {
-    "postinstall": "cd ../../ios && pod install"
-  },
   "main": "index.js",
   "repository": {
     "type": "git",
