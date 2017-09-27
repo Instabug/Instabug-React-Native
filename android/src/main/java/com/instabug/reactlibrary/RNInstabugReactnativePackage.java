@@ -7,6 +7,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -54,6 +55,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvent(this.invocationEvent)
+                .setCrashReportingState(Feature.State.DISABLED)
                 .build();
 
         Instabug.setPrimaryColor(Color.parseColor(primaryColor));
