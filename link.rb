@@ -2,7 +2,7 @@
 begin
 	require 'xcodeproj'
 rescue LoadError
-	puts('xcodeproj doesn\'t exist')
+	puts('xcodeproj gem doesn\'t exist. Please run \'gem install xcodeproj\' to install it, and re-run \'react-native link instabug-reactnative\' again')
 	Kernel.exit(0)
 end
 
@@ -30,16 +30,16 @@ frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to
 
 # Add new "Embed Frameworks" build phase to target
 embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
-Kernel.exit(0) if embed_frameworks_build_phase 
+Kernel.exit(0) if embed_frameworks_build_phase
 embed_frameworks_build_phase = project.new(Xcodeproj::Project::Object::PBXCopyFilesBuildPhase)
 embed_frameworks_build_phase.name = 'Embed Instabug Framework'
 embed_frameworks_build_phase.symbol_dst_subfolder_spec = :frameworks
-target.build_phases << embed_frameworks_build_phase 
+target.build_phases << embed_frameworks_build_phase
 
 # Add framework search path to target
 ['Debug', 'Release'].each do |config|
   framework_search_paths = target.build_settings(config)['FRAMEWORK_SEARCH_PATHS']
-  
+
   framework_search_paths ||= ['$(inherited)']
   framework_search_paths = [framework_search_paths] unless framework_search_paths.is_a?(Array)
   framework_search_paths << framework_root unless framework_search_paths.include? framework_root

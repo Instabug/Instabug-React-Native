@@ -19,7 +19,12 @@ yarn add instabug-reactnative
 
 2. Install [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/). (You can skip this step if you're building for Android only)
 
-3. Link the bridging files in the npm package to the ios project use the following command.
+3. Install `xcodeproj` gem by running the following command. (You can also skip this step if you're building for Android only)
+```bash
+gem install xcodeproj
+```
+
+4. Link the bridging files in the npm package to the ios project use the following command.
 ```bash
 react-native link instabug-reactnative
 ```
@@ -37,7 +42,7 @@ Instabug.startWithToken('IOS_APP_TOKEN', Instabug.invocationEvent.shake);
 ```
 3. Open `android/app/src/main/java/[...]/MainApplication.java`
    You should find the getPackages method looks like the following snippet. You just need to add your Android app token (You can skip this step if you are building an iOS app only). You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
-   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
+   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number.
 ```javascript
 @Override
 protected List<ReactPackage> getPackages() {
@@ -62,9 +67,9 @@ Version 2.0.0
 
 ### Upgrading from 1.x.x
 
-When upgrading from version 1.x.x please make sure you do the following steps: 
+When upgrading from version 1.x.x please make sure you do the following steps:
 
-1. Run 
+1. Run
 ```bash
 npm install instabug-reactnative
 ```
@@ -79,13 +84,13 @@ pod install
 
  ```bash
 react-native link instabug-reactnative
-``` 
+```
 
 ## Documentation
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
 
-## Contact US 
+## Contact US
 If you have any questions or feedback don't hesitate to get in touch. You can reach us at any time through **support@instabug.com**.
 
 
