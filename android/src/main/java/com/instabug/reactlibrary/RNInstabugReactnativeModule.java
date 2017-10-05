@@ -815,7 +815,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {strings} key Key of string to override.
      */
     @ReactMethod
-    public void setStringToKey(String string, String key) {
+    public void setString(String string, String key) {
         try {
             placeHolders.set(getStringToKeyConstant(key), string);
             Instabug.setCustomTextPlaceHolders(placeHolders);
