@@ -442,6 +442,15 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
 
+// Note: This function is used to bridge IBGNSLog with RCTLogFunction.
+// This log function should not be used externally and is only an implementation detail.
+void RNIBGLog(IBGLogLevel logLevel, NSString *format,  ...) {
+    va_list arg_list;
+    va_start(arg_list, format);
+    IBGNSLogWithLevel(format, arg_list, logLevel);
+    va_end(arg_list);
+}
+
 RCTLogFunction InstabugReactLogFunction = ^(
                                                RCTLogLevel level,
                                                __unused RCTLogSource source,
@@ -450,30 +459,27 @@ RCTLogFunction InstabugReactLogFunction = ^(
                                                NSString *message
                                                )
 {
+    NSString *formatString = @"Instabug - REACT LOG: %@";
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-    NSString *compeleteLog = [NSString stringWithFormat:@"Instabug - REACT LOG: %@", log];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        va_list arg_list;
-        
-        switch(level) {
-            case RCTLogLevelTrace:
-                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelTrace);
-                break;
-            case RCTLogLevelInfo:
-                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelInfo);
-                break;
-            case RCTLogLevelWarning:
-                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelWarning);
-                break;
-            case RCTLogLevelError:
-                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelError);
-                break;
-            case RCTLogLevelFatal:
-                IBGNSLogWithLevel(compeleteLog, arg_list, IBGLogLevelFatal);
-                break;
-        }
-    });
+
+    switch(level) {
+        case RCTLogLevelTrace:
+            RNIBGLog(IBGLogLevelTrace, formatString, log);
+            break;
+        case RCTLogLevelInfo:
+            RNIBGLog(IBGLogLevelInfo, formatString, log);
+            break;
+        case RCTLogLevelWarning:
+            RNIBGLog(IBGLogLevelWarning, formatString, log);
+            break;
+        case RCTLogLevelError:
+            RNIBGLog(IBGLogLevelError, formatString, log);
+            break;
+        case RCTLogLevelFatal:
+            RNIBGLog(IBGLogLevelFatal, formatString, log);
+            break;
+    }
 };
+
 
 @end
