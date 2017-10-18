@@ -37,8 +37,8 @@ embed_frameworks_build_phase.symbol_dst_subfolder_spec = :frameworks
 target.build_phases << embed_frameworks_build_phase
 
 # Add framework search path to target
-['Debug', 'Release'].each do |config|
-  framework_search_paths = target.build_settings(config)['FRAMEWORK_SEARCH_PATHS']
+target.build_configurations.each do |config|
+  framework_search_paths = target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS']
 
   framework_search_paths ||= ['$(inherited)']
   framework_search_paths = [framework_search_paths] unless framework_search_paths.is_a?(Array)
