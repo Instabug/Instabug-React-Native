@@ -44,7 +44,7 @@ target.build_configurations.each do |config|
   framework_search_paths = [framework_search_paths] unless framework_search_paths.is_a?(Array)
   framework_search_paths << framework_root unless framework_search_paths.include? framework_root
 
-  target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'] = framework_search_paths
+  target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS'] = framework_search_paths
 end
 
 # Add framework to target as "Embedded Frameworks"

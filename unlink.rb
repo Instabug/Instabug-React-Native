@@ -29,8 +29,8 @@ Kernel.exit(0) unless embed_frameworks_build_phase
 target.build_phases.delete(embed_frameworks_build_phase)
 
 # Remove framework search path from target
-['Debug', 'Release'].each do |config|
-	target.build_settings(config)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
+target.build_configurations.each do |config|
+	target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
 end
 
 # Remove framework from target from "Embedded Frameworks"
