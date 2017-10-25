@@ -238,15 +238,15 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringScreenRecording,
     IBGStringImage,
     IBGStringSurveyEnterYourAnswerPlaceholder,
-    kIBGStringSurveyNoAnswerTitle,
-    kIBGStringSurveyNoAnswerMessage,
-    kIBGStringSurveySubmitTitle,
-    kIBGStringVideoPressRecordTitle,
-    kIBGStringLowDiskStorageTitle,
-    kIBGStringLowDiskStorageMessage,
-    kIBGStringCollectingDataText,
-    kIBGStringExtraFieldIsRequiredText,
-    kIBGStringExtraFieldMissingDataText
+    IBGStringSurveyNoAnswerTitle,
+    IBGStringSurveyNoAnswerMessage,
+    IBGStringSurveySubmitTitle,
+    IBGStringVideoPressRecordTitle,
+    IBGStringLowDiskStorageTitle,
+    IBGStringLowDiskStorageMessage,
+    IBGStringCollectingDataText,
+    IBGStringExtraFieldIsRequiredText,
+    IBGStringExtraFieldMissingDataText
 };
 
 /**

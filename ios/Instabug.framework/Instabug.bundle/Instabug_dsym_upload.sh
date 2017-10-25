@@ -28,13 +28,20 @@ if [ "$EFFECTIVE_PLATFORM_NAME" == "-iphonesimulator" ]; then
 fi
 
 # Check to make sure the app token exists
+# Objective-C
 if [ ! "${APP_TOKEN}" ]; then
   APP_TOKEN=$(grep -r 'Instabug startWithToken:@\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 fi
 
+# Swift
 if [ ! "${APP_TOKEN}" ]; then
   APP_TOKEN=$(grep -r 'Instabug.startWithToken(\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 fi
+
+if [ ! "${APP_TOKEN}" ]; then
+    APP_TOKEN=$(grep -r 'Instabug.start(withToken:\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+fi
+
 
 if [ ! "${APP_TOKEN}" ] || [ -z "${APP_TOKEN}" ];then
   echo "Instabug: err: APP_TOKEN not found. Make sure you've added the SDK initialization line [Instabug startWithToken: invocationEvent:]"
