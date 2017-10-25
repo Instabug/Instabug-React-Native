@@ -782,7 +782,7 @@ module.exports = {
 
     /**
      * @param enabled true to show success dialog after submitting a bug report
-     * 
+     *
      */
     setSuccessDialogEnabled: function(enabled) {
         Instabug.setSuccessDialogEnabled(enabled);
@@ -936,6 +936,7 @@ module.exports = {
         team: Instabug.team,
         messageNotification: Instabug.messageNotification,
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
-        conversationTextFieldHint: Instabug.conversationTextFieldHint
+        conversationTextFieldHint: Instabug.conversationTextFieldHint,
+        collectingDataText: Instabug.collectingDataText
     }
 };

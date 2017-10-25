@@ -431,10 +431,11 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"screenRecording": @(IBGStringScreenRecording),
               @"image": @(IBGStringImage),
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
-              @"surveyNoAnswerTitle": @(kIBGStringSurveyNoAnswerTitle),
-              @"surveyNoAnswerMessage": @(kIBGStringSurveyNoAnswerMessage),
-              @"surveySubmitTitle": @(kIBGStringSurveySubmitTitle),
-              @"videPressRecord": @(kIBGStringVideoPressRecordTitle)
+              @"surveyNoAnswerTitle": @(IBGStringSurveyNoAnswerTitle),
+              @"surveyNoAnswerMessage": @(IBGStringSurveyNoAnswerMessage),
+              @"surveySubmitTitle": @(IBGStringSurveySubmitTitle),
+              @"videPressRecord": @(IBGStringVideoPressRecordTitle),
+              @"collectingDataText": @(IBGStringCollectingDataText)
               };
 };
 
