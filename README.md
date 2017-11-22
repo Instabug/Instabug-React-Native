@@ -1,7 +1,19 @@
+# Instabug for react native
 
-# instabug-reactnative
+[![npm](https://img.shields.io/npm/v/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
+[![npm](https://img.shields.io/npm/dt/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
+[![npm](https://img.shields.io/npm/l/instabug-reactnative.svg)](https://github.com/Instabug/instabug-reactnative/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/badge/twitter-@Instabug-blue.svg)](https://twitter.com/Instabug)
+
 
 Upgrading? Check the [Upgrade Guide](#upgrading-guide) before bumping to a new major version.
+
+<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="200"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="655"/> 
+
+Instabug is a reliable [bug reporting and user feedback platform](https://instabug.com/bug-reporting) that empowers mobile-first companies to iterate faster and enhance their app quality.
+Gather bug reports from your users and the Instabug SDK will automatically capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging), [bug reproduction steps](https://instabug.com/user-steps) and more details that would help you debug and fix bugs faster.
+
+For more info, visit [Instabug.com](https://www.instabug.com).
 
 ## Installation
 This section explains how to install Instabug SDK into your React Native application.
@@ -99,4 +111,4 @@ If you have any questions or feedback don't hesitate to get in touch. You can re
 
 This software is released under <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
 
-© 2016 Instabug. All rights reserved.
+© 2017 Instabug. All rights reserved.
