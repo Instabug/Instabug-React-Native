@@ -8,7 +8,7 @@
 
 Upgrading? Check the [Upgrade Guide](#upgrading-guide) before bumping to a new major version.
 
-<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="200"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="655"/> 
+<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="25%"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="73%"/> 
 
 Instabug is a reliable [bug reporting and user feedback platform](https://instabug.com/bug-reporting) that empowers mobile-first companies to iterate faster and enhance their app quality.
 Gather bug reports from your users and the Instabug SDK will automatically capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging), [bug reproduction steps](https://instabug.com/user-steps) and more details that would help you debug and fix bugs faster.
