@@ -27,7 +27,7 @@ frameworks_group.children.delete(framework_ref)
 
 # Remove Instabug to every target that is of type application
 targets.each do |target|
-	if target.is_a? Xcodeproj::Project::Object::PBXNativeTarget and (target.product_type == "com.apple.product-type.application") and (target.platform_name == :ios)
+	if target.is_a? Xcodeproj::Project::Object::PBXNativeTarget && (target.product_type == "com.apple.product-type.application") && (target.platform_name == :ios)
 
 		# Remove "Embed Frameworks" build phase to target
 		embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
