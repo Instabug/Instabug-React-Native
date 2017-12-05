@@ -31,7 +31,7 @@ framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
 
 # Add Instabug to every target that is of type application
 targets.each do |target|
-	if target.is_a? Xcodeproj::Project::Object::PBXNativeTarget && (target.product_type == "com.apple.product-type.application") && (target.platform_name == :ios)
+	if (target.is_a? Xcodeproj::Project::Object::PBXNativeTarget) && (target.product_type == "com.apple.product-type.application") && (target.platform_name == :ios)
 
 		# Add new "Embed Frameworks" build phase to target
 		embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
