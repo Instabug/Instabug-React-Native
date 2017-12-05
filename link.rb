@@ -26,49 +26,48 @@ project = Xcodeproj::Project.open(project_location)
 frameworks_group = project.groups.find { |group| group.display_name == 'Frameworks' }
 frameworks_group ||= project.new_group('Frameworks')
 default_target = project.targets.find { |target| target.to_s == default_target_name }
-targets = project.targets
+targets = project.targets.select { |target| (target.is_a? Xcodeproj::Project::Object::PBXNativeTarget) &&
+	 																				  (target.product_type == "com.apple.product-type.application") &&
+																					  (target.platform_name == :ios) }
 framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
 
 # Add Instabug to every target that is of type application
 targets.each do |target|
-	if target.is_a? Xcodeproj::Project::Object::PBXNativeTarget && (target.product_type == "com.apple.product-type.application") && (target.platform_name == :ios)
+	# Add new "Embed Frameworks" build phase to target
+	embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
+	Kernel.exit(0) if embed_frameworks_build_phase
+	embed_frameworks_build_phase = project.new(Xcodeproj::Project::Object::PBXCopyFilesBuildPhase)
+	embed_frameworks_build_phase.name = 'Embed Instabug Framework'
+	embed_frameworks_build_phase.symbol_dst_subfolder_spec = :frameworks
+	target.build_phases << embed_frameworks_build_phase
 
-		# Add new "Embed Frameworks" build phase to target
-		embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
-		Kernel.exit(0) if embed_frameworks_build_phase
-		embed_frameworks_build_phase = project.new(Xcodeproj::Project::Object::PBXCopyFilesBuildPhase)
-		embed_frameworks_build_phase.name = 'Embed Instabug Framework'
-		embed_frameworks_build_phase.symbol_dst_subfolder_spec = :frameworks
-		target.build_phases << embed_frameworks_build_phase
-
-		# Add static library to non default targets' build phase
-		if target.name != default_target_name
-			static_library_file_reference = default_target.frameworks_build_phase.files_references.find { |file_reference| file_reference.path == 'libRNInstabug.a' }
-			target.frameworks_build_phase.add_file_reference(static_library_file_reference)
-		end
-
-		# Add framework search path to target
-		target.build_configurations.each do |config|
-		  framework_search_paths = target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS']
-
-		  framework_search_paths ||= ['$(inherited)']
-		  framework_search_paths = [framework_search_paths] unless framework_search_paths.is_a?(Array)
-		  framework_search_paths << framework_root unless framework_search_paths.include? framework_root
-
-		  target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS'] = framework_search_paths
-		end
-
-		# Add framework to target as "Embedded Frameworks"
-
-		build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
-		target.frameworks_build_phase.add_file_reference(framework_ref)
-		build_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
-
-
-		#Add New Run Script Phase to Build Phases
-		phase = target.new_shell_script_build_phase(INSTABUG_PHASE_NAME)
-		phase.shell_script = INSTABUG_PHASE_SCRIPT
+	# Add static library to non default targets' build phase
+	if target.name != default_target_name
+		static_library_file_reference = default_target.frameworks_build_phase.files_references.find { |file_reference| file_reference.path == 'libRNInstabug.a' }
+		target.frameworks_build_phase.add_file_reference(static_library_file_reference)
 	end
+
+	# Add framework search path to target
+	target.build_configurations.each do |config|
+	  framework_search_paths = target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS']
+
+	  framework_search_paths ||= ['$(inherited)']
+	  framework_search_paths = [framework_search_paths] unless framework_search_paths.is_a?(Array)
+	  framework_search_paths << framework_root unless framework_search_paths.include? framework_root
+
+	  target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS'] = framework_search_paths
+	end
+
+	# Add framework to target as "Embedded Frameworks"
+
+	build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
+	target.frameworks_build_phase.add_file_reference(framework_ref)
+	build_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
+
+
+	#Add New Run Script Phase to Build Phases
+	phase = target.new_shell_script_build_phase(INSTABUG_PHASE_NAME)
+	phase.shell_script = INSTABUG_PHASE_SCRIPT
 end
 
 # Save Xcode project
