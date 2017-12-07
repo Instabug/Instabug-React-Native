@@ -439,6 +439,11 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               };
 };
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 + (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
