@@ -14,11 +14,12 @@ project_location = "./ios/#{file_name}.xcodeproj"
 default_target_name = file_name
 framework_root = '../node_modules/instabug-reactnative/ios'
 framework_name = 'Instabug.framework'
+framework_core = 'InstabugCore.framework'
 
 INSTABUG_PHASE_NAME = "Strip Frameworks"
 
 INSTABUG_PHASE_SCRIPT = <<-SCRIPTEND
-bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/Instabug.bundle/strip-frameworks.sh"
+bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework/strip-frameworks.sh"
   SCRIPTEND
 
 # Get useful variables
@@ -30,6 +31,7 @@ targets = project.targets.select { |target| (target.is_a? Xcodeproj::Project::Ob
 	 																				  (target.product_type == "com.apple.product-type.application") &&
 																					  (target.platform_name == :ios) }
 framework_ref = frameworks_group.new_file("#{framework_root}/#{framework_name}")
+framework_core_ref = frameworks_group.new_file("#{framework_root}/#{framework_core}")
 
 # Add Instabug to every target that is of type application
 targets.each do |target|
@@ -61,8 +63,11 @@ targets.each do |target|
 	# Add framework to target as "Embedded Frameworks"
 
 	build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
+	build_core_file = embed_frameworks_build_phase.add_file_reference(framework_core_ref)
 	target.frameworks_build_phase.add_file_reference(framework_ref)
+	target.frameworks_build_phase.add_file_reference(framework_core_ref)
 	build_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
+	build_core_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
 
 
 	#Add New Run Script Phase to Build Phases
