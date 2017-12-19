@@ -806,7 +806,7 @@ module.exports = {
      *
      * (Default for `position` is `bottomRight`)
      *
-     * @param position `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
+     * @param position is of type IBGPosition `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
      */
      setVideoRecordingFloatingButtonPosition: function(position) {
        if(Platform.OS === 'ios') {
