@@ -7,7 +7,7 @@
 //
 
 #import "RCTConvert+InstabugEnums.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugCore/IBGTypes.h>
 
 @implementation RCTConvert (InstabugEnums)
 
@@ -70,6 +70,13 @@ RCT_ENUM_CONVERTER(IBGColorTheme, (@{
                                      @"colorThemeLight": @(IBGColorThemeLight),
                                      @"colorThemeDark": @(IBGColorThemeDark)
                                      }), IBGColorThemeLight, integerValue);
+
+RCT_ENUM_CONVERTER(IBGPosition, (@{
+                                    @"bottomRight": @(IBGPositionBottomRight),
+                                    @"topRight": @(IBGPositionTopRight),
+                                    @"bottomLeft": @(IBGPositionBottomLeft),
+                                    @"topLeft": @(IBGPositionTopLeft)
+                                    }), IBGPositionBottomRight, integerValue);
 
 RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"shakeHint": @(IBGStringShakeHint),

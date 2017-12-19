@@ -802,6 +802,19 @@ module.exports = {
     },
 
     /**
+     * Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
+     *
+     * (Default for `position` is `bottomRight`)
+     *
+     * @param position is of type IBGPosition `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
+     */
+     setVideoRecordingFloatingButtonPosition: function(position) {
+       if(Platform.OS === 'ios') {
+         Instabug.setVideoRecordingFloatingButtonPosition(position);
+       }
+     },
+
+    /**
      * The event used to invoke the feedback form
      * @readonly
      * @enum {number}
@@ -890,6 +903,18 @@ module.exports = {
     floatingButtonEdge: {
         left: Instabug.rectMinXEdge,
         right: Instabug.rectMaxXEdge,
+    },
+
+    /**
+     * Instabug floating buttons positions.
+     * @readonly
+     * @enum {number}
+     */
+    IBGPosition: {
+        bottomRight: Instabug.bottomRight,
+        topRight: Instabug.topRight,
+        bottomLeft: Instabug.bottomLeft,
+        topLeft: Instabug.topLeft
     },
 
     /**
