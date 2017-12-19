@@ -331,6 +331,10 @@ RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
     [Instabug setViewHierarchyEnabled:viewHirearchyEnabled];
 }
 
+RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
+    [Instabug setVideoRecordingFloatingButtonPosition:position];
+}
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR
@@ -373,6 +377,11 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"rectMinYEdge": @(CGRectMinYEdge),
               @"rectMaxXEdge": @(CGRectMaxXEdge),
               @"rectMaxYEdge": @(CGRectMaxYEdge),
+
+              @"bottomRight": @(IBGPositionBottomRight),
+              @"topRight": @(IBGPositionTopRight),
+              @"bottomLeft": @(IBGPositionBottomLeft),
+              @"topLeft": @(IBGPositionTopLeft),
 
               @"localeArabic": @(IBGLocaleArabic),
               @"localeChineseSimplified": @(IBGLocaleChineseSimplified),

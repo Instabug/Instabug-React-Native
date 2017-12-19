@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "IBGTypes.h"
+#import <InstabugCore/IBGTypes.h>
 
 /**
  This is the API for using Instabug's SDK. For more details about the SDK integration,
@@ -118,6 +118,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  */
 + (void)addFileAttachmentWithURL:(NSURL *)fileURL;
 
+
 /**
  @brief Add a set of data as a file attachment to be sent with each report.
  
@@ -128,7 +129,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param data NSData to be added as a file attachment with each report.
  */
 +(void)addFileAttachmentWithData:(NSData *)data;
-
 
 /**
  @brief Clear list of files to be attached with each report.
@@ -452,6 +452,15 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 + (void)setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop;
 
 /**
+ @brief Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
+ 
+ @discussion Default for `position` is `bottomRight`.
+ 
+ @param position `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
+ */
++ (void)setVideoRecordingFloatingButtonPosition:(IBGPosition)position;
+
+/**
  @brief Sets the SDK's locale.
  
  @discussion Use to change the SDK's UI to different language.
@@ -630,7 +639,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @discussion When only a single option is enabled, it become the default invocation mode. 
  If all options are disabled, bug reporting becomes the default invocation mode.
- 
+
  By default, all three options are enabled.
  
  @param bugReportEnabled A boolean to indicate whether bug reports are enabled or disabled.
@@ -667,7 +676,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @brief Remove all extra fields.
  
  @discussion Use this method to remove all added extra fields.
-  */
+ */
 + (void)removeExtraReportFields;
 
 /**
@@ -865,7 +874,7 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 /**
  @brief Used to reroute all your NSLogs to Instabug to be able to automatically include them with reports.
  
- @discussion For details on how to reroute your NSLogs to Instabug, see https://docs.instabug.com/docs/ios-logging
+ @discussion For details on how to reroute your NSLogs to Instabug, see http://docs.instabug.com/docs/logging
  
  @param format Format string.
  @param args Arguments list.
@@ -1095,7 +1104,7 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  
  To manually display any available surveys, call `+ [Instabug showSurveyIfAvailable]`.
  
- Defaults to NO.
+ Defaults to YES.
  
  @param autoShowingSurveysEnabled A boolean to indicate whether the surveys auto showing are enabled or not.
  */
@@ -1148,10 +1157,14 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
 
 /**
  @brief Sets the verbosity level of logs used to debug the Instabug SDK itself.
+ 
+ @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
 
  @param level Logs verbosity level.
  */
 + (void)setSDKDebugLogsLevel:(IBGSDKDebugLogsLevel)level;
 
 @end
+
+
 NS_ASSUME_NONNULL_END
