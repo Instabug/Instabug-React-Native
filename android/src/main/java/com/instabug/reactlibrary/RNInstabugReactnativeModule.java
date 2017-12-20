@@ -548,11 +548,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 invocationEvent = InstabugInvocationEvent.NONE;
             }
 
-            return invocationEvent;
         } catch (Exception e) {
             e.printStackTrace();
-            return invocationEvent;
         }
+        return invocationEvent;
     }
 
     /**
@@ -1245,11 +1244,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 corner = InstabugVideoRecordingButtonCorner.TOP_RIGHT;
             }
 
-            return corner;
         } catch (Exception e) {
             e.printStackTrace();
-            return corner;
         }
+        return corner;
     }
 
     private Locale getLocaleByKey(String instabugLocale) {
