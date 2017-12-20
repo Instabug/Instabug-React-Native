@@ -809,9 +809,7 @@ module.exports = {
      * @param position is of type IBGPosition `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
      */
      setVideoRecordingFloatingButtonPosition: function(position) {
-       if(Platform.OS === 'ios') {
-         Instabug.setVideoRecordingFloatingButtonPosition(position);
-       }
+       Instabug.setVideoRecordingFloatingButtonPosition(position);
      },
 
     /**
