@@ -24,6 +24,7 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
@@ -78,6 +79,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_SPANISH = "spanish";
     private final String LOCALE_SWEDISH = "swedish";
     private final String LOCALE_TURKISH = "turkish";
+
+    //Instabug Button Corner
+    private final String TOP_RIGHT = "topRight";
+    private final String TOP_LEFT = "topLeft";
+    private final String BOTTOM_RIGHT = "bottomRight";
+    private final String BOTTOM_LEFT = "bottomLeft";
 
     //Theme colors
     private final String COLOR_THEME_LIGHT = "light";
@@ -235,6 +242,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void changeLocale(String instabugLocale) {
         try {
             mInstabug.changeLocale(getLocaleByKey(instabugLocale));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the default corner at which the video recording floating button will be shown
+     *
+     * @param corner corner to stick the video recording floating button to
+     */
+    @ReactMethod
+    public void setVideoRecordingFloatingButtonPosition(String corner) {
+        try {
+            mInstabug.setVideoRecordingFloatingButtonCorner(getVideoRecordingButtonCorner(corner));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -527,11 +548,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 invocationEvent = InstabugInvocationEvent.NONE;
             }
 
-            return invocationEvent;
         } catch (Exception e) {
             e.printStackTrace();
-            return invocationEvent;
         }
+        return invocationEvent;
     }
 
     /**
@@ -1211,6 +1231,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private InstabugVideoRecordingButtonCorner getVideoRecordingButtonCorner(String cornerValue) {
+        InstabugVideoRecordingButtonCorner corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+        try {
+            if (cornerValue.equals(BOTTOM_RIGHT)) {
+                corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+            } else if (cornerValue.equals(BOTTOM_LEFT)) {
+                corner = InstabugVideoRecordingButtonCorner.BOTTOM_LEFT;
+            } else if (cornerValue.equals(TOP_LEFT)) {
+                corner = InstabugVideoRecordingButtonCorner.TOP_LEFT;
+            } else if (cornerValue.equals(TOP_RIGHT)) {
+                corner = InstabugVideoRecordingButtonCorner.TOP_RIGHT;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return corner;
+    }
+
     private Locale getLocaleByKey(String instabugLocale) {
         String localeInLowerCase = instabugLocale.toLowerCase();
         switch (localeInLowerCase) {
@@ -1275,7 +1314,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
             .emit(eventName, params);
     }
-    
+
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
@@ -1313,6 +1352,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeSwedish", LOCALE_SWEDISH);
         constants.put("localeTurkish", LOCALE_TURKISH);
 
+        constants.put("topRight", TOP_RIGHT);
+        constants.put("topLeft", TOP_LEFT);
+        constants.put("bottomRight", BOTTOM_RIGHT);
+        constants.put("bottomLeft", BOTTOM_LEFT);
+
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);
         constants.put("invalidEmailMessage", INVALID_EMAIL_MESSAGE);
@@ -1340,4 +1384,3 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return constants;
     }
 }
-
