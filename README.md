@@ -8,7 +8,7 @@
 
 Upgrading? Check the [Upgrade Guide](#upgrading-guide) before bumping to a new major version.
 
-<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="25%"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="73%"/> 
+<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="25%"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="73%"/>
 
 Instabug is a reliable [bug reporting and user feedback platform](https://instabug.com/bug-reporting) that empowers mobile-first companies to iterate faster and enhance their app quality.
 Gather bug reports from your users and the Instabug SDK will automatically capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging), [bug reproduction steps](https://instabug.com/user-steps) and more details that would help you debug and fix bugs faster.
@@ -79,7 +79,7 @@ Version 2.0.0
 
 ### Upgrading from 1.x.x
 
-When upgrading from version 1.x.x please make sure you do the following steps:
+When upgrading from version 1.x.x, please make sure you do the following steps:
 
 1. Run
 ```bash
@@ -95,6 +95,25 @@ pod install
 4. Run this command from your root project's directory. Make sure you have [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/) and `xcodeproj` gem installed before running this last command. (You can skip installing Ruby if you're building an Android app only)
 
  ```bash
+react-native link instabug-reactnative
+```
+
+### Upgrading from 2.0.x
+
+When upgrading from 2.0.x to 2.1.x, please make sure you do the following steps:
+
+1. Unlink the project before upgrading to the new version
+```bash
+reacy-native unlink instabug-reactnative
+```
+
+2. Install the new version by running
+```bash
+npm install instabug-reactnative
+```
+
+3. Link the project by running
+```bash
 react-native link instabug-reactnative
 ```
 
