@@ -111,8 +111,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
     private final String ADD_VIDEO = "addVideoMessage";
 
-    private final String AUDIO_RECORDING_PERMISSION_DENIED =
-            "audioRecordingPermissionDeniedMessage";
+    private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDeniedMessage";
 
     private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "recordingMessageToHoldText";
     private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";

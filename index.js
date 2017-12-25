@@ -381,8 +381,15 @@ module.exports = {
      * voiceNote attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
-    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording) {
-        Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording);
+    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote,
+      screenRecording) {
+      Instabug.setAttachmentTypesEnabled(
+      	screenshot,
+      	extraScreenshot,
+      	galleryImage,
+      	voiceNote,
+      	screenRecording
+      );
     },
 
     /**
@@ -433,7 +440,8 @@ module.exports = {
     /**
      * Sets the default value of the user's email and hides the email field from the reporting UI
      * and set the user's name to be included with all reports.
-     * It also reset the chats on device to that email and removes user attributes, user data and completed surveys.
+     * It also reset the chats on device to that email and removes user attributes,
+     * user data and completed surveys.
      * @param {string} email Email address to be set as the user's email.
      * @param {string} name Name of the user to be set.
      */
@@ -446,7 +454,8 @@ module.exports = {
     },
 
     /**
-     * Sets the default value of the user's email to nil and show email field and remove user name from all reports
+     * Sets the default value of the user's email to nil and show email field and remove user name
+     * from all reports
      * It also reset the chats on device and removes user attributes, user data and completed surveys.
      */
     logOut: function () {
@@ -454,10 +463,10 @@ module.exports = {
     },
 
     /**
-     * Sets an array of report categories to be shown for users to select from before reporting a bug or sending
-     * feedback.
-     * Use this method to give users a list of choices of categories their bug report or feedback might be related
-     * to. Selected category will be shown as a tag on your dashboard.
+     * Sets an array of report categories to be shown for users to select from before reporting a
+     * bug or sending feedback.
+     * Use this method to give users a list of choices of categories their bug report or feedback
+     * might be related to. Selected category will be shown as a tag on your dashboard.
      * @param {Array} titles titles to be shown in the list.
      */
     setReportCategories: function (...titles) {
@@ -633,8 +642,8 @@ module.exports = {
 
     /**
      * @summary Returns all user attributes.
-     * @param {function} userAttributesCallback callback with argument A new dictionary containing all the currently set user attributes,
-     * or an empty dictionary if no user attributes have been set.
+     * @param {function} userAttributesCallback callback with argument A new dictionary containing
+     * all the currently set user attributes, or an empty dictionary if no user attributes have been set.
      */
     getAllUserAttributes: function (userAttributesCallback) {
         Instabug.getAllUserAttributes(userAttributesCallback);
@@ -649,7 +658,8 @@ module.exports = {
 
     /**
      * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
-     * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
+     * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
+     * or disabled.
      */
     setViewHierarchyEnabled: function (viewHierarchyEnabled) {
         if (Platform.OS === 'ios') {
@@ -660,7 +670,8 @@ module.exports = {
     /**
      * @summary Sets whether surveys are enabled or not.
      * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
-     * those surveys are still going to be sent to the device, but are not going to be shown automatically.
+     * those surveys are still going to be sent to the device, but are not going to be
+     * shown automatically.
      * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
      * Defaults to `true`.
      * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
@@ -670,8 +681,10 @@ module.exports = {
     },
 
     /**
-     * @summary Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.
-     * Does nothing if there are no available surveys or if a survey has already been shown in the current session.
+     * @summary Shows one of the surveys that were not shown before, that also have conditions
+     * that match the current device/user.
+     * Does nothing if there are no available surveys or if a survey has already been shown
+     * in the current session.
      */
     showSurveysIfAvailable: function () {
         Instabug.showSurveysIfAvailable()
@@ -681,8 +694,8 @@ module.exports = {
      * @summary Sets a block of code to be executed just before the survey's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any UI changes before
      * the survey's UI is shown.
-     * @param {function} willShowSurveyHandler - A block of code that gets executed before presenting the survey's UI.
-     * report.
+     * @param {function} willShowSurveyHandler - A block of code that gets executed before
+     * presenting the survey's UI.
      */
     setWillShowSurveyHandler: function (willShowSurveyHandler) {
         if (Platform.OS === 'ios') {
@@ -701,9 +714,10 @@ module.exports = {
 
     /**
      * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
-     * This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
-     * is dismissed.
-     * @param {function} didDismissSurveyHandler - A block of code that gets executed after the survey's UI is dismissed.
+     * This block is executed on the UI thread. Could be used for performing any UI
+     * changes after the survey's UI is dismissed.
+     * @param {function} didDismissSurveyHandler - A block of code that gets executed after
+     * the survey's UI is dismissed.
      */
     setDidDismissSurveyHandler: function (didDismissSurveyHandler) {
         if (Platform.OS === 'ios') {
@@ -770,8 +784,8 @@ module.exports = {
     /**
      * @summary Checks whether app is development/Beta testing OR live
      * Note: This API is iOS only
-     * It returns in the callback false if in development or beta testing on Test Flight, and true if app is live on the
-     * app store.
+     * It returns in the callback false if in development or beta testing on Test Flight, and
+     * true if app is live on the app store.
      * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
      */
     isRunningLive: function(runningLiveCallBack) {
@@ -802,11 +816,12 @@ module.exports = {
     },
 
     /**
-     * Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
-     *
+     * Sets the default position at which the Instabug screen recording button will be shown.
+     * Different orientations are already handled.
      * (Default for `position` is `bottomRight`)
      *
-     * @param position is of type IBGPosition `topLeft` to show on the top left of screen , or `bottomRight` to show on the bottom right of scrren.
+     * @param position is of type IBGPosition `topLeft` to show on the top left of screen,
+     * or `bottomRight` to show on the bottom right of scrren.
      */
      setVideoRecordingFloatingButtonPosition: function(position) {
        Instabug.setVideoRecordingFloatingButtonPosition(position);
