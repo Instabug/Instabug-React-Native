@@ -60,7 +60,6 @@ extern NSString * const kIBGVideoRecordingFailureMessageStringName;
 extern NSString * const kIBGSurveyEnterYourAnswerTextPlaceholder;
 extern NSString * const kIBGSurveyNoAnswerTitle;
 extern NSString * const kIBGSurveyNoAnswerMessage;
-extern NSString * const kIBGSurveySubmitTitle;
 extern NSString * const kIBGVideoPressRecordTitle;
 extern NSString * const kIBGCollectingDataText;
 extern NSString * const kIBGLowDiskStorageTitle;
@@ -68,6 +67,12 @@ extern NSString * const kIBGLowDiskStorageMessage;
 extern NSString * const kIBGInboundByLineMessage;
 extern NSString * const kIBGExtraFieldIsRequiredText;
 extern NSString * const kIBGExtraFieldMissingDataText;
+extern NSString * const kIBGSurveyIntroTitleText;
+extern NSString * const kIBGSurveyIntroDescriptionText;
+extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
+extern NSString * const kIBGSurveyIntroDismissButtonText;
+extern NSString * const kIBGSurveyThankYouTitleText;
+extern NSString * const kIBGSurveyThankYouDescriptionText;
 
 /// -----------
 /// @name Enums
@@ -241,15 +246,18 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringScreenRecording,
     IBGStringImage,
     IBGStringSurveyEnterYourAnswerPlaceholder,
-    IBGStringSurveyNoAnswerTitle,
-    IBGStringSurveyNoAnswerMessage,
-    IBGStringSurveySubmitTitle,
     IBGStringVideoPressRecordTitle,
     IBGStringCollectingDataText,
     IBGStringLowDiskStorageTitle,
     IBGStringLowDiskStorageMessage,
     IBGStringExtraFieldIsRequiredText,
-    IBGStringExtraFieldMissingDataText
+    IBGStringExtraFieldMissingDataText,
+    IBGStringSurveyIntroTitleText,
+    IBGStringSurveyIntroDescriptionText,
+    IBGStringSurveyIntroTakeSurveyButtonText,
+    IBGStringSurveyIntroDismissButtonText,
+    IBGStringSurveyThankYouTitleText,
+    IBGStringSurveyThankYouDescriptionText
 };
 
 /**
