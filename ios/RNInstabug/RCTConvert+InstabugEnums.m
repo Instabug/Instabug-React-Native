@@ -115,9 +115,6 @@ RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"screenRecording": @(IBGStringScreenRecording),
                                  @"image": @(IBGStringImage),
                                  @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
-                                 @"surveyNoAnswerTitle": @(IBGStringSurveyNoAnswerTitle),
-                                 @"surveyNoAnswerMessage": @(IBGStringSurveyNoAnswerMessage),
-                                 @"surveySubmitTitle": @(IBGStringSurveySubmitTitle),
                                  @"videPressRecord": @(IBGStringVideoPressRecordTitle),
                                  @"collectingDataText": @(IBGStringCollectingDataText)
                                  }), IBGStringShakeHint, integerValue);
