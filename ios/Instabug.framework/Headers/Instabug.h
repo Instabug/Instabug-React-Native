@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
 
- Version:    7.5
+ Version:    7.6
  */
 
 #import <Foundation/Foundation.h>
@@ -1152,6 +1152,24 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  @param didShowSurveyHandler A block of code that gets executed after the survey's UI is dismissed.
  */
 + (void)setDidDismissSurveyHandler:(void (^)(void))didShowSurveyHandler;
+
+/**
+  @brief Shows Survey with a specific token.
+ 
+ @discussion Does nothing if there are no available surveys with that specific token. Answered and canceled surveys won't show up again.
+ 
+  @param surveyToken A String with a survey token.
+  */
++ (void)showSurveyWithToken:(NSString *)surveyToken;
+
+/**
+ @brief Returns true if the survey with a specific token was answered before .
+ 
+ @discussion Will return false if the token does not exist or if the survey was not answered before.
+ 
+ @param surveyToken A String with a survey token.
+*/
++ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
 
 #pragma mark - SDK Debugging
 
