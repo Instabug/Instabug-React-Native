@@ -61,6 +61,10 @@ RCT_EXPORT_METHOD(IBGLog:(NSString *)log) {
     [Instabug IBGLog:log];
 }
 
+RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
+    [Instabug showSurveyWithToken:surveyToken];
+}
+
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
     [Instabug setUserStepsEnabled:isUserStepsEnabled];
 }

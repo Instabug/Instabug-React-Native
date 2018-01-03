@@ -104,6 +104,17 @@ module.exports = {
     },
 
     /**
+     * Shows Survey with a specific token.
+     * Does nothing if there are no available surveys with that specific token.
+     * Answered and canceled surveys won't show up again.
+     * @param {string} surveyToken - A String with a survey token.
+     *
+     */
+    showSurveyWithToken: function (surveyToken) {
+      Instabug.showSurveyWithToken(surveyToken);
+    },
+
+    /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
