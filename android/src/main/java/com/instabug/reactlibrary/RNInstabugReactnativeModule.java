@@ -673,6 +673,26 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     *
+     * @param surveyToken the attribute key as string
+     * @param hasRespondedCallback A callback that gets invoked with the returned value of whether
+     *                             the user has responded to the survey or not.
+     * @return the desired value of whether the user has responded to the survey or not.
+     */
+    @ReactMethod
+    public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
+        boolean hasResponded;
+        try {
+            hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            hasRespondedCallback.invoke(hasResponded);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Shows survey with a specific token.
      * Does nothing if there are no available surveys with that specific token.
      * Answered and cancelled surveys won't show up again.
