@@ -104,9 +104,9 @@ module.exports = {
     },
 
     /**
-     * Shows Survey with a specific token.
+     * Shows survey with a specific token.
      * Does nothing if there are no available surveys with that specific token.
-     * Answered and canceled surveys won't show up again.
+     * Answered and cancelled surveys won't show up again.
      * @param {string} surveyToken - A String with a survey token.
      *
      */

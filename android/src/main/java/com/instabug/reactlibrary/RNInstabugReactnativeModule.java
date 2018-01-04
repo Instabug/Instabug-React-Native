@@ -673,6 +673,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Shows survey with a specific token.
+     * Does nothing if there are no available surveys with that specific token.
+     * Answered and cancelled surveys won't show up again.
+     *
+     * @param surveyToken A String with a survey token.
+     */
+    @ReactMethod
+    public void showSurveyWithToken(String surveyToken) {
+        try {
+            Instabug.showSurvey(surveyToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
      *
      * @param key   the attribute
