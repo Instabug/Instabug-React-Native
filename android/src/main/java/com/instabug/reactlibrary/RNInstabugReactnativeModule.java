@@ -357,15 +357,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {boolean} screenShot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
      * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
-     * @param {boolean} voiceNote A boolean to enable or disable voice note attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
     public void setAttachmentTypesEnabled(boolean screenshot, boolean extraScreenshot, boolean
-            galleryImage, boolean voiceNote, boolean screenRecording) {
+            galleryImage, boolean screenRecording) {
         try {
-            mInstabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                    voiceNote, screenRecording);
+            Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                    screenRecording);
         } catch (Exception e) {
             e.printStackTrace();
         }

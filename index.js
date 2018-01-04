@@ -399,13 +399,12 @@ module.exports = {
      * @param {boolean} galleryImage A boolean to enable or disable gallery image
      * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
      * info.plist to enable gallery image attachments.
-     * @param {boolean} voiceNote A boolean to enable or disable voice note attachments.
-     * In iOS 10+, NSMicrophoneUsageDescription should be set in info.plist to enable
-     * voiceNote attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
-    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording) {
-        Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording);
+    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, screenRecording) {
+      if(Platform.OS == 'android')
+        Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, screenRecording);
+
     },
 
     /**
