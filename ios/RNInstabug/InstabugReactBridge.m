@@ -65,6 +65,10 @@ RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
     [Instabug showSurveyWithToken:surveyToken];
 }
 
+RCT_EXPORT_METHOD(hasRespondedToSurveyWithToken:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
+    callback(@[@([Instabug hasRespondedToSurveyWithToken:surveyToken])]);
+}
+
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
     [Instabug setUserStepsEnabled:isUserStepsEnabled];
 }

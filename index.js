@@ -115,6 +115,18 @@ module.exports = {
     },
 
     /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     * @param {string} surveyToken - A String with a survey token.
+     * @param {function} surveyTokenCallback callback with argument as the desired value of the whether
+     * the survey has been responded to or not.
+     *
+     */
+    hasRespondedToSurveyWithToken: function (surveyToken, surveyTokenCallback) {
+      Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
+    },
+
+    /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
