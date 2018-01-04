@@ -6,11 +6,11 @@
 	<dict>
 		<key>Headers/Instabug.h</key>
 		<data>
-		BfsBz56unTcAbZ94XgCeCH4hLiA=
+		wbRGHXdBl0uQRZhJAsvdO+5ARfU=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		GBrcvErX2xz9tnmYH6xjSxlG2w8=
+		lCGWkFUMspzePxMCyoe61a364pw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -23,11 +23,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BfsBz56unTcAbZ94XgCeCH4hLiA=
+			wbRGHXdBl0uQRZhJAsvdO+5ARfU=
 			</data>
 			<key>hash2</key>
 			<data>
-			3dXqAVUmyI5WNvmhyqz38J4NQ5+VDt2a97m1Ja3T+Tk=
+			/beRz83/JfRE3ERsVSNwUaAFbEc3w28rX4aVpoNOC9k=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

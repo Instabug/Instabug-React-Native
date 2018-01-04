@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
 
- Version:    7.6
+ Version:    7.6.1
  */
 
 #import <Foundation/Foundation.h>
@@ -618,8 +618,14 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
                             extraScreenShot:(BOOL)extraScreenShot
                                galleryImage:(BOOL)galleryImage
                                   voiceNote:(BOOL)voiceNote
-                            screenRecording:(BOOL)screenRecording;
+                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v8.0, use setAttachmentOptions: instead");
 
+/**
+ @brief Sets whether attachments in bug reporting and in-app messaging are enabled.
+ 
+ @param attachmentTypes A NS_OPTIONS to add enabled attachments type.
+ */
++ (void)setEnabledAttachmentTypes:(IBGAttachmentType)attachmentTypes;
 /**
  @brief Enables/disables showing in-app notifications when the user receives a new message.
  

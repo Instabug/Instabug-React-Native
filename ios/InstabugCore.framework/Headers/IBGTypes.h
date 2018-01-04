@@ -291,6 +291,16 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
     IBGLogLevelFatal
 };
 
+/**
+ The attachment types selected in Attachment action sheet.
+ */
+typedef NS_OPTIONS(NSInteger, IBGAttachmentType) {
+    IBGAttachmentTypeScreenShot = 1 << 1,
+    IBGAttachmentTypeExtraScreenShot = 1 << 2,
+    IBGAttachmentTypeGalleryImage = 1 << 4,
+    IBGAttachmentTypeScreenRecording = 1 << 6,
+};
+
 @interface UIView (Instabug)
 
 /**
