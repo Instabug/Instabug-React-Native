@@ -402,9 +402,7 @@ module.exports = {
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, screenRecording) {
-      if(Platform.OS == 'android')
         Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, screenRecording);
-
     },
 
     /**

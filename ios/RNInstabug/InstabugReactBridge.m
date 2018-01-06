@@ -9,6 +9,7 @@
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
+#import <InstabugCore/IBGTypes.h>
 
 @implementation InstabugReactBridge
 
@@ -184,16 +185,25 @@ RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(IBGString)key) {
 }
 
 RCT_EXPORT_METHOD(setAttachmentTypesEnabled:(BOOL)screenShot
-                  extraScreenShot:(BOOL)extraScreenShot
-                  galleryImage:(BOOL)galleryImage
-                  voiceNote:(BOOL)voiceNote
-                  screenRecording:(BOOL)screenRecording) {
-    [Instabug setAttachmentTypesEnabledScreenShot:screenShot
-                                  extraScreenShot:extraScreenShot
-                                     galleryImage:galleryImage
-                                        voiceNote:voiceNote
-                                  screenRecording:screenRecording];
-}
+                    extraScreenShot:(BOOL)extraScreenShot
+                    galleryImage:(BOOL)galleryImage
+                    screenRecording:(BOOL)screenRecording) {
+     IBGAttachmentType attachmentTypes = 0;
+     if(screenShot) {
+         attachmentTypes = IBGAttachmentTypeScreenShot;
+     }
+     if(extraScreenShot) {
+         attachmentTypes |= IBGAttachmentTypeExtraScreenShot;
+     }
+     if(galleryImage) {
+         attachmentTypes |= IBGAttachmentTypeGalleryImage;
+     }
+     if(screenRecording) {
+         attachmentTypes |= IBGAttachmentTypeScreenRecording;
+     }
+
+     [Instabug setEnabledAttachmentTypes:attachmentTypes];
+  }
 
 RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
     [Instabug setChatNotificationEnabled:isChatNotificationEnabled];
