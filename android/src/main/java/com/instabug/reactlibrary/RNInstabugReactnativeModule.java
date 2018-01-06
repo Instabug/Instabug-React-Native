@@ -360,7 +360,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
-    public void setAttachmentTypesEnabled(boolean screenshot, boolean extraScreenshot, boolean
+    public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
             galleryImage, boolean screenRecording) {
         try {
             Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,

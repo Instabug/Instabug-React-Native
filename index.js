@@ -392,6 +392,24 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
+     * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+     * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+     * @param {boolean} extraScreenshot A boolean to enable or disable extra
+     * screenshot attachments.
+     * @param {boolean} galleryImage A boolean to enable or disable gallery image
+     * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
+     * info.plist to enable gallery image attachments.
+     * @param {boolean} voiceNote A boolean to enable or disable voice note attachments.
+     * In iOS 10+, NSMicrophoneUsageDescription should be set in info.plist to enable
+     * voiceNote attachments.
+     * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+     */
+    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording) {
+        Instabug.setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording);
+    },
+
+    /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
      * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -401,8 +419,8 @@ module.exports = {
      * info.plist to enable gallery image attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
-    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, screenRecording) {
-        Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, screenRecording);
+    setEnabledAttachmentTypes: function (screenshot, extraScreenshot, galleryImage, screenRecording) {
+        Instabug.setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording);
     },
 
     /**

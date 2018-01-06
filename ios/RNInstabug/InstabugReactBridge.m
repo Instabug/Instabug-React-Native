@@ -184,7 +184,7 @@ RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(IBGString)key) {
     [Instabug setString:value toKey:key];
 }
 
-RCT_EXPORT_METHOD(setAttachmentTypesEnabled:(BOOL)screenShot
+RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
                     extraScreenShot:(BOOL)extraScreenShot
                     galleryImage:(BOOL)galleryImage
                     screenRecording:(BOOL)screenRecording) {
