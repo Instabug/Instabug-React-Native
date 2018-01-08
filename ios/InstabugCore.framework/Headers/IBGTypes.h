@@ -73,6 +73,8 @@ extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
 extern NSString * const kIBGSurveyIntroDismissButtonText;
 extern NSString * const kIBGSurveyThankYouTitleText;
 extern NSString * const kIBGSurveyThankYouDescriptionText;
+extern NSString * const kIBGSurveysNPSLeastLikelyStringName;
+extern NSString * const kIBGSurveysNPSMostLikelyStringName;
 
 /// -----------
 /// @name Enums
