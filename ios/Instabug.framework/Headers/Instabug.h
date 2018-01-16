@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
 
- Version:    7.7.1
+ Version:    7.8
  */
 
 #import <Foundation/Foundation.h>
@@ -159,6 +159,18 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
+
+/**
+ @brief Sets whether user steps tracking is visual, non visula or disabled.
+ 
+ @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a
+ bug or a crash. User steps are attached with each report being sent.
+ 
+ User Steps tracking is enabled by default if it's available in your current plan.
+ 
+ @param userStepsMode An enum to set user steps tracking to be enabled , non visual or disabled.
+ */
++ (void)setReproStepsMode:(IBGUserStepsMode)userStepsMode;
 
 /**
  @brief Sets whether to track and report crashes or not.
