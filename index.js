@@ -50,6 +50,16 @@ module.exports = {
     },
 
     /**
+     * Sets whether user steps tracking is visual, non visula or disabled.
+     *
+     * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking to be
+     * enabled, non visual or disabled.
+     */
+    setReproStepsMode: function (reproStepsMode) {
+        Instabug.setReproStepsMode(reproStepsMode);
+    },
+
+    /**
      * Attaches user data to each report being sent.
      * Each call to this method overrides the user data to be attached.
      * Maximum size of the string is 1,000 characters.
@@ -861,6 +871,17 @@ module.exports = {
         screenshot: Instabug.invocationEventScreenshot,
         twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
         floatingButton: Instabug.invocationEventFloatingButton
+    },
+
+    /**
+     * The user steps option.
+     * @readonly
+     * @enum {number}
+     */
+    reproStepsMode: {
+        enabled: Instabug.reproStepsEnabled,
+        disabled: Instabug.reproStepsDisabled,
+        enabledWithNoScreenshot: Instabug.reproStepsEnabledWithNoScreenshot,
     },
 
     /**

@@ -50,6 +50,10 @@ RCT_EXPORT_METHOD(dismiss) {
     [Instabug dismiss];
 }
 
+RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
+    [Instabug setReproStepsMode:reproStepsMode];
+}
+
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     [Instabug setFileAttachment:fileLocation];
 }
@@ -387,6 +391,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
+
+              @"reproStepsEnabled": @(IBGUserStepsModeEnable),
+              @"reproStepsDisabled": @(IBGUserStepsModeEnabledWithNoScreenshots),
+              @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeDisable),
 
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),
