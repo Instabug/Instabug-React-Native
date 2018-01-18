@@ -12,6 +12,7 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
+import com.instabug.library.visualusersteps.State;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvent(this.invocationEvent)
                 .setCrashReportingState(Feature.State.DISABLED)
+                .setReproStepsState(State.DISABLED)
                 .build();
 
         Instabug.setPrimaryColor(Color.parseColor(primaryColor));

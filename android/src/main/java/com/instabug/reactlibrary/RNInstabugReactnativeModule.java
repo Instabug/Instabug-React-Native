@@ -19,6 +19,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -242,6 +243,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void changeLocale(String instabugLocale) {
         try {
             mInstabug.changeLocale(getLocaleByKey(instabugLocale));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ReactMethod
+    public void setViewHierarchyEnabled(boolean enabled) {
+        try {
+            if(enabled) {
+                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+            } else {
+
+                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
