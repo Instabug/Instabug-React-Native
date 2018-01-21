@@ -690,9 +690,7 @@ module.exports = {
      * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
      */
     setViewHierarchyEnabled: function (viewHierarchyEnabled) {
-        if (Platform.OS === 'ios') {
-            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
-        }
+        Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
     },
 
     /**
@@ -861,6 +859,17 @@ module.exports = {
         screenshot: Instabug.invocationEventScreenshot,
         twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
         floatingButton: Instabug.invocationEventFloatingButton
+    },
+
+    /**
+     * The user steps option.
+     * @readonly
+     * @enum {number}
+     */
+    reproStepsMode: {
+        enabled: Instabug.reproStepsEnabled,
+        disabled: Instabug.reproStepsDisabled,
+        enabledWithNoScreenshot: Instabug.reproStepsEnabledWithNoScreenshot,
     },
 
     /**

@@ -294,7 +294,16 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
 };
 
 /**
- The attachment types selected in Attachment action sheet.
+ The user steps option.
+ */
+typedef NS_ENUM(NSInteger, IBGUserStepsMode) {
+    IBGUserStepsModeEnable,
+    IBGUserStepsModeEnabledWithNoScreenshots,
+    IBGUserStepsModeDisable
+};
+
+ /**
+    The attachment types selected in Attachment action sheet.
  */
 typedef NS_OPTIONS(NSInteger, IBGAttachmentType) {
     IBGAttachmentTypeScreenShot = 1 << 1,
