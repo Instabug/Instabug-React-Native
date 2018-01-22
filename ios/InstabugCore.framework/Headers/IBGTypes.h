@@ -1,9 +1,12 @@
-//
-//  IBGTypes.h
-//  Instabug
-//
-//  Copyright:  (c) 2013-2016 by Instabug, Inc., all rights reserved.
-//
+/*
+ File:       InstabugCore/IBGTypes.h
+ 
+ Contains:   Enums and Constants for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
+ 
+ Version:    7.8.1
+ */
 
 #import <UIKit/UIKit.h>
 

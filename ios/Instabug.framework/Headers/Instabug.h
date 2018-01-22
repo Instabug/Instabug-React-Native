@@ -3,9 +3,9 @@
 
  Contains:   API for using Instabug's SDK.
 
- Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
+ Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.8
+ Version:    7.8.1
  */
 
 #import <Foundation/Foundation.h>
@@ -43,6 +43,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 /// ---------------------------
 /// @name SDK Manual Invocation
 /// ---------------------------
+
 
 /**
  @brief Invokes the SDK manually with the default invocation mode.
@@ -826,7 +827,9 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  */
 + (void)logUserEventWithName:(NSString *)name params:(nullable NSDictionary *)params;
 
-#pragma mark - IBGLog
+/// ------------------------
+/// @name IBGLog
+/// ------------------------
 
 /**
  @brief Adds custom logs that will be sent with each report.
@@ -969,7 +972,9 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  */
 + (void)clearAllLogs;
 
-#pragma mark - Network Logging
+/// ------------------------
+/// @name Network Logging
+/// ------------------------
 
 /**
  @brief Sets whether to log network requests or not.
@@ -1113,7 +1118,9 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  */
 + (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* (^)(NSURLAuthenticationChallenge *challenge))reciveChallengeHandler;
 
-#pragma mark - Surveys
+/// ------------------------
+/// @name Surveys
+/// ------------------------
 
 /**
  @brief Sets whether auto surveys showing are enabled or not.
@@ -1189,7 +1196,9 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
 */
 + (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
 
-#pragma mark - SDK Debugging
+/// ------------------------
+/// @name SDK Debugging
+/// ------------------------
 
 /**
  @brief Sets the verbosity level of logs used to debug the Instabug SDK itself.
