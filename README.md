@@ -117,6 +117,21 @@ npm install instabug-reactnative
 react-native link instabug-reactnative
 ```
 
+## Microphone and Photo Library Usage Description (iOS Only)
+Instabug needs access to the microphone and photo library to be able to let users add audio and video attachments. Starting from iOS 10, apps that don’t provide a usage description for those 2 permissions would be rejected when submitted to the App Store.
+
+For your app not to be rejected, you’ll need to add the following 2 keys to your app’s info.plist file with text explaining to the user why those permissions are needed:
+
+* `NSMicrophoneUsageDescription`
+* `NSPhotoLibraryUsageDescription`
+
+If your app doesn’t already access the microphone or photo library, we recommend using a usage description like:
+
+* "`<app name>` needs access to the microphone to be able to attach voice notes."
+* "`<app name>` needs access to your photo library for you to be able to attach images."
+
+**The permission alert for accessing the microphone/photo library will NOT appear unless users attempt to attach a voice note/photo while using Instabug.**
+
 ## Documentation
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
