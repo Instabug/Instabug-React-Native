@@ -26,7 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             		new RNInstabugReactnativePackage.Builder("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this)
 							.setInvocationEvent("shake")
-                                .setPrimaryColor("#1D82DC")
+              .setPrimaryColor("#1D82DC")
 							.setFloatingEdge("left")
 							.setFloatingButtonOffsetFromTop(250)
 							.build()

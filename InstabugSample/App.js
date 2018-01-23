@@ -34,7 +34,7 @@ export default class App extends Component<{}> {
       switchValue: false,
       colorTheme: 'Dark'
     };
-    Instabug.startWithToken("8020a1fab5139a4be54038a9728c4dc8", Instabug.invocationEvent.shake);
+    Instabug.startWithToken("APP_TOKEN", Instabug.invocationEvent.shake);
     Instabug.setReportCategories("Performance","UI","Flow","Other");
     Instabug.setPromptOptionsEnabled(true, true, true);
     Instabug.setLocale(Instabug.locale.english);
