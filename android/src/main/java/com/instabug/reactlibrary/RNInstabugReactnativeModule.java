@@ -112,8 +112,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
     private final String ADD_VIDEO = "addVideoMessage";
 
-    private final String AUDIO_RECORDING_PERMISSION_DENIED =
-            "audioRecordingPermissionDeniedMessage";
+    private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDeniedMessage";
 
     private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "recordingMessageToHoldText";
     private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";
@@ -237,7 +236,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Change Locale of Instabug UI elements(defaults to English)
      *
-     * @param String instabugLocale
+     * @param instabugLocale
      */
     @ReactMethod
     public void changeLocale(String instabugLocale) {
@@ -353,7 +352,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Set the primary color that the SDK will use to tint certain UI elements in the SDK
      *
-     * @param primaryColorValue The value of the primary color ,
+     * @param primaryColor The value of the primary color ,
      *                          whatever this color was parsed from a resource color or hex color
      *                          or RGB color values
      */
@@ -387,12 +386,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Appends a log message to Instabug internal log
-     * <p>
      * These logs are then sent along the next uploaded report. All log messages are timestamped
-     * <br/>
      * Logs aren't cleared per single application run. If you wish to reset the logs, use
-     * {@link #clearLog()}
-     * </p>
      * Note: logs passed to this method are <b>NOT</b> printed to Logcat
      *
      * @param message log message
@@ -409,7 +404,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Gets tags.
      *
-     * @return all tags added using {@link #addTags(String...)}
+     * @return all tags added
      * @see #resetTags()
      */
     @ReactMethod
@@ -432,8 +427,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
      *
-     * @param username Username.
-     * @param email    User's default email
+     * @param userName Username.
+     * @param userEmail    User's default email
      */
     @ReactMethod
     public void identifyUser(String userName, String userEmail) {
@@ -445,7 +440,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Reset ALL tags added using {@link #addTags(String...)}
+     * Reset ALL tags added
      */
     @ReactMethod
     public void resetTags() {
@@ -601,7 +596,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Report a caught exception to Instabug dashboard
      *
-     * @param throwable the exception to be reported
+     * @param stack the exception to be reported
+     * @param message the message of the exception to be reported
+     * @param errorIdentifier used to group issues manually reported
      */
     @ReactMethod
     public void reportJsException(ReadableArray stack, String message, String errorIdentifier) {
@@ -640,7 +637,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * </p>
      * Note: logs passed to this method are <b>NOT</b> printed to Logcat
      *
-     * @param logMessage The message you would like logged
      * @param level      the level
      * @param message    the message
      */
@@ -825,7 +821,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * shows up on your Instabug dashboard as a tag to make filtering
      * through issues easier.
      *
-     * @param reportCategories the report categories list which is a list of ReportCategory model
+     * @param categoriesTitles the report categories list which is a list of ReportCategory model
      */
     @ReactMethod
     public void setReportCategories(ReadableArray categoriesTitles) {
@@ -849,7 +845,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * sending reports.
      * Defaults to YES.
      *
-     * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
+     * @param isEmailFieldRequired A boolean to indicate whether email
      *                  field is required or not.
      */
     @ReactMethod
@@ -865,7 +861,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      *
-     * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
+     * @param isCommentFieldRequired A boolean to indicate whether comment
      *                  field is required or not.
      */
     @ReactMethod
@@ -881,8 +877,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Overrides any of the strings shown in the SDK with custom ones.
      * Allows you to customize any of the strings shown to users in the SDK.
      *
-     * @param {string}  string String value to override the default one.
-     * @param {strings} key Key of string to override.
+     * @param string String value to override the default one.
+     * @param key Key of string to override.
      */
     @ReactMethod
     public void setString(String string, String key) {
@@ -914,7 +910,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * By default, screenshot view is shown when reporting a bug, but not when
      * sending feedback.
      *
-     * @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
+     * @param willSkipScreenshotAnnotation sets whether screenshot view is
      *                  shown or not. Passing YES will show screenshot view for both feedback and
      *                  bug reporting, while passing NO will disable it for both.
      */
@@ -931,7 +927,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Logs a user event that happens through the lifecycle of the application.
      * Logged user events are going to be sent with each report, as well as at the end of a session.
      *
-     * @param {string} name Event name.
+     * @param name Event name.
      */
     @ReactMethod
     public void logUserEventWithName(String name) {
@@ -947,8 +943,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Logged user events are going to be sent with each report, as well as at the end of a
      * session.
      *
-     * @param {string}      name Event name.
-     * @param {ReadableMap} params An optional ReadableMap to be associated with the event.
+     * @param name Event name.
+     * @param params An optional ReadableMap to be associated with the event.
      */
     @ReactMethod
     public void logUserEventWithNameAndParams(String name, ReadableMap params) {
@@ -975,7 +971,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
      *
-     * @param {preInvocationHandler} preInvocationHandler - A callback that gets executed before
+     * @param preInvocationHandler - A callback that gets executed before
      *                               invoking the SDK
      */
     @ReactMethod
@@ -998,7 +994,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
      *
-     * @param {preSendingHandler} preSendingHandler - A callback that gets executed before
+     * @param preSendingHandler - A callback that gets executed before
      *                            sending each bug
      *                            report.
      */
@@ -1022,7 +1018,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes after the SDK's UI is dismissed.
      *
-     * @param {postInvocationHandler} postInvocationHandler - A callback to get executed after
+     * @param postInvocationHandler - A callback to get executed after
      *                                dismissing the SDK.
      */
     @ReactMethod
@@ -1047,7 +1043,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Show any valid survey if exist
      *
-     * @return return true if a valid survey was shown otherwise false
+     * @return true if a valid survey was shown otherwise false
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
@@ -1061,7 +1057,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Show any valid survey if exist
      *
-     * @return return true if a valid survey was shown otherwise false
+     * @return true if a valid survey was shown otherwise false
      */
     @ReactMethod
     public void setSurveysEnabled(boolean surveysEnabled) {
@@ -1091,7 +1087,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * WARNING: This runs on your application's main UI thread. Please do not include
      * any blocking operations to avoid ANRs.
      *
-     * @param preShowingSurveyRunnable to run on the UI thread before showing any valid survey
+     * @param willShowSurveyHandler to run on the UI thread before showing any valid survey
      */
     @ReactMethod
     public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
@@ -1113,7 +1109,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * WARNING: This runs on your application's main UI thread. Please do not include
      * any blocking operations to avoid ANRs.
      *
-     * @param afterShowingSurveyRunnable to run on the UI thread after showing any valid survey
+     * @param didDismissSurveyHandler to run on the UI thread after showing any valid survey
      */
     @ReactMethod
     public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
@@ -1137,9 +1133,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * none is enabled, Bug
      * reporting becomes the default invocation option.
      *
-     * @param {boolean} chat      weather Talk to us is enable or not
-     * @param {boolean} bug       weather Report a Problem is enable or not
-     * @param {boolean} feedback  weather General Feedback  is enable or not
+     * @param chat      weather Talk to us is enable or not
+     * @param bug       weather Report a Problem is enable or not
+     * @param feedback  weather General Feedback  is enable or not
      */
     @ReactMethod
     public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
@@ -1169,7 +1165,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * you could increase the shaking difficulty level by
      * increasing the `350` value and vice versa.
      *
-     * @param {number} androidThreshold Threshold for android devices.
+     * @param androidThreshold Threshold for android devices.
      */
     @ReactMethod
     public void setShakingThresholdForAndroid(int androidThreshold) {
@@ -1183,7 +1179,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets a block of code that gets executed when a new message is received.
      *
-     * @param {onNewMessageHandler} onNewMessageHandler - A callback that gets
+     * @param onNewMessageHandler - A callback that gets
      *                              executed when a new message is received.
      */
     @ReactMethod
