@@ -34,8 +34,11 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocatio
     [Instabug startWithToken:token invocationEvent:invocationEvent];
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    [Instabug setCrashReportingEnabled:NO];
     [Instabug setNetworkLoggingEnabled:NO];
+    SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
+    if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
+        [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
+    }
 }
 
 RCT_EXPORT_METHOD(invoke) {
@@ -58,6 +61,13 @@ RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     [Instabug setFileAttachment:fileLocation];
 }
 
+RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace) {
+    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:");
+    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace];
+    }
+}
+
 RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
     [Instabug setUserData:userData];
 }
@@ -76,6 +86,14 @@ RCT_EXPORT_METHOD(hasRespondedToSurveyWithToken:(NSString *)surveyToken callback
 
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
     [Instabug setUserStepsEnabled:isUserStepsEnabled];
+}
+
+RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
+  if(enabledCrashReporter) {
+    [Instabug setCrashReportingEnabled:YES];
+  } else {
+    [Instabug setCrashReportingEnabled:NO];
+  }
 }
 
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
