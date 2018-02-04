@@ -104,6 +104,29 @@ module.exports = {
     },
 
     /**
+     * Shows survey with a specific token.
+     * Does nothing if there are no available surveys with that specific token.
+     * Answered and cancelled surveys won't show up again.
+     * @param {string} surveyToken - A String with a survey token.
+     *
+     */
+    showSurveyWithToken: function (surveyToken) {
+      Instabug.showSurveyWithToken(surveyToken);
+    },
+
+    /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     * @param {string} surveyToken - A String with a survey token.
+     * @param {function} surveyTokenCallback callback with argument as the desired value of the whether
+     * the survey has been responded to or not.
+     *
+     */
+    hasRespondedToSurveyWithToken: function (surveyToken, surveyTokenCallback) {
+      Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
+    },
+
+    /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
@@ -369,6 +392,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
      * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -381,15 +405,23 @@ module.exports = {
      * voiceNote attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
-    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote,
-      screenRecording) {
-      Instabug.setAttachmentTypesEnabled(
-      	screenshot,
-      	extraScreenshot,
-      	galleryImage,
-      	voiceNote,
-      	screenRecording
-      );
+
+    setAttachmentTypesEnabled: function (screenshot, extraScreenshot, galleryImage, voiceNote, screenRecording) {
+        Instabug.setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording);
+    },
+
+    /**
+     * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+     * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+     * @param {boolean} extraScreenshot A boolean to enable or disable extra
+     * screenshot attachments.
+     * @param {boolean} galleryImage A boolean to enable or disable gallery image
+     * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
+     * info.plist to enable gallery image attachments.
+     * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+     */
+    setEnabledAttachmentTypes: function (screenshot, extraScreenshot, galleryImage, screenRecording) {
+        Instabug.setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording);
     },
 
     /**
@@ -662,9 +694,7 @@ module.exports = {
      * or disabled.
      */
     setViewHierarchyEnabled: function (viewHierarchyEnabled) {
-        if (Platform.OS === 'ios') {
-            Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
-        }
+        Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
     },
 
     /**
@@ -838,6 +868,17 @@ module.exports = {
         screenshot: Instabug.invocationEventScreenshot,
         twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
         floatingButton: Instabug.invocationEventFloatingButton
+    },
+
+    /**
+     * The user steps option.
+     * @readonly
+     * @enum {number}
+     */
+    reproStepsMode: {
+        enabled: Instabug.reproStepsEnabled,
+        disabled: Instabug.reproStepsDisabled,
+        enabledWithNoScreenshot: Instabug.reproStepsEnabledWithNoScreenshot,
     },
 
     /**

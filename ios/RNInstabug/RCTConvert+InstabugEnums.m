@@ -34,6 +34,13 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
 
+RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
+                                      @"reproStepsEnabled": @(IBGUserStepsModeEnable),
+                                      @"reproStepsDisabled": @(IBGUserStepsModeDisable),
+                                      @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeEnabledWithNoScreenshots)
+                                      }), IBGUserStepsModeEnable, integerValue)
+
+
 RCT_ENUM_CONVERTER(IBGReportType, (@{
                                      @"reportTypeBug": @(IBGReportTypeBug),
                                      @"reportTypeFeedback": @(IBGReportTypeFeedback)
@@ -115,9 +122,6 @@ RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"screenRecording": @(IBGStringScreenRecording),
                                  @"image": @(IBGStringImage),
                                  @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
-                                 @"surveyNoAnswerTitle": @(IBGStringSurveyNoAnswerTitle),
-                                 @"surveyNoAnswerMessage": @(IBGStringSurveyNoAnswerMessage),
-                                 @"surveySubmitTitle": @(IBGStringSurveySubmitTitle),
                                  @"videPressRecord": @(IBGStringVideoPressRecordTitle),
                                  @"collectingDataText": @(IBGStringCollectingDataText)
                                  }), IBGStringShakeHint, integerValue);

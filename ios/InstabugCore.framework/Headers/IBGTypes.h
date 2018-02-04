@@ -1,9 +1,12 @@
-//
-//  IBGTypes.h
-//  Instabug
-//
-//  Copyright:  (c) 2013-2016 by Instabug, Inc., all rights reserved.
-//
+/*
+ File:       InstabugCore/IBGTypes.h
+ 
+ Contains:   Enums and Constants for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
+ 
+ Version:    7.8.1
+ */
 
 #import <UIKit/UIKit.h>
 
@@ -60,7 +63,6 @@ extern NSString * const kIBGVideoRecordingFailureMessageStringName;
 extern NSString * const kIBGSurveyEnterYourAnswerTextPlaceholder;
 extern NSString * const kIBGSurveyNoAnswerTitle;
 extern NSString * const kIBGSurveyNoAnswerMessage;
-extern NSString * const kIBGSurveySubmitTitle;
 extern NSString * const kIBGVideoPressRecordTitle;
 extern NSString * const kIBGCollectingDataText;
 extern NSString * const kIBGLowDiskStorageTitle;
@@ -68,6 +70,14 @@ extern NSString * const kIBGLowDiskStorageMessage;
 extern NSString * const kIBGInboundByLineMessage;
 extern NSString * const kIBGExtraFieldIsRequiredText;
 extern NSString * const kIBGExtraFieldMissingDataText;
+extern NSString * const kIBGSurveyIntroTitleText;
+extern NSString * const kIBGSurveyIntroDescriptionText;
+extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
+extern NSString * const kIBGSurveyIntroDismissButtonText;
+extern NSString * const kIBGSurveyThankYouTitleText;
+extern NSString * const kIBGSurveyThankYouDescriptionText;
+extern NSString * const kIBGSurveysNPSLeastLikelyStringName;
+extern NSString * const kIBGSurveysNPSMostLikelyStringName;
 
 /// -----------
 /// @name Enums
@@ -241,15 +251,18 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringScreenRecording,
     IBGStringImage,
     IBGStringSurveyEnterYourAnswerPlaceholder,
-    IBGStringSurveyNoAnswerTitle,
-    IBGStringSurveyNoAnswerMessage,
-    IBGStringSurveySubmitTitle,
     IBGStringVideoPressRecordTitle,
     IBGStringCollectingDataText,
     IBGStringLowDiskStorageTitle,
     IBGStringLowDiskStorageMessage,
     IBGStringExtraFieldIsRequiredText,
-    IBGStringExtraFieldMissingDataText
+    IBGStringExtraFieldMissingDataText,
+    IBGStringSurveyIntroTitleText,
+    IBGStringSurveyIntroDescriptionText,
+    IBGStringSurveyIntroTakeSurveyButtonText,
+    IBGStringSurveyIntroDismissButtonText,
+    IBGStringSurveyThankYouTitleText,
+    IBGStringSurveyThankYouDescriptionText
 };
 
 /**
@@ -281,6 +294,25 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
     IBGLogLevelWarning,
     IBGLogLevelError,
     IBGLogLevelFatal
+};
+
+/**
+ The user steps option.
+ */
+typedef NS_ENUM(NSInteger, IBGUserStepsMode) {
+    IBGUserStepsModeEnable,
+    IBGUserStepsModeEnabledWithNoScreenshots,
+    IBGUserStepsModeDisable
+};
+
+ /**
+    The attachment types selected in Attachment action sheet.
+ */
+typedef NS_OPTIONS(NSInteger, IBGAttachmentType) {
+    IBGAttachmentTypeScreenShot = 1 << 1,
+    IBGAttachmentTypeExtraScreenShot = 1 << 2,
+    IBGAttachmentTypeGalleryImage = 1 << 4,
+    IBGAttachmentTypeScreenRecording = 1 << 6,
 };
 
 @interface UIView (Instabug)

@@ -9,6 +9,7 @@
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
+#import <InstabugCore/IBGTypes.h>
 
 @implementation InstabugReactBridge
 
@@ -49,6 +50,10 @@ RCT_EXPORT_METHOD(dismiss) {
     [Instabug dismiss];
 }
 
+RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
+    [Instabug setReproStepsMode:reproStepsMode];
+}
+
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     [Instabug setFileAttachment:fileLocation];
 }
@@ -59,6 +64,14 @@ RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
 
 RCT_EXPORT_METHOD(IBGLog:(NSString *)log) {
     [Instabug IBGLog:log];
+}
+
+RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
+    [Instabug showSurveyWithToken:surveyToken];
+}
+
+RCT_EXPORT_METHOD(hasRespondedToSurveyWithToken:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
+    callback(@[@([Instabug hasRespondedToSurveyWithToken:surveyToken])]);
 }
 
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
@@ -175,17 +188,26 @@ RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(IBGString)key) {
     [Instabug setString:value toKey:key];
 }
 
-RCT_EXPORT_METHOD(setAttachmentTypesEnabled:(BOOL)screenShot
-                  extraScreenShot:(BOOL)extraScreenShot
-                  galleryImage:(BOOL)galleryImage
-                  voiceNote:(BOOL)voiceNote
-                  screenRecording:(BOOL)screenRecording) {
-    [Instabug setAttachmentTypesEnabledScreenShot:screenShot
-                                  extraScreenShot:extraScreenShot
-                                     galleryImage:galleryImage
-                                        voiceNote:voiceNote
-                                  screenRecording:screenRecording];
-}
+RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
+                    extraScreenShot:(BOOL)extraScreenShot
+                    galleryImage:(BOOL)galleryImage
+                    screenRecording:(BOOL)screenRecording) {
+     IBGAttachmentType attachmentTypes = 0;
+     if(screenShot) {
+         attachmentTypes = IBGAttachmentTypeScreenShot;
+     }
+     if(extraScreenShot) {
+         attachmentTypes |= IBGAttachmentTypeExtraScreenShot;
+     }
+     if(galleryImage) {
+         attachmentTypes |= IBGAttachmentTypeGalleryImage;
+     }
+     if(screenRecording) {
+         attachmentTypes |= IBGAttachmentTypeScreenRecording;
+     }
+
+     [Instabug setEnabledAttachmentTypes:attachmentTypes];
+  }
 
 RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
     [Instabug setChatNotificationEnabled:isChatNotificationEnabled];
@@ -370,6 +392,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
 
+              @"reproStepsEnabled": @(IBGUserStepsModeEnable),
+              @"reproStepsDisabled": @(IBGUserStepsModeEnabledWithNoScreenshots),
+              @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeDisable),
+
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),
 
@@ -440,9 +466,6 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"screenRecording": @(IBGStringScreenRecording),
               @"image": @(IBGStringImage),
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
-              @"surveyNoAnswerTitle": @(IBGStringSurveyNoAnswerTitle),
-              @"surveyNoAnswerMessage": @(IBGStringSurveyNoAnswerMessage),
-              @"surveySubmitTitle": @(IBGStringSurveySubmitTitle),
               @"videPressRecord": @(IBGStringVideoPressRecordTitle),
               @"collectingDataText": @(IBGStringCollectingDataText)
               };

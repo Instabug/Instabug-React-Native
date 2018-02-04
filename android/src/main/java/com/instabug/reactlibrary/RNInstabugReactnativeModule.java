@@ -19,6 +19,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -246,6 +247,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void setViewHierarchyEnabled(boolean enabled) {
+        try {
+            if(enabled) {
+                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+            } else {
+
+                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sets the default corner at which the video recording floating button will be shown
      *
@@ -356,15 +371,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param {boolean} screenShot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
      * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
-     * @param {boolean} voiceNote A boolean to enable or disable voice note attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
-    public void setAttachmentTypesEnabled(boolean screenshot, boolean extraScreenshot, boolean
-            galleryImage, boolean voiceNote, boolean screenRecording) {
+    public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
+            galleryImage, boolean screenRecording) {
         try {
-            mInstabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                    voiceNote, screenRecording);
+            Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                    screenRecording);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -663,6 +677,42 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void clearLogs() {
         try {
             InstabugLog.clearLogs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns true if the survey with a specific token was answered before.
+     * Will return false if the token does not exist or if the survey was not answered before.
+     *
+     * @param surveyToken the attribute key as string
+     * @param hasRespondedCallback A callback that gets invoked with the returned value of whether
+     *                             the user has responded to the survey or not.
+     * @return the desired value of whether the user has responded to the survey or not.
+     */
+    @ReactMethod
+    public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
+        boolean hasResponded;
+        try {
+            hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            hasRespondedCallback.invoke(hasResponded);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows survey with a specific token.
+     * Does nothing if there are no available surveys with that specific token.
+     * Answered and cancelled surveys won't show up again.
+     *
+     * @param surveyToken A String with a survey token.
+     */
+    @ReactMethod
+    public void showSurveyWithToken(String surveyToken) {
+        try {
+            Instabug.showSurvey(surveyToken);
         } catch (Exception e) {
             e.printStackTrace();
         }

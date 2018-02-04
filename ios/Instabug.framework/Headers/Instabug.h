@@ -3,9 +3,9 @@
 
  Contains:   API for using Instabug's SDK.
 
- Copyright:  (c) 2013-2017 by Instabug, Inc., all rights reserved.
+ Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.4.1
+ Version:    7.8.1
  */
 
 #import <Foundation/Foundation.h>
@@ -43,6 +43,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 /// ---------------------------
 /// @name SDK Manual Invocation
 /// ---------------------------
+
 
 /**
  @brief Invokes the SDK manually with the default invocation mode.
@@ -159,6 +160,18 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
+
+/**
+ @brief Sets whether user steps tracking is visual, non visula or disabled.
+ 
+ @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a
+ bug or a crash. User steps are attached with each report being sent.
+ 
+ User Steps tracking is enabled by default if it's available in your current plan.
+ 
+ @param userStepsMode An enum to set user steps tracking to be enabled , non visual or disabled.
+ */
++ (void)setReproStepsMode:(IBGUserStepsMode)userStepsMode;
 
 /**
  @brief Sets whether to track and report crashes or not.
@@ -618,8 +631,14 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
                             extraScreenShot:(BOOL)extraScreenShot
                                galleryImage:(BOOL)galleryImage
                                   voiceNote:(BOOL)voiceNote
-                            screenRecording:(BOOL)screenRecording;
+                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v8.0, use setAttachmentOptions: instead");
 
+/**
+ @brief Sets whether attachments in bug reporting and in-app messaging are enabled.
+ 
+ @param attachmentTypes A NS_OPTIONS to add enabled attachments type.
+ */
++ (void)setEnabledAttachmentTypes:(IBGAttachmentType)attachmentTypes;
 /**
  @brief Enables/disables showing in-app notifications when the user receives a new message.
  
@@ -808,7 +827,9 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  */
 + (void)logUserEventWithName:(NSString *)name params:(nullable NSDictionary *)params;
 
-#pragma mark - IBGLog
+/// ------------------------
+/// @name IBGLog
+/// ------------------------
 
 /**
  @brief Adds custom logs that will be sent with each report.
@@ -951,7 +972,9 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  */
 + (void)clearAllLogs;
 
-#pragma mark - Network Logging
+/// ------------------------
+/// @name Network Logging
+/// ------------------------
 
 /**
  @brief Sets whether to log network requests or not.
@@ -1095,7 +1118,9 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  */
 + (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* (^)(NSURLAuthenticationChallenge *challenge))reciveChallengeHandler;
 
-#pragma mark - Surveys
+/// ------------------------
+/// @name Surveys
+/// ------------------------
 
 /**
  @brief Sets whether auto surveys showing are enabled or not.
@@ -1153,7 +1178,27 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  */
 + (void)setDidDismissSurveyHandler:(void (^)(void))didShowSurveyHandler;
 
-#pragma mark - SDK Debugging
+/**
+  @brief Shows Survey with a specific token.
+ 
+ @discussion Does nothing if there are no available surveys with that specific token. Answered and canceled surveys won't show up again.
+ 
+  @param surveyToken A String with a survey token.
+  */
++ (void)showSurveyWithToken:(NSString *)surveyToken;
+
+/**
+ @brief Returns true if the survey with a specific token was answered before .
+ 
+ @discussion Will return false if the token does not exist or if the survey was not answered before.
+ 
+ @param surveyToken A String with a survey token.
+*/
++ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
+
+/// ------------------------
+/// @name SDK Debugging
+/// ------------------------
 
 /**
  @brief Sets the verbosity level of logs used to debug the Instabug SDK itself.
