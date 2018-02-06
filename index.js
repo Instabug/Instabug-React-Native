@@ -858,6 +858,23 @@ module.exports = {
     },
 
     /**
+     * Send handled JS error object
+     *
+     * @param errorObject   Error object to be sent to Instabug's servers
+     */
+    reportJSExcpetion: function(errorObject) {
+      if(Platform.OS === 'android') {
+        let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+        var jsonObject = {
+          message: errorObject.message,
+          os: 'react_native',
+          exception: jsStackTrace
+        }
+        Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+      }
+    },
+
+    /**
      * Sets the default position at which the Instabug screen recording button will be shown.
      * Different orientations are already handled.
      * (Default for `position` is `bottomRight`)

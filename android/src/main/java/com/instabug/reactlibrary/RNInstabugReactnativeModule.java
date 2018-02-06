@@ -298,7 +298,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Send JS error object
+     * Send unhandled JS error object
      *
      * @param exceptionObject   Exception object to be sent to Instabug's servers
      */
@@ -306,17 +306,32 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void sendJSCrash(String exceptionObject) {
         try {
             JSONObject newJSONObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(newJSONObject);
+            sendJSCrashByReflection(newJSONObject, false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendJSCrashByReflection(JSONObject newJSONObject) {
+    /**
+     * Send handled JS error object
+     *
+     * @param exceptionObject   Exception object to be sent to Instabug's servers
+     */
+    @ReactMethod
+    public void sendHandledJSCrash(String exceptionObject) {
         try {
-            Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportCrashWithStackTrace");
+            JSONObject newJSONObject = new JSONObject(exceptionObject);
+            sendJSCrashByReflection(newJSONObject, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendJSCrashByReflection(JSONObject newJSONObject, boolean isHandled) {
+        try {
+            Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
             if (method != null) {
-                method.invoke(null, newJSONObject);
+                method.invoke(null, newJSONObject, isHandled);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
