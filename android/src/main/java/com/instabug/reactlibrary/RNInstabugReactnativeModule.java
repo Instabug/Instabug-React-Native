@@ -343,7 +343,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             if(isEnabled) {
                 Instabug.setCrashReportingState(Feature.State.ENABLED);
             } else {
-
                 Instabug.setCrashReportingState(Feature.State.DISABLED);
             }
         } catch (Exception e) {
