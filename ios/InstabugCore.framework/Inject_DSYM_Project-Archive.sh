@@ -20,4 +20,6 @@ find "${PROJECT_DIR}" -name "*.bcsymbolmap" | (while read -r file
 do
     cp -r "${file}" "${ARCHIVE_DSYMS_PATH}/../BCSymbolMaps"
 done
+)
 echo "Instabug: Injecting dSYM and bcsymbolmap inside project archive complete."
+

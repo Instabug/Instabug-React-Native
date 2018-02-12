@@ -19,7 +19,7 @@ let init = () => {
 
       //JSON object to be sent to the native SDK
       var jsonObject = {
-        message: e.message,
+        message: e.name + " - " + e.message,
         os: 'react_native',
         exception: jsStackTrace
       }

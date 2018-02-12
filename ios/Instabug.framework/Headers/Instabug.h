@@ -162,6 +162,25 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
 
 /**
+ @brief Sets whether the SDK is recording the screen or not.
+
+ @discussion Enabling auto screen recording would give you an insight on the scenario a user has performed before encountering a bug or a crash. screen recording is attached with each report being sent.
+
+ Auto screen recording is disabled by default.
+
+ @param enabled A boolean to set auto screen recording to being enabled or disabled.
+ */
++ (void)setAutoScreenRecordingEnabled:(BOOL)enabled;
+
+/**
+ @brief Sets maximum auto screen recording video duration.
+
+ @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
+
+ @param duration A float to set maximum auto screen recording video duration.
+ */
++ (void)setAutoScreenRecordingDuration:(CGFloat)duration;
+/**
  @brief Sets whether user steps tracking is visual, non visula or disabled.
  
  @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a

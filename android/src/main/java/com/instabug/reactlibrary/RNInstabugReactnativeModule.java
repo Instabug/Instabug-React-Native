@@ -327,6 +327,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Sets whether crash reporting feature is Enabled or Disabled
+     *
+     * @param isEnabled   Exception object to be sent to Instabug's servers
+     */
+    @ReactMethod
+    public void setCrashReportingEnabled(boolean isEnabled) {
+        try {
+            if(isEnabled) {
+                Instabug.setCrashReportingState(Feature.State.ENABLED);
+            } else {
+
+                Instabug.setCrashReportingState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendJSCrashByReflection(JSONObject newJSONObject, boolean isHandled) {
         try {
             Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");

@@ -89,7 +89,7 @@ module.exports = {
      * We don't send exceptions from __DEV__, since it's way too noisy!
      */
     setCrashReportingEnabled: function(enableCrashReporter){
-      if (Platform.OS === 'ios')
+      // if (Platform.OS === 'ios')
         Instabug.setCrashReportingEnabled(enableCrashReporter);
     },
 
@@ -862,15 +862,17 @@ module.exports = {
      *
      * @param errorObject   Error object to be sent to Instabug's servers
      */
-    reportJSExcpetion: function(errorObject) {
+    reportJSException: function(errorObject) {
+      let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+      var jsonObject = {
+        message: errorObject.name + " - " + errorObject.message,
+        os: 'react_native',
+        exception: jsStackTrace
+      }
       if(Platform.OS === 'android') {
-        let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
-        var jsonObject = {
-          message: errorObject.message,
-          os: 'react_native',
-          exception: jsStackTrace
-        }
         Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+      } else {
+        Instabug.sendHandledJSCrash(jsonObject);
       }
     },
 

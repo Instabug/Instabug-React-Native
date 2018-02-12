@@ -62,9 +62,16 @@ RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
 }
 
 RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace) {
-    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:");
+    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
     if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace];
+        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(false)];
+    }
+}
+
+RCT_EXPORT_METHOD(sendHandledJSCrash:(NSDictionary *)stackTrace) {
+    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
+    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(true)];
     }
 }
 
