@@ -252,19 +252,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    // @ReactMethod
-    // public void setViewHierarchyEnabled(boolean enabled) {
-    //     try {
-    //         if(enabled) {
-    //             Instabug.setViewHierarchyState(Feature.State.ENABLED);
-    //         } else {
-    //
-    //             Instabug.setViewHierarchyState(Feature.State.DISABLED);
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    /**
+     * Enables/disables view hierarchy state
+     *
+     * @param enabled
+     */
+    @ReactMethod
+    public void setViewHierarchyEnabled(boolean enabled) {
+        try {
+            if(enabled) {
+                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+            } else {
+
+                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Sets the default corner at which the video recording floating button will be shown
@@ -772,16 +777,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                             the user has responded to the survey or not.
      * @return the desired value of whether the user has responded to the survey or not.
      */
-    // @ReactMethod
-    // public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
-    //     boolean hasResponded;
-    //     try {
-    //         hasResponded = Instabug.hasRespondToSurvey(surveyToken);
-    //         hasRespondedCallback.invoke(hasResponded);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    @ReactMethod
+    public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
+        boolean hasResponded;
+        try {
+            hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            hasRespondedCallback.invoke(hasResponded);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Shows survey with a specific token.
@@ -790,14 +795,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      * @param surveyToken A String with a survey token.
      */
-    // @ReactMethod
-    // public void showSurveyWithToken(String surveyToken) {
-    //     try {
-    //         Instabug.showSurvey(surveyToken);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    @ReactMethod
+    public void showSurveyWithToken(String surveyToken) {
+        try {
+            Instabug.showSurvey(surveyToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.

@@ -89,7 +89,6 @@ module.exports = {
      * We don't send exceptions from __DEV__, since it's way too noisy!
      */
     setCrashReportingEnabled: function(enableCrashReporter){
-      // if (Platform.OS === 'ios')
         Instabug.setCrashReportingEnabled(enableCrashReporter);
     },
 
