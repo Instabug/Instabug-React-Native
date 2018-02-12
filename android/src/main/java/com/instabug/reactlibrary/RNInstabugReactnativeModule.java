@@ -463,8 +463,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
             galleryImage, boolean screenRecording) {
         try {
-            Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                    false, screenRecording);
+            Instabug.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage, screenRecording);
         } catch (Exception e) {
             e.printStackTrace();
         }
