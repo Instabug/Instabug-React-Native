@@ -310,9 +310,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendJSCrash(String exceptionObject) {
         try {
-            JSONObject newJSONObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(newJSONObject, false);
-        } catch (JSONException e) {
+            sendJSCrashByReflection(exceptionObject, false);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -325,9 +324,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendHandledJSCrash(String exceptionObject) {
         try {
-            JSONObject newJSONObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(newJSONObject, true);
-        } catch (JSONException e) {
+            sendJSCrashByReflection(exceptionObject, true);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -350,17 +348,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void sendJSCrashByReflection(JSONObject newJSONObject, boolean isHandled) {
+    private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
         try {
-            Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
-            if (method != null) {
-                method.invoke(null, newJSONObject, isHandled);
-            }
+          JSONObject newJSONObject = new JSONObject(exceptionObject);
+          Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
+          if (method != null) {
+              method.invoke(null, newJSONObject, isHandled);
+          }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
