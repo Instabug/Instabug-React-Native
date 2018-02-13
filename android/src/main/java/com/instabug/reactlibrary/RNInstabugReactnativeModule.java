@@ -234,6 +234,37 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enable/Disable screen recording
+     *
+     * @param autoScreenRecordingEnabled boolean for enable/disable
+     * screen recording on crash feature
+     */
+    @ReactMethod
+    public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
+        try {
+            Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets auto screen recording maximum duration
+     *
+     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+     *                                       in milliseconds
+     * The maximum duration is 30000 milliseconds
+     */
+    @ReactMethod
+    public void setAutoScreenRecordingMaxDuration(int autoScreenRecordingMaxDuration) {
+        try {
+            Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Change Locale of Instabug UI elements(defaults to English)
      *
      * @param instabugLocale

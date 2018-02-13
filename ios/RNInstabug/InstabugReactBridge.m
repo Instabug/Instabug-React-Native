@@ -78,6 +78,14 @@ RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
     [Instabug setUserStepsEnabled:isUserStepsEnabled];
 }
 
+RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
+    [Instabug setAutoScreenRecordingEnabled:enabled];
+}
+
+RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
+    [Instabug setAutoScreenRecordingDuration:duration];
+}
+
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         [Instabug setPreSendingHandler:^{
