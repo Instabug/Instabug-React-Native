@@ -5,12 +5,12 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.8.4
+ Version:    7.9.1
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <InstabugCore/IBGTypes.h>
+#import <InstabugCore/InstabugCore.h>
 
 /**
  This is the API for using Instabug's SDK. For more details about the SDK integration,
@@ -161,6 +161,25 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
 
+/**
+ @brief Sets whether the SDK is recording the screen or not.
+
+ @discussion Enabling auto screen recording would give you an insight on the scenario a user has performed before encountering a bug or a crash. screen recording is attached with each report being sent.
+
+ Auto screen recording is disabled by default.
+
+ @param enabled A boolean to set auto screen recording to being enabled or disabled.
+ */
++ (void)setAutoScreenRecordingEnabled:(BOOL)enabled;
+
+/**
+ @brief Sets maximum auto screen recording video duration.
+
+ @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
+
+ @param duration A float to set maximum auto screen recording video duration.
+ */
++ (void)setAutoScreenRecordingDuration:(CGFloat)duration;
 /**
  @brief Sets whether user steps tracking is visual, non visula or disabled.
  
@@ -631,7 +650,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
                             extraScreenShot:(BOOL)extraScreenShot
                                galleryImage:(BOOL)galleryImage
                                   voiceNote:(BOOL)voiceNote
-                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v8.0, use setAttachmentOptions: instead");
+                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v7.6.1, use setEnabledAttachmentTypes: instead");
 
 /**
  @brief Sets whether attachments in bug reporting and in-app messaging are enabled.
