@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile 'com.facebook.react:react-native:0.20.+'
-    compile 'com.instabug.library:instabug:4.10.1-SNAPSHOT'
+    compile 'com.instabug.library:instabug:4.10.1.1-SNAPSHOT'
 
 }
