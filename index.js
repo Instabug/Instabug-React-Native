@@ -73,8 +73,8 @@ module.exports = {
      * Sets auto screen recording maximum duration
      *
      * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
-     *                                       in milliseconds
-     * The maximum duration is 30000 milliseconds
+     *                                       in seconds
+     * The maximum duration is 30 seconds
      */
     setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
         Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration)

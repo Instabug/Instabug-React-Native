@@ -258,7 +258,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setAutoScreenRecordingMaxDuration(int autoScreenRecordingMaxDuration) {
         try {
-            Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+            int durationInMilli = autoScreenRecordingMaxDuration*1000;
+            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
         } catch (Exception e) {
             e.printStackTrace();
         }
