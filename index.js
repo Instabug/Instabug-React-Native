@@ -61,6 +61,26 @@ module.exports = {
     },
 
     /**
+     * Enable/Disable screen recording
+     * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
+     * screen recording on crash feature
+     */
+    setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+        Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+    },
+
+    /**
+     * Sets auto screen recording maximum duration
+     *
+     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+     *                                       in seconds
+     * The maximum duration is 30 seconds
+     */
+    setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
+        Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration)
+    },
+
+    /**
      * Adds custom logs that will be sent with each report.
      * @param {string} log Message to be logged.
      */
