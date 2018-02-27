@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.9.2
+ Version:    7.10
  */
 
 #import <UIKit/UIKit.h>
@@ -78,6 +78,10 @@ extern NSString * const kIBGSurveyThankYouTitleText;
 extern NSString * const kIBGSurveyThankYouDescriptionText;
 extern NSString * const kIBGSurveysNPSLeastLikelyStringName;
 extern NSString * const kIBGSurveysNPSMostLikelyStringName;
+extern NSString * const kIBGExpectedResultsStringName;
+extern NSString * const kIBGActualResultsStringName;
+extern NSString * const kIBGStepsToReproduceStringName;
+extern NSString * const kIBGReplyButtonTitleStringName;
 
 /// -----------
 /// @name Enums
@@ -262,7 +266,11 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringSurveyIntroTakeSurveyButtonText,
     IBGStringSurveyIntroDismissButtonText,
     IBGStringSurveyThankYouTitleText,
-    IBGStringSurveyThankYouDescriptionText
+    IBGStringSurveyThankYouDescriptionText,
+    IBGExpectedResultsStringName,
+    IBGActualResultsStringName,
+    IBGStepsToReproduceStringName,
+    IBGReplyButtonTitleStringName
 };
 
 /**
@@ -313,6 +321,15 @@ typedef NS_OPTIONS(NSInteger, IBGAttachmentType) {
     IBGAttachmentTypeExtraScreenShot = 1 << 2,
     IBGAttachmentTypeGalleryImage = 1 << 4,
     IBGAttachmentTypeScreenRecording = 1 << 6,
+};
+
+/**
+ The extended bug report mode.
+ */
+typedef NS_ENUM(NSInteger, IBGExtendedBugReportMode) {
+    IBGExtendedBugReportModeEnabledWithRequiredFields,
+    IBGExtendedBugReportModeEnabledWithOptionalFields,
+    IBGExtendedBugReportModeDisabled
 };
 
 @interface UIView (Instabug)
