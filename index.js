@@ -515,6 +515,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.7.0, you can now add categories from the dashboard.
      * Sets an array of report categories to be shown for users to select from before reporting a
      * bug or sending feedback.
      * Use this method to give users a list of choices of categories their bug report or feedback
@@ -527,6 +528,17 @@ module.exports = {
         } else if (Platform.OS == 'android') {
             Instabug.setReportCategories(titles);
         }
+    },
+
+    /**
+     * ets whether the extended bug report mode should be disabled, enabled with
+     * required fields or enabled with optional fields.
+     * @param {extendedBugReportMode} extendedBugReportMode An enum to disable
+     *                                the extended bug report mode, enable it
+     *                                with required or with optional fields.
+     */
+    setExtendedBugReportMode: function (extendedBugReportMode) {
+        Instabug.setExtendedBugReportMode(extendedBugReportMode);
     },
 
     /**
@@ -934,6 +946,18 @@ module.exports = {
         newChat: Instabug.invocationModeNewChat,
         chatsList: Instabug.invocationModeChatsList
     },
+
+    /**
+     *  The extended bug report mode
+     * @readonly
+     * @enum {number}
+     */
+    extendedBugReportMode: {
+        enabledWithRequiredFields: Instabug.enabledWithRequiredFields,
+        enabledWithOptionalFields: Instabug.enabledWithOptionalFields,
+        disabled: Instabug.disabled
+    },
+
 
     /**
      * The supported locales
