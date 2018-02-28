@@ -40,6 +40,12 @@ RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnable, integerValue)
 
+RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{
+                                      @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
+                                      @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
+                                      @"disabled": @(IBGExtendedBugReportModeDisabled)
+                                      }), IBGExtendedBugReportModeDisabled, integerValue)
+
 
 RCT_ENUM_CONVERTER(IBGReportType, (@{
                                      @"reportTypeBug": @(IBGReportTypeBug),

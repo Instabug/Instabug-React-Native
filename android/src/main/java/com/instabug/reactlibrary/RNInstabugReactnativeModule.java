@@ -21,6 +21,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
@@ -86,6 +87,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String TOP_LEFT = "topLeft";
     private final String BOTTOM_RIGHT = "bottomRight";
     private final String BOTTOM_LEFT = "bottomLeft";
+
+    //Instabug extended bug report modes
+    private final String EXTENDED_BUG_REPORT_REQUIRED_FIELDS = "enabledWithRequiredFields";
+    private final String EXTENDED_BUG_REPORT_OPTIONAL_FIELDS = "enabledWithOptionalFields";
+    private final String EXTENDED_BUG_REPORT_DISABLED = "disabled";
 
     //Theme colors
     private final String COLOR_THEME_LIGHT = "light";
@@ -205,6 +211,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
 
+
+
     /**
      * Dismisses all visible Instabug views
      */
@@ -274,6 +282,33 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void changeLocale(String instabugLocale) {
         try {
             mInstabug.changeLocale(getLocaleByKey(instabugLocale));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets whether the extended bug report mode should be disabled,
+     * enabled with required fields,  or enabled with optional fields.
+     *
+     * @param extendedBugReportMode
+     */
+    @ReactMethod
+    public void setExtendedBugReportMode(String extendedBugReportMode) {
+        try {
+          switch(extendedBugReportMode) {
+              case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+                  break;
+              case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+                  break;
+              case EXTENDED_BUG_REPORT_DISABLED:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                  break;
+              default:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+          }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1434,6 +1469,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("topLeft", TOP_LEFT);
         constants.put("bottomRight", BOTTOM_RIGHT);
         constants.put("bottomLeft", BOTTOM_LEFT);
+
+        constants.put("enabledWithRequiredFields", EXTENDED_BUG_REPORT_REQUIRED_FIELDS);
+        constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);
+        constants.put("disabled", EXTENDED_BUG_REPORT_DISABLED);
 
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);

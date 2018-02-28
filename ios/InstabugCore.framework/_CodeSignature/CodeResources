@@ -6,83 +6,79 @@
 	<dict>
 		<key>Headers/IBGTypes.h</key>
 		<data>
-		VgGQDGRbFiH9VGuj/yoFzi9DL6Y=
+		oclAFtQpkI2PhYiF12Z2x+oY0oU=
 		</data>
 		<key>Headers/InstabugCore.h</key>
 		<data>
-		fbHs2xgsSh9slUiN9UheSHjuvZ0=
+		rUiBFO7xxymDfDr0/D0u74HBzJ4=
 		</data>
 		<key>IBGActionSheetCell.nib</key>
 		<data>
-		axD/4vrxYkA+u8o67rOlOMUrink=
+		EDRsZLMUnl6NvomzLAZLcUvz3gk=
 		</data>
 		<key>IBGActionSheetVC-iPhone.nib</key>
 		<data>
-		Ai3LmPZGUtpjOFWYuKgs5fzTKNo=
+		8yKBTyMnJnw9rEPjMXoMJEUopJ4=
 		</data>
 		<key>IBGAttachmentButton.nib</key>
 		<data>
-		tpNhI9KlSoid5DTYIQHEAV6CUw0=
+		DQsrIDBtV39++KYp6dYg9S8fMyo=
 		</data>
 		<key>IBGBugVC-iPhone.nib</key>
 		<data>
-		v3sXhJEyCKflKnJ5D0Qe9rI5NhM=
+		cZcQ7LcAVnKtGcvDYT+h5nycgnA=
 		</data>
 		<key>IBGChatCell.nib</key>
 		<data>
-		ivKodd+1LqLf/eUiB2lk7mU7wLk=
+		L2nRO+F9Oj5Vib334FuqhMfT5dY=
 		</data>
 		<key>IBGChatListVC-iPhone.nib</key>
 		<data>
-		Adin9Q1Cj0ZP1QFCqHYGktGxRJ8=
+		IWQPbUyDYy+OTk25lad3GJbbFEc=
 		</data>
 		<key>IBGChatVC-iPhone.nib</key>
 		<data>
-		cZCC2Toyr+7WSdQNynRbupXqysg=
+		heVyp6L+nLIv/+kwvGql9gPAys0=
 		</data>
 		<key>IBGFullScreenImageViewController.nib</key>
 		<data>
-		/ggsdh3Ltg0w5oXEVjQHooHWKIg=
+		7iPh19QU7nWtVK5PTCylRMJHKJE=
 		</data>
 		<key>IBGMessagesView.nib</key>
 		<data>
-		KumxE3fk6F6MfKG3IOdM8VuaUT4=
+		U3JTSBQ/f9V14Tv81NU8zsDzuoQ=
 		</data>
 		<key>IBGPoweredByView.nib</key>
 		<data>
-		vy3t8vdCuSV4tXOaTGWiYEN9nHo=
+		8kfp666HjrbXbxiHyCGWiFdT0Yw=
 		</data>
 		<key>IBGPromptCell.nib</key>
 		<data>
-		Iu7YfrTL+RgEpRpVj5rx9fid42Y=
+		MVosbbzh4bgpRbbsd2WnapgxsCE=
 		</data>
 		<key>IBGPromptVC-iPhone.nib</key>
 		<data>
-		wHiKkLIHnz77p2/KNzvA/QpRpRo=
+		H2aiV1tDKRp1eeEwQOOA+Qaztyg=
 		</data>
 		<key>IBGReplyView-iPhone.nib</key>
 		<data>
-		yRS52lnpNQtoUKAEXukWEQ4GM1s=
+		w2L2P4lwz7sxWGdiBfPO+l6N0pc=
 		</data>
 		<key>IBGReportCategoriesVC-iPhone.nib</key>
 		<data>
-		tBEbxJ+safwHmWmDIPcvedG1fw8=
+		Ql2WzHcxy1ozLO64e53Hg381eJM=
 		</data>
 		<key>IBGScreenshotVC-iPhone.nib</key>
 		<data>
-		nBPp7WPAfVIuuzMlh49KTylTGzQ=
-		</data>
-		<key>IBGUnnotifiedMessagesAlertView.nib</key>
-		<data>
-		EZTQj70fpsMl29X70jn3oyVzXBc=
+		/WRd0horoVav/20lbUVaMAUjmNg=
 		</data>
 		<key>IBGVideoPlaybackViewController.nib</key>
 		<data>
-		+fxfhLLIgy1l2vP5Ct09SVfmtnA=
+		qaOvHFU9So2ZXXoLvNT5NebfhBk=
 		</data>
 		<key>IBGVoiceNoteRecordingViewController-iPhone.nib</key>
 		<data>
-		jjNp/zrZWQBheoAPUpEdkLQHt1U=
+		DgGKS2Mr8I5xAOixj7KQGuVt84M=
 		</data>
 		<key>InAppScreenshotPlaceholder.png</key>
 		<data>
@@ -110,7 +106,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		eBSzQ/nBWQQt1RH7b28d5z00q7g=
+		EpZg8BPDpqPOxTV+FbjGswfMgKc=
 		</data>
 		<key>Inject_DSYM_Project-Archive.sh</key>
 		<data>
@@ -164,7 +160,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			H1q3z0BfwHD8dtxGCEFQf2sCGQg=
+			CoHJzfR10AA+0U8+z0a9B0KuDgY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -185,7 +181,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GJMj2OG2CH1A41AoxA/oblR+WHU=
+			yOS04z00eMYaEmJTLq/5/+dDjdc=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -194,7 +190,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GrqLx+cgcd/agNKN3S0fCo9YCb8=
+			b1Hs3ghMWu+Jgvf2VmhO1f389NA=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -203,7 +199,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			USgdcyt/sGXdAXTW2uZWdokO4m0=
+			6NOZCbhHqDhqSTHH88r7fxL1P68=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -212,7 +208,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8GO5JX8vfCnxE+Vxglv7jyCtHLg=
+			zTCB0x3Nmy8PI8C26sYbevWpsYM=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -221,7 +217,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SIgfXBsAgGneVfSFzg6GTQ4P5QM=
+			BTxHiP0xcbi0JOTNVy2gvYcgos4=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -230,7 +226,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			n92ZNB92WJ68XghFklJhjIzUMhk=
+			8rRLGWYOjYjDfgyoH/HlhdZU8qQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -251,7 +247,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lP/n4mvzeGBv/MObQxKBB1KzxaI=
+			t7JjtCufniZrfBcTYeHZE9ttO7Q=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -260,7 +256,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Rbc5aUR0m+b9K0PKrswNZ0Dd2nw=
+			LzrGXmD3T47dvw5YsPEU5+jop8g=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -269,7 +265,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gfvqc+3ChvTip4GyQbFH+/1AmaY=
+			iZUhg2EEcf6CnDqUzlsTbk19b1E=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -278,7 +274,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dgTwT3uOdSTj8Zt3CiVkZ9dywqM=
+			39PRIR6GJGyxIuw2SRKhNdeLUWQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -287,28 +283,16 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XM6tQKdTjSACAVzdFWQQCV51fVY=
+			zrqYfsCzBHmrAz1eyl8NNVTZqLw=
 			</data>
 			<key>optional</key>
 			<true/>
 		</dict>
-		<key>notificationEdge.png</key>
-		<data>
-		5hW9jlcAUFQogrki/oNZ2/zOtAg=
-		</data>
-		<key>notificationEdge@2x.png</key>
-		<data>
-		mu3Oj3n0J3cCW+rAq8DYTv9vn+Q=
-		</data>
-		<key>notificationEdge@3x.png</key>
-		<data>
-		8pXpEp8/k5MOGMQzWc2Cah6aDhw=
-		</data>
 		<key>pl.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			WGS7AjM/IfCnH82Egfg/K3Jcyh8=
+			hArC0Jctub9B+WRRi5/XOwEQG0c=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -321,7 +305,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			B0lp4t3vKViG4nYSPQNqZdcxEbw=
+			PZLSyP41p3Juh5B/LQLQZUXzFnM=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -330,7 +314,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YFHErfupJsqzpwB3ZNAQ1ESpN1k=
+			LUY0EhSGf9tUB7BdSWzwv9GpPw0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -339,7 +323,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fDL0OF3IJjb4bfs28b85vmnbdUo=
+			jsoTpM1M8zi+W5Cv3rUFETprpNQ=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -352,7 +336,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			v8QUPagguOYct4g5wpmvqQg+2ts=
+			0MCac+vBkucvGTp6HuRgBqEiVPc=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -365,7 +349,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YpVuKpA41/5GeQYK2nWbiuCexUY=
+			qGlKddvjgwyntwyCqLAXx8R/cE8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -386,7 +370,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			W2hCi/mRBpnxAHYqRSKLBtguJS4=
+			adts9T3f1Jim4ahwtCTOjUl/Reg=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -399,7 +383,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Dw3Ztrnxn25NLrxYpFKBBJ3X658=
+			i8tnrB/du/s+r+jCeybfkVQH60g=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -408,7 +392,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NB/zpqzhCvT4PhvG46GtMiq8JT4=
+			BUEfGuii+Qsnp73KpU2aVDqcOlw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -417,7 +401,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			q4tvTeIr5ALJO+4wCbvgnOZ/iF4=
+			KjG1zMOgfGyjnATYqE98rCGpjgw=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -429,220 +413,209 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VgGQDGRbFiH9VGuj/yoFzi9DL6Y=
+			oclAFtQpkI2PhYiF12Z2x+oY0oU=
 			</data>
 			<key>hash2</key>
 			<data>
-			/07k6nGT6DxwR87btxZqjVMNF5efeRHWr64aieO01lQ=
+			MSaGnzEiP0lsP3JpYPLsjM6VF8CslhDZ2Z/C1mlK6ow=
 			</data>
 		</dict>
 		<key>Headers/InstabugCore.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fbHs2xgsSh9slUiN9UheSHjuvZ0=
+			rUiBFO7xxymDfDr0/D0u74HBzJ4=
 			</data>
 			<key>hash2</key>
 			<data>
-			1Z7QlTDVjG41jcCfuu4fg/OMRvLlnu5da+8CbsW2wHs=
+			wQs2HvR7AL4z7iii+AeUfndL0KdZ9ADZD/K0J8hb4dQ=
 			</data>
 		</dict>
 		<key>IBGActionSheetCell.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			axD/4vrxYkA+u8o67rOlOMUrink=
+			EDRsZLMUnl6NvomzLAZLcUvz3gk=
 			</data>
 			<key>hash2</key>
 			<data>
-			NWWEmw+GKgTK233si1elyUKruQnWMorPUfRLfZGoMfo=
+			n0kv+JvsCgdpo3m9ajEVtdZsM2lO9/uFAKtWf4jP8Jk=
 			</data>
 		</dict>
 		<key>IBGActionSheetVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Ai3LmPZGUtpjOFWYuKgs5fzTKNo=
+			8yKBTyMnJnw9rEPjMXoMJEUopJ4=
 			</data>
 			<key>hash2</key>
 			<data>
-			JbaYs0It8XMsWpTYAEIeVpq9LUFbtKIEtWN0v0Jd/Wo=
+			6QHjrHrvFDEK68LaZ9dQFoZvSqE/IB6gXnT3mFqGF8c=
 			</data>
 		</dict>
 		<key>IBGAttachmentButton.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tpNhI9KlSoid5DTYIQHEAV6CUw0=
+			DQsrIDBtV39++KYp6dYg9S8fMyo=
 			</data>
 			<key>hash2</key>
 			<data>
-			91mSeXr5Tx6wfbw2vxu0QnoXTIbqHOfhwqi9WB7FzzM=
+			GOkyFLtA6HaPGPmsGwffokaH2qf9t1zGnGEu0KV7G0Q=
 			</data>
 		</dict>
 		<key>IBGBugVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			v3sXhJEyCKflKnJ5D0Qe9rI5NhM=
+			cZcQ7LcAVnKtGcvDYT+h5nycgnA=
 			</data>
 			<key>hash2</key>
 			<data>
-			RDhw39wGXIsB4ByN8GAc5VQ+OxUBkLCMAROyUtk7SGM=
+			zQcqoWE9XWozRnfLv5yPTz+rxWixGwr13elW4RxQfjY=
 			</data>
 		</dict>
 		<key>IBGChatCell.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ivKodd+1LqLf/eUiB2lk7mU7wLk=
+			L2nRO+F9Oj5Vib334FuqhMfT5dY=
 			</data>
 			<key>hash2</key>
 			<data>
-			DE50jYRLMr69ml9o4l3GLFA0tQsmhVFhiEHFGy6/eVA=
+			HHX0crhXF2waGzRdrejdkPPJ3bPXTfJ2N77leWQwwV0=
 			</data>
 		</dict>
 		<key>IBGChatListVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Adin9Q1Cj0ZP1QFCqHYGktGxRJ8=
+			IWQPbUyDYy+OTk25lad3GJbbFEc=
 			</data>
 			<key>hash2</key>
 			<data>
-			YnvdlDGdI4yA8komnzN4NVqAoenHAQmRNtDcxmR3q2M=
+			MJzjXc8MtOt/a7G2+8hzTZKkCz58ibcUpQv+nSBjAC4=
 			</data>
 		</dict>
 		<key>IBGChatVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			cZCC2Toyr+7WSdQNynRbupXqysg=
+			heVyp6L+nLIv/+kwvGql9gPAys0=
 			</data>
 			<key>hash2</key>
 			<data>
-			oTX4VJG3FGpv0Tn69M99ErrcKZfuOXZyiRhdT4Hke6k=
+			EjOGEvZI8flov2orI1hHw30iWqCLf63VcrGBp1rCEtM=
 			</data>
 		</dict>
 		<key>IBGFullScreenImageViewController.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			/ggsdh3Ltg0w5oXEVjQHooHWKIg=
+			7iPh19QU7nWtVK5PTCylRMJHKJE=
 			</data>
 			<key>hash2</key>
 			<data>
-			/DP0ymwHicdep4M4+AbRButbaVUl8HMfb58dj8lIMPs=
+			SC6PqUKFqonrvOaW6EQV7Lh+IaTATfk7tQV7AvHuNyE=
 			</data>
 		</dict>
 		<key>IBGMessagesView.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			KumxE3fk6F6MfKG3IOdM8VuaUT4=
+			U3JTSBQ/f9V14Tv81NU8zsDzuoQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			OP6KunUCi2gDtLr04i9Slk4XNcX03v8YiHWSMVyUstk=
+			CkzsMeBvMV0idHi+FP1Q4mM817kv1o8j/pwaV4JCJoE=
 			</data>
 		</dict>
 		<key>IBGPoweredByView.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vy3t8vdCuSV4tXOaTGWiYEN9nHo=
+			8kfp666HjrbXbxiHyCGWiFdT0Yw=
 			</data>
 			<key>hash2</key>
 			<data>
-			kaXOUwd003espOmvqXFl0MqEvl+jDt0y7MnUAk3VgFU=
+			joBcXaaGDEGxGWZgbGxLP888SZQqlb+brx12jw9U1nQ=
 			</data>
 		</dict>
 		<key>IBGPromptCell.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Iu7YfrTL+RgEpRpVj5rx9fid42Y=
+			MVosbbzh4bgpRbbsd2WnapgxsCE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Oxror4BMuAV1bwEcbYYixP9ITaT5XMQjqVBwjs/abko=
+			cKWl4R4UO+F89jXW/GMqFcge9rWSyC6PJOH3zFpxYrE=
 			</data>
 		</dict>
 		<key>IBGPromptVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			wHiKkLIHnz77p2/KNzvA/QpRpRo=
+			H2aiV1tDKRp1eeEwQOOA+Qaztyg=
 			</data>
 			<key>hash2</key>
 			<data>
-			4yIBfGfrwVr2Xxd4UdJaxAAGeQZPnSjKu5h9W7sFV2s=
+			U3mxvUMByY6l5N1oEVEWAjIiOrxo+c7Jqgw+uNYBscE=
 			</data>
 		</dict>
 		<key>IBGReplyView-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			yRS52lnpNQtoUKAEXukWEQ4GM1s=
+			w2L2P4lwz7sxWGdiBfPO+l6N0pc=
 			</data>
 			<key>hash2</key>
 			<data>
-			FQEqLhdIwD07aArTgVpz8ko3eIZBiyvh3pLY0/SlndE=
+			RX3yJb1guSkRtmsxJA0pDAeifcJy6qMKbIFxZaM6KWM=
 			</data>
 		</dict>
 		<key>IBGReportCategoriesVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tBEbxJ+safwHmWmDIPcvedG1fw8=
+			Ql2WzHcxy1ozLO64e53Hg381eJM=
 			</data>
 			<key>hash2</key>
 			<data>
-			aC4fvkEyjLTIeNNY6LTRB+YiVb3LwuxPihmFI0YaEmg=
+			lpbdTo1nP0MTXYQ3vy5fEig8GWRdz44NvMHhNm84l2w=
 			</data>
 		</dict>
 		<key>IBGScreenshotVC-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			nBPp7WPAfVIuuzMlh49KTylTGzQ=
+			/WRd0horoVav/20lbUVaMAUjmNg=
 			</data>
 			<key>hash2</key>
 			<data>
-			JfYIXO8P9B+QaA4yLN6AMp4bZlmMYrBFDjktY7kP7UM=
-			</data>
-		</dict>
-		<key>IBGUnnotifiedMessagesAlertView.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			EZTQj70fpsMl29X70jn3oyVzXBc=
-			</data>
-			<key>hash2</key>
-			<data>
-			qUIe40r39FYMg6QPxrMyyrQwJcDbckFENT7wTuznl7k=
+			WSD3cIIoGUgRCthm8XJZkmGfEvg543MoE0hFakvMwyk=
 			</data>
 		</dict>
 		<key>IBGVideoPlaybackViewController.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+fxfhLLIgy1l2vP5Ct09SVfmtnA=
+			qaOvHFU9So2ZXXoLvNT5NebfhBk=
 			</data>
 			<key>hash2</key>
 			<data>
-			PD+A/WeSbvDM07OWBHByK2MSxWJGeiDTW11yp14UIJM=
+			po1luSaRtJhWmm06sqyBxhuZJpsCNofqP+mAd5wRD0Y=
 			</data>
 		</dict>
 		<key>IBGVoiceNoteRecordingViewController-iPhone.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jjNp/zrZWQBheoAPUpEdkLQHt1U=
+			DgGKS2Mr8I5xAOixj7KQGuVt84M=
 			</data>
 			<key>hash2</key>
 			<data>
-			p62cMb81dDUcm93POcpVddUupaC3PiQS1f74w7MO5Zs=
+			TFE/Ke8wJQ7kFheRlIuJtgiKGcEvvdFlOgC8kSJwv0Q=
 			</data>
 		</dict>
 		<key>InAppScreenshotPlaceholder.png</key>
@@ -847,11 +820,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			H1q3z0BfwHD8dtxGCEFQf2sCGQg=
+			CoHJzfR10AA+0U8+z0a9B0KuDgY=
 			</data>
 			<key>hash2</key>
 			<data>
-			i3lXpmW7ZLqCHoTxSNbx22I3HbfFuHnpm4yp/l2lUec=
+			8HUUYyxUzZ0VI3HPsm7bzu37JKWUCL70O2vKLpuMtYo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -893,11 +866,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GJMj2OG2CH1A41AoxA/oblR+WHU=
+			yOS04z00eMYaEmJTLq/5/+dDjdc=
 			</data>
 			<key>hash2</key>
 			<data>
-			fHZ5Nbim6rcxzHeBK5KXZ3ErOoSa14z5hT2mlkgrxWM=
+			E7yLBn5tykC9L2HIG2wHZvsmaI+cIluHbxo+7WIKh5A=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -906,11 +879,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GrqLx+cgcd/agNKN3S0fCo9YCb8=
+			b1Hs3ghMWu+Jgvf2VmhO1f389NA=
 			</data>
 			<key>hash2</key>
 			<data>
-			NuVKsvXrBfJ5OGbQ+8P3D+q5qOmouHBXFXK3/zMIhfE=
+			+gMvXNIYoYebllyDEwFJPAkfEsVv8AXcU/ZiYTVOhbI=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -919,11 +892,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			USgdcyt/sGXdAXTW2uZWdokO4m0=
+			6NOZCbhHqDhqSTHH88r7fxL1P68=
 			</data>
 			<key>hash2</key>
 			<data>
-			4egIf1V8HZkhPJyRQ7V2/dFWLW+pLOsIrHPPGhJ55L0=
+			HEb0Rsq3VNtQHv2vmob+uSkJWhy/rGzOBKwBkOmrGvY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -932,11 +905,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8GO5JX8vfCnxE+Vxglv7jyCtHLg=
+			zTCB0x3Nmy8PI8C26sYbevWpsYM=
 			</data>
 			<key>hash2</key>
 			<data>
-			Ty81HO85gxSwfXtXRMkU4Y3n4XABBIWvIGPGQa8NUv4=
+			CYHzuD+rT46LX+FsGfQffvDqcj5IIufqkcMF8MUXJII=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -945,11 +918,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SIgfXBsAgGneVfSFzg6GTQ4P5QM=
+			BTxHiP0xcbi0JOTNVy2gvYcgos4=
 			</data>
 			<key>hash2</key>
 			<data>
-			9jp9tS30WzrxZ14Mpf4mlu3S7KkgWk/Wybe9W4kqujY=
+			L+6ZWc4vhmZP6Y5wkD2JzQHhOrWy2r5Z2cW64Uo7XQY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -958,11 +931,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			n92ZNB92WJ68XghFklJhjIzUMhk=
+			8rRLGWYOjYjDfgyoH/HlhdZU8qQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			qdom6CxfrdKCcWEHA7L2umVnEK/FRYIHGpFS292Wd+w=
+			ybxlKIWKvC/yv2WywDTGHe+P8d0Trb5pR9lwFkHets0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1004,11 +977,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lP/n4mvzeGBv/MObQxKBB1KzxaI=
+			t7JjtCufniZrfBcTYeHZE9ttO7Q=
 			</data>
 			<key>hash2</key>
 			<data>
-			YiEYBZZgHc6TZ/JtP8Qpq2z8YINaW0I/tTNR2tQyHeE=
+			0z9yLubMuRWGZKnK8ZAYEemaCt1KFMtP7tOq/aeJsAo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1017,11 +990,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Rbc5aUR0m+b9K0PKrswNZ0Dd2nw=
+			LzrGXmD3T47dvw5YsPEU5+jop8g=
 			</data>
 			<key>hash2</key>
 			<data>
-			8UmlCt+Jq5gCTZ5AuKmHMfNa3jFd4mdiJ1CogNVKCeE=
+			Vg9F9UTOxx41z/3HYw317gQU17zPpc6hir2Ps79iIw0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1030,11 +1003,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gfvqc+3ChvTip4GyQbFH+/1AmaY=
+			iZUhg2EEcf6CnDqUzlsTbk19b1E=
 			</data>
 			<key>hash2</key>
 			<data>
-			n/rQg4Ywhck2EAGGQQ+dfp6ghNvvRdOPYinJ3dgyMf4=
+			W5EPSbr/2+dbrJyRQ3MGegG5PPX6jozq/i1pCb8XphE=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1043,11 +1016,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dgTwT3uOdSTj8Zt3CiVkZ9dywqM=
+			39PRIR6GJGyxIuw2SRKhNdeLUWQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			QczFcBUKY+LqIsF6iIIYNLfEw/9iVDRQjKqYC2RCw5g=
+			uLZDQIa0Z8+kPBGxsAPdrxb6AjxLxP0P+7z6pUdvd/Q=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1056,57 +1029,24 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XM6tQKdTjSACAVzdFWQQCV51fVY=
+			zrqYfsCzBHmrAz1eyl8NNVTZqLw=
 			</data>
 			<key>hash2</key>
 			<data>
-			OZkwjK2v9qX3mZ6ltQdAw5oCGidF5G0PByHHg+ap89Q=
+			qjrRHE9j6+CXtMzpZcibPS0UyqqEJjmji/Vnms8ppSE=
 			</data>
 			<key>optional</key>
 			<true/>
-		</dict>
-		<key>notificationEdge.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			5hW9jlcAUFQogrki/oNZ2/zOtAg=
-			</data>
-			<key>hash2</key>
-			<data>
-			CQ676KSRFs/2SLjMvYP+wXT3v5x4skqVGpNdU9GRR+U=
-			</data>
-		</dict>
-		<key>notificationEdge@2x.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			mu3Oj3n0J3cCW+rAq8DYTv9vn+Q=
-			</data>
-			<key>hash2</key>
-			<data>
-			bflGfzfs8+oZf5pPruLbj+fa57+j/wHFxKqMVR4ARDM=
-			</data>
-		</dict>
-		<key>notificationEdge@3x.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			8pXpEp8/k5MOGMQzWc2Cah6aDhw=
-			</data>
-			<key>hash2</key>
-			<data>
-			mLnXt0PZlbrDTl6bxydfJ4nWdcE7bCtEcVChmzewUxM=
-			</data>
 		</dict>
 		<key>pl.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			WGS7AjM/IfCnH82Egfg/K3Jcyh8=
+			hArC0Jctub9B+WRRi5/XOwEQG0c=
 			</data>
 			<key>hash2</key>
 			<data>
-			5WOhr0D+FcQW6FvaN2GM8kU0nlAOET3jjNPMUOM9THU=
+			J0iVPcjLdn1i6k3UgCsq715hc14ISmyq+sS06IRgJGk=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1126,11 +1066,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			B0lp4t3vKViG4nYSPQNqZdcxEbw=
+			PZLSyP41p3Juh5B/LQLQZUXzFnM=
 			</data>
 			<key>hash2</key>
 			<data>
-			0gu9W3Hq/KlqezpEBznGyM3UMOpZGujGriFQzERSNPo=
+			6l3PNPqdn5nvTK+3m4VvGPuqMNl8oobyC04lpgI8nkc=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1139,11 +1079,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YFHErfupJsqzpwB3ZNAQ1ESpN1k=
+			LUY0EhSGf9tUB7BdSWzwv9GpPw0=
 			</data>
 			<key>hash2</key>
 			<data>
-			ueFtnmz42w0VHzpybkFRUmHn/Rxc+58dJ8v+mBvgplA=
+			3gFQWOGmVpirFxqvE2ilPSyLWOkycHAtHkPzNaJ35kY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1152,11 +1092,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fDL0OF3IJjb4bfs28b85vmnbdUo=
+			jsoTpM1M8zi+W5Cv3rUFETprpNQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			cl4vXtu+KHfRtj5y2gle8mWRrfYmk67XGX4I9uxnK6c=
+			iSjnsDSTE/UMmHmgmetLsd3+KvWOawsAFkNGg24sBDI=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1176,11 +1116,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			v8QUPagguOYct4g5wpmvqQg+2ts=
+			0MCac+vBkucvGTp6HuRgBqEiVPc=
 			</data>
 			<key>hash2</key>
 			<data>
-			JRyZstEhtQ+v4BAZCh/V6Rrg0786na5y6eFSHGc12VA=
+			Vyh+MIlQHjHmNXMIMf+yO80hpITsKve+0y0IEVyHJo0=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1200,11 +1140,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YpVuKpA41/5GeQYK2nWbiuCexUY=
+			qGlKddvjgwyntwyCqLAXx8R/cE8=
 			</data>
 			<key>hash2</key>
 			<data>
-			DRhfoCae1zPQRDmmu6SAjbHzmTWN1Vbu0rRLGz9pZxs=
+			QRC8BGyxicWYQIoW+gHQT/8JuzZYwoiQGslvDDH8Yuo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1246,11 +1186,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			W2hCi/mRBpnxAHYqRSKLBtguJS4=
+			adts9T3f1Jim4ahwtCTOjUl/Reg=
 			</data>
 			<key>hash2</key>
 			<data>
-			C16t4HeCkC4qIRCV544uxbSsChg4pVa2Z42R5YpdhO4=
+			DyUDjIsk4LvbMzeQz4jze1yFmXTbvEAmskkFARJP3mg=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1270,11 +1210,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Dw3Ztrnxn25NLrxYpFKBBJ3X658=
+			i8tnrB/du/s+r+jCeybfkVQH60g=
 			</data>
 			<key>hash2</key>
 			<data>
-			fdxrDf6D+5ZUvIHpTqlvYIkqR5+1C+zy+Dbf2oEm1sk=
+			LvgW6sgvzqVE/LQSo1GJx1LseQfj2++MX2WFsbI99Ak=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1283,11 +1223,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NB/zpqzhCvT4PhvG46GtMiq8JT4=
+			BUEfGuii+Qsnp73KpU2aVDqcOlw=
 			</data>
 			<key>hash2</key>
 			<data>
-			NEm8KMIZN5rHFTKD+YLcqPe5DswL9zXeVjyDw9v3VCU=
+			t1akD2F6JKhWZWONR5isN0z1XOS6L3vkFMU37jPwiGc=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -1296,11 +1236,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			q4tvTeIr5ALJO+4wCbvgnOZ/iF4=
+			KjG1zMOgfGyjnATYqE98rCGpjgw=
 			</data>
 			<key>hash2</key>
 			<data>
-			vC7L3ckUIvkp8LwIP4AiuJLBZ0gXuJISBvu4hoD17M4=
+			5g6pdhhkeCqKvm6HtEzm+efb/H7+lR0IEwPSWzXB6oA=
 			</data>
 			<key>optional</key>
 			<true/>

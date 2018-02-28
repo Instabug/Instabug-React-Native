@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.9.2
+ Version:    7.10
  */
 
 #import <Foundation/Foundation.h>
@@ -697,7 +697,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param names Array of names of icons to be shown along with titles. Use the same names you would use
  with `+ [UIImage imageNamed:]`.
  */
-+ (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names;
++ (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, you can add categories from dashboard.");
 
 /**
  @brief Sets an array of report categories to be shown for users to select from before reporting a bug or sending
@@ -708,14 +708,26 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param title extra field key.
  @param required determine whether this field is required or not.
  */
-+ (void)addExtraReportFieldWithTitle:(NSString *)title required:(BOOL)required;
++ (void)addExtraReportFieldWithTitle:(NSString *)title required:(BOOL)required DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, use setExtendedBugReportMode: instead");;
 
 /**
  @brief Remove all extra fields.
  
  @discussion Use this method to remove all added extra fields.
  */
-+ (void)removeExtraReportFields;
++ (void)removeExtraReportFields DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, use setExtendedBugReportMode: instead");;
+
+/**
+ @brief Sets whether the extended bug report mode should be disabled, enabled with required fields or enabled with optional fields.
+ 
+ @discussion This feature is disabled by default. When enabled, it adds more fields for your reporters to fill in. You can set whether the extra fields are required or optional.
+ 1. Expected Results.
+ 2. Actual Results.
+ 3. Steps to Reproduce.
+ 
+ @param extendedBugReportMode An enum to disable the extended bug report mode, enable it with required or with optional fields.
+ */
++ (void)setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode;
 
 /**
  @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.

@@ -168,6 +168,10 @@ RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
 
+RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode) {
+    [Instabug setExtendedBugReportMode:extendedBugReportMode];
+}
+
 RCT_EXPORT_METHOD(setIntroMessageEnabled:(BOOL)isIntroMessageEnabled) {
     [Instabug setIntroMessageEnabled:isIntroMessageEnabled];
 }
@@ -437,6 +441,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
 
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
+
+              @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
+              @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
+              @"disabled": @(IBGExtendedBugReportModeDisabled),
 
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),
