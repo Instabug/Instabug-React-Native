@@ -406,7 +406,7 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
 
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
-              @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeEnabledWithNoScreenshots),
+              @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
 
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),

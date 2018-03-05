@@ -95,7 +95,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String EXTENDED_BUG_REPORT_DISABLED = "disabled";
 
     //Instabug repro step modes
-    private final String ENABLED_WITH_NO_SCREENSHOT = "enabledWithNoScreenshot";
+    private final String ENABLED_WITH_NO_SCREENSHOTS = "enabledWithNoScreenshots";
     private final String ENABLED = "enabled";
     private final String DISABLED = "disabled";
 
@@ -1233,7 +1233,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Sets whether user steps tracking is visual, non visula or disabled.
+     * Sets whether user steps tracking is visual, non visual or disabled.
      *
      * @param reproStepsMode   A string to set user steps tracking to be
      * enabled, non visual or disabled.
@@ -1242,7 +1242,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setReproStepsMode(String reproStepsMode) {
         try {
           switch(reproStepsMode) {
-              case ENABLED_WITH_NO_SCREENSHOT:
+              case ENABLED_WITH_NO_SCREENSHOTS:
                   Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
                   break;
               case ENABLED:
@@ -1508,7 +1508,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);
         constants.put("disabled", EXTENDED_BUG_REPORT_DISABLED);
 
-        constants.put("reproStepsEnabledWithNoScreenshot", ENABLED_WITH_NO_SCREENSHOT);
+        constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
         constants.put("reproStepsEnabled", ENABLED);
         constants.put("reproStepsDisabled", DISABLED);
 

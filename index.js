@@ -920,7 +920,7 @@ module.exports = {
     reproStepsMode: {
         enabled: Instabug.reproStepsEnabled,
         disabled: Instabug.reproStepsDisabled,
-        enabledWithNoScreenshot: Instabug.reproStepsEnabledWithNoScreenshot,
+        enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots,
     },
 
     /**
