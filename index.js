@@ -671,10 +671,12 @@ module.exports = {
     },
 
     /**
-     * Sets whether user steps tracking is visual, non visula or disabled.
+     * Sets whether user steps tracking is visual, non visual or disabled.
+     * User Steps tracking is enabled by default if it's available
+     * in your current plan.
      *
-     * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking to be
-     * enabled, non visual or disabled.
+     * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking
+     * to be enabled, non visual or disabled.
      */
     setReproStepsMode: function (reproStepsMode) {
         Instabug.setReproStepsMode(reproStepsMode);
