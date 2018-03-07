@@ -405,8 +405,8 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
 
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
-              @"reproStepsDisabled": @(IBGUserStepsModeEnabledWithNoScreenshots),
-              @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeDisable),
+              @"reproStepsDisabled": @(IBGUserStepsModeDisable),
+              @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
 
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),

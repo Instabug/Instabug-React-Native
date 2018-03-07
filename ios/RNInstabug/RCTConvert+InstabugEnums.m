@@ -37,7 +37,7 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabled": @(IBGUserStepsModeEnable),
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
-                                      @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeEnabledWithNoScreenshots)
+                                      @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnable, integerValue)
 
 RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{

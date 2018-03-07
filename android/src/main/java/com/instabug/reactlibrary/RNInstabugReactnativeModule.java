@@ -33,6 +33,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.OnSdkDismissedCallback;
 import com.instabug.library.bugreporting.model.Bug;
+import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.InstabugSurvey;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
@@ -92,6 +93,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String EXTENDED_BUG_REPORT_REQUIRED_FIELDS = "enabledWithRequiredFields";
     private final String EXTENDED_BUG_REPORT_OPTIONAL_FIELDS = "enabledWithOptionalFields";
     private final String EXTENDED_BUG_REPORT_DISABLED = "disabled";
+
+    //Instabug repro step modes
+    private final String ENABLED_WITH_NO_SCREENSHOTS = "enabledWithNoScreenshots";
+    private final String ENABLED = "enabled";
+    private final String DISABLED = "disabled";
 
     //Theme colors
     private final String COLOR_THEME_LIGHT = "light";
@@ -1227,6 +1233,34 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets whether user steps tracking is visual, non visual or disabled.
+     *
+     * @param reproStepsMode   A string to set user steps tracking to be
+     * enabled, non visual or disabled.
+     */
+    @ReactMethod
+    public void setReproStepsMode(String reproStepsMode) {
+        try {
+          switch(reproStepsMode) {
+              case ENABLED_WITH_NO_SCREENSHOTS:
+                  Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+                  break;
+              case ENABLED:
+                  Instabug.setReproStepsState(State.ENABLED);
+                  break;
+              case DISABLED:
+                  Instabug.setReproStepsState(State.DISABLED);
+                  break;
+              default:
+                  Instabug.setReproStepsState(State.ENABLED);
+          }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sets the threshold value of the shake gesture for android devices.
      * Default for android is an integer value equals 350.
      * you could increase the shaking difficulty level by
@@ -1473,6 +1507,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("enabledWithRequiredFields", EXTENDED_BUG_REPORT_REQUIRED_FIELDS);
         constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);
         constants.put("disabled", EXTENDED_BUG_REPORT_DISABLED);
+
+        constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
+        constants.put("reproStepsEnabled", ENABLED);
+        constants.put("reproStepsDisabled", DISABLED);
 
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);
