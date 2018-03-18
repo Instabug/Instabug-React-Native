@@ -26,7 +26,7 @@ bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstabugCore.framework/str
 project = Xcodeproj::Project.open(project_location)
 frameworks_group = project.groups.find { |group| group.display_name == 'Frameworks' }
 frameworks_group ||= project.new_group('Frameworks')
-default_target = project.targets.find { |target| target.to_s == default_target_name }
+default_target = project.targets.find { |target| target.to_s == default_target_name } || project.targets.first
 targets = project.targets.select { |target| (target.is_a? Xcodeproj::Project::Object::PBXNativeTarget) &&
 	 																				  (target.product_type == "com.apple.product-type.application") &&
 																					  (target.platform_name == :ios) }
