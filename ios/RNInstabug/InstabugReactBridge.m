@@ -365,8 +365,16 @@ RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
     [Instabug setViewHierarchyEnabled:viewHirearchyEnabled];
 }
 
+RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
+    [Instabug setAutoShowingSurveysEnabled:autoShowingSurveysEnabled];
+}
+
 RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
     [Instabug setVideoRecordingFloatingButtonPosition:position];
+}
+
+RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
+    [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
 }
 
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {

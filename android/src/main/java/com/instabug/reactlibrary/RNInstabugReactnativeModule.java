@@ -1312,6 +1312,37 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Set after how many sessions should the dismissed survey would show again.
+     *
+     * @param sessionsCount  number of sessions that the dismissed survey will be shown after.
+     * @param daysCount      number of days that the dismissed survey will show after
+     *
+     */
+    @ReactMethod
+    public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
+        try {
+            Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set Surveys auto-showing state, default state auto-showing enabled
+     *
+     * @param autoShowingSurveysEnabled  whether Surveys should be auto-showing or not
+     *
+     */
+    @ReactMethod
+    public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
+        try {
+            Instabug.setSurveysAutoShowing(autoShowingSurveysEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set whether new in app notification received will play a small sound notification
      * or not (Default is {@code false})
      *

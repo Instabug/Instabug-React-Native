@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.10.1
+ Version:    7.11
  */
 
 #import <Foundation/Foundation.h>
@@ -1226,6 +1226,16 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  @param surveyToken A String with a survey token.
 */
 + (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
+
+/**
+ @brief Sets a threshold for numbers of sessions and another for number of days required before a survey, that has been dismissed once, would show again.
+ 
+ @discussion When a survey that has been shown to the user gets dismissed once, it will not reappear to the user unless a certain number of sessions have started AND a certain number of days have passed since the user first dismissed the survey. Note that if a survey is dismissed for a second time, it will not show again, in other words, it will be set to `canceled`. This applies to both surveys with and without tokens.
+ 
+ @param sessionCount : Number of sessions required to be initialized before a dismissed survey can be shown again.
+ @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
+ */
++ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
 
 /// ------------------------
 /// @name SDK Debugging

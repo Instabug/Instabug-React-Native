@@ -901,6 +901,28 @@ module.exports = {
        Instabug.setVideoRecordingFloatingButtonPosition(position);
      },
 
+     /**
+      * Sets a threshold for numbers of sessions and another for number of days
+      * required before a survey, that has been dismissed once, would show again.
+      * @param {number} sessionCount Number of sessions required to be
+      *                initialized before a dismissed survey can be shown again.
+      * @param {number} daysCount Number of days required to pass before a
+      *                dismissed survey can be shown again.
+      */
+     setThresholdForReshowingSurveyAfterDismiss: function (sessionCount, daysCount) {
+         Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionCount, daysCount);
+     },
+
+     /**
+      * Sets whether auto surveys showing are enabled or not.
+      * @param autoShowingSurveysEnabled A boolean to indicate whether the
+      *                                surveys auto showing are enabled or not.
+      *
+      */
+     setAutoShowingSurveysEnabled: function(autoShowingSurveysEnabled) {
+         Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
+     },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
