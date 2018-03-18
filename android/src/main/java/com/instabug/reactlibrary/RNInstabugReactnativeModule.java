@@ -1328,6 +1328,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Set Surveys auto-showing state, default state auto-showing enabled
+     *
+     * @param autoShowingSurveysEnabled  whether Surveys should be auto-showing or not
+     *
+     */
+    @ReactMethod
+    public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
+        try {
+            Instabug.setSurveysAutoShowing(autoShowingSurveysEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set whether new in app notification received will play a small sound notification
      * or not (Default is {@code false})
      *
