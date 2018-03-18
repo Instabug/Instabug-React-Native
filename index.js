@@ -913,6 +913,16 @@ module.exports = {
          Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionCount, daysCount);
      },
 
+     /**
+      * Sets whether auto surveys showing are enabled or not.
+      * @param autoShowingSurveysEnabled A boolean to indicate whether the
+      *                                surveys auto showing are enabled or not.
+      *
+      */
+     setAutoShowingSurveysEnabled: function(autoShowingSurveysEnabled) {
+         Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
+     },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
