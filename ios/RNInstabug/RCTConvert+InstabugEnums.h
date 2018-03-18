@@ -6,7 +6,7 @@
 //  Copyright © 2016 Facebook. All rights reserved.
 //
 
-#import "RCTConvert.h"
+#import <React/RCTConvert.h>
 
 @interface RCTConvert (InstabugEnums)
 
