@@ -70,6 +70,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
     private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
     private final String LOCALE_CZECH = "czech";
+    private final String LOCALE_DUTCH= "dutch";
     private final String LOCALE_ENGLISH = "english";
     private final String LOCALE_FRENCH = "french";
     private final String LOCALE_GERMAN = "german";
@@ -1437,6 +1438,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             case LOCALE_ENGLISH:
                 return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
                         .getCountry());
+            case LOCALE_DUTCH:
+                return new Locale(InstabugLocale.NETHERLANDS.getCode(), InstabugLocale.NETHERLANDS
+                        .getCountry());
             case LOCALE_CZECH:
                 return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry
                         ());
@@ -1517,6 +1521,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
         constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
         constants.put("localeCzech", LOCALE_CZECH);
+        constants.put("localeDutch", LOCALE_DUTCH);
         constants.put("localeEnglish", LOCALE_ENGLISH);
         constants.put("localeFrench", LOCALE_FRENCH);
         constants.put("localeGerman", LOCALE_FRENCH);

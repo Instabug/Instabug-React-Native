@@ -1004,6 +1004,7 @@ module.exports = {
         chineseTraditional: Instabug.localeChineseTraditional,
         czech: Instabug.localeCzech,
         danish: Instabug.localeDanish,
+        dutch: Instabug.localeDutch,
         english: Instabug.localeEnglish,
         french: Instabug.localeFrench,
         german: Instabug.localeGerman,
