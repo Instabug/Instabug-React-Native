@@ -434,6 +434,7 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
               @"localeCzech": @(IBGLocaleCzech),
               @"localeDanish": @(IBGLocaleDanish),
+              @"localeDutch": @(IBGLocaleDutch),
               @"localeEnglish": @(IBGLocaleEnglish),
               @"localeFrench": @(IBGLocaleFrench),
               @"localeGerman": @(IBGLocaleGerman),
