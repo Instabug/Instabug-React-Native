@@ -147,6 +147,16 @@ module.exports = {
     },
 
     /**
+     * The session profiler is enabled by default and it attaches to the bug and
+     * crash reports the following information during the last 60 seconds before the report is sent.
+     * @param {boolean} sessionProfilerEnabled - A boolean parameter to enable or disable the feature.
+     *
+     */
+    setSessionProfilerEnabled: function (sessionProfilerEnabled) {
+      Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
+    },
+
+    /**
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.

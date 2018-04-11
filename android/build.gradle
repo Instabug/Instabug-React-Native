@@ -22,7 +22,7 @@ android {
 dependencies {
     compile 'com.facebook.react:react-native:0.20.+'
     compile ('com.instabug.library:instabug:4.13.0'){
-        exclude group: 'com.android.support'
+        exclude group: 'com.android.support:appcompat-v7'
     }
 
 }
