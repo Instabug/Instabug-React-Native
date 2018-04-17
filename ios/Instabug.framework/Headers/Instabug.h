@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <InstabugCore/IBGTypes.h>
+#import <InstabugCore/InstabugCore.h>
 
 /**
  This is the API for using Instabug's SDK. For more details about the SDK integration,
@@ -160,6 +160,22 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
+
+/**
+ @brief Sets whether the session profiler is enabled or disabled.
+ 
+ @discussion The session profiler is enabled by default and it attaches to the bug and crash reports the following information during the last 60 seconds before the report is sent.
+ 1. CPU load.
+ 2. Dispatch queues latency.
+ 3. Memory usage.
+ 4. Storage usage.
+ 5. Connectivity.
+ 6. Battery percentage and state.
+ 7. Orientation.
+ 
+ @param sessionProfilerEnabled A boolean parameter to enable or disable the feature.
+ */
++ (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled;
 
 /**
  @brief Sets whether the SDK is recording the screen or not.
@@ -444,12 +460,14 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 
 /**
  @brief Sets whether users are required to enter an email address or not when sending reports.
+ 
+ @deprecated Use setEmailFieldRequired:forAction: instead.
 
  @discussion Defaults to YES.
 
  @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
  */
-+ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired;
++ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired DEPRECATED_MSG_ATTRIBUTE("Use setEmailFieldRequired:forAction: instead");
 
 /**
  @brief Sets whether users are required to enter a comment or not when sending reports.
@@ -650,7 +668,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
                             extraScreenShot:(BOOL)extraScreenShot
                                galleryImage:(BOOL)galleryImage
                                   voiceNote:(BOOL)voiceNote
-                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v8.0, use setAttachmentOptions: instead");
+                            screenRecording:(BOOL)screenRecording DEPRECATED_MSG_ATTRIBUTE("Starting from v7.6.1, use setEnabledAttachmentTypes: instead");
 
 /**
  @brief Sets whether attachments in bug reporting and in-app messaging are enabled.
@@ -697,7 +715,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param names Array of names of icons to be shown along with titles. Use the same names you would use
  with `+ [UIImage imageNamed:]`.
  */
-+ (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names;
++ (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, you can add categories from dashboard.");
 
 /**
  @brief Sets an array of report categories to be shown for users to select from before reporting a bug or sending
@@ -708,14 +726,26 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param title extra field key.
  @param required determine whether this field is required or not.
  */
-+ (void)addExtraReportFieldWithTitle:(NSString *)title required:(BOOL)required;
++ (void)addExtraReportFieldWithTitle:(NSString *)title required:(BOOL)required DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, use setExtendedBugReportMode: instead");;
 
 /**
  @brief Remove all extra fields.
  
  @discussion Use this method to remove all added extra fields.
  */
-+ (void)removeExtraReportFields;
++ (void)removeExtraReportFields DEPRECATED_MSG_ATTRIBUTE("Starting from v7.9, use setExtendedBugReportMode: instead");;
+
+/**
+ @brief Sets whether the extended bug report mode should be disabled, enabled with required fields or enabled with optional fields.
+ 
+ @discussion This feature is disabled by default. When enabled, it adds more fields for your reporters to fill in. You can set whether the extra fields are required or optional.
+ 1. Expected Results.
+ 2. Actual Results.
+ 3. Steps to Reproduce.
+ 
+ @param extendedBugReportMode An enum to disable the extended bug report mode, enable it with required or with optional fields.
+ */
++ (void)setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode;
 
 /**
  @brief Set custom user attributes that are going to be sent with each feedback, bug or crash.
@@ -756,6 +786,16 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
  */
 + (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
+
+/**
+ @brief Sets whether users are required to enter an email address or not when doing a certain action `IBGActionType`.
+ 
+ @discussion Defaults to YES.
+ 
+ @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
+ @param actionType An enum that indicates which action types will have the isEmailFieldRequired.
+ */
++ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired forAction:(IBGActionType)actionType;
 
 /// -------------------
 /// @name SDK Reporting
@@ -1214,6 +1254,28 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  @param surveyToken A String with a survey token.
 */
 + (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
+
+/**
+ @brief Sets a threshold for numbers of sessions and another for number of days required before a survey, that has been dismissed once, would show again.
+ 
+ @discussion When a survey that has been shown to the user gets dismissed once, it will not reappear to the user unless a certain number of sessions have started AND a certain number of days have passed since the user first dismissed the survey. Note that if a survey is dismissed for a second time, it will not show again, in other words, it will be set to `canceled`. This applies to both surveys with and without tokens.
+ 
+ @param sessionCount : Number of sessions required to be initialized before a dismissed survey can be shown again.
+ @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
+ */
++ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
+
+#pragma mark - Feature Requests
+/// ------------------------
+/// @name Feature Requests
+/// ------------------------
+
+/**
+ @brief Shows the UI for feature requests list
+ */
++ (void)showFeatureRequests;
+
+#pragma mark - SDK Debugging
 
 /// ------------------------
 /// @name SDK Debugging

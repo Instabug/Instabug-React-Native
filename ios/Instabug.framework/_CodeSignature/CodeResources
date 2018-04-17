@@ -4,13 +4,21 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>FeaturesRequest1.json</key>
+		<data>
+		I6cUbj/WMcEon1/+yUn4IOMEp4o=
+		</data>
+		<key>FeaturesRequest2.json</key>
+		<data>
+		9hMrUSpFsvAAiMaPl0e56WCt530=
+		</data>
 		<key>Headers/Instabug.h</key>
 		<data>
-		+EiAXX3ojcs9KnDvuu8muj3EBTo=
+		FkqN5vjmy+4znDvT7KaSZA2AfaI=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		WyJbTMy7HRjaQUO/UauLbxnB8uk=
+		xQEQTHOaCcybc0CdGE15cuQGlJk=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -19,15 +27,37 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>FeaturesRequest1.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			I6cUbj/WMcEon1/+yUn4IOMEp4o=
+			</data>
+			<key>hash2</key>
+			<data>
+			e28Pj448u2c9/buQ6OK6oAhGfYnxfHtDPwknvfhQb1M=
+			</data>
+		</dict>
+		<key>FeaturesRequest2.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			9hMrUSpFsvAAiMaPl0e56WCt530=
+			</data>
+			<key>hash2</key>
+			<data>
+			Kn1UzaByYVOVtkXDBWk1wIfhb5lb0ueuWXN8Q1hGPbE=
+			</data>
+		</dict>
 		<key>Headers/Instabug.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+EiAXX3ojcs9KnDvuu8muj3EBTo=
+			FkqN5vjmy+4znDvT7KaSZA2AfaI=
 			</data>
 			<key>hash2</key>
 			<data>
-			qlLmRcOrCgju1+Ti2Wo6pLafjrPKI2Yw3UP78yECXrQ=
+			y3LAIHF/OXikiIno9qF07R3DPi64Z+k5aw+ZeFiZQKc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
