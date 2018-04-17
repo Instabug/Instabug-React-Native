@@ -377,6 +377,10 @@ RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionC
     [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
 }
 
+RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
+    [Instabug setSessionProfilerEnabled:sessionProfilerEnabled];
+}
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.11.1
+ Version:    7.12.2
  */
 
 #import <UIKit/UIKit.h>
@@ -70,6 +70,50 @@ extern NSString * const kIBGLowDiskStorageMessage;
 extern NSString * const kIBGInboundByLineMessage;
 extern NSString * const kIBGExtraFieldIsRequiredText;
 extern NSString * const kIBGExtraFieldMissingDataText;
+extern NSString * const kIBGFeatureRequestsTitle;
+extern NSString * const kIBGFeatureDetailsTitle;
+extern NSString * const kIBGStringFeatureRequestsRefreshText;
+extern NSString * const kIBGFeatureRequestErrorStateTitleLabel;
+extern NSString * const kIBGFeatureRequestErrorStateDescriptionLabel;
+extern NSString * const kIBGFeatureRequestSortingByRecentlyUpdatedText;
+extern NSString * const kIBGFeatureRequestSortingByTopVotesText;
+extern NSString * const kIBGStringFeatureRequestAllFeaturesText;
+extern NSString * const kIBGAddNewFeatureRequestText;
+extern NSString * const kIBGAddNewFeatureRequestToastText;
+extern NSString * const kIBGAddNewFeatureRequestErrorToastText;
+extern NSString * const kIBGAddNewFeatureRequestLoadingHUDTitle;
+extern NSString * const kIBGAddNewFeatureRequestSuccessHUDTitle;
+extern NSString * const kIBGAddNewFeatureRequestSuccessHUDMessage;
+extern NSString * const kIBGAddNewFeatureRequestTryAgainText;
+extern NSString * const kIBGAddNewFeatureRequestCancelPromptTitle;
+extern NSString * const kIBGAddNewFeatureRequestCancelPromptYesAction;
+extern NSString * const kIBGFeatureRequestInvalidEmailText;
+extern NSString * const kIBGFeatureRequestTimelineEmptyText;
+extern NSString * const kIBGFeatureRequestTimelineErrorDescriptionLabel;
+extern NSString * const kIBGFeatureRequestStatusChangeText;
+extern NSString * const kIBGFeatureRequestAddButtonText;
+extern NSString * const kIBGFeatureRequestVoteWithCountText;
+extern NSString * const kIBGFeatureRequestVoteText;
+extern NSString * const kIBGFeatureRequestPostButtonText;
+extern NSString * const kIBGFeatureRequestCommentsText;
+extern NSString * const kIBGFeatureRequestAuthorText;
+extern NSString * const kIBGFeatureRequestEmptyViewTitle;
+extern NSString * const kIBGFeatureRequestAddYourIdeaText;
+extern NSString * const kIBGFeatureRequestAnonymousText;
+extern NSString * const kIBGFeatureRequestStatusPosted;
+extern NSString * const kIBGFeatureRequestStatusPlanned;
+extern NSString * const kIBGFeatureRequestStatusStarted;
+extern NSString * const kIBGFeatureRequestStatusCompleted;
+extern NSString * const kIBGFeatureRequestStatusMaybeLater;
+extern NSString * const kIBGFeatureRequestStatusMoreText;
+extern NSString * const kIBGFeatureRequestStatusLessText;
+extern NSString * const kIBGFeatureRequestAddYourThoughtsText;
+extern NSString * const kIBGEmailRequiredText;
+extern NSString * const kIBGNameText;
+extern NSString * const kIBGEmailText;
+extern NSString * const kIBGTitleText;
+extern NSString * const kIBGDescriptionText;
+extern NSString * const kIBGStringFeatureRequestMyFeaturesText;
 extern NSString * const kIBGSurveyIntroTitleText;
 extern NSString * const kIBGSurveyIntroDescriptionText;
 extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
@@ -265,6 +309,50 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringLowDiskStorageMessage,
     IBGStringExtraFieldIsRequiredText,
     IBGStringExtraFieldMissingDataText,
+    IBGStringFeatureRequestsTitle,
+    IBGStringFeatureDetailsTitle,
+    IBGStringFeatureRequestsRefreshText,
+    IBGStringFeatureRequestSortingByRecentlyUpdatedText,
+    IBGStringFeatureRequestSortingByTopVotesText,
+    IBGStringFeatureRequestErrorStateTitleText,
+    IBGStringFeatureRequestErrorStateDescriptionText,
+    IBGStringFeatureRequestAllFeaturesText,
+    IBGStringFeatureRequestMyFeaturesText,
+    IBGStringAddNewFeatureRequestText,
+    IBGStringAddNewFeatureRequestToastText,
+    IBGStringAddNewFeatureRequestErrorToastText,
+    IBGStringAddNewFeatureRequestLoadingHUDTitle,
+    IBGStringAddNewFeatureRequestSuccessHUDTitle,
+    IBGStringAddNewFeatureRequestSuccessHUDMessage,
+    IBGStringAddNewFeatureRequestTryAgainText,
+    IBGStringAddNewFeatureRequestCancelPromptTitle,
+    IBGStringAddNewFeatureRequestCancelPromptYesAction,
+    IBGStringFeatureRequestInvalidEmailText,
+    IBGStringFeatureRequestStatusChangeText,
+    IBGStringFeatureRequestAddButtonText,
+    IBGStringFeatureRequestVoteWithCountText,
+    IBGStringFeatureRequestVoteText,
+    IBGStringFeatureRequestPostButtonText,
+    IBGStringFeatureRequestCommentsText,
+    IBGStringFeatureRequestAuthorText,
+    IBGStringFeatureRequestEmptyViewTitle,
+    IBGStringFeatureRequestAddYourIdeaText,
+    IBGStringFeatureRequestAnonymousText,
+    IBGStringFeatureRequestStatusPosted,
+    IBGStringFeatureRequestStatusPlanned,
+    IBGStringFeatureRequestStatusStarted,
+    IBGStringFeatureRequestStatusCompleted,
+    IBGStringFeatureRequestStatusMaybeLater,
+    IBGFeatureRequestTimelineEmptyCommentText,
+    IBGFeatureRequestTimelineErrorDescriptionText,
+    IBGStringFeatureRequestStatusMoreText,
+    IBGStringFeatureRequestStatusLessText,
+    IBGStringFeatureRequestAddYourThoughtsText,
+    IBGStringEmailRequiredText,
+    IBGStringNameText,
+    IBGStringEmailText,
+    IBGStringTitleText,
+    IBGStringDescriptionText,
     IBGStringSurveyIntroTitleText,
     IBGStringSurveyIntroDescriptionText,
     IBGStringSurveyIntroTakeSurveyButtonText,
@@ -335,6 +423,13 @@ typedef NS_ENUM(NSInteger, IBGExtendedBugReportMode) {
     IBGExtendedBugReportModeEnabledWithOptionalFields,
     IBGExtendedBugReportModeDisabled
 };
+
+typedef enum : NSUInteger {
+    IBGActionAllActions = 1 << 0,
+    IBGActionReportBug = 1 << 1,
+    IBGActionRequestNewFeature = 1 << 2,
+    IBGActionAddCommentToFeature = 1 << 3,
+} IBGActionType;
 
 @interface UIView (Instabug)
 

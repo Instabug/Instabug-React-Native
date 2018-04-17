@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.11.1
+ Version:    7.12.2
  */
 
 #import <Foundation/Foundation.h>
@@ -160,6 +160,22 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled;
+
+/**
+ @brief Sets whether the session profiler is enabled or disabled.
+ 
+ @discussion The session profiler is enabled by default and it attaches to the bug and crash reports the following information during the last 60 seconds before the report is sent.
+ 1. CPU load.
+ 2. Dispatch queues latency.
+ 3. Memory usage.
+ 4. Storage usage.
+ 5. Connectivity.
+ 6. Battery percentage and state.
+ 7. Orientation.
+ 
+ @param sessionProfilerEnabled A boolean parameter to enable or disable the feature.
+ */
++ (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled;
 
 /**
  @brief Sets whether the SDK is recording the screen or not.
@@ -444,12 +460,14 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 
 /**
  @brief Sets whether users are required to enter an email address or not when sending reports.
+ 
+ @deprecated Use setEmailFieldRequired:forAction: instead.
 
  @discussion Defaults to YES.
 
  @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
  */
-+ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired;
++ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired DEPRECATED_MSG_ATTRIBUTE("Use setEmailFieldRequired:forAction: instead");
 
 /**
  @brief Sets whether users are required to enter a comment or not when sending reports.
@@ -768,6 +786,16 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
  */
 + (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
+
+/**
+ @brief Sets whether users are required to enter an email address or not when doing a certain action `IBGActionType`.
+ 
+ @discussion Defaults to YES.
+ 
+ @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
+ @param actionType An enum that indicates which action types will have the isEmailFieldRequired.
+ */
++ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired forAction:(IBGActionType)actionType;
 
 /// -------------------
 /// @name SDK Reporting
@@ -1236,6 +1264,18 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
  */
 + (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
+
+#pragma mark - Feature Requests
+/// ------------------------
+/// @name Feature Requests
+/// ------------------------
+
+/**
+ @brief Shows the UI for feature requests list
+ */
++ (void)showFeatureRequests;
+
+#pragma mark - SDK Debugging
 
 /// ------------------------
 /// @name SDK Debugging

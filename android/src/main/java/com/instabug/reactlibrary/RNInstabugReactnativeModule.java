@@ -1359,6 +1359,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Enable/disable session profiler
+     *
+     * @param sessionProfilerEnabled desired state of the session profiler feature
+     */
+    @ReactMethod
+    public void setSessionProfilerEnabled(boolean sessionProfilerEnabled) {
+        try {
+            if(sessionProfilerEnabled) {
+              Instabug.setSessionProfilerState(Feature.State.ENABLED);
+            } else {
+              Instabug.setSessionProfilerState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:
