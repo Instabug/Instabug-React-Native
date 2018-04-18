@@ -865,7 +865,8 @@ module.exports = {
       let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
       var jsonObject = {
         message: errorObject.name + " - " + errorObject.message,
-        os: 'react_native',
+        os: Platform.OS,
+        platform: 'react_native',
         exception: jsStackTrace
       }
       if(Platform.OS === 'android') {

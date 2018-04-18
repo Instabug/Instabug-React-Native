@@ -21,7 +21,7 @@ let init = () => {
       var jsonObject = {
         message: e.name + " - " + e.message,
         os: Platform.OS,
-        platform: 'react-native',
+        platform: 'react_native',
         exception: jsStackTrace
       }
       if(Platform.OS === 'android') {
