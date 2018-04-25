@@ -130,6 +130,7 @@ RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"image": @(IBGStringImage),
                                  @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
                                  @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-                                 @"collectingDataText": @(IBGStringCollectingDataText)
+                                 @"collectingDataText": @(IBGStringCollectingDataText),
+                                 @"thankYouAlertText": @(IBGStringThankYouAlertText)
                                  }), IBGStringShakeHint, integerValue);
 @end

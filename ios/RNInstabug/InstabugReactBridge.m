@@ -496,7 +496,8 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"image": @(IBGStringImage),
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
               @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-              @"collectingDataText": @(IBGStringCollectingDataText)
+              @"collectingDataText": @(IBGStringCollectingDataText),
+              @"thankYouAlertText": @(IBGStringThankYouAlertText)
               };
 };
 
