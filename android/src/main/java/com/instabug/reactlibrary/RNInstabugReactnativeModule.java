@@ -569,6 +569,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Shows the UI for feature requests list
+     */
+    @ReactMethod
+    public void showFeatureRequests() {
+        try {
+            Instabug.showFeatureRequests();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @return application token
      */
     @ReactMethod

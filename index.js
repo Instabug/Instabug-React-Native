@@ -933,6 +933,14 @@ module.exports = {
          Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
      },
 
+     /**
+      * Shows the UI for feature requests list
+      *
+      */
+     showFeatureRequests: function() {
+         Instabug.showFeatureRequests();
+     },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
