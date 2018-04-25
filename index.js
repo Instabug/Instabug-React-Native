@@ -1114,6 +1114,6 @@ module.exports = {
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
         conversationTextFieldHint: Instabug.conversationTextFieldHint,
         collectingDataText: Instabug.collectingDataText,
-        ...Platform.OS === 'ios' && {thankYouAlertText: Instabug.thankYouAlertText},
+        thankYouAlertText: Instabug.thankYouAlertText,
     }
 };
