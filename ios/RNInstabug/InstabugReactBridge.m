@@ -381,6 +381,10 @@ RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
     [Instabug setSessionProfilerEnabled:sessionProfilerEnabled];
 }
 
+RCT_EXPORT_METHOD(showFeatureRequests) {
+    [Instabug showFeatureRequests];
+}
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR
@@ -496,7 +500,8 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"image": @(IBGStringImage),
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
               @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-              @"collectingDataText": @(IBGStringCollectingDataText)
+              @"collectingDataText": @(IBGStringCollectingDataText),
+              @"thankYouAlertText": @(IBGStringThankYouAlertText)
               };
 };
 

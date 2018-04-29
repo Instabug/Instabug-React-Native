@@ -131,6 +131,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";
 
     private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
+    private final String THANK_YOU_ALERT_TEXT = "thankYouAlertText";
+
     private final String VIDEO_PLAYER_TITLE = "video";
 
     private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
@@ -563,6 +565,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void disable() {
         try {
             mInstabug.disable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the UI for feature requests list
+     */
+    @ReactMethod
+    public void showFeatureRequests() {
+        try {
+            Instabug.showFeatureRequests();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1420,9 +1434,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             case CONVERSATION_TEXT_FIELD_HINT:
                 return InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT;
             case REPORT_SUCCESSFULLY_SENT:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
+                return InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER;
             case VIDEO_PLAYER_TITLE:
                 return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
+            case THANK_YOU_ALERT_TEXT:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
             default:
                 return null;
         }
@@ -1588,7 +1604,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("thankYouText", REPORT_SUCCESSFULLY_SENT);
         constants.put("video", VIDEO_PLAYER_TITLE);
         constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
-
+        constants.put("thankYouAlertText", THANK_YOU_ALERT_TEXT);
 
         return constants;
     }

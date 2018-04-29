@@ -933,6 +933,14 @@ module.exports = {
          Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
      },
 
+     /**
+      * Shows the UI for feature requests list
+      *
+      */
+     showFeatureRequests: function() {
+         Instabug.showFeatureRequests();
+     },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
@@ -1105,6 +1113,7 @@ module.exports = {
         messageNotification: Instabug.messageNotification,
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
         conversationTextFieldHint: Instabug.conversationTextFieldHint,
-        collectingDataText: Instabug.collectingDataText
+        collectingDataText: Instabug.collectingDataText,
+        thankYouAlertText: Instabug.thankYouAlertText,
     }
 };
