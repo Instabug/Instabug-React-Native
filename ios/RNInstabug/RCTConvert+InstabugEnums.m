@@ -37,8 +37,14 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabled": @(IBGUserStepsModeEnable),
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
-                                      @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeEnabledWithNoScreenshots)
+                                      @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnable, integerValue)
+
+RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{
+                                      @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
+                                      @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
+                                      @"disabled": @(IBGExtendedBugReportModeDisabled)
+                                      }), IBGExtendedBugReportModeDisabled, integerValue)
 
 
 RCT_ENUM_CONVERTER(IBGReportType, (@{
@@ -59,6 +65,7 @@ RCT_ENUM_CONVERTER(IBGLocale, (@{
                                  @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
                                  @"localeCzech": @(IBGLocaleCzech),
                                  @"localeDanish": @(IBGLocaleDanish),
+                                 @"localeDutch": @(IBGLocaleDutch),
                                  @"localeEnglish": @(IBGLocaleEnglish),
                                  @"localeFrench": @(IBGLocaleFrench),
                                  @"localeGerman": @(IBGLocaleGerman),
@@ -123,6 +130,7 @@ RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"image": @(IBGStringImage),
                                  @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
                                  @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-                                 @"collectingDataText": @(IBGStringCollectingDataText)
+                                 @"collectingDataText": @(IBGStringCollectingDataText),
+                                 @"thankYouAlertText": @(IBGStringThankYouAlertText)
                                  }), IBGStringShakeHint, integerValue);
 @end

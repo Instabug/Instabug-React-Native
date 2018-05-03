@@ -21,6 +21,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
@@ -32,6 +33,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.OnSdkDismissedCallback;
 import com.instabug.library.bugreporting.model.Bug;
+import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.InstabugSurvey;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
@@ -73,6 +75,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
     private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
     private final String LOCALE_CZECH = "czech";
+    private final String LOCALE_DUTCH= "dutch";
     private final String LOCALE_ENGLISH = "english";
     private final String LOCALE_FRENCH = "french";
     private final String LOCALE_GERMAN = "german";
@@ -91,6 +94,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String TOP_LEFT = "topLeft";
     private final String BOTTOM_RIGHT = "bottomRight";
     private final String BOTTOM_LEFT = "bottomLeft";
+
+    //Instabug extended bug report modes
+    private final String EXTENDED_BUG_REPORT_REQUIRED_FIELDS = "enabledWithRequiredFields";
+    private final String EXTENDED_BUG_REPORT_OPTIONAL_FIELDS = "enabledWithOptionalFields";
+    private final String EXTENDED_BUG_REPORT_DISABLED = "disabled";
+
+    //Instabug repro step modes
+    private final String ENABLED_WITH_NO_SCREENSHOTS = "enabledWithNoScreenshots";
+    private final String ENABLED = "enabled";
+    private final String DISABLED = "disabled";
 
     //Theme colors
     private final String COLOR_THEME_LIGHT = "light";
@@ -123,6 +136,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";
 
     private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
+    private final String THANK_YOU_ALERT_TEXT = "thankYouAlertText";
+
     private final String VIDEO_PLAYER_TITLE = "video";
 
     private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
@@ -210,6 +225,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
 
+
+
     /**
      * Dismisses all visible Instabug views
      */
@@ -239,6 +256,38 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enable/Disable screen recording
+     *
+     * @param autoScreenRecordingEnabled boolean for enable/disable
+     * screen recording on crash feature
+     */
+    @ReactMethod
+    public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
+        try {
+            Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets auto screen recording maximum duration
+     *
+     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+     *                                       in milliseconds
+     * The maximum duration is 30000 milliseconds
+     */
+    @ReactMethod
+    public void setAutoScreenRecordingMaxDuration(int autoScreenRecordingMaxDuration) {
+        try {
+            int durationInMilli = autoScreenRecordingMaxDuration*1000;
+            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Change Locale of Instabug UI elements(defaults to English)
      *
      * @param instabugLocale
@@ -253,10 +302,39 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+<<<<<<< HEAD
      * Enables/disables view hierarchy state
      *
      * @param enabled
      */
+=======
+     * Sets whether the extended bug report mode should be disabled,
+     * enabled with required fields,  or enabled with optional fields.
+     *
+     * @param extendedBugReportMode
+     */
+    @ReactMethod
+    public void setExtendedBugReportMode(String extendedBugReportMode) {
+        try {
+          switch(extendedBugReportMode) {
+              case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+                  break;
+              case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+                  break;
+              case EXTENDED_BUG_REPORT_DISABLED:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                  break;
+              default:
+                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+          }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+>>>>>>> d78a9102d58cd9acbef437db19a6a3e5ec93744c
     @ReactMethod
     public void setViewHierarchyEnabled(boolean enabled) {
         try {
@@ -574,6 +652,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void disable() {
         try {
             mInstabug.disable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the UI for feature requests list
+     */
+    @ReactMethod
+    public void showFeatureRequests() {
+        try {
+            Instabug.showFeatureRequests();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1245,6 +1335,34 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets whether user steps tracking is visual, non visual or disabled.
+     *
+     * @param reproStepsMode   A string to set user steps tracking to be
+     * enabled, non visual or disabled.
+     */
+    @ReactMethod
+    public void setReproStepsMode(String reproStepsMode) {
+        try {
+          switch(reproStepsMode) {
+              case ENABLED_WITH_NO_SCREENSHOTS:
+                  Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+                  break;
+              case ENABLED:
+                  Instabug.setReproStepsState(State.ENABLED);
+                  break;
+              case DISABLED:
+                  Instabug.setReproStepsState(State.DISABLED);
+                  break;
+              default:
+                  Instabug.setReproStepsState(State.ENABLED);
+          }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sets the threshold value of the shake gesture for android devices.
      * Default for android is an integer value equals 350.
      * you could increase the shaking difficulty level by
@@ -1296,6 +1414,37 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Set after how many sessions should the dismissed survey would show again.
+     *
+     * @param sessionsCount  number of sessions that the dismissed survey will be shown after.
+     * @param daysCount      number of days that the dismissed survey will show after
+     *
+     */
+    @ReactMethod
+    public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
+        try {
+            Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set Surveys auto-showing state, default state auto-showing enabled
+     *
+     * @param autoShowingSurveysEnabled  whether Surveys should be auto-showing or not
+     *
+     */
+    @ReactMethod
+    public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
+        try {
+            Instabug.setSurveysAutoShowing(autoShowingSurveysEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set whether new in app notification received will play a small sound notification
      * or not (Default is {@code false})
      *
@@ -1306,6 +1455,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setEnableInAppNotificationSound(boolean shouldPlaySound) {
         try {
             mInstabug.setEnableInAppNotificationSound(shouldPlaySound);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Enable/disable session profiler
+     *
+     * @param sessionProfilerEnabled desired state of the session profiler feature
+     */
+    @ReactMethod
+    public void setSessionProfilerEnabled(boolean sessionProfilerEnabled) {
+        try {
+            if(sessionProfilerEnabled) {
+              Instabug.setSessionProfilerState(Feature.State.ENABLED);
+            } else {
+              Instabug.setSessionProfilerState(Feature.State.DISABLED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1354,9 +1521,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             case CONVERSATION_TEXT_FIELD_HINT:
                 return InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT;
             case REPORT_SUCCESSFULLY_SENT:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
+                return InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER;
             case VIDEO_PLAYER_TITLE:
                 return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
+            case THANK_YOU_ALERT_TEXT:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
             default:
                 return null;
         }
@@ -1389,6 +1558,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         .getCountry());
             case LOCALE_ENGLISH:
                 return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
+                        .getCountry());
+            case LOCALE_DUTCH:
+                return new Locale(InstabugLocale.NETHERLANDS.getCode(), InstabugLocale.NETHERLANDS
                         .getCountry());
             case LOCALE_CZECH:
                 return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry
@@ -1470,6 +1642,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
         constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
         constants.put("localeCzech", LOCALE_CZECH);
+        constants.put("localeDutch", LOCALE_DUTCH);
         constants.put("localeEnglish", LOCALE_ENGLISH);
         constants.put("localeFrench", LOCALE_FRENCH);
         constants.put("localeGerman", LOCALE_FRENCH);
@@ -1487,6 +1660,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("topLeft", TOP_LEFT);
         constants.put("bottomRight", BOTTOM_RIGHT);
         constants.put("bottomLeft", BOTTOM_LEFT);
+
+        constants.put("enabledWithRequiredFields", EXTENDED_BUG_REPORT_REQUIRED_FIELDS);
+        constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);
+        constants.put("disabled", EXTENDED_BUG_REPORT_DISABLED);
+
+        constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
+        constants.put("reproStepsEnabled", ENABLED);
+        constants.put("reproStepsDisabled", DISABLED);
 
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);
@@ -1510,7 +1691,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("thankYouText", REPORT_SUCCESSFULLY_SENT);
         constants.put("video", VIDEO_PLAYER_TITLE);
         constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
-
+        constants.put("thankYouAlertText", THANK_YOU_ALERT_TEXT);
 
         return constants;
     }

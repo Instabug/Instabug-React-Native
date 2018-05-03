@@ -64,6 +64,26 @@ module.exports = {
     },
 
     /**
+     * Enable/Disable screen recording
+     * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
+     * screen recording on crash feature
+     */
+    setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+        Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+    },
+
+    /**
+     * Sets auto screen recording maximum duration
+     *
+     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+     *                                       in seconds
+     * The maximum duration is 30 seconds
+     */
+    setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
+        Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration)
+    },
+
+    /**
      * Adds custom logs that will be sent with each report.
      * @param {string} log Message to be logged.
      */
@@ -135,6 +155,16 @@ module.exports = {
      */
     hasRespondedToSurveyWithToken: function (surveyToken, surveyTokenCallback) {
       Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
+    },
+
+    /**
+     * The session profiler is enabled by default and it attaches to the bug and
+     * crash reports the following information during the last 60 seconds before the report is sent.
+     * @param {boolean} sessionProfilerEnabled - A boolean parameter to enable or disable the feature.
+     *
+     */
+    setSessionProfilerEnabled: function (sessionProfilerEnabled) {
+      Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
     },
 
     /**
@@ -506,6 +536,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.7.0, you can now add categories from the dashboard.
      * Sets an array of report categories to be shown for users to select from before reporting a
      * bug or sending feedback.
      * Use this method to give users a list of choices of categories their bug report or feedback
@@ -518,6 +549,17 @@ module.exports = {
         } else if (Platform.OS == 'android') {
             Instabug.setReportCategories(titles);
         }
+    },
+
+    /**
+     * ets whether the extended bug report mode should be disabled, enabled with
+     * required fields or enabled with optional fields.
+     * @param {extendedBugReportMode} extendedBugReportMode An enum to disable
+     *                                the extended bug report mode, enable it
+     *                                with required or with optional fields.
+     */
+    setExtendedBugReportMode: function (extendedBugReportMode) {
+        Instabug.setExtendedBugReportMode(extendedBugReportMode);
     },
 
     /**
@@ -647,6 +689,18 @@ module.exports = {
         } else {
             Instabug.logWarn(message);
         }
+    },
+
+    /**
+     * Sets whether user steps tracking is visual, non visual or disabled.
+     * User Steps tracking is enabled by default if it's available
+     * in your current plan.
+     *
+     * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking
+     * to be enabled, non visual or disabled.
+     */
+    setReproStepsMode: function (reproStepsMode) {
+        Instabug.setReproStepsMode(reproStepsMode);
     },
 
     /**
@@ -888,6 +942,36 @@ module.exports = {
        Instabug.setVideoRecordingFloatingButtonPosition(position);
      },
 
+     /**
+      * Sets a threshold for numbers of sessions and another for number of days
+      * required before a survey, that has been dismissed once, would show again.
+      * @param {number} sessionCount Number of sessions required to be
+      *                initialized before a dismissed survey can be shown again.
+      * @param {number} daysCount Number of days required to pass before a
+      *                dismissed survey can be shown again.
+      */
+     setThresholdForReshowingSurveyAfterDismiss: function (sessionCount, daysCount) {
+         Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionCount, daysCount);
+     },
+
+     /**
+      * Sets whether auto surveys showing are enabled or not.
+      * @param autoShowingSurveysEnabled A boolean to indicate whether the
+      *                                surveys auto showing are enabled or not.
+      *
+      */
+     setAutoShowingSurveysEnabled: function(autoShowingSurveysEnabled) {
+         Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
+     },
+
+     /**
+      * Shows the UI for feature requests list
+      *
+      */
+     showFeatureRequests: function() {
+         Instabug.showFeatureRequests();
+     },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
@@ -909,7 +993,7 @@ module.exports = {
     reproStepsMode: {
         enabled: Instabug.reproStepsEnabled,
         disabled: Instabug.reproStepsDisabled,
-        enabledWithNoScreenshot: Instabug.reproStepsEnabledWithNoScreenshot,
+        enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots,
     },
 
     /**
@@ -947,6 +1031,18 @@ module.exports = {
     },
 
     /**
+     *  The extended bug report mode
+     * @readonly
+     * @enum {number}
+     */
+    extendedBugReportMode: {
+        enabledWithRequiredFields: Instabug.enabledWithRequiredFields,
+        enabledWithOptionalFields: Instabug.enabledWithOptionalFields,
+        disabled: Instabug.disabled
+    },
+
+
+    /**
      * The supported locales
      * @readonly
      * @enum {number}
@@ -957,6 +1053,7 @@ module.exports = {
         chineseTraditional: Instabug.localeChineseTraditional,
         czech: Instabug.localeCzech,
         danish: Instabug.localeDanish,
+        dutch: Instabug.localeDutch,
         english: Instabug.localeEnglish,
         french: Instabug.localeFrench,
         german: Instabug.localeGerman,
@@ -1047,6 +1144,7 @@ module.exports = {
         messageNotification: Instabug.messageNotification,
         messagesNotificationAndOthers: Instabug.messagesNotificationAndOthers,
         conversationTextFieldHint: Instabug.conversationTextFieldHint,
-        collectingDataText: Instabug.collectingDataText
+        collectingDataText: Instabug.collectingDataText,
+        thankYouAlertText: Instabug.thankYouAlertText,
     }
 };

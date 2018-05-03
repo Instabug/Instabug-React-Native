@@ -95,12 +95,20 @@ RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
     [Instabug setUserStepsEnabled:isUserStepsEnabled];
 }
 
+
 RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
   if(enabledCrashReporter) {
     [Instabug setCrashReportingEnabled:YES];
   } else {
     [Instabug setCrashReportingEnabled:NO];
   }
+
+RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
+    [Instabug setAutoScreenRecordingEnabled:enabled];
+}
+
+RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
+    [Instabug setAutoScreenRecordingDuration:duration];
 }
 
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
@@ -183,6 +191,10 @@ RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOf
 
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
+}
+
+RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode) {
+    [Instabug setExtendedBugReportMode:extendedBugReportMode];
 }
 
 RCT_EXPORT_METHOD(setIntroMessageEnabled:(BOOL)isIntroMessageEnabled) {
@@ -378,8 +390,24 @@ RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
     [Instabug setViewHierarchyEnabled:viewHirearchyEnabled];
 }
 
+RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
+    [Instabug setAutoShowingSurveysEnabled:autoShowingSurveysEnabled];
+}
+
 RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
     [Instabug setVideoRecordingFloatingButtonPosition:position];
+}
+
+RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
+    [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
+}
+
+RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
+    [Instabug setSessionProfilerEnabled:sessionProfilerEnabled];
+}
+
+RCT_EXPORT_METHOD(showFeatureRequests) {
+    [Instabug showFeatureRequests];
 }
 
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
@@ -418,8 +446,8 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
 
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
-              @"reproStepsDisabled": @(IBGUserStepsModeEnabledWithNoScreenshots),
-              @"reproStepsEnabledWithNoScreenshot": @(IBGUserStepsModeDisable),
+              @"reproStepsDisabled": @(IBGUserStepsModeDisable),
+              @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
 
               @"reportTypeBug": @(IBGReportTypeBug),
               @"reportTypeFeedback": @(IBGReportTypeFeedback),
@@ -439,6 +467,7 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
               @"localeCzech": @(IBGLocaleCzech),
               @"localeDanish": @(IBGLocaleDanish),
+              @"localeDutch": @(IBGLocaleDutch),
               @"localeEnglish": @(IBGLocaleEnglish),
               @"localeFrench": @(IBGLocaleFrench),
               @"localeGerman": @(IBGLocaleGerman),
@@ -454,6 +483,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
 
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
+
+              @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
+              @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
+              @"disabled": @(IBGExtendedBugReportModeDisabled),
 
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),
@@ -492,7 +525,8 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"image": @(IBGStringImage),
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
               @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-              @"collectingDataText": @(IBGStringCollectingDataText)
+              @"collectingDataText": @(IBGStringCollectingDataText),
+              @"thankYouAlertText": @(IBGStringThankYouAlertText)
               };
 };
 
