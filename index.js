@@ -1,5 +1,8 @@
 import {NativeModules, NativeAppEventEmitter, DeviceEventEmitter, Platform} from "react-native";
 let {Instabug} = NativeModules;
+import InstabugUtils from './utils/InstabugUtils.js';
+
+InstabugUtils.captureJsErrors();
 
 /**
  * Instabug
@@ -100,6 +103,14 @@ module.exports = {
         if (Platform.OS === 'ios')
             Instabug.setUserStepsEnabled(isUserStepsEnabled);
     },
+
+    /**
+	    * Report un-caught exceptions to Instabug dashboard
+	    * We don't send exceptions from __DEV__, since it's way too noisy!
+      */
+	    setCrashReportingEnabled: function(enableCrashReporter){
+	        Instabug.setCrashReportingEnabled(enableCrashReporter);
+	    },
 
     /**
      * Sets a block of code to be executed before sending each report.
@@ -898,6 +909,26 @@ module.exports = {
             Instabug.setEnableInAppNotificationSound(shouldPlaySound);
         }
     },
+
+    /**
+	    * Send handled JS error object
+      *
+      * @param errorObject   Error object to be sent to Instabug's servers
+	    */
+	    reportJSException: function(errorObject) {
+	      let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+	      var jsonObject = {
+	        message: errorObject.name + " - " + errorObject.message,
+	        os: Platform.OS,
+	        platform: 'react_native',
+	        exception: jsStackTrace
+	      }
+	      if(Platform.OS === 'android') {
+	        Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+	      } else {
+	        Instabug.sendHandledJSCrash(jsonObject);
+	      }
+	    },	
 
     /**
      * Sets the default position at which the Instabug screen recording button will be shown.

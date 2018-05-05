@@ -56,7 +56,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvent(this.invocationEvent)
-                .setCrashReportingState(Feature.State.DISABLED)
+                .setCrashReportingState(Feature.State.ENABLED)
                 .setReproStepsState(State.DISABLED)
                 .build();
 
