@@ -39,6 +39,11 @@ import com.instabug.survey.InstabugSurvey;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -366,6 +371,82 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Send unhandled JS error object
+     *
+     * @param exceptionObject   Exception object to be sent to Instabug's servers
+     */
+    @ReactMethod
+    public void sendJSCrash(String exceptionObject) {
+        try {
+            sendJSCrashByReflection(exceptionObject, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Send handled JS error object
+     *
+     * @param exceptionObject   Exception object to be sent to Instabug's servers
+     */
+    @ReactMethod
+    public void sendHandledJSCrash(String exceptionObject) {
+        try {
+            sendJSCrashByReflection(exceptionObject, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets whether crash reporting feature is Enabled or Disabled
+     *
+     * @param isEnabled   Exception object to be sent to Instabug's servers
+     */
+    @ReactMethod
+    public void setCrashReportingEnabled(boolean isEnabled) {
+        try {
+            if(isEnabled) {
+                Instabug.setCrashReportingState(Feature.State.ENABLED);
+            } else {
+                Instabug.setCrashReportingState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
+        try {
+          JSONObject newJSONObject = new JSONObject(exceptionObject);
+          Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
+          if (method != null) {
+              method.invoke(null, newJSONObject, isHandled);
+          }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Method getMethod(Class clazz, String methodName) {
+        final Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)) {
+                method.setAccessible(true);
+                return method;
+            }
+        }
+        return null;
     }
 
     /**

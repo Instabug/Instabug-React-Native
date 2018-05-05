@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.12.3
+ Version:    7.12.5
  */
 
 #import <Foundation/Foundation.h>
@@ -378,7 +378,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 /**
  @brief Shows/Hides email field.
 
- @discussion Defaults to show email field.
+ @discussion Defaults to show email field. If set to NO the email field will not be required regardless of previous or future calls to setEmailFieldRequired:.
 
  @param isShowingEmailField YES to show the email field, NO to hide it.
  */
@@ -463,7 +463,8 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @deprecated Use setEmailFieldRequired:forAction: instead.
 
- @discussion Defaults to YES.
+ @discussion Defaults to YES. If email field is set to be hidden using + [Instabug setShowEmailField:NO], email field
+ will always be optional regardless of the whether this method was called or not.
 
  @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
  */
