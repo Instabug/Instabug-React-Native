@@ -928,7 +928,7 @@ module.exports = {
 	      } else {
 	        Instabug.sendHandledJSCrash(jsonObject);
 	      }
-	    },	
+	    },
 
     /**
      * Sets the default position at which the Instabug screen recording button will be shown.
@@ -972,6 +972,17 @@ module.exports = {
          Instabug.showFeatureRequests();
      },
 
+     /**
+      * Setting an option for all the surveys to show a welcome screen before
+      * the user starts taking the survey.
+      * @param shouldShowWelcomeScreen A boolean for setting whether the
+      *                                welcome screen should show.
+      *
+      */
+     setShouldShowSurveysWelcomeScreen: function(shouldShowWelcomeScreen) {
+         Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
+     },
+     
     /**
      * The event used to invoke the feedback form
      * @readonly

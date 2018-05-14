@@ -1472,6 +1472,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * Set Surveys welcome screen enabled, default value is false
+     *
+     * @param shouldShow shouldShow whether should a welcome screen be shown
+     *                   before taking surveys or not
+     */
+    @ReactMethod
+    public void setShouldShowSurveysWelcomeScreen(boolean shouldShow) {
+        try {
+            InstabugSurvey.setShouldShowSurveysWelcomeScreen(shouldShow);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:

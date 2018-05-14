@@ -410,6 +410,10 @@ RCT_EXPORT_METHOD(showFeatureRequests) {
     [Instabug showFeatureRequests];
 }
 
+RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
+    [Instabug setShouldShowSurveysWelcomeScreen:shouldShowWelcomeScreen];
+}
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR
