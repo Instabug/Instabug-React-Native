@@ -297,6 +297,22 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
+     * Sets whether users are required to enter an email address or not when
+     * sending reports.
+     * Defaults to YES.
+     * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
+     * field is required or not.
+     * @param {actionTypes} actionTypes An enum that indicates which action
+     *                                  types will have the isEmailFieldRequired
+     */
+
+    setEmailFieldRequiredForActions: function(isEmailFieldRequired, actionTypes) {
+      Instabug.setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes);
+    },
+
+
+    /**
      * Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
@@ -407,12 +423,6 @@ module.exports = {
     resetTags: function () {
         Instabug.resetTags();
     },
-
-    /**
-     * return callback
-     * @callback tagsCallback
-     * @param {string[]} tags of reported feedback, bug or crash.
-     */
 
     /**
      * Gets all tags of reported feedback, bug or crash.
@@ -982,7 +992,7 @@ module.exports = {
      setShouldShowSurveysWelcomeScreen: function(shouldShowWelcomeScreen) {
          Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
      },
-     
+
     /**
      * The event used to invoke the feedback form
      * @readonly
@@ -1108,6 +1118,18 @@ module.exports = {
         topRight: Instabug.topRight,
         bottomLeft: Instabug.bottomLeft,
         topLeft: Instabug.topLeft
+    },
+
+    /**
+     * Instabug action types.
+     * @readonly
+     * @enum {number}
+     */
+    actionTypes: {
+        allActions: Instabug.allActions,
+        reportBug: Instabug.reportBugAction,
+        requestNewFeature: Instabug.requestNewFeature,
+        addCommentToFeature: Instabug.addCommentToFeature
     },
 
     /**

@@ -92,6 +92,14 @@ RCT_ENUM_CONVERTER(IBGPosition, (@{
                                     @"topLeft": @(IBGPositionTopLeft)
                                     }), IBGPositionBottomRight, integerValue);
 
+
+RCT_ENUM_CONVERTER(IBGActionType, (@{
+                                    @"allActions": @(IBGActionAllActions),
+                                    @"reportBug": @(IBGActionReportBug),
+                                    @"requestNewFeature": @(IBGActionRequestNewFeature),
+                                    @"addCommentToFeature": @(IBGActionAddCommentToFeature)
+                                  }), IBGActionAllActions, unsignedLongLongValue);
+
 RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"shakeHint": @(IBGStringShakeHint),
                                  @"swipeHint": @(IBGStringSwipeHint),
