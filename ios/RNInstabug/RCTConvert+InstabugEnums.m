@@ -98,7 +98,7 @@ RCT_ENUM_CONVERTER(IBGActionType, (@{
                                     @"reportBug": @(IBGActionReportBug),
                                     @"requestNewFeature": @(IBGActionRequestNewFeature),
                                     @"addCommentToFeature": @(IBGActionAddCommentToFeature)
-                                  }), IBGActionAllActions, unsignedLongLongValue);
+                                  }), IBGActionAllActions, integerValue);
 
 RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"shakeHint": @(IBGStringShakeHint),
