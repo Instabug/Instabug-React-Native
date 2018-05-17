@@ -19,6 +19,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.instabug.library.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -75,7 +76,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
     private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
     private final String LOCALE_CZECH = "czech";
-    private final String LOCALE_DUTCH= "dutch";
+    private final String LOCALE_DUTCH = "dutch";
     private final String LOCALE_ENGLISH = "english";
     private final String LOCALE_FRENCH = "french";
     private final String LOCALE_GERMAN = "german";
@@ -122,6 +123,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String START_CHATS = "talkToUs";
     private final String REPORT_BUG = "reportBug";
     private final String REPORT_FEEDBACK = "reportFeedback";
+
+    private final String ACTION_TYPE_ALL_ACTIONS = "allActions";
+    private final String ACTION_TYPE_REPORT_BUG = "reportBugAction";
+    private final String ACTION_TYPE_REQUEST_NEW_FEATURE = "requestNewFeature";
+    private final String ACTION_TYPE_ADD_COMMENT_TO_FEATURE = "addCommentToFeature";
 
     private final String CONVERSATIONS_LIST_TITLE = "conversationsHeaderTitle";
 
@@ -225,8 +231,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
 
-
-
     /**
      * Dismisses all visible Instabug views
      */
@@ -259,7 +263,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Enable/Disable screen recording
      *
      * @param autoScreenRecordingEnabled boolean for enable/disable
-     * screen recording on crash feature
+     *                                   screen recording on crash feature
      */
     @ReactMethod
     public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
@@ -275,12 +279,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
      *                                       in milliseconds
-     * The maximum duration is 30000 milliseconds
+     *                                       The maximum duration is 30000 milliseconds
      */
     @ReactMethod
     public void setAutoScreenRecordingMaxDuration(int autoScreenRecordingMaxDuration) {
         try {
-            int durationInMilli = autoScreenRecordingMaxDuration*1000;
+            int durationInMilli = autoScreenRecordingMaxDuration * 1000;
             Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
         } catch (Exception e) {
             e.printStackTrace();
@@ -310,19 +314,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setExtendedBugReportMode(String extendedBugReportMode) {
         try {
-          switch(extendedBugReportMode) {
-              case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
-                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
-                  break;
-              case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
-                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-                  break;
-              case EXTENDED_BUG_REPORT_DISABLED:
-                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                  break;
-              default:
-                  Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-          }
+            switch (extendedBugReportMode) {
+                case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
+                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+                    break;
+                case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
+                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+                    break;
+                case EXTENDED_BUG_REPORT_DISABLED:
+                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                    break;
+                default:
+                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -331,7 +335,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setViewHierarchyEnabled(boolean enabled) {
         try {
-            if(enabled) {
+            if (enabled) {
                 Instabug.setViewHierarchyState(Feature.State.ENABLED);
             } else {
 
@@ -376,7 +380,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Send unhandled JS error object
      *
-     * @param exceptionObject   Exception object to be sent to Instabug's servers
+     * @param exceptionObject Exception object to be sent to Instabug's servers
      */
     @ReactMethod
     public void sendJSCrash(String exceptionObject) {
@@ -390,7 +394,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Send handled JS error object
      *
-     * @param exceptionObject   Exception object to be sent to Instabug's servers
+     * @param exceptionObject Exception object to be sent to Instabug's servers
      */
     @ReactMethod
     public void sendHandledJSCrash(String exceptionObject) {
@@ -404,12 +408,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets whether crash reporting feature is Enabled or Disabled
      *
-     * @param isEnabled   Exception object to be sent to Instabug's servers
+     * @param isEnabled Exception object to be sent to Instabug's servers
      */
     @ReactMethod
     public void setCrashReportingEnabled(boolean isEnabled) {
         try {
-            if(isEnabled) {
+            if (isEnabled) {
                 Instabug.setCrashReportingState(Feature.State.ENABLED);
             } else {
                 Instabug.setCrashReportingState(Feature.State.DISABLED);
@@ -421,11 +425,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
         try {
-          JSONObject newJSONObject = new JSONObject(exceptionObject);
-          Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
-          if (method != null) {
-              method.invoke(null, newJSONObject, isHandled);
-          }
+            JSONObject newJSONObject = new JSONObject(exceptionObject);
+            Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
+            if (method != null) {
+                method.invoke(null, newJSONObject, isHandled);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -510,8 +514,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Set the primary color that the SDK will use to tint certain UI elements in the SDK
      *
      * @param primaryColor The value of the primary color ,
-     *                          whatever this color was parsed from a resource color or hex color
-     *                          or RGB color values
+     *                     whatever this color was parsed from a resource color or hex color
+     *                     or RGB color values
      */
     @ReactMethod
     public void setPrimaryColor(int primaryColor) {
@@ -584,8 +588,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
      *
-     * @param userName Username.
-     * @param userEmail    User's default email
+     * @param userName  Username.
+     * @param userEmail User's default email
      */
     @ReactMethod
     public void identifyUser(String userName, String userEmail) {
@@ -765,8 +769,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Report a caught exception to Instabug dashboard
      *
-     * @param stack the exception to be reported
-     * @param message the message of the exception to be reported
+     * @param stack           the exception to be reported
+     * @param message         the message of the exception to be reported
      * @param errorIdentifier used to group issues manually reported
      */
     @ReactMethod
@@ -806,8 +810,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * </p>
      * Note: logs passed to this method are <b>NOT</b> printed to Logcat
      *
-     * @param level      the level
-     * @param message    the message
+     * @param level   the level
+     * @param message the message
      */
     @ReactMethod
     public void log(String level, String message) {
@@ -855,7 +859,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Returns true if the survey with a specific token was answered before.
      * Will return false if the token does not exist or if the survey was not answered before.
      *
-     * @param surveyToken the attribute key as string
+     * @param surveyToken          the attribute key as string
      * @param hasRespondedCallback A callback that gets invoked with the returned value of whether
      *                             the user has responded to the survey or not.
      * @return the desired value of whether the user has responded to the survey or not.
@@ -1015,7 +1019,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Defaults to YES.
      *
      * @param isEmailFieldRequired A boolean to indicate whether email
-     *                  field is required or not.
+     *                             field is required or not.
      */
     @ReactMethod
     public void setEmailFieldRequired(boolean isEmailFieldRequired) {
@@ -1031,7 +1035,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Defaults to NO.
      *
      * @param isCommentFieldRequired A boolean to indicate whether comment
-     *                  field is required or not.
+     *                               field is required or not.
      */
     @ReactMethod
     public void setCommentFieldRequired(boolean isCommentFieldRequired) {
@@ -1047,7 +1051,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Allows you to customize any of the strings shown to users in the SDK.
      *
      * @param string String value to override the default one.
-     * @param key Key of string to override.
+     * @param key    Key of string to override.
      */
     @ReactMethod
     public void setString(String string, String key) {
@@ -1080,8 +1084,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * sending feedback.
      *
      * @param willSkipScreenshotAnnotation sets whether screenshot view is
-     *                  shown or not. Passing YES will show screenshot view for both feedback and
-     *                  bug reporting, while passing NO will disable it for both.
+     *                                     shown or not. Passing YES will show screenshot view for both feedback and
+     *                                     bug reporting, while passing NO will disable it for both.
      */
     @ReactMethod
     public void setWillSkipScreenshotAnnotation(boolean willSkipScreenshotAnnotation) {
@@ -1112,7 +1116,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Logged user events are going to be sent with each report, as well as at the end of a
      * session.
      *
-     * @param name Event name.
+     * @param name   Event name.
      * @param params An optional ReadableMap to be associated with the event.
      */
     @ReactMethod
@@ -1141,7 +1145,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * UI changes before the SDK's UI is shown.
      *
      * @param preInvocationHandler - A callback that gets executed before
-     *                               invoking the SDK
+     *                             invoking the SDK
      */
     @ReactMethod
     public void setPreInvocationHandler(final Callback preInvocationHandler) {
@@ -1164,8 +1168,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * be used for attaching logs and extra data to reports.
      *
      * @param preSendingHandler - A callback that gets executed before
-     *                            sending each bug
-     *                            report.
+     *                          sending each bug
+     *                          report.
      */
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
@@ -1188,7 +1192,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * UI changes after the SDK's UI is dismissed.
      *
      * @param postInvocationHandler - A callback to get executed after
-     *                                dismissing the SDK.
+     *                              dismissing the SDK.
      */
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
@@ -1302,9 +1306,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * none is enabled, Bug
      * reporting becomes the default invocation option.
      *
-     * @param chat      weather Talk to us is enable or not
-     * @param bug       weather Report a Problem is enable or not
-     * @param feedback  weather General Feedback  is enable or not
+     * @param chat     weather Talk to us is enable or not
+     * @param bug      weather Report a Problem is enable or not
+     * @param feedback weather General Feedback  is enable or not
      */
     @ReactMethod
     public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
@@ -1331,25 +1335,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets whether user steps tracking is visual, non visual or disabled.
      *
-     * @param reproStepsMode   A string to set user steps tracking to be
-     * enabled, non visual or disabled.
+     * @param reproStepsMode A string to set user steps tracking to be
+     *                       enabled, non visual or disabled.
      */
     @ReactMethod
     public void setReproStepsMode(String reproStepsMode) {
         try {
-          switch(reproStepsMode) {
-              case ENABLED_WITH_NO_SCREENSHOTS:
-                  Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
-                  break;
-              case ENABLED:
-                  Instabug.setReproStepsState(State.ENABLED);
-                  break;
-              case DISABLED:
-                  Instabug.setReproStepsState(State.DISABLED);
-                  break;
-              default:
-                  Instabug.setReproStepsState(State.ENABLED);
-          }
+            switch (reproStepsMode) {
+                case ENABLED_WITH_NO_SCREENSHOTS:
+                    Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+                    break;
+                case ENABLED:
+                    Instabug.setReproStepsState(State.ENABLED);
+                    break;
+                case DISABLED:
+                    Instabug.setReproStepsState(State.DISABLED);
+                    break;
+                default:
+                    Instabug.setReproStepsState(State.ENABLED);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1377,7 +1381,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Sets a block of code that gets executed when a new message is received.
      *
      * @param onNewMessageHandler - A callback that gets
-     *                              executed when a new message is received.
+     *                            executed when a new message is received.
      */
     @ReactMethod
     public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
@@ -1396,7 +1400,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * @param enabled true to show success dialog after submitting a bug report
-     *
      */
     @ReactMethod
     public void setSuccessDialogEnabled(boolean enabled) {
@@ -1410,9 +1413,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Set after how many sessions should the dismissed survey would show again.
      *
-     * @param sessionsCount  number of sessions that the dismissed survey will be shown after.
-     * @param daysCount      number of days that the dismissed survey will show after
-     *
+     * @param sessionsCount number of sessions that the dismissed survey will be shown after.
+     * @param daysCount     number of days that the dismissed survey will show after
      */
     @ReactMethod
     public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
@@ -1426,8 +1428,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Set Surveys auto-showing state, default state auto-showing enabled
      *
-     * @param autoShowingSurveysEnabled  whether Surveys should be auto-showing or not
-     *
+     * @param autoShowingSurveysEnabled whether Surveys should be auto-showing or not
      */
     @ReactMethod
     public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
@@ -1462,10 +1463,65 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setSessionProfilerEnabled(boolean sessionProfilerEnabled) {
         try {
-            if(sessionProfilerEnabled) {
-              Instabug.setSessionProfilerState(Feature.State.ENABLED);
+            if (sessionProfilerEnabled) {
+                Instabug.setSessionProfilerState(Feature.State.ENABLED);
             } else {
-              Instabug.setSessionProfilerState(Feature.State.DISABLED);
+                Instabug.setSessionProfilerState(Feature.State.DISABLED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set Surveys welcome screen enabled, default value is false
+     *
+     * @param shouldShow shouldShow whether should a welcome screen be shown
+     *                   before taking surveys or not
+     */
+    @ReactMethod
+    public void setShouldShowSurveysWelcomeScreen(boolean shouldShow) {
+        try {
+            InstabugSurvey.setShouldShowSurveysWelcomeScreen(shouldShow);
+        } catch (java.lang.Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * ets whether email field is required or not when submitting
+     * bug/feedback/new-feature-request/new-comment-on-feature
+     *
+     * @param isEmailRequired set true to make email field required
+     * @param actionTypes Bitwise-or of actions
+     *                    {@link ActionType#ALL_ACTIONS}
+     *                    {@link ActionType#REPORT_BUG}
+     *                    {@link ActionType#ADD_COMMENT_TO_FEATURE}
+     *                    {@link ActionType#REQUEST_NEW_FEATURE}
+     */
+    @ReactMethod
+    public void setEmailFieldRequiredForActions(boolean isEmailRequired, ReadableArray actionTypes) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(actionTypes);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            for (String action : stringArray) {
+                switch (action) {
+                    case ACTION_TYPE_ALL_ACTIONS:
+                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ALL_ACTIONS);
+                        return;
+                    case ACTION_TYPE_REPORT_BUG:
+                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REPORT_BUG);
+                        break;
+                    case ACTION_TYPE_REQUEST_NEW_FEATURE:
+                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REQUEST_NEW_FEATURE);
+                        break;
+                    case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
+                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ADD_COMMENT_TO_FEATURE);
+                        break;
+                    default:
+                        Instabug.setEmailFieldRequired(isEmailRequired);
+                        break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1605,11 +1661,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     private void sendEvent(ReactApplicationContext reactContext,
-                        String eventName,
-                        @Nullable WritableMap params) {
+                           String eventName,
+                           @Nullable WritableMap params) {
         reactContext
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(eventName, params);
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 
     @Override
@@ -1629,8 +1685,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
         constants.put("invocationModeChatsList", INVOCATION_MODE_CHATS_LIST);
 
-        constants.put("floatingButtonEdgeLeft",FLOATING_BUTTON_EDGE_LEFT);
-        constants.put("floatingButtonEdgeRight",FLOATING_BUTTON_EDGE_RIGHT);
+        constants.put("floatingButtonEdgeLeft", FLOATING_BUTTON_EDGE_LEFT);
+        constants.put("floatingButtonEdgeRight", FLOATING_BUTTON_EDGE_RIGHT);
 
         constants.put("localeArabic", LOCALE_ARABIC);
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
@@ -1662,6 +1718,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
         constants.put("reproStepsEnabled", ENABLED);
         constants.put("reproStepsDisabled", DISABLED);
+
+        constants.put("allActions", ACTION_TYPE_ALL_ACTIONS);
+        constants.put("reportBugAction", ACTION_TYPE_REPORT_BUG);
+        constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
+        constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
 
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);

@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.12.5
+ Version:    7.12.7
  */
 
 #import <Foundation/Foundation.h>
@@ -1265,6 +1265,17 @@ OBJC_EXTERN void IBGNSLogWithLevel(NSString *format, va_list args, IBGLogLevel l
  @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
  */
 + (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
+
+/**
+ @brief Setting an option for all the surveys to show a welcome screen before the user starts taking the survey.
+ 
+ @discussion By enabling this option, any survey that appears to the user will have a welcome screen with a title, subtitle
+  and a button that if clicked, will take the user to the survey. All the strings in the welcome screen have a default value
+ and localized. They can also be modified using the strings API. The default value of this option is false.
+ 
+ @param shouldShowWelcomeScreen : Boolean for setting wether the welcome screen should show.
+ */
++ (void)setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen;
 
 #pragma mark - Feature Requests
 /// ------------------------

@@ -297,6 +297,22 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
+     * Sets whether users are required to enter an email address or not when
+     * sending reports.
+     * Defaults to YES.
+     * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
+     * field is required or not.
+     * @param {actionTypes} actionTypes An enum that indicates which action
+     *                                  types will have the isEmailFieldRequired
+     */
+
+    setEmailFieldRequiredForActions: function(isEmailFieldRequired, actionTypes) {
+      Instabug.setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes);
+    },
+
+
+    /**
      * Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
@@ -407,12 +423,6 @@ module.exports = {
     resetTags: function () {
         Instabug.resetTags();
     },
-
-    /**
-     * return callback
-     * @callback tagsCallback
-     * @param {string[]} tags of reported feedback, bug or crash.
-     */
 
     /**
      * Gets all tags of reported feedback, bug or crash.
@@ -928,7 +938,7 @@ module.exports = {
 	      } else {
 	        Instabug.sendHandledJSCrash(jsonObject);
 	      }
-	    },	
+	    },
 
     /**
      * Sets the default position at which the Instabug screen recording button will be shown.
@@ -970,6 +980,17 @@ module.exports = {
       */
      showFeatureRequests: function() {
          Instabug.showFeatureRequests();
+     },
+
+     /**
+      * Setting an option for all the surveys to show a welcome screen before
+      * the user starts taking the survey.
+      * @param shouldShowWelcomeScreen A boolean for setting whether the
+      *                                welcome screen should show.
+      *
+      */
+     setShouldShowSurveysWelcomeScreen: function(shouldShowWelcomeScreen) {
+         Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
      },
 
     /**
@@ -1097,6 +1118,18 @@ module.exports = {
         topRight: Instabug.topRight,
         bottomLeft: Instabug.bottomLeft,
         topLeft: Instabug.topLeft
+    },
+
+    /**
+     * Instabug action types.
+     * @readonly
+     * @enum {number}
+     */
+    actionTypes: {
+        allActions: Instabug.allActions,
+        reportBug: Instabug.reportBugAction,
+        requestNewFeature: Instabug.requestNewFeature,
+        addCommentToFeature: Instabug.addCommentToFeature
     },
 
     /**
