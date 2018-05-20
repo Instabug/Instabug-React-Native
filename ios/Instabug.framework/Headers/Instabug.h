@@ -21,6 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Instabug : NSObject
 
+@property (class, atomic, assign) IBGUserStepsMode trackUserSteps;
+@property (class, atomic, assign) BOOL autoScreenRecordingEnabled;
+@property (class, atomic, assign) CGFloat autoScreenRecordingDuration;
+@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy;
+@property (class, atomic, strong) UIColor *tintColor;
+@property (class, atomic, strong) void (^didRecieveReplyHandler)(void);
+@property (class, atomic, assign) BOOL replyNotificationsEnabled;
+@property (class, atomic, assign) NSInteger unreadMessagesCount;
+
 typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *response);
 
 /// ------------------------
@@ -38,7 +47,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @see IBGInvocationEvent
  */
-+ (void)startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent;
++ (void)startWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvent;
 
 /// ---------------------------
 /// @name SDK Manual Invocation

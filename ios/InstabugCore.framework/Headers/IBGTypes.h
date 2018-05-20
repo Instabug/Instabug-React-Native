@@ -138,9 +138,7 @@ extern NSString * const kIBGReplyButtonTitleStringName;
 /**
  The event used to invoke the feedback form.
  */
-typedef NS_ENUM(NSInteger, IBGInvocationEvent) {
-    /** No event will be registered to show the feedback form, you'll need to code your own and call the method showFeedbackForm. */
-    IBGInvocationEventNone,
+typedef NS_OPTIONS(NSInteger, IBGInvocationEvent) {
     /** Shaking the device while in any screen to show the feedback form. */
     IBGInvocationEventShake,
     /** Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form. */
@@ -150,7 +148,9 @@ typedef NS_ENUM(NSInteger, IBGInvocationEvent) {
     /** Swiping one finger left from the right edge of the screen to show the feedback form, substituted with IBGInvocationEventTwoFingersSwipeLeft on iOS 6.1.3 and earlier. */
     IBGInvocationEventRightEdgePan,
     /**  Shows a floating button on top of all views, when pressed it takes a screenshot. */
-    IBGInvocationEventFloatingButton
+    IBGInvocationEventFloatingButton,
+    /** No event will be registered to show the feedback form, you'll need to code your own and call the method showFeedbackForm. */
+    IBGInvocationEventNone,
 };
 
 /**
