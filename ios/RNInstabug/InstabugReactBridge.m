@@ -8,6 +8,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
+#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <asl.h>
 #import <React/RCTLog.h>
@@ -96,11 +97,11 @@ RCT_EXPORT_METHOD(IBGLog:(NSString *)log) {
 }
 
 RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
-    [Instabug showSurveyWithToken:surveyToken];
+    [IBGSurveys showSurveyWithToken:surveyToken];
 }
 
 RCT_EXPORT_METHOD(hasRespondedToSurveyWithToken:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
-    callback(@[@([Instabug hasRespondedToSurveyWithToken:surveyToken])]);
+    callback(@[@([IBGSurveys hasRespondedToSurveyWithToken:surveyToken])]);
 }
 
 RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
@@ -367,6 +368,10 @@ RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
     Instabug.shouldCaptureViewHierarchy = viewHierarchyEnabled;
 }
 
+RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
+    callback(@[[IBGSurveys availableSurveys]]);
+}
+
 RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
     [Instabug logUserEventWithName:name];
 }
@@ -400,30 +405,30 @@ RCT_EXPORT_METHOD(logError:(NSString *)log) {
 }
 
 RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
-    [Instabug setSurveysEnabled:surveysEnabled];
+    IBGSurveys.enabled = surveysEnabled;
 }
 
 RCT_EXPORT_METHOD(showSurveysIfAvailable) {
-    [Instabug showSurveyIfAvailable];
+    [IBGSurveys showSurveyIfAvailable];
 }
 
 RCT_EXPORT_METHOD(setWillShowSurveyHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setWillShowSurveyHandler:^{
+        IBGSurveys.willShowSurveyHandler = ^{
             [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
-        }];
+        };
     } else {
-        [Instabug setWillShowSurveyHandler:nil];
+        IBGSurveys.willShowSurveyHandler = nil;
     }
 }
 
 RCT_EXPORT_METHOD(setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setDidDismissSurveyHandler:^{
+        IBGSurveys.didDismissSurveyHandler = ^{
             [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
-        }];
+        };
     } else {
-        [Instabug setDidDismissSurveyHandler:nil];
+        IBGSurveys.didDismissSurveyHandler = nil;
     }
 }
 
@@ -432,7 +437,7 @@ RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
 }
 
 RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
-    [Instabug setAutoShowingSurveysEnabled:autoShowingSurveysEnabled];
+    IBGSurveys.autoShowingEnabled = autoShowingSurveysEnabled;
 }
 
 RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
@@ -440,7 +445,7 @@ RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position)
 }
 
 RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
-    [Instabug setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
+    [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
 }
 
 RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
@@ -452,7 +457,7 @@ RCT_EXPORT_METHOD(showFeatureRequests) {
 }
 
 RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
-    [Instabug setShouldShowSurveysWelcomeScreen:shouldShowWelcomeScreen];
+    IBGSurveys.shouldShowWelcomeScreen = shouldShowWelcomeScreen;
 }
 
 RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired

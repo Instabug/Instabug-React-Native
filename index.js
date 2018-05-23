@@ -96,6 +96,16 @@ module.exports = {
     },
 
     /**
+     * Returns an array containing the available surveys.
+     * @param {availableSurveysCallback} availableSurveysCallback callback with
+     * argument available surveys
+     *
+     */
+    getAvailableSurveys: function(availableSurveysCallback) {
+        Instabug.getAvailableSurveys(availableSurveysCallback)
+    },
+
+    /**
      * Adds custom logs that will be sent with each report.
      * @param {string} log Message to be logged.
      */
