@@ -174,6 +174,17 @@ typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeChatsList
 };
 
+typedef NS_OPTIONS(NSInteger, IBGBugReportingInvocationOption) {
+    IBGBugReportingInvocationOptionNewBug,
+    IBGBugReportingInvocationOptionNewFeedback,
+    IBGBugReportingInvocationOptionNewChat,
+    IBGBugReportingInvocationOptionChatsList,
+    IBGBugReportingInvocationOptionEmailFieldHidden,
+    IBGBugReportingInvocationOptionEmailFieldOptional,
+    IBGBugReportingInvocationOptionCommentFieldRequired,
+    IBGBugReportingInvocationOptionDisablePostSendingDialog,
+};
+
 /**
  Type of report to be submitted.
  */
