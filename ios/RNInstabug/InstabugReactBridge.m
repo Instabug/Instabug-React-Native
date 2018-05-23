@@ -154,7 +154,7 @@ RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
 }
 
 RCT_EXPORT_METHOD(showIntroMessage) {
-    [Instabug showIntroMessage];
+    [IBGBugReporting showIntroMessage];
 }
 
 RCT_EXPORT_METHOD(setUserEmail:(NSString *)userEmail) {
