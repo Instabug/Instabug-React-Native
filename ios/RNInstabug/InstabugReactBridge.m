@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(invokeWithInvocationModes:(IBGBugReportingInvocationOption)inv
 }
 
 RCT_EXPORT_METHOD(dismiss) {
-    [Instabug dismiss];
+    [IBGBugReporting dismiss];
 }
 
 RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
