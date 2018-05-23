@@ -6,6 +6,7 @@
 
 #import "InstabugReactBridge.h"
 #import <Instabug/Instabug.h>
+#import <Instabug/IBGBugReporting.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -30,8 +31,12 @@ RCT_EXPORT_MODULE(Instabug)
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent) {
-    [Instabug startWithToken:token invocationEvent:invocationEvent];
+RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
+    IBGInvocationEvent invocationEvents = 0;
+    for (NSNumber *boxedValue in invocationEventsArray) {
+        invocationEvents |= [boxedValue intValue];
+    }
+    [Instabug startWithToken:token invocationEvents:invocationEvents];
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     [Instabug setNetworkLoggingEnabled:NO];
@@ -42,11 +47,15 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvent:(IBGInvocatio
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    [Instabug invoke];
+    [IBGBugReporting invoke];
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode) {
     [Instabug invokeWithInvocationMode:invocationMode];
+}
+
+RCT_EXPORT_METHOD(invokeWithInvocationModes:(IBGBugReportingInvocationOption)invocationOptions) {
+    [Instabug invokeWithOptions:invocationOptions];
 }
 
 RCT_EXPORT_METHOD(dismiss) {
@@ -501,6 +510,15 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
 
+              @"invocationOptionNewBug": @(IBGBugReportingInvocationOptionNewBug),
+              @"invocationOptionNewFeedback": @(IBGBugReportingInvocationOptionNewFeedback),
+              @"invocationOptionNewChat": @(IBGBugReportingInvocationOptionNewChat),
+              @"invocationOptionsChatsList": @(IBGBugReportingInvocationOptionChatsList),
+              @"invocationOptionsEmailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
+              @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
+              @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
+              @"invocationOptionsDisablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
+              
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
 

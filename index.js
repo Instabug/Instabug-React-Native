@@ -35,6 +35,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link invokeWithInvocationModes} instead.
      * Invokes the SDK with a specific mode.
      * Invokes the SDK and show a specific view, instead of showing a prompt for
      * users to choose from.
@@ -43,6 +44,17 @@ module.exports = {
      */
     invokeWithInvocationMode: function (invocationMode) {
         Instabug.invokeWithInvocationMode(invocationMode);
+    },
+
+    /**
+     * Invokes the SDK with a specific mode.
+     * Invokes the SDK and show a specific view, instead of showing a prompt for
+     * users to choose from.
+     * @param {invocationOptions} invocationOptions Specifies which mode the
+     * SDK is going to start with.
+     */
+    invokeWithModes: function (invocationOptions) {
+        Instabug.invokeWithInvocationModes(invocationOptions);
     },
 
     /**
@@ -1049,6 +1061,22 @@ module.exports = {
         newFeedback: Instabug.invocationModeNewFeedback,
         newChat: Instabug.invocationModeNewChat,
         chatsList: Instabug.invocationModeChatsList
+    },
+
+    /**
+     *  The options used upon invocating the SDK
+     * @readonly
+     * @enum {number}
+     */
+    invocationOptions: {
+      invocationOptionNewBug: Instabug.invocationOptionNewBug,
+      invocationOptionNewFeedback: Instabug.invocationOptionNewFeedback,
+      invocationOptionNewChat: Instabug.invocationOptionNewChat,
+      invocationOptionsChatsList: Instabug.invocationOptionsChatsList,
+      invocationOptionsEmailFieldHidden: Instabug.invocationOptionsEmailFieldHidden,
+      invocationOptionsEmailFieldOptional: Instabug.invocationOptionsEmailFieldOptional,
+      invocationOptionsCommentFieldRequired: Instabug.invocationOptionsCommentFieldRequired,
+      invocationOptionsDisablePostSendingDialog: Instabug.invocationOptionsDisablePostSendingDialog
     },
 
     /**
