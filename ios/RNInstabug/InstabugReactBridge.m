@@ -7,6 +7,8 @@
 #import "InstabugReactBridge.h"
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
+#import <Instabug/IBGCrashReporting.h>
+#import <Instabug/IBGLog.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -21,7 +23,8 @@
              @"IBGpostInvocationHandler",
              @"IBGonNewMessageHandler",
              @"IBGWillShowSurvey",
-             @"IBGDidDismissSurvey"
+             @"IBGDidDismissSurvey",
+             @"IBGDidSelectPromptOptionHandler"
              ];
 }
 
@@ -39,7 +42,7 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     [Instabug startWithToken:token invocationEvents:invocationEvents];
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    [Instabug setNetworkLoggingEnabled:NO];
+    [IBGNetworkLogger.enabled = NO];
     SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
     if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
         [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
@@ -89,7 +92,7 @@ RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
 }
 
 RCT_EXPORT_METHOD(IBGLog:(NSString *)log) {
-    [Instabug IBGLog:log];
+    [IBGLog log:log];
 }
 
 RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
@@ -106,50 +109,62 @@ RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isUserStepsEnabled) {
 
 RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
   if(enabledCrashReporter) {
-    [Instabug setCrashReportingEnabled:YES];
+    IBGCrashReporting.enabled = YES;
   } else {
-    [Instabug setCrashReportingEnabled:NO];
+    IBGCrashReporting.enabled = NO;
   }
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
-    [Instabug setAutoScreenRecordingEnabled:enabled];
+    Instabug.autoScreenRecordingEnabled = enabled;
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
-    [Instabug setAutoScreenRecordingDuration:duration];
+    Instabug.autoScreenRecordingDuration = duration;
 }
 
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPreSendingHandler:^{
+        IBGBugReporting.willSendReportHandler = ^{
             [self sendEventWithName:@"IBGpreSendingHandler" body:nil];
-        }];
+        };
     } else {
-        [Instabug setPreSendingHandler:nil];
+        IBGBugReporting.willSendReportHandler = nil;
     }
 }
 
 RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPreInvocationHandler:^{
+        IBGBugReporting.willInvokeHandler = ^{
             [self sendEventWithName:@"IBGpreInvocationHandler" body:nil];
-        }];
+        };
     } else {
-        [Instabug setPreInvocationHandler:nil];
+        IBGBugReporting.willInvokeHandler = nil;
     }
 }
 
 RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setPostInvocationHandler:^(IBGDismissType dismissType, IBGReportType reportType) {
+        IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
             [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
                                                                        @"dismissType": @(dismissType),
                                                                        @"reportType": @(reportType)
                                                                        }];
-        }];
+        };
     } else {
-        [Instabug setPostInvocationHandler:nil];
+        IBGBugReporting.didDismissHandler = nil;
+    }
+}
+
+RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
+    if (callBack != nil) {
+        IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
+            [self sendEventWithName:@"IBGDidSelectPromptOptionHandler" body:@{
+                                                                       @"promptOption": @(promptOption)
+                                                                       }];
+        };
+    } else {
+        IBGBugReporting.didSelectPromptOptionHandler = nil;
     }
 }
 
@@ -170,11 +185,19 @@ RCT_EXPORT_METHOD(setWillSkipScreenshotAnnotation:(BOOL)willSkipScreenshot) {
 }
 
 RCT_EXPORT_METHOD(getUnreadMessagesCount:(RCTResponseSenderBlock)callBack) {
-    callBack(@[@([Instabug getUnreadMessagesCount])]);
+    callBack(@[@(Instabug.unreadMessagesCount)]);
 }
 
 RCT_EXPORT_METHOD(setInvocationEvent:(IBGInvocationEvent)invocationEvent) {
     [Instabug setInvocationEvent:invocationEvent];
+}
+
+RCT_EXPORT_METHOD(setInvocationEvents:(NSArray*)invocationEventsArray) {
+    IBGInvocationEvent invocationEvents = 0;
+    for (NSNumber *boxedValue in invocationEventsArray) {
+        invocationEvents |= [boxedValue intValue];
+    }
+    IBGBugReporting.invocationEvents = invocationEvents;
 }
 
 RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
@@ -194,8 +217,17 @@ RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold fo
                                    foriPad:iPadShakingThreshold];
 }
 
+RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold) {
+    IBGBugReporting.shakingThresholdForiPhone = iPhoneShakingThreshold;
+}
+
+RCT_EXPORT_METHOD(setShakingThresholdForiPad:(double)iPadShakingThreshold) {
+    IBGBugReporting.shakingThresholdForiPad = iPadShakingThreshold;
+}
+
 RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop) {
-    [Instabug setFloatingButtonEdge:floatingButtonEdge withTopOffset:floatingButtonOffsetFromTop];
+    IBGBugReporting.floatingButtonEdge = floatingButtonEdge;
+    IBGBugReporting.floatingButtonTopOffset = floatingButtonOffsetFromTop;
 }
 
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
@@ -203,11 +235,11 @@ RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
 }
 
 RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode) {
-    [Instabug setExtendedBugReportMode:extendedBugReportMode];
+    IBGBugReporting.extendedBugReportMode = extendedBugReportMode;
 }
 
 RCT_EXPORT_METHOD(setIntroMessageEnabled:(BOOL)isIntroMessageEnabled) {
-    [Instabug setIntroMessageEnabled:isIntroMessageEnabled];
+    IBGBugReporting.introMessageEnabled = isIntroMessageEnabled;
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
@@ -215,7 +247,7 @@ RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    [Instabug setPrimaryColor:color];
+    Instabug.tintColor = color;
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -252,20 +284,20 @@ RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
          attachmentTypes |= IBGAttachmentTypeScreenRecording;
      }
 
-     [Instabug setEnabledAttachmentTypes:attachmentTypes];
+     IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
   }
 
 RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
-    [Instabug setChatNotificationEnabled:isChatNotificationEnabled];
+    Instabug.replyNotificationsEnabled = isChatNotificationEnabled;
 }
 
 RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setOnNewMessageHandler:^{
+        Instabug.didRecieveReplyHandler = ^{
             [self sendEventWithName:@"IBGonNewMessageHandler" body:nil];
-        }];
+        };
     } else {
-        [Instabug setOnNewMessageHandler:nil];
+        Instabug.didRecieveReplyHandler = nil;
     }
 }
 
@@ -332,7 +364,7 @@ RCT_EXPORT_METHOD(clearAllUserAttributes) {
 }
 
 RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
-    [Instabug setViewHierarchyEnabled:viewHierarchyEnabled];
+    Instabug.shouldCaptureViewHierarchy = viewHierarchyEnabled;
 }
 
 RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
@@ -343,28 +375,28 @@ RCT_EXPORT_METHOD(logUserEventWithNameAndParams:(NSString *)name params:(nullabl
     [Instabug logUserEventWithName:name params:params];
 }
 
-RCT_EXPORT_METHOD(log:(NSString *)log) {
-    [Instabug IBGLog:log];
+RCT_EXPORT_METHOD(setIBGLogPrintsToConsole:(BOOL) printsToConsole) {
+    IBGLog.printsToConsole = printsToConsole;
 }
 
 RCT_EXPORT_METHOD(logVerbose:(NSString *)log) {
-    [Instabug logVerbose:log];
+    [IBGLog logVerbose:log];
 }
 
 RCT_EXPORT_METHOD(logDebug:(NSString *)log) {
-    [Instabug logDebug:log];
+    [IBGLog logDebug:log];
 }
 
 RCT_EXPORT_METHOD(logInfo:(NSString *)log) {
-    [Instabug logInfo:log];
+    [IBGLog logInfo:log];
 }
 
 RCT_EXPORT_METHOD(logWarn:(NSString *)log) {
-    [Instabug logWarn:log];
+    [IBGLog logWarn:log];
 }
 
 RCT_EXPORT_METHOD(logError:(NSString *)log) {
-    [Instabug logError:log];
+    [IBGLog logError:log];
 }
 
 RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
@@ -404,7 +436,7 @@ RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) 
 }
 
 RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
-    [Instabug setVideoRecordingFloatingButtonPosition:position];
+    IBGBugReporting.videoRecordingFloatingButtonPosition = position;
 }
 
 RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
@@ -416,7 +448,7 @@ RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
 }
 
 RCT_EXPORT_METHOD(showFeatureRequests) {
-    [Instabug showFeatureRequests];
+    [IBGFeatureRequests show];
 }
 
 RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
@@ -431,7 +463,7 @@ RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
          actionTypes |= [boxedValue intValue];
     }
 
-     [Instabug setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
+     [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
   }
 
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {

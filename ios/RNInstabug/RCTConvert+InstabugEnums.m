@@ -37,13 +37,19 @@ RCT_ENUM_CONVERTER(IBGBugReportingInvocationOption, (@{
                                          @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
                                          @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
                                          @"invocationOptionsDisablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog)
-                                         }), IBGInvocationModeNA, integerValue);
+                                         }), IBGBugReportingInvocationOptionNewBug, integerValue);
 
 RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
                                       @"dismissTypeCancel": @(IBGDismissTypeCancel),
                                       @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
+
+RCT_ENUM_CONVERTER(IBGPromptOption, (@{
+                                      @"promptOptionChat": @(IBGPromptOptionChat),
+                                      @"promptOptionBug": @(IBGPromptOptionBug),
+                                      @"promptOptionBugFeedback": @(IBGPromptOptionFeedback)
+                                      }), IBGPromptOptionChat, integerValue)
 
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabled": @(IBGUserStepsModeEnable),

@@ -117,6 +117,16 @@ module.exports = {
     },
 
     /**
+     * Sets whether IBGLog should also print to Xcode's console log or not.
+     * @param {boolean} printsToConsole A boolean to set whether printing to
+     *                  Xcode's console is enabled or not.
+     */
+    setIBGLogPrintsToConsole: function (printsToConsole) {
+        if (Platform.OS === 'ios')
+            Instabug.setIBGLogPrintsToConsole(printsToConsole);
+    },
+
+    /**
 	    * Report un-caught exceptions to Instabug dashboard
 	    * We don't send exceptions from __DEV__, since it's way too noisy!
       */
@@ -143,6 +153,30 @@ module.exports = {
         }
 
         Instabug.setPreSendingHandler(preSendingHandler);
+
+    },
+
+    /**
+     * Sets a block of code to be executed when a prompt option is selected.
+     * @param {function} didSelectPromptOptionHandler - A block of code that
+     *                  gets executed when a prompt option is selected.
+     */
+    setDidSelectPromptOptionHandler: function (didSelectPromptOptionHandler) {
+      if (Platform.OS === 'ios') {
+          Instabug.addListener('IBGDidSelectPromptOptionHandler');
+          NativeAppEventEmitter.addListener(
+              'IBGDidSelectPromptOptionHandler',
+              function (payload) {
+                  didSelectPromptOptionHandler(payload['promptOption']);
+              }
+          );
+      } else {
+          DeviceEventEmitter.addListener('IBGDidSelectPromptOptionHandler', function(payload) {
+              didSelectPromptOptionHandler(payload.promptOption);
+          });
+      }
+
+      Instabug.didSelectPromptOptionHandler(didSelectPromptOptionHandler);
 
     },
 
@@ -277,6 +311,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated Use {@link setInvocationEvents} instead.
      * Sets the event that invoke the feedback form.
      * Default is set by `Instabug.startWithToken`.
      * @param {invocationEvent} invocationEvent Event that invokes the
@@ -284,6 +319,16 @@ module.exports = {
      */
     setInvocationEvent: function (invocationEvent) {
         Instabug.setInvocationEvent(invocationEvent);
+    },
+
+    /**
+     * Sets the events that invoke the feedback form.
+     * Default is set by `Instabug.startWithToken`.
+     * @param {invocationEvent} invocationEvent Event that invokes the
+     * feedback form.
+     */
+    setInvocationEvents: function(invocationEvents) {
+      Instabug.setInvocationEvents(invocationEvents);
     },
 
     /**
@@ -335,6 +380,8 @@ module.exports = {
     },
 
     /**
+     * @deprecated since version 2.3.0. Use {@link setShakingThresholdForiPhone}
+     * and {@link setShakingThresholdForiPad} instead.
      * Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad.
      * Default for iPhone is 2.5.
      * Default for iPad is 0.6.
@@ -344,6 +391,26 @@ module.exports = {
     setShakingThresholdForIPhone: function (iPhoneShakingThreshold, iPadShakingThreshold) {
         if (Platform.OS === 'ios')
             Instabug.setShakingThresholdForIPhone(iPhoneShakingThreshold, iPadShakingThreshold);
+    },
+
+    /**
+     * Sets the threshold value of the shake gesture for iPhone/iPod Touch
+     * Default for iPhone is 2.5.
+     * @param {number} iPhoneShakingThreshold Threshold for iPhone.
+     */
+    setShakingThresholdForiPhone: function (iPhoneShakingThreshold) {
+        if (Platform.OS === 'ios')
+            Instabug.setShakingThresholdForiPhone(iPhoneShakingThreshold);
+    },
+
+    /**
+     * Sets the threshold value of the shake gesture for iPad.
+     * Default for iPad is 0.6.
+     * @param {number} iPadShakingThreshold Threshold for iPad.
+     */
+    setShakingThresholdForiPad: function (iPadShakingThreshold) {
+        if (Platform.OS === 'ios')
+            Instabug.setShakingThresholdForiPad(iPadShakingThreshold);
     },
 
     /**
