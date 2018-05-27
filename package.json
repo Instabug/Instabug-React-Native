@@ -3,6 +3,7 @@
   "version": "2.11.2",
   "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
+  "type": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Instabug/instabug-reactnative.git"
