@@ -334,11 +334,20 @@ module.exports = {
     /**
      * Sets the events that invoke the feedback form.
      * Default is set by `Instabug.startWithToken`.
-     * @param {invocationEvent} invocationEvent Event that invokes the
+     * @param {invocationEvent} invocationEvent Array of events that invokes the
      * feedback form.
      */
     setInvocationEvents: function(invocationEvents) {
       Instabug.setInvocationEvents(invocationEvents);
+    },
+
+    /**
+     * Sets the invocation options.
+     * Default is set by `Instabug.startWithToken`.
+     * @param {invocationOptions} invocationOptions Array of invocation options
+     */
+    setInvocationOptions: function(invocationOptions) {
+      Instabug.setInvocationOptions(invocationOptions);
     },
 
     /**
@@ -376,6 +385,21 @@ module.exports = {
 
     setEmailFieldRequiredForActions: function(isEmailFieldRequired, actionTypes) {
       Instabug.setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes);
+    },
+
+    /**
+     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
+     * Sets whether users are required to enter an email address or not when
+     * sending reports.
+     * Defaults to YES.
+     * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
+     * field is required or not.
+     * @param {actionTypes} actionTypes An enum that indicates which action
+     *                                  types will have the isEmailFieldRequired
+     */
+
+    setEmailFieldRequiredForFeatureRequests: function(isEmailFieldRequired, actionTypes) {
+      Instabug.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
     },
 
 
@@ -1118,6 +1142,17 @@ module.exports = {
     },
 
     /**
+     * Type of SDK dismiss
+     * @readonly
+     * @enum {number}
+     */
+    promptOption: {
+        bug: Instabug.promptOptionBug,
+        chat: Instabug.promptOptionChat,
+        feedback: Instabug.promptOptionFeedback
+    },
+
+    /**
      * Type of report to be submit
      * @readonly
      * @enum {number}
@@ -1146,14 +1181,14 @@ module.exports = {
      * @enum {number}
      */
     invocationOptions: {
-      invocationOptionNewBug: Instabug.invocationOptionNewBug,
-      invocationOptionNewFeedback: Instabug.invocationOptionNewFeedback,
-      invocationOptionNewChat: Instabug.invocationOptionNewChat,
-      invocationOptionsChatsList: Instabug.invocationOptionsChatsList,
-      invocationOptionsEmailFieldHidden: Instabug.invocationOptionsEmailFieldHidden,
-      invocationOptionsEmailFieldOptional: Instabug.invocationOptionsEmailFieldOptional,
-      invocationOptionsCommentFieldRequired: Instabug.invocationOptionsCommentFieldRequired,
-      invocationOptionsDisablePostSendingDialog: Instabug.invocationOptionsDisablePostSendingDialog
+      // invocationOptionNewBug: Instabug.invocationOptionNewBug,
+      // invocationOptionNewFeedback: Instabug.invocationOptionNewFeedback,
+      // invocationOptionNewChat: Instabug.invocationOptionNewChat,
+      // invocationOptionsChatsList: Instabug.invocationOptionsChatsList,
+      invocationOptionsEmailFieldHidden: Instabug.emailFieldHidden,
+      invocationOptionsEmailFieldOptional: Instabug.emailFieldOptional,
+      invocationOptionsCommentFieldRequired: Instabug.commentFieldRequired,
+      invocationOptionsDisablePostSendingDialog: Instabug.disablePostSendingDialog
     },
 
     /**
