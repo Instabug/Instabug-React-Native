@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.12.7
+ Version:    7.13
  */
 
 #import <Foundation/Foundation.h>
@@ -386,15 +386,15 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 
 /**
  @brief Enables/disables screenshot view when reporting a bug/improvement.
- 
+
  @deprecated Starting from v6.0, use `setWillSkipScreenshotAnnotation:` instead.
- 
+
  @discussion By default, screenshot view is shown when reporting a bug, but not when sending feedback.
- 
+
  @param willShowScreenshotView A boolean to set whether screenshot view is shown or not. Passing YES will show
  screenshot view for both feedback and bug reporting, while passing NO will disable it for both.
  */
-+ (void)setWillShowScreenshotView:(BOOL)willShowScreenshotView DEPRECATED_MSG_ATTRIBUTE("Starting from v6.0, use setWillSkipScreenshotAnnotation: instead.");
++ (void)setWillShowScreenshotView:(BOOL)willShowScreenshotView DEPRECATED_MSG_ATTRIBUTE("This API has no effect now and will be removed soon");
 
 /**
  @brief Enables/disables screenshot view when reporting a bug/improvement.
@@ -404,7 +404,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param willSkipScreenShot A boolean to set whether screenshot view is shown or not. Passing YES will show
  screenshot view for both feedback and bug reporting, while passing NO will disable it for both.
  */
-+ (void)setWillSkipScreenshotAnnotation:(BOOL)willSkipScreenShot;
++ (void)setWillSkipScreenshotAnnotation:(BOOL)willSkipScreenShot DEPRECATED_MSG_ATTRIBUTE("This API has no effect now and will be removed soon");
 
 /**
  @brief Returns the number of unread messages the user currently has.
@@ -477,7 +477,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param isCommentFieldRequired A boolean to indicate whether comment field is required or not.
  */
-+ (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired;
++ (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired DEPRECATED_MSG_ATTRIBUTE("Use setEmailFieldRequired:forAction: instead");
 
 /**
  @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad.

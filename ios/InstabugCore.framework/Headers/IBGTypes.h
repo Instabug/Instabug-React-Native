@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.12.7
+ Version:    7.13
  */
 
 #import <UIKit/UIKit.h>
@@ -130,6 +130,11 @@ extern NSString * const kIBGExpectedResultsStringName;
 extern NSString * const kIBGActualResultsStringName;
 extern NSString * const kIBGStepsToReproduceStringName;
 extern NSString * const kIBGReplyButtonTitleStringName;
+extern NSString * const kIBGAddAttachmentButtonTitleStringName;
+extern NSString * const kIBGDiscardAlertTitle;
+extern NSString * const kIBGDiscardAlertMessage;
+extern NSString * const kIBGDiscardAlertAction;
+extern NSString * const kIBGDiscardAlertCancel;
 
 /// -----------
 /// @name Enums
@@ -362,7 +367,12 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGExpectedResultsStringName,
     IBGActualResultsStringName,
     IBGStepsToReproduceStringName,
-    IBGReplyButtonTitleStringName
+    IBGReplyButtonTitleStringName,
+    IBGAddAttachmentButtonTitleStringName,
+    IBGDiscardAlertTitleStringName,
+    IBGDiscardAlertMessageStringName,
+    IBGDiscardAlertActionStringName,
+    IBGDiscardAlertCancelStringName
 };
 
 /**
