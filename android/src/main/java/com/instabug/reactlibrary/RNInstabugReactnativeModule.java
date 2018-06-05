@@ -34,6 +34,7 @@ import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
@@ -372,7 +373,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setVideoRecordingFloatingButtonPosition(String corner) {
         try {
-            BugReporting.setVideoRecordingFloatingButtonCorner(getVideoRecordingButtonCorner(corner));
+            BugReporting.setVideoRecordingFloatingButtonPosition(getVideoRecordingButtonCorner(corner));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1302,16 +1303,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
         try {
-             BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
-                 @Override
-                 public void call() {
-//                     WritableMap params = Arguments.createMap();
-//                     params.putString("issueState", issueState.toString());
-//                     params.putString("bugType", bugType.toString());
-                     sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
-                 }
-             });
+//             BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+//                 @Override
+//                 public void call() {
+////                     WritableMap params = Arguments.createMap();
+////                     params.putString("issueState", issueState.toString());
+////                     params.putString("bugType", bugType.toString());
+//                     sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
+//                 }
+//             });
 
+           BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+               @Override
+               public void call(DismissType dismissType, ReportType reportType) {
+                   WritableMap params = Arguments.createMap();
+                   params.putString("issueState", dismissType.toString());
+                   params.putString("bugType", reportType.toString());
+                   sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
+               }
+           });
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1762,17 +1772,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private InstabugVideoRecordingButtonCorner getVideoRecordingButtonCorner(String cornerValue) {
-        InstabugVideoRecordingButtonCorner corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+    private InstabugVideoRecordingButtonPosition getVideoRecordingButtonCorner(String cornerValue) {
+        InstabugVideoRecordingButtonPosition corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
         try {
             if (cornerValue.equals(BOTTOM_RIGHT)) {
-                corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+                corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
             } else if (cornerValue.equals(BOTTOM_LEFT)) {
-                corner = InstabugVideoRecordingButtonCorner.BOTTOM_LEFT;
+                corner = InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
             } else if (cornerValue.equals(TOP_LEFT)) {
-                corner = InstabugVideoRecordingButtonCorner.TOP_LEFT;
+                corner = InstabugVideoRecordingButtonPosition.TOP_LEFT;
             } else if (cornerValue.equals(TOP_RIGHT)) {
-                corner = InstabugVideoRecordingButtonCorner.TOP_RIGHT;
+                corner = InstabugVideoRecordingButtonPosition.TOP_RIGHT;
             }
 
         } catch (Exception e) {
