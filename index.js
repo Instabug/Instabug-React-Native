@@ -262,7 +262,7 @@ module.exports = {
             );
         } else {
             DeviceEventEmitter.addListener('IBGpostInvocationHandler', function(payload) {
-                postInvocationHandler(payload.issueState, payload.bugType);
+                postInvocationHandler(payload.dismissType, payload.reportType);
             });
         }
 

@@ -1303,22 +1303,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
         try {
-//             BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
-//                 @Override
-//                 public void call() {
-////                     WritableMap params = Arguments.createMap();
-////                     params.putString("issueState", issueState.toString());
-////                     params.putString("bugType", bugType.toString());
-//                     sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
-//                 }
-//             });
-
            BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
                @Override
                public void call(DismissType dismissType, ReportType reportType) {
                    WritableMap params = Arguments.createMap();
-                   params.putString("issueState", dismissType.toString());
-                   params.putString("bugType", reportType.toString());
+                   params.putString("dismissType", dismissType.toString());
+                   params.putString("reportType", reportType.toString());
                    sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
                }
            });
