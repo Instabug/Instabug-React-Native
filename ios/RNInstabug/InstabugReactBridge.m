@@ -423,7 +423,11 @@ RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
     }
 
      [Instabug setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
-  }
+}
+
+RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
+    [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
+}
 
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
@@ -507,6 +511,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
               @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
               @"disabled": @(IBGExtendedBugReportModeDisabled),
+
+              @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
+              @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
+              @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled),
 
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),

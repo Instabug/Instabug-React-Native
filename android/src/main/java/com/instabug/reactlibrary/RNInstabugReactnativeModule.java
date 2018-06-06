@@ -106,6 +106,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ENABLED = "enabled";
     private final String DISABLED = "disabled";
 
+    //Instabug welcome message modes
+    private final String WELCOME_MESSAGE_MODE_LIVE = "welcomeMessageModeLive";
+    private final String WELCOME_MESSAGE_MODE_BETA = "welcomeMessageModeBeta";
+    private final String WELCOME_MESSAGE_MODE_DISABLED = "welcomeMessageModeDisabled";
+
     //Theme colors
     private final String COLOR_THEME_LIGHT = "light";
     private final String COLOR_THEME_DARK = "dark";
@@ -1361,6 +1366,31 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Shows the welcome message in a specific mode.
+     *
+     * @param welcomeMessageMode An enum to set the welcome message mode to
+      *                          live, beta or disabled.
+     */
+    @ReactMethod
+    public void showWelcomeMessageWithMode(String welcomeMessageMode) {
+        try {
+            switch (welcomeMessageMode) {
+                case WELCOME_MESSAGE_MODE_LIVE:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                    break;
+                case WELCOME_MESSAGE_MODE_BETA:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                    break;
+                default:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sets the threshold value of the shake gesture for android devices.
      * Default for android is an integer value equals 350.
      * you could increase the shaking difficulty level by
@@ -1718,6 +1748,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
         constants.put("reproStepsEnabled", ENABLED);
         constants.put("reproStepsDisabled", DISABLED);
+
+        constants.put("welcomeMessageModeLive", WELCOME_MESSAGE_MODE_LIVE);
+        constants.put("welcomeMessageModeBeta", WELCOME_MESSAGE_MODE_BETA);
+        constants.put("welcomeMessageModeDisabled", WELCOME_MESSAGE_MODE_DISABLED);
 
         constants.put("allActions", ACTION_TYPE_ALL_ACTIONS);
         constants.put("reportBugAction", ACTION_TYPE_REPORT_BUG);
