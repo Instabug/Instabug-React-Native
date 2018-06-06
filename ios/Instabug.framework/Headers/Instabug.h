@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.13
+ Version:    7.14.2
  */
 
 #import <Foundation/Foundation.h>
@@ -330,7 +330,27 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @discussion Does nothing if invocation event is set to anything other than IBGInvocationEventShake or IBGInvocationEventScreenshot.
  */
-+ (void)showIntroMessage;
++ (void)showIntroMessage DEPRECATED_MSG_ATTRIBUTE("Use showWelcomeMessageWithMode: instead.");
+
+/**
+ @brief Shows the welcome message in a specific mode.
+
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can show it manually in a specific mode through this API.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ 
+ @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
+ */
++ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
+
+/**
+ @brief Sets the welcome message mode to live, beta or disabled.
+
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ 
+ @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
+ */
++ (void)setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 
 /**
  @brief Enables/disables the attachment of an initial screenshot when reporting a bug/improvement.
@@ -530,7 +550,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param isIntroMessageEnabled A boolean to indicate whether the intro message is enabled or not.
  */
-+ (void)setIntroMessageEnabled:(BOOL)isIntroMessageEnabled;
++ (void)setIntroMessageEnabled:(BOOL)isIntroMessageEnabled DEPRECATED_MSG_ATTRIBUTE("Use setWelcomeMessageMode: instead.");
 
 /**
  @brief Sets whether to show a "Thank You" dialog after a bug report is sent or not.

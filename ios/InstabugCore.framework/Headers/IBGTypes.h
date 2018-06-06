@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.13
+ Version:    7.14.2
  */
 
 #import <UIKit/UIKit.h>
@@ -21,6 +21,16 @@ extern NSString * const kIBGShakeStartAlertTextStringName;
 extern NSString * const kIBGTwoFingerSwipeStartAlertTextStringName;
 extern NSString * const kIBGEdgeSwipeStartAlertTextStringName;
 extern NSString * const kIBGScreenshotStartAlertTextStringName;
+extern NSString * const kIBGFloatingButtonStartAlertTextStringName;
+extern NSString * const kIBGBetaWelcomeMessageWelcomeStepTitle;
+extern NSString * const kIBGBetaWelcomeMessageWelcomeStepContent;
+extern NSString * const kIBGBetaWelcomeMessageHowToReportStepTitle;
+extern NSString * const kIBGBetaWelcomeMessageHowToReportStepContent;
+extern NSString * const kIBGBetaWelcomeMessageFinishStepTitle;
+extern NSString * const kIBGBetaWelcomeMessageFinishStepContent;
+extern NSString * const kIBGBetaWelcomeDoneButtonTitle;
+extern NSString * const kIBGLiveWelcomeMessageTitle;
+extern NSString * const kIBGLiveWelcomeMessageContent;
 extern NSString * const kIBGInvalidEmailMessageStringName;
 extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
@@ -272,7 +282,18 @@ typedef NS_ENUM(NSInteger, IBGString) {
     IBGStringShakeHint,
     IBGStringSwipeHint,
     IBGStringEdgeSwipeStartHint,
+    IBGStringScreenshotHint,
+    IBGStringFloatingButtonHint,
     IBGStringStartAlertText,
+    IBGBetaWelcomeMessageWelcomeStepTitle,
+    IBGBetaWelcomeMessageWelcomeStepContent,
+    IBGBetaWelcomeMessageHowToReportStepTitle,
+    IBGBetaWelcomeMessageHowToReportStepMessage,
+    IBGBetaWelcomeMessageFinishStepTitle,
+    IBGBetaWelcomeMessageFinishStepContent,
+    IBGBetaWelcomeDoneButtonTitle,
+    IBGLiveWelcomeMessageTitle,
+    IBGLiveWelcomeMessageMessage,
     IBGStringInvalidEmailMessage,
     IBGStringInvalidEmailTitle,
     IBGStringInvalidCommentMessage,
@@ -432,6 +453,15 @@ typedef NS_ENUM(NSInteger, IBGExtendedBugReportMode) {
     IBGExtendedBugReportModeEnabledWithRequiredFields,
     IBGExtendedBugReportModeEnabledWithOptionalFields,
     IBGExtendedBugReportModeDisabled
+};
+
+/**
+ The welcome message mode.
+ */
+typedef NS_ENUM(NSInteger, IBGWelcomeMessageMode) {
+    IBGWelcomeMessageModeLive,
+    IBGWelcomeMessageModeBeta,
+    IBGWelcomeMessageModeDisabled
 };
 
 typedef enum : NSUInteger {
