@@ -997,11 +997,21 @@ module.exports = {
      /**
       * Shows the welcome message in a specific mode.
       * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                           live, beta or disabled.
+      *                           live, or beta.
       *
       */
      showWelcomeMessage: function(welcomeMessageMode) {
         Instabug.showWelcomeMessageWithMode(welcomeMessageMode);
+    },
+
+    /**
+      * Sets the welcome message mode to live, beta or disabled.
+      * @param welcomeMessageMode An enum to set the welcome message mode to
+      *                           live, beta or disabled.
+      *
+      */
+     setWelcomeMessageMode: function(welcomeMessageMode) {
+        Instabug.setWelcomeMessageMode(welcomeMessageMode);
     },
 
     /**

@@ -429,6 +429,10 @@ RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessa
     [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
 }
 
+RCT_EXPORT_METHOD(setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
+    [Instabug setWelcomeMessageMode:welcomeMessageMode];
+}
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR

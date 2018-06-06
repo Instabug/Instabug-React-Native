@@ -30,6 +30,7 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.OnSdkDismissedCallback;
@@ -1369,7 +1370,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * Shows the welcome message in a specific mode.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                          live, beta or disabled.
+      *                          live, or beta.
      */
     @ReactMethod
     public void showWelcomeMessageWithMode(String welcomeMessageMode) {
@@ -1380,6 +1381,34 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     break;
                 case WELCOME_MESSAGE_MODE_BETA:
                     Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                    break;
+                default:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the welcome message mode to live, beta or disabled.
+     *
+     * @param welcomeMessageMode An enum to set the welcome message mode to
+      *                          live, beta or disabled.
+     */
+    @ReactMethod
+    public void setWelcomeMessageMode(String welcomeMessageMode) {
+        try {
+            switch (welcomeMessageMode) {
+                case WELCOME_MESSAGE_MODE_LIVE:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                    break;
+                case WELCOME_MESSAGE_MODE_BETA:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                    break;
+                case WELCOME_MESSAGE_MODE_DISABLED:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
                     break;
                 default:
                     Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
