@@ -215,6 +215,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated Use {@link showWelcomeMessage} instead.
      * Present a view that educates the user on how to invoke the SDK with the
      * currently set invocation event.
      */
@@ -286,6 +287,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated Use {@link setEmailFieldRequiredForActions} instead.
      * Sets whether users are required to enter an email address or not when
      * sending reports.
      * Defaults to YES.
@@ -297,7 +299,6 @@ module.exports = {
     },
 
     /**
-     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
      * Sets whether users are required to enter an email address or not when
      * sending reports.
      * Defaults to YES.
@@ -993,6 +994,26 @@ module.exports = {
          Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
      },
 
+     /**
+      * Shows the welcome message in a specific mode.
+      * @param welcomeMessageMode An enum to set the welcome message mode to
+      *                           live, or beta.
+      *
+      */
+     showWelcomeMessage: function(welcomeMessageMode) {
+        Instabug.showWelcomeMessageWithMode(welcomeMessageMode);
+    },
+
+    /**
+      * Sets the welcome message mode to live, beta or disabled.
+      * @param welcomeMessageMode An enum to set the welcome message mode to
+      *                           live, beta or disabled.
+      *
+      */
+     setWelcomeMessageMode: function(welcomeMessageMode) {
+        Instabug.setWelcomeMessageMode(welcomeMessageMode);
+    },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
@@ -1118,6 +1139,17 @@ module.exports = {
         topRight: Instabug.topRight,
         bottomLeft: Instabug.bottomLeft,
         topLeft: Instabug.topLeft
+    },
+
+    /**
+     * The welcome message mode.
+     * @readonly
+     * @enum {number}
+     */
+    welcomeMessageMode: {
+        live: Instabug.welcomeMessageModeLive,
+        beta: Instabug.welcomeMessageModeBeta,
+        disabled: Instabug.welcomeMessageModeDisabled
     },
 
     /**

@@ -92,13 +92,19 @@ RCT_ENUM_CONVERTER(IBGPosition, (@{
                                     @"topLeft": @(IBGPositionTopLeft)
                                     }), IBGPositionBottomRight, integerValue);
 
+RCT_ENUM_CONVERTER(IBGWelcomeMessageMode, (@{
+                                    @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
+                                    @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
+                                    @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled)
+                                    }), IBGWelcomeMessageModeLive, integerValue);
+
 
 RCT_ENUM_CONVERTER(IBGActionType, (@{
                                     @"allActions": @(IBGActionAllActions),
                                     @"reportBug": @(IBGActionReportBug),
                                     @"requestNewFeature": @(IBGActionRequestNewFeature),
                                     @"addCommentToFeature": @(IBGActionAddCommentToFeature)
-                                  }), IBGActionAllActions, unsignedLongLongValue);
+                                  }), IBGActionAllActions, integerValue);
 
 RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"shakeHint": @(IBGStringShakeHint),
