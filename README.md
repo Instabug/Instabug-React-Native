@@ -105,7 +105,7 @@ When upgrading from 2.0.x to 2.1.x, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
-reacy-native unlink instabug-reactnative
+react-native unlink instabug-reactnative
 ```
 
 2. Install the new version by running
