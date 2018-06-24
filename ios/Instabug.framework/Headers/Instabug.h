@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    7.14.2
+ Version:    7.14.5
  */
 
 #import <Foundation/Foundation.h>
@@ -497,7 +497,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param isCommentFieldRequired A boolean to indicate whether comment field is required or not.
  */
-+ (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired DEPRECATED_MSG_ATTRIBUTE("Use setEmailFieldRequired:forAction: instead");
++ (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired;
 
 /**
  @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad.
