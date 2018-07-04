@@ -7,16 +7,52 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IBGSurvey.h"
 
-@class IBGSurvey;
-
+NS_SWIFT_NAME(Surveys)
 @interface IBGSurveys : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
+/**
+ @brief Sets whether auto surveys showing are enabled or not.
+ 
+ @discussion If you disable surveys auto showing on the SDK but still have active surveys on your Instabug dashboard, those surveys are still going to be sent to the device, but are not going to be shown automatically.
+ 
+ To manually display any available surveys, call `+ [Instabug showSurveyIfAvailable]`.
+ 
+ Defaults to YES.
+ */
 @property (class, atomic, assign) BOOL autoShowingEnabled;
+
+/**
+ @brief Returns array of available surveys that match the current device/user.
+ */
 @property (class, atomic, readonly, strong) NSArray<IBGSurvey *> *availableSurveys;
+
+/**
+ @brief Sets a block of code to be executed just before the survey's UI is presented.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes before the survey's UI
+ is shown.
+ */
 @property (class, atomic, strong) void(^willShowSurveyHandler)(void);
+
+/**
+ @brief Sets a block of code to be executed right after the survey's UI is dismissed.
+ 
+ @discussion This block is executed on the UI thread. Could be used for performing any UI changes after the survey's UI
+ is dismissed.
+ */
 @property (class, atomic, strong) void(^didDismissSurveyHandler)(void);
+
+/**
+ @brief Setting an option for all the surveys to show a welcome screen before the user starts taking the survey.
+ 
+ @discussion By enabling this option, any survey that appears to the user will have a welcome screen with a title, subtitle
+ and a button that if clicked, will take the user to the survey. All the strings in the welcome screen have a default value
+ and localized. They can also be modified using the strings API. The default value of this option is false.
+ */
+@property (class, atomic, assign) BOOL shouldShowWelcomeScreen;
 
 /**
  @brief Shows one of the surveys that were not shown before, that also have conditions that match the current device/user.

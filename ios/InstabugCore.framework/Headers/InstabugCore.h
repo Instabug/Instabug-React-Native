@@ -5,11 +5,12 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.12.7
+ Version:    8.0.1
  */
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"
+#import "IBGReport.h"
 
 @interface InstabugCore : NSObject
 

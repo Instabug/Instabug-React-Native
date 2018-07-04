@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"
 
+NS_SWIFT_NAME(NetworkLogger)
 @interface IBGNetworkLogger : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
@@ -93,5 +94,24 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData * _Nullable data, NSURL
  @param reciveChallengeHandler A block that takes the authentication challenge and returns NSURLCredential.
  */
 + (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* _Nonnull (^_Nonnull)(NSURLAuthenticationChallenge * _Nonnull challenge))reciveChallengeHandler;
+
+
+/**
+ @brief Specify NSPredicates to be used to omit certain network requests from being logged based on their request or
+ response objects.
+ 
+ @discussion `requestFilterPredicate` will be matched against an `NSURLRequest`. It can be used to filter out requests
+ to a specific domain for example.
+ 
+ `responseFilterPredicate` will be matched against an `NSHTTPURLResponse`. It can be used to filter out responses that
+ match specific status codes.
+ 
+ If both predicates are specified, `requestFilterPredicate` is evaluated first, if it matches, the request is omitted
+ from logging without evaluating `responseFilterPredicate`.
+ 
+ @param requestFilterPredicate An NSPredicate to match against an NSURLRequest. Matching requests will be omitted.
+ @param responseFilterPredicate An NSPredicate to match against an NSHTTPURLResponse. Matching responses will be omitted.
+ */
++ (void)setNetworkLoggingRequestFilterPredicate:(nullable NSPredicate *)requestFilterPredicate responseFilterPredicate:(nullable NSPredicate *)responseFilterPredicate;
 
 @end

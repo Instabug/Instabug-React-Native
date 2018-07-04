@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_SWIFT_NAME(CrashReporting)
 @interface IBGCrashReporting : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
