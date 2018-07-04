@@ -46,6 +46,8 @@ import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
+import com.instabug.survey.OnDismissCallback;
+import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
@@ -256,7 +258,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismiss() {
         try {
-            BugReporting.dismiss();
+            Instabug.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1247,7 +1249,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                 @Override
-                public void call() {
+                public void onInvoke() {
                     sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
                 }
             });
@@ -1275,7 +1277,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             };
 
-            BugReporting.onReportSubmitHandler(new Report.OnReportCreatedListener() {
+
+            Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                 @Override
                 public void onReportCreated(Report report) {
                     WritableMap reportParam = Arguments.createMap();
@@ -1368,17 +1371,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
-        try {
-            Runnable willShowSurveyRunnable = new Runnable() {
+
+            Surveys.setOnShowCallback(new OnShowCallback() {
                 @Override
-                public void run() {
+                public void onShow() {
                     sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
                 }
-            };
-            Surveys.setOnShowCallback(willShowSurveyRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            });
     }
 
     /**
@@ -1390,17 +1389,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
-        try {
-            Runnable didDismissSurveyRunnable = new Runnable() {
+
+            Surveys.setOnDismissCallback(new OnDismissCallback() {
                 @Override
-                public void run() {
+                public void onDismiss() {
                     sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
                 }
-            };
-            Surveys.setOnDismissCallback(didDismissSurveyRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            });
     }
 
     /**
