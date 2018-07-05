@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    8.0.1
+ Version:    8.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -124,7 +124,39 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  */
 @property (class, atomic, assign) IBGUserStepsMode reproStepsMode;
 
+
+/**
+ @brief Sets the welcome message mode to live, beta or disabled.
+ 
+ @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
+ The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ */
+@property (class, atomic, assign) IBGWelcomeMessageMode welcomeMessageMode;
+
+/**
+ @brief Attaches user data to each report being sent.
+ 
+ @discussion Each call to this method overrides the user data to be attached.
+ Maximum size of the string is 1,000 characters.
+ */
+@property (class, atomic, strong) NSString *userData;
+
 + (void)startWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents;
+
+#pragma mark - SDK Debugging
+
+/// ------------------------
+/// @name SDK Debugging
+/// ------------------------
+
+/**
+ @brief Sets the verbosity level of logs used to debug the Instabug SDK itself.
+ 
+ @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
+ */
+@property (class, atomic, assign) IBGSDKDebugLogsLevel SDKDebugLogsLevel;
+
+#pragma mark - Old APIs
 
 /// ------------------------
 /// @name SDK Initialization
@@ -243,16 +275,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 + (void)clearFileAttachments;
 
 /**
- @brief Attaches user data to each report being sent.
- 
- @discussion Each call to this method overrides the user data to be attached.
- Maximum size of the string is 1,000 characters.
- 
- @param userData A string to be attached to each report, with a maximum size of 1,000 characters.
- */
-+ (void)setUserData:(NSString *)userData DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-/**
  @brief Sets whether the SDK is tracking user steps or not.
  
  @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a
@@ -263,22 +285,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param isUserStepsEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 + (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-/**
- @brief Sets whether the session profiler is enabled or disabled.
- 
- @discussion The session profiler is enabled by default and it attaches to the bug and crash reports the following information during the last 60 seconds before the report is sent.
- 1. CPU load.
- 2. Dispatch queues latency.
- 3. Memory usage.
- 4. Storage usage.
- 5. Connectivity.
- 6. Battery percentage and state.
- 7. Orientation.
- 
- @param sessionProfilerEnabled A boolean parameter to enable or disable the feature.
- */
-+ (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
 
 /**
  @brief Sets whether to track and report crashes or not.
@@ -411,17 +417,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
  */
-+ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-/**
- @brief Sets the welcome message mode to live, beta or disabled.
-
- @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
- The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
- 
- @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
- */
-+ (void)setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 
 /**
  @brief Enables/disables the attachment of an initial screenshot when reporting a bug/improvement.
@@ -439,7 +435,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param email Email address to be set as the user's email.
  @param name Name of the user to be set.
  */
-+ (void)identifyUserWithEmail:(NSString *)email name:(nullable NSString *)name DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)identifyUserWithEmail:(NSString *)email name:(nullable NSString *)name;
 
 /**
  @brief Resets the value of the user's email and name, previously set using `+ [Instabug identifyUserWithEmail:name:]`.
@@ -612,7 +608,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @see IBGLocale
  */
-+ (void)setLocale:(IBGLocale)locale DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)setLocale:(IBGLocale)locale;
 
 /**
  @brief Sets whether the intro message that gets shown on launching the app is enabled or not.
@@ -668,7 +664,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param screenshotCapturingHandler A block of code that's going to be used to capture screenshots.
  */
-+ (void)setScreenshotCapturingHandler:(UIImage *(^)(void))screenshotCapturingHandler DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)setScreenshotCapturingHandler:(UIImage *(^)(void))screenshotCapturingHandler;
 
 /**
  @brief Appends a set of tags to previously added tags of reported feedback, bug or crash.
@@ -706,19 +702,19 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
 
  @param tags An array of tags to append to current tags.
 */
-+ (void)appendTags:(NSArray<NSString *> *)tags DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)appendTags:(NSArray<NSString *> *)tags;
 
 /**
  @brief Manually removes all tags of reported feedback, bug or crash.
  */
-+ (void)resetTags DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)resetTags;
 
 /**
  @brief Gets all tags of reported feedback, bug or crash.
  
  @return An array of tags.
  */
-+ (NSArray *)getTags DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (NSArray *)getTags;
 
 /**
  @brief Overrides any of the strings shown in the SDK with custom ones.
@@ -745,7 +741,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @see IBGTypes
  */
-+ (void)setValue:(NSString *)value forStringWithKey:(NSString *)key DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)setValue:(NSString *)value forStringWithKey:(NSString *)key;
 
 /**
  @brief Sets whether attachments in bug reporting and in-app messaging are enabled or not.
@@ -845,7 +841,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @param value User attribute value.
  @param key User attribute key.
  */
-+ (void)setUserAttribute:(NSString *)value withKey:(NSString *)key DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)setUserAttribute:(NSString *)value withKey:(NSString *)key;
 
 /**
  @brief Returns the user attribute associated with a given key.
@@ -854,7 +850,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @return The value associated with aKey, or nil if no value is associated with aKey.
  */
-+ (nullable NSString *)userAttributeForKey:(NSString *)key DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (nullable NSString *)userAttributeForKey:(NSString *)key;
 
 /**
  @brief Removes a given key and its associated value from user attributes.
@@ -863,14 +859,14 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param key The key to remove.
  */
-+ (void)removeUserAttributeForKey:(NSString *)key DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)removeUserAttributeForKey:(NSString *)key;
 
 /**
  @brief Returns all user attributes.
  
  @return A new dictionary containing all the currently set user attributes, or an empty dictionary if no user attributes have been set.
  */
-+ (nullable NSDictionary *)userAttributes DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (nullable NSDictionary *)userAttributes;
 
 /**
  @brief Enables/disables inspect view hierarchy when reporting a bug/feedback.
@@ -943,7 +939,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param deviceToken Device token received in `-[UIApplicationDelegate didRegisterForRemoteNotificationsWithDeviceToken:]`
  */
-+ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 
 /**
  @brief Call this method and pass the notification's userInfo dictionary to allow Instabug to handle its remote notifications.
@@ -957,7 +953,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  `[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]` from
  `-[UIApplicationDelegate application:didFinishLaunchingWithOptions:]`.
  */
-+ (void)didReceiveRemoteNotification:(NSDictionary *)userInfo DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 /**
  @brief Logs a user event that happens through the lifecycle of the application.
@@ -966,7 +962,7 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  
  @param name Event name.
  */
-+ (void)logUserEventWithName:(NSString *)name DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
++ (void)logUserEventWithName:(NSString *)name;
 
 /**
  @brief Logs a user event that happens through the lifecycle of the application.
@@ -1295,21 +1291,6 @@ typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *r
  @brief Shows the UI for feature requests list
  */
 + (void)showFeatureRequests DEPRECATED_MSG_ATTRIBUTE("This API has been deprecated. See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.");
-
-#pragma mark - SDK Debugging
-
-/// ------------------------
-/// @name SDK Debugging
-/// ------------------------
-
-/**
- @brief Sets the verbosity level of logs used to debug the Instabug SDK itself.
- 
- @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
-
- @param level Logs verbosity level.
- */
-+ (void)setSDKDebugLogsLevel:(IBGSDKDebugLogsLevel)level;
 
 @end
 

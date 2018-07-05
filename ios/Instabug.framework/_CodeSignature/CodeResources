@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/IBGBugReporting.h</key>
 		<data>
-		usRBB/zx2wJWqJIa94BrotQrVRg=
+		hkW+zJJsTEIuI83iyxEliITjaI4=
 		</data>
 		<key>Headers/IBGCrashReporting.h</key>
 		<data>
@@ -30,11 +30,11 @@
 		</data>
 		<key>Headers/Instabug.h</key>
 		<data>
-		SWLPAXjk63ru/67E21Yfpp0bEwA=
+		sepwzdEifs9Ddm1FiudYWFolrvo=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		fw79lg+a96vgVfrCSCmIot8roHA=
+		m5cMWHqfcC+/uQOYadUc2MkNcVY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -47,11 +47,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			usRBB/zx2wJWqJIa94BrotQrVRg=
+			hkW+zJJsTEIuI83iyxEliITjaI4=
 			</data>
 			<key>hash2</key>
 			<data>
-			1677Dd3gi2ma40I2DXTxLossTbgXP0pFJq0wOOr8nCM=
+			cDXE2vpwnAVAENM3At2M7ImV7wqYKduxznWmWjvLYcY=
 			</data>
 		</dict>
 		<key>Headers/IBGCrashReporting.h</key>
@@ -113,11 +113,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SWLPAXjk63ru/67E21Yfpp0bEwA=
+			sepwzdEifs9Ddm1FiudYWFolrvo=
 			</data>
 			<key>hash2</key>
 			<data>
-			xRFTD5wgNtqNfC5UBeQeWlRY3577SbWBh+YDyrzX7ow=
+			1MNZcuO9wLxiZsIm6WWpSPZeX75HvtkYpSRYp3I9HQ8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

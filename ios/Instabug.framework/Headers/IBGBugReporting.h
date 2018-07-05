@@ -111,15 +111,12 @@ NS_SWIFT_NAME(BugReporting)
  */
 @property(class, atomic, assign) IBGExtendedBugReportMode extendedBugReportMode;
 
-@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
-
 /**
- @brief Sets the welcome message mode to live, beta or disabled.
- 
- @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can change it to the beta mode or disable it.
- The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
+ @brief Use to specify different options that would affect how Instabug is shown and other aspects about the reporting experience.
+
+ @discussion See IBGInvocationOptions.
  */
-@property (class, atomic, assign) IBGWelcomeMessageMode welcomeMessageMode;
+@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
 
 /**
  @brief Invokes the SDK manually with the default invocation mode.
@@ -142,16 +139,6 @@ NS_SWIFT_NAME(BugReporting)
  @brief Dismisses any Instabug views that are currently being shown.
  */
 + (void)dismiss;
-
-/**
- @brief Shows the welcome message in a specific mode.
- 
- @discussion By default, the welcome message live mode is enabled. It appears automatically after 10 seconds from the user's first session. You can show it manually in a specific mode through this API.
- The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
- 
- @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
- */
-+ (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 
 
 @end
