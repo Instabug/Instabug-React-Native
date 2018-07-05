@@ -7,6 +7,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -38,8 +39,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
-        Log.d(TAG, "ARRAY: " + Arrays.toString(invocationEventValues));
-
         //setting invocation event
         this.parseInvocationEvent(invocationEventValues);
 
@@ -50,8 +49,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 .build();
 
         Instabug.setPrimaryColor(Color.parseColor(primaryColor));
-        Instabug.setFloatingButtonEdge(floatingButtonEdge);
-        Instabug.setFloatingButtonOffsetFromTop(offset);
+        BugReporting.setFloatingButtonEdge(floatingButtonEdge);
+        BugReporting.setFloatingButtonOffset(offset);
 
     }
 
