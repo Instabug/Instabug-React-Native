@@ -1434,8 +1434,23 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
+
+        ArrayList<PromptOption> options = new ArrayList<>();
+
+        if (chat) {
+            options.add(PromptOption.CHAT);
+        }
+
+        if (feedback) {
+            options.add(PromptOption.FEEDBACK);
+        }
+
+        if (bug) {
+            options.add(PromptOption.BUG);
+        }
+
         try {
-            mInstabug.setPromptOptionsEnabled(chat, bug, feedback);
+            BugReporting.setPromptOptionsEnabled(options.toArray(new PromptOption[0]));
         } catch (Exception e) {
             e.printStackTrace();
         }
