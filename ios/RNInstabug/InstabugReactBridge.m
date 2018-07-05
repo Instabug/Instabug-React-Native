@@ -37,13 +37,14 @@ RCT_EXPORT_MODULE(Instabug)
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
     IBGInvocationEvent invocationEvents = 0;
+    NSLog(@"invocation events: %ld",(long)invocationEvents);
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
     [Instabug startWithToken:token invocationEvents:invocationEvents];
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    [IBGNetworkLogger.enabled = NO];
+    IBGNetworkLogger.enabled = NO;
     SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
     if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
         [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
@@ -126,11 +127,12 @@ RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
 
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        IBGBugReporting.willSendReportHandler = ^{
+        Instabug.willSendReportHandler = ^(IBGReport* report){
             [self sendEventWithName:@"IBGpreSendingHandler" body:nil];
+            return report;
         };
     } else {
-        IBGBugReporting.willSendReportHandler = nil;
+        Instabug.willSendReportHandler = nil;
     }
 }
 
@@ -170,7 +172,7 @@ RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack)
 }
 
 RCT_EXPORT_METHOD(showIntroMessage) {
-    [IBGBugReporting showIntroMessage];
+//    [IBGBugReporting showIntroMessage];
 }
 
 RCT_EXPORT_METHOD(setUserEmail:(NSString *)userEmail) {
@@ -240,7 +242,7 @@ RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBug
 }
 
 RCT_EXPORT_METHOD(setIntroMessageEnabled:(BOOL)isIntroMessageEnabled) {
-    IBGBugReporting.introMessageEnabled = isIntroMessageEnabled;
+//    IBGBugReporting.introMessageEnabled = isIntroMessageEnabled;
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
@@ -441,7 +443,7 @@ RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) 
 }
 
 RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
-    IBGBugReporting.videoRecordingFloatingButtonPosition = position;
+//    IBGBugReporting.videoRecordingFloatingButtonPosition = position;
 }
 
 RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
@@ -462,7 +464,7 @@ RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScree
 
 RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
                  forAction:(NSArray *)actionTypesArray) {
-    IBGActionType actionTypes = 0;
+    IBGAction actionTypes = 0;
     
     for (NSNumber *boxedValue in actionTypesArray) {
          actionTypes |= [boxedValue intValue];
@@ -547,10 +549,7 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
 
-              @"invocationOptionNewBug": @(IBGBugReportingInvocationOptionNewBug),
-              @"invocationOptionNewFeedback": @(IBGBugReportingInvocationOptionNewFeedback),
-              @"invocationOptionNewChat": @(IBGBugReportingInvocationOptionNewChat),
-              @"invocationOptionsChatsList": @(IBGBugReportingInvocationOptionChatsList),
+              
               @"invocationOptionsEmailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
               @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
               @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
