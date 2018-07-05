@@ -271,7 +271,7 @@ module.exports = {
     },
 
     /**
-     * Present a view that educates the user on how to invoke the SDK with the
+     * @deprecated Present a view that educates the user on how to invoke the SDK with the
      * currently set invocation event.
      */
     showIntroMessage: function () {
@@ -489,7 +489,7 @@ module.exports = {
     },
 
     /**
-     * Sets whether the intro message that gets shown on launching the app is
+     * @deprecated Sets whether the intro message that gets shown on launching the app is
      * enabled or not.
      * Defaults to YES.
      * @param {boolean} isIntroMessageEnabled A boolean to indicate whether the
@@ -686,7 +686,7 @@ module.exports = {
     },
 
     /**
-     * Logs a user event that happens through the lifecycle of the application.
+     * @deprecated Logs a user event that happens through the lifecycle of the application.
      * Logged user events are going to be sent with each report, as well as at the end of a session.
      * @param {string} name Event name.
      */
