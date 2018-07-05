@@ -74,6 +74,8 @@ import java.util.Map;
  */
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
+    private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
+
     //InvocationEvents
     private final String INVOCATION_EVENT_NONE = "none";
     private final String INVOCATION_EVENT_SHAKE = "shake";
@@ -769,31 +771,37 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvents(ReadableArray invocationEventValues) {
+
         try {
             Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
+
+            Log.d(TAG, Arrays.toString(stringArray) + " " + INVOCATION_EVENT_FLOATING_BUTTON);
+
             for (String action : stringArray) {
                 switch (action) {
                     case INVOCATION_EVENT_FLOATING_BUTTON:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.FLOATING_BUTTON);
-                        return;
+                        parsedInvocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
+                        break;
                     case INVOCATION_EVENT_TWO_FINGERS_SWIPE:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
+                        parsedInvocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
                         break;
                     case INVOCATION_EVENT_SHAKE:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
                         break;
                     case INVOCATION_EVENT_SCREENSHOT:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
                         break;
                     case INVOCATION_EVENT_NONE:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.NONE);
+                        parsedInvocationEvents.add(InstabugInvocationEvent.NONE);
                         break;
                     default:
-                        BugReporting.setInvocationEvents(InstabugInvocationEvent.SHAKE);
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
                         break;
                 }
             }
+            BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
         } catch (Exception e) {
             e.printStackTrace();
         }
