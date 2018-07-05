@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -20,8 +21,11 @@ import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.instabug.bug.BugReporting;
+import com.instabug.bug.PromptOption;
+import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.chat.InstabugChat;
+import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.ActionType;
 import com.instabug.library.Feature;
@@ -54,6 +58,7 @@ import com.instabug.survey.Surveys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -194,19 +199,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return "Instabug";
     }
 
-    @ReactMethod
-    public void startWithToken(String androidToken, String invocationEvent) {
-        mInstabug = new Instabug.Builder(this.androidApplication, androidToken)
-                .setIntroMessageEnabled(false)
-                .setInvocationEvent(getInvocationEventById(invocationEvent))
-                .build();
-        //init placHolders
-        placeHolders = new InstabugCustomTextPlaceHolder();
-
-    }
-
     /**
-     * invoke sdk manually
+     * invoke sdk manually with mode and options
+     *
+     * @param
      */
     @ReactMethod
     public void invoke() {
@@ -227,25 +223,54 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * invoke sdk manually with desire invocation mode
      *
      * @param invocationMode the invocation mode
+     * @param invocationOptions the array of invocation options
      */
     @ReactMethod
-    public void invokeWithInvocationMode(String invocationMode) {
-        InstabugInvocationMode mode;
+    public void invokeWithInvocationMode(String invocationMode, ReadableArray invocationOptions) {
+        InvocationMode mode;
+
 
         if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
-            mode = InstabugInvocationMode.NEW_BUG;
+            mode = InvocationMode.NEW_BUG;
         } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
-            mode = InstabugInvocationMode.NEW_FEEDBACK;
+            mode = InvocationMode.NEW_FEEDBACK;
         } else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)) {
-            mode = InstabugInvocationMode.NEW_CHAT;
+            mode = InvocationMode.NEW_CHAT;
         } else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)) {
-            mode = InstabugInvocationMode.CHATS_LIST;
+            mode = InvocationMode.CHATS_LIST;
         } else {
-            mode = InstabugInvocationMode.PROMPT_OPTION;
+            mode = InvocationMode.PROMPT_OPTION;
         }
 
+        Log.d("where is", invocationMode + " " + mode);
+
+        Object[] objectArray = ArrayUtil.toArray(invocationOptions);
+        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+
+        int[] arrayOfParsedOptions = new int[stringArray.length];
+        int i = 0;
+        for (String option : stringArray) {
+            switch (option) {
+                case EMAIL_FIELD_HIDDEN:
+                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_HIDDEN;
+                    break;
+                case EMAIL_FIELD_OPTIONAL:
+                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_OPTIONAL;
+                    break;
+                case COMMENT_FIELD_REQUIRED:
+                    arrayOfParsedOptions[i++] = InvocationOption.COMMENT_FIELD_REQUIRED;
+                    break;
+                case DISABLE_POST_SENDING_DIALOG:
+                    arrayOfParsedOptions[i++] = InvocationOption.DISABLE_POST_SENDING_DIALOG;
+                    break;
+                default:
+                    break;
+            }
+        }
+        Log.d("where is", Arrays.toString(stringArray) + " " + Arrays.toString(arrayOfParsedOptions));
+
         try {
-            mInstabug.invoke(mode);
+            BugReporting.invoke(mode, arrayOfParsedOptions);
         } catch (Exception e) {
             e.printStackTrace();
         }
