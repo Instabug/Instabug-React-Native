@@ -29,15 +29,11 @@ RCT_ENUM_CONVERTER(IBGInvocationMode, (@{
                                          }), IBGInvocationModeNA, integerValue);
 
 RCT_ENUM_CONVERTER(IBGBugReportingInvocationOption, (@{
-                                         @"invocationOptionNewBug": @(IBGBugReportingInvocationOptionNewBug),
-                                         @"invocationOptionNewFeedback": @(IBGBugReportingInvocationOptionNewFeedback),
-                                         @"invocationOptionNewChat": @(IBGBugReportingInvocationOptionNewChat),
-                                         @"invocationOptionsChatsList": @(IBGBugReportingInvocationOptionChatsList),
                                          @"invocationOptionsEmailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
                                          @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
                                          @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
                                          @"invocationOptionsDisablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog)
-                                         }), IBGBugReportingInvocationOptionNewBug, integerValue);
+                                         }), 0, integerValue);
 
 RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
@@ -110,7 +106,7 @@ RCT_ENUM_CONVERTER(IBGPosition, (@{
                                     }), IBGPositionBottomRight, integerValue);
 
 
-RCT_ENUM_CONVERTER(IBGActionType, (@{
+RCT_ENUM_CONVERTER(IBGAction, (@{
                                     @"allActions": @(IBGActionAllActions),
                                     @"reportBug": @(IBGActionReportBug),
                                     @"requestNewFeature": @(IBGActionRequestNewFeature),

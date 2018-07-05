@@ -55,12 +55,8 @@ RCT_EXPORT_METHOD(invoke) {
     [IBGBugReporting invoke];
 }
 
-RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode) {
-    [Instabug invokeWithInvocationMode:invocationMode];
-}
-
-RCT_EXPORT_METHOD(invokeWithInvocationModes:(IBGBugReportingInvocationOption)invocationOptions) {
-    [Instabug invokeWithOptions:invocationOptions];
+RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options) {
+    [IBGBugReporting invokeWithMode:invocationMode options:options];
 }
 
 RCT_EXPORT_METHOD(dismiss) {
@@ -216,8 +212,8 @@ RCT_EXPORT_METHOD(setCommentFieldRequired:(BOOL)isCommentFieldRequired) {
 }
 
 RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold forIPad:(double)iPadShakingThreshold) {
-    [Instabug setShakingThresholdForiPhone:iPadShakingThreshold
-                                   foriPad:iPadShakingThreshold];
+    [IBGBugReporting setShakingThresholdForiPhone:iPhoneShakingThreshold];
+    [IBGBugReporting setShakingThresholdForiPad:iPadShakingThreshold];
 }
 
 RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold) {
