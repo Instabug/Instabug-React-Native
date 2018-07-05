@@ -42,8 +42,8 @@ module.exports = {
      * @param {invocationMode} invocationMode Specifies which mode the
      * SDK is going to start with.
      */
-    invokeWithInvocationMode: function (invocationMode) {
-        Instabug.invokeWithInvocationMode(invocationMode);
+    invokeWithInvocationMode: function (invocationMode, invocationOptions) {
+        Instabug.invokeWithInvocationMode(invocationMode, invocationOptions);
     },
 
     /**

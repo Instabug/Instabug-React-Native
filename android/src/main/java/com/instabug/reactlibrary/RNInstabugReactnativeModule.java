@@ -707,7 +707,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showFeatureRequests() {
         try {
-            FeatureRequests.showFeatureRequests();
+            FeatureRequests.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -912,9 +912,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Throwable throwable = new Throwable(message);
             throwable.setStackTrace(stackTraceElements);
             if (errorIdentifier != null)
-                mInstabug.reportException(throwable);
+                CrashReporting.reportException(throwable);
             else
-                mInstabug.reportException(throwable, errorIdentifier);
+                CrashReporting.reportException(throwable, errorIdentifier);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1607,7 +1607,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
         try {
-            Instabug.setSurveysAutoShowing(autoShowingSurveysEnabled);
+            Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
         } catch (Exception e) {
             e.printStackTrace();
         }
