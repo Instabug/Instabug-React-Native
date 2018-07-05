@@ -145,10 +145,31 @@ RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
 RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
-            [self sendEventWithName:@"IBGpostInvocationHandler" body:@{
-                                                                       @"dismissType": @(dismissType),
-                                                                       @"reportType": @(reportType)
-                                                                       }];
+            NSLog(@"Dismiss Type: %ld",(long)dismissType);
+            NSLog(@"Report Type: %ld",(long)reportType);
+            
+            //parse dismiss type enum
+            NSString* dismissTypeString;
+            if (dismissType == IBGDismissTypeCancel) {
+                dismissTypeString = @"CANCEL";
+            } else if (dismissType == IBGDismissTypeSubmit) {
+                dismissTypeString = @"SUBMIT";
+            } else if (dismissType == IBGDismissTypeAddAttachment) {
+                dismissTypeString = @"ADD_ATTACHMENT";
+            }
+            
+            //parse report type enum
+            NSString* reportTypeString;
+            if (reportType == IBGReportTypeBug) {
+                reportTypeString = @"bug";
+            } else if (reportType == IBGReportTypeFeedback) {
+                reportTypeString = @"feedback";
+            } else {
+                reportTypeString = @"other";
+            }
+            NSDictionary *result = @{ @"dismissType": dismissTypeString,
+                                     @"reportType": reportTypeString};
+            [self sendEventWithName:@"IBGpostInvocationHandler" body: result];
         };
     } else {
         IBGBugReporting.didDismissHandler = nil;
@@ -157,9 +178,22 @@ RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
 
 RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
+        
         IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
+            
+            NSString *promptOptionString;
+            if (promptOption == IBGPromptOptionBug) {
+                promptOptionString = @"bug";
+            } else if (promptOption == IBGReportTypeFeedback) {
+                promptOptionString = @"feedback";
+            } else if (promptOption == IBGPromptOptionChat) {
+                promptOptionString = @"chat";
+            } else {
+                promptOptionString = @"none";
+            }
+            
             [self sendEventWithName:@"IBGDidSelectPromptOptionHandler" body:@{
-                                                                       @"promptOption": @(promptOption)
+                                                                       @"promptOption": promptOptionString
                                                                        }];
         };
     } else {
