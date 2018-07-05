@@ -1308,7 +1308,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 public void onReportCreated(Report report) {
                     WritableMap reportParam = Arguments.createMap();
                     reportParam.putArray("tagsArray", (WritableArray) report.getTags());
-                    reportParam.putArray("tagsArray", (WritableArray) report.getConsoleLog());
+                    reportParam.putArray("consoleLogs", (WritableArray) report.getConsoleLog());
                     reportParam.putString("userData", report.getUserData());
                     reportParam.putMap("userAttributes", (WritableMap) report.getUserAttributes());
                     reportParam.putMap("fileAttachments", (WritableMap) report.getFileAttachments());
