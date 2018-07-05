@@ -1137,7 +1137,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setCommentFieldRequired(boolean isCommentFieldRequired) {
         try {
-            Instabug.setCommentFieldRequired(isCommentFieldRequired);
+            BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1532,11 +1532,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setSuccessDialogEnabled(boolean enabled) {
-        try {
-            Instabug.setSuccessDialogEnabled(enabled);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (enabled) {
+            try {
+                BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     /**

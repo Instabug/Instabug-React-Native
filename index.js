@@ -298,7 +298,7 @@ module.exports = {
     },
 
     /**
-     * Enables/disables screenshot view when reporting a bug/improvement.
+     * @deprecated Enables/disables screenshot view when reporting a bug/improvement.
      * By default, screenshot view is shown when reporting a bug, but not when
      * sending feedback.
      * @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
@@ -362,7 +362,7 @@ module.exports = {
     },
 
     /**
-     * Sets whether users are required to enter an email address or not when
+     * @deprecated Sets whether users are required to enter an email address or not when
      * sending reports.
      * Defaults to YES.
      * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
@@ -404,7 +404,7 @@ module.exports = {
 
 
     /**
-     * Sets whether users are required to enter a comment or not when sending reports.
+     * @deprecated Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
      * field is required or not.
@@ -1013,6 +1013,8 @@ module.exports = {
     },
 
     /**
+     * @deprecated
+     * 
      * @param enabled true to show success dialog after submitting a bug report
      *
      */
