@@ -347,9 +347,18 @@ RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
 RCT_EXPORT_METHOD(setPromptOptionsEnabled:(BOOL)chatEnabled
                   feedback:(BOOL)bugReportEnabled
                   chat:(BOOL)feedbackEnabled) {
-    [Instabug setPromptOptionsEnabledWithBug:bugReportEnabled
-                                    feedback:feedbackEnabled
-                                        chat:chatEnabled];
+    IBGPromptOption promptOption = IBGPromptOptionNone;
+    if (chatEnabled) {
+        promptOption |= IBGPromptOptionChat;
+    }
+    if (bugReportEnabled) {
+        promptOption |= IBGPromptOptionBug;
+    }
+    if (feedbackEnabled) {
+        promptOption |= IBGPromptOptionFeedback;
+    }
+    
+    [IBGBugReporting setPromptOptions:promptOption];
 }
 
 RCT_EXPORT_METHOD(isInstabugNotification:(NSDictionary *)notification callback:(RCTResponseSenderBlock)callBack) {
