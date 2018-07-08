@@ -24,5 +24,4 @@ dependencies {
     compile ('com.instabug.library:instabug:8.0.1'){
         exclude group: 'com.android.support:appcompat-v7'
     }
-
 }

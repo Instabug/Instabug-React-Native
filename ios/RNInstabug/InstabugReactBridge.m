@@ -528,6 +528,14 @@ RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
      [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
   }
 
+RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
+    [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
+}
+
+RCT_EXPORT_METHOD(setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
+    [Instabug setWelcomeMessageMode:welcomeMessageMode];
+}
+
 RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired
                   forAction:(NSArray *)actionTypesArray) {
     IBGAction actionTypes = 0;
@@ -628,6 +636,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
               @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
               @"disabled": @(IBGExtendedBugReportModeDisabled),
+
+              @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
+              @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
+              @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled),
 
               @"shakeHint": @(IBGStringShakeHint),
               @"swipeHint": @(IBGStringSwipeHint),
