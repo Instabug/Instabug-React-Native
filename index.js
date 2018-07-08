@@ -388,7 +388,7 @@ module.exports = {
     },
 
     /**
-     * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
+     * Use {@link setEnabledAttachmentTypes} instead.
      * Sets whether users are required to enter an email address or not when
      * sending reports.
      * Defaults to YES.
