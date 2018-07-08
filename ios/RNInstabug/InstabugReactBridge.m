@@ -522,6 +522,18 @@ RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
      [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
   }
 
+RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired
+                  forAction:(NSArray *)actionTypesArray) {
+    IBGAction actionTypes = 0;
+    
+    for (NSNumber *boxedValue in actionTypesArray) {
+        actionTypes |= [boxedValue intValue];
+    }
+    
+    [IBGFeatureRequests setEmailFieldRequired:false forAction:actionTypes];
+}
+
+
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
   BOOL result = NO;
 #if TARGET_OS_SIMULATOR
