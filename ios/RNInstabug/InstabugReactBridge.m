@@ -124,7 +124,13 @@ RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         Instabug.willSendReportHandler = ^(IBGReport* report){
-            [self sendEventWithName:@"IBGpreSendingHandler" body:nil];
+            NSArray *tagsArray = report.tags;
+            NSArray *instabugLogs= report.instabugLogs;
+            NSArray *consoleLogs= report.consoleLogs;
+            NSDictionary *userAttributes= report.userAttributes;
+            NSArray *fileAttachments= report.fileLocations;
+            NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
+            [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
             return report;
         };
     } else {
