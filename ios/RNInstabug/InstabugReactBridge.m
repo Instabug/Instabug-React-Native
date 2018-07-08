@@ -233,6 +233,16 @@ RCT_EXPORT_METHOD(setInvocationEvents:(NSArray*)invocationEventsArray) {
     IBGBugReporting.invocationEvents = invocationEvents;
 }
 
+RCT_EXPORT_METHOD(setInvocationOptions:(NSArray*)invocationOptionsArray) {
+    IBGBugReportingInvocationOption invocationOptions = 0;
+    
+    for (NSNumber *boxedValue in invocationOptionsArray) {
+        invocationOptions |= [boxedValue intValue];
+    }
+    
+    IBGBugReporting.invocationOptions = invocationOptions;
+}
+
 RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
     [Instabug setPushNotificationsEnabled:isPushNotificationEnabled];
 }
