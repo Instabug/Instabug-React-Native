@@ -27,7 +27,7 @@ import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.chat.InstabugChat;
 import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
-import com.instabug.library.ActionType;
+import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.OnSdkDismissCallback;
@@ -1697,19 +1697,23 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             Object[] objectArray = ArrayUtil.toArray(actionTypes);
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            int[] parsedActionTypes = new int[stringArray.length];
+            int i = 0;
             for (String action : stringArray) {
                 switch (action) {
                     case ACTION_TYPE_REQUEST_NEW_FEATURE:
-                        FeatureRequests.setEmailFieldRequired(isEmailRequired, ActionType.REQUEST_NEW_FEATURE);
+                        parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
                         break;
                     case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
-                        FeatureRequests.setEmailFieldRequired(isEmailRequired, ActionType.ADD_COMMENT_TO_FEATURE);
+                        parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
                         break;
                     default:
-                        FeatureRequests.setEmailFieldRequired(isEmailRequired);
+
                         break;
                 }
             }
+            
+            FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1721,8 +1725,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      * @param isEmailRequired set true to make email field required
      * @param actionTypes Bitwise-or of actions
-     *                    {@link ActionType#ALL_ACTIONS}
-     *                    {@link ActionType#REPORT_BUG}
      *                    {@link ActionType#ADD_COMMENT_TO_FEATURE}
      *                    {@link ActionType#REQUEST_NEW_FEATURE}
      */
@@ -1733,12 +1735,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
             for (String action : stringArray) {
                 switch (action) {
-                    case ACTION_TYPE_ALL_ACTIONS:
-                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ALL_ACTIONS);
-                        return;
-                    case ACTION_TYPE_REPORT_BUG:
-                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REPORT_BUG);
-                        break;
+//                    case ACTION_TYPE_ALL_ACTIONS:
+//                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ALL_ACTIONS);
+//                        return;
+//                    case ACTION_TYPE_REPORT_BUG:
+//                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REPORT_BUG);
+//                        break;
                     case ACTION_TYPE_REQUEST_NEW_FEATURE:
                         Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REQUEST_NEW_FEATURE);
                         break;
