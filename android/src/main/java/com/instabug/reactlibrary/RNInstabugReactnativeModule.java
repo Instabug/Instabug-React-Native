@@ -24,7 +24,6 @@ import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
-import com.instabug.chat.InstabugChat;
 import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.featuresrequest.ActionType;
@@ -37,7 +36,6 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
@@ -45,8 +43,6 @@ import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.model.Report;
 import com.instabug.library.user.UserEventParam;
-import com.instabug.library.OnSdkDismissedCallback;
-import com.instabug.library.bugreporting.model.Bug;
 import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
@@ -56,15 +52,17 @@ import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -231,10 +229,38 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * invoke sdk manually with desire invocation mode
      *
      * @param invocationMode the invocation mode
+     */
+    @ReactMethod
+    public void invokeWithInvocationMode(String invocationMode) {
+        InstabugInvocationMode mode;
+
+        if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
+            mode = InstabugInvocationMode.NEW_BUG;
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
+            mode = InstabugInvocationMode.NEW_FEEDBACK;
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)) {
+            mode = InstabugInvocationMode.NEW_CHAT;
+        } else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)) {
+            mode = InstabugInvocationMode.CHATS_LIST;
+        } else {
+            mode = InstabugInvocationMode.PROMPT_OPTION;
+        }
+
+        try {
+            mInstabug.invoke(mode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * invoke sdk manually with desire invocation mode
+     *
+     * @param invocationMode the invocation mode
      * @param invocationOptions the array of invocation options
      */
     @ReactMethod
-    public void invokeWithInvocationMode(String invocationMode, ReadableArray invocationOptions) {
+    public void invokeWithInvocationModeAndOptions(String invocationMode, ReadableArray invocationOptions) {
         InvocationMode mode;
 
 
@@ -249,8 +275,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } else {
             mode = InvocationMode.PROMPT_OPTION;
         }
-
-        Log.d("where is", invocationMode + " " + mode);
 
         Object[] objectArray = ArrayUtil.toArray(invocationOptions);
         String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
@@ -275,8 +299,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     break;
             }
         }
-        Log.d("where is", Arrays.toString(stringArray) + " " + Arrays.toString(arrayOfParsedOptions));
-
         try {
             BugReporting.invoke(mode, arrayOfParsedOptions);
         } catch (Exception e) {
@@ -1309,29 +1331,65 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
         try {
-            Runnable preSendingRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", null);
-                }
-            };
-
 
             Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                 @Override
                 public void onReportCreated(Report report) {
                     WritableMap reportParam = Arguments.createMap();
-                    reportParam.putArray("tagsArray", (WritableArray) report.getTags());
-                    reportParam.putArray("consoleLogs", (WritableArray) report.getConsoleLog());
+                    reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
+                    reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
                     reportParam.putString("userData", report.getUserData());
-                    reportParam.putMap("userAttributes", (WritableMap) report.getUserAttributes());
-                    reportParam.putMap("fileAttachments", (WritableMap) report.getFileAttachments());
-                    sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", reportParam);
+                    reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
+                    reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
+                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
                 }
             });
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
+        WritableMap writableMap = new WritableNativeMap();
+        for(int i = 0; i < hashMap.size(); i++) {
+            Object key = hashMap.keySet().toArray()[i];
+            Object value = hashMap.get(key);
+            writableMap.putString((String) key,(String) value);
+        }
+        return writableMap;
+    }
+
+    private static JSONObject objectToJSONObject(Object object){
+        Object json = null;
+        JSONObject jsonObject = null;
+        try {
+            json = new JSONTokener(object.toString()).nextValue();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (json instanceof JSONObject) {
+            jsonObject = (JSONObject) json;
+        }
+        return jsonObject;
+    }
+
+    private WritableArray convertArrayListToWritableArray(List arrayList) {
+        WritableArray writableArray = new WritableNativeArray();
+
+        for(int i = 0; i < arrayList.size(); i++) {
+            Object object = arrayList.get(i);
+
+            if(object instanceof String) {
+                writableArray.pushString((String) object);
+            }
+            else {
+                JSONObject jsonObject = objectToJSONObject(object);
+                writableArray.pushMap((WritableMap) jsonObject);
+            }
+        }
+
+        return writableArray;
+
     }
 
     /**
@@ -1351,7 +1409,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                    WritableMap params = Arguments.createMap();
                    params.putString("dismissType", dismissType.toString());
                    params.putString("reportType", reportType.toString());
-                   sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", null);
+                   sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
                }
            });
         } catch (java.lang.Exception exception) {
@@ -1671,14 +1729,84 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAvailableSurveys(Callback availableSurveysCallback) {
-        ArrayList<Survey> availableSurveys = new ArrayList<Survey>();
         try {
-            availableSurveys = (ArrayList<Survey>) Surveys.getAvailableSurveys();
+            List<Survey> availableSurveys = Surveys.getAvailableSurveys();
+            JSONArray surveysArray = toJson(availableSurveys);
+            WritableArray array = convertJsonToArray(surveysArray);
+            availableSurveysCallback.invoke(array);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        availableSurveysCallback.invoke(availableSurveys);
+    }
+
+
+    private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
+        WritableMap map = new WritableNativeMap();
+
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                map.putMap(key, convertJsonToMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                map.putArray(key, convertJsonToArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                map.putBoolean(key, (Boolean) value);
+            } else if (value instanceof  Integer) {
+                map.putInt(key, (Integer) value);
+            } else if (value instanceof  Double) {
+                map.putDouble(key, (Double) value);
+            } else if (value instanceof String)  {
+                map.putString(key, (String) value);
+            } else {
+                map.putString(key, value.toString());
+            }
+        }
+        return map;
+    }
+
+    private static WritableArray convertJsonToArray(JSONArray jsonArray) throws JSONException {
+        WritableArray array = new WritableNativeArray();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (value instanceof JSONObject) {
+                array.pushMap(convertJsonToMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                array.pushArray(convertJsonToArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                array.pushBoolean((Boolean) value);
+            } else if (value instanceof  Integer) {
+                array.pushInt((Integer) value);
+            } else if (value instanceof  Double) {
+                array.pushDouble((Double) value);
+            } else if (value instanceof String)  {
+                array.pushString((String) value);
+            }
+        }
+        return array;
+    }
+
+    /**
+     * Convenience method to convert from a list of Surveys to a JSON array
+     *
+     * @param list
+     *        List of Surveys to be converted to JSON array
+     */
+    public static JSONArray toJson(List<Survey> list) {
+        JSONArray jsonArray = new JSONArray();
+        try{
+            for (Survey obj : list) {
+                JSONObject object = new JSONObject();
+                object.put("title", obj.getTitle());
+                jsonArray.put(object);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
 
     /**

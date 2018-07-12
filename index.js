@@ -1,6 +1,9 @@
 import {NativeModules, NativeAppEventEmitter, DeviceEventEmitter, Platform} from "react-native";
 let {Instabug} = NativeModules;
 import InstabugUtils from './utils/InstabugUtils.js';
+import BugReporting from './modules/BugReporting.js';
+import Surveys from './modules/Surveys.js';
+import FeatureRequests from './modules/FeatureRequests.js';
 
 InstabugUtils.captureJsErrors();
 
@@ -8,7 +11,7 @@ InstabugUtils.captureJsErrors();
  * Instabug
  * @exports Instabug
  */
-module.exports = {
+const InstabugModule =  {
 
     /**
      * Starts the SDK.
@@ -26,6 +29,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated Use {@link BugReporting.invoke()} instead.
      * Invokes the SDK manually with the default invocation mode.
      * Shows a view that asks the user whether they want to start a chat, report
      * a problem or suggest an improvement.
@@ -35,29 +39,19 @@ module.exports = {
     },
 
     /**
-     * @deprecated since version 2.3.0. Use {@link invokeWithInvocationModes} instead.
+     * @deprecated Use {@link BugReporting.invokeWithInvocationModeAndOptions} instead.
      * Invokes the SDK with a specific mode.
      * Invokes the SDK and show a specific view, instead of showing a prompt for
      * users to choose from.
      * @param {invocationMode} invocationMode Specifies which mode the
      * SDK is going to start with.
      */
-    invokeWithInvocationMode: function (invocationMode, invocationOptions) {
-        Instabug.invokeWithInvocationMode(invocationMode, invocationOptions);
+    invokeWithInvocationMode: function (invocationMode) {
+        Instabug.invokeWithInvocationMode(invocationMode);
     },
 
     /**
-     * Invokes the SDK with a specific mode.
-     * Invokes the SDK and show a specific view, instead of showing a prompt for
-     * users to choose from.
-     * @param {invocationOptions} invocationOptions Specifies which mode the
-     * SDK is going to start with.
-     */
-    invokeWithModes: function (invocationOptions) {
-        Instabug.invokeWithInvocationModes(invocationOptions);
-    },
-
-    /**
+     * @deprecated Use {@link BugReporting.dismiss() instead}
      * Dismisses any Instabug views that are currently being shown.
      */
     dismiss: function () {
@@ -93,16 +87,6 @@ module.exports = {
      */
     setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
         Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration)
-    },
-
-    /**
-     * Returns an array containing the available surveys.
-     * @param {availableSurveysCallback} availableSurveysCallback callback with
-     * argument available surveys
-     *
-     */
-    getAvailableSurveys: function(availableSurveysCallback) {
-        Instabug.getAvailableSurveys(availableSurveysCallback)
     },
 
     /**
@@ -145,6 +129,7 @@ module.exports = {
 	    },
 
     /**
+     * @deprecated Use {@link BugReporting.onReportSubmitHandler} instead.
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
@@ -191,6 +176,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Shows survey with a specific token.
      * Does nothing if there are no available surveys with that specific token.
      * Answered and cancelled surveys won't show up again.
@@ -202,6 +188,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Returns true if the survey with a specific token was answered before.
      * Will return false if the token does not exist or if the survey was not answered before.
      * @param {string} surveyToken - A String with a survey token.
@@ -224,6 +211,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated Use {@link BugReporting.onInvokeHandler} instead
      * Sets a block of code to be executed just before the SDK's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
@@ -245,6 +233,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated {@link BugReporting.onSDKDismissedHandler} instead
      * Sets a block of code to be executed right after the SDK's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes after the SDK's UI is dismissed.
@@ -332,25 +321,6 @@ module.exports = {
     },
 
     /**
-     * Sets the events that invoke the feedback form.
-     * Default is set by `Instabug.startWithToken`.
-     * @param {invocationEvent} invocationEvent Array of events that invokes the
-     * feedback form.
-     */
-    setInvocationEvents: function(invocationEvents) {
-      Instabug.setInvocationEvents(invocationEvents);
-    },
-
-    /**
-     * Sets the invocation options.
-     * Default is set by `Instabug.startWithToken`.
-     * @param {invocationOptions} invocationOptions Array of invocation options
-     */
-    setInvocationOptions: function(invocationOptions) {
-      Instabug.setInvocationOptions(invocationOptions);
-    },
-
-    /**
      * Enables/disables the use of push notifications in the SDK.
      * Defaults to YES.
      * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
@@ -387,22 +357,6 @@ module.exports = {
     },
 
     /**
-     * Use {@link setEnabledAttachmentTypes} instead.
-     * Sets whether users are required to enter an email address or not when
-     * sending reports.
-     * Defaults to YES.
-     * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
-     * field is required or not.
-     * @param {actionTypes} actionTypes An enum that indicates which action
-     *                                  types will have the isEmailFieldRequired
-     */
-
-    setEmailFieldRequiredForFeatureRequests: function(isEmailFieldRequired, actionTypes) {
-      Instabug.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
-    },
-
-
-    /**
      * @deprecated Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
@@ -427,6 +381,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Sets the threshold value of the shake gesture for iPhone/iPod Touch
      * Default for iPhone is 2.5.
      * @param {number} iPhoneShakingThreshold Threshold for iPhone.
@@ -437,6 +392,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Sets the threshold value of the shake gesture for iPad.
      * Default for iPad is 0.6.
      * @param {number} iPadShakingThreshold Threshold for iPad.
@@ -447,6 +403,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Sets the threshold value of the shake gesture for android devices.
      * Default for android is an integer value equals 350.
      * you could increase the shaking difficulty level by
@@ -674,7 +631,8 @@ module.exports = {
     },
 
     /**
-     * ets whether the extended bug report mode should be disabled, enabled with
+     * @deprecated
+     * Sets whether the extended bug report mode should be disabled, enabled with
      * required fields or enabled with optional fields.
      * @param {extendedBugReportMode} extendedBugReportMode An enum to disable
      *                                the extended bug report mode, enable it
@@ -908,6 +866,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * @summary Sets a block of code to be executed just before the survey's UI is presented.
      * This block is executed on the UI thread. Could be used for performing any UI changes before
      * the survey's UI is shown.
@@ -930,6 +889,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
      * This block is executed on the UI thread. Could be used for performing any UI
      * changes after the survey's UI is dismissed.
@@ -952,6 +912,7 @@ module.exports = {
     },
 
     /**
+     * @deprecated
      * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
      * becomes the default
      * invocation option that SDK gets invoked with and prompt options screen will not show. When
@@ -1067,6 +1028,7 @@ module.exports = {
      },
 
      /**
+      * @deprecated
       * Sets a threshold for numbers of sessions and another for number of days
       * required before a survey, that has been dismissed once, would show again.
       * @param {number} sessionCount Number of sessions required to be
@@ -1079,6 +1041,7 @@ module.exports = {
      },
 
      /**
+      * @deprecated
       * Sets whether auto surveys showing are enabled or not.
       * @param autoShowingSurveysEnabled A boolean to indicate whether the
       *                                surveys auto showing are enabled or not.
@@ -1089,6 +1052,7 @@ module.exports = {
      },
 
      /**
+      * @deprecated
       * Shows the UI for feature requests list
       *
       */
@@ -1202,10 +1166,6 @@ module.exports = {
      * @enum {number}
      */
     invocationOptions: {
-      // invocationOptionNewBug: Instabug.invocationOptionNewBug,
-      // invocationOptionNewFeedback: Instabug.invocationOptionNewFeedback,
-      // invocationOptionNewChat: Instabug.invocationOptionNewChat,
-      // invocationOptionsChatsList: Instabug.invocationOptionsChatsList,
       invocationOptionsEmailFieldHidden: Instabug.emailFieldHidden,
       invocationOptionsEmailFieldOptional: Instabug.emailFieldOptional,
       invocationOptionsCommentFieldRequired: Instabug.commentFieldRequired,
@@ -1353,3 +1313,9 @@ module.exports = {
         thankYouAlertText: Instabug.thankYouAlertText,
     }
 };
+
+InstabugModule.BugReporting = BugReporting;
+InstabugModule.Surveys = Surveys;
+InstabugModule.FeatureRequests = FeatureRequests;
+
+module.exports = InstabugModule;
