@@ -4,13 +4,37 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/IBGBugReporting.h</key>
+		<data>
+		hkW+zJJsTEIuI83iyxEliITjaI4=
+		</data>
+		<key>Headers/IBGCrashReporting.h</key>
+		<data>
+		J+nbZD9XLGOqQ5NKTdmlUS7jT5U=
+		</data>
+		<key>Headers/IBGFeatureRequests.h</key>
+		<data>
+		sx6/m+HVdAWLpz7z0LMFlmUiDAw=
+		</data>
+		<key>Headers/IBGLog.h</key>
+		<data>
+		CxPMwV9poTITtelgp5bcDhpihjI=
+		</data>
+		<key>Headers/IBGSurvey.h</key>
+		<data>
+		f9xxYupSdHZNxQm+RHLGAsVfBj0=
+		</data>
+		<key>Headers/IBGSurveys.h</key>
+		<data>
+		FOZwr54D5o1Nk/VAyF+LvDj6+xk=
+		</data>
 		<key>Headers/Instabug.h</key>
 		<data>
-		A2hIp+URGCShxY4uOIeKgQ3r51o=
+		sepwzdEifs9Ddm1FiudYWFolrvo=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		86L44nwgzIeTUUbjcO61nWuaqwo=
+		m5cMWHqfcC+/uQOYadUc2MkNcVY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -19,15 +43,81 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/IBGBugReporting.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hkW+zJJsTEIuI83iyxEliITjaI4=
+			</data>
+			<key>hash2</key>
+			<data>
+			cDXE2vpwnAVAENM3At2M7ImV7wqYKduxznWmWjvLYcY=
+			</data>
+		</dict>
+		<key>Headers/IBGCrashReporting.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			J+nbZD9XLGOqQ5NKTdmlUS7jT5U=
+			</data>
+			<key>hash2</key>
+			<data>
+			HUs2+a+2SGjZoROjTaHV04YmCMc6tzAjmRpxsw2rNgE=
+			</data>
+		</dict>
+		<key>Headers/IBGFeatureRequests.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sx6/m+HVdAWLpz7z0LMFlmUiDAw=
+			</data>
+			<key>hash2</key>
+			<data>
+			0W+UgtPWulyL+kZpyxTXH65IcOA3kbMHXGxWENdsx1I=
+			</data>
+		</dict>
+		<key>Headers/IBGLog.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			CxPMwV9poTITtelgp5bcDhpihjI=
+			</data>
+			<key>hash2</key>
+			<data>
+			ruxbDMyVVaC/a+WaTdnoKb2Eemck5+hH+km8Pv7zh2k=
+			</data>
+		</dict>
+		<key>Headers/IBGSurvey.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			f9xxYupSdHZNxQm+RHLGAsVfBj0=
+			</data>
+			<key>hash2</key>
+			<data>
+			NpBT5tUdWWmyd7mSMSENa8AxHzxULGxV1LCnIitkikU=
+			</data>
+		</dict>
+		<key>Headers/IBGSurveys.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FOZwr54D5o1Nk/VAyF+LvDj6+xk=
+			</data>
+			<key>hash2</key>
+			<data>
+			wSSM8KdRPq2ZKgNUh73yPRqA2/LI+TnurOK3Zu1LT3o=
+			</data>
+		</dict>
 		<key>Headers/Instabug.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			A2hIp+URGCShxY4uOIeKgQ3r51o=
+			sepwzdEifs9Ddm1FiudYWFolrvo=
 			</data>
 			<key>hash2</key>
 			<data>
-			0GvzeDByhOxwApnpaxjQ9ZgLHJVqzI5ZFp8yeA6lFCU=
+			1MNZcuO9wLxiZsIm6WWpSPZeX75HvtkYpSRYp3I9HQ8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

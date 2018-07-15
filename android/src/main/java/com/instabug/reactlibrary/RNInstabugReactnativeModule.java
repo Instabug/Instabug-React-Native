@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,36 +20,50 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.instabug.library.ActionType;
+import com.instabug.bug.BugReporting;
+import com.instabug.bug.PromptOption;
+import com.instabug.bug.invocation.InvocationMode;
+import com.instabug.bug.invocation.InvocationOption;
+import com.instabug.crash.CrashReporting;
+import com.instabug.featuresrequest.FeatureRequests;
+import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.InstabugInvocationMode;
 import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonCorner;
+import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
+import com.instabug.library.model.Report;
 import com.instabug.library.user.UserEventParam;
-import com.instabug.library.OnSdkDismissedCallback;
-import com.instabug.library.bugreporting.model.Bug;
 import com.instabug.library.visualusersteps.State;
-import com.instabug.survey.InstabugSurvey;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
+import com.instabug.survey.OnDismissCallback;
+import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.Survey;
+import com.instabug.survey.Surveys;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,6 +72,8 @@ import java.util.Map;
  * The type Rn instabug reactnative module.
  */
 public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
+
+    private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
     //InvocationEvents
     private final String INVOCATION_EVENT_NONE = "none";
@@ -135,6 +152,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ACTION_TYPE_REQUEST_NEW_FEATURE = "requestNewFeature";
     private final String ACTION_TYPE_ADD_COMMENT_TO_FEATURE = "addCommentToFeature";
 
+    private final String PROMPT_OPTION_BUG = "promptOptionBug";
+    private final String PROMPT_OPTION_CHAT = "promptOptionChat";
+    private final String PROMPT_OPTION_FEEDBACK = "promptOptionFeedback";
+
+    private final String EMAIL_FIELD_HIDDEN = "emailFieldHidden";
+    private final String EMAIL_FIELD_OPTIONAL = "emailFieldOptional";
+    private final String COMMENT_FIELD_REQUIRED = "commentFieldRequired";
+    private final String DISABLE_POST_SENDING_DIALOG = "disablePostSendingDialog";
+
     private final String CONVERSATIONS_LIST_TITLE = "conversationsHeaderTitle";
 
     private final String ADD_VOICE_MESSAGE = "addVoiceMessage";
@@ -179,19 +205,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return "Instabug";
     }
 
-    @ReactMethod
-    public void startWithToken(String androidToken, String invocationEvent) {
-        mInstabug = new Instabug.Builder(this.androidApplication, androidToken)
-                .setIntroMessageEnabled(false)
-                .setInvocationEvent(getInvocationEventById(invocationEvent))
-                .build();
-        //init placHolders
-        placeHolders = new InstabugCustomTextPlaceHolder();
-
-    }
-
     /**
-     * invoke sdk manually
+     * invoke sdk manually with mode and options
+     *
+     * @param
      */
     @ReactMethod
     public void invoke() {
@@ -200,7 +217,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mInstabug.invoke();
+                    BugReporting.invoke();
                 }
             });
         } catch (Exception e) {
@@ -236,6 +253,59 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    /**
+     * invoke sdk manually with desire invocation mode
+     *
+     * @param invocationMode the invocation mode
+     * @param invocationOptions the array of invocation options
+     */
+    @ReactMethod
+    public void invokeWithInvocationModeAndOptions(String invocationMode, ReadableArray invocationOptions) {
+        InvocationMode mode;
+
+
+        if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
+            mode = InvocationMode.NEW_BUG;
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
+            mode = InvocationMode.NEW_FEEDBACK;
+        } else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)) {
+            mode = InvocationMode.NEW_CHAT;
+        } else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)) {
+            mode = InvocationMode.CHATS_LIST;
+        } else {
+            mode = InvocationMode.PROMPT_OPTION;
+        }
+
+        Object[] objectArray = ArrayUtil.toArray(invocationOptions);
+        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+
+        int[] arrayOfParsedOptions = new int[stringArray.length];
+        int i = 0;
+        for (String option : stringArray) {
+            switch (option) {
+                case EMAIL_FIELD_HIDDEN:
+                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_HIDDEN;
+                    break;
+                case EMAIL_FIELD_OPTIONAL:
+                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_OPTIONAL;
+                    break;
+                case COMMENT_FIELD_REQUIRED:
+                    arrayOfParsedOptions[i++] = InvocationOption.COMMENT_FIELD_REQUIRED;
+                    break;
+                case DISABLE_POST_SENDING_DIALOG:
+                    arrayOfParsedOptions[i++] = InvocationOption.DISABLE_POST_SENDING_DIALOG;
+                    break;
+                default:
+                    break;
+            }
+        }
+        try {
+            BugReporting.invoke(mode, arrayOfParsedOptions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Dismisses all visible Instabug views
@@ -243,7 +313,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismiss() {
         try {
-            mInstabug.dismiss();
+            Instabug.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -322,16 +392,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             switch (extendedBugReportMode) {
                 case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
-                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
                     break;
                 case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
-                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
                     break;
                 case EXTENDED_BUG_REPORT_DISABLED:
-                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
                     break;
                 default:
-                    Instabug.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -360,7 +430,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setVideoRecordingFloatingButtonPosition(String corner) {
         try {
-            mInstabug.setVideoRecordingFloatingButtonCorner(getVideoRecordingButtonCorner(corner));
+            BugReporting.setVideoRecordingFloatingButtonPosition(getVideoRecordingButtonCorner(corner));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -535,7 +605,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
      *
-     * @param {boolean} screenShot A boolean to enable or disable screenshot attachments.
+     * @param  screenshot A boolean to enable or disable screenshot attachments.
      * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
      * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
@@ -667,7 +737,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showFeatureRequests() {
         try {
-            Instabug.showFeatureRequests();
+            FeatureRequests.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -715,7 +785,51 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setInvocationEvent(String invocationEventValue) {
         try {
-            mInstabug.changeInvocationEvent(getInvocationEventById(invocationEventValue));
+            BugReporting.setInvocationEvents(getInvocationEventById(invocationEventValue));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the event used to invoke Instabug SDK
+     *
+     * @param invocationEventValues the invocation event value
+     * @see InstabugInvocationEvent
+     */
+    @ReactMethod
+    public void setInvocationEvents(ReadableArray invocationEventValues) {
+
+        try {
+            Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
+
+            Log.d(TAG, Arrays.toString(stringArray) + " " + INVOCATION_EVENT_FLOATING_BUTTON);
+
+            for (String action : stringArray) {
+                switch (action) {
+                    case INVOCATION_EVENT_FLOATING_BUTTON:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
+                        break;
+                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
+                        break;
+                    case INVOCATION_EVENT_SHAKE:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
+                        break;
+                    case INVOCATION_EVENT_SCREENSHOT:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                        break;
+                    case INVOCATION_EVENT_NONE:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.NONE);
+                        break;
+                    default:
+                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
+                        break;
+                }
+            }
+            BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -743,6 +857,44 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets the event used to invoke Instabug SDK
+     *
+     * @param invocationOptionValues the invocation event value
+     * @see InstabugInvocationEvent
+     */
+    @ReactMethod
+    public void setInvocationOptions(ReadableArray invocationOptionValues) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            for (String option : stringArray) {
+                switch (option) {
+                    case EMAIL_FIELD_HIDDEN:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN);
+                        return;
+                    case EMAIL_FIELD_OPTIONAL:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_OPTIONAL);
+                        break;
+                    case COMMENT_FIELD_REQUIRED:
+                        BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
+                        break;
+                    case DISABLE_POST_SENDING_DIALOG:
+                        BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                        break;
+                    default:
+                        BugReporting.setInvocationOptions(InvocationOption.EMAIL_FIELD_HIDDEN,
+                                InvocationOption.EMAIL_FIELD_OPTIONAL,
+                                InvocationOption.COMMENT_FIELD_REQUIRED,
+                                InvocationOption.DISABLE_POST_SENDING_DIALOG);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Enabled/disable chat notification
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not
@@ -750,7 +902,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
         try {
-            mInstabug.setChatNotificationEnabled(isChatNotificationEnable);
+            Instabug.setReplyNotificationEnabled(isChatNotificationEnable);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -796,9 +948,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             Throwable throwable = new Throwable(message);
             throwable.setStackTrace(stackTraceElements);
             if (errorIdentifier != null)
-                mInstabug.reportException(throwable);
+                CrashReporting.reportException(throwable);
             else
-                mInstabug.reportException(throwable, errorIdentifier);
+                CrashReporting.reportException(throwable, errorIdentifier);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -874,7 +1026,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
         boolean hasResponded;
         try {
-            hasResponded = Instabug.hasRespondToSurvey(surveyToken);
+            hasResponded = Surveys.hasRespondToSurvey(surveyToken);
             hasRespondedCallback.invoke(hasResponded);
         } catch (Exception e) {
             e.printStackTrace();
@@ -891,7 +1043,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showSurveyWithToken(String surveyToken) {
         try {
-            Instabug.showSurvey(surveyToken);
+            Surveys.showSurvey(surveyToken);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -984,10 +1136,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setColorTheme(String theme) {
         try {
             if (theme.equals(COLOR_THEME_LIGHT)) {
-                mInstabug.setTheme(InstabugColorTheme.InstabugColorThemeLight);
+                Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
 
             } else if (theme.equals(COLOR_THEME_DARK)) {
-                mInstabug.setTheme(InstabugColorTheme.InstabugColorThemeDark);
+                Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1046,7 +1198,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setCommentFieldRequired(boolean isCommentFieldRequired) {
         try {
-            mInstabug.setCommentFieldRequired(isCommentFieldRequired);
+            BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1156,13 +1308,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPreInvocationHandler(final Callback preInvocationHandler) {
         try {
-            Runnable preInvocationRunnable = new Runnable() {
+            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                 @Override
-                public void run() {
+                public void onInvoke() {
                     sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
                 }
-            };
-            mInstabug.setPreInvocation(preInvocationRunnable);
+            });
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1180,16 +1331,65 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
         try {
-            Runnable preSendingRunnable = new Runnable() {
+
+            Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                 @Override
-                public void run() {
-                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", null);
+                public void onReportCreated(Report report) {
+                    WritableMap reportParam = Arguments.createMap();
+                    reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
+                    reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
+                    reportParam.putString("userData", report.getUserData());
+                    reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
+                    reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
+                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
                 }
-            };
-            mInstabug.setPreSendingRunnable(preSendingRunnable);
+            });
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
+        WritableMap writableMap = new WritableNativeMap();
+        for(int i = 0; i < hashMap.size(); i++) {
+            Object key = hashMap.keySet().toArray()[i];
+            Object value = hashMap.get(key);
+            writableMap.putString((String) key,(String) value);
+        }
+        return writableMap;
+    }
+
+    private static JSONObject objectToJSONObject(Object object){
+        Object json = null;
+        JSONObject jsonObject = null;
+        try {
+            json = new JSONTokener(object.toString()).nextValue();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (json instanceof JSONObject) {
+            jsonObject = (JSONObject) json;
+        }
+        return jsonObject;
+    }
+
+    private WritableArray convertArrayListToWritableArray(List arrayList) {
+        WritableArray writableArray = new WritableNativeArray();
+
+        for(int i = 0; i < arrayList.size(); i++) {
+            Object object = arrayList.get(i);
+
+            if(object instanceof String) {
+                writableArray.pushString((String) object);
+            }
+            else {
+                JSONObject jsonObject = objectToJSONObject(object);
+                writableArray.pushMap((WritableMap) jsonObject);
+            }
+        }
+
+        return writableArray;
+
     }
 
     /**
@@ -1203,17 +1403,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
         try {
-
-            mInstabug.setOnSdkDismissedCallback(new OnSdkDismissedCallback() {
-                @Override
-                public void onSdkDismissed(DismissType issueState, Bug.Type bugType) {
-                    WritableMap params = Arguments.createMap();
-                    params.putString("issueState", issueState.toString());
-                    params.putString("bugType", bugType.toString());
-                    sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
-                }
-            });
-
+           BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+               @Override
+               public void call(DismissType dismissType, ReportType reportType) {
+                   WritableMap params = Arguments.createMap();
+                   params.putString("dismissType", dismissType.toString());
+                   params.putString("reportType", reportType.toString());
+                   sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
+               }
+           });
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1227,7 +1425,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showSurveysIfAvailable() {
         try {
-            mInstabug.showValidSurvey();
+            Surveys.showSurveyIfAvailable();
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1241,7 +1439,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setSurveysEnabled(boolean surveysEnabled) {
         try {
-            InstabugSurvey.setSurveysAutoShowing(surveysEnabled);
+            Surveys.setAutoShowingEnabled(surveysEnabled);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1270,17 +1468,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
-        try {
-            Runnable willShowSurveyRunnable = new Runnable() {
+
+            Surveys.setOnShowCallback(new OnShowCallback() {
                 @Override
-                public void run() {
+                public void onShow() {
                     sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
                 }
-            };
-            mInstabug.setPreShowingSurveyRunnable(willShowSurveyRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            });
     }
 
     /**
@@ -1292,25 +1486,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
-        try {
-            Runnable didDismissSurveyRunnable = new Runnable() {
+
+            Surveys.setOnDismissCallback(new OnDismissCallback() {
                 @Override
-                public void run() {
+                public void onDismiss() {
                     sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
                 }
-            };
-            mInstabug.setAfterShowingSurveyRunnable(didDismissSurveyRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            });
     }
 
     /**
      * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-     * becomes the default
-     * invocation option that SDK gets invoked with and prompt options screen will not show. When
-     * none is enabled, Bug
-     * reporting becomes the default invocation option.
+     * becomes the default invocation option that SDK gets invoked with and prompt options screen
+     * will not show. When none is enabled, Bug reporting becomes the default invocation option.
      *
      * @param chat     weather Talk to us is enable or not
      * @param bug      weather Report a Problem is enable or not
@@ -1318,8 +1506,55 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
+
+        ArrayList<PromptOption> options = new ArrayList<>();
+
+        if (chat) {
+            options.add(PromptOption.CHAT);
+        }
+
+        if (feedback) {
+            options.add(PromptOption.FEEDBACK);
+        }
+
+        if (bug) {
+            options.add(PromptOption.BUG);
+        }
+
         try {
-            mInstabug.setPromptOptionsEnabled(chat, bug, feedback);
+            BugReporting.setPromptOptionsEnabled(options.toArray(new PromptOption[0]));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets whether email field is required or not when submitting
+     * bug/feedback/new-feature-request/new-comment-on-feature
+     *
+     * @param promptOptions Bitwise-or of prompt option types
+     */
+    @ReactMethod
+    public void setPromptOptions(ReadableArray promptOptions) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(promptOptions);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            for (String action : stringArray) {
+                switch (action) {
+                    case PROMPT_OPTION_BUG:
+                        BugReporting.setPromptOptionsEnabled();
+                        return;
+                    case PROMPT_OPTION_CHAT:
+                        BugReporting.setPromptOptionsEnabled();
+                        break;
+                    case PROMPT_OPTION_FEEDBACK:
+                        BugReporting.setPromptOptionsEnabled();
+                        break;
+                    default:
+                        BugReporting.setPromptOptionsEnabled();
+                        break;
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1430,7 +1665,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setShakingThresholdForAndroid(int androidThreshold) {
         try {
-            mInstabug.setShakingThreshold(androidThreshold);
+            BugReporting.setShakingThreshold(androidThreshold);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1451,7 +1686,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
                 }
             };
-            mInstabug.setNewMessageHandler(onNewMessageRunnable);
+            Instabug.setOnNewReplyReceivedCallback(onNewMessageRunnable);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1462,11 +1697,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setSuccessDialogEnabled(boolean enabled) {
-        try {
-            mInstabug.setSuccessDialogEnabled(enabled);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (enabled) {
+            try {
+                BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     /**
@@ -1478,10 +1716,97 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
         try {
-            Instabug.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+            Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns an array containing the available surveys.
+     * @param availableSurveysCallback - Callback with the returned value of the available surveys
+     *
+     */
+    @ReactMethod
+    public void getAvailableSurveys(Callback availableSurveysCallback) {
+        try {
+            List<Survey> availableSurveys = Surveys.getAvailableSurveys();
+            JSONArray surveysArray = toJson(availableSurveys);
+            WritableArray array = convertJsonToArray(surveysArray);
+            availableSurveysCallback.invoke(array);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
+        WritableMap map = new WritableNativeMap();
+
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                map.putMap(key, convertJsonToMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                map.putArray(key, convertJsonToArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                map.putBoolean(key, (Boolean) value);
+            } else if (value instanceof  Integer) {
+                map.putInt(key, (Integer) value);
+            } else if (value instanceof  Double) {
+                map.putDouble(key, (Double) value);
+            } else if (value instanceof String)  {
+                map.putString(key, (String) value);
+            } else {
+                map.putString(key, value.toString());
+            }
+        }
+        return map;
+    }
+
+    private static WritableArray convertJsonToArray(JSONArray jsonArray) throws JSONException {
+        WritableArray array = new WritableNativeArray();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (value instanceof JSONObject) {
+                array.pushMap(convertJsonToMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                array.pushArray(convertJsonToArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                array.pushBoolean((Boolean) value);
+            } else if (value instanceof  Integer) {
+                array.pushInt((Integer) value);
+            } else if (value instanceof  Double) {
+                array.pushDouble((Double) value);
+            } else if (value instanceof String)  {
+                array.pushString((String) value);
+            }
+        }
+        return array;
+    }
+
+    /**
+     * Convenience method to convert from a list of Surveys to a JSON array
+     *
+     * @param list
+     *        List of Surveys to be converted to JSON array
+     */
+    public static JSONArray toJson(List<Survey> list) {
+        JSONArray jsonArray = new JSONArray();
+        try{
+            for (Survey obj : list) {
+                JSONObject object = new JSONObject();
+                object.put("title", obj.getTitle());
+                jsonArray.put(object);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
 
     /**
@@ -1492,7 +1817,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
         try {
-            Instabug.setSurveysAutoShowing(autoShowingSurveysEnabled);
+            Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1508,7 +1833,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setEnableInAppNotificationSound(boolean shouldPlaySound) {
         try {
-            mInstabug.setEnableInAppNotificationSound(shouldPlaySound);
+            Instabug.setInAppReplyNotificationSound(shouldPlaySound);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1541,20 +1866,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setShouldShowSurveysWelcomeScreen(boolean shouldShow) {
         try {
-            InstabugSurvey.setShouldShowSurveysWelcomeScreen(shouldShow);
+            Surveys.setShouldShowWelcomeScreen(shouldShow);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * ets whether email field is required or not when submitting
+     * Sets whether email field is required or not when submitting
+     * new-feature-request/new-comment-on-feature
+     *
+     * @param isEmailRequired set true to make email field required
+     * @param actionTypes Bitwise-or of actions
+     */
+    @ReactMethod
+    public void setEmailFieldRequiredForFeatureRequests(boolean isEmailRequired, ReadableArray actionTypes) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(actionTypes);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            int[] parsedActionTypes = new int[stringArray.length];
+            int i = 0;
+            for (String action : stringArray) {
+                switch (action) {
+                    case ACTION_TYPE_REQUEST_NEW_FEATURE:
+                        parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
+                        break;
+                    case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
+                        parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
+                        break;
+                    default:
+
+                        break;
+                }
+            }
+            
+            FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets whether email field is required or not when submitting
      * bug/feedback/new-feature-request/new-comment-on-feature
      *
      * @param isEmailRequired set true to make email field required
      * @param actionTypes Bitwise-or of actions
-     *                    {@link ActionType#ALL_ACTIONS}
-     *                    {@link ActionType#REPORT_BUG}
      *                    {@link ActionType#ADD_COMMENT_TO_FEATURE}
      *                    {@link ActionType#REQUEST_NEW_FEATURE}
      */
@@ -1565,12 +1922,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
             for (String action : stringArray) {
                 switch (action) {
-                    case ACTION_TYPE_ALL_ACTIONS:
-                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ALL_ACTIONS);
-                        return;
-                    case ACTION_TYPE_REPORT_BUG:
-                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REPORT_BUG);
-                        break;
+//                    case ACTION_TYPE_ALL_ACTIONS:
+//                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.ALL_ACTIONS);
+//                        return;
+//                    case ACTION_TYPE_REPORT_BUG:
+//                        Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REPORT_BUG);
+//                        break;
                     case ACTION_TYPE_REQUEST_NEW_FEATURE:
                         Instabug.setEmailFieldRequired(isEmailRequired, ActionType.REQUEST_NEW_FEATURE);
                         break;
@@ -1640,17 +1997,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private InstabugVideoRecordingButtonCorner getVideoRecordingButtonCorner(String cornerValue) {
-        InstabugVideoRecordingButtonCorner corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+    private InstabugVideoRecordingButtonPosition getVideoRecordingButtonCorner(String cornerValue) {
+        InstabugVideoRecordingButtonPosition corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
         try {
             if (cornerValue.equals(BOTTOM_RIGHT)) {
-                corner = InstabugVideoRecordingButtonCorner.BOTTOM_RIGHT;
+                corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
             } else if (cornerValue.equals(BOTTOM_LEFT)) {
-                corner = InstabugVideoRecordingButtonCorner.BOTTOM_LEFT;
+                corner = InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
             } else if (cornerValue.equals(TOP_LEFT)) {
-                corner = InstabugVideoRecordingButtonCorner.TOP_LEFT;
+                corner = InstabugVideoRecordingButtonPosition.TOP_LEFT;
             } else if (cornerValue.equals(TOP_RIGHT)) {
-                corner = InstabugVideoRecordingButtonCorner.TOP_RIGHT;
+                corner = InstabugVideoRecordingButtonPosition.TOP_RIGHT;
             }
 
         } catch (Exception e) {
@@ -1786,6 +2143,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("reportBugAction", ACTION_TYPE_REPORT_BUG);
         constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
         constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
+
+        constants.put("emailFieldHidden", EMAIL_FIELD_HIDDEN);
+        constants.put("emailFieldOptional", EMAIL_FIELD_OPTIONAL);
+        constants.put("commentFieldRequired", COMMENT_FIELD_REQUIRED);
+        constants.put("disablePostSendingDialog", DISABLE_POST_SENDING_DIALOG);
+
+        constants.put("promptOptionBug", PROMPT_OPTION_BUG);
+        constants.put("promptOptionChat", PROMPT_OPTION_CHAT);
+        constants.put("promptOptionFeedback", PROMPT_OPTION_FEEDBACK);
 
         constants.put("shakeHint", SHAKE_HINT);
         constants.put("swipeHint", SWIPE_HINT);

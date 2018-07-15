@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    7.14.5
+ Version:    8.0.2
  */
 
 #import <UIKit/UIKit.h>
@@ -153,19 +153,19 @@ extern NSString * const kIBGDiscardAlertCancel;
 /**
  The event used to invoke the feedback form.
  */
-typedef NS_ENUM(NSInteger, IBGInvocationEvent) {
-    /** No event will be registered to show the feedback form, you'll need to code your own and call the method showFeedbackForm. */
-    IBGInvocationEventNone,
+typedef NS_OPTIONS(NSInteger, IBGInvocationEvent) {
     /** Shaking the device while in any screen to show the feedback form. */
-    IBGInvocationEventShake,
+    IBGInvocationEventShake = 1 << 0,
     /** Taking a screenshot using the Home+Lock buttons while in any screen to show the feedback form. */
-    IBGInvocationEventScreenshot,
+    IBGInvocationEventScreenshot = 1 << 1,
     /** Swiping two fingers left while in any screen to show the feedback form. */
-    IBGInvocationEventTwoFingersSwipeLeft,
+    IBGInvocationEventTwoFingersSwipeLeft = 1 << 2,
     /** Swiping one finger left from the right edge of the screen to show the feedback form, substituted with IBGInvocationEventTwoFingersSwipeLeft on iOS 6.1.3 and earlier. */
-    IBGInvocationEventRightEdgePan,
+    IBGInvocationEventRightEdgePan = 1 << 3,
     /**  Shows a floating button on top of all views, when pressed it takes a screenshot. */
-    IBGInvocationEventFloatingButton
+    IBGInvocationEventFloatingButton = 1 << 4,
+    /** No event will be registered to show the feedback form, you'll need to code your own and call the method showFeedbackForm. */
+    IBGInvocationEventNone = 1 << 5,
 };
 
 /**
@@ -187,6 +187,14 @@ typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeNewFeedback,
     IBGInvocationModeNewChat,
     IBGInvocationModeChatsList
+};
+
+typedef NS_OPTIONS(NSInteger, IBGBugReportingInvocationOption) {
+    IBGBugReportingInvocationOptionEmailFieldHidden = 1 << 0,
+    IBGBugReportingInvocationOptionEmailFieldOptional = 1 << 1,
+    IBGBugReportingInvocationOptionCommentFieldRequired = 1 << 2,
+    IBGBugReportingInvocationOptionDisablePostSendingDialog = 1 << 3,
+    IBGBugReportingInvocationOptionNone = 1 << 4,
 };
 
 /**
@@ -399,10 +407,11 @@ typedef NS_ENUM(NSInteger, IBGString) {
 /**
  The prompt option selected in Instabug prompt.
  */
-typedef NS_ENUM(NSInteger, IBGPromptOption) {
-    IBGPromptOptionChat,
-    IBGPromptOptionBug,
-    IBGPromptOptionFeedback
+typedef NS_OPTIONS(NSInteger, IBGPromptOption) {
+    IBGPromptOptionChat = 1 << 0,
+    IBGPromptOptionBug = 1 << 1,
+    IBGPromptOptionFeedback = 1 << 2,
+    IBGPromptOptionNone = 1 << 3,
 };
 
 /**
@@ -455,6 +464,13 @@ typedef NS_ENUM(NSInteger, IBGExtendedBugReportMode) {
     IBGExtendedBugReportModeDisabled
 };
 
+typedef NS_OPTIONS(NSInteger, IBGAction) {
+    IBGActionAllActions = 1 << 0,
+    IBGActionReportBug = 1 << 1,
+    IBGActionRequestNewFeature = 1 << 2,
+    IBGActionAddCommentToFeature = 1 << 3,
+};
+
 /**
  The welcome message mode.
  */
@@ -463,13 +479,6 @@ typedef NS_ENUM(NSInteger, IBGWelcomeMessageMode) {
     IBGWelcomeMessageModeBeta,
     IBGWelcomeMessageModeDisabled
 };
-
-typedef enum : NSUInteger {
-    IBGActionAllActions = 1 << 0,
-    IBGActionReportBug = 1 << 1,
-    IBGActionRequestNewFeature = 1 << 2,
-    IBGActionAddCommentToFeature = 1 << 3,
-} IBGActionType;
 
 @interface UIView (Instabug)
 

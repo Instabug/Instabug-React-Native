@@ -28,11 +28,24 @@ RCT_ENUM_CONVERTER(IBGInvocationMode, (@{
                                          @"invocationModeChatsList": @(IBGInvocationModeChatsList)
                                          }), IBGInvocationModeNA, integerValue);
 
+RCT_ENUM_CONVERTER(IBGBugReportingInvocationOption, (@{
+                                         @"invocationOptionsEmailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
+                                         @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
+                                         @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
+                                         @"invocationOptionsDisablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog)
+                                         }), 0, integerValue);
+
 RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
                                       @"dismissTypeCancel": @(IBGDismissTypeCancel),
                                       @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
+
+RCT_ENUM_CONVERTER(IBGPromptOption, (@{
+                                      @"promptOptionChat": @(IBGPromptOptionChat),
+                                      @"promptOptionBug": @(IBGPromptOptionBug),
+                                      @"promptOptionBugFeedback": @(IBGPromptOptionFeedback)
+                                      }), IBGPromptOptionChat, integerValue)
 
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabled": @(IBGUserStepsModeEnable),
@@ -99,7 +112,7 @@ RCT_ENUM_CONVERTER(IBGWelcomeMessageMode, (@{
                                     }), IBGWelcomeMessageModeLive, integerValue);
 
 
-RCT_ENUM_CONVERTER(IBGActionType, (@{
+RCT_ENUM_CONVERTER(IBGAction, (@{
                                     @"allActions": @(IBGActionAllActions),
                                     @"reportBug": @(IBGActionReportBug),
                                     @"requestNewFeature": @(IBGActionRequestNewFeature),
