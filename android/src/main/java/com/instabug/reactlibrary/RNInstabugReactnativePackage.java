@@ -7,6 +7,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -14,63 +15,91 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.visualusersteps.State;
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
+    private static final String TAG = RNInstabugReactnativePackage.class.getSimpleName();
+
     private Application androidApplication;
     private String mAndroidApplicationToken;
     private Instabug mInstabug;
     private Instabug.Builder mBuilder;
-    private InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
+    private ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<>();
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
-                                        String invocationEventValue, String primaryColor,
+                                        String[] invocationEventValues, String primaryColor,
                                         InstabugFloatingButtonEdge floatingButtonEdge, int offset) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
         //setting invocation event
-                if (invocationEventValue.equals("button")) {
-                    this.invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
-                } else if (invocationEventValue.equals("swipe")) {
-                    this.invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
-
-                } else if (invocationEventValue.equals("shake")) {
-                    this.invocationEvent = InstabugInvocationEvent.SHAKE;
-
-                } else if (invocationEventValue.equals("screenshot")) {
-                    this.invocationEvent = InstabugInvocationEvent.SCREENSHOT_GESTURE;
-
-                } else if (invocationEventValue.equals("none")) {
-                    this.invocationEvent = InstabugInvocationEvent.NONE;
-
-                } else {
-                    this.invocationEvent = InstabugInvocationEvent.SHAKE;
-                }
-
+        this.parseInvocationEvent(invocationEventValues);
 
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
-                .setInvocationEvent(this.invocationEvent)
+                .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
                 .setCrashReportingState(Feature.State.ENABLED)
                 .setReproStepsState(State.DISABLED)
                 .build();
 
         Instabug.setPrimaryColor(Color.parseColor(primaryColor));
-        Instabug.setFloatingButtonEdge(floatingButtonEdge);
-        Instabug.setFloatingButtonOffsetFromTop(offset);
+        BugReporting.setFloatingButtonEdge(floatingButtonEdge);
+        BugReporting.setFloatingButtonOffset(offset);
 
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
-                                        String invocationEventValue, String primaryColor) {
-        new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValue,primaryColor,
+                                        String[] invocationEventValues, String primaryColor) {
+        new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValues,primaryColor,
                 InstabugFloatingButtonEdge.LEFT,250);
     }
+
+    private void parseInvocationEvent(String[] invocationEventValues) {
+
+        for (int i = 0; i < invocationEventValues.length; i++) {
+            if (invocationEventValues[i].equals("button")) {
+                this.invocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
+            } else if (invocationEventValues[i].equals("swipe")) {
+                this.invocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
+
+            } else if (invocationEventValues[i].equals("shake")) {
+                this.invocationEvents.add(InstabugInvocationEvent.SHAKE);
+
+            } else if (invocationEventValues[i].equals("screenshot")) {
+                this.invocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+
+            } else if (invocationEventValues[i].equals("none")) {
+                this.invocationEvents.add(InstabugInvocationEvent.NONE);
+            }
+        }
+
+        if (invocationEvents.isEmpty()) {
+            invocationEvents.add(InstabugInvocationEvent.SHAKE);
+        }
+    }
+
+    @Override
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        List<NativeModule> modules = new ArrayList<>();
+        modules.add(new RNInstabugReactnativeModule(reactContext, this.androidApplication, this.mInstabug));
+        return modules;
+    }
+
+    public List<Class<? extends JavaScriptModule>> createJSModules() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
+
 
     public static class Builder {
         //FloatingButtonEdge
@@ -79,7 +108,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         String androidApplicationToken;
         Application application;
-        String invocationEvent;
+        String[] invocationEvents;
         String primaryColor;
         InstabugFloatingButtonEdge floatingButtonEdge;
         int offset;
@@ -89,8 +118,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
             this.application = application;
         }
 
-        public Builder setInvocationEvent(String invocationEvent) {
-            this.invocationEvent = invocationEvent;
+        public Builder setInvocationEvent(String... invocationEvents) {
+            this.invocationEvents = invocationEvents;
             return this;
         }
 
@@ -110,7 +139,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         }
 
         public RNInstabugReactnativePackage build() {
-            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvent,primaryColor,floatingButtonEdge,offset);
+            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvents,primaryColor,floatingButtonEdge,offset);
         }
 
         private InstabugFloatingButtonEdge getFloatingButtonEdge(String floatingButtonEdgeValue) {
@@ -128,22 +157,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 return floatingButtonEdge;
             }
         }
-    }
-
-    @Override
-    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNInstabugReactnativeModule(reactContext, this.androidApplication, this.mInstabug));
-        return modules;
-    }
-
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.emptyList();
     }
 
 }
