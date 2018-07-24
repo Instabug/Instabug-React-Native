@@ -59,6 +59,14 @@ RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode opt
     [IBGBugReporting invokeWithMode:invocationMode options:options];
 }
 
+RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
+    IBGBugReportingInvocationOption invocationOptions = 0;
+    for (NSNumber *boxedValue in options) {
+        invocationOptions |= [boxedValue intValue];
+    }
+    [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
+}
+
 RCT_EXPORT_METHOD(dismiss) {
     [IBGBugReporting dismiss];
 }
@@ -625,10 +633,10 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"localeTurkish": @(IBGLocaleTurkish),
 
               
-              @"invocationOptionsEmailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
-              @"invocationOptionsEmailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
-              @"invocationOptionsCommentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
-              @"invocationOptionsDisablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
+              @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
+              @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
+              @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
+              @"disablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
               
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
