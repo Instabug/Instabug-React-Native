@@ -55,8 +55,8 @@ RCT_EXPORT_METHOD(invoke) {
     [IBGBugReporting invoke];
 }
 
-RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options) {
-    [IBGBugReporting invokeWithMode:invocationMode options:options];
+RCT_EXPORT_METHOD(invokeWithInvocationMode:(IBGInvocationMode)invocationMode) {
+    [Instabug invokeWithInvocationMode:invocationMode];
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
