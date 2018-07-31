@@ -13,7 +13,7 @@
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <InstabugCore/IBGTypes.h>
+#import <Instabug/IBGTypes.h>
 
 @implementation InstabugReactBridge
 
@@ -48,6 +48,18 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
     if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
         [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
+    }
+}
+
+RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
+    SEL setPrivateApiSEL = NSSelectorFromString([apiName stringByAppendingString:@":"]);
+    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
+        if (param == nil) {
+            [[Instabug class] performSelector:setPrivateApiSEL];
+        } else {
+            [[Instabug class] performSelector:setPrivateApiSEL withObject:param];
+
+        }
     }
 }
 

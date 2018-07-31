@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <InstabugCore/InstabugCore.h>
-#import <InstabugCore/IBGTypes.h>
+#import "IBGTypes.h"
 
 NS_SWIFT_NAME(BugReporting)
 @interface IBGBugReporting : NSObject
@@ -117,6 +116,14 @@ NS_SWIFT_NAME(BugReporting)
  @discussion See IBGInvocationOptions.
  */
 @property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
+
+
+/**
+ @brief Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
+ 
+ @discussion Default for `position` is `bottomRight`.
+ */
+@property(class, atomic, assign) IBGPosition videoRecordingFloatingButtonPosition;
 
 /**
  @brief Invokes the SDK manually with the default invocation mode.

@@ -5,14 +5,14 @@
 
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
 
- Version:    8.0.2
+ Version:    8.0.6
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <InstabugCore/InstabugCore.h>
-#import <InstabugCore/IBGNetworkLogger.h>
-#import <InstabugCore/IBGReport.h>
+#import "InstabugCore.h"
+#import "IBGNetworkLogger.h"
+#import "IBGReport.h"
 #import "IBGLog.h"
 #import "IBGBugReporting.h"
 #import "IBGCrashReporting.h"
@@ -27,9 +27,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Instabug : NSObject
-
-typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *response);
-
 
 /**
  @brief Sets whether the SDK is recording the screen or not.

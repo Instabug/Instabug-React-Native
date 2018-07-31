@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <InstabugCore/InstabugCore.h>
+#import "InstabugCore.h"
 
 @interface IBGLog : NSObject
 

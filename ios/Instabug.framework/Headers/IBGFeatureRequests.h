@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <InstabugCore/InstabugCore.h>
+#import "IBGTypes.h"
 
 NS_SWIFT_NAME(FeatureRequests)
 @interface IBGFeatureRequests : NSObject
