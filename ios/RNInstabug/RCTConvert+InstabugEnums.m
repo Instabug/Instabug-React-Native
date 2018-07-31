@@ -7,7 +7,7 @@
 //
 
 #import "RCTConvert+InstabugEnums.h"
-#import <InstabugCore/IBGTypes.h>
+#import <Instabug/IBGTypes.h>
 
 @implementation RCTConvert (InstabugEnums)
 

@@ -22,6 +22,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
+import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.crash.CrashReporting;
@@ -1739,6 +1740,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
 
     }
+
+    @ReactMethod
+    public void callPrivateApi(String apiName, String param) {
+        try {
+            if (param == null) {
+                Method m = Internal.class.getDeclaredMethod(apiName);
+                m.setAccessible(true);
+                m.invoke(null);
+            } else {
+                Method m = Internal.class.getDeclaredMethod(apiName, param.getClass());
+                m.setAccessible(true);
+                m.invoke(null, param);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {

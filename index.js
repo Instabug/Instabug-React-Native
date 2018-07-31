@@ -1091,6 +1091,10 @@ const InstabugModule =  {
         Instabug.setWelcomeMessageMode(welcomeMessageMode);
     },
 
+    callPrivateApi: function(apiName, param) {
+        Instabug.callPrivateApi(apiName, param);
+    },
+
     /**
      * The event used to invoke the feedback form
      * @readonly
