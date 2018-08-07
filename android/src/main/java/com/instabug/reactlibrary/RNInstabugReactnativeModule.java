@@ -504,7 +504,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
         try {
             JSONObject newJSONObject = new JSONObject(exceptionObject);
-            Method method = getMethod(Class.forName("com.instabug.crash.InstabugCrash"), "reportException");
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
             if (method != null) {
                 method.invoke(null, newJSONObject, isHandled);
             }
@@ -520,12 +520,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     }
 
-    public static Method getMethod(Class clazz, String methodName) {
+    private static Method getMethod(Class clazz, String methodName, Class... parameterType) {
         final Method[] methods = clazz.getDeclaredMethods();
+
         for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                method.setAccessible(true);
-                return method;
+            if (method.getName().equals(methodName) && method.getParameterTypes().length ==
+                    parameterType.length) {
+                for (int i = 0; i < 2; i++) {
+                    if (method.getParameterTypes()[i] == parameterType[i]) {
+                        if (i == method.getParameterTypes().length - 1) {
+                            method.setAccessible(true);
+                            return method;
+                        }
+                    } else {
+                        break;
+                    }
+                }
             }
         }
         return null;
