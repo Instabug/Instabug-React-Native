@@ -83,6 +83,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
     private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
     //InvocationModes
+    private final String INVOCATION_MODE_NA = "na";
     private final String INVOCATION_MODE_NEW_BUG = "bug";
     private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
     private final String INVOCATION_MODE_NEW_CHAT = "chat";
@@ -2116,6 +2117,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("colorThemeLight", COLOR_THEME_LIGHT);
         constants.put("colorThemeDark", COLOR_THEME_DARK);
 
+        constants.put("invocationModeNA", INVOCATION_MODE_NA);
         constants.put("invocationModeNewBug", INVOCATION_MODE_NEW_BUG);
         constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
         constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
