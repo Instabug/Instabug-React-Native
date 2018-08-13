@@ -137,7 +137,7 @@ If your app doesn’t already access the microphone or photo library, we recomme
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
 
-## Contact US
+## Contact Us
 If you have any questions or feedback don't hesitate to get in touch. You can reach us at any time through **support@instabug.com**.
 
 
