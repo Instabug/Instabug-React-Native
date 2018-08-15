@@ -1316,6 +1316,15 @@ const InstabugModule =  {
         conversationTextFieldHint: Instabug.conversationTextFieldHint,
         collectingDataText: Instabug.collectingDataText,
         thankYouAlertText: Instabug.thankYouAlertText,
+        welcomeMessageBetaWelcomeStepTitle: Instabug.welcomeMessageBetaWelcomeStepTitle,
+        welcomeMessageBetaWelcomeStepContent: Instabug.welcomeMessageBetaWelcomeStepContent,
+        welcomeMessageBetaHowToReportStepTitle: Instabug.welcomeMessageBetaHowToReportStepTitle,
+        welcomeMessageBetaHowToReportStepContent: Instabug.welcomeMessageBetaHowToReportStepContent,
+        welcomeMessageBetaFinishStepTitle: Instabug.welcomeMessageBetaFinishStepTitle,
+        welcomeMessageBetaFinishStepContent: Instabug.welcomeMessageBetaFinishStepContent,
+        welcomeMessageLiveWelcomeStepTitle: Instabug.welcomeMessageLiveWelcomeStepTitle,
+        welcomeMessageLiveWelcomeStepContent: Instabug.welcomeMessageLiveWelcomeStepContent
+    
     }
 };
 

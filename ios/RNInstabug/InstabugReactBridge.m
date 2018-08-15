@@ -699,7 +699,16 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
               @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
               @"videPressRecord": @(IBGStringVideoPressRecordTitle),
               @"collectingDataText": @(IBGStringCollectingDataText),
-              @"thankYouAlertText": @(IBGStringThankYouAlertText)
+              @"thankYouAlertText": @(IBGStringThankYouAlertText),
+
+              @"welcomeMessageBetaWelcomeStepTitle": @(IBGBetaWelcomeMessageWelcomeStepTitle),
+              @"welcomeMessageBetaWelcomeStepContent": @(IBGBetaWelcomeMessageWelcomeStepContent),
+              @"welcomeMessageBetaHowToReportStepTitle": @(IBGBetaWelcomeMessageHowToReportStepTitle),
+              @"welcomeMessageBetaHowToReportStepContent": @(IBGBetaWelcomeMessageHowToReportStepMessage),
+              @"welcomeMessageBetaFinishStepTitle": @(IBGBetaWelcomeMessageFinishStepTitle),
+              @"welcomeMessageBetaFinishStepContent": @(IBGBetaWelcomeMessageFinishStepContent),
+              @"welcomeMessageLiveWelcomeStepTitle": @(IBGLiveWelcomeMessageTitle),
+              @"welcomeMessageLiveWelcomeStepContent": @(IBGLiveWelcomeMessageMessage)
               };
 };
 

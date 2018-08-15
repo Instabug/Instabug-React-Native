@@ -158,6 +158,14 @@ RCT_ENUM_CONVERTER(IBGString, (@{
                                  @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
                                  @"videPressRecord": @(IBGStringVideoPressRecordTitle),
                                  @"collectingDataText": @(IBGStringCollectingDataText),
-                                 @"thankYouAlertText": @(IBGStringThankYouAlertText)
+                                 @"thankYouAlertText": @(IBGStringThankYouAlertText),
+                                 @"welcomeMessageBetaWelcomeStepTitle": @(IBGBetaWelcomeMessageWelcomeStepTitle),
+                                 @"welcomeMessageBetaWelcomeStepContent": @(IBGBetaWelcomeMessageWelcomeStepContent),
+                                 @"welcomeMessageBetaHowToReportStepTitle": @(IBGBetaWelcomeMessageHowToReportStepTitle),
+                                 @"welcomeMessageBetaHowToReportStepContent": @(IBGBetaWelcomeMessageHowToReportStepMessage),
+                                 @"welcomeMessageBetaFinishStepTitle": @(IBGBetaWelcomeMessageFinishStepTitle),
+                                 @"welcomeMessageBetaFinishStepContent": @(IBGBetaWelcomeMessageFinishStepContent),
+                                 @"welcomeMessageLiveWelcomeStepTitle": @(IBGLiveWelcomeMessageTitle),
+                                 @"welcomeMessageLiveWelcomeStepContent": @(IBGLiveWelcomeMessageMessage)
                                  }), IBGStringShakeHint, integerValue);
 @end

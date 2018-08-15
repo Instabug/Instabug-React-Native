@@ -178,6 +178,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
     private final String THANK_YOU_ALERT_TEXT = "thankYouAlertText";
 
+    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE = "welcomeMessageBetaWelcomeStepTitle";
+    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT = "welcomeMessageBetaWelcomeStepContent";
+    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE = "welcomeMessageBetaHowToReportStepTitle";
+    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT = "welcomeMessageBetaHowToReportStepContent";
+    private final String WELCOME_MESSAGE_FINISH_STEP_TITLE = "welcomeMessageBetaFinishStepTitle";
+    private final String WELCOME_MESSAGE_FINISH_STEP_CONTENT = "welcomeMessageBetaFinishStepContent";
+    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "welcomeMessageLiveWelcomeStepTitle";
+    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "welcomeMessageLiveWelcomeStepContent";
+
     private final String VIDEO_PLAYER_TITLE = "video";
 
     private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
@@ -2022,6 +2031,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
             case THANK_YOU_ALERT_TEXT:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
+            case WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE;
+            case WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT;
+            case WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE;
+            case WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT;
+            case WELCOME_MESSAGE_FINISH_STEP_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_TITLE;
+            case WELCOME_MESSAGE_FINISH_STEP_CONTENT:
+                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_CONTENT;
+            case WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
+            case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
+                return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
             default:
                 return null;
         }
@@ -2207,6 +2232,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("video", VIDEO_PLAYER_TITLE);
         constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
         constants.put("thankYouAlertText", THANK_YOU_ALERT_TEXT);
+
+        constants.put("welcomeMessageBetaWelcomeStepTitle", WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE);
+        constants.put("welcomeMessageBetaWelcomeStepContent", WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT);
+        constants.put("welcomeMessageBetaHowToReportStepTitle", WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
+        constants.put("welcomeMessageBetaHowToReportStepContent", WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT);
+        constants.put("welcomeMessageBetaFinishStepTitle", WELCOME_MESSAGE_FINISH_STEP_TITLE);
+        constants.put("welcomeMessageBetaFinishStepContent", WELCOME_MESSAGE_FINISH_STEP_CONTENT);
+        constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
+        constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
 
         return constants;
     }
