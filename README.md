@@ -1,4 +1,4 @@
-# Instabug for react native
+# Instabug for React Native
 
 [![npm](https://img.shields.io/npm/v/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
 [![npm](https://img.shields.io/npm/dt/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
@@ -7,17 +7,17 @@
 [![Analytics](https://instabug-ga.appspot.com/UA-41982088-6/github/Instabug/instabug-reactnative?pixel)](https://instabug.com)
 
 
-Upgrading? Check the [Upgrade Guide](#upgrading-guide) before bumping to a new major version.
+Upgrading? Check the [Upgrade Guide](#upgrade-guide) before bumping to a new major version.
 
 <img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="25%"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="73%"/>
 
-Instabug is a reliable [bug reporting and user feedback platform](https://instabug.com/bug-reporting) that empowers mobile-first companies to iterate faster and enhance their app quality.
-Gather bug reports from your users and the Instabug SDK will automatically capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging), [bug reproduction steps](https://instabug.com/user-steps) and more details that would help you debug and fix bugs faster.
+Instabug is an in-app feedback and bug reporting tool for mobile apps. With just a simple shake, your users or beta testers can [report bugs](https://instabug.com/bug-reporting) or send in-app feedback and the SDK will capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging) and bug reproduction steps compiling all these details in one organised dashboard to help you debug and fix bugs faster. 
+
+Instabug also provides you with a [reliable crash reporter](https://instabug.com/crash-reporting) that automatically captures a detailed report of the running environment, the different threads’ states, [the steps to reproduce the crash](https://instabug.com/user-steps), and the network request logs. All the data is captured automatically with no need for breadcrumbs, and you can always [reply back to your users](https://instabug.com/in-app-chat) and they will receive your messages within the app.
 
 For more info, visit [Instabug.com](https://www.instabug.com).
 
 ## Installation
-This section explains how to install Instabug SDK into your React Native application.
 
 1. Open the terminal and navigate to your React Native Directory. Then run the following command.
 
@@ -71,12 +71,7 @@ protected List<ReactPackage> getPackages() {
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
-## Upgrading guide
-
-Version 2.0.0
-
-- **removes dependency on Cocoapods** when installing Instabug
-- **ensures consistency** between the React Native SDK, and the Native SDK
+## Upgrade Guide
 
 ### Upgrading from 1.x.x
 
@@ -99,9 +94,9 @@ pod install
 react-native link instabug-reactnative
 ```
 
-### Upgrading from 2.0.x and from 8.0.3
+### Upgrading from 8.0.3 to 8.x
 
-When upgrading from 2.0.x to 2.1.x or from 8.0.3 to 8.x, please make sure you do the following steps:
+When upgrading from 8.0.3 to 8.x, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
@@ -119,6 +114,7 @@ react-native link instabug-reactnative
 ```
 
 ## Microphone and Photo Library Usage Description (iOS Only)
+
 Instabug needs access to the microphone and photo library to be able to let users add audio and video attachments. Starting from iOS 10, apps that don’t provide a usage description for those 2 permissions would be rejected when submitted to the App Store.
 
 For your app not to be rejected, you’ll need to add the following 2 keys to your app’s info.plist file with text explaining to the user why those permissions are needed:
@@ -134,16 +130,5 @@ If your app doesn’t already access the microphone or photo library, we recomme
 **The permission alert for accessing the microphone/photo library will NOT appear unless users attempt to attach a voice note/photo while using Instabug.**
 
 ## Documentation
-For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
-
-## Contact Us
-If you have any questions or feedback don't hesitate to get in touch. You can reach us at any time through **support@instabug.com**.
-
-
-
-## License
-
-This software is released under <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
-
-© 2017 Instabug. All rights reserved.
+For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
