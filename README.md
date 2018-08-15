@@ -9,8 +9,6 @@
 
 Upgrading? Check the [Upgrade Guide](#upgrade-guide) before bumping to a new major version.
 
-<img src="http://s3.amazonaws.com/instabug-assets/mockups/annotation.gif" width="25%"/> <img src="http://s3.amazonaws.com/instabug-assets/mockups/dashboard.gif" width="73%"/>
-
 Instabug is an in-app feedback and bug reporting tool for mobile apps. With just a simple shake, your users or beta testers can [report bugs](https://instabug.com/bug-reporting) or send in-app feedback and the SDK will capture an environment snapshot of your user's device including all console logs, [server-side network requests](https://instabug.com/network-logging) and bug reproduction steps compiling all these details in one organised dashboard to help you debug and fix bugs faster. 
 
 Instabug also provides you with a [reliable crash reporter](https://instabug.com/crash-reporting) that automatically captures a detailed report of the running environment, the different threads’ states, [the steps to reproduce the crash](https://instabug.com/user-steps), and the network request logs. All the data is captured automatically with no need for breadcrumbs, and you can always [reply back to your users](https://instabug.com/in-app-chat) and they will receive your messages within the app.
