@@ -19,6 +19,6 @@ your issue will help us a lot.
 
 ### React Native, iOS and Android Versions
 
-### Device Type
+### Device Model
 
 ### [Optional] Project That Reproduces the Issue
