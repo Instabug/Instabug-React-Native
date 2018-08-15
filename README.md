@@ -51,7 +51,7 @@ import Instabug from 'instabug-reactnative';
 2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs (You can skip this step if you are building an Android app only).
 
 ```javascript
-Instabug.startWithToken('IOS_APP_TOKEN', Instabug.invocationEvent.shake);
+Instabug.startWithToken('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
 ```
 3. Open `android/app/src/main/java/[...]/MainApplication.java`
    You should find the getPackages method looks like the following snippet. You just need to add your Android app token (You can skip this step if you are building an iOS app only). You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
@@ -99,13 +99,13 @@ pod install
 react-native link instabug-reactnative
 ```
 
-### Upgrading from 2.0.x
+### Upgrading from 2.0.x and from 8.0.3
 
-When upgrading from 2.0.x to 2.1.x, please make sure you do the following steps:
+When upgrading from 2.0.x to 2.1.x or from 8.0.3 to 8.x, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
-reacy-native unlink instabug-reactnative
+react-native unlink instabug-reactnative
 ```
 
 2. Install the new version by running
@@ -137,7 +137,7 @@ If your app doesn’t already access the microphone or photo library, we recomme
 For more details about the supported APIs and how to use them, you can check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
 
 
-## Contact US
+## Contact Us
 If you have any questions or feedback don't hesitate to get in touch. You can reach us at any time through **support@instabug.com**.
 
 

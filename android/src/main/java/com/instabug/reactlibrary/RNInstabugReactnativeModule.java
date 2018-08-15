@@ -247,7 +247,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } else {
             mode = InstabugInvocationMode.PROMPT_OPTION;
         }
-
         try {
             mInstabug.invoke(mode);
         } catch (Exception e) {
@@ -1649,16 +1648,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             switch (welcomeMessageMode) {
                 case WELCOME_MESSAGE_MODE_LIVE:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                    Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
                     break;
                 case WELCOME_MESSAGE_MODE_BETA:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                    Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
                     break;
                 case WELCOME_MESSAGE_MODE_DISABLED:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
+                    Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
                     break;
                 default:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                    Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
             }
 
         } catch (Exception e) {
