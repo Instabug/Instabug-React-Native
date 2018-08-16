@@ -481,6 +481,10 @@ RCT_EXPORT_METHOD(logError:(NSString *)log) {
     [IBGLog logError:log];
 }
 
+RCT_EXPORT_METHOD(clearLogs) {
+    [IBGLog clearAllLogs];
+}
+
 RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
     IBGSurveys.enabled = surveysEnabled;
 }
@@ -564,7 +568,7 @@ RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequ
         actionTypes |= [boxedValue intValue];
     }
     
-    [IBGFeatureRequests setEmailFieldRequired:false forAction:actionTypes];
+    [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
 }
 
 
@@ -714,7 +718,7 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
 
 + (BOOL)requiresMainQueueSetup
 {
-    return YES;
+    return NO;
 }
 
 + (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
