@@ -45,7 +45,7 @@ module.exports = {
      * SDK is going to start with.
      */
     invokeWithInvocationModeAndOptions: function (invocationMode, invocationOptions) {
-        Instabug.invokeWithInvocationModeAndOptions(invocationMode, invocationOptions);
+        Instabug.invokeWithInvocationMode(invocationMode, invocationOptions);
     },
 
     /**
