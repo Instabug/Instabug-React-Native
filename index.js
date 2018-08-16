@@ -806,6 +806,13 @@ const InstabugModule = {
   },
 
   /**
+   * Clear all Instabug logs, console logs, network logs and user steps.
+   */
+  clearLogs: function() {
+    Instabug.clearLogs();
+  },
+
+  /**
    * Sets whether user steps tracking is visual, non visual or disabled.
    * User Steps tracking is enabled by default if it's available
    * in your current plan.

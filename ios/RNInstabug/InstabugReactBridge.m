@@ -481,6 +481,10 @@ RCT_EXPORT_METHOD(logError:(NSString *)log) {
     [IBGLog logError:log];
 }
 
+RCT_EXPORT_METHOD(clearLogs) {
+    [IBGLog clearAllLogs];
+}
+
 RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
     IBGSurveys.enabled = surveysEnabled;
 }
