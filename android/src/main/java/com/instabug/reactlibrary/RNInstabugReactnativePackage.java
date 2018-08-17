@@ -35,7 +35,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor,
-                                        InstabugFloatingButtonEdge floatingButtonEdge, int offset) {
+                                        InstabugFloatingButtonEdge floatingButtonEdge, Integer offset) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
@@ -48,9 +48,12 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 .setReproStepsState(State.DISABLED)
                 .build();
 
-        Instabug.setPrimaryColor(Color.parseColor(primaryColor));
-        BugReporting.setFloatingButtonEdge(floatingButtonEdge);
-        BugReporting.setFloatingButtonOffset(offset);
+        if(primaryColor != null)
+            Instabug.setPrimaryColor(Color.parseColor(primaryColor));
+        if(floatingButtonEdge != null)
+            BugReporting.setFloatingButtonEdge(floatingButtonEdge);
+        if(offset != null)
+            BugReporting.setFloatingButtonOffset(offset);
 
     }
 
