@@ -14,13 +14,10 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
 
   s.source       = { :git => "https://github.com/Instabug/Instabug-React-Native.git", :tag => "#{s.version}" }
-  s.source_files = "ios/**/*.{h,m}"
+  s.source_files = "ios/RNInstabug/*.{h,m}"
   s.static_framework = true
-  s.vendored_frameworks = "ios/Instabug.framework"
-
-  s.swift_version= '4.1'
 
   s.dependency 'React'
-
+  s.dependency 'Instabug'
 
 end
