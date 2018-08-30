@@ -43,6 +43,7 @@ import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.model.Report;
+import com.instabug.library.model.NetworkLog;
 import com.instabug.library.user.UserEventParam;
 import com.instabug.library.visualusersteps.State;
 
@@ -1981,6 +1982,27 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Extracts HTTP connection properties. Request method, Headers, Date, Url and Response code
+     *
+     * @param jsonObject the JSON object containing all HTTP connection properties
+     * @throws JSONException
+     */
+    @ReactMethod
+    public void networkLog(String jsonObject) throws JSONException {
+        NetworkLog networkLog = new NetworkLog();
+        String date = System.currentTimeMillis()+"";
+        networkLog.setDate(date);
+        JSONObject newJSONObject = new JSONObject(jsonObject);
+        networkLog.setUrl(newJSONObject.getString("url"));
+        networkLog.setRequest(newJSONObject.getString("requestBody"));
+        networkLog.setResponse(newJSONObject.getString("responseBody"));
+        networkLog.setMethod(newJSONObject.getString("method"));
+        networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
+        networkLog.setHeaders(newJSONObject.getString("headers"));
+        networkLog.insert();
     }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
