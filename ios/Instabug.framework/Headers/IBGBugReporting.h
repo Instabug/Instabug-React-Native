@@ -56,16 +56,18 @@ NS_SWIFT_NAME(BugReporting)
 @property(class, atomic, assign) IBGInvocationEvent invocationEvents;
 
 /**
- @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch
+ @brief Sets the threshold value of the shake gesture for iPhone/iPod Touch.
 
- @discussion Default for iPhone is 2.5.
+ @discussion Default for iPhone is 2.5. The lower the threshold, the easier it will be to invoke Instabug with the
+ shake gesture. A threshold which is too low will cause Instabug to be invoked unintentionally.
  */
 @property(class, atomic, assign) CGFloat shakingThresholdForiPhone;
 
 /**
  @brief Sets the threshold value of the shake gesture for iPad.
  
- @discussion Default for iPad is 0.6.
+ @discussion Default for iPad is 0.6. The lower the threshold, the easier it will be to invoke Instabug with the
+ shake gesture. A threshold which is too low will cause Instabug to be invoked unintentionally.
  */
 @property(class, atomic, assign) CGFloat shakingThresholdForiPad;
 
