@@ -2189,7 +2189,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("localeDutch", LOCALE_DUTCH);
         constants.put("localeEnglish", LOCALE_ENGLISH);
         constants.put("localeFrench", LOCALE_FRENCH);
-        constants.put("localeGerman", LOCALE_FRENCH);
+        constants.put("localeGerman", LOCALE_GERMAN);
         constants.put("localeKorean", LOCALE_KOREAN);
         constants.put("localeItalian", LOCALE_ITALIAN);
         constants.put("localeJapanese", LOCALE_JAPANESE);

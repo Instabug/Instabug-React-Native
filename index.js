@@ -52,7 +52,9 @@ var jsonObject = {
     // Modify the reponse object;
     jsonObject.responseCode = response.status;
     jsonObject.responseBody = response._bodyText;
-    Instabug.networkLog(JSON.stringify(jsonObject));
+    if (Platform.OS === 'android') {
+      Instabug.networkLog(JSON.stringify(jsonObject));
+    }
     return response;
   }
 });
