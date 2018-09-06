@@ -28,7 +28,6 @@ var jsonObject = {
     // Modify the url or config here
     jsonObject.url = url;
     if(!config || !config.method) {
-      //TO-DO: set method to GET!
       jsonObject.method = 'GET';
     }
     if(config) {
@@ -51,7 +50,7 @@ var jsonObject = {
    response: function (response) {
     // Modify the reponse object;
     jsonObject.responseCode = response.status;
-    jsonObject.responseBody = response._bodyText;
+    jsonObject.responseBody = response._bodyText ? response._bodyText : '';
     if (Platform.OS === 'android') {
       Instabug.networkLog(JSON.stringify(jsonObject));
     }
