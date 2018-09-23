@@ -59,6 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -457,8 +458,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setFileAttachment(String fileUri, String fileNameWithExtension) {
         try {
-            Uri uri = Uri.parse(fileUri);
-            Instabug.addFileAttachment(uri, fileNameWithExtension);
+            File file = new File(fileUri);
+            if (file.exists()) {
+                Instabug.addFileAttachment(Uri.fromFile(file), fileNameWithExtension);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
