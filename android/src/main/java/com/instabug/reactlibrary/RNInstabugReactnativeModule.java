@@ -458,7 +458,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setFileAttachment(String fileUri, String fileNameWithExtension) {
         try {
             Uri uri = Uri.parse(fileUri);
-            mInstabug.setFileAttachment(uri, fileNameWithExtension);
+            Instabug.addFileAttachment(uri, fileNameWithExtension);
         } catch (Exception e) {
             e.printStackTrace();
         }
