@@ -1189,6 +1189,19 @@ const InstabugModule = {
     Instabug.setWelcomeMessageMode(welcomeMessageMode);
   },
 
+  /**
+   * Add file to be attached to the bug report.
+   * @param {string} filePath
+   * @param {string} fileName
+   */
+  addFileAttachment: function(filePath, fileName) {
+    if (Platform.OS === 'android') {
+      Instabug.setFileAttachment(filePath, fileName);
+    } else {
+      Instabug.setFileAttachment(filePath);
+    }
+  },
+
   callPrivateApi: function(apiName, param) {
     Instabug.callPrivateApi(apiName, param);
   },
