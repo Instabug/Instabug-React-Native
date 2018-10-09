@@ -2004,7 +2004,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         networkLog.setResponse(newJSONObject.getString("responseBody"));
         networkLog.setMethod(newJSONObject.getString("method"));
         networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
-        networkLog.setHeaders(newJSONObject.getString("headers"));
+        networkLog.setRequestHeaders(newJSONObject.getString("headers"));
         networkLog.insert();
     }
 
