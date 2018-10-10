@@ -18,6 +18,7 @@
 #import "IBGCrashReporting.h"
 #import "IBGSurveys.h"
 #import "IBGFeatureRequests.h"
+#import "UIView+Instabug.h"
 
 /**
  This is the API for using Instabug's SDK. For more details about the SDK integration,
@@ -112,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, atomic, assign) BOOL trackUserSteps;
 
 /**
- @brief Sets whether user steps tracking is visual, non visula or disabled.
+ @brief Sets whether user steps tracking is visual, non visual or disabled.
  
  @discussion Enabling user steps would give you an insight on the scenario a user has performed before encountering a
  bug or a crash. User steps are attached with each report being sent.
@@ -320,6 +321,10 @@ NS_ASSUME_NONNULL_BEGIN
  @return A new dictionary containing all the currently set user attributes, or an empty dictionary if no user attributes have been set.
  */
 + (nullable NSDictionary *)userAttributes;
+
+/// -------------------
+/// @name SDK Reporting
+/// -------------------
 
 /**
  @brief Logs a user event that happens through the lifecycle of the application.
