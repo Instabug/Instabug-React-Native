@@ -482,13 +482,3 @@ typedef NS_ENUM(NSInteger, IBGWelcomeMessageMode) {
 
 /* CHECK NULLABILITY! */
 typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *response);
-
-@interface UIView (Instabug)
-
-/**
- @brief Set this to true on any UIView to mark it as private.
- Doing this will exclude it from all screenshots, view hierarchy captures and screen recordings.
- */
-@property (nonatomic, assign) BOOL instabug_privateView;
-
-@end
