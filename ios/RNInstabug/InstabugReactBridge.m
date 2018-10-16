@@ -583,8 +583,9 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     if (isRunningTestFlightBeta || hasEmbeddedMobileProvision)
     {
         result = NO;
+    } else {
+        result = YES;
     }
-    result = YES;
 #endif
     callback(@[[NSNumber numberWithBool:result]]);
 }
