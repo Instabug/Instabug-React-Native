@@ -5,58 +5,12 @@ import {
   Platform
 } from 'react-native';
 let { Instabug } = NativeModules;
-import interceptor from './utils/NetworkInterceptor.js';
 import InstabugUtils from './utils/InstabugUtils.js';
 import BugReporting from './modules/BugReporting.js';
 import Surveys from './modules/Surveys.js';
 import FeatureRequests from './modules/FeatureRequests.js';
 
 InstabugUtils.captureJsErrors();
-
-var jsonObject = {
-  url: '',
-  requestBody: '',
-  responseBody: '',
-  method: '',
-  responseCode: undefined,
-  headers: ''
-}
-
-// Register the interceptor for fetch requests
- interceptor.register({
-  request: function (url, config) {
-    // Modify the url or config here
-    jsonObject.url = url;
-    if(!config || !config.method) {
-      jsonObject.method = 'GET';
-    }
-    if(config) {
-      if(config.body) {
-        jsonObject.requestBody = config.body;
-      } else {
-        jsonObject.requestBody = '';
-      }
-      if(config.method) {
-        jsonObject.method = config.method;
-      }
-      if(config.headers) {
-        jsonObject.headers = config.headers;
-      } else {
-        jsonObject.headers = '';
-      }
-    }
-    return [url, config];
-  },
-   response: function (response) {
-    // Modify the reponse object;
-    jsonObject.responseCode = response.status;
-    jsonObject.responseBody = response._bodyText ? response._bodyText : '';
-    if (Platform.OS === 'android') {
-      Instabug.networkLog(JSON.stringify(jsonObject));
-    }
-    return response;
-  }
-});
 
 /**
  * Instabug
