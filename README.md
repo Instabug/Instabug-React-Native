@@ -39,6 +39,32 @@ gem install xcodeproj
 ```bash
 react-native link instabug-reactnative
 ```
+### Installing using Cocoapods
+Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for managing dependencies. After following the first step from the installation steps above, add the following to your `Podfile`:
+
+```ruby
+pod 'instabug-reactnative', :path => '../node_modules/instabug-reactnative'
+pod 'React', :path => '../node_modules/react-native', :subspecs => [
+'Core',
+'CxxBridge',
+'DevSupport'
+]
+pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/GLog.podspec'
+pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+```
+And add the following post install script at the end of your `Podfile`:
+
+```ruby
+post_install do |installer|
+   installer.pods_project.targets.each do |target|
+      if target.name == "React"
+         target.remove_from_project
+      end
+   end
+end
+```
 
 ## Using Instabug
 1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
