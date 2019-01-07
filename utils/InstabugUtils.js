@@ -15,6 +15,9 @@ let init = () => {
     }
 
     function errorHandler(e, isFatal) {
+      if (!e) {
+        return;
+      }
       let jsStackTrace = parseErrorStackLib(e);
 
       //JSON object to be sent to the native SDK
