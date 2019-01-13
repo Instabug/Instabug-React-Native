@@ -348,6 +348,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setInvocationOptions}
    * Sets whether users are required to enter an email address or not when
    * sending reports.
    * Defaults to YES.
