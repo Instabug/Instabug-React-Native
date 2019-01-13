@@ -4,7 +4,6 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -1987,27 +1986,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    /**
-     * Extracts HTTP connection properties. Request method, Headers, Date, Url and Response code
-     *
-     * @param jsonObject the JSON object containing all HTTP connection properties
-     * @throws JSONException
-     */
-    @ReactMethod
-    public void networkLog(String jsonObject) throws JSONException {
-        NetworkLog networkLog = new NetworkLog();
-        String date = System.currentTimeMillis()+"";
-        networkLog.setDate(date);
-        JSONObject newJSONObject = new JSONObject(jsonObject);
-        networkLog.setUrl(newJSONObject.getString("url"));
-        networkLog.setRequest(newJSONObject.getString("requestBody"));
-        networkLog.setResponse(newJSONObject.getString("responseBody"));
-        networkLog.setMethod(newJSONObject.getString("method"));
-        networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
-        networkLog.setRequestHeaders(newJSONObject.getString("headers"));
-        networkLog.insert();
-    }
-
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:
@@ -2158,7 +2136,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private void sendEvent(ReactApplicationContext reactContext,
                            String eventName,
-                           @Nullable WritableMap params) {
+                           WritableMap params) {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
