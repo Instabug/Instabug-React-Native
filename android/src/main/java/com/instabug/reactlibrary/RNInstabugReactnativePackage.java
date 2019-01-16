@@ -25,7 +25,7 @@ import java.util.List;
 public class RNInstabugReactnativePackage implements ReactPackage {
 
     private static final String TAG = RNInstabugReactnativePackage.class.getSimpleName();
-
+    
     private Application androidApplication;
     private String mAndroidApplicationToken;
     private Instabug mInstabug;
@@ -35,7 +35,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor,
-                                        InstabugFloatingButtonEdge floatingButtonEdge, Integer offset) {
+                                        InstabugFloatingButtonEdge floatingButtonEdge, Integer offset, boolean crashReportingEnabled) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
@@ -44,7 +44,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
-                .setCrashReportingState(Feature.State.ENABLED)
+                .setCrashReportingState(crashReportingEnabled ? Feature.State.ENABLED: Feature.State.DISABLED)
                 .setReproStepsState(State.DISABLED)
                 .build();
 
@@ -60,7 +60,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor) {
         new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValues,primaryColor,
-                InstabugFloatingButtonEdge.LEFT,250);
+                InstabugFloatingButtonEdge.LEFT,250, true);
     }
 
     private void parseInvocationEvent(String[] invocationEventValues) {
@@ -115,6 +115,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         String primaryColor;
         InstabugFloatingButtonEdge floatingButtonEdge;
         int offset;
+        boolean isCrashReportingEnabled = true;
 
         public Builder(String androidApplicationToken, Application application) {
             this.androidApplicationToken = androidApplicationToken;
@@ -123,6 +124,11 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         public Builder setInvocationEvent(String... invocationEvents) {
             this.invocationEvents = invocationEvents;
+            return this;
+        }
+
+        public Builder setCrashReportingEnabled(boolean enabled) {
+            this.isCrashReportingEnabled = enabled;
             return this;
         }
 
@@ -142,7 +148,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         }
 
         public RNInstabugReactnativePackage build() {
-            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvents,primaryColor,floatingButtonEdge,offset);
+            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvents,primaryColor,floatingButtonEdge,offset, isCrashReportingEnabled);
         }
 
         private InstabugFloatingButtonEdge getFloatingButtonEdge(String floatingButtonEdgeValue) {
