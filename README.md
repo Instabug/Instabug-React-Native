@@ -17,30 +17,44 @@ For more info, visit [Instabug.com](https://www.instabug.com).
 
 ## Installation
 
-1. Open the terminal and navigate to your React Native Directory. Then run the following command.
+### Using react-native CLI
+
+1. In Terminal, navigate to your React Native directory and install the `instabug-reactnative` package:
 
 ```bash
 npm install instabug-reactnative
 ```
-or
+
+Or if you prefer to use Yarn instead of npm:
 
 ```bash
 yarn add instabug-reactnative
 ```
 
-2. Install [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/). (You can skip this step if you're building for Android only)
+2. For projects that build for iOS, install `xcodeproj` gem:
 
-3. Install `xcodeproj` gem by running the following command. (You can also skip this step if you're building for Android only)
 ```bash
 gem install xcodeproj
 ```
 
-4. Link the bridging files in the npm package to the ios project use the following command.
+3. Finally, link the bridging files in the `instabug-reactnative` package:
+
+
 ```bash
 react-native link instabug-reactnative
 ```
-### Installing using Cocoapods
-Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for managing dependencies. After following the first step from the installation steps above, add the following to your `Podfile`:
+
+### Using CocoaPods
+
+Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for managing dependencies. 
+
+1. In Terminal, navigate to your React Native directory and install the `instabug-reactnative` package:
+
+```bash
+npm install instabug-reactnative
+```
+
+2. Add the following to your `Podfile`:
 
 ```ruby
 pod 'instabug-reactnative', :path => '../node_modules/instabug-reactnative'
@@ -54,7 +68,8 @@ pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-po
 pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/GLog.podspec'
 pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 ```
-And add the following post install script at the end of your `Podfile`:
+
+3. Add the following post install script at the end of your `Podfile`:
 
 ```ruby
 post_install do |installer|
@@ -64,6 +79,12 @@ post_install do |installer|
       end
    end
 end
+```
+
+4. Install `instabug-reactnative`:
+
+```bash
+pod install
 ```
 
 ## Using Instabug
