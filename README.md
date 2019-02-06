@@ -59,19 +59,19 @@ npm install instabug-reactnative
 ```ruby
 pod 'instabug-reactnative', :path => '../node_modules/instabug-reactnative'
 pod 'React', :path => '../node_modules/react-native', :subspecs => [
-'Core',
-'CxxBridge',
-'DevSupport'
+  'Core',
+  'CxxBridge',
+  'DevSupport'
 ]
+
+# Required React native dependencies
 pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
 pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/GLog.podspec'
 pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-```
 
-3. Add the following post install script at the end of your `Podfile`:
-
-```ruby
+# To make sure that archiving works correctly in Xcode, React has to be 
+# removed from the Pods project as it's already included in the main project.
 post_install do |installer|
    installer.pods_project.targets.each do |target|
       if target.name == "React"
