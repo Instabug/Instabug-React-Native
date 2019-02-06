@@ -44,7 +44,7 @@ gem install xcodeproj
 react-native link instabug-reactnative
 ```
 
-### Using CocoaPods
+### Using CocoaPods (iOS only)
 
 Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for managing dependencies. 
 
@@ -81,7 +81,7 @@ post_install do |installer|
 end
 ```
 
-4. Install `instabug-reactnative`:
+3. Install `instabug-reactnative`:
 
 ```bash
 pod install
