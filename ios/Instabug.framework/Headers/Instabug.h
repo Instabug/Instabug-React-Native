@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  Auto screen recording is disabled by default.
  */
-@property (class, atomic, assign) BOOL autoScreenRecordingEnabled;
+@property (class, atomic, assign) BOOL autoScreenRecordingEnabled DEPRECATED_MSG_ATTRIBUTE("AutoScreen recording is disabled please contact support for further details.");
 
 /**
  @brief Sets whether the session profiler is enabled or disabled.
