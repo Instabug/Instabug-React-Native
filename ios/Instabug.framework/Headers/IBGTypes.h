@@ -464,7 +464,7 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
  The user steps option.
  */
 typedef NS_ENUM(NSInteger, IBGUserStepsMode) {
-    IBGUserStepsModeEnable,
+    IBGUserStepsModeEnable __attribute__((deprecated)),
     IBGUserStepsModeEnabledWithNoScreenshots,
     IBGUserStepsModeDisable
 };

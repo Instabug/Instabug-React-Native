@@ -73,6 +73,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated
    * Enable/Disable screen recording
    * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
    * screen recording on crash feature
@@ -82,6 +83,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated
    * Sets auto screen recording maximum duration
    *
    * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
