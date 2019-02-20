@@ -78,18 +78,10 @@ export default class App extends Component<{}> {
           {this.invocationEvent()}
           <Text style={styles.textColor}> Set primary color </Text>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#FF0000')}>
-              <Text style={styles.text}> RED </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#00FF00')}>
-              <Text style={styles.text}> GREEN </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#0000FF')}>
-              <Text style={styles.text}> BLUE </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#FFFF00')}>
-              <Text style={styles.text}> YELLOW </Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={buttonColor('#FF0000')} onPress={()=>this.setPrimaryColor('#FF0000')}/>
+            <TouchableOpacity style={buttonColor('#00FF00')} onPress={()=>this.setPrimaryColor('#00FF00')}/>
+            <TouchableOpacity style={buttonColor('#0000FF')} onPress={()=>this.setPrimaryColor('#0000FF')}/>
+            <TouchableOpacity style={buttonColor('#FFFF00')} onPress={()=>this.setPrimaryColor('#FFFF00')}/>
           </View>
           <View style={styles.switchView}>
             <Text style={styles.textSwitchStyle}>Color Theme: {this.state.colorTheme}</Text>
@@ -203,12 +195,22 @@ export default class App extends Component<{}> {
     });
   }
 }
-
+buttonColor = function(myColor) {
+  return {
+    marginTop: 10,
+    padding: 20,
+    paddingRight : 40,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 5,
+    backgroundColor: myColor,
+  }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   details: {
     textAlign: 'center',
@@ -230,7 +232,10 @@ const styles = StyleSheet.create({
   },
   rowView: {
     flexDirection: 'row',
-    marginTop: 10
+    marginTop: 10,
+    maxWidth : '100%',
+    flexGrow: 1,
+    flexWrap: 'wrap'
   },
   textColor: {
     fontSize: 14,
