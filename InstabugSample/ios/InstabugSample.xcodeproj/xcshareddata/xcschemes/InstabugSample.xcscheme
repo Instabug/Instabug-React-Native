@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0620"
+   LastUpgradeVersion = "0940"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "InstabugSample.app"
+               BuildableName = "InstabugSample"
                BlueprintName = "InstabugSample"
                ReferencedContainer = "container:InstabugSample.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "InstabugSampleTests.xctest"
+               BuildableName = "InstabugSampleTests"
                BlueprintName = "InstabugSampleTests"
                ReferencedContainer = "container:InstabugSample.xcodeproj">
             </BuildableReference>
@@ -61,7 +61,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "InstabugSampleTests.xctest"
+               BuildableName = "InstabugSampleTests"
                BlueprintName = "InstabugSampleTests"
                ReferencedContainer = "container:InstabugSample.xcodeproj">
             </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "InstabugSample.app"
+            BuildableName = "InstabugSample"
             BlueprintName = "InstabugSample"
             ReferencedContainer = "container:InstabugSample.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "InstabugSample.app"
+            BuildableName = "InstabugSample"
             BlueprintName = "InstabugSample"
             ReferencedContainer = "container:InstabugSample.xcodeproj">
          </BuildableReference>
@@ -113,7 +113,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "InstabugSample.app"
+            BuildableName = "InstabugSample"
             BlueprintName = "InstabugSample"
             ReferencedContainer = "container:InstabugSample.xcodeproj">
          </BuildableReference>
