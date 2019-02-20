@@ -57,6 +57,9 @@ export default class App extends Component<{}> {
           <TouchableOpacity style={styles.button} onPress={()=>this.sendFeedback()}>
             <Text style={styles.text}> SEND FEEDBACK </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.sendCrashReport()}>
+            <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.startNewConversation()}>
             <Text style={styles.text}> START A NEW CONVERSATION </Text>
           </TouchableOpacity>
@@ -65,6 +68,9 @@ export default class App extends Component<{}> {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.showMultipleQuestionSurvey()}>
             <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showFeatureRequests()}>
+            <Text style={styles.text}> SHOW FEATURE REQUESTS </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
@@ -153,6 +159,8 @@ export default class App extends Component<{}> {
     Surveys.showSurvey("pcV_mE2ttqHxT1iqvBxL0w");
   }
 
+  showFeatureRequests() {
+    FeatureRequests.show();
   }
 
   sendBugReport() {
