@@ -31,10 +31,11 @@ export default class App extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      switchValue: false,
-      colorTheme: 'Dark'
+      switchValue: true,
+      colorTheme: 'Light'
     };
-    Instabug.startWithToken("APP_TOKEN", Instabug.invocationEvent.shake);
+
+    Instabug.startWithToken("APP_TOKEN", [Instabug.invocationEvent.shake]);
     Instabug.setReportCategories("Performance","UI","Flow","Other");
     Instabug.setPromptOptionsEnabled(true, true, true);
     Instabug.setLocale(Instabug.locale.english);
@@ -95,7 +96,6 @@ export default class App extends Component<{}> {
   }
 
   invocationEvent() {
-    if(Platform.OS === 'ios') {
       return(
         <View>
           <Text style={styles.textColor}> Change Invocation Event </Text>
