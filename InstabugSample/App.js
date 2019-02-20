@@ -60,6 +60,12 @@ export default class App extends Component<{}> {
           <TouchableOpacity style={styles.button} onPress={()=>this.startNewConversation()}>
             <Text style={styles.text}> START A NEW CONVERSATION </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showNpsSurvey()}>
+            <Text style={styles.text}> SHOW NPS SURVEY </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showMultipleQuestionSurvey()}>
+            <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
           </TouchableOpacity>
@@ -137,6 +143,14 @@ export default class App extends Component<{}> {
 
   invoke() {
     BugReporting.invoke();
+  }
+
+  showMultipleQuestionSurvey() {
+    Surveys.showSurvey("ZAKSlVz98QdPyOx1wIt8BA");
+  }
+
+  showNpsSurvey() {
+    Surveys.showSurvey("pcV_mE2ttqHxT1iqvBxL0w");
   }
 
   }
