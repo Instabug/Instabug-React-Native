@@ -48,9 +48,6 @@ export default class App extends Component<{}> {
             Hello {"Instabug's"} awesome user! The purpose of this application is to show you the different
             options for customizing the SDK and how easy it is to integrate it to your existing app
           </Text>
-          <TouchableOpacity style={styles.button} onPress={()=>this.showIntroMessage()}>
-            <Text style={styles.text}> SHOW INTRO MESSAGE </Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.invoke()}>
             <Text style={styles.text}> INVOKE </Text>
           </TouchableOpacity>
