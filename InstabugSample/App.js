@@ -102,20 +102,21 @@ export default class App extends Component<{}> {
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Shake')}>
               <Text style={styles.textInvoke}> SHAKE </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Button')}>
-              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Screenshot')}>
               <Text style={styles.textInvoke}> SCREENSHOT </Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('twoFingersSwipe')}>
+              <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Button')}>
+              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
+            </TouchableOpacity>       
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('None')}>
               <Text style={styles.textInvoke}> NONE </Text>
             </TouchableOpacity>
           </View>
         </View>
       );
-    }
-    return;
   }
 
   toggleSwitch = (value) => {
