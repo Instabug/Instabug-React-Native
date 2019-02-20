@@ -16,7 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
-import Instabug from'instabug-reactnative';
+import Instabug, {BugReporting, FeatureRequests, Surveys} from'instabug-reactnative';
 
 
 const instructions = Platform.select({
@@ -139,30 +139,43 @@ export default class App extends Component<{}> {
   }
 
   invoke() {
-    Instabug.invoke();
+    BugReporting.invoke();
+  }
+
   }
 
   sendBugReport() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newBug);
+    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newBug, []);
+  }
+
+  sendCrashReport() {
+    try {
+      throw new Error('Text Handled Exception From Instabug Test App'); 
+    } catch (Exception) {
+      Instabug.reportJSException(Exception);
+      alert('Crash report Sent!');
+    }
   }
 
   sendFeedback() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newFeedback);
+    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newFeedback, []);
   }
 
   changeInvocationEvent(invocationEvent) {
     if(invocationEvent === 'Shake')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.shake);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
     if(invocationEvent === 'Button')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.floatingButton);
+      Instabug.setInvocationEvent(BugReporting.invocationEvent.floatingButton);
     if(invocationEvent === 'Screenshot')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.screenshot);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
+    if(invocationEvent === 'twoFingersSwipe')
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.twoFingersSwipe]);
     if(invocationEvent === 'None')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.none);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
   }
 
   startNewConversation() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newChat);
+    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newChat, []);
   }
 
   showUnreadMessagesCount() {
