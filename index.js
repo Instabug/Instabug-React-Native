@@ -486,9 +486,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-    if (Platform.OS == 'ios') {
       Instabug.setPrimaryColor(primaryColor);
-    }
   },
 
   /**
