@@ -617,12 +617,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                     or RGB color values
      */
     @ReactMethod
-    public void setPrimaryColor(int primaryColor) {
-        try {
-            mInstabug.setPrimaryColor(primaryColor);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setPrimaryColor(final int primaryColor) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mInstabug.setPrimaryColor(primaryColor);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -831,7 +836,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
+            final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
 
             Log.d(TAG, Arrays.toString(stringArray) + " " + INVOCATION_EVENT_FLOATING_BUTTON);
 
@@ -857,7 +862,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         break;
                 }
             }
-            BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
