@@ -176,7 +176,7 @@ export default class App extends Component<{}> {
     if(invocationEvent === 'Shake')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
     if(invocationEvent === 'Button')
-      Instabug.setInvocationEvent(BugReporting.invocationEvent.floatingButton);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.floatingButton]);
     if(invocationEvent === 'Screenshot')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
     if(invocationEvent === 'twoFingersSwipe')
