@@ -1,4 +1,7 @@
-import { Color } from "csstype";
+// Type definitions for instabug-reactnative 8.0.26
+// Project: https://github.com/Instabug/instabug-reactnative#readme
+// Definitions by: Aly Ezz <https://github.com/alyezz>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 declare module "instabug-reactnative" {
     
