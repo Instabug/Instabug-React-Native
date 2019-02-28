@@ -198,7 +198,7 @@ declare module "instabug-reactnative" {
 
     function setColorTheme(colorTheme: colorTheme): void;
 
-    function setPrimaryColor(setPrimaryColor: Color): void;
+    function setPrimaryColor(setPrimaryColor: String): void;
     
     function appendTags(tags: String[]): void;
 
