@@ -13,6 +13,13 @@ NS_SWIFT_NAME(BugReporting)
 @interface IBGBugReporting : NSObject
 
 /**
+ @brief Acts as master switch for the Bug Reporting.
+ 
+ @discussion It's enabled by default. When disabled, both "Report a problem" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
+ */
+@property (class, atomic, assign) BOOL enabled;
+
+/**
  @brief Sets a block of code to be executed just before the SDK's UI is presented.
  
  @discussion This block is executed on the UI thread. Could be used for performing any UI changes before the SDK's UI
@@ -91,14 +98,11 @@ NS_SWIFT_NAME(BugReporting)
 @property(class, atomic, assign) IBGAttachmentType enabledAttachmentTypes;
 
 /**
- @brief Enables/disables prompt options when SDK is invoked.
+ @brief Controls if Instabug Prompt Options should contain "Report a problem” and/or "Suggest an improvement" or not.
  
- @discussion When only a single option is enabled, it become the default invocation mode.
- If all options are disabled, bug reporting becomes the default invocation mode.
- 
- By default, all three options are enabled.
+ @discussion By default, both options are enabled.
  */
-@property(class, atomic, assign) IBGPromptOption promptOptions;
+@property(class, atomic, assign) IBGBugReportingReportType promptOptionsEnabledReportTypes;
 
 /**
  @brief Sets whether the extended bug report mode should be disabled, enabled with required fields or enabled with optional fields.
@@ -114,11 +118,10 @@ NS_SWIFT_NAME(BugReporting)
 
 /**
  @brief Use to specify different options that would affect how Instabug is shown and other aspects about the reporting experience.
-
+ 
  @discussion See IBGInvocationOptions.
  */
-@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions;
-
+@property(class, atomic, assign) IBGBugReportingOption bugReportingOptions;
 
 /**
  @brief Sets the default position at which the Instabug screen recording button will be shown. Different orientations are already handled.
@@ -128,26 +131,43 @@ NS_SWIFT_NAME(BugReporting)
 @property(class, atomic, assign) IBGPosition videoRecordingFloatingButtonPosition;
 
 /**
- @brief Invokes the SDK manually with the default invocation mode.
+ @method +showWithReportType:options:
+ @brief Shows the compose view of a bug report or a feedback.
  
- @discussion Shows a view that asks the user whether they want to start a chat, report a problem or suggest an improvement.
- */
-+ (void)invoke;
-
-/**
- @brief Invokes the SDK with a specific mode.
- 
- @discussion Invokes the SDK and show a specific view with specified options, instead of showing a prompt for users to choose from.
- 
- @see IBGInvocationMode
- @see IBGBugReportingInvocationOption
- */
-+ (void)invokeWithMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options;
+ @see IBGBugReportingReportType
+ @see IBGBugReportingOption
+  */
++ (void)showWithReportType:(IBGBugReportingReportType)reportType
+                   options:(IBGBugReportingOption)options;
 
 /**
  @brief Dismisses any Instabug views that are currently being shown.
  */
 + (void)dismiss;
 
+/*
+ +------------------------------------------------------------------------+
+ |                            Deprecated APIs                             |
+ +------------------------------------------------------------------------+
+ | The following section includes all deprecated APIs.                    |
+ |                                                                        |
+ | We've made a few changes to our APIs starting from version 8.0 to make |
+ | them more intuitive and easily reachable.                              |
+ |                                                                        |
+ | While the APIs below still function, they will be completely removed   |
+ | in a future release.                                                   |
+ |                                                                        |
+ | To adopt the new changes, please refer to our migration guide at:      |
+ | https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide             |
+ +------------------------------------------------------------------------+
+ */
+
++ (void)invoke DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invoke for instructions on migrating to SDK v8.1 APIs.");
+
++ (void)invokeWithMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invokewithmode for instructions on migrating to SDK v8.1 APIs.");
+
+@property(class, atomic, assign) IBGPromptOption promptOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-promptoptions for instructions on migrating to SDK v8.1 APIs.");
+
+@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invocationoptions for instructions on migrating to SDK v8.1 APIs.");
 
 @end

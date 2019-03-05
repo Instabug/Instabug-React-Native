@@ -119,53 +119,17 @@ RCT_ENUM_CONVERTER(IBGAction, (@{
                                     @"addCommentToFeature": @(IBGActionAddCommentToFeature)
                                   }), IBGActionAllActions, integerValue);
 
-RCT_ENUM_CONVERTER(IBGString, (@{
-                                 @"shakeHint": @(IBGStringShakeHint),
-                                 @"swipeHint": @(IBGStringSwipeHint),
-                                 @"edgeSwipeStartHint": @(IBGStringEdgeSwipeStartHint),
-                                 @"startAlertText": @(IBGStringStartAlertText),
-                                 @"invalidEmailMessage": @(IBGStringInvalidEmailMessage),
-                                 @"invalidEmailTitle": @(IBGStringInvalidEmailTitle),
-                                 @"invalidCommentMessage": @(IBGStringInvalidCommentMessage),
-                                 @"invalidCommentTitle": @(IBGStringInvalidCommentTitle),
-                                 @"invocationHeader": @(IBGStringInvocationHeader),
-                                 @"talkToUs": @(IBGStringTalkToUs),
-                                 @"reportBug": @(IBGStringReportBug),
-                                 @"reportFeedback": @(IBGStringReportFeedback),
-                                 @"emailFieldHint": @(IBGStringEmailFieldHint),
-                                 @"commentFieldHintForBugReport": @(IBGStringCommentFieldHintForBugReport),
-                                 @"commentFieldHintForFeedback": @(IBGStringCommentFieldHintForFeedback),
-                                 @"addScreenRecordingMessage": @(IBGStringAddScreenRecordingMessage),
-                                 @"addVoiceMessage": @(IBGStringAddVoiceMessage),
-                                 @"addImageFromGallery": @(IBGStringAddImageFromGallery),
-                                 @"addExtraScreenshot": @(IBGStringAddExtraScreenshot),
-                                 @"audioRecordingPermissionDeniedTitle": @(IBGStringAudioRecordingPermissionDeniedTitle),
-                                 @"audioRecordingPermissionDeniedMessage": @(IBGStringAudioRecordingPermissionDeniedMessage),
-                                 @"microphonePermissionAlertSettingsButtonTitle": @(IBGStringMicrophonePermissionAlertSettingsButtonTitle),
-                                 @"chatsHeaderTitle": @(IBGStringChatsHeaderTitle),
-                                 @"team": @(IBGStringTeam),
-                                 @"recordingMessageToHoldText": @(IBGStringRecordingMessageToHoldText),
-                                 @"recordingMessageToReleaseText": @(IBGStringRecordingMessageToReleaseText),
-                                 @"messagesNotification": @(IBGStringMessagesNotification),
-                                 @"messagesNotificationAndOthers": @(IBGStringMessagesNotificationAndOthers),
-                                 @"screenshotHeaderTitle": @(IBGStringScreenshotHeaderTitle),
-                                 @"okButtonTitle": @(IBGStringOkButtonTitle),
-                                 @"cancelButtonTitle": @(IBGStringCancelButtonTitle),
-                                 @"thankYouText": @(IBGStringThankYouText),
-                                 @"audio": @(IBGStringAudio),
-                                 @"screenRecording": @(IBGStringScreenRecording),
-                                 @"image": @(IBGStringImage),
-                                 @"surveyEnterYourAnswer": @(IBGStringSurveyEnterYourAnswerPlaceholder),
-                                 @"videPressRecord": @(IBGStringVideoPressRecordTitle),
-                                 @"collectingDataText": @(IBGStringCollectingDataText),
-                                 @"thankYouAlertText": @(IBGStringThankYouAlertText),
-                                 @"welcomeMessageBetaWelcomeStepTitle": @(IBGBetaWelcomeMessageWelcomeStepTitle),
-                                 @"welcomeMessageBetaWelcomeStepContent": @(IBGBetaWelcomeMessageWelcomeStepContent),
-                                 @"welcomeMessageBetaHowToReportStepTitle": @(IBGBetaWelcomeMessageHowToReportStepTitle),
-                                 @"welcomeMessageBetaHowToReportStepContent": @(IBGBetaWelcomeMessageHowToReportStepMessage),
-                                 @"welcomeMessageBetaFinishStepTitle": @(IBGBetaWelcomeMessageFinishStepTitle),
-                                 @"welcomeMessageBetaFinishStepContent": @(IBGBetaWelcomeMessageFinishStepContent),
-                                 @"welcomeMessageLiveWelcomeStepTitle": @(IBGLiveWelcomeMessageTitle),
-                                 @"welcomeMessageLiveWelcomeStepContent": @(IBGLiveWelcomeMessageMessage)
-                                 }), IBGStringShakeHint, integerValue);
+RCT_ENUM_CONVERTER(IBGBugReportingReportType, (@{
+                                 @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
+                                 @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback)
+                                 }), IBGBugReportingReportTypeBug, integerValue);
+
+RCT_ENUM_CONVERTER(IBGBugReportingOption, (@{
+                                               @"optionEmailFieldHidden": @(IBGBugReportingOptionEmailFieldHidden),
+                                               @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
+                                               @"optionCommentFieldRequired": @(IBGBugReportingOptionCommentFieldRequired),
+                                               @"optionDisablePostSendingDialog": @(IBGBugReportingOptionDisablePostSendingDialog)
+                                               }), IBGBugReportingOptionNone, integerValue);
+
+
 @end

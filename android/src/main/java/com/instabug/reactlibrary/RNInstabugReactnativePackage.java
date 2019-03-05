@@ -14,11 +14,13 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.visualusersteps.State;
-import android.graphics.Color;
-import android.util.Log;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 
+import android.graphics.Color;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +44,9 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         //setting invocation event
         this.parseInvocationEvent(invocationEventValues);
 
-        mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
+        setBaseUrlForDeprecationLogs();
+        
+        new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
                 .setCrashReportingState(crashReportingEnabled ? Feature.State.ENABLED: Feature.State.DISABLED)
                 .setReproStepsState(State.DISABLED)
@@ -74,9 +78,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
             } else if (invocationEventValues[i].equals("shake")) {
                 this.invocationEvents.add(InstabugInvocationEvent.SHAKE);
 
-            } else if (invocationEventValues[i].equals("screenshot")) {
-                this.invocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
-
             } else if (invocationEventValues[i].equals("none")) {
                 this.invocationEvents.add(InstabugInvocationEvent.NONE);
             }
@@ -84,6 +85,21 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         if (invocationEvents.isEmpty()) {
             invocationEvents.add(InstabugInvocationEvent.SHAKE);
+        }
+    }
+
+    private void setBaseUrlForDeprecationLogs() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
+            if (method != null) {
+                method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 

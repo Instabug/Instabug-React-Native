@@ -18,6 +18,8 @@
 #import "IBGCrashReporting.h"
 #import "IBGSurveys.h"
 #import "IBGFeatureRequests.h"
+#import "IBGChats.h"
+#import "IBGReplies.h"
 #import "UIView+Instabug.h"
 
 /**
@@ -72,11 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, atomic, strong) UIColor *tintColor;
 
 /**
- @brief Sets a block of code that gets executed when a new message is received.
- */
-@property (class, atomic, strong) void (^didRecieveReplyHandler)(void);
-
-/**
  @brief Sets a block of code to be executed before sending each report.
  
  @discussion This block is executed in the background before sending each report. Could be used for attaching logs
@@ -85,22 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param willSendReportHandler A block of code that gets executed before sending each bug report.
  */
 @property(class, atomic, strong) IBGReport*(^willSendReportHandler)(IBGReport *report);
-
-/**
- @brief Enables/disables showing in-app notifications when the user receives a new message.
- */
-@property (class, atomic, assign) BOOL replyNotificationsEnabled;
-
-/**
- @brief Returns the number of unread messages the user currently has.
- 
- @discussion Use this method to get the number of unread messages the user has, then possibly notify them about it with
- your own UI.
- 
- @return Notifications count, or -1 incase the SDK has not been initialized.
- */
-@property (class, atomic, assign, readonly) NSInteger unreadMessagesCount;
-
 
 /**
  @brief Sets whether the SDK is tracking user steps or not.
@@ -152,6 +133,13 @@ NS_ASSUME_NONNULL_BEGIN
  @see IBGInvocationEvent
  */
 + (void)startWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents;
+
+/**
+ @brief Shows Instabug Prompt Options.
+ 
+ @discussion By default, it contains Report a problem, Suggest an improvement, Ask a question, and a button that navigates to the chats list. To control which options should be enabled, see IBGBugReporting.enabled, IBGChats.enabled, and  IBGReplies.enabled.
+ */
++ (void)show;
 
 /**
  @brief Add file to attached files with each report being sent.
@@ -212,20 +200,6 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion This method also resets all chats currently on the device and removes any set user attributes.
  */
 + (void)logOut;
-
-/**
- @brief Enables/disables the use of push notifications in the SDK.
-
- @discussion In order to enable push notifications, implement 
- `-[UIApplicationDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]` and either
- `-[UIApplicationDelegate application:didReceiveRemoteNotification]` or
- `-[UIApplicationDelegate application:didReceiveRemoteNotification:fetchCompletionHandler:]`.
- 
- Defaults to YES.
- 
- @param isPushNotificationsEnabled A boolean to indicate whether push notifications are enabled or disabled.
- */
-+ (void)setPushNotificationsEnabled:(BOOL)isPushNotificationsEnabled;
 
 /**
  @brief Sets the SDK's locale.
@@ -335,34 +309,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)logUserEventWithName:(NSString *)name;
 
-/// ------------------------
-/// @name Push Notifications
-/// ------------------------
-
-/**
- @brief Use this method to set Apple Push Notification token to enable receiving Instabug push notifications.
- 
- @discussion You should call this method after receiving token in 
- `-[UIApplicationDelegate didRegisterForRemoteNotificationsWithDeviceToken:]` and pass received token.
- 
- @param deviceToken Device token received in `-[UIApplicationDelegate didRegisterForRemoteNotificationsWithDeviceToken:]`
- */
-+ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
-
-/**
- @brief Call this method and pass the notification's userInfo dictionary to allow Instabug to handle its remote notifications.
- 
- @discussion Instabug will check if notification is from Instabug's servers and only handle it if it is.
- You should call this method in -[UIApplicationDelegate application:didReceiveRemoteNotification:] and pass received userInfo
- dictionary, or `-[UIApplicationDelegate application:didFinishLaunchingWithOptions:]` and pass
- `[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]`.
- 
- @param userInfo userInfo dictionary from `-[UIApplicationDelegate application:didReceiveRemoteNotification:]` or
- `[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]` from
- `-[UIApplicationDelegate application:didFinishLaunchingWithOptions:]`.
- */
-+ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo;
-
 #pragma mark - SDK Debugging
 
 /// ------------------------
@@ -382,103 +328,28 @@ NS_ASSUME_NONNULL_BEGIN
  +------------------------------------------------------------------------+
  | The following section includes all deprecated APIs.                    |
  |                                                                        |
- | We've made a few changes to our APIs starting from version 8.0 to make |
+ | We've made a few changes to our APIs starting from version 8.1 to make |
  | them more intuitive and easily reachable.                              |
  |                                                                        |
  | While the APIs below still function, they will be completely removed   |
  | in a future release.                                                   |
  |                                                                        |
  | To adopt the new changes, please refer to our migration guide at:      |
- | https://docs.instabug.com/v1.0/docs/ios-migration-guide                |
+ | https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide             |
  +------------------------------------------------------------------------+
-*/
+ */
 
-#define IBG_DEPRECATED_ATTRIBUTE DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/v1.0/docs/ios-migration-guide for instructions on migrating to SDK v8.x APIs.")
++ (void)setPushNotificationsEnabled:(BOOL)isPushNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-setpushnotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
 
-+ (void)startWithToken:(NSString *)token invocationEvent:(IBGInvocationEvent)invocationEvent IBG_DEPRECATED_ATTRIBUTE;
-+ (void)invoke IBG_DEPRECATED_ATTRIBUTE;
-+ (void)invokeWithInvocationMode:(IBGInvocationMode)invocationMode IBG_DEPRECATED_ATTRIBUTE;
-+ (void)dismiss IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setFileAttachment:(NSString *)fileLocation IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setFileAttachmentWithURL:(NSURL *)fileURL IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setUserStepsEnabled:(BOOL)isUserStepsEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setCrashReportingEnabled:(BOOL)isReportingCrashes IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setInAppConversationsEnabled:(BOOL)isInAppConversationsEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPreSendingBlock:(void (^)(void))preSendingBlock IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPreSendingHandler:(void (^)(void))preSendingHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPreInvocationBlock:(void (^)(void))preInvocationBlock IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPreInvocationHandler:(void (^)(void))preInvocationHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPostInvocationBlock:(void (^)(IBGIssueState issueState, IBGFeedbackType feedbackType))postInvocationBlock IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPostInvocationHandler:(void (^)(IBGDismissType dismissType, IBGReportType reportType))postInvocationHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setDidSelectPromptOptionHandler:(void (^)(IBGPromptOption promptOption))didSelectPromptOptionHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)showIntroMessage IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setWillTakeScreenshot:(BOOL)willTakeScreenshot IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setUserEmail:(NSString *)userEmail IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setUserName:(NSString *)userName IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setShowEmailField:(BOOL)isShowingEmailField IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setWillShowScreenshotView:(BOOL)willShowScreenshotView IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setWillSkipScreenshotAnnotation:(BOOL)willSkipScreenShot IBG_DEPRECATED_ATTRIBUTE;
-+ (NSInteger)getUnreadMessagesCount IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setInvocationEvent:(IBGInvocationEvent)invocationEvent IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setDefaultInvocationMode:(IBGInvocationMode)invocationMode IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setCommentFieldRequired:(BOOL)isCommentFieldRequired IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold foriPad:(double)iPadShakingThreshold IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setVideoRecordingFloatingButtonPosition:(IBGPosition)position IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setIntroMessageEnabled:(BOOL)isIntroMessageEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPostSendingDialogEnabled:(BOOL)isPostSendingDialogEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPrimaryColor:(UIColor *)color IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setScreenshotCapturingBlock:(UIImage *(^)(void))screenshotCapturingBlock IBG_DEPRECATED_ATTRIBUTE;
-+ (void)addTags:(NSString *)tag, ... NS_REQUIRES_NIL_TERMINATION IBG_DEPRECATED_ATTRIBUTE;
-+ (void)addTags:(NSString *)tag withArguments:(va_list)arguments IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setString:(NSString*)value toKey:(IBGString)key IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setAttachmentTypesEnabledScreenShot:(BOOL)screenShot extraScreenShot:(BOOL)extraScreenShot galleryImage:(BOOL)galleryImage voiceNote:(BOOL)voiceNote screenRecording:(BOOL)screenRecording IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setEnabledAttachmentTypes:(IBGAttachmentType)attachmentTypes IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setChatNotificationEnabled:(BOOL)chatNotificationEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setOnNewMessageHandler:(void (^)(void))onNewMessageHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setPromptOptionsEnabledWithBug:(BOOL)bugReportEnabled feedback:(BOOL)feedbackEnabled chat:(BOOL)chatEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setReportCategoriesWithTitles:(NSArray<NSString *> *)titles iconNames:(nullable NSArray<NSString *> *)names IBG_DEPRECATED_ATTRIBUTE;
-+ (void)addExtraReportFieldWithTitle:(NSString *)title required:(BOOL)required IBG_DEPRECATED_ATTRIBUTE;
-+ (void)removeExtraReportFields IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setEmailFieldRequired:(BOOL)isEmailFieldRequired forAction:(IBGAction)actionType IBG_DEPRECATED_ATTRIBUTE;
-+ (void)reportException:(NSException *)exception IBG_DEPRECATED_ATTRIBUTE;
-+ (void)reportError:(NSError *)error IBG_DEPRECATED_ATTRIBUTE;
-+ (void)invokeConversations IBG_DEPRECATED_ATTRIBUTE;
-+ (BOOL)isInstabugNotification:(NSDictionary *)notification IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logUserEventWithName:(NSString *)name params:(nullable NSDictionary *)params IBG_DEPRECATED_ATTRIBUTE;
-+ (void)IBGLog:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logVerbose:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logDebug:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logInfo:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logWarn:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logError:(NSString *)log IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setIBGLogPrintsToConsole:(BOOL)enabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)clearAllLogs IBG_DEPRECATED_ATTRIBUTE;
-+ (void)showFeatureRequests IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLoggingEnabled:(BOOL)isNetworkLoggingEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLoggingFilterPredicate:(NSPredicate *)filterPredicate IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLoggingRequestFilterPredicate:(nullable NSPredicate *)requestFilterPredicate responseFilterPredicate:(nullable NSPredicate *)responseFilterPredicate IBG_DEPRECATED_ATTRIBUTE;
-+ (void)enableLoggingForURLSessionConfiguration:(NSURLSessionConfiguration *)URLSessionConfiguration IBG_DEPRECATED_ATTRIBUTE;
-+ (void)logHTTPBody:(NSData *)body forRequest:(NSMutableURLRequest *)request IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLoggingURLObfuscationHandler:(nonnull NSURL * (^)(NSURL * _Nonnull url))obfuscationHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLogRequestObfuscationHandler:(nonnull NSURLRequest * (^)(NSURLRequest * _Nonnull request))obfuscationHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setNetworkLogResponseObfuscationHandler:(void (^)(NSData * _Nullable responseData, NSURLResponse * _Nonnull response, NetworkObfuscationCompletionBlock returnBlock))obfuscationHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setProgressHandlerForRequestURL:(nonnull NSURL *)URL progressHandler:(nonnull void (^)(NSURLSessionTask *task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend))requestProgressHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setCanAuthenticateAgainstProtectionSpaceHandler:(BOOL(^)(NSURLProtectionSpace *protectionSpace))protectionSpaceHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* (^)(NSURLAuthenticationChallenge *challenge))reciveChallengeHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setSurveysEnabled:(BOOL)surveysEnabled IBG_DEPRECATED_ATTRIBUTE;
-+ (void)showSurveyIfAvailable IBG_DEPRECATED_ATTRIBUTE;
-+ (BOOL)hasAvailableSurveys IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setWillShowSurveyHandler:(void (^)(void))willShowSurveyHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setDidDismissSurveyHandler:(void (^)(void))didShowSurveyHandler IBG_DEPRECATED_ATTRIBUTE;
-+ (void)showSurveyWithToken:(NSString *)surveyToken IBG_DEPRECATED_ATTRIBUTE;
-+ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount IBG_DEPRECATED_ATTRIBUTE;
-+ (void)setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen IBG_DEPRECATED_ATTRIBUTE;
++ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didreceiveremotenotification for instructions on migrating to SDK v8.1 APIs.");
+
++ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didregisterforremotenotificationswithdevicetoken for instructions on migrating to SDK v8.1 APIs.");
+
+@property (class, atomic, strong) void (^didRecieveReplyHandler)(void) DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didrecievereplyhandler for instructions on migrating to SDK v8.1 APIs.");
+
+@property (class, atomic, assign) BOOL replyNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-replynotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
+
+@property (class, atomic, assign, readonly) NSInteger unreadMessagesCount DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-unreadmessagescount for instructions on migrating to SDK v8.1 APIs.");
 
 @end
 

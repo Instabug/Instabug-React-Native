@@ -24,7 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            		new RNInstabugReactnativePackage.Builder("068ba9a8c3615035e163dc5f829c73be",MainApplication.this)
+            		new RNInstabugReactnativePackage.Builder("APP_TOKEN",MainApplication.this)
 							.setInvocationEvent("shake")
 							.setPrimaryColor("#1D82DC")
 							.setFloatingEdge("right")
