@@ -5,10 +5,12 @@ import {
   Platform
 } from 'react-native';
 let { Instabug } = NativeModules;
-import InstabugUtils from './utils/InstabugUtils.js';
-import BugReporting from './modules/BugReporting.js';
-import Surveys from './modules/Surveys.js';
-import FeatureRequests from './modules/FeatureRequests.js';
+import InstabugUtils from './utils/InstabugUtils';
+import BugReporting from './modules/BugReporting';
+import Surveys from './modules/Surveys';
+import FeatureRequests from './modules/FeatureRequests';
+import Chats from './modules/Chats';
+import Replies from './modules/Replies';
 
 InstabugUtils.captureJsErrors();
 
@@ -29,36 +31,6 @@ const InstabugModule = {
    */
   startWithToken: function(token, invocationEvent) {
     if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
-  },
-
-  /**
-   * @deprecated Use {@link BugReporting.invoke()} instead.
-   * Invokes the SDK manually with the default invocation mode.
-   * Shows a view that asks the user whether they want to start a chat, report
-   * a problem or suggest an improvement.
-   */
-  invoke: function() {
-    Instabug.invoke();
-  },
-
-  /**
-   * @deprecated Use {@link BugReporting.invokeWithInvocationModeAndOptions} instead.
-   * Invokes the SDK with a specific mode.
-   * Invokes the SDK and show a specific view, instead of showing a prompt for
-   * users to choose from.
-   * @param {invocationMode} invocationMode Specifies which mode the
-   * SDK is going to start with.
-   */
-  invokeWithInvocationMode: function(invocationMode) {
-    Instabug.invokeWithInvocationMode(invocationMode);
-  },
-
-  /**
-   * @deprecated Use {@link BugReporting.dismiss() instead}
-   * Dismisses any Instabug views that are currently being shown.
-   */
-  dismiss: function() {
-    Instabug.dismiss();
   },
 
   /**
@@ -95,11 +67,16 @@ const InstabugModule = {
   },
 
   /**
-   * Adds custom logs that will be sent with each report.
-   * @param {string} log Message to be logged.
+   * @deprecated use {@link Instabug.setTrackUserSteps}
+   * Sets whether the SDK is tracking user steps or not.
+   * Enabling user steps would give you an insight on the scenario a user has
+   * performed before encountering a bug or a crash. User steps are attached
+   * with each report being sent.
+   * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
+   * to being enabled or disabled.
    */
-  IBGLog: function(log) {
-    Instabug.IBGLog(log);
+  setUserStepsEnabled: function(isUserStepsEnabled) {
+    if (Platform.OS === 'ios') Instabug.setUserStepsEnabled(isUserStepsEnabled);
   },
 
   /**
@@ -110,8 +87,8 @@ const InstabugModule = {
    * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
    * to being enabled or disabled.
    */
-  setUserStepsEnabled: function(isUserStepsEnabled) {
-    if (Platform.OS === 'ios') Instabug.setUserStepsEnabled(isUserStepsEnabled);
+  setTrackUserSteps: function(isEnabled) {
+    if (Platform.OS === 'ios') Instabug.setTrackUserSteps(isEnabled);
   },
 
   /**
@@ -125,33 +102,12 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link CrashReporting.setCrashReportingEnabled}
    * Report un-caught exceptions to Instabug dashboard
    * We don't send exceptions from __DEV__, since it's way too noisy!
    */
   setCrashReportingEnabled: function(enableCrashReporter) {
     Instabug.setCrashReportingEnabled(enableCrashReporter);
-  },
-
-  /**
-   * @deprecated Use {@link BugReporting.onReportSubmitHandler} instead.
-   * Sets a block of code to be executed before sending each report.
-   * This block is executed in the background before sending each report. Could
-   * be used for attaching logs and extra data to reports.
-   * @param {function} preSendingHandler - A callback that gets executed before sending each bug
-   * report.
-   */
-  setPreSendingHandler: function(preSendingHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreSendingHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreSendingHandler',
-        preSendingHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener('IBGpreSendingHandler', preSendingHandler);
-    }
-
-    Instabug.setPreSendingHandler(preSendingHandler);
   },
 
   /**
@@ -181,31 +137,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
-   * Shows survey with a specific token.
-   * Does nothing if there are no available surveys with that specific token.
-   * Answered and cancelled surveys won't show up again.
-   * @param {string} surveyToken - A String with a survey token.
-   *
-   */
-  showSurveyWithToken: function(surveyToken) {
-    Instabug.showSurveyWithToken(surveyToken);
-  },
-
-  /**
-   * @deprecated
-   * Returns true if the survey with a specific token was answered before.
-   * Will return false if the token does not exist or if the survey was not answered before.
-   * @param {string} surveyToken - A String with a survey token.
-   * @param {function} surveyTokenCallback callback with argument as the desired value of the whether
-   * the survey has been responded to or not.
-   *
-   */
-  hasRespondedToSurveyWithToken: function(surveyToken, surveyTokenCallback) {
-    Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
-  },
-
-  /**
    * The session profiler is enabled by default and it attaches to the bug and
    * crash reports the following information during the last 60 seconds before the report is sent.
    * @param {boolean} sessionProfilerEnabled - A boolean parameter to enable or disable the feature.
@@ -213,65 +144,6 @@ const InstabugModule = {
    */
   setSessionProfilerEnabled: function(sessionProfilerEnabled) {
     Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
-  },
-
-  /**
-   * @deprecated Use {@link BugReporting.onInvokeHandler} instead
-   * Sets a block of code to be executed just before the SDK's UI is presented.
-   * This block is executed on the UI thread. Could be used for performing any
-   * UI changes before the SDK's UI is shown.
-   * @param {function} preInvocationHandler - A callback that gets executed before invoking the SDK
-   */
-  setPreInvocationHandler: function(preInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreInvocationHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    }
-
-    Instabug.setPreInvocationHandler(preInvocationHandler);
-  },
-
-  /**
-   * @deprecated {@link BugReporting.onSDKDismissedHandler} instead
-   * Sets a block of code to be executed right after the SDK's UI is dismissed.
-   * This block is executed on the UI thread. Could be used for performing any
-   * UI changes after the SDK's UI is dismissed.
-   * @param {function} postInvocationHandler - A callback to get executed after
-   * dismissing the SDK.
-   */
-  setPostInvocationHandler: function(postInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpostInvocationHandler');
-      NativeAppEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload['dismissType'], payload['reportType']);
-      });
-    } else {
-      DeviceEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload.dismissType, payload.reportType);
-      });
-    }
-
-    Instabug.setPostInvocationHandler(postInvocationHandler);
-  },
-
-  /**
-   * @deprecated Present a view that educates the user on how to invoke the SDK with the
-   * currently set invocation event.
-   */
-  showIntroMessage: function() {
-    Instabug.showIntroMessage();
   },
 
   /**
@@ -294,18 +166,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated Enables/disables screenshot view when reporting a bug/improvement.
-   * By default, screenshot view is shown when reporting a bug, but not when
-   * sending feedback.
-   * @param {boolean} willSkipScreenshotAnnotation sets whether screenshot view is
-   * shown or not. Passing YES will show screenshot view for both feedback and
-   * bug reporting, while passing NO will disable it for both.
-   */
-  setWillSkipScreenshotAnnotation: function(willSkipScreenshotAnnotation) {
-    Instabug.setWillSkipScreenshotAnnotation(willSkipScreenshotAnnotation);
-  },
-
-  /**
+   * @deprecated use {@link Replies.getUnreadRepliesCount}
    * Returns the number of unread messages the user currently has.
    * Use this method to get the number of unread messages the user
    * has, then possibly notify them about it with your own UI.
@@ -317,17 +178,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated Use {@link setInvocationEvents} instead.
-   * Sets the event that invoke the feedback form.
-   * Default is set by `Instabug.startWithToken`.
-   * @param {invocationEvent} invocationEvent Event that invokes the
-   * feedback form.
-   */
-  setInvocationEvent: function(invocationEvent) {
-    Instabug.setInvocationEvent(invocationEvent);
-  },
-
-  /**
    * Enables/disables the use of push notifications in the SDK.
    * Defaults to YES.
    * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
@@ -336,17 +186,6 @@ const InstabugModule = {
   setPushNotificationsEnabled: function(isPushNotificationEnabled) {
     if (Platform.OS === 'ios')
       Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
-  },
-
-  /**
-   * @deprecated Sets whether users are required to enter an email address or not when
-   * sending reports.
-   * Defaults to YES.
-   * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
-   * field is required or not.
-   */
-  setEmailFieldRequired: function(isEmailFieldRequired) {
-    Instabug.setEmailFieldRequired(isEmailFieldRequired);
   },
 
   /**
@@ -362,71 +201,6 @@ const InstabugModule = {
 
   setEmailFieldRequiredForActions: function(isEmailFieldRequired, actionTypes) {
     Instabug.setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes);
-  },
-
-  /**
-   * @deprecated Sets whether users are required to enter a comment or not when sending reports.
-   * Defaults to NO.
-   * @param {boolean} isCommentFieldRequired A boolean to indicate whether comment
-   * field is required or not.
-   */
-  setCommentFieldRequired: function(isCommentFieldRequired) {
-    Instabug.setCommentFieldRequired(isCommentFieldRequired);
-  },
-
-  /**
-   * @deprecated since version 2.3.0. Use {@link setShakingThresholdForiPhone}
-   * and {@link setShakingThresholdForiPad} instead.
-   * Sets the threshold value of the shake gesture for iPhone/iPod Touch and iPad.
-   * Default for iPhone is 2.5.
-   * Default for iPad is 0.6.
-   * @param {number} iPhoneShakingThreshold Threshold for iPhone.
-   * @param {number} iPadShakingThreshold Threshold for iPad.
-   */
-  setShakingThresholdForIPhone: function(
-    iPhoneShakingThreshold,
-    iPadShakingThreshold
-  ) {
-    if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForIPhone(
-        iPhoneShakingThreshold,
-        iPadShakingThreshold
-      );
-  },
-
-  /**
-   * @deprecated
-   * Sets the threshold value of the shake gesture for iPhone/iPod Touch
-   * Default for iPhone is 2.5.
-   * @param {number} iPhoneShakingThreshold Threshold for iPhone.
-   */
-  setShakingThresholdForiPhone: function(iPhoneShakingThreshold) {
-    if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPhone(iPhoneShakingThreshold);
-  },
-
-  /**
-   * @deprecated
-   * Sets the threshold value of the shake gesture for iPad.
-   * Default for iPad is 0.6.
-   * @param {number} iPadShakingThreshold Threshold for iPad.
-   */
-  setShakingThresholdForiPad: function(iPadShakingThreshold) {
-    if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPad(iPadShakingThreshold);
-  },
-
-  /**
-   * @deprecated
-   * Sets the threshold value of the shake gesture for android devices.
-   * Default for android is an integer value equals 350.
-   * you could increase the shaking difficulty level by
-   * increasing the `350` value and vice versa
-   * @param {number} androidThreshold Threshold for android devices.
-   */
-  setShakingThresholdForAndroid: function(androidThreshold) {
-    if (Platform.OS === 'android')
-      Instabug.setShakingThresholdForAndroid(androidThreshold);
   },
 
   /**
@@ -459,17 +233,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated Sets whether the intro message that gets shown on launching the app is
-   * enabled or not.
-   * Defaults to YES.
-   * @param {boolean} isIntroMessageEnabled A boolean to indicate whether the
-   * intro message is enabled or not.
-   */
-  setIntroMessageEnabled: function(isIntroMessageEnabled) {
-    Instabug.setIntroMessageEnabled(isIntroMessageEnabled);
-  },
-
-  /**
    * Sets the color theme of the SDK's whole UI.
    * the SDK's UI to.
    * @param colorTheme
@@ -486,9 +249,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-    if (Platform.OS == 'ios') {
       Instabug.setPrimaryColor(primaryColor);
-    }
   },
 
   /**
@@ -526,36 +287,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated since version 2.3.0. Use {@link setEnabledAttachmentTypes} instead.
-   * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
-   * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
-   * @param {boolean} extraScreenshot A boolean to enable or disable extra
-   * screenshot attachments.
-   * @param {boolean} galleryImage A boolean to enable or disable gallery image
-   * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
-   * info.plist to enable gallery image attachments.
-   * @param {boolean} voiceNote A boolean to enable or disable voice note attachments.
-   * In iOS 10+, NSMicrophoneUsageDescription should be set in info.plist to enable
-   * voiceNote attachments.
-   * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
-   */
-
-  setAttachmentTypesEnabled: function(
-    screenshot,
-    extraScreenshot,
-    galleryImage,
-    voiceNote,
-    screenRecording
-  ) {
-    Instabug.setEnabledAttachmentTypes(
-      screenshot,
-      extraScreenshot,
-      galleryImage,
-      screenRecording
-    );
-  },
-
-  /**
    * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
    * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
    * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -580,6 +311,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setInAppNotificationsEnabled}
    * Enables/disables showing in-app notifications when the user receives a
    * new message.
    * @param {boolean} isChatNotificationEnabled A boolean to set whether
@@ -590,6 +322,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
    * Sets a block of code that gets executed when a new message is received.
    * @param {function} onNewMessageHandler - A callback that gets
    * executed when a new message is received.
@@ -609,21 +342,6 @@ const InstabugModule = {
     }
 
     Instabug.setOnNewMessageHandler(onNewMessageHandler);
-  },
-
-  /**
-   * Checks if a notification is from Instabug.
-   * If you are using push notifications, use this method to check whether an
-   * incoming notification is from Instabug or not. If this method returns YES,
-   * you should call didReceiveRemoteNotification: to let the Instabug handle
-   * the notification. Otherwise, handle the notification on your own.
-   * @param {Object} dict Notification's userInfo
-   * @param {function} isInstabugNotificationCallback callback with
-   * argument isInstabugNotification
-   */
-  isInstabugNotification: function(dict, isInstabugNotificationCallback) {
-    if (Platform.OS === 'ios')
-      Instabug.isInstabugNotification(dict, isInstabugNotificationCallback);
   },
 
   /**
@@ -652,50 +370,12 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated since version 2.7.0, you can now add categories from the dashboard.
-   * Sets an array of report categories to be shown for users to select from before reporting a
-   * bug or sending feedback.
-   * Use this method to give users a list of choices of categories their bug report or feedback
-   * might be related to. Selected category will be shown as a tag on your dashboard.
-   * @param {Array} titles titles to be shown in the list.
-   */
-  setReportCategories: function(...titles) {
-    if (Platform.OS == 'ios') {
-      Instabug.setReportCategories(titles, null);
-    } else if (Platform.OS == 'android') {
-      Instabug.setReportCategories(titles);
-    }
-  },
-
-  /**
-   * @deprecated
-   * Sets whether the extended bug report mode should be disabled, enabled with
-   * required fields or enabled with optional fields.
-   * @param {extendedBugReportMode} extendedBugReportMode An enum to disable
-   *                                the extended bug report mode, enable it
-   *                                with required or with optional fields.
-   */
-  setExtendedBugReportMode: function(extendedBugReportMode) {
-    Instabug.setExtendedBugReportMode(extendedBugReportMode);
-  },
-
-  /**
    * @deprecated Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
    * @param {string} name Event name.
    */
   logUserEventWithName: function(name) {
     Instabug.logUserEventWithName(name);
-  },
-
-  /**
-   * Logs a user event that happens through the lifecycle of the application.
-   * Logged user events are going to be sent with each report, as well as at the end of a session.
-   * @param {string} name Event name.
-   * @param {Object} params An optional dictionary or parameters to be associated with the event.
-   */
-  logUserEventWithNameAndParams: function(name, params) {
-    Instabug.logUserEventWithNameAndParams(name, params);
   },
 
   /**
@@ -887,6 +567,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Surveys.setEnabled}
    * @summary Sets whether surveys are enabled or not.
    * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
    * those surveys are still going to be sent to the device, but are not going to be
@@ -897,83 +578,6 @@ const InstabugModule = {
    */
   setSurveysEnabled: function(surveysEnabled) {
     Instabug.setSurveysEnabled(surveysEnabled);
-  },
-
-  /**
-   * @deprecated
-   * @summary Shows one of the surveys that were not shown before, that also have conditions
-   * that match the current device/user.
-   * Does nothing if there are no available surveys or if a survey has already been shown
-   * in the current session.
-   */
-  showSurveysIfAvailable: function() {
-    Instabug.showSurveysIfAvailable();
-  },
-
-  /**
-   * @deprecated
-   * @summary Sets a block of code to be executed just before the survey's UI is presented.
-   * This block is executed on the UI thread. Could be used for performing any UI changes before
-   * the survey's UI is shown.
-   * @param {function} willShowSurveyHandler - A block of code that gets executed before
-   * presenting the survey's UI.
-   */
-  setWillShowSurveyHandler: function(willShowSurveyHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGWillShowSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        willShowSurveyHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        willShowSurveyHandler
-      );
-    }
-
-    Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
-  },
-
-  /**
-   * @deprecated
-   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
-   * This block is executed on the UI thread. Could be used for performing any UI
-   * changes after the survey's UI is dismissed.
-   * @param {function} didDismissSurveyHandler - A block of code that gets executed after
-   * the survey's UI is dismissed.
-   */
-  setDidDismissSurveyHandler: function(didDismissSurveyHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGDidDismissSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        didDismissSurveyHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        didDismissSurveyHandler
-      );
-    }
-
-    Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
-  },
-
-  /**
-   * @deprecated
-   * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-   * becomes the default
-   * invocation option that SDK gets invoked with and prompt options screen will not show. When
-   * none is enabled, Bug
-   * reporting becomes the default invocation option.
-   *
-   * @param  {boolean} chat      whether Talk to us is enable or not
-   * @param  {boolean} bug       whether Report a Problem is enable or not
-   * @param  {boolean} feedback  whether General Feedback  is enable or not
-   * */
-  setPromptOptionsEnabled: function(chat, bug, feedback) {
-    Instabug.setPromptOptionsEnabled(chat, bug, feedback);
   },
 
   /**
@@ -1022,16 +626,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
-   *
-   * @param enabled true to show success dialog after submitting a bug report
-   *
-   */
-  setSuccessDialogEnabled: function(enabled) {
-    Instabug.setSuccessDialogEnabled(enabled);
-  },
-
-  /**
+   * @deprecated use {@link Replies.setInAppNotificationSound}
    * Set whether new in app notification received will play a small sound notification
    * or not (Default is {@code false})
    *
@@ -1045,6 +640,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link CrashReporting.reportJSException}
    * Send handled JS error object
    *
    * @param errorObject   Error object to be sent to Instabug's servers
@@ -1074,45 +670,6 @@ const InstabugModule = {
    */
   setVideoRecordingFloatingButtonPosition: function(position) {
     Instabug.setVideoRecordingFloatingButtonPosition(position);
-  },
-
-  /**
-   * @deprecated
-   * Sets a threshold for numbers of sessions and another for number of days
-   * required before a survey, that has been dismissed once, would show again.
-   * @param {number} sessionCount Number of sessions required to be
-   *                initialized before a dismissed survey can be shown again.
-   * @param {number} daysCount Number of days required to pass before a
-   *                dismissed survey can be shown again.
-   */
-  setThresholdForReshowingSurveyAfterDismiss: function(
-    sessionCount,
-    daysCount
-  ) {
-    Instabug.setThresholdForReshowingSurveyAfterDismiss(
-      sessionCount,
-      daysCount
-    );
-  },
-
-  /**
-   * @deprecated
-   * Sets whether auto surveys showing are enabled or not.
-   * @param autoShowingSurveysEnabled A boolean to indicate whether the
-   *                                surveys auto showing are enabled or not.
-   *
-   */
-  setAutoShowingSurveysEnabled: function(autoShowingSurveysEnabled) {
-    Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
-  },
-
-  /**
-   * @deprecated
-   * Shows the UI for feature requests list
-   *
-   */
-  showFeatureRequests: function() {
-    Instabug.showFeatureRequests();
   },
 
   /**
@@ -1157,6 +714,17 @@ const InstabugModule = {
     } else {
       Instabug.setFileAttachment(filePath);
     }
+  },
+
+  /**
+   * Shows default Instabug prompt.
+   */
+  show() {
+    Instabug.show();
+  },
+
+  onReportSubmitHandler: function(preSendingHandler) {
+    BugReporting.onReportSubmitHandler(preSendingHandler);
   },
 
   callPrivateApi: function(apiName, param) {
@@ -1352,6 +920,7 @@ const InstabugModule = {
     invalidCommentTitle: Instabug.invalidCommentTitle,
     invocationHeader: Instabug.invocationHeader,
     talkToUs: Instabug.talkToUs,
+    startChats: Instabug.startChats,
     reportBug: Instabug.reportBug,
     reportFeedback: Instabug.reportFeedback,
     emailFieldHint: Instabug.emailFieldHint,
@@ -1408,5 +977,7 @@ const InstabugModule = {
 InstabugModule.BugReporting = BugReporting;
 InstabugModule.Surveys = Surveys;
 InstabugModule.FeatureRequests = FeatureRequests;
+InstabugModule.Chats = Chats;
+InstabugModule.Replies = Replies;
 
 module.exports = InstabugModule;

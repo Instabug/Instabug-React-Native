@@ -24,10 +24,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            		new RNInstabugReactnativePackage.Builder("YOUR_ANDROID_APPLICATION_TOKEN",MainApplication.this)
+            		new RNInstabugReactnativePackage.Builder("APP_TOKEN",MainApplication.this)
 							.setInvocationEvent("shake")
-              .setPrimaryColor("#1D82DC")
-							.setFloatingEdge("left")
+							.setPrimaryColor("#1D82DC")
+							.setFloatingEdge("right")
 							.setFloatingButtonOffsetFromTop(250)
 							.build()
       );

@@ -16,7 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
-import Instabug from'instabug-reactnative';
+import Instabug, {BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies} from'instabug-reactnative';
 
 
 const instructions = Platform.select({
@@ -31,12 +31,12 @@ export default class App extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      switchValue: false,
-      colorTheme: 'Dark'
+      switchValue: true,
+      colorTheme: 'Light'
     };
-    Instabug.startWithToken("APP_TOKEN", Instabug.invocationEvent.shake);
-    Instabug.setReportCategories("Performance","UI","Flow","Other");
-    Instabug.setPromptOptionsEnabled(true, true, true);
+
+    Instabug.startWithToken("APP_TOKEN", [Instabug.invocationEvent.shake]);
+    BugReporting.setReportTypes([BugReporting.reportType.bug, BugReporting.reportType.feedback]);
     Instabug.setLocale(Instabug.locale.english);
   }
 
@@ -48,9 +48,6 @@ export default class App extends Component<{}> {
             Hello {"Instabug's"} awesome user! The purpose of this application is to show you the different
             options for customizing the SDK and how easy it is to integrate it to your existing app
           </Text>
-          <TouchableOpacity style={styles.button} onPress={()=>this.showIntroMessage()}>
-            <Text style={styles.text}> SHOW INTRO MESSAGE </Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.invoke()}>
             <Text style={styles.text}> INVOKE </Text>
           </TouchableOpacity>
@@ -60,8 +57,20 @@ export default class App extends Component<{}> {
           <TouchableOpacity style={styles.button} onPress={()=>this.sendFeedback()}>
             <Text style={styles.text}> SEND FEEDBACK </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.sendCrashReport()}>
+            <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.startNewConversation()}>
             <Text style={styles.text}> START A NEW CONVERSATION </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showNpsSurvey()}>
+            <Text style={styles.text}> SHOW NPS SURVEY </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showMultipleQuestionSurvey()}>
+            <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.showFeatureRequests()}>
+            <Text style={styles.text}> SHOW FEATURE REQUESTS </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
@@ -69,18 +78,10 @@ export default class App extends Component<{}> {
           {this.invocationEvent()}
           <Text style={styles.textColor}> Set primary color </Text>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#FF0000')}>
-              <Text style={styles.text}> RED </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#00FF00')}>
-              <Text style={styles.text}> GREEN </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#0000FF')}>
-              <Text style={styles.text}> BLUE </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.setPrimaryColor('#FFFF00')}>
-              <Text style={styles.text}> YELLOW </Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={buttonColor('#FF0000')} onPress={()=>this.setPrimaryColor('#FF0000')}/>
+            <TouchableOpacity style={buttonColor('#00FF00')} onPress={()=>this.setPrimaryColor('#00FF00')}/>
+            <TouchableOpacity style={buttonColor('#0000FF')} onPress={()=>this.setPrimaryColor('#0000FF')}/>
+            <TouchableOpacity style={buttonColor('#FFFF00')} onPress={()=>this.setPrimaryColor('#FFFF00')}/>
           </View>
           <View style={styles.switchView}>
             <Text style={styles.textSwitchStyle}>Color Theme: {this.state.colorTheme}</Text>
@@ -94,7 +95,6 @@ export default class App extends Component<{}> {
   }
 
   invocationEvent() {
-    if(Platform.OS === 'ios') {
       return(
         <View>
           <Text style={styles.textColor}> Change Invocation Event </Text>
@@ -102,20 +102,21 @@ export default class App extends Component<{}> {
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Shake')}>
               <Text style={styles.textInvoke}> SHAKE </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Button')}>
-              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Screenshot')}>
               <Text style={styles.textInvoke}> SCREENSHOT </Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('twoFingersSwipe')}>
+              <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('Button')}>
+              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
+            </TouchableOpacity>       
             <TouchableOpacity style={styles.buttonColor} onPress={()=>this.changeInvocationEvent('None')}>
               <Text style={styles.textInvoke}> NONE </Text>
             </TouchableOpacity>
           </View>
         </View>
       );
-    }
-    return;
   }
 
   toggleSwitch = (value) => {
@@ -138,44 +139,78 @@ export default class App extends Component<{}> {
   }
 
   invoke() {
-    Instabug.invoke();
+    Instabug.show();
+  }
+
+  showMultipleQuestionSurvey() {
+    Surveys.showSurvey("ZAKSlVz98QdPyOx1wIt8BA");
+  }
+
+  showNpsSurvey() {
+    Surveys.showSurvey("pcV_mE2ttqHxT1iqvBxL0w");
+  }
+
+  showFeatureRequests() {
+    FeatureRequests.show();
   }
 
   sendBugReport() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newBug);
+    BugReporting.showWithOptions(BugReporting.reportType.bug);
+  }
+
+  sendCrashReport() {
+    try {
+      throw new Error('Text Handled Exception From Instabug Test App'); 
+    } catch (Exception) {
+      CrashReporting.reportJSException(Exception);
+      alert('Crash report Sent!');
+    }
   }
 
   sendFeedback() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newFeedback);
+    BugReporting.showWithOptions(BugReporting.reportType.feedback, [BugReporting.option.emailFieldHidden]);
+
   }
 
   changeInvocationEvent(invocationEvent) {
     if(invocationEvent === 'Shake')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.shake);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
     if(invocationEvent === 'Button')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.floatingButton);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.floatingButton]);
     if(invocationEvent === 'Screenshot')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.screenshot);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
+    if(invocationEvent === 'twoFingersSwipe')
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.twoFingersSwipe]);
     if(invocationEvent === 'None')
-      Instabug.setInvocationEvent(Instabug.invocationEvent.none);
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
   }
 
   startNewConversation() {
-    Instabug.invokeWithInvocationMode(Instabug.invocationMode.newChat);
+    Chats.show();
   }
 
   showUnreadMessagesCount() {
-    Instabug.getUnreadMessagesCount((count) => {
+    Replies.getUnreadRepliesCount((count) => {
       alert("Messages: " + count);
     });
   }
 }
-
+buttonColor = function(myColor) {
+  return {
+    marginTop: 10,
+    padding: 20,
+    paddingRight : 40,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginRight: 5,
+    backgroundColor: myColor,
+  }
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   details: {
     textAlign: 'center',
@@ -197,7 +232,10 @@ const styles = StyleSheet.create({
   },
   rowView: {
     flexDirection: 'row',
-    marginTop: 10
+    marginTop: 10,
+    maxWidth : '100%',
+    flexGrow: 1,
+    flexWrap: 'wrap'
   },
   textColor: {
     fontSize: 14,

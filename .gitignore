@@ -6,6 +6,9 @@ android/.DS_Store
 ios/.DS_Store
 
 build/
+.gradle
+local.properties
+.idea
 /android/src/main/java/com/instabug/reactlibrary/wrappedAPIs
 
 # Xcode

@@ -7,14 +7,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "16.2.0",
-    "react-native": "0.52.0"
+    "instabug-reactnative": "../",
+    "react": "16.6.3",
+    "react-native": "0.58.4"
   },
   "devDependencies": {
-    "babel-jest": "22.0.6",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "22.0.6",
-    "react-test-renderer": "16.2.0"
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
   },
   "jest": {
     "preset": "react-native"
