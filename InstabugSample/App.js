@@ -16,7 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
-import Instabug, {BugReporting, FeatureRequests, Surveys} from'instabug-reactnative';
+import Instabug, {BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies} from'instabug-reactnative';
 
 
 const instructions = Platform.select({
@@ -36,8 +36,7 @@ export default class App extends Component<{}> {
     };
 
     Instabug.startWithToken("APP_TOKEN", [Instabug.invocationEvent.shake]);
-    Instabug.setReportCategories("Performance","UI","Flow","Other");
-    Instabug.setPromptOptionsEnabled(true, true, true);
+    BugReporting.setReportTypes([BugReporting.reportType.bug, BugReporting.reportType.feedback]);
     Instabug.setLocale(Instabug.locale.english);
   }
 
@@ -140,7 +139,7 @@ export default class App extends Component<{}> {
   }
 
   invoke() {
-    BugReporting.invoke();
+    Instabug.show();
   }
 
   showMultipleQuestionSurvey() {
@@ -156,20 +155,21 @@ export default class App extends Component<{}> {
   }
 
   sendBugReport() {
-    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newBug, []);
+    BugReporting.showWithOptions(BugReporting.reportType.bug);
   }
 
   sendCrashReport() {
     try {
       throw new Error('Text Handled Exception From Instabug Test App'); 
     } catch (Exception) {
-      Instabug.reportJSException(Exception);
+      CrashReporting.reportJSException(Exception);
       alert('Crash report Sent!');
     }
   }
 
   sendFeedback() {
-    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newFeedback, []);
+    BugReporting.showWithOptions(BugReporting.reportType.feedback, [BugReporting.option.emailFieldHidden]);
+
   }
 
   changeInvocationEvent(invocationEvent) {
@@ -186,11 +186,11 @@ export default class App extends Component<{}> {
   }
 
   startNewConversation() {
-    BugReporting.invokeWithInvocationModeAndOptions(BugReporting.invocationMode.newChat, []);
+    Chats.show();
   }
 
   showUnreadMessagesCount() {
-    Instabug.getUnreadMessagesCount((count) => {
+    Replies.getUnreadRepliesCount((count) => {
       alert("Messages: " + count);
     });
   }

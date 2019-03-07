@@ -10,6 +10,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define IBG_DEPRECATED_ATTRIBUTE DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide for instructions on migrating to SDK v8.1 APIs.")
+
 /// ------------------------------
 /// @name User-facing Strings Keys
 /// ------------------------------
@@ -36,7 +38,9 @@ extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
 extern NSString * const kIBGInvalidCommentTitleStringName;
 extern NSString * const kIBGInvocationTitleStringName;
-extern NSString * const kIBGTalkToUsStringName;
+extern NSString * const kIBGTalkToUsStringName DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-setvalue-string-forstringwithkey-kibgtalktousstringname for instructions on migrating to SDK v8.1 APIs.");
+extern NSString * const kIBGFeatureRequetsPromptName;
+extern NSString * const kIBGAskAQuestionStringName;
 extern NSString * const kIBGReportBugStringName;
 extern NSString * const kIBGReportFeedbackStringName;
 extern NSString * const kIBGPhotoPickerTitle;
@@ -193,14 +197,16 @@ typedef NS_ENUM(NSInteger, IBGColorTheme) {
  */
 typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeNA,
-    IBGInvocationModeBugReporter __attribute__((deprecated)),
-    IBGInvocationModeFeedbackSender __attribute__((deprecated)),
     IBGInvocationModeNewBug,
     IBGInvocationModeNewFeedback,
     IBGInvocationModeNewChat,
     IBGInvocationModeChatsList
 };
 
+/**
+ Deprecated, should use IBGBugReportingOption instead.
+ */
+__attribute__((deprecated))
 typedef NS_OPTIONS(NSInteger, IBGBugReportingInvocationOption) {
     IBGBugReportingInvocationOptionEmailFieldHidden = 1 << 0,
     IBGBugReportingInvocationOptionEmailFieldOptional = 1 << 1,
@@ -212,32 +218,23 @@ typedef NS_OPTIONS(NSInteger, IBGBugReportingInvocationOption) {
 /**
  Type of report to be submitted.
  */
+typedef NS_OPTIONS(NSInteger, IBGBugReportingReportType) {
+    IBGBugReportingReportTypeBug = 1 << 0,
+    IBGBugReportingReportTypeFeedback = 1 << 1,
+};
+
+
+typedef NS_OPTIONS(NSInteger, IBGBugReportingOption) {
+    IBGBugReportingOptionEmailFieldHidden = 1 << 0,
+    IBGBugReportingOptionEmailFieldOptional = 1 << 1,
+    IBGBugReportingOptionCommentFieldRequired = 1 << 2,
+    IBGBugReportingOptionDisablePostSendingDialog = 1 << 3,
+    IBGBugReportingOptionNone = 1 << 4,
+};
+
 typedef NS_ENUM(NSInteger, IBGReportType) {
     IBGReportTypeBug,
     IBGReportTypeFeedback
-};
-
-/**
- Type of feedback to be submitted.
- */
-__attribute__((deprecated))
-typedef NS_ENUM(NSInteger, IBGFeedbackType) {
-    IBGFeedbackTypeBug,
-    IBGFeedbackTypeFeedback,
-    IBGFeedbackTypeCrash
-};
-
-/**
- State of Issue after SDK dismiss.
- */
-__attribute__((deprecated))
-typedef NS_ENUM(NSInteger, IBGIssueState) {
-    /** Issue is submitted */
-    IBGIssueSubmitted,
-    /** Issue is cancelled */
-    IBGIssueCancelled,
-    /** Issue is in progress, adding extra screenshot */
-    IBGIssueInProgress
 };
 
 /**
@@ -293,139 +290,6 @@ typedef NS_ENUM(NSInteger, IBGSDKDebugLogsLevel) {
     IBGSDKDebugLogsLevelDebug,
     IBGSDKDebugLogsLevelError,
     IBGSDKDebugLogsLevelNone
-};
-
-/**
- Keys for publicly-facing strings in the SDK.
- Deprecated. Use NSString constants like IBGShakeStartAlertTextStringName and IBGEmailFieldPlaceholderStringName instead.
- */
-typedef NS_ENUM(NSInteger, IBGString) {
-    IBGStringShakeHint,
-    IBGStringSwipeHint,
-    IBGStringEdgeSwipeStartHint,
-    IBGStringScreenshotHint,
-    IBGStringFloatingButtonHint,
-    IBGStringStartAlertText,
-    IBGBetaWelcomeMessageWelcomeStepTitle,
-    IBGBetaWelcomeMessageWelcomeStepContent,
-    IBGBetaWelcomeMessageHowToReportStepTitle,
-    IBGBetaWelcomeMessageHowToReportStepMessage,
-    IBGBetaWelcomeMessageFinishStepTitle,
-    IBGBetaWelcomeMessageFinishStepContent,
-    IBGBetaWelcomeDoneButtonTitle,
-    IBGLiveWelcomeMessageTitle,
-    IBGLiveWelcomeMessageMessage,
-    IBGStringInvalidEmailMessage,
-    IBGStringInvalidEmailTitle,
-    IBGStringInvalidCommentMessage,
-    IBGStringInvalidCommentTitle,
-    IBGStringInvocationHeader,
-    IBGStringTalkToUs,
-    IBGStringReportBug,
-    IBGStringReportFeedback,
-    IBGStringPhotoPickerTitle,
-    IBGStringProgressViewTitle,
-    IBGStringGalleryPermissionDeniedAlertTitle,
-    IBGStringGalleryPermissionDeniedAlertMessage,
-    IBGStringMaximumSizeExceededAlertTitle,
-    IBGStringMaximumSizeExceededAlertMessage,
-    IBGVideoDurationErrorTitle,
-    IBGVideoDurationErrorMessage,
-    IBGStringiCloudImportErrorAlertTitle,
-    IBGStringiCloudImportErrorAlertMessage,
-    IBGStringEmailFieldHint,
-    IBGStringCommentFieldHintForBugReport,
-    IBGStringCommentFieldHintForFeedback,
-    IBGStringAddScreenRecordingMessage,
-    IBGStringAddVoiceMessage,
-    IBGStringAddImageFromGallery,
-    IBGStringAddExtraScreenshot,
-    IBGStringAudioRecordingPermissionDeniedTitle,
-    IBGStringAudioRecordingPermissionDeniedMessage,
-    IBGStringScreenRecordingPermissionDeniedMessage,
-    IBGStringMicrophonePermissionAlertSettingsButtonTitle,
-    IBGStringMicrophonePermissionAlertLaterButtonTitle,
-    IBGStringChatsHeaderTitle,
-    IBGStringTeam,
-    IBGStringRecordingMessageToHoldText,
-    IBGStringRecordingMessageToReleaseText,
-    IBGStringMessagesNotification,
-    IBGStringMessagesNotificationAndOthers,
-    IBGStringScreenshotHeaderTitle,
-    IBGStringOkButtonTitle,
-    IBGStringCancelButtonTitle,
-    IBGStringThankYouText,
-    IBGStringThankYouAlertText,
-    IBGStringAudio,
-    IBGStringScreenRecording,
-    IBGStringImage,
-    IBGStringSurveyEnterYourAnswerPlaceholder,
-    IBGStringVideoPressRecordTitle,
-    IBGStringCollectingDataText,
-    IBGStringLowDiskStorageTitle,
-    IBGStringLowDiskStorageMessage,
-    IBGStringExtraFieldIsRequiredText,
-    IBGStringExtraFieldMissingDataText,
-    IBGStringFeatureRequestsTitle,
-    IBGStringFeatureDetailsTitle,
-    IBGStringFeatureRequestsRefreshText,
-    IBGStringFeatureRequestSortingByRecentlyUpdatedText,
-    IBGStringFeatureRequestSortingByTopVotesText,
-    IBGStringFeatureRequestErrorStateTitleText,
-    IBGStringFeatureRequestErrorStateDescriptionText,
-    IBGStringFeatureRequestAllFeaturesText,
-    IBGStringFeatureRequestMyFeaturesText,
-    IBGStringAddNewFeatureRequestText,
-    IBGStringAddNewFeatureRequestToastText,
-    IBGStringAddNewFeatureRequestErrorToastText,
-    IBGStringAddNewFeatureRequestLoadingHUDTitle,
-    IBGStringAddNewFeatureRequestSuccessHUDTitle,
-    IBGStringAddNewFeatureRequestSuccessHUDMessage,
-    IBGStringAddNewFeatureRequestTryAgainText,
-    IBGStringAddNewFeatureRequestCancelPromptTitle,
-    IBGStringAddNewFeatureRequestCancelPromptYesAction,
-    IBGStringFeatureRequestInvalidEmailText,
-    IBGStringFeatureRequestStatusChangeText,
-    IBGStringFeatureRequestAddButtonText,
-    IBGStringFeatureRequestVoteWithCountText,
-    IBGStringFeatureRequestVoteText,
-    IBGStringFeatureRequestPostButtonText,
-    IBGStringFeatureRequestCommentsText,
-    IBGStringFeatureRequestAuthorText,
-    IBGStringFeatureRequestEmptyViewTitle,
-    IBGStringFeatureRequestAddYourIdeaText,
-    IBGStringFeatureRequestAnonymousText,
-    IBGStringFeatureRequestStatusPosted,
-    IBGStringFeatureRequestStatusPlanned,
-    IBGStringFeatureRequestStatusStarted,
-    IBGStringFeatureRequestStatusCompleted,
-    IBGStringFeatureRequestStatusMaybeLater,
-    IBGFeatureRequestTimelineEmptyCommentText,
-    IBGFeatureRequestTimelineErrorDescriptionText,
-    IBGStringFeatureRequestStatusMoreText,
-    IBGStringFeatureRequestStatusLessText,
-    IBGStringFeatureRequestAddYourThoughtsText,
-    IBGStringEmailRequiredText,
-    IBGStringNameText,
-    IBGStringEmailText,
-    IBGStringTitleText,
-    IBGStringDescriptionText,
-    IBGStringSurveyIntroTitleText,
-    IBGStringSurveyIntroDescriptionText,
-    IBGStringSurveyIntroTakeSurveyButtonText,
-    IBGStringSurveyIntroDismissButtonText,
-    IBGStringSurveyThankYouTitleText,
-    IBGStringSurveyThankYouDescriptionText,
-    IBGExpectedResultsStringName,
-    IBGActualResultsStringName,
-    IBGStepsToReproduceStringName,
-    IBGReplyButtonTitleStringName,
-    IBGAddAttachmentButtonTitleStringName,
-    IBGDiscardAlertTitleStringName,
-    IBGDiscardAlertMessageStringName,
-    IBGDiscardAlertActionStringName,
-    IBGDiscardAlertCancelStringName,
-    IBGVideoGalleryErrorMessageStringName
 };
 
 /**
@@ -506,3 +370,11 @@ typedef NS_ENUM(NSInteger, IBGWelcomeMessageMode) {
 
 /* CHECK NULLABILITY! */
 typedef void (^NetworkObfuscationCompletionBlock)(NSData *data, NSURLResponse *response);
+
+/* Platform */
+typedef NS_ENUM(NSInteger, IBGPlatform) {
+    IBGPlatformIOS,
+    IBGPlatformReactNative,
+    IBGPlatformCordova,
+    IBGPlatformXamarin
+};
