@@ -2,7 +2,8 @@ import {
   NativeModules,
   NativeAppEventEmitter,
   DeviceEventEmitter,
-  Platform
+  Platform,
+  processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
 import InstabugUtils from './utils/InstabugUtils';
@@ -249,7 +250,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-      Instabug.setPrimaryColor(primaryColor);
+      Instabug.setPrimaryColor(processColor(primaryColor));
   },
 
   /**

@@ -92,6 +92,7 @@ export function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolea
 export function setAutoScreenRecosetAutoScreenRecordingMaxDurationrdingEnabled(autoScreenRecordingMaxDuration: number): void;
 export function IBGLog(log: string): void;
 export function setUserStepsEnabled(isUserStepsEnabled: boolean): void;
+export function setTrackUserSteps(issetTrackUserSteps: boolean): void;
 export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
 export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
 export function setPreSendingHandler(preSendingHandler: () => void): void;
@@ -135,9 +136,9 @@ export function setPrimaryColor(setPrimaryColor: string): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
-export function setstringToKey(
+export function setStringToKey(
   string: string,
-  key: string
+  key: strings,
   ): void;
 export function setAttachmentTypesEnabled(
   screenshot: boolean,
