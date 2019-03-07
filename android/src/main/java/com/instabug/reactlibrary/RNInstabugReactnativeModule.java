@@ -32,6 +32,7 @@ import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
+import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -471,9 +472,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setCrashReportingEnabled(boolean isEnabled) {
         try {
             if (isEnabled) {
-                Instabug.setCrashReportingState(Feature.State.ENABLED);
+                CrashReporting.setState(Feature.State.ENABLED);
             } else {
-                Instabug.setCrashReportingState(Feature.State.DISABLED);
+                CrashReporting.setState(Feature.State.DISABLED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -608,11 +609,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void enable() {
-        try {
-            mInstabug.enable();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setState(InstabugState.ENABLED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1584,12 +1590,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setBugReportingEnabled(boolean isEnabled) {
-        if (isEnabled) {
-            BugReporting.setState(Feature.State.ENABLED);
-        } else {
-            BugReporting.setState(Feature.State.DISABLED);
-        }
+    public void setBugReportingEnabled(final boolean isEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        BugReporting.setState(Feature.State.ENABLED);
+                    } else {
+                        BugReporting.setState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @ReactMethod
@@ -1607,12 +1623,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setChatsEnabled(boolean isEnabled) {
-        if (isEnabled) {
-            Chats.setState(Feature.State.ENABLED);
-        } else {
-            Chats.setState(Feature.State.DISABLED);
-        }
+    public void setChatsEnabled(final boolean isEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        Chats.setState(Feature.State.ENABLED);
+                    } else {
+                        Chats.setState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
@@ -1621,12 +1646,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setRepliesEnabled(boolean isEnabled) {
-        if (isEnabled) {
-            Replies.setState(Feature.State.ENABLED);
-        } else {
-            Replies.setState(Feature.State.DISABLED);
-        }
+    public void setRepliesEnabled(final boolean isEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        Replies.setState(Feature.State.ENABLED);
+                    } else {
+                        Replies.setState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
