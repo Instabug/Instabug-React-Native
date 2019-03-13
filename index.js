@@ -11,6 +11,7 @@ import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
 import Replies from './modules/Replies';
+import CrashReporting from './modules/CrashReporting';
 
 InstabugUtils.captureJsErrors();
 
@@ -979,5 +980,6 @@ InstabugModule.Surveys = Surveys;
 InstabugModule.FeatureRequests = FeatureRequests;
 InstabugModule.Chats = Chats;
 InstabugModule.Replies = Replies;
+InstabugModule.CrashReporting = CrashReporting;
 
 module.exports = InstabugModule;
