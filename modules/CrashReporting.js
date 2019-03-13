@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import InstabugUtils from '../utils/InstabugUtils';
 let { Instabug } = NativeModules;
 
