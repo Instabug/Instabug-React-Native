@@ -78,6 +78,9 @@ public class RNInstabugReactnativePackage implements ReactPackage {
             } else if (invocationEventValues[i].equals("shake")) {
                 this.invocationEvents.add(InstabugInvocationEvent.SHAKE);
 
+            } else if (invocationEventValues[i].equals("screenshot")) {
+                this.invocationEvents.add(InstabugInvocationEvent.SCREENSHOT);
+
             } else if (invocationEventValues[i].equals("none")) {
                 this.invocationEvents.add(InstabugInvocationEvent.NONE);
             }
