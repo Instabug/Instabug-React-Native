@@ -68,19 +68,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated use {@link Instabug.setTrackUserSteps}
-   * Sets whether the SDK is tracking user steps or not.
-   * Enabling user steps would give you an insight on the scenario a user has
-   * performed before encountering a bug or a crash. User steps are attached
-   * with each report being sent.
-   * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
-   * to being enabled or disabled.
-   */
-  setUserStepsEnabled: function(isUserStepsEnabled) {
-    if (Platform.OS === 'ios') Instabug.setUserStepsEnabled(isUserStepsEnabled);
-  },
-
-  /**
    * Sets whether the SDK is tracking user steps or not.
    * Enabling user steps would give you an insight on the scenario a user has
    * performed before encountering a bug or a crash. User steps are attached
@@ -100,15 +87,6 @@ const InstabugModule = {
   setIBGLogPrintsToConsole: function(printsToConsole) {
     if (Platform.OS === 'ios')
       Instabug.setIBGLogPrintsToConsole(printsToConsole);
-  },
-
-  /**
-   * @deprecated use {@link CrashReporting.setCrashReportingEnabled}
-   * Report un-caught exceptions to Instabug dashboard
-   * We don't send exceptions from __DEV__, since it's way too noisy!
-   */
-  setCrashReportingEnabled: function(enableCrashReporter) {
-    Instabug.setCrashReportingEnabled(enableCrashReporter);
   },
 
   /**
@@ -145,37 +123,6 @@ const InstabugModule = {
    */
   setSessionProfilerEnabled: function(sessionProfilerEnabled) {
     Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
-  },
-
-  /**
-   * Sets the default value of the user's email and hides the email field
-   * from the reporting UI.
-   * Defaults to an empty string.
-   * @param {string} userEmail An email address to be set as the user's email.
-   */
-  setUserEmail: function(userEmail) {
-    Instabug.setUserEmail(userEmail);
-  },
-
-  /**
-   * Sets the default value of the user's name to be included with all reports.
-   * Defaults to an empty string.
-   * @param {string} userName Name of the user to be set.
-   */
-  setUserName: function(userName) {
-    Instabug.setUserName(userName);
-  },
-
-  /**
-   * @deprecated use {@link Replies.getUnreadRepliesCount}
-   * Returns the number of unread messages the user currently has.
-   * Use this method to get the number of unread messages the user
-   * has, then possibly notify them about it with your own UI.
-   * @param {messageCountCallback} messageCountCallback callback with argument
-   * Notifications count, or -1 in case the SDK has not been initialized.
-   */
-  getUnreadMessagesCount: function(messageCountCallback) {
-    Instabug.getUnreadMessagesCount(messageCountCallback);
   },
 
   /**
@@ -309,40 +256,6 @@ const InstabugModule = {
       galleryImage,
       screenRecording
     );
-  },
-
-  /**
-   * @deprecated use {@link Replies.setInAppNotificationsEnabled}
-   * Enables/disables showing in-app notifications when the user receives a
-   * new message.
-   * @param {boolean} isChatNotificationEnabled A boolean to set whether
-   * notifications are enabled or disabled.
-   */
-  setChatNotificationEnabled: function(isChatNotificationEnabled) {
-    Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
-  },
-
-  /**
-   * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
-   * Sets a block of code that gets executed when a new message is received.
-   * @param {function} onNewMessageHandler - A callback that gets
-   * executed when a new message is received.
-   */
-  setOnNewMessageHandler: function(onNewMessageHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGonNewMessageHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    }
-
-    Instabug.setOnNewMessageHandler(onNewMessageHandler);
   },
 
   /**
@@ -568,20 +481,6 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated use {@link Surveys.setEnabled}
-   * @summary Sets whether surveys are enabled or not.
-   * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
-   * those surveys are still going to be sent to the device, but are not going to be
-   * shown automatically.
-   * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
-   * Defaults to `true`.
-   * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
-   */
-  setSurveysEnabled: function(surveysEnabled) {
-    Instabug.setSurveysEnabled(surveysEnabled);
-  },
-
-  /**
    * Enable/Disable debug logs from Instabug SDK
    * Default state: disabled
    *
@@ -623,41 +522,6 @@ const InstabugModule = {
   isRunningLive: function(runningLiveCallBack) {
     if (Platform.OS === 'ios') {
       Instabug.isRunningLive(runningLiveCallBack);
-    }
-  },
-
-  /**
-   * @deprecated use {@link Replies.setInAppNotificationSound}
-   * Set whether new in app notification received will play a small sound notification
-   * or not (Default is {@code false})
-   *
-   * @param shouldPlaySound desired state of conversation sounds
-   * @since 4.1.0
-   */
-  setEnableInAppNotificationSound: function(shouldPlaySound) {
-    if (Platform.OS === 'android') {
-      Instabug.setEnableInAppNotificationSound(shouldPlaySound);
-    }
-  },
-
-  /**
-   * @deprecated use {@link CrashReporting.reportJSException}
-   * Send handled JS error object
-   *
-   * @param errorObject   Error object to be sent to Instabug's servers
-   */
-  reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
-    var jsonObject = {
-      message: errorObject.name + ' - ' + errorObject.message,
-      os: Platform.OS,
-      platform: 'react_native',
-      exception: jsStackTrace
-    };
-    if (Platform.OS === 'android') {
-      Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-    } else {
-      Instabug.sendHandledJSCrash(jsonObject);
     }
   },
 
