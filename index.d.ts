@@ -121,8 +121,10 @@ export function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolea
 export function setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration: number): void;
 export function setTrackUserSteps(isEnabled: boolean): void;
 export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
+export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
 export function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
 export function setSessionProfilerEnabled(sessionProfilerEnabled: boolean): void;
+export function getUnreadMessagesCount(messageCountCallback: () => void): void;
 export function setPushNotificationsEnabled(isPushNotificationEnabled: boolean): void;
 export function setEmailFieldRequiredForActions(
   isEmailFieldRequired: boolean,
@@ -138,9 +140,9 @@ export function setPrimaryColor(setPrimaryColor: string): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
-export function setstringToKey(
+export function setStringToKey(
   string: string,
-  key: string
+  key: strings,
   ): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
@@ -172,10 +174,15 @@ export function getUserAttribute(
 export function removeUserAttribute(key: string): void;
 export function getAllUserAttributes(userAttributesCallback: () => void): void;
 export function clearAllUserAttributes(): void;
+export function setChatNotificationEnabled(isChatNotificationEnabled: boolean): void;
+export function setOnNewMessageHandler(onNewMessageHandler: () => void): void;
 export function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
+export function setSurveysEnabled(surveysEnabled: boolean): void;
 export function setDebugEnabled(isDebugEnabled: boolean): void;
 export function enable(): void;
 export function disable(): void;
+export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
+export function reportJSException(Exception: object): void;
 export function isRunningLive(runningLiveCallBack: () => void): void;
 export function setVideoRecordingFloatingButtonPosition(position: IBGPosition): void;
 export function setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen: boolean): void;

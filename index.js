@@ -2,7 +2,8 @@ import {
   NativeModules,
   NativeAppEventEmitter,
   DeviceEventEmitter,
-  Platform
+  Platform,
+  processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
 import InstabugUtils from './utils/InstabugUtils';
@@ -90,6 +91,15 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link CrashReporting.setCrashReportingEnabled}
+   * Report un-caught exceptions to Instabug dashboard
+   * We don't send exceptions from __DEV__, since it's way too noisy!
+   */
+  setCrashReportingEnabled: function(enableCrashReporter) {
+    Instabug.setCrashReportingEnabled(enableCrashReporter);
+  },
+
+  /**
    * Sets a block of code to be executed when a prompt option is selected.
    * @param {function} didSelectPromptOptionHandler - A block of code that
    *                  gets executed when a prompt option is selected.
@@ -123,6 +133,19 @@ const InstabugModule = {
    */
   setSessionProfilerEnabled: function(sessionProfilerEnabled) {
     Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
+  },
+
+  /**
+   * @deprecated use {@link Replies.getUnreadRepliesCount}
+   * Returns the number of unread messages the user currently has.
+   * Use this method to get the number of unread messages the user
+   * has, then possibly notify them about it with your own UI.
+   * @param {messageCountCallback} messageCountCallback callback with argument
+   * Notifications count, or -1 in case the SDK has not been initialized.
+   */
+
+  getUnreadMessagesCount: function(messageCountCallback) {
+    Instabug.getUnreadMessagesCount(messageCountCallback);
   },
 
   /**
@@ -197,7 +220,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-      Instabug.setPrimaryColor(primaryColor);
+    Instabug.setPrimaryColor(primaryColor);
   },
 
   /**
@@ -472,12 +495,63 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setInAppNotificationsEnabled}
+   * Enables/disables showing in-app notifications when the user receives a
+   * new message.
+   * @param {boolean} isChatNotificationEnabled A boolean to set whether
+   * notifications are enabled or disabled.
+   */
+
+  setChatNotificationEnabled: function(isChatNotificationEnabled) {
+    Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
+  },
+
+  /**
+   * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
+   * Sets a block of code that gets executed when a new message is received.
+   * @param {function} onNewMessageHandler - A callback that gets
+   * executed when a new message is received.
+   */
+
+  setOnNewMessageHandler: function(onNewMessageHandler) {
+    if (Platform.OS === 'ios') {
+      Instabug.addListener('IBGonNewMessageHandler');
+      NativeAppEventEmitter.addListener(
+        'IBGonNewMessageHandler',
+        onNewMessageHandler
+      );
+    } else {
+      DeviceEventEmitter.addListener(
+        'IBGonNewMessageHandler',
+        onNewMessageHandler
+      );
+    }
+
+    Instabug.setOnNewMessageHandler(onNewMessageHandler);
+  },
+
+  /**
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
    */
   setViewHierarchyEnabled: function(viewHierarchyEnabled) {
     Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
+  },
+
+  /**
+   * @deprecated use {@link Surveys.setEnabled}
+   * @summary Sets whether surveys are enabled or not.
+   * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
+   * those surveys are still going to be sent to the device, but are not going to be
+   * shown automatically.
+   * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
+   * Defaults to `true`.
+   * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
+   */
+
+  setSurveysEnabled: function(surveysEnabled) {
+    Instabug.setSurveysEnabled(surveysEnabled);
   },
 
   /**
@@ -509,6 +583,43 @@ const InstabugModule = {
   disable: function() {
     if (Platform.OS === 'android') {
       Instabug.disable();
+    }
+  },
+
+  /**
+   * @deprecated use {@link Replies.setInAppNotificationSound}
+   * Set whether new in app notification received will play a small sound notification
+   * or not (Default is {@code false})
+   *
+   * @param shouldPlaySound desired state of conversation sounds
+   * @since 4.1.0
+   */
+
+  setEnableInAppNotificationSound: function(shouldPlaySound) {
+    if (Platform.OS === 'android') {
+      Instabug.setEnableInAppNotificationSound(shouldPlaySound);
+    }
+  },
+
+  /**
+   * @deprecated use {@link CrashReporting.reportJSException}
+   * Send handled JS error object
+   *
+   * @param errorObject   Error object to be sent to Instabug's servers
+   */
+
+  reportJSException: function(errorObject) {
+    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    var jsonObject = {
+      message: errorObject.name + ' - ' + errorObject.message,
+      os: Platform.OS,
+      platform: 'react_native',
+      exception: jsStackTrace
+    };
+    if (Platform.OS === 'android') {
+      Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+    } else {
+      Instabug.sendHandledJSCrash(jsonObject);
     }
   },
 
