@@ -29,3 +29,13 @@ dependencies {
         exclude group: 'com.android.support:appcompat-v7'
     }
 }
+
+task upload_sourcemap(type: Exec) {
+    commandLine 'sh', './upload_sourcemap.sh'
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'preReleaseBuild') {
+        task.dependsOn upload_sourcemap 
+    }
+}
