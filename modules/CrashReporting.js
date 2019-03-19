@@ -6,7 +6,7 @@ let { Instabug } = NativeModules;
  * CrashReporting
  * @exports CrashReporting
  */
-module.exports = {
+export default {
   /**
    * Enables and disables everything related to crash reporting including intercepting
    * errors in the global error handler. It is enabled by default.

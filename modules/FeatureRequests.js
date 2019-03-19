@@ -5,7 +5,7 @@ let {Instabug} = NativeModules;
  * FeatureRequests
  * @exports FeatureRequests
  */
-module.exports = {
+export default {
 
    /**
      * Sets whether users are required to enter an email address or not when
