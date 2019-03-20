@@ -4,6 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 export namespace BugReporting {
+  function setEnabled(isEnabled: boolean): void;
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
   function invoke(): void;
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
@@ -14,7 +15,6 @@ export namespace BugReporting {
   function onInvokeHandler(preInvocationHandler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(postInvocationHandler: () => void): void;
-  function dismiss(): void;
   function setPromptOptionsEnabled(
     chat: boolean,
     bug: boolean,
@@ -24,6 +24,10 @@ export namespace BugReporting {
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
   function setExtendedBugReportMode(extendedBugReportMode: extendedBugReportMode): void;
+  function setReportTypes(types: reportType): void;
+  function showWithOptions(
+    type: reportType,
+    options: option[]): void;
   enum invocationEvent {
     none,
     shake,
@@ -49,6 +53,24 @@ export namespace BugReporting {
     enabledWithOptionalFields,
     disabled
   }
+  enum reportType {
+    bug,
+    feedback
+  }
+  enum option {
+    emailFieldHidden,
+    emailFieldOptional,
+    commentFieldRequired,
+    disablePostSendingDialog
+  }
+}
+export namespace Chats {
+  function setEnabled(isEnabled: boolean): void;
+  function show(): void;
+}
+export namespace CrashReporting {
+  function setEnabled(isEnabled: boolean): void;
+  function reportJSException(Exception: object): void;
 }
 export namespace FeatureRequests {
   function setEmailFieldRequired(
@@ -63,7 +85,17 @@ export namespace FeatureRequests {
     addCommentToFeature
   }
 }
+export namespace Replies {
+  function setEnabled(isEnabled: boolean): void;
+  function hasChats(callback: () => void): void;
+  function show(): void;
+  function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
+  function getUnreadRepliesCount(messageCountCallback: () => void): void;
+  function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
+  function setInAppNotificationSound(shouldPlaySound: boolean): void;
+}
 export namespace Surveys {
+  function setEnabled(isEnabled: boolean): void;
   function showSurveyIfAvailable(): void;
   function setThresholdForReshowingSurveyAfterDismiss(
     sessionCount: number,
@@ -84,53 +116,25 @@ export function startWithToken(
   token: string,
   invocationEvent: invocationEvent[]
   ): void;
-export function invoke(): void;
-export function invokeWithInvocationMode(invocationMode: invocationMode): void;
-export function dismiss(): void;
 export function setUserData(userData: string): void;
 export function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolean): void;
-export function setAutoScreenRecosetAutoScreenRecordingMaxDurationrdingEnabled(autoScreenRecordingMaxDuration: number): void;
-export function IBGLog(log: string): void;
-export function setUserStepsEnabled(isUserStepsEnabled: boolean): void;
-export function setTrackUserSteps(issetTrackUserSteps: boolean): void;
+export function setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration: number): void;
+export function setTrackUserSteps(isEnabled: boolean): void;
 export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
 export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
-export function setPreSendingHandler(preSendingHandler: () => void): void;
 export function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
-export function showSurveyWithToken(surveyToken: string): void;
-export function hasRespondedToSurveyWithToken(
-  surveyToken: string,
-  surveyTokenCallback: () => void
-  ): void;
 export function setSessionProfilerEnabled(sessionProfilerEnabled: boolean): void;
-export function setPreInvocationHandler(preInvocationHandler: () => void): void;
-export function setPostInvocationHandler(postInvocationHandler: () => void): void;
-export function showIntroMessage(): void;
-export function setUserEmail(userEmail: string): void;
-export function setUserName(userName: string): void;
-export function setWillSkipScreenshotAnnotation(setWillSkipScreenshotAnnotation: boolean): void;
 export function getUnreadMessagesCount(messageCountCallback: () => void): void;
-export function setInvocationEvent(invocationEvent: invocationEvent): void;
 export function setPushNotificationsEnabled(isPushNotificationEnabled: boolean): void;
-export function setEmailFieldRequired(isEmailFieldRequired: boolean): void;
 export function setEmailFieldRequiredForActions(
   isEmailFieldRequired: boolean,
   actionTypes: actionTypes
   ): void;
-export function setCommentFieldRequired(isCommentFieldRequired: boolean): void;
-export function setShakingThresholdForIPhone(
-  iPhoneShakingThreshold: number,
-  iPadShakingThreshold: number
-  ): void;
-export function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
-export function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
-export function setShakingThresholdForAndroid(androidThreshold: number): void;
 export function setFloatingButtonEdge(
   floatingButtonEdge: number,
   offsetFromTop: number
   ): void;
 export function setLocale(locale: locale): void;
-export function setIntroMessageEnabled(isIntroMessageEnabled: boolean): void;
 export function setColorTheme(colorTheme: colorTheme): void;
 export function setPrimaryColor(setPrimaryColor: string): void;
 export function appendTags(tags: string[]): void;
@@ -140,32 +144,17 @@ export function setStringToKey(
   string: string,
   key: strings,
   ): void;
-export function setAttachmentTypesEnabled(
-  screenshot: boolean,
-  extraScreenshot: boolean,
-  galleryImage: boolean,
-  voiceNote: boolean,
-  screenRecording: boolean
-  ): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
   extraScreenshot: boolean,
   galleryImage: boolean,
   screenRecording: boolean
   ): void;
-export function setChatNotificationEnabled(isChatNotificationEnabled: boolean): void;
-export function setOnNewMessageHandler(onNewMessageHandler: () => void): void;
-export function isInstabugNotification(
-  dict: any,
-  isInstabugNotificationCallback: () => void
-  ): void;
 export function identifyUserWithEmail(
   email: string,
   name: string
   ): void;
 export function logOut(): void;
-export function setReportCategories(...titles: string[]): void;
-export function setExtendedBugReportMode(extendedBugReportMode: extendedBugReportMode): void;
 export function logUserEventWithName(name: string,  params?: any): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
@@ -185,30 +174,17 @@ export function getUserAttribute(
 export function removeUserAttribute(key: string): void;
 export function getAllUserAttributes(userAttributesCallback: () => void): void;
 export function clearAllUserAttributes(): void;
+export function setChatNotificationEnabled(isChatNotificationEnabled: boolean): void;
+export function setOnNewMessageHandler(onNewMessageHandler: () => void): void;
 export function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
 export function setSurveysEnabled(surveysEnabled: boolean): void;
-export function showSurveysIfAvailable(): void;
-export function setWillShowSurveyHandler(willShowSurveyHandler: () => void): void;
-export function setDidDismissSurveyHandler(didDismissSurveyHandler: () => void): void;
-export function setPromptOptionsEnabled(
-  chat: boolean,
-  bug: boolean,
-  feedback: boolean
-  ): void;
 export function setDebugEnabled(isDebugEnabled: boolean): void;
 export function enable(): void;
 export function disable(): void;
-export function isRunningLive(runningLiveCallBack: () => void): void;
-export function setSuccessDialogEnabled(enabled: boolean): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
-export function reportJSException(errorObject: any): void;
+export function reportJSException(Exception: object): void;
+export function isRunningLive(runningLiveCallBack: () => void): void;
 export function setVideoRecordingFloatingButtonPosition(position: IBGPosition): void;
-export function setThresholdForReshowingSurveyAfterDismiss(
-  sessionCount: number,
-  daysCount: number
-  ): void;
-export function setAutoShowingSurveysEnabled(autoShowingSurveysEnabled: boolean): void;
-export function showFeatureRequests(): void;
 export function setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
 export function showWelcomeMessage(welcomeMessageMode: welcomeMessageMode): void;
 export function setWelcomeMessageMode(welcomeMessageMode: welcomeMessageMode): void;
@@ -216,6 +192,8 @@ export function addFileAttachment(
   filePath: string,
   fileName: string
   ): void;
+export function show(): void;
+export function onReportSubmitHandler(preSendingHandler: () => void): void;
 export function callPrivateApi(
   apiName: string,
   param: any

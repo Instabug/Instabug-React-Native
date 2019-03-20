@@ -12,6 +12,7 @@ import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
 import Replies from './modules/Replies';
+import CrashReporting from './modules/CrashReporting';
 
 InstabugUtils.captureJsErrors();
 
@@ -65,19 +66,6 @@ const InstabugModule = {
    */
   setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
     Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
-  },
-
-  /**
-   * @deprecated use {@link Instabug.setTrackUserSteps}
-   * Sets whether the SDK is tracking user steps or not.
-   * Enabling user steps would give you an insight on the scenario a user has
-   * performed before encountering a bug or a crash. User steps are attached
-   * with each report being sent.
-   * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
-   * to being enabled or disabled.
-   */
-  setUserStepsEnabled: function(isUserStepsEnabled) {
-    if (Platform.OS === 'ios') Instabug.setUserStepsEnabled(isUserStepsEnabled);
   },
 
   /**
@@ -148,25 +136,6 @@ const InstabugModule = {
   },
 
   /**
-   * Sets the default value of the user's email and hides the email field
-   * from the reporting UI.
-   * Defaults to an empty string.
-   * @param {string} userEmail An email address to be set as the user's email.
-   */
-  setUserEmail: function(userEmail) {
-    Instabug.setUserEmail(userEmail);
-  },
-
-  /**
-   * Sets the default value of the user's name to be included with all reports.
-   * Defaults to an empty string.
-   * @param {string} userName Name of the user to be set.
-   */
-  setUserName: function(userName) {
-    Instabug.setUserName(userName);
-  },
-
-  /**
    * @deprecated use {@link Replies.getUnreadRepliesCount}
    * Returns the number of unread messages the user currently has.
    * Use this method to get the number of unread messages the user
@@ -174,6 +143,7 @@ const InstabugModule = {
    * @param {messageCountCallback} messageCountCallback callback with argument
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
+
   getUnreadMessagesCount: function(messageCountCallback) {
     Instabug.getUnreadMessagesCount(messageCountCallback);
   },
@@ -250,7 +220,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-      Instabug.setPrimaryColor(processColor(primaryColor));
+    Instabug.setPrimaryColor(primaryColor);
   },
 
   /**
@@ -309,40 +279,6 @@ const InstabugModule = {
       galleryImage,
       screenRecording
     );
-  },
-
-  /**
-   * @deprecated use {@link Replies.setInAppNotificationsEnabled}
-   * Enables/disables showing in-app notifications when the user receives a
-   * new message.
-   * @param {boolean} isChatNotificationEnabled A boolean to set whether
-   * notifications are enabled or disabled.
-   */
-  setChatNotificationEnabled: function(isChatNotificationEnabled) {
-    Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
-  },
-
-  /**
-   * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
-   * Sets a block of code that gets executed when a new message is received.
-   * @param {function} onNewMessageHandler - A callback that gets
-   * executed when a new message is received.
-   */
-  setOnNewMessageHandler: function(onNewMessageHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGonNewMessageHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    }
-
-    Instabug.setOnNewMessageHandler(onNewMessageHandler);
   },
 
   /**
@@ -559,6 +495,42 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setInAppNotificationsEnabled}
+   * Enables/disables showing in-app notifications when the user receives a
+   * new message.
+   * @param {boolean} isChatNotificationEnabled A boolean to set whether
+   * notifications are enabled or disabled.
+   */
+
+  setChatNotificationEnabled: function(isChatNotificationEnabled) {
+    Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
+  },
+
+  /**
+   * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
+   * Sets a block of code that gets executed when a new message is received.
+   * @param {function} onNewMessageHandler - A callback that gets
+   * executed when a new message is received.
+   */
+
+  setOnNewMessageHandler: function(onNewMessageHandler) {
+    if (Platform.OS === 'ios') {
+      Instabug.addListener('IBGonNewMessageHandler');
+      NativeAppEventEmitter.addListener(
+        'IBGonNewMessageHandler',
+        onNewMessageHandler
+      );
+    } else {
+      DeviceEventEmitter.addListener(
+        'IBGonNewMessageHandler',
+        onNewMessageHandler
+      );
+    }
+
+    Instabug.setOnNewMessageHandler(onNewMessageHandler);
+  },
+
+  /**
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
@@ -577,6 +549,7 @@ const InstabugModule = {
    * Defaults to `true`.
    * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
+
   setSurveysEnabled: function(surveysEnabled) {
     Instabug.setSurveysEnabled(surveysEnabled);
   },
@@ -614,19 +587,6 @@ const InstabugModule = {
   },
 
   /**
-   * @summary Checks whether app is development/Beta testing OR live
-   * Note: This API is iOS only
-   * It returns in the callback false if in development or beta testing on Test Flight, and
-   * true if app is live on the app store.
-   * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
-   */
-  isRunningLive: function(runningLiveCallBack) {
-    if (Platform.OS === 'ios') {
-      Instabug.isRunningLive(runningLiveCallBack);
-    }
-  },
-
-  /**
    * @deprecated use {@link Replies.setInAppNotificationSound}
    * Set whether new in app notification received will play a small sound notification
    * or not (Default is {@code false})
@@ -634,6 +594,7 @@ const InstabugModule = {
    * @param shouldPlaySound desired state of conversation sounds
    * @since 4.1.0
    */
+
   setEnableInAppNotificationSound: function(shouldPlaySound) {
     if (Platform.OS === 'android') {
       Instabug.setEnableInAppNotificationSound(shouldPlaySound);
@@ -646,6 +607,7 @@ const InstabugModule = {
    *
    * @param errorObject   Error object to be sent to Instabug's servers
    */
+
   reportJSException: function(errorObject) {
     let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
     var jsonObject = {
@@ -658,6 +620,19 @@ const InstabugModule = {
       Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
     } else {
       Instabug.sendHandledJSCrash(jsonObject);
+    }
+  },
+
+  /**
+   * @summary Checks whether app is development/Beta testing OR live
+   * Note: This API is iOS only
+   * It returns in the callback false if in development or beta testing on Test Flight, and
+   * true if app is live on the app store.
+   * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
+   */
+  isRunningLive: function(runningLiveCallBack) {
+    if (Platform.OS === 'ios') {
+      Instabug.isRunningLive(runningLiveCallBack);
     }
   },
 
@@ -980,5 +955,6 @@ InstabugModule.Surveys = Surveys;
 InstabugModule.FeatureRequests = FeatureRequests;
 InstabugModule.Chats = Chats;
 InstabugModule.Replies = Replies;
+InstabugModule.CrashReporting = CrashReporting;
 
 module.exports = InstabugModule;
