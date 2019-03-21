@@ -6,7 +6,7 @@ let { Instabug } = NativeModules;
  * Replies
  * @exports Replies
  */
-module.exports = {
+export default {
   /**
    * Enables and disables everything related to receiving replies.
    * @param {boolean} isEnabled

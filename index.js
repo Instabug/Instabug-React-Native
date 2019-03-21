@@ -957,4 +957,4 @@ InstabugModule.Chats = Chats;
 InstabugModule.Replies = Replies;
 InstabugModule.CrashReporting = CrashReporting;
 
-module.exports = InstabugModule;
+export default InstabugModule;
