@@ -16,6 +16,8 @@ framework_name = 'Instabug.framework'
 
 INSTABUG_PHASE_NAME = "Strip Frameworks"
 
+INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
+
 # Get useful variables
 project = Xcodeproj::Project.open(project_location)
 frameworks_group = project.groups.find { |group| group.display_name == 'Frameworks' }
@@ -44,6 +46,10 @@ targets.each do |target|
 
 	#Delete New Run Script Phase from Build Phases
 	shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_PHASE_NAME }
+	target.build_phases.delete(shell_script_build_phase)
+
+	#Delete New Run Script Phase from Build Phases
+	shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_UPLOAD_NAME }
 	target.build_phases.delete(shell_script_build_phase)
 end
 

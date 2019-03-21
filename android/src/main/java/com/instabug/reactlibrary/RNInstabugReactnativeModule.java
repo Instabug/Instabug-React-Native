@@ -1666,9 +1666,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void hasChats(Callback callback) {
         boolean hasChats = Replies.hasChats();
-        if (hasChats) {
-            callback.invoke();
-        }
+        callback.invoke(hasChats);
+
     }
 
     @ReactMethod
