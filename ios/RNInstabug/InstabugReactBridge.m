@@ -567,10 +567,8 @@ RCT_EXPORT_METHOD(setRepliesEnabled:(BOOL) isEnabled) {
 
 RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
     BOOL hasChats = IBGReplies.hasChats;
-    if (hasChats) {
-        callback(nil);
-        
-    }
+    callback(@[@(hasChats)]);
+
 }
 
 RCT_EXPORT_METHOD(showReplies) {
