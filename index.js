@@ -950,6 +950,15 @@ const InstabugModule = {
   }
 };
 
+export {
+  BugReporting,
+  Surveys,
+  FeatureRequests,
+  Chats,
+  Replies,
+  CrashReporting
+};
+
 InstabugModule.BugReporting = BugReporting;
 InstabugModule.Surveys = Surveys;
 InstabugModule.FeatureRequests = FeatureRequests;
