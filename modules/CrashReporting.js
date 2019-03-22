@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import InstabugUtils from '../utils/InstabugUtils';
+import { parseErrorStack } from '../utils/InstabugUtils';
 let { Instabug } = NativeModules;
 
 /**
@@ -22,7 +22,7 @@ export default {
    * @param errorObject   Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    let jsStackTrace = parseErrorStack(errorObject);
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,

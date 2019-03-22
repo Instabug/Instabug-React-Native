@@ -3,13 +3,13 @@ import {NativeModules, Platform} from 'react-native';
 let {Instabug} = NativeModules;
 import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
 
-let parseErrorStack = (error) => {
+export const parseErrorStack = (error) => {
     return parseErrorStackLib(error);
 };
 
 const originalHandler = global.ErrorUtils.getGlobalHandler();
 
-let init = () => {
+export const captureJsErrors = () => {
     if (__DEV__) {
         return;
     }
@@ -43,6 +43,6 @@ let init = () => {
 };
 
 export default {
-    parseErrorStack: parseErrorStack,
-    captureJsErrors: init
+    parseErrorStack,
+    captureJsErrors
 };
