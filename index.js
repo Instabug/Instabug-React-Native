@@ -946,7 +946,11 @@ const InstabugModule = {
     welcomeMessageLiveWelcomeStepTitle:
       Instabug.welcomeMessageLiveWelcomeStepTitle,
     welcomeMessageLiveWelcomeStepContent:
-      Instabug.welcomeMessageLiveWelcomeStepContent
+      Instabug.welcomeMessageLiveWelcomeStepContent,
+    surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
+    surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
+    surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
+    surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle
   }
 };
 
