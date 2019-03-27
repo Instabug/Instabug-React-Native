@@ -75,11 +75,13 @@ NS_SWIFT_NAME(Surveys)
  @brief Sets a threshold for numbers of sessions and another for number of days required before a survey, that has been dismissed once, would show again.
  
  @discussion When a survey that has been shown to the user gets dismissed once, it will not reappear to the user unless a certain number of sessions have started AND a certain number of days have passed since the user first dismissed the survey. Note that if a survey is dismissed for a second time, it will not show again, in other words, it will be set to `canceled`. This applies to both surveys with and without tokens.
+
+ Please note that this overrides the dashboard configuration for reshowing if called.
  
  @param sessionCount : Number of sessions required to be initialized before a dismissed survey can be shown again.
  @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
  */
-+ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
++ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount DEPRECATED_MSG_ATTRIBUTE("Reshowing the survey can now be controlled from the dashboard for any new survey you create.");
 
 /**
  @brief Returns true if the survey with a specific token was answered before .

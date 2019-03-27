@@ -718,7 +718,14 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"welcomeMessageBetaFinishStepTitle": kIBGBetaWelcomeMessageFinishStepTitle,
               @"welcomeMessageBetaFinishStepContent": kIBGBetaWelcomeMessageFinishStepContent,
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
-              @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent
+              @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
+              
+              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
+              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
+              
+              @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
+              @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText
+              
               };
 };
 

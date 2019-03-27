@@ -946,15 +946,21 @@ const InstabugModule = {
     welcomeMessageLiveWelcomeStepTitle:
       Instabug.welcomeMessageLiveWelcomeStepTitle,
     welcomeMessageLiveWelcomeStepContent:
-      Instabug.welcomeMessageLiveWelcomeStepContent
+      Instabug.welcomeMessageLiveWelcomeStepContent,
+    surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
+    surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
+    surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
+    surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle
   }
 };
 
-InstabugModule.BugReporting = BugReporting;
-InstabugModule.Surveys = Surveys;
-InstabugModule.FeatureRequests = FeatureRequests;
-InstabugModule.Chats = Chats;
-InstabugModule.Replies = Replies;
-InstabugModule.CrashReporting = CrashReporting;
+export {
+  BugReporting,
+  Surveys,
+  FeatureRequests,
+  Chats,
+  Replies,
+  CrashReporting
+}
 
 export default InstabugModule;
