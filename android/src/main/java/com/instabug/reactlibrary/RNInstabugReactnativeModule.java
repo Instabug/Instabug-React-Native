@@ -555,6 +555,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+     *
+     * @param  screenshot A boolean to enable or disable screenshot attachments.
+     * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
+     * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
+     * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+     */
+    @ReactMethod
+    public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
+            galleryImage, boolean screenRecording) {
+        try {
+            BugReporting.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                    screenRecording);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * Gets tags.
      *
      * @return all tags added

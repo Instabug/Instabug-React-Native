@@ -10,7 +10,7 @@ let { Instabug } = NativeModules;
  * Surveys
  * @exports Surveys
  */
-module.exports = {
+export default {
   /**
    * @summary Sets whether surveys are enabled or not.
    * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,

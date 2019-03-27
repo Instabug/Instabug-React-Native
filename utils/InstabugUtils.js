@@ -42,7 +42,7 @@ let init = () => {
     global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 
-module.exports = {
+export default {
     parseErrorStack: parseErrorStack,
     captureJsErrors: init
 };

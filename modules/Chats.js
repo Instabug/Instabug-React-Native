@@ -7,7 +7,7 @@ import {
  * Chats
  * @exports Chats
  */
-module.exports = {
+export default {
     /**
      * Enables and disables everything related to creating new chats.
      * @param {boolean} isEnabled 

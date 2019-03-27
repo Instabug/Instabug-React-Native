@@ -10,7 +10,7 @@ let { Instabug } = NativeModules;
  * BugReporting
  * @exports BugReporting
  */
-module.exports = {
+export default {
   /**
    * Enables and disables manual invocation and prompt options for bug and feedback.
    * @param {boolean} isEnabled
