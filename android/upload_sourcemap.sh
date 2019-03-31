@@ -21,7 +21,7 @@ fi
 
 if [ ! "${APP_TOKEN}" ] || [ -z "${APP_TOKEN}" ];then
 echo "Instabug: err: APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.startWithToken"
-exit 1
+exit 0
 else
 echo "Instabug: Uploading files..."
 #Upload android sourcemap
