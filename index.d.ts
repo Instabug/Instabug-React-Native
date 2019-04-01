@@ -87,7 +87,7 @@ export namespace FeatureRequests {
 }
 export namespace Replies {
   function setEnabled(isEnabled: boolean): void;
-  function hasChats(callback: () => void): void;
+  function hasChats(callback: (previousChats : boolean) => void): void;
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
   function getUnreadRepliesCount(messageCountCallback: () => void): void;
