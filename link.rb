@@ -24,6 +24,7 @@ bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/strip-f
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 INSTABUG_UPLOAD_SCRIPT = <<-SCRIPTEND
+export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
 bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
 SCRIPTEND
 
