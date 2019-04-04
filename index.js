@@ -6,7 +6,7 @@ import {
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
-import InstabugUtils from './utils/InstabugUtils';
+import { parseErrorStack, captureJsErrors } from './utils/InstabugUtils';
 import BugReporting from './modules/BugReporting';
 import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
@@ -14,7 +14,7 @@ import Chats from './modules/Chats';
 import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
 
-InstabugUtils.captureJsErrors();
+captureJsErrors();
 
 /**
  * Instabug
@@ -609,7 +609,7 @@ const InstabugModule = {
    */
 
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    let jsStackTrace = parseErrorStack(errorObject);
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,
