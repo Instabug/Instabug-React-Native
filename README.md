@@ -177,12 +177,11 @@ If your app doesn’t already access the microphone or photo library, we recomme
 
 ## Auto Uploading Source Map Files
 
-We will automatically generate the source map files and upload them to your dashboard on release build. You just have to add 
-`Instabug.startWithToken('YOUR_APP_TOKEN'` in your .js file.
+For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.startWithToken('YOUR_APP_TOKEN')` in JavaScript. 
 
-Alternatively, you can set the app token manually as shown below:
+If your app token is defined as a constant or you have different tokens for both iOS and Android apps, set the token as shown below.
 
-1. In Android, go to the `build.gradle` file of the library and you will find below code, replace `YOUR_APP_TOKEN` with your token from the dashboard.
+1. In Android, go to the `build.gradle` file of the library and you will find below code, replace `YOUR_APP_TOKEN` with your app token from the dashboard.
 
 ```java
 task upload_sourcemap(type: Exec) {
