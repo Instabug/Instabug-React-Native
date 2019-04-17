@@ -174,6 +174,29 @@ If your app doesn’t already access the microphone or photo library, we recomme
 
 **The permission alert for accessing the microphone/photo library will NOT appear unless users attempt to attach a voice note/photo while using Instabug.**
 
+
+## Auto Uploading Source Map Files
+
+For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.startWithToken('YOUR_APP_TOKEN')` in JavaScript. 
+
+If your app token is defined as a constant or you have different tokens for both iOS and Android apps, set the token as shown below.
+
+1. In Android, go to the `build.gradle` file of the library and you will find below code, replace `YOUR_APP_TOKEN` with your app token from the dashboard.
+
+```java
+task upload_sourcemap(type: Exec) {
+    environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
+    commandLine 'sh', './upload_sourcemap.sh'
+}
+```
+
+2. In iOS, go to the build phases of the project, you will find a build phase called `Upload Sourcemap`. Expand it you will find below lines of code, replace `YOUR_APP_TOKEN` with your token from the dashboard.
+
+```bash
+export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
+bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
+```
+
 ## Documentation
 
 For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
