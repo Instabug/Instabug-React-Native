@@ -175,7 +175,7 @@ If your app doesn’t already access the microphone or photo library, we recomme
 **The permission alert for accessing the microphone/photo library will NOT appear unless users attempt to attach a voice note/photo while using Instabug.**
 
 
-## Auto Uploading Source Map Files
+## Uploading Source Map Files for Crash Reports
 
 For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.startWithToken('YOUR_APP_TOKEN')` in JavaScript. 
 
