@@ -197,6 +197,18 @@ export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
 bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
 ```
 
+## Network Logging
+
+Instabug network logging is enabled by default. It intercepts any requests performed with `fetch` or `XMLHttpRequest` and attaches them to the report that will be sent to the dashboard. To disable network logs:
+
+```javascript
+import { NetworkLogger } from 'instabug-reactnative';
+```
+
+```javascript
+NetworkLogger.setEnabled(false);
+```
+
 ## Documentation
 
 For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).

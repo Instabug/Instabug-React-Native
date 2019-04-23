@@ -14,8 +14,12 @@ import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
 import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
+import NetworkLogger from './modules/NetworkLogger';
 
 InstabugUtils.captureJsErrors();
+NetworkLogger.setEnabled(true);
+
+
 
 /**
  * Instabug
@@ -973,7 +977,8 @@ export {
   FeatureRequests,
   Chats,
   Replies,
-  CrashReporting
+  CrashReporting,
+  NetworkLogger
 };
 
 export default InstabugModule;

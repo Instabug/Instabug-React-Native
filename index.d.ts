@@ -112,6 +112,12 @@ export namespace Surveys {
     ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
 }
+export namespace NetworkLogger {
+  function setEnabled(isEnabled: boolean): void;
+  function setNetworkDataObfuscationHandler(handler: () => void): void;
+  function setRequestFilterExpression(expression: string): void;
+  function setProgressHandlerForRequest(handler: () => void): void;
+}
 export function startWithToken(
   token: string,
   invocationEvent: invocationEvent[]

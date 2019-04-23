@@ -544,7 +544,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-
     /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
      *
@@ -1888,6 +1887,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Extracts HTTP connection properties. Request method, Headers, Date, Url and Response code
+     *
+     * @param jsonObject the JSON object containing all HTTP connection properties
+     * @throws JSONException
+     */
+    @ReactMethod
+    public void networkLog(String jsonObject) throws JSONException {
+        NetworkLog networkLog = new NetworkLog();
+        String date = System.currentTimeMillis()+"";
+        networkLog.setDate(date);
+        JSONObject newJSONObject = new JSONObject(jsonObject);
+        networkLog.setUrl(newJSONObject.getString("url"));
+        networkLog.setRequest(newJSONObject.getString("requestBody"));
+        networkLog.setResponse(newJSONObject.getString("responseBody"));
+        networkLog.setMethod(newJSONObject.getString("method"));
+        networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
+        networkLog.setRequestHeaders(newJSONObject.getString("requestHeaders"));
+        networkLog.setResponseHeaders(newJSONObject.getString("responseHeaders"));
+        networkLog.insert();
+    }
+
 
     @ReactMethod
     public void setSecureViews(ReadableArray ids) {
