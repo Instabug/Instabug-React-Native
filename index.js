@@ -3,6 +3,7 @@ import {
   NativeAppEventEmitter,
   DeviceEventEmitter,
   Platform,
+  findNodeHandle,
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
@@ -220,7 +221,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-    Instabug.setPrimaryColor(primaryColor);
+    Instabug.setPrimaryColor(processColor(primaryColor));
   },
 
   /**
@@ -693,6 +694,18 @@ const InstabugModule = {
   },
 
   /**
+   * Hides component from screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to hide
+   */
+  setPrivateView: function(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    if (Platform.OS === 'ios') {
+      Instabug.hideView(nativeTag);
+    } else {
+      Instabug.setSecureViews([nativeTag]);
+    }
+  },
+  /**
    * Shows default Instabug prompt.
    */
   show() {
@@ -961,6 +974,6 @@ export {
   Chats,
   Replies,
   CrashReporting
-}
+};
 
 export default InstabugModule;

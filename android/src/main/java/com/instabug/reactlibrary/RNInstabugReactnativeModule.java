@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
@@ -72,6 +73,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 
 /**
@@ -490,7 +493,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
         try {
             JSONObject newJSONObject = new JSONObject(exceptionObject);
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
             if (method != null) {
                 method.invoke(null, newJSONObject, isHandled);
             }
@@ -541,24 +544,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-     /**
-     * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
-     *
-     * @param  screenshot A boolean to enable or disable screenshot attachments.
-     * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
-     * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
-     * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
-     */
-    @ReactMethod
-    public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
-            galleryImage, boolean screenRecording) {
-        try {
-            BugReporting.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                    screenRecording);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
@@ -1901,6 +1886,30 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @ReactMethod
+    public void setSecureViews(ReadableArray ids) {
+        int[] arrayOfIds = new int[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            int viewId = (int) ids.getDouble(i);
+            arrayOfIds[i] = viewId;
+        }
+        Method method = null;
+        try {
+            method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setSecureViewsId", int[].class);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (method != null) {
+            try {
+                method.invoke(null, arrayOfIds);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
 

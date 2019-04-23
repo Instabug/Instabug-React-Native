@@ -14,6 +14,7 @@
 #import <React/RCTLog.h>
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
+#import <React/RCTUIManager.h>
 
 @implementation InstabugReactBridge
 
@@ -529,6 +530,11 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     callback(@[[NSNumber numberWithBool:result]]);
 }
 
+RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = true;
+   
+}
 RCT_EXPORT_METHOD(show) {
     [Instabug show];
 }
