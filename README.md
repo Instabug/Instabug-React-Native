@@ -139,9 +139,9 @@ pod install
 react-native link instabug-reactnative
 ```
 
-### Upgrading from 8.0.3 to 8.x
+### Upgrading the SDK
 
-When upgrading from 8.0.3 to 8.x, please make sure you do the following steps:
+When doing an upgrade in these two cases, from 8.0.3 to 8.x or from an older version than 8.2.6 to 8.2.6 or higher, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
