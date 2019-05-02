@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
@@ -72,6 +73,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 
 /**
@@ -490,7 +493,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
         try {
             JSONObject newJSONObject = new JSONObject(exceptionObject);
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
             if (method != null) {
                 method.invoke(null, newJSONObject, isHandled);
             }
@@ -1882,6 +1885,53 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Extracts HTTP connection properties. Request method, Headers, Date, Url and Response code
+     *
+     * @param jsonObject the JSON object containing all HTTP connection properties
+     * @throws JSONException
+     */
+    @ReactMethod
+    public void networkLog(String jsonObject) throws JSONException {
+        NetworkLog networkLog = new NetworkLog();
+        String date = System.currentTimeMillis()+"";
+        networkLog.setDate(date);
+        JSONObject newJSONObject = new JSONObject(jsonObject);
+        networkLog.setUrl(newJSONObject.getString("url"));
+        networkLog.setRequest(newJSONObject.getString("requestBody"));
+        networkLog.setResponse(newJSONObject.getString("responseBody"));
+        networkLog.setMethod(newJSONObject.getString("method"));
+        networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
+        networkLog.setRequestHeaders(newJSONObject.getString("requestHeaders"));
+        networkLog.setResponseHeaders(newJSONObject.getString("responseHeaders"));
+        networkLog.insert();
+    }
+
+
+    @ReactMethod
+    public void setSecureViews(ReadableArray ids) {
+        int[] arrayOfIds = new int[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            int viewId = (int) ids.getDouble(i);
+            arrayOfIds[i] = viewId;
+        }
+        Method method = null;
+        try {
+            method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setSecureViewsId", int[].class);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (method != null) {
+            try {
+                method.invoke(null, arrayOfIds);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
 

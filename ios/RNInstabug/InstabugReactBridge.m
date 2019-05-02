@@ -14,6 +14,7 @@
 #import <React/RCTLog.h>
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
+#import <React/RCTUIManager.h>
 
 @implementation InstabugReactBridge
 
@@ -26,6 +27,7 @@
              @"IBGWillShowSurvey",
              @"IBGDidDismissSurvey",
              @"IBGDidSelectPromptOptionHandler",
+             @"IBGSetNetworkDataObfuscationHandler",
              @"IBGOnNewReplyReceivedCallback"
              ];
 }
@@ -45,13 +47,15 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     [Instabug startWithToken:token invocationEvents:invocationEvents];
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    IBGNetworkLogger.enabled = NO;
+    
     SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
     if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
         [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
     }
     
+    IBGNetworkLogger.enabled = YES;
     [self setBaseUrlForDeprecationLogs];
+
 }
 
 RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
@@ -529,6 +533,44 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     callback(@[[NSNumber numberWithBool:result]]);
 }
 
+RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
+    NSString* url = networkData[@"url"];
+    NSString* method = networkData[@"method"];
+    NSString* requestBody = networkData[@"requestBody"];
+    NSString* responseBody = networkData[@"responseBody"];
+    int32_t responseCode = [networkData[@"responseCode"] integerValue];
+    NSDictionary* requestHeaders = networkData[@"requestHeaders"];
+    NSDictionary* responseHeaders = networkData[@"responseHeaders"];
+    NSString* contentType = networkData[@"contentType"];
+    double duration = [networkData[@"duration"] doubleValue];
+    
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:");
+    
+    if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
+        [inv setSelector:networkLogSEL];
+        [inv setTarget:[IBGNetworkLogger class]];
+        
+        [inv setArgument:&(url) atIndex:2];
+        [inv setArgument:&(method) atIndex:3];
+        [inv setArgument:&(requestBody) atIndex:4];
+        [inv setArgument:&(responseBody) atIndex:5];
+        [inv setArgument:&(responseCode) atIndex:6];
+        [inv setArgument:&(requestHeaders) atIndex:7];
+        [inv setArgument:&(responseHeaders) atIndex:8];
+        [inv setArgument:&(contentType) atIndex:9];
+        [inv setArgument:&(duration) atIndex:10];
+        
+        [inv invoke];
+    }
+}
+
+RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = true;
+   
+}
+
 RCT_EXPORT_METHOD(show) {
     [Instabug show];
 }
@@ -583,6 +625,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
     } else {
         IBGReplies.didReceiveReplyHandler = nil;
     }
+
 }
 
 - (NSDictionary *)constantsToExport

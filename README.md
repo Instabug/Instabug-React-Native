@@ -139,9 +139,9 @@ pod install
 react-native link instabug-reactnative
 ```
 
-### Upgrading from 8.0.3 to 8.x
+### Upgrading in version 8
 
-When upgrading from 8.0.3 to 8.x, please make sure you do the following steps:
+When doing an upgrade in these two cases, from 8.0.3 to 8.x or from an older version than 8.2.6 to 8.2.6 or higher, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
@@ -195,6 +195,18 @@ task upload_sourcemap(type: Exec) {
 ```bash
 export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
 bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
+```
+
+## Network Logging
+
+Instabug network logging is enabled by default. It intercepts any requests performed with `fetch` or `XMLHttpRequest` and attaches them to the report that will be sent to the dashboard. To disable network logs:
+
+```javascript
+import { NetworkLogger } from 'instabug-reactnative';
+```
+
+```javascript
+NetworkLogger.setEnabled(false);
 ```
 
 ## Documentation

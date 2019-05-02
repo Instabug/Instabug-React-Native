@@ -3,6 +3,7 @@ import {
   NativeAppEventEmitter,
   DeviceEventEmitter,
   Platform,
+  findNodeHandle,
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
@@ -13,8 +14,10 @@ import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
 import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
+import NetworkLogger from './modules/NetworkLogger';
 
 captureJsErrors();
+NetworkLogger.setEnabled(true);
 
 /**
  * Instabug
@@ -220,7 +223,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-    Instabug.setPrimaryColor(primaryColor);
+    Instabug.setPrimaryColor(processColor(primaryColor));
   },
 
   /**
@@ -693,6 +696,18 @@ const InstabugModule = {
   },
 
   /**
+   * Hides component from screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to hide
+   */
+  setPrivateView: function(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    if (Platform.OS === 'ios') {
+      Instabug.hideView(nativeTag);
+    } else {
+      Instabug.setSecureViews([nativeTag]);
+    }
+  },
+  /**
    * Shows default Instabug prompt.
    */
   show() {
@@ -960,7 +975,8 @@ export {
   FeatureRequests,
   Chats,
   Replies,
-  CrashReporting
-}
+  CrashReporting,
+  NetworkLogger
+};
 
 export default InstabugModule;
