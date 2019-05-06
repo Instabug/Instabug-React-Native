@@ -81,7 +81,11 @@ const XHRInterceptor = {
             }
             if (this.readyState === this.DONE) {
               duration = (Date.now() - duration);
-              network.responseCode = this.status;
+              if (this.status == null) {
+                network.responseCode = 0;
+              } else {
+                network.responseCode = this.status;
+              }
               network.duration = duration;
 
               if (this.response) {
