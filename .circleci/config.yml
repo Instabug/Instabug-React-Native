@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout:
-        path: ~/project
+          path: ~/project
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
