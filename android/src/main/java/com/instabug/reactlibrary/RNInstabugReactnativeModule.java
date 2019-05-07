@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -51,6 +52,7 @@ import com.instabug.library.user.UserEventParam;
 import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.ReportUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
 import com.instabug.survey.OnDismissCallback;
@@ -212,6 +214,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private Instabug mInstabug;
     private InstabugInvocationEvent invocationEvent;
     private InstabugCustomTextPlaceHolder placeHolders;
+    private Report currentReport;
 
     /**
      * Instantiates a new Rn instabug reactnative module.
@@ -452,7 +455,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendJSCrash(String exceptionObject) {
         try {
-            sendJSCrashByReflection(exceptionObject, false);
+            JSONObject jsonObject = new JSONObject(exceptionObject);
+            sendJSCrashByReflection(jsonObject, false, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -466,7 +470,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendHandledJSCrash(String exceptionObject) {
         try {
-            sendJSCrashByReflection(exceptionObject, true);
+            JSONObject jsonObject = new JSONObject(exceptionObject);
+            sendJSCrashByReflection(jsonObject, true, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -490,23 +495,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void sendJSCrashByReflection(String exceptionObject, boolean isHandled) {
+ private void sendJSCrashByReflection(JSONObject exceptionObject, boolean isHandled, Report report) {
         try {
-            JSONObject newJSONObject = new JSONObject(exceptionObject);
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
             if (method != null) {
-                method.invoke(null, newJSONObject, isHandled);
+                method.invoke(null, exceptionObject, isHandled, currentReport);
+                currentReport = null;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -1185,24 +1187,143 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
-        try {
+        Report.OnReportCreatedListener listener = new Report.OnReportCreatedListener() {
+            @Override
+            public void onReportCreated(Report report) {
+                WritableMap reportParam = Arguments.createMap();
+                reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
+                reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
+                reportParam.putString("userData", report.getUserData());
+                reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
+                reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
+                sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
+                currentReport = report;
+            }
+        };
 
-            Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
-                @Override
-                public void onReportCreated(Report report) {
-                    WritableMap reportParam = Arguments.createMap();
-                    reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
-                    reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
-                    reportParam.putString("userData", report.getUserData());
-                    reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
-                    reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
-                    sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
-                }
-            });
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
+        Method method = getMethod(Instabug.class, "onReportSubmitHandler_Private", Report.OnReportCreatedListener.class);
+        if (method != null) {
+            try {
+                method.invoke(null, listener);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    @ReactMethod
+    public void appendTagToReport(String tag) {
+        if (currentReport != null) {
+            currentReport.addTag(tag);
+        }
+    }
+
+    @ReactMethod
+    public void appendConsoleLogToReport(String consoleLog) {
+        if (currentReport != null) {
+            currentReport.appendToConsoleLogs(consoleLog);
+        }
+    }
+
+    @ReactMethod
+    public void setUserAttributeToReport(String key, String value) {
+        if (currentReport != null) {
+            currentReport.setUserAttribute(key, value);
+        }
+    }
+
+    @ReactMethod
+    public void logDebugToReport(String log) {
+        if (currentReport != null) {
+            currentReport.logDebug(log);
+        }
+    }
+
+    @ReactMethod
+    public void logVerboseToReport(String log) {
+        if (currentReport != null) {
+            currentReport.logVerbose(log);
+        }
+    }
+
+    @ReactMethod
+    public void logWarnToReport(String log) {
+        if (currentReport != null) {
+            currentReport.logWarn(log);
+        }
+    }
+
+    @ReactMethod
+    public void logErrorToReport(String log) {
+        if (currentReport != null) {
+            currentReport.logError(log);
+        }
+    }
+
+    @ReactMethod
+    public void logInfoToReport(String log) {
+        if (currentReport != null) {
+            currentReport.logInfo(log);
+        }
+    }
+
+    @ReactMethod
+    public void addFileAttachmentWithURLToReport(String urlString, String fileName) {
+        if (currentReport != null) {
+            Uri uri = Uri.parse(urlString);
+            currentReport.addFileAttachment(uri, fileName);
+        }
+    }
+
+    @ReactMethod
+    public void addFileAttachmentWithDataToReport(String data, String fileName) {
+        if (currentReport != null) {
+            currentReport.addFileAttachment(data.getBytes(), fileName);
+        }
+    }
+
+    @ReactMethod
+    public void submitReport() {
+        Method method = getMethod(Instabug.class, "setReport", Report.class);
+        if (method != null) {
+            try {
+                method.invoke(null, currentReport);
+                currentReport = null;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @ReactMethod
+    public void getReport(Promise promise) {
+        try {
+            Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "getReport");
+            if (method != null) {
+                Report report = (Report) method.invoke(null);
+                WritableMap reportParam = Arguments.createMap();
+                reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
+                reportParam.putArray("consoleLogs", ReportUtil.parseConsoleLogs(report.getConsoleLog()));
+                reportParam.putString("userData", report.getUserData());
+                reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
+                reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
+                promise.resolve(reportParam);
+                currentReport = report;
+            }
+
+        } catch (ClassNotFoundException e) {
+            promise.reject(e);
+        } catch (IllegalAccessException e) {
+            promise.reject(e);
+        } catch (InvocationTargetException e) {
+            promise.reject(e);
+        }
+    }
+
 
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();

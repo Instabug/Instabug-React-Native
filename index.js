@@ -7,7 +7,10 @@ import {
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
+import IBGEventEmitter from './utils/IBGEventEmitter';
 import InstabugUtils from './utils/InstabugUtils';
+import InstabugConstants from './utils/InstabugConstants';
+import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
 import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
@@ -19,6 +22,7 @@ import NetworkLogger from './modules/NetworkLogger';
 InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
 
+var _isOnReportHandlerSet = false;
 
 
 /**
@@ -614,18 +618,7 @@ const InstabugModule = {
    */
 
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
-    var jsonObject = {
-      message: errorObject.name + ' - ' + errorObject.message,
-      os: Platform.OS,
-      platform: 'react_native',
-      exception: jsStackTrace
-    };
-    if (Platform.OS === 'android') {
-      Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-    } else {
-      Instabug.sendHandledJSCrash(jsonObject);
-    }
+    CrashReporting.reportJSException(errorObject);
   },
 
   /**
@@ -717,7 +710,51 @@ const InstabugModule = {
   },
 
   onReportSubmitHandler: function(preSendingHandler) {
-    BugReporting.onReportSubmitHandler(preSendingHandler);
+    if (preSendingHandler) {
+      _isOnReportHandlerSet = true;
+    } else {
+      _isOnReportHandlerSet = false;
+    }
+    
+    // send bug report
+    IBGEventEmitter.addListener(InstabugConstants.PRESENDING_HANDLER, (report) => {
+      const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+      const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+      preSendingHandler(reportObj);
+      Instabug.submitReport();
+
+    });
+
+    // handled js crash
+    IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+      try {
+        let report = await Instabug.getReport();
+        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+        preSendingHandler(reportObj);
+        if (Platform.OS === 'android') {
+          Instabug.sendHandledJSCrash(
+            JSON.stringify(jsonObject)
+          );
+        } 
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+      let report = await Instabug.getReport();
+        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+        preSendingHandler(reportObj);
+        if (Platform.OS === 'android') {
+          Instabug.sendJSCrash(
+            JSON.stringify(jsonObject)
+          );
+        } 
+    });
+
+    Instabug.setPreSendingHandler(preSendingHandler);
   },
 
   callPrivateApi: function(apiName, param) {
@@ -968,8 +1005,14 @@ const InstabugModule = {
     surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
     surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle
+  },
+
+  _isOnReportHandlerSet() {
+    return _isOnReportHandlerSet;
   }
 };
+
+export { _isOnReportHandlerSet };
 
 export {
   BugReporting,

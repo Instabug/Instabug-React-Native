@@ -5,6 +5,7 @@ import {
   Platform
 } from 'react-native';
 let { Instabug } = NativeModules;
+import InstabugModule from '../index';
 
 /**
  * BugReporting
@@ -103,24 +104,7 @@ export default {
    * report.
    */
   onReportSubmitHandler: function(preSendingHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreSendingHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreSendingHandler',
-        preSendingHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener('IBGpreSendingHandler', function(payload) {
-        preSendingHandler(
-          payload.tagsArray,
-          payload.consoleLogs,
-          payload.userData,
-          payload.userAttributes,
-          payload.fileAttachments
-        );
-      });
-    }
-    Instabug.setPreSendingHandler(preSendingHandler);
+    InstabugModule.onReportSubmitHandler(preSendingHandler);
   },
 
   /**

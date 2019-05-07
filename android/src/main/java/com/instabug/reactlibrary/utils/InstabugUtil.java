@@ -9,7 +9,11 @@ public class InstabugUtil {
         for (Method method : methods) {
             if (method.getName().equals(methodName) && method.getParameterTypes().length ==
                     parameterType.length) {
-                for (int i = 0; i < 2; i++) {
+                if (parameterType.length == 0) {
+                    method.setAccessible(true);
+                    return method;
+                }
+                for (int i = 0; i < parameterType.length; i++) {
                     if (method.getParameterTypes()[i] == parameterType[i]) {
                         if (i == method.getParameterTypes().length - 1) {
                             method.setAccessible(true);

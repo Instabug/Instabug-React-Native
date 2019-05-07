@@ -199,7 +199,7 @@ export function addFileAttachment(
   fileName: string
   ): void;
 export function show(): void;
-export function onReportSubmitHandler(preSendingHandler: () => void): void;
+export function onReportSubmitHandler(preSendingHandler: (presendingHandler: Report) => void): void;
 export function callPrivateApi(
   apiName: string,
   param: any
@@ -343,4 +343,17 @@ export enum strings {
   welcomeMessageBetaFinishStepContent,
   welcomeMessageLiveWelcomeStepTitle,
   welcomeMessageLiveWelcomeStepContent
+}
+
+ interface Report {
+  logDebug(log: string);
+  logVerbose(log: string);
+  logWarn(log: string);
+  logError(log: string);
+  logInfo(log: string);
+  appendTag(tag: string);
+  appendConsoleLog(consoleLog: string);
+  setUserAttribute(key: string, value: string);
+  addFileAttachmentWithUrl(url: string, filename: string);
+  addFileAttachmentWithData(data: string, filename: string);
 }
