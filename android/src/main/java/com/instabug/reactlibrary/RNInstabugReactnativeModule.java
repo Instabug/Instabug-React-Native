@@ -1,5 +1,6 @@
 package com.instabug.reactlibrary;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.net.Uri;
 import android.os.Handler;
@@ -262,6 +263,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param invocationMode the invocation mode
      * @param invocationOptions the array of invocation options
      */
+    @SuppressLint("WrongConstant")
     @ReactMethod
     public void invokeWithInvocationModeAndOptions(String invocationMode, ReadableArray invocationOptions) {
 
@@ -1723,6 +1725,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         Instabug.show();
     }
 
+    @SuppressLint("WrongConstant")
     @ReactMethod
     public void setReportTypes(ReadableArray types) {
         Object[] objectArray = ArrayUtil.toArray(types);
@@ -1982,6 +1985,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param isEmailRequired set true to make email field required
      * @param actionTypes Bitwise-or of actions
      */
+    @SuppressLint("WrongConstant")
     @ReactMethod
     public void setEmailFieldRequiredForFeatureRequests(boolean isEmailRequired, ReadableArray actionTypes) {
         try {

@@ -20,6 +20,8 @@ android {
     }
     lintOptions {
        warning 'InvalidPackage'
+        abortOnError true
+        // SuppressLint WrongConstant was used to suppress errors when using arrays of ints to represent annotations.
     }
 }
 
