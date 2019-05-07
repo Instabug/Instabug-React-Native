@@ -1,7 +1,7 @@
 version: 2
 jobs:
   node:
-    working_directory: ~/Instabug/reactnative/instabug-reactnative-private/InstabugSample
+    working_directory: ~/instabug-reactnative-private/InstabugSample
     docker:
       - image: circleci/node:8
     steps:
@@ -34,7 +34,7 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: ~/Instabug/reactnative/instabug-reactnative-private/InstabugSample
+          root: ~/instabug-reactnative-private/InstabugSample
           paths:
             - node_modules
 
