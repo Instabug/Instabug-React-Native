@@ -14,7 +14,7 @@ export namespace BugReporting {
     ): void;
   function onInvokeHandler(preInvocationHandler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
-  function onSDKDismissedHandler(postInvocationHandler: () => void): void;
+  function onSDKDismissedHandler(postInvocationHandler: (dismiss: dismissType, report: reportType) => void): void;
   function setPromptOptionsEnabled(
     chat: boolean,
     bug: boolean,
@@ -87,7 +87,7 @@ export namespace FeatureRequests {
 }
 export namespace Replies {
   function setEnabled(isEnabled: boolean): void;
-  function hasChats(callback: () => void): void;
+  function hasChats(callback: (previousChats : boolean) => void): void;
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
   function getUnreadRepliesCount(messageCountCallback: () => void): void;
@@ -142,7 +142,7 @@ export function setFloatingButtonEdge(
   ): void;
 export function setLocale(locale: locale): void;
 export function setColorTheme(colorTheme: colorTheme): void;
-export function setPrimaryColor(setPrimaryColor: string): void;
+export function setPrimaryColor(setPrimaryColor: number): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
