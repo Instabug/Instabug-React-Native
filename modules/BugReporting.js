@@ -201,11 +201,21 @@ export default {
   },
 
   /**
+   * @deprecated use {@link BugReporting.show}
    * Invoke bug reporting with report type and options.
    * @param {reportType} type 
    * @param {option} options 
    */
   showWithOptions(type, options) {
+    this.show(type, options);
+  },
+
+  /**
+   * Invoke bug reporting with report type and options.
+   * @param {reportType} type 
+   * @param {option} options 
+   */
+  show(type, options) {
     if (!options) {
       options = [];
     }

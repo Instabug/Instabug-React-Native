@@ -31,6 +31,7 @@ var _isOnReportHandlerSet = false;
  */
 const InstabugModule = {
   /**
+   * @deprecated use {@link Instabug.start}
    * Starts the SDK.
    * This is the main SDK method that does all the magic. This is the only
    * method that SHOULD be called.
@@ -41,6 +42,20 @@ const InstabugModule = {
    * the SDK's UI.
    */
   startWithToken: function(token, invocationEvent) {
+    this.start(token, invocationEvent);
+  },
+
+  /**
+   * Starts the SDK.
+   * This is the main SDK method that does all the magic. This is the only
+   * method that SHOULD be called.
+   * Should be called in constructor of the app registery component
+   * @param {string} token The token that identifies the app, you can find
+   * it on your dashboard.
+   * @param {invocationEvent} invocationEvent The event that invokes
+   * the SDK's UI.
+   */
+  start: function(token, invocationEvent) {
     if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
   },
 
@@ -257,12 +272,23 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Instabug.setString}
    * Overrides any of the strings shown in the SDK with custom ones.
    * Allows you to customize any of the strings shown to users in the SDK.
    * @param {string} string String value to override the default one.
    * @param {strings} key Key of string to override.
    */
   setStringToKey: function(string, key) {
+    this.setString(key, string);
+  },
+
+  /**
+   * Overrides any of the strings shown in the SDK with custom ones.
+   * Allows you to customize any of the strings shown to users in the SDK.
+   * @param {string} string String value to override the default one.
+   * @param {strings} key Key of string to override.
+   */
+  setString: function(key, string) {
     Instabug.setString(string, key);
   },
 
@@ -291,6 +317,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Instabug.identifyUser}
    * Sets the default value of the user's email and hides the email field from the reporting UI
    * and set the user's name to be included with all reports.
    * It also reset the chats on device to that email and removes user attributes,
@@ -299,6 +326,18 @@ const InstabugModule = {
    * @param {string} name Name of the user to be set.
    */
   identifyUserWithEmail: function(email, name) {
+    this.identifyUser(email, name);
+  },
+
+  /**
+   * Sets the default value of the user's email and hides the email field from the reporting UI
+   * and set the user's name to be included with all reports.
+   * It also reset the chats on device to that email and removes user attributes,
+   * user data and completed surveys.
+   * @param {string} email Email address to be set as the user's email.
+   * @param {string} name Name of the user to be set.
+   */
+  identifyUser: function(email, name) {
     if (Platform.OS == 'ios') {
       Instabug.identifyUserWithEmail(email, name);
     } else if ('android') {
@@ -316,11 +355,21 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated Logs a user event that happens through the lifecycle of the application.
+   * @deprecated use {@link Instabug.logUserEvent}
+   * Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
    * @param {string} name Event name.
    */
   logUserEventWithName: function(name) {
+    this.logUserEvent(name);
+  },
+
+  /**
+   * Logs a user event that happens through the lifecycle of the application.
+   * Logged user events are going to be sent with each report, as well as at the end of a session.
+   * @param {string} name Event name.
+   */
+  logUserEvent: function(name) {
     Instabug.logUserEventWithName(name);
   },
 
@@ -521,7 +570,6 @@ const InstabugModule = {
    * @param {function} onNewMessageHandler - A callback that gets
    * executed when a new message is received.
    */
-
   setOnNewMessageHandler: function(onNewMessageHandler) {
     if (Platform.OS === 'ios') {
       Instabug.addListener('IBGonNewMessageHandler');
