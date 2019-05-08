@@ -68,7 +68,6 @@ function finish(logLevel, message) {
   } else {
     console.warn(message);
   }
-
   // process.exit(0);
 }
 
