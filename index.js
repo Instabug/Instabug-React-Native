@@ -19,7 +19,7 @@ import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
 import NetworkLogger from './modules/NetworkLogger';
 
-captureJsErrors();
+InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
 
 var _isOnReportHandlerSet = false;
