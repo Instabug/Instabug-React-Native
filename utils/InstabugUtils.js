@@ -1,7 +1,10 @@
 'use strict';
 import {NativeModules, Platform} from 'react-native';
 let {Instabug} = NativeModules;
+import IBGEventEmitter from './IBGEventEmitter';
+import InstabugConstants from './InstabugConstants';
 import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
+import IBG from '../index';
 
 export const parseErrorStack = (error) => {
     return parseErrorStackLib(error);
@@ -24,11 +27,17 @@ export const captureJsErrors = () => {
         platform: 'react_native',
         exception: jsStackTrace
       }
+      
       if(Platform.OS === 'android') {
-        Instabug.sendJSCrash(JSON.stringify(jsonObject));
+        if (IBG._isOnReportHandlerSet()) {
+          IBGEventEmitter.emit( InstabugConstants.SEND_UNHANDLED_CRASH, jsonObject);
+        } else {
+          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+        }
       } else {
         Instabug.sendJSCrash(jsonObject);
       }
+
       if (originalHandler) {
         if (Platform.OS === 'ios') {
           originalHandler(e, isFatal);

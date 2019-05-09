@@ -20,12 +20,14 @@ android {
     }
     lintOptions {
        warning 'InvalidPackage'
+        abortOnError true
+        // SuppressLint WrongConstant was used to suppress errors when using arrays of ints to represent annotations.
     }
 }
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api ('com.instabug.library:instabug:8.2.2.0'){
+    api ('com.instabug.library:instabug:8.3.0.0'){
         exclude group: 'com.android.support:appcompat-v7'
     }
 }

@@ -145,6 +145,27 @@ NS_SWIFT_NAME(BugReporting)
  */
 + (void)dismiss;
 
+/**
+ @brief Enables/disables inspect view hierarchy when reporting a bug/feedback.
+ */
+@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy;
+
+/**
+ @brief Sets whether the SDK is recording the screen or not.
+ 
+ @discussion Enabling auto screen recording would give you an insight on the scenario a user has performed before encountering a bug. screen recording is attached with each bug being sent.
+ 
+ Auto screen recording is disabled by default.
+ */
+@property (class, atomic, assign) BOOL autoScreenRecordingEnabled;
+
+/**
+ @brief Sets maximum auto screen recording video duration.
+ 
+ @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
+ */
+@property (class, atomic, assign) CGFloat autoScreenRecordingDuration;
+
 /*
  +------------------------------------------------------------------------+
  |                            Deprecated APIs                             |

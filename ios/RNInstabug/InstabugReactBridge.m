@@ -16,6 +16,10 @@
 #import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
 
+@interface Instabug (PrivateWillSendAPI)
++ (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
+@end
+
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
@@ -27,6 +31,8 @@
              @"IBGWillShowSurvey",
              @"IBGDidDismissSurvey",
              @"IBGDidSelectPromptOptionHandler",
+             @"IBGSendHandledJSCrash",
+             @"IBGSendUnhandledJSCrash",
              @"IBGSetNetworkDataObfuscationHandler",
              @"IBGOnNewReplyReceivedCallback"
              ];
@@ -92,17 +98,23 @@ RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
 }
 
 RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace) {
-    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(false)];
-    }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+    dispatch_async(queue, ^{
+        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
+        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(NO)];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(sendHandledJSCrash:(NSDictionary *)stackTrace) {
-    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(true)];
-    }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+    dispatch_async(queue, ^{
+        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
+        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(YES)];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
@@ -130,16 +142,17 @@ RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
-    Instabug.autoScreenRecordingEnabled = enabled;
+    IBGBugReporting.autoScreenRecordingEnabled = enabled;
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
-    Instabug.autoScreenRecordingDuration = duration;
+    IBGBugReporting.autoScreenRecordingDuration = duration;
 }
-
+void (^globalReportCompletionHandler)(IBGReport *);
+IBGReport *currentReport = nil;
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        Instabug.willSendReportHandler = ^(IBGReport* report){
+        [Instabug setWillSendReportHandler_private:^(IBGReport *report, void (^reportCompletionHandler)(IBGReport *)) {
             NSArray *tagsArray = report.tags;
             NSArray *instabugLogs= report.instabugLogs;
             NSArray *consoleLogs= report.consoleLogs;
@@ -147,11 +160,79 @@ RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
             NSArray *fileAttachments= report.fileLocations;
             NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
             [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
-            return report;
-        };
+            currentReport = report;
+            globalReportCompletionHandler = reportCompletionHandler;
+        }];
     } else {
         Instabug.willSendReportHandler = nil;
     }
+}
+
+RCT_EXPORT_METHOD(appendTagToReport:(NSString*) tag) {
+    if (currentReport != nil) {
+        [currentReport appendTag:tag];
+    }
+}
+
+RCT_EXPORT_METHOD(appendConsoleLogToReport:(NSString*) consoleLog) {
+    if (currentReport != nil) {
+        [currentReport appendToConsoleLogs:consoleLog];
+    }
+}
+
+RCT_EXPORT_METHOD(setUserAttributeToReport:(NSString*) key:(NSString*) value) {
+    if (currentReport != nil) {
+        [currentReport setUserAttribute:value withKey:key];
+    }
+}
+
+RCT_EXPORT_METHOD(logDebugToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logDebug:log];
+    }
+}
+
+RCT_EXPORT_METHOD(logVerboseToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logVerbose:log];
+    }
+}
+
+RCT_EXPORT_METHOD(logWarnToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logWarn:log];
+    }
+}
+
+RCT_EXPORT_METHOD(logErrorToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logError:log];
+    }
+}
+
+RCT_EXPORT_METHOD(logInfoToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logInfo:log];
+    }
+}
+
+RCT_EXPORT_METHOD(addFileAttachmentWithURLToReport:(NSString*) urlString) {
+    if (currentReport != nil) {
+        NSURL *url = [NSURL URLWithString:urlString];
+        [currentReport addFileAttachmentWithURL:url];
+    }
+}
+
+RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
+    if (currentReport != nil) {
+        NSData* data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
+        [currentReport addFileAttachmentWithData:data];
+    }
+}
+
+RCT_EXPORT_METHOD(submitReport) {
+    globalReportCompletionHandler(currentReport);
+    currentReport = nil;
 }
 
 RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
@@ -167,8 +248,6 @@ RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
 RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
-            NSLog(@"Dismiss Type: %ld",(long)dismissType);
-            NSLog(@"Report Type: %ld",(long)reportType);
             
             //parse dismiss type enum
             NSString* dismissTypeString;
@@ -458,7 +537,7 @@ RCT_EXPORT_METHOD(setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack) {
 }
 
 RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
-    Instabug.shouldCaptureViewHierarchy = viewHirearchyEnabled;
+    IBGBugReporting.shouldCaptureViewHierarchy = viewHirearchyEnabled;
 }
 
 RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
@@ -647,7 +726,6 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
 
-              @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
 
