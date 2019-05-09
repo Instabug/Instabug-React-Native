@@ -5,6 +5,7 @@ import {
   Platform
 } from 'react-native';
 let { Instabug } = NativeModules;
+import InstabugModule from '../index';
 
 /**
  * BugReporting
@@ -103,24 +104,7 @@ export default {
    * report.
    */
   onReportSubmitHandler: function(preSendingHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreSendingHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreSendingHandler',
-        preSendingHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener('IBGpreSendingHandler', function(payload) {
-        preSendingHandler(
-          payload.tagsArray,
-          payload.consoleLogs,
-          payload.userData,
-          payload.userAttributes,
-          payload.fileAttachments
-        );
-      });
-    }
-    Instabug.setPreSendingHandler(preSendingHandler);
+    InstabugModule.onReportSubmitHandler(preSendingHandler);
   },
 
   /**
@@ -217,15 +201,54 @@ export default {
   },
 
   /**
+   * @deprecated use {@link BugReporting.show}
    * Invoke bug reporting with report type and options.
    * @param {reportType} type 
    * @param {option} options 
    */
   showWithOptions(type, options) {
+    this.show(type, options);
+  },
+
+  /**
+   * Invoke bug reporting with report type and options.
+   * @param {reportType} type 
+   * @param {option} options 
+   */
+  show(type, options) {
     if (!options) {
       options = [];
     }
       Instabug.showBugReportingWithReportTypeAndOptions(type, options);
+  },
+
+  /**
+   * Enable/Disable screen recording
+   * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
+   * screen recording on crash feature
+   */
+  setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+    Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+  },
+
+  /**
+   * Sets auto screen recording maximum duration
+   *
+   * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+   *                                       in seconds
+   * The maximum duration is 30 seconds
+   */
+  setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
+    Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+  },
+
+  /**
+   * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
+   * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
+   * or disabled.
+   */
+  setViewHierarchyEnabled: function(viewHierarchyEnabled) {
+    Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
   },
 
   /**

@@ -87,8 +87,6 @@ function finish(logLevel, message) {
   } else {
     console.warn(message);
   }
-
-  process.exit(0);
 }
 
 readFile(GRADLE_FILE_PATH, function(data) {

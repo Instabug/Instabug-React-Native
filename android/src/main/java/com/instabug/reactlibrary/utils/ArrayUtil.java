@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -129,5 +130,16 @@ public class ArrayUtil {
         }
 
         return writableArray;
+    }
+
+    public static ArrayList<String> parseReadableArrayOfStrings(ReadableArray readableArray) {
+        ArrayList<String> array = new ArrayList<>();
+        for (int i = 0; i < readableArray.size(); i++) {
+            ReadableType type = readableArray.getType(i);
+            if (type == ReadableType.String) {
+                array.add(readableArray.getString(i));
+            }
+        }
+        return array;
     }
 }

@@ -68,8 +68,7 @@ function finish(logLevel, message) {
   } else {
     console.warn(message);
   }
-
-  process.exit(0);
+  // process.exit(0);
 }
 
 function generateNewGradleFile(data) {

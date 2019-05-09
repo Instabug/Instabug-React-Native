@@ -73,6 +73,7 @@ export default {
   },
 
   /**
+   * @deprecated use {@link Surveys.setOnShowHandler}
    * @summary Sets a block of code to be executed just before the survey's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any UI changes before
    * the survey's UI is shown.
@@ -80,23 +81,35 @@ export default {
    * presenting the survey's UI.
    */
   onShowCallback: function(willShowSurveyHandler) {
+    this.setOnShowHandler(willShowSurveyHandler);
+  },
+
+  /**
+   * @summary Sets a block of code to be executed just before the survey's UI is presented.
+   * This block is executed on the UI thread. Could be used for performing any UI changes before
+   * the survey's UI is shown.
+   * @param {function} onShowHandler - A block of code that gets executed before
+   * presenting the survey's UI.
+   */
+  setOnShowHandler: function(onShowHandler) {
     if (Platform.OS === 'ios') {
       Instabug.addListener('IBGWillShowSurvey');
       NativeAppEventEmitter.addListener(
         'IBGWillShowSurvey',
-        willShowSurveyHandler
+        onShowHandler
       );
     } else {
       DeviceEventEmitter.addListener(
         'IBGWillShowSurvey',
-        willShowSurveyHandler
+        onShowHandler
       );
     }
 
-    Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+    Instabug.setWillShowSurveyHandler(onShowHandler);
   },
 
   /**
+   * @deprecated use {@link Surveys.setOnDismissHandler}
    * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any UI
    * changes after the survey's UI is dismissed.
@@ -104,20 +117,31 @@ export default {
    * the survey's UI is dismissed.
    */
   onDismissCallback: function(didDismissSurveyHandler) {
+    this.setOnDismissHandler(didDismissSurveyHandler);
+  },
+
+  /**
+   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
+   * This block is executed on the UI thread. Could be used for performing any UI
+   * changes after the survey's UI is dismissed.
+   * @param {function} onDismissHandler - A block of code that gets executed after
+   * the survey's UI is dismissed.
+   */
+  setOnDismissHandler: function(onDismissHandler) {
     if (Platform.OS === 'ios') {
       Instabug.addListener('IBGDidDismissSurvey');
       NativeAppEventEmitter.addListener(
         'IBGDidDismissSurvey',
-        didDismissSurveyHandler
+        onDismissHandler
       );
     } else {
       DeviceEventEmitter.addListener(
         'IBGDidDismissSurvey',
-        didDismissSurveyHandler
+        onDismissHandler
       );
     }
 
-    Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+    Instabug.setDidDismissSurveyHandler(onDismissHandler);
   },
 
   /**

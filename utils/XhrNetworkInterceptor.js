@@ -9,8 +9,6 @@ var onProgressCallback;
 var onDoneCallback;
 var isInterceptorEnabled = false;
 var network;
-var duration = 0;
-
 
 const _reset = () => {
   network = {
@@ -19,10 +17,11 @@ const _reset = () => {
     requestHeaders: '',
     method: '',
     responseBody: '',
-    responseCode: undefined,
+    responseCode: 0,
     responseHeaders: '',
     contentType: '',
-    duration: 0
+    duration: 0,
+    start: 0
   };
 }
 
@@ -50,7 +49,8 @@ const XHRInterceptor = {
     };
 
     XMLHttpRequest.prototype.send = function(data) {
-      network.requestBody = data ? data : '';
+      var cloneNetwork = JSON.parse(JSON.stringify(network));
+      cloneNetwork.requestBody = data ? data : '';
 
       if (this.addEventListener) {
         this.addEventListener(
@@ -62,7 +62,7 @@ const XHRInterceptor = {
             if (this.readyState === this.HEADERS_RECEIVED) {
               const contentTypeString = this.getResponseHeader('Content-Type');
               if (contentTypeString) {
-                network.contentType = contentTypeString.split(';')[0];
+                cloneNetwork.contentType = contentTypeString.split(';')[0];
               }
 
               
@@ -74,34 +74,33 @@ const XHRInterceptor = {
                   const value = element.split(':')[1];
                   responseHeadersDictionary[key] = value;
                 });
-                network.responseHeaders = responseHeadersDictionary;
+                cloneNetwork.responseHeaders = responseHeadersDictionary;
               }
               
               
             }
             if (this.readyState === this.DONE) {
-              duration = (Date.now() - duration);
+              cloneNetwork.duration = (Date.now() - cloneNetwork.start);
               if (this.status == null) {
-                network.responseCode = 0;
+                cloneNetwork.responseCode = 0;
               } else {
-                network.responseCode = this.status;
+                cloneNetwork.responseCode = this.status;
               }
-              network.duration = duration;
-
+              
               if (this.response) {
                 if (this.responseType === 'blob') {
                   var responseText = await (new Response(this.response)).text();
-                  network.responseBody = responseText;
+                  cloneNetwork.responseBody = responseText;
                 } else if (this.responseType === 'text') {
-                  network.responseBody = this.response;
+                  cloneNetwork.responseBody = this.response;
                 }
               }
 
               if (this._hasError) {
-                network.requestBody = this._response;
+                cloneNetwork.requestBody = this._response;
               }
               if (onDoneCallback) {
-                onDoneCallback(network);
+                onDoneCallback(cloneNetwork);
               }
             }
           },
@@ -123,7 +122,7 @@ const XHRInterceptor = {
         this.upload.addEventListener('progress', downloadUploadProgressCallback);
       }
 
-      duration = Date.now();
+      cloneNetwork.start = Date.now();
       originalXHRSend.apply(this, arguments);
     };
     isInterceptorEnabled = true;
