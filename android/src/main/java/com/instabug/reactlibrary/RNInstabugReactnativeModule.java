@@ -338,7 +338,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
         try {
-            Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+            BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -406,10 +406,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void setViewHierarchyEnabled(boolean enabled) {
         try {
             if (enabled) {
-                Instabug.setViewHierarchyState(Feature.State.ENABLED);
+                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
             } else {
-
-                Instabug.setViewHierarchyState(Feature.State.DISABLED);
+                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1550,14 +1549,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 case ENABLED_WITH_NO_SCREENSHOTS:
                     Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
                     break;
-                case ENABLED:
-                    Instabug.setReproStepsState(State.ENABLED);
-                    break;
                 case DISABLED:
                     Instabug.setReproStepsState(State.DISABLED);
                     break;
                 default:
-                    Instabug.setReproStepsState(State.ENABLED);
+                    Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
             }
 
         } catch (Exception e) {
@@ -2032,6 +2028,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
         networkLog.setRequestHeaders(newJSONObject.getString("requestHeaders"));
         networkLog.setResponseHeaders(newJSONObject.getString("responseHeaders"));
+        networkLog.setTotalDuration(newJSONObject.getLong("duration"));
         networkLog.insert();
     }
 

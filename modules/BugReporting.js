@@ -223,6 +223,35 @@ export default {
   },
 
   /**
+   * Enable/Disable screen recording
+   * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
+   * screen recording on crash feature
+   */
+  setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+    Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+  },
+
+  /**
+   * Sets auto screen recording maximum duration
+   *
+   * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
+   *                                       in seconds
+   * The maximum duration is 30 seconds
+   */
+  setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
+    Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+  },
+
+  /**
+   * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
+   * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
+   * or disabled.
+   */
+  setViewHierarchyEnabled: function(viewHierarchyEnabled) {
+    Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
+  },
+
+  /**
    * The event used to invoke the feedback form
    * @readonly
    * @enum {number}

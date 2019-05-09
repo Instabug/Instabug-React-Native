@@ -142,11 +142,11 @@ RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
-    Instabug.autoScreenRecordingEnabled = enabled;
+    IBGBugReporting.autoScreenRecordingEnabled = enabled;
 }
 
 RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
-    Instabug.autoScreenRecordingDuration = duration;
+    IBGBugReporting.autoScreenRecordingDuration = duration;
 }
 void (^globalReportCompletionHandler)(IBGReport *);
 IBGReport *currentReport = nil;
@@ -537,7 +537,7 @@ RCT_EXPORT_METHOD(setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack) {
 }
 
 RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
-    Instabug.shouldCaptureViewHierarchy = viewHirearchyEnabled;
+    IBGBugReporting.shouldCaptureViewHierarchy = viewHirearchyEnabled;
 }
 
 RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
@@ -726,7 +726,6 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
 
-              @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
 

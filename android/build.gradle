@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api ('com.instabug.library:instabug:8.2.2.1'){
+    api ('com.instabug.library:instabug:8.3.0.0'){
         exclude group: 'com.android.support:appcompat-v7'
     }
 }

@@ -127,7 +127,7 @@ OBJC_EXTERN void IBGLogError(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) ;
 /**
  @brief Used to reroute all your NSLogs to Instabug to be able to automatically include them with reports.
  
- @discussion For details on how to reroute your NSLogs to Instabug, see http://docs.instabug.com/docs/logging
+ @discussion For details on how to reroute your NSLogs to Instabug, see https://docs.instabug.com/docs/ios-logging
  
  @param format Format string.
  @param args Arguments list.

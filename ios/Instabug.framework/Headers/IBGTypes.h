@@ -164,7 +164,11 @@ extern NSString * const kIBGDiscardAlertCancel;
 extern NSString * const kIBGVideoGalleryErrorMessageStringName;
 extern NSString * const kIBGVideoDurationErrorTitle;
 extern NSString * const kIBGVideoDurationErrorMessage;
-
+extern NSString * const kIBGAutoScreenRecordingAlertAllowText;
+extern NSString * const kIBGAutoScreenRecordingAlertAlwaysAllowText;
+extern NSString * const kIBGAutoScreenRecordingAlertDenyText;
+extern NSString * const kIBGAutoScreenRecordingAlertTitleText;
+extern NSString * const kIBGAutoScreenRecordingAlertBodyText;
 
 /// -----------
 /// @name Enums
@@ -332,7 +336,6 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
  The user steps option.
  */
 typedef NS_ENUM(NSInteger, IBGUserStepsMode) {
-    IBGUserStepsModeEnable __attribute__((deprecated)),
     IBGUserStepsModeEnabledWithNoScreenshots,
     IBGUserStepsModeDisable
 };

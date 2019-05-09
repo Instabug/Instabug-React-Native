@@ -71,7 +71,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
+   * @deprecated use {@link BugReporting.setAutoScreenRecordingEnabled}
    * Enable/Disable screen recording
    * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
    * screen recording on crash feature
@@ -81,7 +81,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
+   * @deprecated use {@link BugReporting.setAutoScreenRecordingMaxDuration}
    * Sets auto screen recording maximum duration
    *
    * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
@@ -588,6 +588,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setViewHierarchyEnabled}
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
@@ -828,7 +829,6 @@ const InstabugModule = {
    * @enum {number}
    */
   reproStepsMode: {
-    enabled: Instabug.reproStepsEnabled,
     disabled: Instabug.reproStepsDisabled,
     enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots
   },
