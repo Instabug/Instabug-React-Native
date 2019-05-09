@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './utils/IBGEventEmitter';
-import InstabugUtils from './utils/InstabugUtils';
+import { captureJsErrors } from './utils/InstabugUtils';
 import InstabugConstants from './utils/InstabugConstants';
 import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
@@ -19,7 +19,7 @@ import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
 import NetworkLogger from './modules/NetworkLogger';
 
-InstabugUtils.captureJsErrors();
+captureJsErrors();
 NetworkLogger.setEnabled(true);
 
 var _isOnReportHandlerSet = false;
