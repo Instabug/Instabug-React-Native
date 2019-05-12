@@ -5,5 +5,7 @@ export default {
     SEND_UNHANDLED_CRASH: 'IBGSendUnhandledJSCrash',
     ON_INVOKE_HANDLER: 'IBGpreInvocationHandler',
     ON_SDK_DISMISSED_HANDLER: 'IBGpostInvocationHandler',
-    ON_REPLY_RECEIVED_HANDLER: 'IBGOnNewReplyReceivedCallback'
+    ON_REPLY_RECEIVED_HANDLER: 'IBGOnNewReplyReceivedCallback',
+    WILL_SHOW_SURVEY_HANDLER: 'IBGWillShowSurvey',
+    DID_DISMISS_SURVEY_HANDLER: 'IBGDidDismissSurvey'
 };

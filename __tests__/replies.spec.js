@@ -65,7 +65,7 @@ describe('Replies Module', () => {
 
   });
 
-  it('should invoke callback on emitting the event IBGpreInvocationHandler', () => {
+  it('should invoke callback on emitting the event IBGOnNewReplyReceivedCallback', () => {
 
     const callback = jest.fn()
     Replies.setOnNewReplyReceivedHandler(callback);
