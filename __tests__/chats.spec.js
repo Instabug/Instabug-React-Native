@@ -3,21 +3,11 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-
- 
 import 'react-native';
 import { NativeModules } from 'react-native';
+import '../jest/mockChats';
 import Chats from '../modules/Chats'
 import sinon from 'sinon';
-
-jest.mock('NativeModules', () => {
-  return {
-    Instabug: {
-      setChatsEnabled: (_) => jest.fn(),
-      showChats: () => jest.fn()
-    },
-  };
-});
 
 describe('Testing Chats Module', () => {
   
@@ -40,7 +30,5 @@ describe('Testing Chats Module', () => {
     expect(showChats.calledOnce).toBe(true);
 
   });
-
-
 
 });
