@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
 let { Instabug } = NativeModules;
 
 /**
@@ -47,7 +48,7 @@ export default {
    */
   setOnNewReplyReceivedHandler(onNewReplyReceivedHandler) {
     IBGEventEmitter.addListener(
-      'IBGOnNewReplyReceivedCallback',
+      InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
       onNewReplyReceivedHandler
     );
     Instabug.setOnNewReplyReceivedCallback(onNewReplyReceivedHandler);
