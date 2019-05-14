@@ -5,7 +5,7 @@ jobs:
       xcode: "10.2.0"
     steps:
       - checkout
-      - run: git clone git clone -b react-native --single-branch https://github.com/Instabug/Escape.git
+      - run: git clone -b react-native --single-branch https://github.com/Instabug/Escape.git
       - run: swift build -c release -Xswiftc -static-stdlib
       - run: cd .build/release; cp -f Escape /usr/local/bin/escape
       - run: Escape react-native publish 8.1.1
