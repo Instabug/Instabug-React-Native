@@ -741,7 +741,7 @@ const InstabugModule = {
     if (Platform.OS === 'ios') {
       Instabug.hideView(nativeTag);
     } else {
-      Instabug.setSecureViews([nativeTag]);
+      Instabug.hideView([nativeTag]);
     }
   },
   /**
