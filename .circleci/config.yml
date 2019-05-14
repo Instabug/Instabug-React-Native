@@ -5,8 +5,6 @@ jobs:
       xcode: "10.2.0"
     steps:
       - checkout
-      - run: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-      - run: brew install node
       - run: git clone https://github.com/yonaskolb/Mint.git
       - run: cd Mint; make
       - run: mint install Instabug/Escape/tree/react-native
