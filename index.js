@@ -220,11 +220,7 @@ const InstabugModule = {
    * @param {locale} locale A locale to set the SDK to.
    */
   setLocale: function(locale) {
-    if (Platform.OS === 'ios') {
-      Instabug.setLocale(locale);
-    } else if (Platform.OS === 'android') {
-      Instabug.changeLocale(locale);
-    }
+    Instabug.setLocale(locale);
   },
 
   /**
@@ -338,11 +334,7 @@ const InstabugModule = {
    * @param {string} name Name of the user to be set.
    */
   identifyUser: function(email, name) {
-    if (Platform.OS == 'ios') {
-      Instabug.identifyUserWithEmail(email, name);
-    } else if ('android') {
-      Instabug.identifyUser(name, email);
-    }
+    Instabug.identifyUserWithEmail(email, name);
   },
 
   /**
@@ -696,6 +688,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Surveys.setShouldShowWelcomeScreen}
    * Setting an option for all the surveys to show a welcome screen before
    * the user starts taking the survey.
    * @param shouldShowWelcomeScreen A boolean for setting whether the
@@ -775,33 +768,30 @@ const InstabugModule = {
     });
 
     // handled js crash
-    IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
-      try {
-        let report = await Instabug.getReport();
-        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-        preSendingHandler(reportObj);
-        if (Platform.OS === 'android') {
-          Instabug.sendHandledJSCrash(
-            JSON.stringify(jsonObject)
-          );
-        } 
-      } catch (e) {
-        console.error(e);
-      }
-    });
+    if (Platform.OS === 'android') {
+      IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+          try {
+            let report = await Instabug.getReport();
+            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+            const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+            preSendingHandler(reportObj);
+            Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+          } catch (e) {
+            console.error(e);
+          }
+      });
+    }
 
-    IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
-      let report = await Instabug.getReport();
-        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-        preSendingHandler(reportObj);
-        if (Platform.OS === 'android') {
-          Instabug.sendJSCrash(
-            JSON.stringify(jsonObject)
-          );
-        } 
-    });
+    if (Platform.OS === 'android') {
+      IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+        
+          let report = await Instabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+          preSendingHandler(reportObj);
+          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+      });
+    } 
 
     Instabug.setPreSendingHandler(preSendingHandler);
   },
