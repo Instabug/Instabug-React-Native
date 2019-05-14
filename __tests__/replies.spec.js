@@ -24,14 +24,14 @@ describe('Replies Module', () => {
   beforeEach(() => {
     setOnNewReplyReceivedCallback.resetHistory();
     setEnableInAppNotificationSound.resetHistory();
+    IBGEventEmitter.removeAllListeners();
   });
 
   it('should call the native method setRepliesEnabled', () => {
 
     Replies.setEnabled(true);
 
-    expect(setRepliesEnabled.calledOnce).toBe(true);
-    expect(setRepliesEnabled.calledWith(true)).toBe(true);
+    expect(setRepliesEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 
@@ -51,7 +51,7 @@ describe('Replies Module', () => {
     }
     Replies.hasChats(callback);
 
-    expect(hasChats.calledOnce).toBe(true);
+    expect(hasChats.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -60,8 +60,7 @@ describe('Replies Module', () => {
     const callback = jest.fn()
     Replies.setOnNewReplyReceivedHandler(callback);
 
-    expect(setOnNewReplyReceivedCallback.calledOnce).toBe(true);
-    expect(setOnNewReplyReceivedCallback.calledWith(callback)).toBe(true);
+    expect(setOnNewReplyReceivedCallback.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -71,6 +70,7 @@ describe('Replies Module', () => {
     Replies.setOnNewReplyReceivedHandler(callback);
     IBGEventEmitter.emit(IBGConstants.ON_REPLY_RECEIVED_HANDLER);
 
+    expect(IBGEventEmitter.getListeners(IBGConstants.ON_REPLY_RECEIVED_HANDLER).length).toEqual(1);
     expect(callback).toHaveBeenCalled();
 
   });
@@ -83,7 +83,7 @@ describe('Replies Module', () => {
     }
     Replies.getUnreadRepliesCount(callback);
 
-    expect(getUnreadMessagesCount.calledOnce).toBe(true);
+    expect(getUnreadMessagesCount.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -91,8 +91,7 @@ describe('Replies Module', () => {
 
     Replies.setInAppNotificationsEnabled(true);
 
-    expect(setChatNotificationEnabled.calledOnce).toBe(true);
-    expect(setChatNotificationEnabled.calledWith(true)).toBe(true);
+    expect(setChatNotificationEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 
@@ -101,8 +100,7 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.setInAppNotificationSound(true);
 
-    expect(setEnableInAppNotificationSound.calledOnce).toBe(true);
-    expect(setEnableInAppNotificationSound.calledWith(true)).toBe(true);
+    expect(setEnableInAppNotificationSound.calledOnceWithExactly(true)).toBe(true);
 
   });
 

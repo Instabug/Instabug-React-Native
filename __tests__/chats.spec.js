@@ -18,8 +18,7 @@ describe('Testing Chats Module', () => {
 
     Chats.setEnabled(true);
 
-    expect(setChatsEnabled.calledOnce).toBe(true);
-    expect(setChatsEnabled.calledWith(true)).toBe(true);
+    expect(setChatsEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 

@@ -28,6 +28,9 @@ describe('Testing BugReporting Module', () => {
   const showBugReportingWithReportTypeAndOptions = sinon.spy(NativeModules.Instabug, 'showBugReportingWithReportTypeAndOptions');
   const setPreInvocationHandler = sinon.spy(NativeModules.Instabug, 'setPreInvocationHandler');
   const setPostInvocationHandler = sinon.spy(NativeModules.Instabug, 'setPostInvocationHandler');
+  const setAutoScreenRecordingEnabled = sinon.spy(NativeModules.Instabug, 'setAutoScreenRecordingEnabled');
+  const setAutoScreenRecordingMaxDuration = sinon.spy(NativeModules.Instabug, 'setAutoScreenRecordingMaxDuration');
+  const setViewHierarchyEnabled = sinon.spy(NativeModules.Instabug, 'setViewHierarchyEnabled');
 
   beforeEach(() => {
     setShakingThresholdForiPhone.resetHistory();
@@ -35,14 +38,14 @@ describe('Testing BugReporting Module', () => {
     setShakingThresholdForAndroid.resetHistory();
     setPreInvocationHandler.resetHistory();
     setPostInvocationHandler.resetHistory();
+    IBGEventEmitter.removeAllListeners();
   });
 
   it('should call the native method setBugReportingEnabled', () => {
 
     BugReporting.setEnabled(true);
 
-    expect(setBugReportingEnabled.calledOnce).toBe(true);
-    expect(setBugReportingEnabled.calledWith(true)).toBe(true);
+    expect(setBugReportingEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 
@@ -51,8 +54,7 @@ describe('Testing BugReporting Module', () => {
     const arrayOfInvocationEvents = [BugReporting.invocationEvent.floatingButton, BugReporting.invocationEvent.shake];
     BugReporting.setInvocationEvents(arrayOfInvocationEvents);
 
-    expect(setInvocationEvents.calledOnce).toBe(true);
-    expect(setInvocationEvents.calledWith(arrayOfInvocationEvents)).toBe(true);
+    expect(setInvocationEvents.calledOnceWithExactly(arrayOfInvocationEvents)).toBe(true);
 
   });
 
@@ -61,8 +63,7 @@ describe('Testing BugReporting Module', () => {
     const arrayOfInvocationOptions = [BugReporting.invocationOptions.commentFieldRequired];
     BugReporting.setInvocationOptions(arrayOfInvocationOptions);
 
-    expect(setInvocationOptions.calledOnce).toBe(true);
-    expect(setInvocationOptions.calledWith(arrayOfInvocationOptions)).toBe(true);
+    expect(setInvocationOptions.calledOnceWithExactly(arrayOfInvocationOptions)).toBe(true);
 
   });
 
@@ -72,8 +73,7 @@ describe('Testing BugReporting Module', () => {
     const value = 2.5;
     BugReporting.setShakingThresholdForiPhone(value);
 
-    expect(setShakingThresholdForiPhone.calledOnce).toBe(true);
-    expect(setShakingThresholdForiPhone.calledWith(value)).toBe(true);
+    expect(setShakingThresholdForiPhone.calledOnceWithExactly(value)).toBe(true);
 
   });
 
@@ -92,8 +92,7 @@ describe('Testing BugReporting Module', () => {
     const value = 0.6;
     BugReporting.setShakingThresholdForiPad(value);
 
-    expect(setShakingThresholdForiPad.calledOnce).toBe(true);
-    expect(setShakingThresholdForiPad.calledWith(value)).toBe(true);
+    expect(setShakingThresholdForiPad.calledOnceWithExactly(value)).toBe(true);
 
   });
 
@@ -112,8 +111,7 @@ describe('Testing BugReporting Module', () => {
     const value = 350;
     BugReporting.setShakingThresholdForAndroid(value);
 
-    expect(setShakingThresholdForAndroid.calledOnce).toBe(true);
-    expect(setShakingThresholdForAndroid.calledWith(value)).toBe(true);
+    expect(setShakingThresholdForAndroid.calledOnceWithExactly(value)).toBe(true);
 
   });
 
@@ -130,8 +128,7 @@ describe('Testing BugReporting Module', () => {
 
     BugReporting.setExtendedBugReportMode(true);
 
-    expect(setExtendedBugReportMode.calledOnce).toBe(true);
-    expect(setExtendedBugReportMode.calledWith(true)).toBe(true);
+    expect(setExtendedBugReportMode.calledOnceWithExactly(true)).toBe(true);
 
   });
 
@@ -140,8 +137,7 @@ describe('Testing BugReporting Module', () => {
     const arrayOfReportTypes = [BugReporting.reportType.bug];
     BugReporting.setReportTypes(arrayOfReportTypes);
 
-    expect(setReportTypes.calledOnce).toBe(true);
-    expect(setReportTypes.calledWith(arrayOfReportTypes)).toBe(true);
+    expect(setReportTypes.calledOnceWithExactly(arrayOfReportTypes)).toBe(true);
 
   });
 
@@ -151,8 +147,7 @@ describe('Testing BugReporting Module', () => {
     const arrayOfOptions = [BugReporting.invocationOptions.commentFieldRequired];
     BugReporting.show(reportType, arrayOfOptions);
 
-    expect(showBugReportingWithReportTypeAndOptions.calledOnce).toBe(true);
-    expect(showBugReportingWithReportTypeAndOptions.calledWith(reportType, arrayOfOptions)).toBe(true);
+    expect(showBugReportingWithReportTypeAndOptions.calledOnceWithExactly(reportType, arrayOfOptions)).toBe(true);
 
   });
 
@@ -161,8 +156,7 @@ describe('Testing BugReporting Module', () => {
     const callback = jest.fn()
     BugReporting.onInvokeHandler(callback);
 
-    expect(setPreInvocationHandler.calledOnce).toBe(true);
-    expect(setPreInvocationHandler.calledWith(callback)).toBe(true);
+    expect(setPreInvocationHandler.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -172,6 +166,7 @@ describe('Testing BugReporting Module', () => {
     BugReporting.onInvokeHandler(callback);
     IBGEventEmitter.emit(IBGConstants.ON_INVOKE_HANDLER);
 
+    expect(IBGEventEmitter.getListeners(IBGConstants.ON_INVOKE_HANDLER).length).toEqual(1);
     expect(callback).toHaveBeenCalled();
 
   });
@@ -181,20 +176,47 @@ describe('Testing BugReporting Module', () => {
     const callback = jest.fn()
     BugReporting.onSDKDismissedHandler(callback);
 
-    expect(setPostInvocationHandler.calledOnce).toBe(true);
-    expect(setPostInvocationHandler.calledWith(callback)).toBe(true);
+    expect(setPostInvocationHandler.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
-  it('should invoke callback on emitting the event IBGpostInvocationHandler', () => {
+  it('should invoke callback on emitting the event IBGpostInvocationHandler', (done) => {
 
-    const callback = jest.fn()
     const dismissType = 'cancel';
     const reportType = 'bug';
+    const callback = (dismiss, report) => {
+      expect(dismiss).toBe(dismissType);
+      expect(report).toBe(reportType);
+      done();
+    }
     BugReporting.onSDKDismissedHandler(callback);
     IBGEventEmitter.emit(IBGConstants.ON_SDK_DISMISSED_HANDLER, {dismissType: dismissType, reportType: reportType});
 
-    expect(callback).toHaveBeenCalledWith(dismissType, reportType);
+    expect(IBGEventEmitter.getListeners(IBGConstants.ON_SDK_DISMISSED_HANDLER).length).toEqual(1);
+
+  });
+
+  it('should call the native method setAutoScreenRecordingEnabled', () => {
+
+    BugReporting.setAutoScreenRecordingEnabled(true);
+
+    expect(setAutoScreenRecordingEnabled.calledOnceWithExactly(true)).toBe(true);
+
+  });
+
+  it('should call the native method setAutoScreenRecordingMaxDuration', () => {
+
+    BugReporting.setAutoScreenRecordingMaxDuration(30);
+
+    expect(setAutoScreenRecordingMaxDuration.calledOnceWithExactly(30)).toBe(true);
+
+  });
+
+  it('should call the native method setViewHierarchyEnabled', () => {
+
+    BugReporting.setViewHierarchyEnabled(true);
+
+    expect(setViewHierarchyEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 

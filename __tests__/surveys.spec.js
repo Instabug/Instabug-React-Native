@@ -28,6 +28,7 @@ describe('Surveys Module', () => {
   beforeEach(() => {
     setWillShowSurveyHandler.resetHistory();
     setDidDismissSurveyHandler.resetHistory();
+    IBGEventEmitter.removeAllListeners();
   });
 
   it('should call the native method setSurveysEnabled', () => {
@@ -88,6 +89,7 @@ describe('Surveys Module', () => {
     Surveys.setOnShowHandler(callback);
     IBGEventEmitter.emit(IBGConstants.WILL_SHOW_SURVEY_HANDLER);
 
+    expect(IBGEventEmitter.getListeners(IBGConstants.WILL_SHOW_SURVEY_HANDLER).length).toEqual(1);
     expect(callback).toHaveBeenCalled();
 
   });
@@ -107,6 +109,7 @@ describe('Surveys Module', () => {
     Surveys.setOnDismissHandler(callback);
     IBGEventEmitter.emit(IBGConstants.DID_DISMISS_SURVEY_HANDLER);
 
+    expect(IBGEventEmitter.getListeners(IBGConstants.DID_DISMISS_SURVEY_HANDLER).length).toEqual(1);
     expect(callback).toHaveBeenCalled();
 
   });

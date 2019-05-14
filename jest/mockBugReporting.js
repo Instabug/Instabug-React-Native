@@ -12,7 +12,10 @@ jest.mock('NativeModules', () => {
           showBugReportingWithReportTypeAndOptions: jest.fn(),
           setPreInvocationHandler: jest.fn(),
           addListener: jest.fn(),
-          setPostInvocationHandler: jest.fn()
+          setPostInvocationHandler: jest.fn(),
+          setAutoScreenRecordingEnabled: jest.fn(),
+          setAutoScreenRecordingMaxDuration: jest.fn(),
+          setViewHierarchyEnabled: jest.fn()
       },
     };
   });
