@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
+      - run: brew install mint
       - run: mint install Instabug/Escape/tree/react-native
       - run: Escape react-native publish 8.1.1
 
