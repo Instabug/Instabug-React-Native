@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  publish:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: mint install Instabug/Escape/tree/react-native
+      - run: Escape react-native publish 8.1.1
+
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - publish
