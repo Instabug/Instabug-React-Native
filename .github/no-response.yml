@@ -8,5 +8,5 @@ responseRequiredLabel: Pending Feedback
 # Comment to post when closing an Issue for lack of response. Set to `false` to disable
 closeComment: >
   This issue has been automatically closed since we haven't heard back from
-  back from. Please feel free to reopen the issue if you have more information
+  you. Please feel free to reopen the issue if you have more information
   to add.
