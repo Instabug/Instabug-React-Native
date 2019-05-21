@@ -47,9 +47,12 @@ export default {
    * @param {function} handler
    */
   setNetworkDataObfuscationHandler(handler) {
-    if (handler !== null) {
-      _networkDataObfuscationHandlerSet = true;
-    }
+    if (handler === null) {
+      _networkDataObfuscationHandlerSet = false;
+      return;
+    } 
+    _networkDataObfuscationHandlerSet = true;
+
     IBGEventEmitter.addListener(
       InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
       async data => {
