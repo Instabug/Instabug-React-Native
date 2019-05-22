@@ -10,19 +10,18 @@ jobs:
       # - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
       # - run: Escape react-native publish
   run_sample_app:
-    macos:
-      xcode: "10.2.0"
+    docker:
+      - image: circleci/android:api-27-node8-alpha
     working_directory: ~/project/InstabugSample
     steps:
       - checkout:
           path: ~/project
-      - run: which npm
       - run: yarn install
       - run: yarn global add react-native
       - run: yarn global add react-native-cli
       - run: react-native link instabug-reactnative
       - run: react-native run-android
-      - run: react-native run-ios
+      # - run: react-native run-ios
 
 
 workflows:
