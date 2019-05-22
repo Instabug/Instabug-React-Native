@@ -50,7 +50,7 @@ workflows:
     jobs:
       - run_sample_app
       - run_android_app:
-        requires:
+          requires:
             - run_sample_app
       - publish:
           requires:
