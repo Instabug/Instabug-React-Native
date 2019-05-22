@@ -14,10 +14,13 @@ jobs:
       xcode: "10.2.0"
     environment:
       ANDROID_HOME: "/usr/local/share/android-sdk"
-      PATH: "$PATH:$ANDROID_HOME/tools/bin"
+      ANDROID_SDK_HOME: "/usr/local/share/android-sdk"
+      ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
     dependencies:
-      pre:
-        - bash ./scripts/circle-install-android-sdk.sh
+      override:
+        - brew tap caskroom/cask
+        - brew tap caskroom/versions
+        - brew cask install android-sdk
     working_directory: ~/project/InstabugSample
     steps:
       - checkout:
