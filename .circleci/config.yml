@@ -34,7 +34,7 @@ jobs:
       - run: sudo apt-get install pulseaudio
       - run:
           name: Setup emulator
-          command: sdkmanager "system-images;android-28;default;x86" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86"
+          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
       - run:
           name: Launch emulator
           command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator -avd test -noaudio -no-boot-anim -no-window -accel on
