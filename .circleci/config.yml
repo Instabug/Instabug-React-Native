@@ -30,7 +30,8 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: sdkmanager --list --verbose
+      - run: cd ..; yarn install
+      - run: cd ..; npm link instabug-reactnative
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;google_apis;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;google_apis;x86_64"
