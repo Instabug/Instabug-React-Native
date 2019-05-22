@@ -26,10 +26,10 @@ jobs:
       - run: react-native link instabug-reactnative
       - run:
           name: Setup emulator
-          command: sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
+          command: cd /usr/local/share/android-sdk/tools/bin | sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
       - run:
           name: Launch emulator
-          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          command: echo 'export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on' >> $BASH_ENV
           background: true
       - run: react-native run-android
       - run: react-native run-ios
