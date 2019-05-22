@@ -25,7 +25,7 @@ jobs:
       
   run_android_app:
     docker:
-      - image: circleci/api-28-node8-alpha
+      - image: circleci/android:api-28-node
     working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
@@ -49,7 +49,9 @@ workflows:
   publish:
     jobs:
       - run_sample_app
-      - run_android_app
+      - run_android_app:
+        requires:
+            - run_sample_app
       - publish:
           requires:
-            - run_sample_app
+            - run_android_app
