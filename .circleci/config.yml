@@ -16,30 +16,40 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: chmod 755 install_android_sdk.sh
-      - run: ./install_android_sdk.sh
-      - run: echo 'export ANDROID_HOME=/usr/local/share/android-sdk'  >> $BASH_ENV
       - run: yarn install
       - run: yarn global add react-native
       - run: yarn global add react-native-cli
-      - run: sudo chmod 755 'install_android_sdk.sh'
       - run: react-native link instabug-reactnative
+      # - run: react-native run-android
+      - run: react-native run-ios
+      
+  run_android_app:
+    docker:
+      - image: circleci/api-28-node8-alpha
+    working_directory: ~/project/InstabugSample/android
+    steps:
+      - checkout:
+          path: ~/project
       - run:
           name: Setup emulator
-          command: cd /usr/local/share/android-sdk/tools/bin | sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
+          command: sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
       - run:
           name: Launch emulator
-          command: echo 'export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on' >> $BASH_ENV
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
           background: true
-      - run: react-native run-android
-      - run: react-native run-ios
-
+      - run:
+          name: Build App
+          command: ./gradlew assembleDebug
+      - run:
+          name: Run App
+          command: ./gradlew installDebug
 
 workflows:
   version: 2
   publish:
     jobs:
       - run_sample_app
+      - run_android_app
       - publish:
           requires:
             - run_sample_app
