@@ -20,7 +20,7 @@ jobs:
       - run: yarn install
       - run: yarn global add react-native
       - run: yarn global add react-native-cli
-      - run: run: ./install_android_sdk.sh
+      - run: ./install_android_sdk.sh
       - run: react-native link instabug-reactnative
       - run: react-native run-android
       - run: react-native run-ios
