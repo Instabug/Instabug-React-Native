@@ -16,6 +16,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run: chmod 755 install_android_sdk.sh
       - run: ./install_android_sdk.sh
       - run: echo 'export ANDROID_HOME=/usr/local/share/android-sdk'  >> $BASH_ENV
       - run: yarn install
