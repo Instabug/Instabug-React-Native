@@ -30,10 +30,11 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run: sdkmanager --list
       - run: sdkmanager --list --verbose
       - run:
           name: Setup emulator
-          command: sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
+          command: sdkmanager "system-images;/opt/android/sdk/build-tools/28.0.0;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;/opt/android/sdk/build-tools/28.0.0;default;armeabi-v7a"
       - run:
           name: Launch emulator
           command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
