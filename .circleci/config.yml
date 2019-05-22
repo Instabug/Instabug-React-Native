@@ -31,12 +31,13 @@ jobs:
       - checkout:
           path: ~/project
       - run: cd ..; yarn install
+      - run: sudo apt-get install libpulse0:i386
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;default;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86_64"
       - run:
           name: Launch emulator
-          command: emulator -avd test -noaudio -no-boot-anim -no-window -accel on
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator -avd test -noaudio -no-boot-anim -no-window -accel on
           background: true
       - run:
           name: chmod permissions
