@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: brew cask install android-sdk
+      - run: ./install_android_sdk.sh
       - run: echo 'export ANDROID_HOME=/usr/local/share/android-sdk'  >> $BASH_ENV
       - run: yarn install
       - run: yarn global add react-native
