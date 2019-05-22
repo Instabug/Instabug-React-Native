@@ -31,7 +31,7 @@ jobs:
       - checkout:
           path: ~/project
       - run: cd ..; yarn install
-      - run: sudo apt-get install lib32-libpulse
+      - run: sudo apt-get install pulseaudio
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;default;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86_64"
