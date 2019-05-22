@@ -30,7 +30,9 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: cd ..; yarn install ; npm install -g react-native-cli ; react-native link instabug-reactnative
+      - run: cd ..; yarn install ;
+      - run: cd ..; yarn global add react-native-cli
+      - run: cd ..; react-native link instabug-reactnative
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;google_apis;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;google_apis;x86_64"
