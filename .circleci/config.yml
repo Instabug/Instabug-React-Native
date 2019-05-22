@@ -12,20 +12,12 @@ jobs:
   run_sample_app:
     macos:
       xcode: "10.2.0"
-    environment:
-      ANDROID_HOME: "/usr/local/share/android-sdk"
-      ANDROID_SDK_HOME: "/usr/local/share/android-sdk"
-      ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
-    dependencies:
-      override:
-        - brew tap caskroom/cask
-        - brew tap caskroom/versions
-        - brew cask install android-sdk
     working_directory: ~/project/InstabugSample
     steps:
       - checkout:
           path: ~/project
-      - run: which brew
+      - run: brew cask install android-sdk
+      - run: echo 'export ANDROID_HOME=/usr/local/share/android-sdk'  >> $BASH_ENV
       - run: yarn install
       - run: yarn global add react-native
       - run: yarn global add react-native-cli
