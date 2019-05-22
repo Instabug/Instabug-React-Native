@@ -9,9 +9,25 @@ jobs:
       # - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
       # - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
       # - run: Escape react-native publish
+  run_sample_app:
+    macos:
+      xcode: "10.2.0"
+    working_directory: ~/project/InstabugSample
+    steps:
+      - checkout:
+          path: ~/project
+       - run: which npm
+       - run: yarn install
+       - run: react-native link instabug-reactnative
+       - run: react-native run android
+       - run: react-native run ios
+
 
 workflows:
   version: 2
   publish:
     jobs:
-      - publish
+      - run_sample_app
+      - publish:
+          requires:
+            - run_sample_app
