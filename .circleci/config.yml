@@ -30,9 +30,10 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: cd ..; yarn install ;
+      - run: cd ..; yarn install
       - run: cd ..; sudo npm install -g react-native
       - run: cd ..; echo 'export PATH="/usr/local/share/npm/bin:$PATH"' >> $BASH_ENV 
+      - run: cd ..; npm list -g | head -n 1
       - run: cd ..; react-native link instabug-reactnative
       - run:
           name: Setup emulator
