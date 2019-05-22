@@ -33,7 +33,7 @@ jobs:
       - run: cd ..; yarn install
       - run: cd ..; sudo npm install -g react-native
       - run: cd ..; echo 'export PATH="/usr/local/bin:$PATH"' >> $BASH_ENV 
-      - run: cd ..; node link_bridge.js
+      - run: cd ..; cd ..; node link_bridge.js
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;google_apis;x86_64" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;google_apis;x86_64"
