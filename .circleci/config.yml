@@ -30,6 +30,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run: sdkmanager --list --verbose
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-28;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;armeabi-v7a"
@@ -52,9 +53,7 @@ workflows:
   publish:
     jobs:
       - run_sample_app
-      - run_android_app:
-          requires:
-            - run_sample_app
+      - run_android_app
       - publish:
           requires:
             - run_android_app
