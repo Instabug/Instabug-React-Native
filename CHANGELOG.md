@@ -1,3 +1,7 @@
+## v8.3.2 (2019-05-23)
+
+* Fixes android release build on windows
+
 ## v8.3.1 (2019-05-11)
 
 * Hotfix captureJsErrors
