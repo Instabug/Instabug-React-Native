@@ -52,8 +52,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - cd_to_sample:
-          - cd InstabugSample
+      - run: cd InstabugSample
 
       # - restore_cache:
       #     key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
