@@ -46,12 +46,12 @@ jobs:
           path: test-results
 
   test_sample:
-    working_directory: ~/project
+    working_directory: ~/project/InstabugSample
     docker:
       - image: circleci/node:8
     steps:
       - checkout:
-          path: ~/project
+          path: ~/project/InstabugSample
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
