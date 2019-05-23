@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  node:
+  test_module:
     working_directory: ~/project
     docker:
       - image: circleci/node:8
@@ -44,6 +44,52 @@ jobs:
 
       - store_artifacts:
           path: test-results
+
+  test_sample:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - run:
+          name: jest tests
+          command: |
+            mkdir -p test-results/jest
+            yarn run test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - node_modules
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
+    
 
   # android:
   #   working_directory: ~/Instabug/reactnative/instabug-reactnative-private/InstabugSample/android
@@ -149,7 +195,8 @@ workflows:
   version: 2
   node:
     jobs:
-      - node
+      - test_module
+      - test_sample
       # - android:
       #     requires:
       #       - node
