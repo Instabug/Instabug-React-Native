@@ -5,56 +5,21 @@ jobs:
       xcode: "10.1.0"
     steps:
       - checkout
-      # - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
-      # - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
-      # - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
-      # - run: Escape react-native publish
-  run_sample_app:
-    macos:
-      xcode: "10.2.0"
-    working_directory: ~/project/InstabugSample
-    steps:
-      - checkout:
-          path: ~/project
-      - run: yarn install
-      - run: yarn global add react-native
-      - run: yarn global add react-native-cli
-      - run: react-native link instabug-reactnative
-      # - run: react-native run-android
-      - run: react-native run-ios
-      
-  run_android_app:
-    docker:
-      - image: circleci/android:api-28-node
-    working_directory: ~/project/InstabugSample/android
-    steps:
-      - checkout:
-          path: ~/project
-      - run: cd ..; yarn install
-      - run: sudo apt-get install pulseaudio
-      - run:
-          name: Setup emulator
-          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
-      - run:
-          name: Launch emulator
-          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator -avd test -noaudio -no-boot-anim -no-window -accel on
-          background: true
-      - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
-      - run:
-          name: Build App
-          command: ./gradlew assembleDebug
-      - run:
-          name: Run App
-          command: ./gradlew installDebug
+      - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
+      - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
+      - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
+      - run: Escape react-native publish
 
 workflows:
   version: 2
   publish:
     jobs:
-      - run_sample_app
-      - run_android_app
+      - hold:
+          type: approval
       - publish:
           requires:
-            - run_android_app
+            - hold
+          filters:
+            branches:
+              only: master
+              

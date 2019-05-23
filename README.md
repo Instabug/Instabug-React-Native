@@ -116,6 +116,16 @@ protected List<ReactPackage> getPackages() {
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
+4. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
+```dart
+allprojects {
+	repositories {
+	    maven {
+	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
+	    }
+	}
+}
+```
 ## Upgrade Guide
 
 ### Upgrading from 1.x.x
