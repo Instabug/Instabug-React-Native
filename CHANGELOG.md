@@ -1,6 +1,6 @@
 ## v8.3.2 (2019-05-23)
 
-* Fixes android release build on windows
+* Fixes an issue that causes release builds to fail on Windows
 
 ## v8.3.1 (2019-05-11)
 
