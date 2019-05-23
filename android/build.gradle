@@ -32,9 +32,16 @@ dependencies {
     }
 }
 
+
+import org.apache.tools.ant.taskdefs.condition.Os
 task upload_sourcemap(type: Exec) {
-    environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
-    commandLine 'sh', './upload_sourcemap.sh'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'echo', 'Automatic upload of sourcemap files is currently not available on Windows. Please generate the sourcemap files and upload them to the dashboard manually. For more information see https://docs.instabug.com/docs/react-native-symbolication-obfuscation'
+        project.logger.lifecycle('Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard')
+    } else {
+        environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
+        commandLine 'sh', './upload_sourcemap.sh'
+    }
 }
 
 tasks.whenTaskAdded { task ->

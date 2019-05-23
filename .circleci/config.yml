@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  publish:
+    macos:
+      xcode: "10.1.0"
+    steps:
+      - checkout
+      - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
+      - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
+      - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
+      - run: Escape react-native publish
+
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: master
