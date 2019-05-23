@@ -16,10 +16,12 @@ workflows:
     jobs:
       - hold:
           type: approval
+          filters:
+            branches:
+              only: master
       - publish:
           requires:
             - hold
           filters:
             branches:
               only: master
-              
