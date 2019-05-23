@@ -5,8 +5,8 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockInstabugUtils';
 import '../jest/mockXhrNetworkInterceotor';
+import '../jest/mockInstabugUtils';
 import sinon from 'sinon';
 import CrashReporting from '../modules/CrashReporting';
 import { parseErrorStack } from '../utils/InstabugUtils';
