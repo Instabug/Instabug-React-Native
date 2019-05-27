@@ -53,17 +53,13 @@ jobs:
       - checkout:
           path: ~/project
 
-      - run: 
-          name: CD to the sample app
-          command: cd InstabugSample
-
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+      - run: cd InstabugSample && yarn install
 
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
