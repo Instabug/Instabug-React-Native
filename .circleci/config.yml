@@ -46,7 +46,7 @@ jobs:
           path: test-results
 
   test_sample:
-    working_directory: ~/project/InstabugSample
+    working_directory: ~/project
     docker:
       - image: circleci/node:8
     steps:
@@ -54,10 +54,10 @@ jobs:
           path: ~/project
 
       - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "InstabugSample/yarn.lock" }}-{{ arch }}
 
       - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
 
       - run: cd InstabugSample && yarn install
 
