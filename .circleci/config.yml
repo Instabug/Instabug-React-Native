@@ -69,7 +69,7 @@ jobs:
       - save_cache:
           key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
           paths:
-            - node_modules
+            - InstabugSample/node_modules
 
       - run:
           name: jest tests
