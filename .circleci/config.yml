@@ -8,11 +8,11 @@ jobs:
       - checkout:
           path: ~/project
 
-      # - restore_cache:
-      #     key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
-      # - restore_cache:
-      #     key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
       - run: yarn install
 
@@ -46,19 +46,22 @@ jobs:
           path: test-results
 
   test_sample:
-    working_directory: ~/project
+    working_directory: ~/project/InstabugSample
     docker:
       - image: circleci/node:8
     steps:
       - checkout:
           path: ~/project
-      - run: cd InstabugSample
 
-      # - restore_cache:
-      #     key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run: 
+          name: CD to the sample app
+          command: cd InstabugSample
 
-      # - restore_cache:
-      #     key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
       - run: yarn install
 
@@ -194,7 +197,7 @@ jobs:
 
 workflows:
   version: 2
-  node:
+  test:
     jobs:
       - test_module
       - test_sample
