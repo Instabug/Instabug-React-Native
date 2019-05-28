@@ -16,7 +16,21 @@ const IBGEventEmitter = {
         } else {
             DeviceEventEmitter.emit(eventName, eventParams);
         }
-    }
+    },
+    removeAllListeners: () => {
+        if (Platform.OS === 'ios') {
+            NativeAppEventEmitter.removeAllListeners()
+        } else {
+            DeviceEventEmitter.removeAllListeners();
+        }
+    },
+    getListeners: (eventName) => {
+        if (Platform.OS === 'ios') {
+            return NativeAppEventEmitter.listeners(eventName)
+        } else {
+            return DeviceEventEmitter.listeners(eventName);
+        }
+    } 
 };
 
 export default IBGEventEmitter;

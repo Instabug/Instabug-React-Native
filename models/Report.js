@@ -115,6 +115,6 @@ export default class Report {
     } else {
       Instabug.addFileAttachmentWithDataToReport(data, fileName);
     }
-    this.fileAttachments = [...this.fileAttachments, {file: url, type: 'data'}];
+    this.fileAttachments = [...this.fileAttachments, {file: data, type: 'data'}];
   }
 }

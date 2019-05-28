@@ -367,7 +367,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param instabugLocale
      */
     @ReactMethod
-    public void changeLocale(String instabugLocale) {
+    public void setLocale(String instabugLocale) {
         try {
             Instabug.setLocale(getLocaleByKey(instabugLocale));
         } catch (Exception e) {
@@ -596,7 +596,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param userEmail User's default email
      */
     @ReactMethod
-    public void identifyUser(String userName, String userEmail) {
+    public void identifyUserWithEmail(String userEmail, String userName) {
         try {
             mInstabug.identifyUser(userName, userEmail);
         } catch (Exception e) {
@@ -2034,7 +2034,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void setSecureViews(ReadableArray ids) {
+    public void hideView(ReadableArray ids) {
         int[] arrayOfIds = new int[ids.size()];
         for (int i = 0; i < ids.size(); i++) {
             int viewId = (int) ids.getDouble(i);

@@ -13,8 +13,10 @@ export const parseErrorStack = (error) => {
 const originalHandler = global.ErrorUtils.getGlobalHandler();
 
 export const captureJsErrors = () => {
-    if (__DEV__) {
-        return;
+    if (!process.env.JEST_WORKER_ID) {
+      if (__DEV__) {
+          return;
+      }
     }
 
     function errorHandler(e, isFatal) {
@@ -38,7 +40,7 @@ export const captureJsErrors = () => {
         Instabug.sendJSCrash(jsonObject);
       }
 
-      if (originalHandler) {
+      if (originalHandler && !process.env.JEST_WORKER_ID) {
         if (Platform.OS === 'ios') {
           originalHandler(e, isFatal);
         } else {
