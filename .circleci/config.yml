@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  codecov: codecov/codecov@1.0.4
 jobs:
   test_module:
     working_directory: ~/project
@@ -44,6 +46,10 @@ jobs:
 
       - store_artifacts:
           path: test-results
+      
+      - codecov/upload:
+          file: ~/project/coverage/coverage-final.json
+          token: acc99c33-f747-4957-b35e-1a061f451e08
 
   test_sample:
     working_directory: ~/project
