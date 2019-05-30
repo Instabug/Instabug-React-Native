@@ -1,10 +1,12 @@
-//
-//  IBGSurvey.h
-//  InstabugSurveys
-//
-//  Created by Yousef Hamza on 5/25/18.
-//  Copyright © 2018 Moataz. All rights reserved.
-//
+/*
+ File:       Instabug/IBGSurvey.h
+ 
+ Contains:   API for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
+ 
+ Version:    8.4
+ */
 
 #import <Foundation/Foundation.h>
 
