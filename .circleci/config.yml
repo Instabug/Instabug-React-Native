@@ -1,9 +1,9 @@
-version: 2.1
-orbs:
-  codecov: codecov/codecov@1.0.4
+version: 2
 jobs:
   test_module:
     working_directory: ~/project
+    environment:
+      CODECOV_TOKEN: "acc99c33-f747-4957-b35e-1a061f451e08"
     docker:
       - image: circleci/node:8
     steps:
@@ -46,10 +46,6 @@ jobs:
 
       - store_artifacts:
           path: test-results
-      
-      - codecov/upload:
-          file: ~/project/coverage/coverage-final.json
-          token: acc99c33-f747-4957-b35e-1a061f451e08
 
   test_sample:
     working_directory: ~/project
@@ -110,7 +106,7 @@ jobs:
 
 
 workflows:
-  version: 2.1
+  version: 2
   publish:
     jobs:
       - test_module
