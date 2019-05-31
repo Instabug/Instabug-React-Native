@@ -819,6 +819,7 @@ const InstabugModule = {
    * @enum {number}
    */
   reproStepsMode: {
+    enabled: Instabug.reproStepsEnabled,
     disabled: Instabug.reproStepsDisabled,
     enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots
   },
