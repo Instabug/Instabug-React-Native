@@ -1,4 +1,4 @@
-## v8.3.3 (2019-05-23)
+## v8.3.3 (2019-05-31)
 
 * Fixes crash caused when calling the setReproStepsMode API with enum value enabled.
 * Fixes wrong typescript definition for the setReportTypes API param.
