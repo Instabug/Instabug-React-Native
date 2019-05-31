@@ -115,7 +115,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated use {@link CrashReporting.setCrashReportingEnabled}
+   * @deprecated use {@link CrashReporting.setEnabled}
    * Report un-caught exceptions to Instabug dashboard
    * We don't send exceptions from __DEV__, since it's way too noisy!
    */
@@ -819,6 +819,7 @@ const InstabugModule = {
    * @enum {number}
    */
   reproStepsMode: {
+    enabled: Instabug.reproStepsEnabled,
     disabled: Instabug.reproStepsDisabled,
     enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots
   },
