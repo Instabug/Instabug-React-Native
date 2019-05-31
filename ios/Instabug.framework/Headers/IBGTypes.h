@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.4
+ Version:    0.0.0
  */
 
 #import <UIKit/UIKit.h>
@@ -169,12 +169,6 @@ extern NSString * const kIBGAutoScreenRecordingAlertAlwaysAllowText;
 extern NSString * const kIBGAutoScreenRecordingAlertDenyText;
 extern NSString * const kIBGAutoScreenRecordingAlertTitleText;
 extern NSString * const kIBGAutoScreenRecordingAlertBodyText;
-extern NSString * const kIBGReproStepsDisclaimerBody;
-extern NSString * const kIBGReproStepsDisclaimerLink;
-extern NSString * const kIBGReproStepsListHeader;
-extern NSString * const kIBGReproStepsListEmptyStateLabel;
-extern NSString * const kIBGReproStepsListTitle;
-extern NSString * const kIBGReproStepsListItemName;
 
 /// -----------
 /// @name Enums
@@ -342,7 +336,6 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
  The user steps option.
  */
 typedef NS_ENUM(NSInteger, IBGUserStepsMode) {
-    IBGUserStepsModeEnable,
     IBGUserStepsModeEnabledWithNoScreenshots,
     IBGUserStepsModeDisable
 };

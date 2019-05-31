@@ -1,12 +1,10 @@
-/*
- File:       Instabug/UIView+Instabug.h
- 
- Contains:   API for using Instabug's SDK.
- 
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
- 
- Version:    0.0.0
- */
+//
+//  UIView+Instabug.h
+//  InstabugUtilities
+//
+//  Created by Aly Yakan on 7/17/18.
+//  Copyright © 2018 Moataz. All rights reserved.
+//
 
 #import <UIKit/UIKit.h>
 

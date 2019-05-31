@@ -1,13 +1,10 @@
-/*
- File:       Instabug/IBGFeatureRequests.h
- 
- Contains:   API for using Instabug's SDK.
- 
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
- 
- Version:    8.4
- */
-
+//
+//  IBGFeatureRequests.h
+//  Instabug
+//
+//  Created by Yousef Hamza on 5/17/18.
+//  Copyright © 2018 Moataz. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"

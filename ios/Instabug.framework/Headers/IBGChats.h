@@ -1,12 +1,10 @@
-/*
- File:       Instabug/IBGChats.h
- 
- Contains:   API for using Instabug's SDK.
- 
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
- 
- Version:    8.4
- */
+//
+//  IBGChats.h
+//  InstabugChats
+//
+//  Created by Hassaan El-Garem on 11/25/18.
+//  Copyright © 2018 Moataz. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
