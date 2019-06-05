@@ -48,7 +48,6 @@ RCT_ENUM_CONVERTER(IBGPromptOption, (@{
                                       }), IBGPromptOptionChat, integerValue)
 
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
-                                        @"reproStepsEnabled": @(IBGUserStepsModeEnable),
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
                                       @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnabledWithNoScreenshots, integerValue)

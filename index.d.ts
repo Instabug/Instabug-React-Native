@@ -231,7 +231,6 @@ export enum invocationEvent {
   floatingButton
 }
 export enum reproStepsMode {
-  enabled,
   disabled,
   enabledWithNoScreenshots
 }
