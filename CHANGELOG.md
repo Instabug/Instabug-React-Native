@@ -1,3 +1,7 @@
+## v8.4.0 (2019-06-11)
+
+* Updates native iOS and Android SDKs to version 8.4.
+
 ## v8.3.4 (2019-06-06)
 
 * Fixes build failure on iOS caused by IBGUserStepsModeEnable not found in SDK.
