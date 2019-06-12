@@ -1,5 +1,11 @@
 version: 2
 jobs:
+  danger:
+    docker:
+      - image: dantoml/danger:latest
+    steps:
+      - checkout
+      - run: danger
   test_module:
     working_directory: ~/project
     environment:
@@ -104,11 +110,11 @@ jobs:
       - run: Escape react-native publish
 
 
-
 workflows:
   version: 2
   publish:
     jobs:
+      - danger
       - test_module
       - test_sample
       - hold:

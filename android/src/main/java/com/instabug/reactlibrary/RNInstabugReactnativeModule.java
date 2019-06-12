@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -22,6 +23,9 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.uimanager.NativeViewHierarchyManager;
+import com.facebook.react.uimanager.UIBlock;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.PromptOption;
 import com.instabug.bug.instabugdisclaimer.Internal;
@@ -2034,27 +2038,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void hideView(ReadableArray ids) {
-        int[] arrayOfIds = new int[ids.size()];
-        for (int i = 0; i < ids.size(); i++) {
-            int viewId = (int) ids.getDouble(i);
-            arrayOfIds[i] = viewId;
-        }
-        Method method = null;
-        try {
-            method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setSecureViewsId", int[].class);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (method != null) {
-            try {
-                method.invoke(null, arrayOfIds);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+    public void hideView(final ReadableArray ids) {
+        UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+        uiManagerModule.prependUIBlock(new UIBlock() {
+            @Override
+            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                final View[] arrayOfViews = new View[ids.size()];
+                for (int i = 0; i < ids.size(); i++) {
+                    int viewId = (int) ids.getDouble(i);
+                    arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
+                }
+                Instabug.setViewsAsPrivate(arrayOfViews);
             }
-        }
+        });
     }
 
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {

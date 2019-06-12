@@ -24,8 +24,11 @@ export namespace BugReporting {
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
   function setExtendedBugReportMode(extendedBugReportMode: extendedBugReportMode): void;
-  function setReportTypes(types: reportType): void;
+  function setReportTypes(types: reportType[]): void;
   function showWithOptions(
+    type: reportType,
+    options: option[]): void;
+  function show(
     type: reportType,
     options: option[]): void;
   enum invocationEvent {
@@ -90,6 +93,7 @@ export namespace Replies {
   function hasChats(callback: (previousChats : boolean) => void): void;
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
+  function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
   function getUnreadRepliesCount(messageCountCallback: () => void): void;
   function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
@@ -104,7 +108,9 @@ export namespace Surveys {
   function getAvailableSurveys(availableSurveysCallback: () => void): void;
   function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   function onShowCallback(willShowSurveyHandler: () => void): void;
+  function setOnShowHandler(onShowHandler: () => void): void;
   function onDismissCallback(didDismissSurveyHandler: () => void): void;
+  function setOnDismissHandler(onDismissHandler: () => void): void;
   function showSurvey(surveyToken: string): void;
   function hasRespondedToSurvey(
     surveyToken: string,
@@ -119,6 +125,10 @@ export namespace NetworkLogger {
   function setProgressHandlerForRequest(handler: () => void): void;
 }
 export function startWithToken(
+  token: string,
+  invocationEvent: invocationEvent[]
+  ): void;
+export function start(
   token: string,
   invocationEvent: invocationEvent[]
   ): void;
@@ -150,6 +160,10 @@ export function setStringToKey(
   string: string,
   key: strings,
   ): void;
+export function setString(
+  key: strings,
+  string: string,
+  ): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
   extraScreenshot: boolean,
@@ -160,8 +174,13 @@ export function identifyUserWithEmail(
   email: string,
   name: string
   ): void;
+export function identifyUser(
+  email: string,
+  name: string
+  ): void;
 export function logOut(): void;
 export function logUserEventWithName(name: string,  params?: any): void;
+export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
 export function logDebug(message: string): void;
@@ -212,7 +231,6 @@ export enum invocationEvent {
   floatingButton
 }
 export enum reproStepsMode {
-  enabled,
   disabled,
   enabledWithNoScreenshots
 }
