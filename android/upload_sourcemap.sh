@@ -18,17 +18,17 @@ zip ./android-sourcemap.zip ./android-sourcemap.json
 
 if [ ${INSTABUG_APP_TOKEN} == "YOUR_APP_TOKEN" ]; then
     echo "Instabug: Looking for Token..."
-    if [ ! "${INSTABUG_APP_TOKEN}" ]; then
+    if [[ ! "${INSTABUG_APP_TOKEN}" ]]; then
         INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} 'Instabug.startWithToken(\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
     fi
 
-    if [ ! "${INSTABUG_APP_TOKEN}" ]; then
+    if [[ ! "${INSTABUG_APP_TOKEN}" ]]; then
         INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.startWithToken(\'[0-9a-zA-Z]*\'" ./ -m 1 | grep -o "\'[0-9a-zA-Z]*\'" | cut -d "\"" -f 2)
     fi
 fi
 
 
-if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ] || [ "${INSTABUG_APP_TOKEN}" == "YOUR_APP_TOKEN" ];then
+if [[ ! "${INSTABUG_APP_TOKEN}" ]] || [[ -z "${INSTABUG_APP_TOKEN}" ]] || [[ "${INSTABUG_APP_TOKEN}" == "YOUR_APP_TOKEN" ]];then
     echo "Instabug: err: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.startWithToken Or added it to the environment variable in the gradle"
     exit 0
 else
