@@ -1,3 +1,8 @@
+## v8.4.1 (2019-06-17)
+
+* Fixes Surveys.getAvailableSurveys API not returning the list of surveys on iOS.
+* Fixes typescript definition for the API Surveys.getAvailableSurveys.
+
 ## v8.4.0 (2019-06-11)
 
 * Updates native iOS and Android SDKs to version 8.4.

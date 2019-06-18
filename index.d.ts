@@ -105,7 +105,7 @@ export namespace Surveys {
     sessionCount: number,
     daysCount: number
     ): void;
-  function getAvailableSurveys(availableSurveysCallback: () => void): void;
+  function getAvailableSurveys(availableSurveysCallback: (surveys: Survey[]) => void): void;
   function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   function onShowCallback(willShowSurveyHandler: () => void): void;
   function setOnShowHandler(onShowHandler: () => void): void;
@@ -374,4 +374,8 @@ export enum strings {
   setUserAttribute(key: string, value: string);
   addFileAttachmentWithUrl(url: string, filename: string);
   addFileAttachmentWithData(data: string, filename: string);
+}
+
+interface Survey {
+  title: string
 }

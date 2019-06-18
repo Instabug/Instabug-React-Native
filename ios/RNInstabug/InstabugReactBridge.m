@@ -473,7 +473,12 @@ RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
 }
 
 RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
-    callback(@[[IBGSurveys availableSurveys]]);
+    NSArray<IBGSurvey* >* availableSurveys = [IBGSurveys availableSurveys];
+    NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
+    for (IBGSurvey* survey in availableSurveys) {
+        [mappedSurveys addObject:@{@"title": survey.title }];
+    }
+    callback(@[mappedSurveys]);
 }
 
 RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
