@@ -1,3 +1,7 @@
+## v8.4.2 (2019-06-19)
+
+* Fixes valid email written but gets enter valid email error message on Android.
+
 ## v8.4.1 (2019-06-17)
 
 * Fixes Surveys.getAvailableSurveys API not returning the list of surveys on iOS.
