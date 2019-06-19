@@ -8,8 +8,6 @@ jobs:
       - run: danger
   test_module:
     working_directory: ~/project
-    environment:
-      CODECOV_TOKEN: "acc99c33-f747-4957-b35e-1a061f451e08"
     docker:
       - image: circleci/node:8
     steps:
