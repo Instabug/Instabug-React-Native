@@ -1,6 +1,6 @@
 ## v8.4.3 (2019-07-01)
 
-* Fixes release build failure on Windows
+* Fixes android release build failure on Windows
 
 ## v8.4.2 (2019-06-19)
 
