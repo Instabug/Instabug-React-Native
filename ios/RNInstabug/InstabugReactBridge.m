@@ -358,7 +358,9 @@ RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBug
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
+    [[NSRunLoop mainRunLoop] performBlock:^{
         [Instabug setColorTheme:colorTheme];
+    }];  
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
