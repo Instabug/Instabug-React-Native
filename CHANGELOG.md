@@ -1,3 +1,8 @@
+## v8.4.3 (2019-07-03)
+
+* Fixes an issue that caused Android release builds to fail when building on a Windows machine.
+* Fixes an issue that caused apps to freeze when `onReportSubmitHandler` is called in certain cases.
+
 ## v8.4.2 (2019-06-19)
 
 * Fixes valid email written but gets enter valid email error message on Android.

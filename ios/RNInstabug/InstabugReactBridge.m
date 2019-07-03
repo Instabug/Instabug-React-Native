@@ -50,7 +50,10 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
-    [Instabug startWithToken:token invocationEvents:invocationEvents];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [Instabug startWithToken:token invocationEvents:invocationEvents];
+    }];
+
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
@@ -77,15 +80,19 @@ RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) para
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    [IBGBugReporting invoke];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [IBGBugReporting invoke];
+    }];
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
-    IBGBugReportingInvocationOption invocationOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        invocationOptions |= [boxedValue intValue];
-    }
-    [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        IBGBugReportingInvocationOption invocationOptions = 0;
+        for (NSNumber *boxedValue in options) {
+            invocationOptions |= [boxedValue intValue];
+        }
+        [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
+    }];
 }
 
 RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
@@ -355,11 +362,15 @@ RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBug
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
-    [Instabug setColorTheme:colorTheme];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [Instabug setColorTheme:colorTheme];
+    }];  
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    Instabug.tintColor = color;
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        Instabug.tintColor = color;
+    }];
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -562,7 +573,9 @@ RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
 }
 
 RCT_EXPORT_METHOD(showFeatureRequests) {
-    [IBGFeatureRequests show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [IBGFeatureRequests show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
@@ -656,7 +669,9 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [Instabug show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [Instabug show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setReportTypes:(NSArray*) types ) {
@@ -672,11 +687,13 @@ RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options) {
-    IBGBugReportingOption parsedOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        parsedOptions |= [boxedValue intValue];
-    }
-    [IBGBugReporting showWithReportType:type options:parsedOptions];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         IBGBugReportingOption parsedOptions = 0;
+        for (NSNumber *boxedValue in options) {
+            parsedOptions |= [boxedValue intValue];
+        }
+        [IBGBugReporting showWithReportType:type options:parsedOptions];
+    }];
 }
 
 RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
@@ -684,7 +701,9 @@ RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showChats) {
-    [IBGChats show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [IBGChats show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setRepliesEnabled:(BOOL) isEnabled) {
@@ -698,7 +717,9 @@ RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
 }
 
 RCT_EXPORT_METHOD(showReplies) {
-    [IBGReplies show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [IBGReplies show];
+    }];
 }
     
 RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback) {
