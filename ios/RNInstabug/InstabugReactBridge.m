@@ -41,7 +41,7 @@
 RCT_EXPORT_MODULE(Instabug)
 
 - (dispatch_queue_t)methodQueue {
-    return dispatch_queue_create("com.facebook.React.Instabug", DISPATCH_QUEUE_SERIAL);
+    return dispatch_get_main_queue();
 }
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
@@ -80,15 +80,19 @@ RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) para
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    [IBGBugReporting invoke];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [IBGBugReporting invoke];
+    }];
 }
 
 RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
-    IBGBugReportingInvocationOption invocationOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        invocationOptions |= [boxedValue intValue];
-    }
-    [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        IBGBugReportingInvocationOption invocationOptions = 0;
+        for (NSNumber *boxedValue in options) {
+            invocationOptions |= [boxedValue intValue];
+        }
+        [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
+    }];
 }
 
 RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
