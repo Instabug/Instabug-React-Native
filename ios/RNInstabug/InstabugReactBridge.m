@@ -41,8 +41,6 @@
 RCT_EXPORT_MODULE(Instabug)
 
 - (dispatch_queue_t)methodQueue {
-    //return dispatch_get_main_queue();
-    //NSLog(@"I will pause now");
     return dispatch_queue_create("com.facebook.React.Instabug", DISPATCH_QUEUE_SERIAL);
 }
 
@@ -683,14 +681,13 @@ RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options) {
-    NSLog(@"Run on main thread");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        IBGBugReportingOption parsedOptions = 0;
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         IBGBugReportingOption parsedOptions = 0;
         for (NSNumber *boxedValue in options) {
             parsedOptions |= [boxedValue intValue];
         }
         [IBGBugReporting showWithReportType:type options:parsedOptions];
-    });
+    }];
 }
 
 RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
