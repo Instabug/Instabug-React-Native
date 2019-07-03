@@ -41,7 +41,9 @@
 RCT_EXPORT_MODULE(Instabug)
 
 - (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
+    //return dispatch_get_main_queue();
+    //NSLog(@"I will pause now");
+    return dispatch_queue_create("com.facebook.React.Instabug", DISPATCH_QUEUE_SERIAL);
 }
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
@@ -50,7 +52,10 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
-    [Instabug startWithToken:token invocationEvents:invocationEvents];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [Instabug startWithToken:token invocationEvents:invocationEvents];
+    }];
+
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
@@ -355,11 +360,13 @@ RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBug
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
-    [Instabug setColorTheme:colorTheme];
+        [Instabug setColorTheme:colorTheme];
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    Instabug.tintColor = color;
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        Instabug.tintColor = color;
+    }];
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -562,7 +569,9 @@ RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
 }
 
 RCT_EXPORT_METHOD(showFeatureRequests) {
-    [IBGFeatureRequests show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [IBGFeatureRequests show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
@@ -656,7 +665,9 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [Instabug show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [Instabug show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setReportTypes:(NSArray*) types ) {
@@ -672,11 +683,14 @@ RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options) {
-    IBGBugReportingOption parsedOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        parsedOptions |= [boxedValue intValue];
-    }
-    [IBGBugReporting showWithReportType:type options:parsedOptions];
+    NSLog(@"Run on main thread");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        IBGBugReportingOption parsedOptions = 0;
+        for (NSNumber *boxedValue in options) {
+            parsedOptions |= [boxedValue intValue];
+        }
+        [IBGBugReporting showWithReportType:type options:parsedOptions];
+    });
 }
 
 RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
@@ -684,7 +698,9 @@ RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showChats) {
-    [IBGChats show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+         [IBGChats show];
+    }];
 }
 
 RCT_EXPORT_METHOD(setRepliesEnabled:(BOOL) isEnabled) {
@@ -698,7 +714,9 @@ RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
 }
 
 RCT_EXPORT_METHOD(showReplies) {
-    [IBGReplies show];
+    [[NSRunLoop mainRunLoop] performBlock:^{
+        [IBGReplies show];
+    }];
 }
     
 RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback) {
