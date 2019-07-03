@@ -1,4 +1,4 @@
-## v8.4.3 (2019-07-01)
+## v8.4.3 (2019-07-03)
 
 * Fixes android release build failure on Windows
 * Fixes onReportSubmitHandler causing the app to freeze
