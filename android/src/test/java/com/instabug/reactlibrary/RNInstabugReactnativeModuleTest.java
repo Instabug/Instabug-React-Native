@@ -40,7 +40,7 @@ public class RNInstabugReactnativeModuleTest {
     public void testBugReportingInvoke() {
         PowerMockito.mockStatic(BugReporting.class);
         rnModule.invoke();
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        PowerMockito.verifyStatic(VerificationModeFactory.times(2));
         BugReporting.invoke();
     }
 
