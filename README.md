@@ -1,5 +1,6 @@
 # Instabug for React Native
 
+[![CircleCI](https://circleci.com/gh/Instabug/Instabug-React-Native.svg?style=svg)](https://circleci.com/gh/Instabug/Instabug-React-Native)
 [![npm](https://img.shields.io/npm/v/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
 [![npm](https://img.shields.io/npm/dt/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
 [![npm](https://img.shields.io/npm/l/instabug-reactnative.svg)](https://github.com/Instabug/instabug-reactnative/blob/master/LICENSE)
