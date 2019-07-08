@@ -140,7 +140,7 @@ workflows:
           requires:
             - test_module
             - test_sample
-            - android_test
+            - test_android
           type: approval
           filters:
             branches:
