@@ -96,7 +96,27 @@ jobs:
 
       - store_artifacts:
           path: InstabugSample/test-results
-          
+
+   android_test:
+    working_directory: ~/project/InstabugSample
+    docker:
+      - image: circleci/api-28-node8-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout:
+          path: ~/project
+      - run: yarn install
+      - run:
+          name: chmod permissions
+          command: cd android && chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: cd android && ./gradlew androidDependencies
+      - run:
+          name: Run UnitTest
+          command: cd android && ./gradlew test   
+
   publish:
     macos:
       xcode: "10.1.0"
@@ -115,10 +135,12 @@ workflows:
       - danger
       - test_module
       - test_sample
+      - android_test
       - hold:
           requires:
             - test_module
             - test_sample
+            - android_test
           type: approval
           filters:
             branches:
