@@ -1,3 +1,7 @@
+## v8.4.4 (2019-07-08)
+
+* Fixes an issue that causes the sdk to crash when a network request has no headers.
+
 ## v8.4.3 (2019-07-03)
 
 * Fixes an issue that caused Android release builds to fail when building on a Windows machine.
