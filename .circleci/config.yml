@@ -97,7 +97,7 @@ jobs:
       - store_artifacts:
           path: InstabugSample/test-results
 
-   android_test:
+  android_test:
     working_directory: ~/project/InstabugSample
     docker:
       - image: circleci/api-28-node8-alpha
