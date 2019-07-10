@@ -6,6 +6,7 @@
  */
 
 #import <XCTest/XCTest.h>
+#import "OCMock/OCMock.h"
 #import "InstabugReactBridge.h"
 
 @interface InstabugSampleTests : XCTestCase
