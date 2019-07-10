@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.ios.vendored_frameworks = 'ios/Instabug.framework'
   s.dependency 'React'
+  s.dependency 'Instabug', '8.4'
 end
