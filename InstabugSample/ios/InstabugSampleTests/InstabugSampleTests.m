@@ -7,6 +7,8 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
+#import "Instabug/Instabug.h"
+#import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 
 @interface InstabugSampleTests : XCTestCase
@@ -18,6 +20,15 @@
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
   self.instabugBridge = [[InstabugReactBridge alloc] init];
+}
+
+- (void)testShowingSurveyWithToken {
+  NSString *token = @"token";
+  id mock = OCMClassMock([IBGSurveys class]);
+
+  [[[mock stub] classMethod] showSurveyWithToken:token];
+  [self.instabugBridge showSurveyWithToken:token];
+  [[[mock verify] classMethod] showSurveyWithToken:token];
 }
 
 @end
