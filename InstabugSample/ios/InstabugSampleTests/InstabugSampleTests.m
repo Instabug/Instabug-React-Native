@@ -6,11 +6,17 @@
  */
 
 #import <XCTest/XCTest.h>
+#import "InstabugReactBridge.h"
 
 @interface InstabugSampleTests : XCTestCase
-
+  @property InstabugReactBridge *instabugBridge;
 @end
 
 @implementation InstabugSampleTests
+
+- (void)setUp {
+  // Put setup code here. This method is called before the invocation of each test method in the class.
+  self.instabugBridge = [[InstabugReactBridge alloc] init];
+}
 
 @end
