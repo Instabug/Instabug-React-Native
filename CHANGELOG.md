@@ -1,6 +1,6 @@
 ## v8.5.0 (2019-07-11)
 
-**⚠️ If you are using React Native 0.60, please follow our migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md)**
+**⚠️ If you are using React Native 0.60, please follow our migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-85)**
 
 * Support for React Native 0.60
 * Updates native iOS and Android SDKs to version 8.5
