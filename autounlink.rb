@@ -29,25 +29,7 @@ framework_ref = frameworks_group.files.find { |file_reference| file_reference.pa
 # # Remove Instabug's framework from the Frameworks group
 # frameworks_group.children.delete(framework_ref)
 
-# Remove Instabug to every target that is of type application
 targets.each do |target|
-	# Remove "Embed Frameworks" build phase to target
-	# embed_frameworks_build_phase = target.build_phases.find { |build_phase| build_phase.to_s == 'Embed Instabug Framework'}
-	# Kernel.exit(0) unless embed_frameworks_build_phase
-	# target.build_phases.delete(embed_frameworks_build_phase)
-
-	# # Remove framework search path from target
-	# target.build_configurations.each do |config|
-	# 	target.build_settings(config.name)['FRAMEWORK_SEARCH_PATHS'].delete(framework_root)
-	# end
-
-	# # Remove framework from target from "Embedded Frameworks"
-	# target.frameworks_build_phase.remove_file_reference(framework_ref)
-
-	# #Delete New Run Script Phase from Build Phases
-	# shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_PHASE_NAME }
-	# target.build_phases.delete(shell_script_build_phase)
-
 	#Delete New Run Script Phase from Build Phases
 	shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_UPLOAD_NAME }
 	target.build_phases.delete(shell_script_build_phase)

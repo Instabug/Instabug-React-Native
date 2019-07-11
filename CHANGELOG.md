@@ -1,6 +1,6 @@
 ## master
 
-* Support for RN 0.60
+* Support for React Native 0.60
 
 ## v8.4.4 (2019-07-08)
 

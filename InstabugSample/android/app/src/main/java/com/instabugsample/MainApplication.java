@@ -28,9 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
       // packages.add(new MyReactNativePackage());
       new RNInstabugReactnativePackage.Builder("YOUR_TOKEN",this.getApplication())
               .setInvocationEvent("shake")
-              .setPrimaryColor("#1D82DC")
-              .setFloatingEdge("left")
-              .setFloatingButtonOffsetFromTop(250)
               .build();
       return packages;
     }

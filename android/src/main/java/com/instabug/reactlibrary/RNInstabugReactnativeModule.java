@@ -46,6 +46,7 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.bugreporting.model.ReportCategory;
@@ -2053,6 +2054,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
+
+    @ReactMethod
+    public void setFloatingButtonEdge(final String floatingButtonEdge, final int floatingButtonOffset) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                BugReporting.setFloatingButtonOffset(floatingButtonOffset);
+                if (floatingButtonEdge.equals("left"))
+                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
+                else
+                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
+            }
+        });
+    }
+
+
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:
@@ -2263,6 +2280,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("topLeft", TOP_LEFT);
         constants.put("bottomRight", BOTTOM_RIGHT);
         constants.put("bottomLeft", BOTTOM_LEFT);
+
+        constants.put("rectMinXEdge", FLOATING_BUTTON_EDGE_LEFT);
+        constants.put("rectMaxXEdge", FLOATING_BUTTON_EDGE_RIGHT);
 
         constants.put("enabledWithRequiredFields", EXTENDED_BUG_REPORT_REQUIRED_FIELDS);
         constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);

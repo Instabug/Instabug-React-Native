@@ -35,9 +35,7 @@ export default class App extends Component<{}> {
       colorTheme: 'Light'
     };
 
-    Instabug.startWithToken("APP_TOKEN", [Instabug.invocationEvent.shake]);
-    BugReporting.setReportTypes([BugReporting.reportType.bug, BugReporting.reportType.feedback]);
-    Instabug.setLocale(Instabug.locale.english);
+    Instabug.startWithToken("YOUR_TOKEN", [Instabug.invocationEvent.shake]);
   }
 
   render() {
@@ -131,7 +129,7 @@ export default class App extends Component<{}> {
    }
 
   setPrimaryColor(color) {
-    Instabug.setPrimaryColor(processColor(color));
+    Instabug.setPrimaryColor(color);
   }
 
   showIntroMessage() {
