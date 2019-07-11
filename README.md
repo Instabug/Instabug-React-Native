@@ -128,28 +128,6 @@ allprojects {
 }
 ```
 ## Upgrade Guide
-
-### Upgrading from 1.x.x
-
-When upgrading from version 1.x.x, please make sure you do the following steps:
-
-1. Run
-```bash
-npm install instabug-reactnative
-```
-2. Open your Pod file and delete this line ```pod 'Instabug', '~> 7.0'```
-
-3. Run this command from inside the ```ios``` directory inside your root project's directory
-```bash
-pod install
-```
-
-4. Run this command from your root project's directory. Make sure you have [**Ruby**](https://www.ruby-lang.org/en/documentation/installation/) and `xcodeproj` gem installed before running this last command. (You can skip installing Ruby if you're building an Android app only)
-
- ```bash
-react-native link instabug-reactnative
-```
-
 ### Upgrading in version 8
 
 When doing an upgrade in these two cases, from 8.0.3 to 8.x or from an older version than 8.2.6 to 8.2.6 or higher, please make sure you do the following steps:
@@ -167,6 +145,25 @@ npm install instabug-reactnative
 3. Link the project by running
 ```bash
 react-native link instabug-reactnative
+```
+
+### Upgrading in version 8.5
+
+Starting version 8.5.0, we added support for React Native 0.60. If you are using react native 0.60, please follow the steps below:
+
+1. Unlink our library
+```bash
+react-native unlink instabug-reactnative
+```
+
+2. Install the new version by running
+```bash
+npm install instabug-reactnative
+```
+
+3. Run the command `add-instabug` as follows
+```bash
+react-native add-instabug
 ```
 
 ## Microphone and Photo Library Usage Description (iOS Only)
