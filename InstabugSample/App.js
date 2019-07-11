@@ -16,7 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
-import Instabug, {BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies} from'instabug-reactnative';
+import Instabug, { BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies } from'instabug-reactnative';
 
 
 const instructions = Platform.select({
