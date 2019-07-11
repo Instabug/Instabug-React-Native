@@ -3,7 +3,6 @@ module.exports = {
     platforms: {
       ios: {},
       android: {
-            packageInstance: "\t\tnew RNInstabugReactnativePackage.Builder(\"1f07a266ad0fb6e0e08d5427f09ad082\",this.getApplication())\n\t\t\t\t\t\t\t.setInvocationEvent(\"shake\")\n\t\t\t\t\t\t\t.setPrimaryColor(\"#1D82DC\")\n\t\t\t\t\t\t\t.setFloatingEdge(\"left\")\n\t\t\t\t\t\t\t.setFloatingButtonOffsetFromTop(250)\n\t\t\t\t\t\t\t.build()"
       },
     },
     hooks: {

@@ -35,6 +35,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<>();
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
+    public RNInstabugReactnativePackage() {}
+
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor,
                                         InstabugFloatingButtonEdge floatingButtonEdge, Integer offset, boolean crashReportingEnabled) {

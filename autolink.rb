@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+require 'fileutils'
+
+FileUtils.rm_rf('node_modules/instabug-reactnative/ios/Instabug.framework')
+
 begin
 	require 'xcodeproj'
 rescue LoadError
