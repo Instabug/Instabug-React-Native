@@ -72,14 +72,7 @@ public class RNInstabugReactnativeModuleTest {
         Answer<Boolean> handlerPostAnswer = new Answer<Boolean>() {
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                Runnable runnable = invocation.getArgumentAt(0, Runnable.class);
-                Long delay = 0L;
-                if (invocation.getArguments().length > 1) {
-                    delay = invocation.getArgumentAt(1, Long.class);
-                }
-                if (runnable != null) {
-                    mainThread.schedule(runnable, delay, TimeUnit.MILLISECONDS);
-                }
+                invocation.getArgumentAt(0, Runnable.class).run();
                 return true;
             }
         };
