@@ -1,3 +1,7 @@
+## master
+
+* Support for RN 0.60
+
 ## v8.4.4 (2019-07-08)
 
 * Fixes an issue that causes the sdk to crash when a network request has no headers.
