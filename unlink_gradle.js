@@ -58,15 +58,17 @@ function findClosureEnd(data, index) {
 }
 
 function removeMavenRepo(data) {
-  const regex = /\"https:\/\/oss.sonatype.org\/content\/repositories\/snapshots\"/;
-  if (!regex.test(data)) {
+  const regex = /\"https:\/\/sdks.instabug.com\/nexus\/repository\/instabug-cp\"/;
+  if (!regex.test(data) || !data.match(regex)) {
     finish(LOG_LEVEL_SUCCESS, 'Already Unlinked');
-  }
-  const start = findClosureStart(data, data.match(regex).index);
-  const end = findClosureEnd(data, data.match(regex).index);
-  let newGradle =
-    data.substring(0, start) + data.substring(end + 1, data.length);
-    return newGradle;
+    return data;
+  } else {
+    const start = findClosureStart(data, data.match(regex).index);
+    const end = findClosureEnd(data, data.match(regex).index);
+    let newGradle =
+      data.substring(0, start) + data.substring(end + 1, data.length);
+      return newGradle;
+  } 
 }
 
 function writeFile(data) {
