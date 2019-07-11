@@ -26,7 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
-      new RNInstabugReactnativePackage.Builder("1f07a266ad0fb6e0e08d5427f09ad082",this.getApplication())
+      new RNInstabugReactnativePackage.Builder("YOUR_TOKEN",this.getApplication())
               .setInvocationEvent("shake")
               .setPrimaryColor("#1D82DC")
               .setFloatingEdge("left")
