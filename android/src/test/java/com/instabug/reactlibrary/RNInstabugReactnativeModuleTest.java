@@ -2,47 +2,66 @@ package com.instabug.reactlibrary;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Dynamic;
+import com.facebook.react.bridge.JavaOnlyMap;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.instabug.bug.BugReporting;
+import com.instabug.bug.OnSdkDismissedCallback;
+import com.instabug.bug.invocation.Option;
+import com.instabug.library.Feature;
+import com.instabug.library.OnSdkDismissCallback;
+import com.instabug.library.extendedbugreport.ExtendedBugReport;
+import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.OnInvokeCallback;
+import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.mockito.Spy;
+import org.mockito.internal.util.collections.Iterables;
+import org.mockito.internal.verification.VerificationDataImpl;
 import org.mockito.internal.verification.VerificationModeFactory;
+import org.mockito.internal.verification.api.VerificationDataInOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, Runnable.class, RNInstabugReactnativeModule.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, Runnable.class, RNInstabugReactnativeModule.class, Arguments.class})
 
 public class RNInstabugReactnativeModuleTest {
 
     private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null,null,null);
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
-
-    @Test
-    public void testBugReportingInvoke() {
-        PowerMockito.mockStatic(BugReporting.class);
-        rnModule.invoke();
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-        BugReporting.invoke();
-    }
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -69,5 +88,492 @@ public class RNInstabugReactnativeModuleTest {
         PowerMockito.whenNew(Handler.class).withArguments(mockMainThreadLooper).thenReturn(mockMainThreadHandler);
     }
 
+    /********BugReporting*********/
+
+    @Test
+    public void given$invoke_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.invoke();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.invoke();
+    }
+
+    @Test
+    public void givenShakingThreshold$setShakingThresholdForAndroid_whenQuery_thenShouldCallNativeApiWithShakingThreshold() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        int shakingThreshold = 30;
+        // when
+        rnModule.setShakingThresholdForAndroid(shakingThreshold);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setShakingThreshold(shakingThreshold);
+    }
+
+    @Test
+    public void givenFalse$setBugReportingEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setBugReportingEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void givenTrue$setBugReportingEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setBugReportingEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void givenIsEnabled$setAutoScreenRecordingEnabled_whenQuery_thenShouldCallNativeApiWithIsEnabled() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setAutoScreenRecordingEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setAutoScreenRecordingEnabled(true);
+    }
+
+    @Test
+    public void givenTrue$setViewHierarchyEnabled_whenQuery_shouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setViewHierarchyEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setViewHierarchyState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void givenFalse$setViewHierarchyEnabled_whenQuery_shouldCallNativeApiWithDisabled() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setViewHierarchyEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setViewHierarchyState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void givenBooleanArgs$setEnabledAttachmentTypes_whenQuery_shouldCallNativeApiWithBooleanArgs() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        // when
+        rnModule.setEnabledAttachmentTypes(true, true, false, true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setAttachmentTypesEnabled(true, true, false, true);
+    }
+
+    @Test
+    public void givenExtendedBugReportMode$setExtendedBugReportMode_whenQuery_thenShouldCallNativeApiWithArgs() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        Map<String, Object> args = new HashMap<>();
+        ArgsRegistry.registerInstabugExtendedBugReportModeArgs(args);
+        // when
+        for (String strExtendedBugReportMode : args.keySet()) {
+            rnModule.setExtendedBugReportMode(strExtendedBugReportMode);
+        }
+        // then
+        for (Object extendedBugReportMode : args.values()) {
+            ExtendedBugReport.State state = (ExtendedBugReport.State) extendedBugReportMode;
+            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+            BugReporting.setExtendedBugReportState(state);
+        }
+    }
+
+    @Test
+    public void givenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        final Map<String, Object> args = new HashMap<>();
+        ArgsRegistry.registerInstabugInvocationEventsArgs(args);
+        final String[] keysArray = args.keySet().toArray(new String[0]);
+
+        ReadableArray givenArray = new ReadableArray() {
+            @Override
+            public int size() {
+                return args.keySet().size();
+            }
+
+            @Override
+            public boolean isNull(int index) {
+                return false;
+            }
+
+            @Override
+            public boolean getBoolean(int index) {
+                return false;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return 0;
+            }
+
+            @Override
+            public int getInt(int index) {
+                return 0;
+            }
+
+            @Override
+            public String getString(int index) {
+                return keysArray[index];
+            }
+
+            @Override
+            public ReadableArray getArray(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableMap getMap(int index) {
+                return null;
+            }
+
+            @Override
+            public Dynamic getDynamic(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableType getType(int index) {
+                return ReadableType.String;
+            }
+
+            @Override
+            public ArrayList<Object> toArrayList() {
+                return null;
+            }
+        };
+        // when
+        rnModule.setInvocationEvents(givenArray);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        BugReporting.setInvocationEvents(args.values().toArray(new InstabugInvocationEvent[0]));
+    }
+
+    @Test
+    public void givenOptions$setInvocationOptions_whenQuery_thenShouldCallNativeApiWithArgs() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        final Map<String, Object> args = new HashMap<>();
+        ArgsRegistry.registerInvocationOptionsArgs(args);
+        final String[] keysArray = args.keySet().toArray(new String[0]);
+
+        ReadableArray givenArray = new ReadableArray() {
+            @Override
+            public int size() {
+                return 2;
+            }
+
+            @Override
+            public boolean isNull(int index) {
+                return false;
+            }
+
+            @Override
+            public boolean getBoolean(int index) {
+                return false;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return 0;
+            }
+
+            @Override
+            public int getInt(int index) {
+                return 0;
+            }
+
+            @Override
+            public String getString(int index) {
+                if (index == 0) {
+                    return keysArray[0];
+                }
+                return keysArray[1];
+            }
+
+            @Override
+            public ReadableArray getArray(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableMap getMap(int index) {
+                return null;
+            }
+
+            @Override
+            public Dynamic getDynamic(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableType getType(int index) {
+                return ReadableType.String;
+            }
+
+            @Override
+            public ArrayList<Object> toArrayList() {
+                return null;
+            }
+        };
+        // when
+        rnModule.setInvocationOptions(givenArray);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        int option1 = (int) args.get(keysArray[0]);
+        int option2 = (int) args.get(keysArray[1]);
+        BugReporting.setOptions(option1);
+        BugReporting.setOptions(option2);
+    }
+
+    @Test
+    public void given$setPreInvocationHandler_whenQuery_thenShouldSetNativeCallback() {
+
+        try {
+            // given
+            PowerMockito.mockStatic(BugReporting.class);
+            RNInstabugReactnativeModule mockModule = mock(RNInstabugReactnativeModule.class);
+            PowerMockito.doCallRealMethod().when(mockModule, "setPreInvocationHandler", Matchers.any());
+            PowerMockito.doAnswer(new Answer<Object>() {
+                @Override
+                public Object answer(InvocationOnMock invocation) {
+                    ((OnInvokeCallback) invocation.getArguments()[0]).onInvoke();
+                    return null;
+                }
+            }).when(BugReporting.class, "setOnInvokeCallback", Matchers.anyObject());
+            // when
+            mockModule.setPreInvocationHandler(null);
+            // then
+            verifyPrivate(mockModule, VerificationModeFactory.times(1))
+                    .invoke("sendEvent", any(), eq("IBGpreInvocationHandler"), eq(null));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void given$setPostInvocationHandler_whenQuery_thenShouldSetNativeCallback() {
+        try {
+            // given
+            PowerMockito.mockStatic(BugReporting.class);
+            PowerMockito.mockStatic(Arguments.class);
+            RNInstabugReactnativeModule mockModule = mock(RNInstabugReactnativeModule.class);
+            PowerMockito.doCallRealMethod().when(mockModule, "setPostInvocationHandler", Matchers.any());
+            PowerMockito.when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+            PowerMockito.doAnswer(new Answer<Object>() {
+                @Override
+                public Object answer(InvocationOnMock invocation) {
+                    ((OnSdkDismissCallback) invocation.getArguments()[0])
+                            .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
+                    return null;
+                }
+            }).when(BugReporting.class, "setOnDismissCallback", Matchers.anyObject());
+            // when
+            mockModule.setPostInvocationHandler(null);
+            // then
+            WritableMap params = new JavaOnlyMap();
+            params.putString("dismissType", OnSdkDismissedCallback.DismissType.CANCEL.toString());
+            params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
+            verifyPrivate(mockModule, VerificationModeFactory.times(1))
+                    .invoke("sendEvent", any(), eq("IBGpostInvocationHandler"), eq(params));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenArray$setReportTypes_whenQuery_thenShouldCallNativeApiWithEnumArgs() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        final Map<String, Object> args = new HashMap<>();
+        ArgsRegistry.registerInstabugReportTypesArgs(args);
+        final String[] keysArray = args.keySet().toArray(new String[0]);
+
+        ReadableArray givenArray = new ReadableArray() {
+            @Override
+            public int size() {
+                return 2;
+            }
+
+            @Override
+            public boolean isNull(int index) {
+                return false;
+            }
+
+            @Override
+            public boolean getBoolean(int index) {
+                return false;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return 0;
+            }
+
+            @Override
+            public int getInt(int index) {
+                return 0;
+            }
+
+            @Override
+            public String getString(int index) {
+                if (index == 0) {
+                    return keysArray[0];
+                }
+                return keysArray[1];
+            }
+
+            @Override
+            public ReadableArray getArray(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableMap getMap(int index) {
+                return null;
+            }
+
+            @Override
+            public Dynamic getDynamic(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableType getType(int index) {
+                return ReadableType.String;
+            }
+
+            @Override
+            public ArrayList<Object> toArrayList() {
+                return null;
+            }
+        };
+        // when
+        rnModule.setReportTypes(givenArray);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        int option1 = (int) args.get(keysArray[0]);
+        int option2 = (int) args.get(keysArray[1]);
+        BugReporting.setReportTypes(option1, option2);
+    }
+
+    @Test
+    public void givenString$setVideoRecordingFloatingButtonPosition_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        final Map<String, Object> args = new HashMap<>();
+        ArgsRegistry.registerInstabugVideoRecordingFloatingButtonPositionArgs(args);
+        final String[] keysArray = args.keySet().toArray(new String[0]);
+        // when
+        rnModule.setVideoRecordingFloatingButtonPosition(keysArray[0]);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        InstabugVideoRecordingButtonPosition position = (InstabugVideoRecordingButtonPosition) args.get(keysArray[0]);
+        BugReporting.setVideoRecordingFloatingButtonPosition(position);
+    }
+
+    @Test
+    public void givenArgs$showBugReportingWithReportTypeAndOptions_whenQuery_thenShouldCallNativeApiWithEnums() {
+        // given
+        PowerMockito.mockStatic(BugReporting.class);
+        final Map<String, Object> optionsArgs = new HashMap<>();
+        final Map<String, Object> reportTypeArgs = new HashMap<>();
+        ArgsRegistry.registerInvocationOptionsArgs(optionsArgs);
+        ArgsRegistry.registerInstabugReportTypesArgs(reportTypeArgs);
+        final String[] keysArray = optionsArgs.keySet().toArray(new String[0]);
+        final String[] reportTypeKeys = reportTypeArgs.keySet().toArray(new String[0]);
+
+        ReadableArray givenArray = new ReadableArray() {
+            @Override
+            public int size() {
+                return 2;
+            }
+
+            @Override
+            public boolean isNull(int index) {
+                return false;
+            }
+
+            @Override
+            public boolean getBoolean(int index) {
+                return false;
+            }
+
+            @Override
+            public double getDouble(int index) {
+                return 0;
+            }
+
+            @Override
+            public int getInt(int index) {
+                return 0;
+            }
+
+            @Override
+            public String getString(int index) {
+                if (index == 0) {
+                    return keysArray[0];
+                }
+                return keysArray[1];
+            }
+
+            @Override
+            public ReadableArray getArray(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableMap getMap(int index) {
+                return null;
+            }
+
+            @Override
+            public Dynamic getDynamic(int index) {
+                return null;
+            }
+
+            @Override
+            public ReadableType getType(int index) {
+                return ReadableType.String;
+            }
+
+            @Override
+            public ArrayList<Object> toArrayList() {
+                return null;
+            }
+        };
+        // when
+        rnModule.showBugReportingWithReportTypeAndOptions(reportTypeKeys[0], givenArray);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        int option1 = (int) optionsArgs.get(keysArray[0]);
+        int option2 = (int) optionsArgs.get(keysArray[1]);
+        BugReporting.setOptions(option1);
+        BugReporting.setOptions(option2);
+        BugReporting.show((int) reportTypeArgs.get(reportTypeKeys[0]));
+    }
+
+    /*****************************/
 
 }
