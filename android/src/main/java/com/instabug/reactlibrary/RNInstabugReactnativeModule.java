@@ -86,11 +86,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
     //InvocationEvents
-    private final String INVOCATION_EVENT_NONE = "none";
-    private final String INVOCATION_EVENT_SHAKE = "shake";
-    private final String INVOCATION_EVENT_SCREENSHOT = "screenshot";
-    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
-    private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
+    private final String INVOCATION_EVENT_NONE = "invocationEventNone";
+    private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
+    private final String INVOCATION_EVENT_SCREENSHOT = "invocationEventScreenshot";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "invocationEventTwoFingersSwipe";
+    private final String INVOCATION_EVENT_FLOATING_BUTTON = "invocationEventFloatingButton";
     //InvocationModes
     private final String INVOCATION_MODE_NA = "na";
     private final String INVOCATION_MODE_NEW_BUG = "bug";
