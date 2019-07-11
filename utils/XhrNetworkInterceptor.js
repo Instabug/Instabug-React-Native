@@ -14,11 +14,11 @@ const _reset = () => {
   network = {
     url: '',
     requestBody: '',
-    requestHeaders: '',
+    requestHeaders: {},
     method: '',
     responseBody: '',
     responseCode: 0,
-    responseHeaders: '',
+    responseHeaders: {},
     contentType: '',
     duration: 0,
     start: 0
@@ -51,10 +51,6 @@ const XHRInterceptor = {
     XMLHttpRequest.prototype.send = function(data) {
       var cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
-
-      if (cloneNetwork.requestHeaders === '') {
-        cloneNetwork.requestHeaders = {};
-      }
       
       if (this.addEventListener) {
         this.addEventListener(
@@ -68,8 +64,7 @@ const XHRInterceptor = {
               if (contentTypeString) {
                 cloneNetwork.contentType = contentTypeString.split(';')[0];
               }
-
-              
+                
               if (this.getAllResponseHeaders()) {
                 const responseHeaders = this.getAllResponseHeaders().split('\r\n');
                 const responseHeadersDictionary = {};
@@ -80,8 +75,6 @@ const XHRInterceptor = {
                 });
                 cloneNetwork.responseHeaders = responseHeadersDictionary;
               }
-              
-              
             }
             if (this.readyState === this.DONE) {
               cloneNetwork.duration = (Date.now() - cloneNetwork.start);
