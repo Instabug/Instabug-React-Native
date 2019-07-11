@@ -209,8 +209,7 @@ const InstabugModule = {
    * floating button.
    */
   setFloatingButtonEdge: function(floatingButtonEdge, offsetFromTop) {
-    if (Platform.OS === 'ios')
-      Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
+      Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
   },
 
   /**
