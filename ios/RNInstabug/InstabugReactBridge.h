@@ -12,4 +12,6 @@
 
 @interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>
 
+- (void)showSurveyWithToken:(NSString *)surveyToken;
+
 @end
