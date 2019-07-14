@@ -37,13 +37,3 @@ target 'InstabugSample' do
 
   use_native_modules!
 end
-
-target 'InstabugSample-tvOS' do
-  # Pods for InstabugSample-tvOS
-
-  target 'InstabugSample-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
