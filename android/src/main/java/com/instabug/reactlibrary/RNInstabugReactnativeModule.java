@@ -1872,7 +1872,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     private static WritableArray convertJsonToArray(JSONArray jsonArray) throws JSONException {
-        WritableArray array = new WritableNativeArray();
+        WritableArray array = Arguments.createArray();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             Object value = jsonArray.get(i);
