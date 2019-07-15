@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cd ..
 cd ..
 cd ..
@@ -18,9 +18,7 @@ zip ./android-sourcemap.zip ./android-sourcemap.json
 
 if [ ${INSTABUG_APP_TOKEN} == "YOUR_APP_TOKEN" ]; then
     echo "Instabug: Looking for Token..."
-    if [ ! "${INSTABUG_APP_TOKEN}" ]; then
-        INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} 'Instabug.startWithToken(\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
-    fi
+    INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} 'Instabug.startWithToken(\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 
     if [ ! "${INSTABUG_APP_TOKEN}" ]; then
         INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.startWithToken(\'[0-9a-zA-Z]*\'" ./ -m 1 | grep -o "\'[0-9a-zA-Z]*\'" | cut -d "\"" -f 2)
