@@ -117,6 +117,32 @@ jobs:
           name: Run UnitTest
           command: cd android && ./gradlew test   
 
+
+  ios_test:
+    macos:
+      xcode: "10.2.0"
+    working_directory: ~/project/InstabugSample/ios
+    environment:
+      FL_OUTPUT_DIR: output
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install node_modules
+          command: cd .. && yarn
+      - run:
+          name: Remove instabug.framework
+          command: rm -rf ../node_modules/instabug-reactnative/ios/Instabug.framework
+      - run:
+          name: Fetch CocoaPods Specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
+      - run:
+          name: Install CocoaPods
+          command: pod install
+      - run:
+          name: Build and run tests
+          command: xcodebuild    -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone X,OS=12.2'    test | xcpretty
+
   publish:
     macos:
       xcode: "10.1.0"
@@ -136,11 +162,13 @@ workflows:
       - test_module
       - test_sample
       - test_android
+      - ios_test
       - hold:
           requires:
             - test_module
             - test_sample
             - test_android
+            - ios_test
           type: approval
           filters:
             branches:
