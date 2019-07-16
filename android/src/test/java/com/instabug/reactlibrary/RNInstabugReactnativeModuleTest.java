@@ -827,23 +827,9 @@ public class RNInstabugReactnativeModuleTest {
         ((WritableArray) actionTypes).pushString("requestNewFeature");
         ((WritableArray) actionTypes).pushString("addCommentToFeature");
         rnModule.setEmailFieldRequiredForFeatureRequests(true, actionTypes );
-        Object[] objectArray = ArrayUtil.toArray(actionTypes);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        int[] parsedActionTypes = new int[stringArray.length];
-        int i = 0;
-        for (String action : stringArray) {
-            switch (action) {
-                case "requestNewFeature":
-                    parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
-                    break;
-                case "addCommentToFeature":
-                    parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
-                    break;
-                default:
-
-                    break;
-            }
-        }
+        int[] parsedActionTypes = new int[2];
+        parsedActionTypes[0] = ActionType.REQUEST_NEW_FEATURE;
+        parsedActionTypes[1] = ActionType.ADD_COMMENT_TO_FEATURE;
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         FeatureRequests.setEmailFieldRequired(true, parsedActionTypes);
