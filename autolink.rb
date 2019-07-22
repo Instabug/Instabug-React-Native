@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-require 'fileutils'
+# require 'fileutils'
 
-FileUtils.rm_rf('node_modules/instabug-reactnative/ios/Instabug.framework')
+# FileUtils.rm_rf('node_modules/instabug-reactnative/ios/Instabug.framework')
 
 begin
 	require 'xcodeproj'

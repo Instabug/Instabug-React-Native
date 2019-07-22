@@ -1,3 +1,10 @@
+## v8.5.1 (2019-07-22)
+
+* Fixes an issue that would cause Instabug.framework to appear twice when using CocoaPods.
+* Fixes a deadlock that would happen when `console.log` is called immediately after `startWithToken`.
+* Fixes an issue that prevented app token from being detected correctly when uploading source map files.
+* Fixes an issue that caused Android release builds to fail when building on a Windows machine.
+
 ## v8.5.0 (2019-07-11)
 
 **⚠️ If you are using React Native 0.60, please follow our migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-85)**
