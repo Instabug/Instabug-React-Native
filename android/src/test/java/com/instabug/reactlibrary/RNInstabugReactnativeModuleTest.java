@@ -9,19 +9,31 @@ import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.OnSdkDismissedCallback;
+import android.os.SystemClock;
+
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.instabug.chat.Chats;
+import com.instabug.chat.Replies;
+import com.instabug.crash.CrashReporting;
+import com.instabug.featuresrequest.ActionType;
+import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
-import com.instabug.library.Instabug;
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
-import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 
-import org.junit.Assert;
+import com.instabug.library.model.Report;
+import com.instabug.survey.OnDismissCallback;
+import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.Surveys;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,21 +45,24 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, Runnable.class, RNInstabugReactnativeModule.class, Arguments.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, CrashReporting.class, FeatureRequests.class, Chats.class, Replies.class, SystemClock.class, Surveys.class, Runnable.class, WritableNativeArray.class, JSONObject.class, RNInstabugReactnativeModule.class, Arguments.class})
 
 public class RNInstabugReactnativeModuleTest {
 
@@ -335,6 +350,389 @@ public class RNInstabugReactnativeModuleTest {
         BugReporting.show((int) reportTypeArgs.get(reportTypeKeys[0]));
     }
 
-    /*****************************/
+    /********CrashReporting*********/
+
+    @Test
+    public void givenFalse$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+        // given
+        PowerMockito.mockStatic(CrashReporting.class);
+        // when
+        rnModule.setCrashReportingEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        CrashReporting.setState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void givenTrue$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(CrashReporting.class);
+        // when
+        rnModule.setCrashReportingEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        CrashReporting.setState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void givenString$sendHandledJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() {
+
+        try {
+            JSONObject json = mock(JSONObject.class);
+            PowerMockito.whenNew(JSONObject.class).withArguments("exception").thenReturn(json);
+
+            // given
+            PowerMockito.mockStatic(CrashReporting.class);
+            // when
+            rnModule.sendHandledJSCrash("exception");
+            // then
+            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+            JSONObject jsonObject = new JSONObject("exception");
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
+            if (method != null) {
+                method.invoke(null, jsonObject, true, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    @Test
+    public void givenString$sendJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() {
+
+        try {
+            JSONObject json = mock(JSONObject.class);
+            PowerMockito.whenNew(JSONObject.class).withArguments("exception").thenReturn(json);
+
+            // given
+            PowerMockito.mockStatic(CrashReporting.class);
+            // when
+            rnModule.sendJSCrash("exception");
+            // then
+            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+            JSONObject jsonObject = new JSONObject("exception");
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
+            if (method != null) {
+                method.invoke(null, jsonObject, false, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    /********Surveys*********/
+
+    @Test
+    public void givenIsEnabled$setSurveysEnabled_whenQuery_thenShouldCallNativeApiWithIsEnabled() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.setSurveysEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.setAutoShowingEnabled(false);
+    }
+
+    @Test
+    public void given$showSurveysIfAvailable_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.showSurveysIfAvailable();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.showSurveyIfAvailable();
+    }
+
+    @Test
+    public void givenIntArgs$setThresholdForReshowingSurveyAfterDismiss_whenQuery_thenShouldCallNativeApiWithIntArgs() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.setThresholdForReshowingSurveyAfterDismiss(2,2);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.setThresholdForReshowingSurveyAfterDismiss(2,2);
+    }
+
+
+    @Test
+    public void given$getAvailableSurveys_whenQuery_thenShouldCallNativeApiAndInvokeCallback() throws Exception {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        PowerMockito.mockStatic(SystemClock.class);
+        PowerMockito.mockStatic(Arguments.class);
+        Callback callback = mock(Callback.class);
+        JSONArray json = mock(JSONArray.class);
+        // when
+        PowerMockito.whenNew(JSONArray.class).withAnyArguments().thenReturn(json);
+        PowerMockito.when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
+        rnModule.getAvailableSurveys(callback);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.getAvailableSurveys();
+        verify(callback).invoke(any());
+    }
+
+    @Test
+    public void givenIsEnabled$setAutoShowingSurveysEnabled_whenQuery_thenShouldCallNativeApiWithIsEnabled() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.setAutoShowingSurveysEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.setAutoShowingEnabled(true);
+    }
+
+    @Test
+    public void given$setWillShowSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
+
+        try {
+            // given
+            PowerMockito.mockStatic(Surveys.class);
+            RNInstabugReactnativeModule mockModule = mock(RNInstabugReactnativeModule.class);
+            PowerMockito.doCallRealMethod().when(mockModule, "setWillShowSurveyHandler", Matchers.any());
+            PowerMockito.doAnswer(new Answer<Object>() {
+                @Override
+                public Object answer(InvocationOnMock invocation) {
+                    ((OnShowCallback) invocation.getArguments()[0]).onShow();
+                    return null;
+                }
+            }).when(Surveys.class, "setOnShowCallback", Matchers.anyObject());
+            // when
+            mockModule.setWillShowSurveyHandler(null);
+            // then
+            verifyPrivate(mockModule, VerificationModeFactory.times(1))
+                    .invoke("sendEvent", any(), eq("IBGWillShowSurvey"), eq(null));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void given$setDidDismissSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
+        try {
+            // given
+            PowerMockito.mockStatic(Surveys.class);
+            RNInstabugReactnativeModule mockModule = mock(RNInstabugReactnativeModule.class);
+            PowerMockito.doCallRealMethod().when(mockModule, "setDidDismissSurveyHandler", Matchers.any());
+            PowerMockito.doAnswer(new Answer<Object>() {
+                @Override
+                public Object answer(InvocationOnMock invocation) {
+                    ((OnDismissCallback) invocation.getArguments()[0]).onDismiss();
+                    return null;
+                }
+            }).when(Surveys.class, "setOnDismissCallback", Matchers.anyObject());
+            // when
+            mockModule.setDidDismissSurveyHandler(null);
+            // then
+            verifyPrivate(mockModule, VerificationModeFactory.times(1))
+                    .invoke("sendEvent", any(), eq("IBGDidDismissSurvey"), eq(null));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenString$showSurveyWithToken_whenQuery_thenShouldCallNativeApiWithString() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.showSurveyWithToken("123");
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.showSurvey("123");
+    }
+
+    @Test
+    public void givenBoolean$hasRespondedToSurveyWithToken_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        Callback callback = mock(Callback.class);
+        rnModule.hasRespondedToSurveyWithToken("123", callback);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.hasRespondToSurvey("123");
+        verify(callback).invoke(any());
+    }
+
+    @Test
+    public void givenBoolean$setShouldShowSurveysWelcomeScreen_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Surveys.class);
+        // when
+        rnModule.setShouldShowSurveysWelcomeScreen(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Surveys.setShouldShowWelcomeScreen(true);
+    }
+
+    /********Feature Requests*********/
+
+    @Test
+    public void givenArgs$setEmailFieldRequired_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(FeatureRequests.class);
+        PowerMockito.mockStatic(Arguments.class);
+        // when
+        PowerMockito.when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
+        ReadableArray actionTypes = Arguments.createArray();
+        ((WritableArray) actionTypes).pushString("requestNewFeature");
+        ((WritableArray) actionTypes).pushString("addCommentToFeature");
+        rnModule.setEmailFieldRequiredForFeatureRequests(true, actionTypes );
+        int[] parsedActionTypes = new int[2];
+        parsedActionTypes[0] = ActionType.REQUEST_NEW_FEATURE;
+        parsedActionTypes[1] = ActionType.ADD_COMMENT_TO_FEATURE;
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FeatureRequests.setEmailFieldRequired(true, parsedActionTypes);
+    }
+
+    @Test
+    public void given$showFeatureRequests_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(FeatureRequests.class);
+        // when
+        rnModule.showFeatureRequests();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        FeatureRequests.show();
+    }
+
+    /********Chats*********/
+
+    @Test
+    public void givenFalse$setChatsEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+        // given
+        PowerMockito.mockStatic(Chats.class);
+        // when
+        rnModule.setChatsEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Chats.setState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void givenTrue$setChatsEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(Chats.class);
+        // when
+        rnModule.setChatsEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Chats.setState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void given$showChats_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Chats.class);
+        // when
+        rnModule.showChats();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Chats.show();
+    }
+
+    /********Replies*********/
+
+    @Test
+    public void givenFalse$setRepliesEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setRepliesEnabled(false);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void givenTrue$setRepliesEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setRepliesEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void givenCallback$hasChats_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        Callback callback = mock(Callback.class);
+        rnModule.hasChats(callback);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.hasChats();
+        verify(callback).invoke(any());
+    }
+
+    @Test
+    public void given$showReplies_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.showReplies();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.show();
+    }
+
+    @Test
+    public void given$setOnNewReplyReceivedCallback_whenQuery_thenShouldSetNativeCallback() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        Callback callback = mock(Callback.class);
+        // when
+        rnModule.setOnNewMessageHandler(callback);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setOnNewReplyReceivedCallback(any(Runnable.class));
+    }
+
+    @Test
+    public void givenCallback$getUnreadMessagesCount_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        Callback callback = mock(Callback.class);
+        rnModule.getUnreadMessagesCount(callback);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.getUnreadRepliesCount();
+        verify(callback).invoke(any());
+    }
+
+    @Test
+    public void givenBoolean$setChatNotificationEnabled_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setChatNotificationEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setInAppNotificationEnabled(true);
+    }
+
+    @Test
+    public void givenBoolean$setEnableInAppNotificationSound_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setEnableInAppNotificationSound(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setInAppNotificationSound(true);
+    }
 
 }
