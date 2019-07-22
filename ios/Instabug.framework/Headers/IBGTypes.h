@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.4
+ Version:    8.5.2
  */
 
 #import <UIKit/UIKit.h>
@@ -144,8 +144,8 @@ extern NSString * const kIBGSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("kI
 extern NSString * const kIBGSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouDescriptionText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouDescriptionText for Custom surveys.");
 extern NSString * const kIBGStoreRatingThankYouTitleText;
 extern NSString * const kIBGStoreRatingThankYouDescriptionText;
-extern NSString * const kIBGCustomSurveyThankYouTitleText;
-extern NSString * const kIBGCustomSurveyThankYouDescriptionText;
+extern NSString * const kIBGCustomSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("This key kIBGCustomSurveyThankYouTitleText and <kIBGCustomSurveyThankYouDescriptionText> will be deprecated with the next release. You will be able to edit this message from the dashboard from this point on.");
+extern NSString * const kIBGCustomSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("This key kIBGCustomSurveyThankYouDescriptionText and <kIBGCustomSurveyThankYouTitleText> will be deprecated with the next release. You will be able to edit this message from the dashboard from this point on.");
 extern NSString * const kIBGSurveysNPSLeastLikelyStringName;
 extern NSString * const kIBGSurveysNPSMostLikelyStringName;
 extern NSString * const kIBGSurveyNextButtonTitle;
@@ -282,7 +282,8 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleKorean,
     IBGLocaleNorwegian,
     IBGLocalePolish,
-    IBGLocalePortugese,
+    IBGLocalePortugese DEPRECATED_MSG_ATTRIBUTE("Please use IBGLocalePortuguese"), // Fixing typo https://instabug.atlassian.net/browse/INSD-2731
+    IBGLocalePortuguese,
     IBGLocalePortugueseBrazil,
     IBGLocaleRussian,
     IBGLocaleSlovak,

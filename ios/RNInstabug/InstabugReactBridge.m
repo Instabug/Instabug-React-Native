@@ -636,8 +636,14 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     NSString* requestBody = networkData[@"requestBody"];
     NSString* responseBody = networkData[@"responseBody"];
     int32_t responseCode = [networkData[@"responseCode"] integerValue];
-    NSDictionary* requestHeaders = networkData[@"requestHeaders"];
-    NSDictionary* responseHeaders = networkData[@"responseHeaders"];
+    NSDictionary* requestHeaders = @{};
+    if([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]){
+        requestHeaders = networkData[@"requestHeaders"];
+    }
+    NSDictionary* responseHeaders = @{};
+    if([networkData[@"responseHeaders"] isKindOfClass:[NSDictionary class]]){
+        responseHeaders = networkData[@"responseHeaders"];
+    }
     NSString* contentType = networkData[@"contentType"];
     double duration = [networkData[@"duration"] doubleValue];
     

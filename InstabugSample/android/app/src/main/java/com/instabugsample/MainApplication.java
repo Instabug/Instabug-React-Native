@@ -2,14 +2,14 @@ package com.instabugsample;
 
 import android.app.Application;
 
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.instabug.reactlibrary.RNInstabugReactnativePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.instabug.reactlibrary.RNInstabugReactnativePackage;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -22,15 +22,14 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            		new RNInstabugReactnativePackage.Builder("APP_TOKEN",MainApplication.this)
-							.setInvocationEvent("shake")
-							.setPrimaryColor("#1D82DC")
-							.setFloatingEdge("right")
-							.setFloatingButtonOffsetFromTop(250)
-							.build()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      new RNInstabugReactnativePackage.Builder("YOUR_TOKEN",this.getApplication())
+              .setInvocationEvent("shake")
+              .build();
+      return packages;
     }
 
     @Override

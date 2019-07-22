@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    8.4
+ Version:    8.5.2
  */
 
 #import <Foundation/Foundation.h>
@@ -102,6 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
  The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
  */
 @property (class, atomic, assign) IBGWelcomeMessageMode welcomeMessageMode;
+
+/**
+ @brief Sets a block of code to be executed when a welcome message is dismissed
+ 
+ @param didDismissWelcomeMessageHandler A block of code that gets executed when a welcome message is dismissed.
+ 
+ */
+@property(class, atomic, strong) void(^didDismissWelcomeMessageHandler)(void);
 
 /**
  @brief Attaches user data to each report being sent.
