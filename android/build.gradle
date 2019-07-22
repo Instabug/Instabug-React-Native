@@ -42,6 +42,7 @@ dependencies {
 import org.apache.tools.ant.taskdefs.condition.Os
 task upload_sourcemap(type: Exec) {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'cmd', '/c', 'echo Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard'
         project.logger.lifecycle('Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard')
     } else {
         environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
