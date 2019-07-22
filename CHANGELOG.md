@@ -1,7 +1,7 @@
 ## v8.5.1 (2019-07-22)
 
 * Fixes an issue that would cause Instabug.framework to appear twice when using CocoaPods.
-* Fixes an issue that cause a deadlock when calling `concole.log` many times after `Instabug.startWithToken`
+* Fixes a deadlock that would happen when `console.log` is called immediately after `startWithToken`.
 * Fixes an issue in the upload sourcemap script that was preventing it from greping the token automatically
 * Fixes an issue that caused Android release builds to fail when building on a Windows machine.
 
