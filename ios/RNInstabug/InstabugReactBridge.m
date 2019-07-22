@@ -50,9 +50,7 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
-    [[NSRunLoop mainRunLoop] performBlock:^{
-         [Instabug startWithToken:token invocationEvents:invocationEvents];
-    }];
+    [Instabug startWithToken:token invocationEvents:invocationEvents];
 
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
