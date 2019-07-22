@@ -95,11 +95,16 @@
   });
 }
 
-
-- (void) test {
-  [self.instabugBridge setPreInvocationHandler:nil];
-  XCTAssertEqual(IBGBugReporting.willInvokeHandler, nil);
+// TODO Figure out what to do to this test
+- (void) testgivenPreInvocationHandler$setPreInvocationHandler_whenQuery_thenShouldCallNativeApi {
+  id mock = OCMClassMock([InstabugReactBridge class]);
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [self.instabugBridge setPreInvocationHandler:callback];
+  XCTAssertNotNil(IBGBugReporting.willInvokeHandler);
+  //[[[mock verify] classMethod] sendEventWithName:@"IBGpreInvocationHandler" body:nil];
 }
+
+
 
 
 
