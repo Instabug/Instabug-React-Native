@@ -1,6 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
-import InstabugUtils from '../utils/InstabugUtils';
+import { parseErrorStack } from '../utils/InstabugUtils';
+import InstabugConstants from '../utils/InstabugConstants';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
 let { Instabug } = NativeModules;
+import IBG from '../index';
 
 /**
  * CrashReporting
@@ -22,17 +25,22 @@ export default {
    * @param errorObject   Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    let jsStackTrace = parseErrorStack(errorObject);
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace
     };
-    if (Platform.OS === 'android') {
-      Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+    
+    if (IBG._isOnReportHandlerSet() && Platform.OS === 'android') {
+      IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
     } else {
-      Instabug.sendHandledJSCrash(jsonObject);
+      if (Platform.OS === 'android') {
+        Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+      } else {
+        Instabug.sendHandledJSCrash(jsonObject);
+      }
     }
   }
 };

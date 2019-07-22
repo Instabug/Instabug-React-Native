@@ -14,7 +14,7 @@ export namespace BugReporting {
     ): void;
   function onInvokeHandler(preInvocationHandler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
-  function onSDKDismissedHandler(postInvocationHandler: () => void): void;
+  function onSDKDismissedHandler(postInvocationHandler: (dismiss: dismissType, report: reportType) => void): void;
   function setPromptOptionsEnabled(
     chat: boolean,
     bug: boolean,
@@ -24,8 +24,11 @@ export namespace BugReporting {
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
   function setExtendedBugReportMode(extendedBugReportMode: extendedBugReportMode): void;
-  function setReportTypes(types: reportType): void;
+  function setReportTypes(types: reportType[]): void;
   function showWithOptions(
+    type: reportType,
+    options: option[]): void;
+  function show(
     type: reportType,
     options: option[]): void;
   enum invocationEvent {
@@ -87,9 +90,10 @@ export namespace FeatureRequests {
 }
 export namespace Replies {
   function setEnabled(isEnabled: boolean): void;
-  function hasChats(callback: () => void): void;
+  function hasChats(callback: (previousChats : boolean) => void): void;
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
+  function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
   function getUnreadRepliesCount(messageCountCallback: () => void): void;
   function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
@@ -101,10 +105,12 @@ export namespace Surveys {
     sessionCount: number,
     daysCount: number
     ): void;
-  function getAvailableSurveys(availableSurveysCallback: () => void): void;
+  function getAvailableSurveys(availableSurveysCallback: (surveys: Survey[]) => void): void;
   function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   function onShowCallback(willShowSurveyHandler: () => void): void;
+  function setOnShowHandler(onShowHandler: () => void): void;
   function onDismissCallback(didDismissSurveyHandler: () => void): void;
+  function setOnDismissHandler(onDismissHandler: () => void): void;
   function showSurvey(surveyToken: string): void;
   function hasRespondedToSurvey(
     surveyToken: string,
@@ -112,7 +118,17 @@ export namespace Surveys {
     ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
 }
+export namespace NetworkLogger {
+  function setEnabled(isEnabled: boolean): void;
+  function setNetworkDataObfuscationHandler(handler: () => void): void;
+  function setRequestFilterExpression(expression: string): void;
+  function setProgressHandlerForRequest(handler: () => void): void;
+}
 export function startWithToken(
+  token: string,
+  invocationEvent: invocationEvent[]
+  ): void;
+export function start(
   token: string,
   invocationEvent: invocationEvent[]
   ): void;
@@ -136,13 +152,17 @@ export function setFloatingButtonEdge(
   ): void;
 export function setLocale(locale: locale): void;
 export function setColorTheme(colorTheme: colorTheme): void;
-export function setPrimaryColor(setPrimaryColor: string): void;
+export function setPrimaryColor(setPrimaryColor: number): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
 export function setStringToKey(
   string: string,
   key: strings,
+  ): void;
+export function setString(
+  key: strings,
+  string: string,
   ): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
@@ -154,8 +174,13 @@ export function identifyUserWithEmail(
   email: string,
   name: string
   ): void;
+export function identifyUser(
+  email: string,
+  name: string
+  ): void;
 export function logOut(): void;
 export function logUserEventWithName(name: string,  params?: any): void;
+export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
 export function logDebug(message: string): void;
@@ -193,7 +218,7 @@ export function addFileAttachment(
   fileName: string
   ): void;
 export function show(): void;
-export function onReportSubmitHandler(preSendingHandler: () => void): void;
+export function onReportSubmitHandler(preSendingHandler: (presendingHandler: Report) => void): void;
 export function callPrivateApi(
   apiName: string,
   param: any
@@ -206,7 +231,6 @@ export enum invocationEvent {
   floatingButton
 }
 export enum reproStepsMode {
-  enabled,
   disabled,
   enabledWithNoScreenshots
 }
@@ -337,4 +361,21 @@ export enum strings {
   welcomeMessageBetaFinishStepContent,
   welcomeMessageLiveWelcomeStepTitle,
   welcomeMessageLiveWelcomeStepContent
+}
+
+ interface Report {
+  logDebug(log: string);
+  logVerbose(log: string);
+  logWarn(log: string);
+  logError(log: string);
+  logInfo(log: string);
+  appendTag(tag: string);
+  appendConsoleLog(consoleLog: string);
+  setUserAttribute(key: string, value: string);
+  addFileAttachmentWithUrl(url: string, filename: string);
+  addFileAttachmentWithData(data: string, filename: string);
+}
+
+interface Survey {
+  title: string
 }

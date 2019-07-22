@@ -20,18 +20,27 @@ android {
     }
     lintOptions {
        warning 'InvalidPackage'
+        abortOnError true
+        // SuppressLint WrongConstant was used to suppress errors when using arrays of ints to represent annotations.
     }
 }
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    api ('com.instabug.library:instabug:8.2.0'){
+    api ('com.instabug.library:instabug:8.4.0.2'){
         exclude group: 'com.android.support:appcompat-v7'
     }
 }
 
+
+import org.apache.tools.ant.taskdefs.condition.Os
 task upload_sourcemap(type: Exec) {
-    commandLine 'sh', './upload_sourcemap.sh'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        project.logger.lifecycle('Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard')
+    } else {
+        environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
+        commandLine 'sh', './upload_sourcemap.sh'
+    }
 }
 
 tasks.whenTaskAdded { task ->

@@ -1,0 +1,132 @@
+version: 2
+jobs:
+  danger:
+    docker:
+      - image: dantoml/danger:latest
+    steps:
+      - checkout
+      - run: danger
+  test_module:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+
+      - restore_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          paths:
+            - node_modules
+
+      - run:
+          name: jest tests
+          command: |
+            mkdir -p test-results/jest
+            yarn run test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - node_modules
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
+
+  test_sample:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout:
+          path: ~/project
+
+      - restore_cache:
+          key: yarn-v1-{{ checksum "InstabugSample/yarn.lock" }}-{{ arch }}
+
+      - restore_cache:
+          key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
+
+      - run: cd InstabugSample && yarn install
+
+      - save_cache:
+          key: yarn-v1-{{ checksum "InstabugSample/yarn.lock" }}-{{ arch }}
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
+          paths:
+            - InstabugSample/node_modules
+
+      - run:
+          name: jest tests
+          command: |
+            cd InstabugSample
+            mkdir -p test-results/jest
+            yarn test
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - InstabugSample/node_modules
+
+      - store_test_results:
+          path: InstabugSample/test-results
+
+      - store_artifacts:
+          path: InstabugSample/test-results
+          
+  publish:
+    macos:
+      xcode: "10.1.0"
+    steps:
+      - checkout
+      - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
+      - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
+      - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
+      - run: Escape react-native publish
+
+
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - danger
+      - test_module
+      - test_sample
+      - hold:
+          requires:
+            - test_module
+            - test_sample
+          type: approval
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: master
+

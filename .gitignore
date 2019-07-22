@@ -29,6 +29,7 @@ DerivedData/
 xcuserdata/
 
 
+coverage/
 *node_modules/
 *Pods/
 *Podfile.lock

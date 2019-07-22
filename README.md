@@ -1,5 +1,6 @@
 # Instabug for React Native
 
+[![CircleCI](https://circleci.com/gh/Instabug/Instabug-React-Native.svg?style=svg)](https://circleci.com/gh/Instabug/Instabug-React-Native)
 [![npm](https://img.shields.io/npm/v/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
 [![npm](https://img.shields.io/npm/dt/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
 [![npm](https://img.shields.io/npm/l/instabug-reactnative.svg)](https://github.com/Instabug/instabug-reactnative/blob/master/LICENSE)
@@ -116,6 +117,16 @@ protected List<ReactPackage> getPackages() {
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
+4. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
+```dart
+allprojects {
+	repositories {
+	    maven {
+	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
+	    }
+	}
+}
+```
 ## Upgrade Guide
 
 ### Upgrading from 1.x.x
@@ -139,9 +150,9 @@ pod install
 react-native link instabug-reactnative
 ```
 
-### Upgrading from 8.0.3 to 8.x
+### Upgrading in version 8
 
-When upgrading from 8.0.3 to 8.x, please make sure you do the following steps:
+When doing an upgrade in these two cases, from 8.0.3 to 8.x or from an older version than 8.2.6 to 8.2.6 or higher, please make sure you do the following steps:
 
 1. Unlink the project before upgrading to the new version
 ```bash
@@ -173,6 +184,41 @@ If your app doesn’t already access the microphone or photo library, we recomme
 * "`<app name>` needs access to your photo library for you to be able to attach images."
 
 **The permission alert for accessing the microphone/photo library will NOT appear unless users attempt to attach a voice note/photo while using Instabug.**
+
+
+## Uploading Source Map Files for Crash Reports
+
+For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.startWithToken('YOUR_APP_TOKEN')` in JavaScript. 
+
+If your app token is defined as a constant or you have different tokens for both iOS and Android apps, set the token as shown below.
+
+1. In Android, go to the `build.gradle` file of the library and you will find below code, replace `YOUR_APP_TOKEN` with your app token from the dashboard.
+
+```java
+task upload_sourcemap(type: Exec) {
+    environment "INSTABUG_APP_TOKEN", "YOUR_APP_TOKEN"
+    commandLine 'sh', './upload_sourcemap.sh'
+}
+```
+
+2. In iOS, go to the build phases of the project, you will find a build phase called `Upload Sourcemap`. Expand it you will find below lines of code, replace `YOUR_APP_TOKEN` with your token from the dashboard.
+
+```bash
+export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
+bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
+```
+
+## Network Logging
+
+Instabug network logging is enabled by default. It intercepts any requests performed with `fetch` or `XMLHttpRequest` and attaches them to the report that will be sent to the dashboard. To disable network logs:
+
+```javascript
+import { NetworkLogger } from 'instabug-reactnative';
+```
+
+```javascript
+NetworkLogger.setEnabled(false);
+```
 
 ## Documentation
 

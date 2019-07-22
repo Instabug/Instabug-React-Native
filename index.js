@@ -3,18 +3,27 @@ import {
   NativeAppEventEmitter,
   DeviceEventEmitter,
   Platform,
+  findNodeHandle,
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
-import InstabugUtils from './utils/InstabugUtils';
+import IBGEventEmitter from './utils/IBGEventEmitter';
+import { captureJsErrors } from './utils/InstabugUtils';
+import InstabugConstants from './utils/InstabugConstants';
+import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
 import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
 import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
+import NetworkLogger from './modules/NetworkLogger';
 
-InstabugUtils.captureJsErrors();
+captureJsErrors();
+NetworkLogger.setEnabled(true);
+
+var _isOnReportHandlerSet = false;
+
 
 /**
  * Instabug
@@ -22,6 +31,7 @@ InstabugUtils.captureJsErrors();
  */
 const InstabugModule = {
   /**
+   * @deprecated use {@link Instabug.start}
    * Starts the SDK.
    * This is the main SDK method that does all the magic. This is the only
    * method that SHOULD be called.
@@ -32,6 +42,20 @@ const InstabugModule = {
    * the SDK's UI.
    */
   startWithToken: function(token, invocationEvent) {
+    this.start(token, invocationEvent);
+  },
+
+  /**
+   * Starts the SDK.
+   * This is the main SDK method that does all the magic. This is the only
+   * method that SHOULD be called.
+   * Should be called in constructor of the app registery component
+   * @param {string} token The token that identifies the app, you can find
+   * it on your dashboard.
+   * @param {invocationEvent} invocationEvent The event that invokes
+   * the SDK's UI.
+   */
+  start: function(token, invocationEvent) {
     if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
   },
 
@@ -47,7 +71,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
+   * @deprecated use {@link BugReporting.setAutoScreenRecordingEnabled}
    * Enable/Disable screen recording
    * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
    * screen recording on crash feature
@@ -57,7 +81,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated
+   * @deprecated use {@link BugReporting.setAutoScreenRecordingMaxDuration}
    * Sets auto screen recording maximum duration
    *
    * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
@@ -91,7 +115,7 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated use {@link CrashReporting.setCrashReportingEnabled}
+   * @deprecated use {@link CrashReporting.setEnabled}
    * Report un-caught exceptions to Instabug dashboard
    * We don't send exceptions from __DEV__, since it's way too noisy!
    */
@@ -196,11 +220,7 @@ const InstabugModule = {
    * @param {locale} locale A locale to set the SDK to.
    */
   setLocale: function(locale) {
-    if (Platform.OS === 'ios') {
-      Instabug.setLocale(locale);
-    } else if (Platform.OS === 'android') {
-      Instabug.changeLocale(locale);
-    }
+    Instabug.setLocale(locale);
   },
 
   /**
@@ -220,7 +240,7 @@ const InstabugModule = {
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
   setPrimaryColor: function(primaryColor) {
-    Instabug.setPrimaryColor(primaryColor);
+    Instabug.setPrimaryColor(processColor(primaryColor));
   },
 
   /**
@@ -248,12 +268,23 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Instabug.setString}
    * Overrides any of the strings shown in the SDK with custom ones.
    * Allows you to customize any of the strings shown to users in the SDK.
    * @param {string} string String value to override the default one.
    * @param {strings} key Key of string to override.
    */
   setStringToKey: function(string, key) {
+    this.setString(key, string);
+  },
+
+  /**
+   * Overrides any of the strings shown in the SDK with custom ones.
+   * Allows you to customize any of the strings shown to users in the SDK.
+   * @param {string} string String value to override the default one.
+   * @param {strings} key Key of string to override.
+   */
+  setString: function(key, string) {
     Instabug.setString(string, key);
   },
 
@@ -282,6 +313,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Instabug.identifyUser}
    * Sets the default value of the user's email and hides the email field from the reporting UI
    * and set the user's name to be included with all reports.
    * It also reset the chats on device to that email and removes user attributes,
@@ -290,11 +322,19 @@ const InstabugModule = {
    * @param {string} name Name of the user to be set.
    */
   identifyUserWithEmail: function(email, name) {
-    if (Platform.OS == 'ios') {
-      Instabug.identifyUserWithEmail(email, name);
-    } else if ('android') {
-      Instabug.identifyUser(name, email);
-    }
+    this.identifyUser(email, name);
+  },
+
+  /**
+   * Sets the default value of the user's email and hides the email field from the reporting UI
+   * and set the user's name to be included with all reports.
+   * It also reset the chats on device to that email and removes user attributes,
+   * user data and completed surveys.
+   * @param {string} email Email address to be set as the user's email.
+   * @param {string} name Name of the user to be set.
+   */
+  identifyUser: function(email, name) {
+    Instabug.identifyUserWithEmail(email, name);
   },
 
   /**
@@ -307,11 +347,21 @@ const InstabugModule = {
   },
 
   /**
-   * @deprecated Logs a user event that happens through the lifecycle of the application.
+   * @deprecated use {@link Instabug.logUserEvent}
+   * Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
    * @param {string} name Event name.
    */
   logUserEventWithName: function(name) {
+    this.logUserEvent(name);
+  },
+
+  /**
+   * Logs a user event that happens through the lifecycle of the application.
+   * Logged user events are going to be sent with each report, as well as at the end of a session.
+   * @param {string} name Event name.
+   */
+  logUserEvent: function(name) {
     Instabug.logUserEventWithName(name);
   },
 
@@ -512,7 +562,6 @@ const InstabugModule = {
    * @param {function} onNewMessageHandler - A callback that gets
    * executed when a new message is received.
    */
-
   setOnNewMessageHandler: function(onNewMessageHandler) {
     if (Platform.OS === 'ios') {
       Instabug.addListener('IBGonNewMessageHandler');
@@ -531,6 +580,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setViewHierarchyEnabled}
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
@@ -609,18 +659,7 @@ const InstabugModule = {
    */
 
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
-    var jsonObject = {
-      message: errorObject.name + ' - ' + errorObject.message,
-      os: Platform.OS,
-      platform: 'react_native',
-      exception: jsStackTrace
-    };
-    if (Platform.OS === 'android') {
-      Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-    } else {
-      Instabug.sendHandledJSCrash(jsonObject);
-    }
+    CrashReporting.reportJSException(errorObject);
   },
 
   /**
@@ -649,6 +688,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Surveys.setShouldShowWelcomeScreen}
    * Setting an option for all the surveys to show a welcome screen before
    * the user starts taking the survey.
    * @param shouldShowWelcomeScreen A boolean for setting whether the
@@ -693,6 +733,18 @@ const InstabugModule = {
   },
 
   /**
+   * Hides component from screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to hide
+   */
+  setPrivateView: function(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    if (Platform.OS === 'ios') {
+      Instabug.hideView(nativeTag);
+    } else {
+      Instabug.hideView([nativeTag]);
+    }
+  },
+  /**
    * Shows default Instabug prompt.
    */
   show() {
@@ -700,7 +752,48 @@ const InstabugModule = {
   },
 
   onReportSubmitHandler: function(preSendingHandler) {
-    BugReporting.onReportSubmitHandler(preSendingHandler);
+    if (preSendingHandler) {
+      _isOnReportHandlerSet = true;
+    } else {
+      _isOnReportHandlerSet = false;
+    }
+    
+    // send bug report
+    IBGEventEmitter.addListener(InstabugConstants.PRESENDING_HANDLER, (report) => {
+      const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+      const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+      preSendingHandler(reportObj);
+      Instabug.submitReport();
+
+    });
+
+    // handled js crash
+    if (Platform.OS === 'android') {
+      IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+          try {
+            let report = await Instabug.getReport();
+            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+            const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+            preSendingHandler(reportObj);
+            Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+          } catch (e) {
+            console.error(e);
+          }
+      });
+    }
+
+    if (Platform.OS === 'android') {
+      IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+        
+          let report = await Instabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+          preSendingHandler(reportObj);
+          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+      });
+    } 
+
+    Instabug.setPreSendingHandler(preSendingHandler);
   },
 
   callPrivateApi: function(apiName, param) {
@@ -726,7 +819,6 @@ const InstabugModule = {
    * @enum {number}
    */
   reproStepsMode: {
-    enabled: Instabug.reproStepsEnabled,
     disabled: Instabug.reproStepsDisabled,
     enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots
   },
@@ -951,8 +1043,14 @@ const InstabugModule = {
     surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
     surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle
+  },
+
+  _isOnReportHandlerSet() {
+    return _isOnReportHandlerSet;
   }
 };
+
+export { _isOnReportHandlerSet };
 
 export {
   BugReporting,
@@ -960,7 +1058,8 @@ export {
   FeatureRequests,
   Chats,
   Replies,
-  CrashReporting
-}
+  CrashReporting,
+  NetworkLogger
+};
 
 export default InstabugModule;
