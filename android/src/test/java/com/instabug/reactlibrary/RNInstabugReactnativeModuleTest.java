@@ -2,49 +2,41 @@ package com.instabug.reactlibrary;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Dynamic;
+import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.OnSdkDismissedCallback;
-import com.instabug.bug.invocation.Option;
 import com.instabug.library.Feature;
+import com.instabug.library.Instabug;
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.visualusersteps.State;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.internal.util.collections.Iterables;
-import org.mockito.internal.verification.VerificationDataImpl;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.internal.verification.api.VerificationDataInOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -197,65 +189,12 @@ public class RNInstabugReactnativeModuleTest {
         final Map<String, Object> args = new HashMap<>();
         ArgsRegistry.registerInstabugInvocationEventsArgs(args);
         final String[] keysArray = args.keySet().toArray(new String[0]);
-
-        ReadableArray givenArray = new ReadableArray() {
-            @Override
-            public int size() {
-                return args.keySet().size();
-            }
-
-            @Override
-            public boolean isNull(int index) {
-                return false;
-            }
-
-            @Override
-            public boolean getBoolean(int index) {
-                return false;
-            }
-
-            @Override
-            public double getDouble(int index) {
-                return 0;
-            }
-
-            @Override
-            public int getInt(int index) {
-                return 0;
-            }
-
-            @Override
-            public String getString(int index) {
-                return keysArray[index];
-            }
-
-            @Override
-            public ReadableArray getArray(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableMap getMap(int index) {
-                return null;
-            }
-
-            @Override
-            public Dynamic getDynamic(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableType getType(int index) {
-                return ReadableType.String;
-            }
-
-            @Override
-            public ArrayList<Object> toArrayList() {
-                return null;
-            }
-        };
+        JavaOnlyArray actualArray = new JavaOnlyArray();
+        for (String key : keysArray) {
+            actualArray.pushString(key);
+        }
         // when
-        rnModule.setInvocationEvents(givenArray);
+        rnModule.setInvocationEvents(actualArray);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         BugReporting.setInvocationEvents(args.values().toArray(new InstabugInvocationEvent[0]));
@@ -268,68 +207,11 @@ public class RNInstabugReactnativeModuleTest {
         final Map<String, Object> args = new HashMap<>();
         ArgsRegistry.registerInvocationOptionsArgs(args);
         final String[] keysArray = args.keySet().toArray(new String[0]);
-
-        ReadableArray givenArray = new ReadableArray() {
-            @Override
-            public int size() {
-                return 2;
-            }
-
-            @Override
-            public boolean isNull(int index) {
-                return false;
-            }
-
-            @Override
-            public boolean getBoolean(int index) {
-                return false;
-            }
-
-            @Override
-            public double getDouble(int index) {
-                return 0;
-            }
-
-            @Override
-            public int getInt(int index) {
-                return 0;
-            }
-
-            @Override
-            public String getString(int index) {
-                if (index == 0) {
-                    return keysArray[0];
-                }
-                return keysArray[1];
-            }
-
-            @Override
-            public ReadableArray getArray(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableMap getMap(int index) {
-                return null;
-            }
-
-            @Override
-            public Dynamic getDynamic(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableType getType(int index) {
-                return ReadableType.String;
-            }
-
-            @Override
-            public ArrayList<Object> toArrayList() {
-                return null;
-            }
-        };
+        JavaOnlyArray actualArray = new JavaOnlyArray();
+        actualArray.pushString(keysArray[0]);
+        actualArray.pushString(keysArray[1]);
         // when
-        rnModule.setInvocationOptions(givenArray);
+        rnModule.setInvocationOptions(actualArray);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         int option1 = (int) args.get(keysArray[0]);
@@ -402,68 +284,11 @@ public class RNInstabugReactnativeModuleTest {
         final Map<String, Object> args = new HashMap<>();
         ArgsRegistry.registerInstabugReportTypesArgs(args);
         final String[] keysArray = args.keySet().toArray(new String[0]);
-
-        ReadableArray givenArray = new ReadableArray() {
-            @Override
-            public int size() {
-                return 2;
-            }
-
-            @Override
-            public boolean isNull(int index) {
-                return false;
-            }
-
-            @Override
-            public boolean getBoolean(int index) {
-                return false;
-            }
-
-            @Override
-            public double getDouble(int index) {
-                return 0;
-            }
-
-            @Override
-            public int getInt(int index) {
-                return 0;
-            }
-
-            @Override
-            public String getString(int index) {
-                if (index == 0) {
-                    return keysArray[0];
-                }
-                return keysArray[1];
-            }
-
-            @Override
-            public ReadableArray getArray(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableMap getMap(int index) {
-                return null;
-            }
-
-            @Override
-            public Dynamic getDynamic(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableType getType(int index) {
-                return ReadableType.String;
-            }
-
-            @Override
-            public ArrayList<Object> toArrayList() {
-                return null;
-            }
-        };
+        JavaOnlyArray actualArray = new JavaOnlyArray();
+        actualArray.pushString(keysArray[0]);
+        actualArray.pushString(keysArray[1]);
         // when
-        rnModule.setReportTypes(givenArray);
+        rnModule.setReportTypes(actualArray);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         int option1 = (int) args.get(keysArray[0]);
@@ -496,68 +321,11 @@ public class RNInstabugReactnativeModuleTest {
         ArgsRegistry.registerInstabugReportTypesArgs(reportTypeArgs);
         final String[] keysArray = optionsArgs.keySet().toArray(new String[0]);
         final String[] reportTypeKeys = reportTypeArgs.keySet().toArray(new String[0]);
-
-        ReadableArray givenArray = new ReadableArray() {
-            @Override
-            public int size() {
-                return 2;
-            }
-
-            @Override
-            public boolean isNull(int index) {
-                return false;
-            }
-
-            @Override
-            public boolean getBoolean(int index) {
-                return false;
-            }
-
-            @Override
-            public double getDouble(int index) {
-                return 0;
-            }
-
-            @Override
-            public int getInt(int index) {
-                return 0;
-            }
-
-            @Override
-            public String getString(int index) {
-                if (index == 0) {
-                    return keysArray[0];
-                }
-                return keysArray[1];
-            }
-
-            @Override
-            public ReadableArray getArray(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableMap getMap(int index) {
-                return null;
-            }
-
-            @Override
-            public Dynamic getDynamic(int index) {
-                return null;
-            }
-
-            @Override
-            public ReadableType getType(int index) {
-                return ReadableType.String;
-            }
-
-            @Override
-            public ArrayList<Object> toArrayList() {
-                return null;
-            }
-        };
+        JavaOnlyArray actualArray = new JavaOnlyArray();
+        actualArray.pushString(keysArray[0]);
+        actualArray.pushString(keysArray[1]);
         // when
-        rnModule.showBugReportingWithReportTypeAndOptions(reportTypeKeys[0], givenArray);
+        rnModule.showBugReportingWithReportTypeAndOptions(reportTypeKeys[0], actualArray);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         int option1 = (int) optionsArgs.get(keysArray[0]);
