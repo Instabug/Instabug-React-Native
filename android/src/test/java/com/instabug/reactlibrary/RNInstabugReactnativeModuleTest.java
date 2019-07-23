@@ -7,7 +7,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.OnSdkDismissedCallback;
 import android.os.SystemClock;
@@ -58,6 +57,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -748,7 +748,7 @@ public class RNInstabugReactnativeModuleTest {
 
     /********Instabug*********/
 
-     @Test
+    @Test
     public void givenBoolean$setDebugEnabled_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(Instabug.class);
@@ -1075,7 +1075,7 @@ public class RNInstabugReactnativeModuleTest {
 
     @Test
     public void givenArgs$getUserAttribute_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
-         // given
+        // given
         PowerMockito.mockStatic(Instabug.class);
         Callback callback = mock(Callback.class);
         // when
@@ -1091,7 +1091,7 @@ public class RNInstabugReactnativeModuleTest {
 
     @Test
     public void givenCallback$getAllUserAttributes_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
-         // given
+        // given
         PowerMockito.mockStatic(Instabug.class);
         PowerMockito.mockStatic(Arguments.class);
         Callback callback = mock(Callback.class);
@@ -1130,7 +1130,7 @@ public class RNInstabugReactnativeModuleTest {
 
     @Test
     public void givenString$setString_whenQuery_thenShouldCallNativeApiWithEnum() {
-         // given
+        // given
         PowerMockito.mockStatic(Instabug.class);
         Map<String, Object> args = new HashMap<>();
         ArgsRegistry.registerCustomTextPlaceHolderKeysArgs(args);

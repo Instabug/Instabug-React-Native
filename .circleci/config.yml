@@ -131,9 +131,6 @@ jobs:
           name: Install node_modules
           command: cd .. && yarn
       - run:
-          name: Remove instabug.framework
-          command: rm -rf ../node_modules/instabug-reactnative/ios/Instabug.framework
-      - run:
           name: Fetch CocoaPods Specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
       - run:
