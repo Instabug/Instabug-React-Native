@@ -111,7 +111,7 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
 }
 
 
-- (void) testgivenPostInvocationHandler$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenPostInvocationHandlerCANCEL$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
   [partialMock setPostInvocationHandler:callback];
@@ -121,18 +121,31 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
   IBGBugReporting.didDismissHandler(IBGDismissTypeCancel,IBGReportTypeBug);
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
+}
+
+- (void) testgivenPostInvocationHandlerSUBMIT$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
+  id partialMock = OCMPartialMock(self.instabugBridge);
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [partialMock setPostInvocationHandler:callback];
+  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
   
-  NSDictionary *result2 = @{ @"dismissType": @"SUBMIT",
-                            @"reportType": @"feedback"};
-  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result2]);
+  NSDictionary *result = @{ @"dismissType": @"SUBMIT",
+                             @"reportType": @"feedback"};
+  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
   IBGBugReporting.didDismissHandler(IBGDismissTypeSubmit,IBGReportTypeFeedback);
-  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result2]);
-  
-  NSDictionary *result3 = @{ @"dismissType": @"ADD_ATTACHMENT",
-                            @"reportType": @"feedback"};
-  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result3]);
+  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
+}
+
+- (void) testgivenPostInvocationHandlerADD_ATTACHMENT$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
+  id partialMock = OCMPartialMock(self.instabugBridge);
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [partialMock setPostInvocationHandler:callback];
+  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
+  NSDictionary *result = @{ @"dismissType": @"ADD_ATTACHMENT",
+                             @"reportType": @"feedback"};
+  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
   IBGBugReporting.didDismissHandler(IBGDismissTypeAddAttachment,IBGReportTypeFeedback);
-  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result3]);
+  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 
 - (void) testgivenBooleans$setPromptOptionsEnabled_whenQuery_thenShouldCallNativeApi {
