@@ -34,4 +34,25 @@
 - (void)invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options;
 
 - (void)setPreInvocationHandler:(RCTResponseSenderBlock)callBack;
+
+- (void)setPostInvocationHandler:(RCTResponseSenderBlock)callBack;
+
+- (void)setPromptOptionsEnabled:(BOOL)chatEnabled feedback:(BOOL)bugReportEnabled chat:(BOOL)feedbackEnabled;
+
+- (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold;
+
+- (void)setShakingThresholdForiPad:(double)iPadShakingThreshold;
+
+- (void)setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode;
+
+- (void)setReportTypes:(NSArray*)types;
+
+- (void)showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options;
+
+- (void)setAutoScreenRecordingEnabled:(BOOL) enabled;
+
+- (void)setAutoScreenRecordingMaxDuration:(CGFloat) duration;
+
+- (void)setViewHierarchyEnabled:(BOOL) viewHierarchyEnabled;
+
 @end
