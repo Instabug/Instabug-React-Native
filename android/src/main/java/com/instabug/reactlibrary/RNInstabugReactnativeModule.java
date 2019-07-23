@@ -5,7 +5,6 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -15,7 +14,6 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
@@ -49,18 +47,14 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
-import com.instabug.library.bugreporting.model.ReportCategory;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.model.Report;
 import com.instabug.library.model.NetworkLog;
-import com.instabug.library.user.UserEventParam;
 import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.ReportUtil;
-import com.instabug.reactlibrary.utils.InstabugUtil;
-import com.instabug.reactlibrary.utils.MapUtil;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Survey;
@@ -93,11 +87,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
     //InvocationEvents
-    private final String INVOCATION_EVENT_NONE = "none";
-    private final String INVOCATION_EVENT_SHAKE = "shake";
-    private final String INVOCATION_EVENT_SCREENSHOT = "screenshot";
-    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "swipe";
-    private final String INVOCATION_EVENT_FLOATING_BUTTON = "button";
+    private final String INVOCATION_EVENT_NONE = "invocationEventNone";
+    private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
+    private final String INVOCATION_EVENT_SCREENSHOT = "invocationEventScreenshot";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "invocationEventTwoFingersSwipe";
+    private final String INVOCATION_EVENT_FLOATING_BUTTON = "invocationEventFloatingButton";
     //InvocationModes
     private final String INVOCATION_MODE_NA = "na";
     private final String INVOCATION_MODE_NEW_BUG = "bug";
@@ -715,6 +709,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated
      * Sets the event used to invoke Instabug SDK
      *
      * @param invocationEventValue the invocation event value
@@ -1098,6 +1093,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated
      * Sets whether users are required to enter a comment or not when sending reports.
      * Defaults to NO.
      *
@@ -1464,6 +1460,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated
      * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
      * becomes the default invocation option that SDK gets invoked with and prompt options screen
      * will not show. When none is enabled, Bug reporting becomes the default invocation option.
@@ -1497,6 +1494,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated
      * Sets whether email field is required or not when submitting
      * bug/feedback/new-feature-request/new-comment-on-feature
      *
@@ -1875,7 +1873,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     private static WritableArray convertJsonToArray(JSONArray jsonArray) throws JSONException {
-        WritableArray array = new WritableNativeArray();
+        WritableArray array = Arguments.createArray();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             Object value = jsonArray.get(i);
