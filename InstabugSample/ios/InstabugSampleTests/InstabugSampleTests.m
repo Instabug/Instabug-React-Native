@@ -11,12 +11,6 @@
 #import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 
-@interface Instabug (Testing)
-
-+ (void)reportCrashWithStackTrace:(NSDictionary*)stackTrace handled:(BOOL)handled;
-
-@end
-
 @interface InstabugSampleTests : XCTestCase
 @property InstabugReactBridge *instabugBridge;
 @end
