@@ -559,4 +559,68 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
+/*
+ +------------------------------------------------------------------------+
+ |                              Log Module                                |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)testSetIBGLogPrintsToConsole {
+  [self.instabugBridge setIBGLogPrintsToConsole:YES];
+  XCTAssertTrue(IBGLog.printsToConsole);
+}
+
+- (void)testLogVerbose {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logVerbose:log]);
+  [self.instabugBridge logVerbose:log];
+  OCMVerify([mock logVerbose:log]);
+}
+
+- (void)testLogDebug {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logDebug:log]);
+  [self.instabugBridge logDebug:log];
+  OCMVerify([mock logDebug:log]);
+}
+
+- (void)testLogInfo {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logInfo:log]);
+  [self.instabugBridge logInfo:log];
+  OCMVerify([mock logInfo:log]);
+}
+
+- (void)testLogWarn {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logWarn:log]);
+  [self.instabugBridge logWarn:log];
+  OCMVerify([mock logWarn:log]);
+}
+
+- (void)testLogError {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logError:log]);
+  [self.instabugBridge logError:log];
+  OCMVerify([mock logError:log]);
+}
+
+- (void)testClearLogs {
+  id mock = OCMClassMock([IBGLog class]);
+  
+  OCMStub([mock clearAllLogs]);
+  [self.instabugBridge clearLogs];
+  OCMVerify([mock clearAllLogs]);
+}
+
 @end
