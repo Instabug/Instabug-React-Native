@@ -118,4 +118,12 @@
 
 - (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
 
+/*
+ +------------------------------------------------------------------------+
+ |                        Crash Reporting Module                          |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setCrashReportingEnabled:(BOOL)enabledCrashReporter;
+
 @end
