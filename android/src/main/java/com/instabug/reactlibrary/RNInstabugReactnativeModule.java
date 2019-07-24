@@ -103,8 +103,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String FLOATING_BUTTON_EDGE_LEFT = "left";
     //locales
     private final String LOCALE_ARABIC = "arabic";
-    private final String LOCALE_CHINESE_SIMPLIFIED = "chinesesimplified";
-    private final String LOCALE_CHINESE_TRADITIONAL = "chinesetraditional";
+    private final String LOCALE_CHINESE_SIMPLIFIED = "chineseSimplified";
+    private final String LOCALE_CHINESE_TRADITIONAL = "chineseTraditional";
     private final String LOCALE_CZECH = "czech";
     private final String LOCALE_DUTCH = "dutch";
     private final String LOCALE_ENGLISH = "english";
@@ -114,7 +114,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String LOCALE_ITALIAN = "italian";
     private final String LOCALE_JAPANESE = "japanese";
     private final String LOCALE_POLISH = "polish";
-    private final String LOCALE_PORTUGUESE_BRAZIL = "portuguesebrazil";
+    private final String LOCALE_PORTUGUESE_BRAZIL = "portugueseBrazil";
     private final String LOCALE_RUSSIAN = "russian";
     private final String LOCALE_SPANISH = "spanish";
     private final String LOCALE_SWEDISH = "swedish";
@@ -142,8 +142,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String WELCOME_MESSAGE_MODE_DISABLED = "welcomeMessageModeDisabled";
 
     //Theme colors
-    private final String COLOR_THEME_LIGHT = "light";
-    private final String COLOR_THEME_DARK = "dark";
+    private final String COLOR_THEME_LIGHT = "colorThemeLight";
+    private final String COLOR_THEME_DARK = "colorThemeDark";
 
     //CustomTextPlaceHolders
     private final String SHAKE_HINT = "shakeHint";
@@ -176,29 +176,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String COMMENT_FIELD_REQUIRED = "commentFieldRequired";
     private final String DISABLE_POST_SENDING_DIALOG = "disablePostSendingDialog";
 
-    private final String CONVERSATIONS_LIST_TITLE = "conversationsHeaderTitle";
+    private final String CONVERSATIONS_LIST_TITLE = "conversationsListTitle";
 
     private final String ADD_VOICE_MESSAGE = "addVoiceMessage";
     private final String ADD_IMAGE_FROM_GALLERY = "addImageFromGallery";
     private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
-    private final String ADD_VIDEO = "addVideoMessage";
+    private final String ADD_VIDEO = "addVideo";
 
-    private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDeniedMessage";
+    private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDenied";
 
-    private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "recordingMessageToHoldText";
-    private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "recordingMessageToReleaseText";
+    private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "voiceMessagePressAndHoldToRecord";
+    private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "voiceMessageReleaseToAttach";
 
-    private final String REPORT_SUCCESSFULLY_SENT = "thankYouText";
-    private final String THANK_YOU_ALERT_TEXT = "thankYouAlertText";
+    private final String REPORT_SUCCESSFULLY_SENT = "reportSuccessfullySent";
+    private final String THANK_YOU_ALERT_TEXT = "successDialogHeader";
 
-    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE = "welcomeMessageBetaWelcomeStepTitle";
-    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT = "welcomeMessageBetaWelcomeStepContent";
-    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE = "welcomeMessageBetaHowToReportStepTitle";
-    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT = "welcomeMessageBetaHowToReportStepContent";
-    private final String WELCOME_MESSAGE_FINISH_STEP_TITLE = "welcomeMessageBetaFinishStepTitle";
-    private final String WELCOME_MESSAGE_FINISH_STEP_CONTENT = "welcomeMessageBetaFinishStepContent";
-    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "welcomeMessageLiveWelcomeStepTitle";
-    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "welcomeMessageLiveWelcomeStepContent";
+    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE = "betaWelcomeMessageWelcomeStepTitle";
+    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT = "betaWelcomeMessageWelcomeStepContent";
+    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE = "betaWelcomeMessageHowToReportStepTitle";
+    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT = "betaWelcomeMessageHowToReportStepContent";
+    private final String WELCOME_MESSAGE_FINISH_STEP_TITLE = "betaWelcomeMessageFinishStepTitle";
+    private final String WELCOME_MESSAGE_FINISH_STEP_CONTENT = "betaWelcomeMessageFinishStepContent";
+    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
+    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
 
     private final String CUSTOM_SURVEY_THANKS_TITLE = "surveysCustomThanksTitle";
     private final String CUSTOM_SURVEY_THANKS_SUBTITLE = "surveysCustomThanksSubTitle";
@@ -519,7 +519,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setUserData(String userData) {
         try {
-            mInstabug.setUserData(userData);
+            Instabug.setUserData(userData);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -538,7 +538,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    mInstabug.setPrimaryColor(primaryColor);
+                    Instabug.setPrimaryColor(primaryColor);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -576,7 +576,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         WritableArray tagsArray;
         try {
             ArrayList<String> tags = mInstabug.getTags();
-            tagsArray = new WritableNativeArray();
+            tagsArray = Arguments.createArray();
             for (int i = 0; i < tags.size(); i++) {
                 tagsArray.pushString(tags.get(i));
             }
@@ -597,7 +597,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void identifyUserWithEmail(String userEmail, String userName) {
         try {
-            mInstabug.identifyUser(userName, userEmail);
+            Instabug.identifyUser(userName, userEmail);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -609,7 +609,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void resetTags() {
         try {
-            mInstabug.resetTags();
+            Instabug.resetTags();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -626,7 +626,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public boolean isEnabled() {
         boolean isEnabled = false;
         try {
-            isEnabled = mInstabug.isEnabled();
+            isEnabled = Instabug.isEnabled();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -657,7 +657,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void disable() {
         try {
-            mInstabug.disable();
+            Instabug.disable();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -682,7 +682,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public String getAppToken() {
         String appToken = "";
         try {
-            appToken = mInstabug.getAppToken();
+            appToken = Instabug.getAppToken();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -864,7 +864,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setDebugEnabled(boolean isDebugEnabled) {
         try {
-            mInstabug.setDebugEnabled(isDebugEnabled);
+            Instabug.setDebugEnabled(isDebugEnabled);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1004,7 +1004,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setUserAttribute(String key, String value) {
         try {
-            mInstabug.setUserAttribute(key, value);
+            Instabug.setUserAttribute(key, value);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1020,7 +1020,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void getUserAttribute(String key, Callback userAttributeCallback) {
         String userAttribute;
         try {
-            userAttribute = mInstabug.getUserAttribute(key);
+            userAttribute = Instabug.getUserAttribute(key);
             userAttributeCallback.invoke(userAttribute);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1036,7 +1036,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeUserAttribute(String key) {
         try {
-            mInstabug.removeUserAttribute(key);
+            Instabug.removeUserAttribute(key);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1049,7 +1049,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAllUserAttributes(Callback userAttributesCallback) {
-        WritableMap writableMap = new WritableNativeMap();
+        WritableMap writableMap = Arguments.createMap();
         try {
             HashMap<String, String> map = mInstabug.getAllUserAttributes();
             for (HashMap.Entry<String, String> entry : map.entrySet()) {
@@ -1067,7 +1067,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void clearAllUserAttributes() {
         try {
-            mInstabug.clearAllUserAttributes();
+            Instabug.clearAllUserAttributes();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1135,7 +1135,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void logOut() {
         try {
-            mInstabug.logoutUser();
+            Instabug.logoutUser();
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1150,7 +1150,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void logUserEventWithName(String name) {
         try {
-            mInstabug.logUserEvent(name);
+            Instabug.logUserEvent(name);
         } catch (java.lang.Exception exception) {
             exception.printStackTrace();
         }
@@ -1533,7 +1533,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void clearFileAttachment() {
         try {
-            mInstabug.clearFileAttachment();
+            Instabug.clearFileAttachment();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1556,7 +1556,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     Instabug.setReproStepsState(State.DISABLED);
                     break;
                 default:
-                    Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+                    Instabug.setReproStepsState(State.ENABLED);
             }
 
         } catch (Exception e) {
@@ -1579,6 +1579,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     break;
                 case WELCOME_MESSAGE_MODE_BETA:
                     Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                    break;
+                case WELCOME_MESSAGE_MODE_DISABLED:
+                    Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
                     break;
                 default:
                     Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
@@ -2111,11 +2114,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             case CONVERSATION_TEXT_FIELD_HINT:
                 return InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT;
             case REPORT_SUCCESSFULLY_SENT:
-                return InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER;
+                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
             case VIDEO_PLAYER_TITLE:
                 return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
             case THANK_YOU_ALERT_TEXT:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
+                return InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER;
             case WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE:
                 return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE;
             case WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT:
@@ -2165,63 +2168,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     private Locale getLocaleByKey(String instabugLocale) {
-        String localeInLowerCase = instabugLocale.toLowerCase();
-        switch (localeInLowerCase) {
-            case LOCALE_ARABIC:
-                return new Locale(InstabugLocale.ARABIC.getCode(), InstabugLocale.ARABIC
-                        .getCountry());
-            case LOCALE_ENGLISH:
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
-                        .getCountry());
-            case LOCALE_DUTCH:
-                return new Locale(InstabugLocale.NETHERLANDS.getCode(), InstabugLocale.NETHERLANDS
-                        .getCountry());
-            case LOCALE_CZECH:
-                return new Locale(InstabugLocale.CZECH.getCode(), InstabugLocale.CZECH.getCountry
-                        ());
-            case LOCALE_FRENCH:
-                return new Locale(InstabugLocale.FRENCH.getCode(), InstabugLocale.FRENCH
-                        .getCountry());
-            case LOCALE_GERMAN:
-                return new Locale(InstabugLocale.GERMAN.getCode(), InstabugLocale.GERMAN
-                        .getCountry());
-            case LOCALE_ITALIAN:
-                return new Locale(InstabugLocale.ITALIAN.getCode(), InstabugLocale.ITALIAN
-                        .getCountry());
-            case LOCALE_JAPANESE:
-                return new Locale(InstabugLocale.JAPANESE.getCode(), InstabugLocale.JAPANESE
-                        .getCountry());
-            case LOCALE_POLISH:
-                return new Locale(InstabugLocale.POLISH.getCode(), InstabugLocale.POLISH
-                        .getCountry());
-            case LOCALE_RUSSIAN:
-                return new Locale(InstabugLocale.RUSSIAN.getCode(), InstabugLocale.RUSSIAN
-                        .getCountry());
-            case LOCALE_SPANISH:
-                return new Locale(InstabugLocale.SPANISH.getCode(), InstabugLocale.SPANISH
-                        .getCountry());
-            case LOCALE_SWEDISH:
-                return new Locale(InstabugLocale.SWEDISH.getCode(), InstabugLocale.SWEDISH
-                        .getCountry());
-            case LOCALE_TURKISH:
-                return new Locale(InstabugLocale.TURKISH.getCode(), InstabugLocale.TURKISH
-                        .getCountry());
-            case LOCALE_PORTUGUESE_BRAZIL:
-                return new Locale(InstabugLocale.PORTUGUESE_BRAZIL.getCode(), InstabugLocale
-                        .PORTUGUESE_BRAZIL.getCountry());
-            case LOCALE_CHINESE_SIMPLIFIED:
-                return new Locale(InstabugLocale.SIMPLIFIED_CHINESE.getCode(), InstabugLocale
-                        .SIMPLIFIED_CHINESE.getCountry());
-            case LOCALE_CHINESE_TRADITIONAL:
-                return new Locale(InstabugLocale.TRADITIONAL_CHINESE.getCode(), InstabugLocale
-                        .TRADITIONAL_CHINESE.getCountry());
-            case LOCALE_KOREAN:
-                return new Locale(InstabugLocale.KOREAN.getCode(), InstabugLocale.KOREAN
-                        .getCountry());
-            default:
-                return new Locale(InstabugLocale.ENGLISH.getCode(), InstabugLocale.ENGLISH
-                        .getCountry());
-        }
+        return ArgsRegistry.getDeserializedValue(instabugLocale, Locale.class);
     }
 
     private void sendEvent(ReactApplicationContext reactContext,
@@ -2335,10 +2282,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("audioRecordingPermissionDeniedMessage", AUDIO_RECORDING_PERMISSION_DENIED);
         constants.put("recordingMessageToHoldText", VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         constants.put("recordingMessageToReleaseText", VOICE_MESSAGE_RELEASE_TO_ATTACH);
-        constants.put("thankYouText", REPORT_SUCCESSFULLY_SENT);
+        constants.put("thankYouText", THANK_YOU_ALERT_TEXT);
         constants.put("video", VIDEO_PLAYER_TITLE);
         constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
-        constants.put("thankYouAlertText", THANK_YOU_ALERT_TEXT);
+        constants.put("thankYouAlertText", REPORT_SUCCESSFULLY_SENT);
 
         constants.put("welcomeMessageBetaWelcomeStepTitle", WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE);
         constants.put("welcomeMessageBetaWelcomeStepContent", WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT);
