@@ -322,9 +322,9 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
  */
 
 - (void) testgivenBoolean$setBugReportingEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = false;
+  BOOL enabled = true;
   [self.instabugBridge setBugReportingEnabled:enabled];
-  XCTAssertFalse(IBGBugReporting.enabled);
+  XCTAssertTrue(IBGBugReporting.enabled);
 }
 
 - (void) testgivenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs {
@@ -495,9 +495,9 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
 }
 
 - (void) testgivenBoolean$setAutoScreenRecordingEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = false;
+  BOOL enabled = true;
   [self.instabugBridge setAutoScreenRecordingEnabled:enabled];
-  XCTAssertFalse(IBGBugReporting.autoScreenRecordingEnabled);
+  XCTAssertTrue(IBGBugReporting.autoScreenRecordingEnabled);
 }
 
 - (void) testgivenArgs$setAutoScreenRecordingMaxDuration_whenQuery_thenShouldCallNativeApi {
@@ -507,9 +507,9 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
 }
 
 - (void) testgivenBoolean$setViewHierarchyEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = false;
-  [self.instabugBridge setViewHierarchyEnabled:enabled];
-  XCTAssertFalse(IBGBugReporting.shouldCaptureViewHierarchy);
+  BOOL enabled = true;
+  [self.instabugBridge setViewHirearchyEnabled:enabled];
+  XCTAssertTrue(IBGBugReporting.shouldCaptureViewHierarchy);
 }
 
 

@@ -116,6 +116,6 @@
 
 - (void)setAutoScreenRecordingMaxDuration:(CGFloat)duration;
 
-- (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
+- (void)setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled;
 
 @end
