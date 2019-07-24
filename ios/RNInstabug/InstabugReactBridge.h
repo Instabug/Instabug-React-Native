@@ -111,8 +111,7 @@
 
 - (void)setReportTypes:(NSArray *)types;
 
-- (void)showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType)type
-                                                :(NSArray *)options;
+- (void)showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType)type options:(NSArray *)options;
 
 - (void)setAutoScreenRecordingEnabled:(BOOL)enabled;
 

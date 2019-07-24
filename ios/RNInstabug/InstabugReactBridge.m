@@ -690,7 +690,7 @@ RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
     IBGBugReporting.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options) {
+RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType)type options:(NSArray*) options) {
     [[NSRunLoop mainRunLoop] performBlock:^{
          IBGBugReportingOption parsedOptions = 0;
         for (NSNumber *boxedValue in options) {
