@@ -68,6 +68,8 @@
 
 - (void)clearAllUserAttributes;
 
+- (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
+
 - (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 
 - (void)setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode;

@@ -256,6 +256,12 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   OCMVerify([mock removeUserAttributeForKey:key]);
 }
 
+- (void)testSetViewHierarchyEnabled {
+  BOOL enabled = true;
+  [self.instabugBridge setViewHierarchyEnabled:enabled];
+  XCTAssertTrue(Instabug.shouldCaptureViewHierarchy);
+}
+
 - (void)testShowWelcomeMessageWithMode {
   id mock = OCMClassMock([Instabug class]);
   IBGWelcomeMessageMode welcomeMessageMode = IBGWelcomeMessageModeBeta;
