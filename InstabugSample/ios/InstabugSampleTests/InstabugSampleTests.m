@@ -11,6 +11,12 @@
 #import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 
+@interface Instabug (Testing)
+
++ (void)reportCrashWithStackTrace:(NSDictionary*)stackTrace handled:(BOOL)handled;
+
+@end
+
 @interface InstabugSampleTests : XCTestCase
 @property InstabugReactBridge *instabugBridge;
 @end
@@ -227,5 +233,91 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   XCTAssertFalse(IBGBugReporting.shouldCaptureViewHierarchy);
 }
 
+/***********Feature Requests*****************/
+
+- (void) testgivenArgs$setEmailFieldRequiredForFeatureRequests_whenQuery_thenShouldCallNativeApi {
+  id mock = OCMClassMock([IBGFeatureRequests class]);
+  BOOL required = true;
+  NSArray *actionTypesArray = [NSArray arrayWithObjects:  @(IBGActionReportBug), nil];
+  IBGAction actionTypes = 0;
+  for (NSNumber *boxedValue in actionTypesArray) {
+    actionTypes |= [boxedValue intValue];
+  }
+  OCMStub([mock setEmailFieldRequired:required forAction:actionTypes]);
+  [self.instabugBridge setEmailFieldRequiredForFeatureRequests:required forAction:actionTypesArray];
+  OCMVerify([mock setEmailFieldRequired:required forAction:actionTypes]);
+}
+
+- (void) testgive$showFeatureRequests_whenQuery_thenShouldCallNativeApi {
+  id mock = OCMClassMock([IBGFeatureRequests class]);
+  OCMStub([mock show]);
+  [self.instabugBridge showFeatureRequests];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
+  
+  [[NSRunLoop mainRunLoop] performBlock:^{
+    OCMVerify([mock show]);
+    [expectation fulfill];
+  }];
+  
+  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
+}
+
+
+/***********Replies*****************/
+
+
+- (void) testgivenBoolean$setRepliesEnabled_whenQuery_thenShouldCallNativeApi {
+  BOOL enabled = false;
+  [self.instabugBridge setRepliesEnabled:enabled];
+  XCTAssertFalse(IBGReplies.enabled);
+}
+
+// Since there is no way to check the invocation of the block 'callback' inside the block, 'IBGReplies.enabled' is set to false
+// and the value is checked after callback execution to verify.
+- (void) testgivenCallback$hasChats_whenQuery_thenShouldCallNativeApi {
+  IBGReplies.enabled = true;
+  RCTResponseSenderBlock callback = ^(NSArray *response) { IBGReplies.enabled = false; };
+  [self.instabugBridge hasChats:callback];
+  XCTAssertFalse(IBGReplies.enabled);
+}
+
+
+- (void) testgive$showReplies_whenQuery_thenShouldCallNativeApi {
+  id mock = OCMClassMock([IBGReplies class]);
+  OCMStub([mock show]);
+  [self.instabugBridge showReplies];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
+  
+  [[NSRunLoop mainRunLoop] performBlock:^{
+    OCMVerify([mock show]);
+    [expectation fulfill];
+  }];
+  
+  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
+}
+
+- (void) testgivenOnNewReplyReceivedCallback$setOnNewReplyReceivedCallback_whenQuery_thenShouldCallNativeApi {
+  id partialMock = OCMPartialMock(self.instabugBridge);
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [partialMock setOnNewReplyReceivedCallback:callback];
+  XCTAssertNotNil(IBGReplies.didReceiveReplyHandler);
+ 
+  OCMStub([partialMock sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil]);
+  IBGReplies.didReceiveReplyHandler();
+  OCMVerify([partialMock sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil]);
+}
+
+- (void) testgivenCallback$getUnreadMessagesCount_whenQuery_thenShouldCallNativeApi {
+  IBGReplies.enabled = true;
+  RCTResponseSenderBlock callback = ^(NSArray *response) { IBGReplies.enabled = false; };
+  [self.instabugBridge getUnreadMessagesCount:callback];
+  XCTAssertFalse(IBGReplies.enabled);
+}
+
+- (void) testgivenBoolean$setChatNotificationEnabled_whenQuery_thenShouldCallNativeApi {
+  BOOL enabled = false;
+  [self.instabugBridge setChatNotificationEnabled:enabled];
+  XCTAssertFalse(IBGReplies.inAppNotificationsEnabled);
+}
 
 @end

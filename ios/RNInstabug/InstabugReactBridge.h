@@ -55,4 +55,26 @@
 
 - (void)setViewHierarchyEnabled:(BOOL) viewHierarchyEnabled;
 
+
+/***********Feature Requests*****************/
+
+- (void)setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired forAction:(NSArray *)actionTypesArray;
+
+- (void)showFeatureRequests;
+
+/***********Replies*****************/
+
+- (void)setRepliesEnabled:(BOOL) isEnabled;
+
+- (void)hasChats:(RCTResponseSenderBlock) callback;
+
+- (void)showReplies;
+
+- (void)setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback;
+
+- (void)getUnreadMessagesCount:(RCTResponseSenderBlock)callBack;
+
+- (void)setChatNotificationEnabled:(BOOL)isChatNotificationEnabled;
+
+
 @end
