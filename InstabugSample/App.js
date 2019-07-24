@@ -40,7 +40,7 @@ export default class App extends Component<{}> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View testID='welcome' style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer} >
           <Text style={styles.details}>
             Hello {"Instabug's"} awesome user! The purpose of this application is to show you the different
