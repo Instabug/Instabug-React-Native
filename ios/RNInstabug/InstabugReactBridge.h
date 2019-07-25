@@ -127,4 +127,13 @@
 
 - (void)setCrashReportingEnabled:(BOOL)enabledCrashReporter;
 
+/*
+ +------------------------------------------------------------------------+
+ |                             Chats Module                               |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setChatsEnabled:(BOOL)isEnabled;
+- (void)showChats;
+
 @end

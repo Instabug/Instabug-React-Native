@@ -534,5 +534,35 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
+/*
+ +------------------------------------------------------------------------+
+ |                             Chats Module                               |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)testSetChatsEnabled {
+  id mock = OCMClassMock([Instabug class]);
+  
+  [self.instabugBridge setChatsEnabled:YES];
+  XCTAssertTrue(IBGChats.enabled);
+  
+  [self.instabugBridge setChatsEnabled:NO];
+  XCTAssertFalse(IBGChats.enabled);
+}
+
+- (void)testShowChats {
+  id mock = OCMClassMock([IBGChats class]);
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [IBGChats showChats]"];
+
+  OCMStub([mock show]);
+  [self.instabugBridge showChats];
+  
+  [[NSRunLoop mainRunLoop] performBlock:^{
+    OCMVerify([mock show]);
+    [expectation fulfill];
+  }];
+  
+  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
+}
 
 @end
