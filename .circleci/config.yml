@@ -117,7 +117,7 @@ jobs:
           name: Run UnitTest
           command: cd android && ./gradlew test
 
-  ios_test:
+  test_ios:
     macos:
       xcode: "10.2.0"
     working_directory: ~/project/InstabugSample/ios
@@ -191,14 +191,14 @@ workflows:
       - test_module
       - test_sample
       - test_android
-      - ios_test
+      - test_ios
       - e2e_ios
       - hold:
           requires:
             - test_module
             - test_sample
             - test_android
-            - ios_test
+            - test_ios
             - e2e_ios
           type: approval
           filters:
