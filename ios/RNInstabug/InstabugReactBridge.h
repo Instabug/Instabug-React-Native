@@ -136,4 +136,18 @@
 - (void)setChatsEnabled:(BOOL)isEnabled;
 - (void)showChats;
 
+/*
+ +------------------------------------------------------------------------+
+ |                              Log Module                                |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setIBGLogPrintsToConsole:(BOOL)printsToConsole;
+- (void)logVerbose:(NSString *)log;
+- (void)logDebug:(NSString *)log;
+- (void)logInfo:(NSString *)log;
+- (void)logWarn:(NSString *)log;
+- (void)logError:(NSString *)log;
+- (void)clearLogs;
+
 @end
