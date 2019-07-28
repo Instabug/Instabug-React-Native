@@ -85,7 +85,11 @@
 
 - (void)showSurveyWithToken:(NSString *)surveyToken;
 
-/***********Bug Reporting*****************/
+/*
+ +------------------------------------------------------------------------+
+ |                            BugReporting Module                         |
+ +------------------------------------------------------------------------+
+ */
 
 - (void)setBugReportingEnabled:(BOOL)isEnabled;
 
@@ -149,5 +153,35 @@
 - (void)logWarn:(NSString *)log;
 - (void)logError:(NSString *)log;
 - (void)clearLogs;
+
+
+/*
+ +------------------------------------------------------------------------+
+ |                            Feature Requests Module                     |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired forAction:(NSArray *)actionTypesArray;
+
+- (void)showFeatureRequests;
+
+/*
+ +------------------------------------------------------------------------+
+ |                            Replies Module                              |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setRepliesEnabled:(BOOL) isEnabled;
+
+- (void)hasChats:(RCTResponseSenderBlock) callback;
+
+- (void)showReplies;
+
+- (void)setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback;
+
+- (void)getUnreadMessagesCount:(RCTResponseSenderBlock)callBack;
+
+- (void)setChatNotificationEnabled:(BOOL)isChatNotificationEnabled;
+
 
 @end
