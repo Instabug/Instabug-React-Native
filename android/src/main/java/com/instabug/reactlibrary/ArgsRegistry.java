@@ -61,6 +61,7 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
+        registerReproStepsModeArgs(ARGS);
     }
 
     /**
@@ -206,10 +207,8 @@ final class ArgsRegistry {
     }
 
     static void registerInstabugActionTypesArgs(Map<String, Object> args) {
-        args.put("ActionType.allActions", ActionType.ALL_ACTIONS);
-        args.put("ActionType.reportBug", ActionType.REPORT_BUG);
-        args.put("ActionType.requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
-        args.put("ActionType.addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
+        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
+        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
     }
 
     static void registerInstabugVideoRecordingFloatingButtonPositionArgs(Map<String, Object> args) {
