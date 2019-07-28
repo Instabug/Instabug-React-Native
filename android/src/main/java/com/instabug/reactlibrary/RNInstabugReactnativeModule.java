@@ -5,6 +5,7 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -48,6 +49,7 @@ import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.ReportUtil;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
@@ -239,7 +241,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         WritableArray tagsArray;
         try {
             ArrayList<String> tags = Instabug.getTags();
-            tagsArray = new WritableNativeArray();
+            tagsArray = Arguments.createArray();
             for (int i = 0; i < tags.size(); i++) {
                 tagsArray.pushString(tags.get(i));
             }
@@ -325,7 +327,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setReproStepsMode(String reproStepsMode) {
         try {
-            Instabug.setReproStepsState(ArgsRegistry.getDeserializedValue("repro"+reproStepsMode, State.class));
+            Instabug.setReproStepsState(ArgsRegistry.getDeserializedValue(reproStepsMode, State.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -384,7 +386,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAllUserAttributes(Callback userAttributesCallback) {
-        WritableMap writableMap = new WritableNativeMap();
+        WritableMap writableMap = Arguments.createMap();
         try {
             HashMap<String, String> map = Instabug.getAllUserAttributes();
             for (HashMap.Entry<String, String> entry : map.entrySet()) {
