@@ -488,7 +488,7 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
     parsedOptions |= [boxedValue intValue];
   }
   OCMStub([mock showWithReportType:reportType options:parsedOptions]);
-  [self.instabugBridge showBugReportingWithReportTypeAndOptions:reportType :options];
+  [self.instabugBridge showBugReportingWithReportTypeAndOptions:reportType options:options];
   
   XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
   
