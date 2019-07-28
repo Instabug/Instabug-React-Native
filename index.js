@@ -379,11 +379,7 @@ const InstabugModule = {
    */
   logVerbose: function(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('v', message);
-    } else {
       Instabug.logVerbose(message);
-    }
   },
 
   /**
@@ -401,11 +397,7 @@ const InstabugModule = {
    */
   logInfo: function(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('i', message);
-    } else {
       Instabug.logInfo(message);
-    }
   },
 
   /**
@@ -423,11 +415,7 @@ const InstabugModule = {
    */
   logDebug: function(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('d', message);
-    } else {
       Instabug.logDebug(message);
-    }
   },
 
   /**
@@ -445,11 +433,7 @@ const InstabugModule = {
    */
   logError: function(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('e', message);
-    } else {
       Instabug.logError(message);
-    }
   },
 
   /**
@@ -467,11 +451,7 @@ const InstabugModule = {
    */
   logWarn: function(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('w', message);
-    } else {
       Instabug.logWarn(message);
-    }
   },
 
   /**
