@@ -379,7 +379,7 @@ const InstabugModule = {
    */
   logVerbose: function(message) {
     if (!message) return;
-      Instabug.logVerbose(message);
+    Instabug.logVerbose(message);
   },
 
   /**
@@ -397,7 +397,7 @@ const InstabugModule = {
    */
   logInfo: function(message) {
     if (!message) return;
-      Instabug.logInfo(message);
+    Instabug.logInfo(message);
   },
 
   /**
@@ -415,7 +415,7 @@ const InstabugModule = {
    */
   logDebug: function(message) {
     if (!message) return;
-      Instabug.logDebug(message);
+    Instabug.logDebug(message);
   },
 
   /**
@@ -433,7 +433,7 @@ const InstabugModule = {
    */
   logError: function(message) {
     if (!message) return;
-      Instabug.logError(message);
+    Instabug.logError(message);
   },
 
   /**
@@ -451,7 +451,7 @@ const InstabugModule = {
    */
   logWarn: function(message) {
     if (!message) return;
-      Instabug.logWarn(message);
+    Instabug.logWarn(message);
   },
 
   /**
