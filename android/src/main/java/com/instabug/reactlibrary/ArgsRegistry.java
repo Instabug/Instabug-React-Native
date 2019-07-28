@@ -10,7 +10,6 @@ import com.instabug.library.ActionType;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
-import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.visualusersteps.State;
 
@@ -62,8 +61,6 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
-        registerInstabugFloatingButtonPositionArgs(ARGS);
-        registerInstabugReproStepsModeArgs(ARGS);
     }
 
     /**
@@ -115,9 +112,9 @@ final class ArgsRegistry {
     }
 
     static void registerWelcomeMessageArgs(Map<String, Object> args) {
-        args.put("WelcomeMessageMode.disabled", DISABLED);
-        args.put("WelcomeMessageMode.live", LIVE);
-        args.put("WelcomeMessageMode.beta", BETA);
+        args.put("welcomeMessageModeDisabled", DISABLED);
+        args.put("welcomeMessageModeLive", LIVE);
+        args.put("welcomeMessageModeBeta", BETA);
     }
 
     static void registerColorThemeArgs(Map<String, Object> args) {
@@ -138,63 +135,63 @@ final class ArgsRegistry {
     }
 
     static void registerLocaleArgs(Map<String, Object> args) {
-        args.put("IBGLocale.chineseTraditional", new Locale(TRADITIONAL_CHINESE.getCode(), TRADITIONAL_CHINESE.getCountry()));
-        args.put("IBGLocale.portuguesePortugal", new Locale(PORTUGUESE_PORTUGAL.getCode(), PORTUGUESE_PORTUGAL.getCountry()));
-        args.put("IBGLocale.chineseSimplified", new Locale(SIMPLIFIED_CHINESE.getCode(), SIMPLIFIED_CHINESE.getCountry()));
-        args.put("IBGLocale.portugueseBrazil", new Locale(PORTUGUESE_BRAZIL.getCode(), PORTUGUESE_BRAZIL.getCountry()));
-        args.put("IBGLocale.indonesian", new Locale(INDONESIAN.getCode(), INDONESIAN.getCountry()));
-        args.put("IBGLocale.dutch", new Locale(NETHERLANDS.getCode(), NETHERLANDS.getCountry()));
-        args.put("IBGLocale.norwegian", new Locale(NORWEGIAN.getCode(), NORWEGIAN.getCountry()));
-        args.put("IBGLocale.japanese", new Locale(JAPANESE.getCode(), JAPANESE.getCountry()));
-        args.put("IBGLocale.english", new Locale(ENGLISH.getCode(), ENGLISH.getCountry()));
-        args.put("IBGLocale.italian", new Locale(ITALIAN.getCode(), ITALIAN.getCountry()));
-        args.put("IBGLocale.russian", new Locale(RUSSIAN.getCode(), RUSSIAN.getCountry()));
-        args.put("IBGLocale.spanish", new Locale(SPANISH.getCode(), SPANISH.getCountry()));
-        args.put("IBGLocale.swedish", new Locale(SWEDISH.getCode(), SWEDISH.getCountry()));
-        args.put("IBGLocale.turkish", new Locale(TURKISH.getCode(), TURKISH.getCountry()));
-        args.put("IBGLocale.arabic", new Locale(ARABIC.getCode(), ARABIC.getCountry()));
-        args.put("IBGLocale.danish", new Locale(DANISH.getCode(), DANISH.getCountry()));
-        args.put("IBGLocale.french", new Locale(FRENCH.getCode(), FRENCH.getCountry()));
-        args.put("IBGLocale.german", new Locale(GERMAN.getCode(), GERMAN.getCountry()));
-        args.put("IBGLocale.korean", new Locale(KOREAN.getCode(), KOREAN.getCountry()));
-        args.put("IBGLocale.polish", new Locale(POLISH.getCode(), POLISH.getCountry()));
-        args.put("IBGLocale.slovak", new Locale(SLOVAK.getCode(), SLOVAK.getCountry()));
-        args.put("IBGLocale.czech", new Locale(CZECH.getCode(), CZECH.getCountry()));
+        args.put("chineseTraditional", new Locale(TRADITIONAL_CHINESE.getCode(), TRADITIONAL_CHINESE.getCountry()));
+        args.put("portuguesePortugal", new Locale(PORTUGUESE_PORTUGAL.getCode(), PORTUGUESE_PORTUGAL.getCountry()));
+        args.put("chineseSimplified", new Locale(SIMPLIFIED_CHINESE.getCode(), SIMPLIFIED_CHINESE.getCountry()));
+        args.put("portugueseBrazil", new Locale(PORTUGUESE_BRAZIL.getCode(), PORTUGUESE_BRAZIL.getCountry()));
+        args.put("indonesian", new Locale(INDONESIAN.getCode(), INDONESIAN.getCountry()));
+        args.put("dutch", new Locale(NETHERLANDS.getCode(), NETHERLANDS.getCountry()));
+        args.put("norwegian", new Locale(NORWEGIAN.getCode(), NORWEGIAN.getCountry()));
+        args.put("japanese", new Locale(JAPANESE.getCode(), JAPANESE.getCountry()));
+        args.put("english", new Locale(ENGLISH.getCode(), ENGLISH.getCountry()));
+        args.put("italian", new Locale(ITALIAN.getCode(), ITALIAN.getCountry()));
+        args.put("russian", new Locale(RUSSIAN.getCode(), RUSSIAN.getCountry()));
+        args.put("spanish", new Locale(SPANISH.getCode(), SPANISH.getCountry()));
+        args.put("swedish", new Locale(SWEDISH.getCode(), SWEDISH.getCountry()));
+        args.put("turkish", new Locale(TURKISH.getCode(), TURKISH.getCountry()));
+        args.put("arabic", new Locale(ARABIC.getCode(), ARABIC.getCountry()));
+        args.put("danish", new Locale(DANISH.getCode(), DANISH.getCountry()));
+        args.put("french", new Locale(FRENCH.getCode(), FRENCH.getCountry()));
+        args.put("german", new Locale(GERMAN.getCode(), GERMAN.getCountry()));
+        args.put("korean", new Locale(KOREAN.getCode(), KOREAN.getCountry()));
+        args.put("polish", new Locale(POLISH.getCode(), POLISH.getCountry()));
+        args.put("slovak", new Locale(SLOVAK.getCode(), SLOVAK.getCountry()));
+        args.put("czech", new Locale(CZECH.getCode(), CZECH.getCountry()));
     }
 
     static void registerCustomTextPlaceHolderKeysArgs(Map<String, Object> args) {
-        args.put("CustomTextPlaceHolderKey.shakeHint", InstabugCustomTextPlaceHolder.Key.SHAKE_HINT);
-        args.put("CustomTextPlaceHolderKey.swipeHint", InstabugCustomTextPlaceHolder.Key.SWIPE_HINT);
-        args.put("CustomTextPlaceHolderKey.invalidEmailMessage", InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE);
-        args.put("CustomTextPlaceHolderKey.invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
-        args.put("CustomTextPlaceHolderKey.invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
-        args.put("CustomTextPlaceHolderKey.startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
-        args.put("CustomTextPlaceHolderKey.reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
-        args.put("CustomTextPlaceHolderKey.reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
-        args.put("CustomTextPlaceHolderKey.emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
-        args.put("CustomTextPlaceHolderKey.commentFieldHintForBugReport", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
-        args.put("CustomTextPlaceHolderKey.commentFieldHintForFeedback", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
-        args.put("CustomTextPlaceHolderKey.addVoiceMessage", InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE);
-        args.put("CustomTextPlaceHolderKey.addImageFromGallery", InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY);
-        args.put("CustomTextPlaceHolderKey.addExtraScreenshot", InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT);
-        args.put("CustomTextPlaceHolderKey.conversationsListTitle", InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE);
-        args.put("CustomTextPlaceHolderKey.audioRecordingPermissionDenied", InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED);
-        args.put("CustomTextPlaceHolderKey.conversationTextFieldHint", InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT);
-        args.put("CustomTextPlaceHolderKey.bugReportHeader", InstabugCustomTextPlaceHolder.Key.BUG_REPORT_HEADER);
-        args.put("CustomTextPlaceHolderKey.feedbackReportHeader", InstabugCustomTextPlaceHolder.Key.FEEDBACK_REPORT_HEADER);
-        args.put("CustomTextPlaceHolderKey.voiceMessagePressAndHoldToRecord", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
-        args.put("CustomTextPlaceHolderKey.voiceMessageReleaseToAttach", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
-        args.put("CustomTextPlaceHolderKey.reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
-        args.put("CustomTextPlaceHolderKey.successDialogHeader", InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER);
-        args.put("CustomTextPlaceHolderKey.addVideo", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageWelcomeStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageWelcomeStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageHowToReportStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageHowToReportStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageFinishStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_TITLE);
-        args.put("CustomTextPlaceHolderKey.betaWelcomeMessageFinishStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_CONTENT);
-        args.put("CustomTextPlaceHolderKey.liveWelcomeMessageTitle", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE);
-        args.put("CustomTextPlaceHolderKey.liveWelcomeMessageContent", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT);
+        args.put("shakeHint", InstabugCustomTextPlaceHolder.Key.SHAKE_HINT);
+        args.put("swipeHint", InstabugCustomTextPlaceHolder.Key.SWIPE_HINT);
+        args.put("invalidEmailMessage", InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE);
+        args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
+        args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
+        args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
+        args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
+        args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
+        args.put("emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
+        args.put("commentFieldHintForBugReport", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
+        args.put("commentFieldHintForFeedback", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
+        args.put("addVoiceMessage", InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE);
+        args.put("addImageFromGallery", InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY);
+        args.put("addExtraScreenshot", InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT);
+        args.put("conversationsListTitle", InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE);
+        args.put("audioRecordingPermissionDenied", InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED);
+        args.put("conversationTextFieldHint", InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT);
+//        args.put("bugReportHeader", InstabugCustomTextPlaceHolder.Key.BUG_REPORT_HEADER);
+//        args.put("feedbackReportHeader", InstabugCustomTextPlaceHolder.Key.FEEDBACK_REPORT_HEADER);
+        args.put("voiceMessagePressAndHoldToRecord", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
+        args.put("voiceMessageReleaseToAttach", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
+        args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
+        args.put("successDialogHeader", InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER);
+        args.put("addVideo", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
+        args.put("betaWelcomeMessageWelcomeStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE);
+        args.put("betaWelcomeMessageWelcomeStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT);
+        args.put("betaWelcomeMessageHowToReportStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
+        args.put("betaWelcomeMessageHowToReportStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT);
+        args.put("betaWelcomeMessageFinishStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_TITLE);
+        args.put("betaWelcomeMessageFinishStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_CONTENT);
+        args.put("liveWelcomeMessageTitle", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE);
+        args.put("liveWelcomeMessageContent", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT);
     }
 
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {
@@ -205,15 +202,15 @@ final class ArgsRegistry {
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {
         args.put("enabledWithRequiredFields", ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
         args.put("enabledWithOptionalFields", ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-        args.put("disabled", ExtendedBugReport.State.DISABLED);
+        args.put("disabledExtended", ExtendedBugReport.State.DISABLED);
     }
 
     static void registerInstabugActionTypesArgs(Map<String, Object> args) {
-        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
-        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
+        args.put("ActionType.allActions", ActionType.ALL_ACTIONS);
+        args.put("ActionType.reportBug", ActionType.REPORT_BUG);
+        args.put("ActionType.requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
+        args.put("ActionType.addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
     }
-
-
 
     static void registerInstabugVideoRecordingFloatingButtonPositionArgs(Map<String, Object> args) {
         args.put("topRight", InstabugVideoRecordingButtonPosition.TOP_RIGHT);
@@ -222,13 +219,9 @@ final class ArgsRegistry {
         args.put("bottomLeft", InstabugVideoRecordingButtonPosition.BOTTOM_LEFT);
     }
 
-    static void registerInstabugFloatingButtonPositionArgs(Map<String, Object> args) {
-        args.put("left", InstabugFloatingButtonEdge.LEFT);
-        args.put("right", InstabugFloatingButtonEdge.RIGHT);
-    }
-
-    static void registerInstabugReproStepsModeArgs(Map<String, Object> args) {
-        args.put("reproenabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
-        args.put("reprodisabled", State.DISABLED);
+    static void registerReproStepsModeArgs(Map<String, Object> args) {
+        args.put("enabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
+        args.put("enabled", State.ENABLED);
+        args.put("disabled", State.DISABLED);
     }
 }

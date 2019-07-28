@@ -298,7 +298,7 @@ export default {
   extendedBugReportMode: {
     enabledWithRequiredFields: Instabug.enabledWithRequiredFields,
     enabledWithOptionalFields: Instabug.enabledWithOptionalFields,
-    disabled: Instabug.disabled
+    disabledExtended: Instabug.disabled
   },
 
   /**
