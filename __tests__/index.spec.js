@@ -323,9 +323,7 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method logVerbose platform is iOS', () => {
-
-    Platform.OS = 'ios';
+  it('should call the native method logVerbose', () => {
     const message = 'log';
     Instabug.logVerbose(message);
 
@@ -333,18 +331,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with v when platform is android', () => {
+  it('should call the native method logDebu', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logVerbose(message);
-    expect(log.calledOnceWithExactly('v', message)).toBe(true);
-
-  });
-
-  it('should call the native method logDebug platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logDebug(message);
 
@@ -352,18 +340,9 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with d when platform is android', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logDebug(message);
-    expect(log.calledOnceWithExactly('d', message)).toBe(true);
+  it('should call the native method logInfo', () => {
 
-  });
-
-  it('should call the native method logInfo platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logInfo(message);
 
@@ -371,18 +350,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with i when platform is android', () => {
+  it('should call the native method logWarn', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logInfo(message);
-    expect(log.calledOnceWithExactly('i', message)).toBe(true);
-
-  });
-
-  it('should call the native method logWarn platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logWarn(message);
 
@@ -390,31 +359,12 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with w when platform is android', () => {
+  it('should call the native method logError', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logWarn(message);
-    expect(log.calledOnceWithExactly('w', message)).toBe(true);
-
-  });
-
-  it('should call the native method logError platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logError(message);
 
     expect(logError.calledOnceWithExactly(message)).toBe(true);
-
-  });
-
-  it('should call the native method log with e when platform is android', () => {
-
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logError(message);
-    expect(log.calledOnceWithExactly('e', message)).toBe(true);
 
   });
 
