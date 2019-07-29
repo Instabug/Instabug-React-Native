@@ -12,9 +12,9 @@ export namespace BugReporting {
     invocationMode: invocationMode,
     invocationOptions: invocationOptions[]
     ): void;
-  function onInvokeHandler(preInvocationHandler: () => void): void;
+  function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
-  function onSDKDismissedHandler(postInvocationHandler: (dismiss: dismissType, report: reportType) => void): void;
+  function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
   function setPromptOptionsEnabled(
     chat: boolean,
     bug: boolean,
