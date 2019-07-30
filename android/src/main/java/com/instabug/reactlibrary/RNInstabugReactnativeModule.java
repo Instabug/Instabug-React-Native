@@ -40,7 +40,6 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
-import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
