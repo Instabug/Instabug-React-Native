@@ -92,7 +92,7 @@ describe('CrashReporting Module', () => {
             exception: 'javascriptStackTrace'
         }
         
-        IBGEventEmitter.addListener(IBGConstants.SEND_HANDLED_CRASH, (actualObject) => {
+        IBGEventEmitter.addListener(NativeModules.Instabug, IBGConstants.SEND_HANDLED_CRASH, (actualObject) => {
             expect(actualObject).toEqual(expectedObject);
             done();
         });

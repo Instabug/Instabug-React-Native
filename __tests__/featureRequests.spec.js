@@ -11,8 +11,9 @@ import sinon from 'sinon';
 
 describe('Feature Requests Module', () => {
   
-  const setEmailFieldRequiredForFeatureRequests = sinon.spy(NativeModules.Instabug, 'setEmailFieldRequiredForFeatureRequests');
-  const showFeatureRequests = sinon.spy(NativeModules.Instabug, 'showFeatureRequests');
+  const setEmailFieldRequiredForFeatureRequests = sinon.spy(NativeModules.IBGFeatureRequests, 'setEmailFieldRequiredForFeatureRequests');
+  const showFeatureRequests = sinon.spy(NativeModules.IBGFeatureRequests, 'show');
+  const setEnabled = sinon.spy(NativeModules.IBGFeatureRequests, 'setEnabled');
 
   it('should call the native method setEmailFieldRequiredForFeatureRequests', () => {
 
@@ -28,6 +29,14 @@ describe('Feature Requests Module', () => {
     FeatureRequests.show();
 
     expect(showFeatureRequests.calledOnce).toBe(true);
+
+  });
+
+  it('should call the native method setEnabled', () => {
+
+    FeatureRequests.setEnabled(true);
+
+    expect(setEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 

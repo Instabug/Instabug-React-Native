@@ -9,6 +9,7 @@ import '../jest/mockXhrNetworkInterceotor';
 import '../jest/mockBugReporting';
 import '../jest/mockInstabugUtils';
 import BugReporting from '../modules/BugReporting'
+import Instabug from '../';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import IBGConstants from '../utils/InstabugConstants';
 import sinon from 'sinon';
@@ -17,27 +18,29 @@ import sinon from 'sinon';
 
 describe('Testing BugReporting Module', () => {
   
-  const setBugReportingEnabled = sinon.spy(NativeModules.Instabug, 'setBugReportingEnabled');
-  const setInvocationEvents = sinon.spy(NativeModules.Instabug, 'setInvocationEvents');
-  const setInvocationOptions = sinon.spy(NativeModules.Instabug, 'setInvocationOptions');
-  const setShakingThresholdForiPhone = sinon.spy(NativeModules.Instabug, 'setShakingThresholdForiPhone');
-  const setShakingThresholdForiPad = sinon.spy(NativeModules.Instabug, 'setShakingThresholdForiPad');
-  const setShakingThresholdForAndroid = sinon.spy(NativeModules.Instabug, 'setShakingThresholdForAndroid');
-  const setExtendedBugReportMode = sinon.spy(NativeModules.Instabug, 'setExtendedBugReportMode');
-  const setReportTypes = sinon.spy(NativeModules.Instabug, 'setReportTypes');
-  const showBugReportingWithReportTypeAndOptions = sinon.spy(NativeModules.Instabug, 'showBugReportingWithReportTypeAndOptions');
-  const setPreInvocationHandler = sinon.spy(NativeModules.Instabug, 'setPreInvocationHandler');
-  const setPostInvocationHandler = sinon.spy(NativeModules.Instabug, 'setPostInvocationHandler');
-  const setAutoScreenRecordingEnabled = sinon.spy(NativeModules.Instabug, 'setAutoScreenRecordingEnabled');
-  const setAutoScreenRecordingMaxDuration = sinon.spy(NativeModules.Instabug, 'setAutoScreenRecordingMaxDuration');
-  const setViewHierarchyEnabled = sinon.spy(NativeModules.Instabug, 'setViewHierarchyEnabled');
+  const setEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setEnabled');
+  const setInvocationEvents = sinon.spy(NativeModules.IBGBugReporting, 'setInvocationEvents');
+  const setOptions = sinon.spy(NativeModules.IBGBugReporting, 'setOptions');
+  const setShakingThresholdForiPhone = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForiPhone');
+  const setShakingThresholdForiPad = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForiPad');
+  const setShakingThresholdForAndroid = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForAndroid');
+  const setExtendedBugReportMode = sinon.spy(NativeModules.IBGBugReporting, 'setExtendedBugReportMode');
+  const setReportTypes = sinon.spy(NativeModules.IBGBugReporting, 'setReportTypes');
+  const show = sinon.spy(NativeModules.IBGBugReporting, 'show');
+  const setOnInvokeHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnInvokeHandler');
+  const setOnSDKDismissedHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnSDKDismissedHandler');
+  const setAutoScreenRecordingEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingEnabled');
+  const setAutoScreenRecordingMaxDuration = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingMaxDuration');
+  const setViewHierarchyEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setViewHierarchyEnabled');
+  const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
 
   beforeEach(() => {
     setShakingThresholdForiPhone.resetHistory();
     setShakingThresholdForiPad.resetHistory();
     setShakingThresholdForAndroid.resetHistory();
-    setPreInvocationHandler.resetHistory();
-    setPostInvocationHandler.resetHistory();
+    setOnInvokeHandler.resetHistory();
+    setOnSDKDismissedHandler.resetHistory();
+    didSelectPromptOptionHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
   });
 
@@ -45,7 +48,7 @@ describe('Testing BugReporting Module', () => {
 
     BugReporting.setEnabled(true);
 
-    expect(setBugReportingEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(setEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 
@@ -63,7 +66,7 @@ describe('Testing BugReporting Module', () => {
     const arrayOfInvocationOptions = [BugReporting.invocationOptions.commentFieldRequired];
     BugReporting.setInvocationOptions(arrayOfInvocationOptions);
 
-    expect(setInvocationOptions.calledOnceWithExactly(arrayOfInvocationOptions)).toBe(true);
+    expect(setOptions.calledOnceWithExactly(arrayOfInvocationOptions)).toBe(true);
 
   });
 
@@ -141,22 +144,22 @@ describe('Testing BugReporting Module', () => {
 
   });
 
-  it('should call the native method showBugReportingWithReportTypeAndOptions with a reportType and array of options', () => {
+  it('should call the native method show with a reportType and array of options', () => {
 
     const reportType = BugReporting.reportType.bug;
     const arrayOfOptions = [BugReporting.invocationOptions.commentFieldRequired];
     BugReporting.show(reportType, arrayOfOptions);
 
-    expect(showBugReportingWithReportTypeAndOptions.calledOnceWithExactly(reportType, arrayOfOptions)).toBe(true);
+    expect(show.calledOnceWithExactly(reportType, arrayOfOptions)).toBe(true);
 
   });
 
-  it('should call the native method setPreInvocationHandler with a function', () => {
+  it('should call the native method setOnInvokeHandler with a function', () => {
 
     const callback = jest.fn()
     BugReporting.onInvokeHandler(callback);
 
-    expect(setPreInvocationHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(setOnInvokeHandler.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -171,12 +174,12 @@ describe('Testing BugReporting Module', () => {
 
   });
 
-  it('should call the native method setPostInvocationHandler with a function', () => {
+  it('should call the native method setOnSDKDismissedHandler with a function', () => {
 
     const callback = jest.fn()
     BugReporting.onSDKDismissedHandler(callback);
 
-    expect(setPostInvocationHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(setOnSDKDismissedHandler.calledOnceWithExactly(callback)).toBe(true);
 
   });
 
@@ -217,6 +220,41 @@ describe('Testing BugReporting Module', () => {
     BugReporting.setViewHierarchyEnabled(true);
 
     expect(setViewHierarchyEnabled.calledOnceWithExactly(true)).toBe(true);
+
+  });
+
+  it('should invoke callback on emitting the event IBGDidSelectPromptOptionHandler', (done) => {
+
+    Platform.OS = 'ios';
+    const payload = { promptOption: Instabug.promptOption.bug };
+    const callback = (promptOption) => {
+      expect(promptOption).toBe(payload.promptOption);
+      done();
+    }
+    BugReporting.setDidSelectPromptOptionHandler(callback);
+    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
+
+    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(1);
+  });
+
+  it('should return on calling setDidSelectPromptOptionHandler when Platform is android', () => {
+
+    Platform.OS = 'android';
+
+    BugReporting.setDidSelectPromptOptionHandler(jest.fn());
+    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
+
+    expect(didSelectPromptOptionHandler.notCalled).toBe(true);
+    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(0);
+  });
+
+  it('should call the native method didSelectPromptOptionHandler with a function', () => {
+
+    Platform.OS = 'ios';
+    const callback = jest.fn()
+    BugReporting.setDidSelectPromptOptionHandler(callback);
+
+    expect(didSelectPromptOptionHandler.calledOnceWithExactly(callback)).toBe(true);
 
   });
 

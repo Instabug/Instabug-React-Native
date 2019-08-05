@@ -23,7 +23,6 @@ describe('Instabug Module', () => {
   const setUserData = sinon.spy(NativeModules.Instabug, 'setUserData');
   const setTrackUserSteps = sinon.spy(NativeModules.Instabug, 'setTrackUserSteps');
   const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
-  const didSelectPromptOptionHandler = sinon.spy(NativeModules.Instabug, 'didSelectPromptOptionHandler');
   const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.Instabug, 'setPushNotificationsEnabled');
   const setFloatingButtonEdge = sinon.spy(NativeModules.Instabug, 'setFloatingButtonEdge');
@@ -71,7 +70,6 @@ describe('Instabug Module', () => {
     startWithToken.resetHistory();
     setTrackUserSteps.resetHistory();
     setIBGLogPrintsToConsole.resetHistory();
-    didSelectPromptOptionHandler.resetHistory();
     setPushNotificationsEnabled.resetHistory();
     setFloatingButtonEdge.resetHistory();
     log.resetHistory();
@@ -153,41 +151,7 @@ describe('Instabug Module', () => {
     expect(setIBGLogPrintsToConsole.notCalled).toBe(true);
 
   });
-
-  it('should call the native method didSelectPromptOptionHandler with a function', () => {
-
-    Platform.OS = 'ios';
-    const callback = jest.fn()
-    Instabug.setDidSelectPromptOptionHandler(callback);
-
-    expect(didSelectPromptOptionHandler.calledOnceWithExactly(callback)).toBe(true);
-
-  });
-
-  it('should invoke callback on emitting the event IBGDidSelectPromptOptionHandler', (done) => {
-
-    Platform.OS = 'ios';
-    const payload = { promptOption: Instabug.promptOption.bug };
-    const callback = (promptOption) => {
-      expect(promptOption).toBe(payload.promptOption);
-      done();
-    }
-    Instabug.setDidSelectPromptOptionHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
-
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(1);
-  });
-
-  it('should return on calling setDidSelectPromptOptionHandler when Platform is android', () => {
-
-    Platform.OS = 'android';
-
-    Instabug.setDidSelectPromptOptionHandler(jest.fn());
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
-
-    expect(didSelectPromptOptionHandler.notCalled).toBe(true);
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(0);
-  });
+  
 
   it('should call the native method setSessionProfilerEnabled', () => {
 
