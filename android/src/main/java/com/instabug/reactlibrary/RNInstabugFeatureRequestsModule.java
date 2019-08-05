@@ -37,7 +37,7 @@ public class RNInstabugFeatureRequestsModule extends ReactContextBaseJavaModule 
      */
     @SuppressLint("WrongConstant")
     @ReactMethod
-    public void setEmailFieldRequired(boolean isEmailRequired, ReadableArray actionTypes) {
+    public void setEmailFieldRequiredForFeatureRequests(boolean isEmailRequired, ReadableArray actionTypes) {
         try {
             Object[] objectArray = ArrayUtil.toArray(actionTypes);
             String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);

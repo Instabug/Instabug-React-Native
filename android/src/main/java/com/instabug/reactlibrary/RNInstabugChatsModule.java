@@ -28,7 +28,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
-    public void setChatsEnabled(final boolean isEnabled) {
+    public void setEnabled(final boolean isEnabled) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -49,7 +49,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      * Show the chats view.
      */
     @ReactMethod
-    public void showChats() {
+    public void show() {
         Chats.show();
     }
 }

@@ -26,7 +26,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setRepliesEnabled(final boolean isEnabled) {
+    public void setEnabled(final boolean isEnabled) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -51,7 +51,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showReplies() {
+    public void show() {
         Replies.show();
     }
 
@@ -63,7 +63,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @since 4.1.0
      */
     @ReactMethod
-    public void setEnableInAppNotificationSound(boolean shouldPlaySound) {
+    public void setInAppNotificationSound(boolean shouldPlaySound) {
         try {
             Replies.setInAppNotificationSound(shouldPlaySound);
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @return number of messages that are unread for this user
      */
     @ReactMethod
-    public void getUnreadMessagesCount(Callback messageCountCallback) {
+    public void getUnreadRepliesCount(Callback messageCountCallback) {
         int unreadMessages = 0;
         try {
             unreadMessages = Replies.getUnreadRepliesCount();
@@ -94,7 +94,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @param isChatNotificationEnable whether chat notification is reburied or not
      */
     @ReactMethod
-    public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
+    public void setInAppNotificationEnabled(boolean isChatNotificationEnable) {
         try {
             Replies.setInAppNotificationEnabled(isChatNotificationEnable);
         } catch (Exception e) {
@@ -102,30 +102,8 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
         }
     }
 
-    /**
-     * @deprecated
-     * Sets a block of code that gets executed when a new message is received.
-     *
-     * @param onNewMessageHandler - A callback that gets
-     *                            executed when a new message is received.
-     */
     @ReactMethod
-    public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
-        try {
-            Runnable onNewMessageRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_NEW_MESSAGE_HANDLER, null);
-                }
-            };
-            Replies.setOnNewReplyReceivedCallback(onNewMessageRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @ReactMethod
-    public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
+    public void setOnNewReplyReceivedHandler(final Callback onNewReplyReceivedCallback) {
         try {
             Runnable onNewReplyReceivedRunnable = new Runnable() {
                 @Override

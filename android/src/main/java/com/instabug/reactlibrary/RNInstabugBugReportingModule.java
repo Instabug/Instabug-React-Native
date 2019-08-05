@@ -48,7 +48,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
-    public void setBugReportingEnabled(final boolean isEnabled) {
+    public void setEnabled(final boolean isEnabled) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -414,7 +414,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @see Option
      */
     @ReactMethod
-    public void showBugReportingWithReportTypeAndOptions(String reportType, ReadableArray options) {
+    public void show(String reportType, ReadableArray options) {
         if (ArgsRegistry.getDeserializedValue(reportType, Integer.class) == null) {
             return;
         }

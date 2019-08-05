@@ -44,7 +44,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @return the desired value of whether the user has responded to the survey or not.
      */
     @ReactMethod
-    public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
+    public void hasRespondedToSurvey(String surveyToken, Callback hasRespondedCallback) {
         boolean hasResponded;
         try {
             hasResponded = Surveys.hasRespondToSurvey(surveyToken);
@@ -62,7 +62,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @param surveyToken A String with a survey token.
      */
     @ReactMethod
-    public void showSurveyWithToken(String surveyToken) {
+    public void showSurvey(String surveyToken) {
         try {
             Surveys.showSurvey(surveyToken);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @return true if a valid survey was shown otherwise false
      */
     @ReactMethod
-    public void setSurveysEnabled(final boolean isEnabled) {
+    public void setEnabled(final boolean isEnabled) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -182,7 +182,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @param autoShowingSurveysEnabled whether Surveys should be auto-showing or not
      */
     @ReactMethod
-    public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
+    public void setAutoShowingEnabled(boolean autoShowingSurveysEnabled) {
         try {
             Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
         } catch (Exception e) {
