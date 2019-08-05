@@ -8,12 +8,8 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.instabug.bug.BugReporting;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
-import com.instabug.crash.CrashReporting;
-import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
-import com.instabug.library.Instabug;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.Surveys;
 
@@ -30,7 +26,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -71,22 +66,22 @@ public class RNInstabugRepliesModuleTest {
 
 
     @Test
-    public void givenFalse$setRepliesEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+    public void givenFalse$setEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
-        rnModule.setRepliesEnabled(false);
+        rnModule.setEnabled(false);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setState(Feature.State.DISABLED);
     }
 
     @Test
-    public void givenTrue$setRepliesEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+    public void givenTrue$setEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
-        rnModule.setRepliesEnabled(true);
+        rnModule.setEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setState(Feature.State.ENABLED);
@@ -106,35 +101,35 @@ public class RNInstabugRepliesModuleTest {
     }
 
     @Test
-    public void given$showReplies_whenQuery_thenShouldCallNativeApi() {
+    public void given$show_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
-        rnModule.showReplies();
+        rnModule.show();
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.show();
     }
 
     @Test
-    public void given$setOnNewReplyReceivedCallback_whenQuery_thenShouldSetNativeCallback() {
+    public void given$setOnNewReplyReceivedHandler_whenQuery_thenShouldSetNativeCallback() {
         // given
         PowerMockito.mockStatic(Replies.class);
         Callback callback = mock(Callback.class);
         // when
-        rnModule.setOnNewMessageHandler(callback);
+        rnModule.setOnNewReplyReceivedHandler(callback);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setOnNewReplyReceivedCallback(any(Runnable.class));
     }
 
     @Test
-    public void givenCallback$getUnreadMessagesCount_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenCallback$getUnreadRepliesCount_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
         Callback callback = mock(Callback.class);
-        rnModule.getUnreadMessagesCount(callback);
+        rnModule.getUnreadRepliesCount(callback);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.getUnreadRepliesCount();
@@ -142,22 +137,22 @@ public class RNInstabugRepliesModuleTest {
     }
 
     @Test
-    public void givenBoolean$setChatNotificationEnabled_whenQuery_thenShouldCallNativeApi() {
+    public void givenBoolean$setInAppNotificationsEnabled_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
-        rnModule.setChatNotificationEnabled(true);
+        rnModule.setInAppNotificationEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setInAppNotificationEnabled(true);
     }
 
     @Test
-    public void givenBoolean$setEnableInAppNotificationSound_whenQuery_thenShouldCallNativeApi() {
+    public void givenBoolean$setInAppNotificationSound_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(Replies.class);
         // when
-        rnModule.setEnableInAppNotificationSound(true);
+        rnModule.setInAppNotificationSound(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setInAppNotificationSound(true);

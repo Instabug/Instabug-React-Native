@@ -9,7 +9,6 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.OnDismissCallback;
@@ -17,7 +16,6 @@ import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,11 +68,11 @@ public class RNInstabugSurveysModuleTest {
     /********Surveys*********/
 
     @Test
-    public void givenFalse$setSurveysEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
+    public void givenFalse$setEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
         // given
         PowerMockito.mockStatic(Surveys.class);
         // when
-        surveysModule.setSurveysEnabled(false);
+        surveysModule.setEnabled(false);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Surveys.setState(Feature.State.DISABLED);
@@ -85,7 +83,7 @@ public class RNInstabugSurveysModuleTest {
         // given
         PowerMockito.mockStatic(Surveys.class);
         // when
-        surveysModule.setSurveysEnabled(true);
+        surveysModule.setEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Surveys.setState(Feature.State.ENABLED);
@@ -133,11 +131,11 @@ public class RNInstabugSurveysModuleTest {
     }
 
     @Test
-    public void givenIsEnabled$setAutoShowingSurveysEnabled_whenQuery_thenShouldCallNativeApiWithIsEnabled() {
+    public void givenIsEnabled$setAutoShowingEnabled_whenQuery_thenShouldCallNativeApiWithIsEnabled() {
         // given
         PowerMockito.mockStatic(Surveys.class);
         // when
-        surveysModule.setAutoShowingSurveysEnabled(true);
+        surveysModule.setAutoShowingEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Surveys.setAutoShowingEnabled(true);
@@ -193,23 +191,23 @@ public class RNInstabugSurveysModuleTest {
     }
 
     @Test
-    public void givenString$showSurveyWithToken_whenQuery_thenShouldCallNativeApiWithString() {
+    public void givenString$showSurvey_whenQuery_thenShouldCallNativeApiWithString() {
         // given
         PowerMockito.mockStatic(Surveys.class);
         // when
-        surveysModule.showSurveyWithToken("123");
+        surveysModule.showSurvey("123");
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Surveys.showSurvey("123");
     }
 
     @Test
-    public void givenBoolean$hasRespondedToSurveyWithToken_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenBoolean$hasRespondedToSurvey_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
         // given
         PowerMockito.mockStatic(Surveys.class);
         // when
         Callback callback = mock(Callback.class);
-        surveysModule.hasRespondedToSurveyWithToken("123", callback);
+        surveysModule.hasRespondedToSurvey("123", callback);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Surveys.hasRespondToSurvey("123");

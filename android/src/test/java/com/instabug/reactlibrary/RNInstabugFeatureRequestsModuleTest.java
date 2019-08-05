@@ -64,7 +64,7 @@ public class RNInstabugFeatureRequestsModuleTest {
     /********Feature Requests*********/
 
     @Test
-    public void givenArgs$setEmailFieldRequired_whenQuery_thenShouldCallNativeApi() {
+    public void givenArgs$setEmailFieldRequiredForFeatureRequests_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(FeatureRequests.class);
         PowerMockito.mockStatic(Arguments.class);
@@ -73,7 +73,7 @@ public class RNInstabugFeatureRequestsModuleTest {
         ReadableArray actionTypes = Arguments.createArray();
         ((WritableArray) actionTypes).pushString("requestNewFeature");
         ((WritableArray) actionTypes).pushString("addCommentToFeature");
-        featureRequestsModule.setEmailFieldRequired(true, actionTypes );
+        featureRequestsModule.setEmailFieldRequiredForFeatureRequests(true, actionTypes );
         int[] parsedActionTypes = new int[2];
         parsedActionTypes[0] = ActionType.REQUEST_NEW_FEATURE;
         parsedActionTypes[1] = ActionType.ADD_COMMENT_TO_FEATURE;

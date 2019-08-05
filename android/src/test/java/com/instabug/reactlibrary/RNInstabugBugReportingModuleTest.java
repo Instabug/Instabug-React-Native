@@ -101,7 +101,7 @@ public class RNInstabugBugReportingModuleTest {
         // given
         PowerMockito.mockStatic(BugReporting.class);
         // when
-        bugReportingModule.setBugReportingEnabled(false);
+        bugReportingModule.setEnabled(false);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         BugReporting.setState(Feature.State.DISABLED);
@@ -112,7 +112,7 @@ public class RNInstabugBugReportingModuleTest {
         // given
         PowerMockito.mockStatic(BugReporting.class);
         // when
-        bugReportingModule.setBugReportingEnabled(true);
+        bugReportingModule.setEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         BugReporting.setState(Feature.State.ENABLED);
@@ -323,7 +323,7 @@ public class RNInstabugBugReportingModuleTest {
         actualArray.pushString(keysArray[0]);
         actualArray.pushString(keysArray[1]);
         // when
-        bugReportingModule.showBugReportingWithReportTypeAndOptions(reportTypeKeys[0], actualArray);
+        bugReportingModule.show(reportTypeKeys[0], actualArray);
         // then
         int option1 = (int) optionsArgs.get(keysArray[0]);
         int option2 = (int) optionsArgs.get(keysArray[1]);

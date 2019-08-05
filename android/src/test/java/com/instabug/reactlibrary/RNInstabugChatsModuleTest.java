@@ -5,13 +5,10 @@ import android.os.Looper;
 import android.os.SystemClock;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.WritableNativeArray;
-import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +57,7 @@ public class RNInstabugChatsModuleTest {
         // given
         PowerMockito.mockStatic(Chats.class);
         // when
-        chatsModule.setChatsEnabled(false);
+        chatsModule.setEnabled(false);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Chats.setState(Feature.State.DISABLED);
@@ -71,7 +68,7 @@ public class RNInstabugChatsModuleTest {
         // given
         PowerMockito.mockStatic(Chats.class);
         // when
-        chatsModule.setChatsEnabled(true);
+        chatsModule.setEnabled(true);
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Chats.setState(Feature.State.ENABLED);
@@ -82,7 +79,7 @@ public class RNInstabugChatsModuleTest {
         // given
         PowerMockito.mockStatic(Chats.class);
         // when
-        chatsModule.showChats();
+        chatsModule.show();
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Chats.show();
