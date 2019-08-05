@@ -81,6 +81,7 @@ export namespace FeatureRequests {
     isEmailFieldRequired: boolean,
     actionTypes: actionTypes[]
     ): void;
+  function setEnabled(isEnabled: boolean): void;
   function show(): void;
   enum actionTypes {
     allActions,
