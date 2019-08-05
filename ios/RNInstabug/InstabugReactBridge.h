@@ -77,69 +77,6 @@
 - (void)setFileAttachment:(NSString *)fileLocation;
 
 - (void)show;
-/*
- +------------------------------------------------------------------------+
- |                            Surveys Module                             |
- +------------------------------------------------------------------------+
- */
- 
-- (void)showSurveyWithToken:(NSString *)surveyToken;
-
-- (void)showSurveysIfAvailable;
-
-- (void)setWillShowSurveyHandler:(RCTResponseSenderBlock)callBack;
-
-- (void)setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack;
-
-- (void)setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled;
-
-- (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
-
-- (void)setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen;
-
-- (void)hasRespondedToSurveyWithToken:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback;
-
-- (void)getAvailableSurveys:(RCTResponseSenderBlock)callback;
-
-- (void)setSurveysEnabled:(BOOL)surveysEnabled;
-
-/*
- +------------------------------------------------------------------------+
- |                            BugReporting Module                         |
- +------------------------------------------------------------------------+
- */
-
-- (void)setBugReportingEnabled:(BOOL)isEnabled;
-
-- (void)setInvocationEvents:(NSArray *)invocationEventsArray;
-
-- (void)invoke;
-
-- (void)setInvocationOptions:(NSArray *)invocationOptionsArray;
-
-- (void)invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray *)options;
-
-- (void)setPreInvocationHandler:(RCTResponseSenderBlock)callBack;
-
-- (void)setPostInvocationHandler:(RCTResponseSenderBlock)callBack;
-
-- (void)setPromptOptionsEnabled:(BOOL)chatEnabled feedback:(BOOL)bugReportEnabled chat:(BOOL)feedbackEnabled;
-
-- (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold;
-
-- (void)setShakingThresholdForiPad:(double)iPadShakingThreshold;
-
-- (void)setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode;
-
-- (void)setReportTypes:(NSArray *)types;
-
-- (void)showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType)type options:(NSArray *)options;
-
-- (void)setAutoScreenRecordingEnabled:(BOOL)enabled;
-
-- (void)setAutoScreenRecordingMaxDuration:(CGFloat)duration;
-
-- (void)setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled;
 
 /*
  +------------------------------------------------------------------------+
@@ -148,15 +85,6 @@
  */
 
 - (void)setCrashReportingEnabled:(BOOL)enabledCrashReporter;
-
-/*
- +------------------------------------------------------------------------+
- |                             Chats Module                               |
- +------------------------------------------------------------------------+
- */
-
-- (void)setChatsEnabled:(BOOL)isEnabled;
-- (void)showChats;
 
 /*
  +------------------------------------------------------------------------+
@@ -171,35 +99,6 @@
 - (void)logWarn:(NSString *)log;
 - (void)logError:(NSString *)log;
 - (void)clearLogs;
-
-
-/*
- +------------------------------------------------------------------------+
- |                            Feature Requests Module                     |
- +------------------------------------------------------------------------+
- */
-
-- (void)setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired forAction:(NSArray *)actionTypesArray;
-
-- (void)showFeatureRequests;
-
-/*
- +------------------------------------------------------------------------+
- |                            Replies Module                              |
- +------------------------------------------------------------------------+
- */
-
-- (void)setRepliesEnabled:(BOOL) isEnabled;
-
-- (void)hasChats:(RCTResponseSenderBlock) callback;
-
-- (void)showReplies;
-
-- (void)setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback;
-
-- (void)getUnreadMessagesCount:(RCTResponseSenderBlock)callBack;
-
-- (void)setChatNotificationEnabled:(BOOL)isChatNotificationEnabled;
 
 
 @end
