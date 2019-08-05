@@ -1,10 +1,9 @@
 import { NativeAppEventEmitter, DeviceEventEmitter, NativeModules, Platform } from 'react-native';
-let { Instabug } = NativeModules;
 
 const IBGEventEmitter = {
-    addListener: (eventName, callback) => {
+    addListener: (nativeModule, eventName, callback) => {
         if (Platform.OS === 'ios') {
-            Instabug.addListener(eventName);
+            nativeModule.addListener(eventName);
             NativeAppEventEmitter.addListener(eventName, callback);
           } else {
             DeviceEventEmitter.addListener(eventName, callback);

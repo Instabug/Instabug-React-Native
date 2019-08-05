@@ -1,7 +1,7 @@
 import {
     NativeModules
   } from 'react-native';
-  let { Instabug } = NativeModules;
+  let { IBGChats } = NativeModules;
 
 /**
  * Chats
@@ -13,13 +13,13 @@ export default {
      * @param {boolean} isEnabled 
      */
     setEnabled(isEnabled) {
-        Instabug.setChatsEnabled(isEnabled);
+        IBGChats.setEnabled(isEnabled);
     },
 
     /**
      * Manual invocation for chats view. 
      */
     show() {
-        Instabug.showChats();
+        IBGChats.show();
     }
 }

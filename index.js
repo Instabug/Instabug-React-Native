@@ -122,16 +122,13 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setDidSelectPromptOptionHandler}
    * Sets a block of code to be executed when a prompt option is selected.
    * @param {function} didSelectPromptOptionHandler - A block of code that
    *                  gets executed when a prompt option is selected.
    */
   setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
-    if (Platform.OS === 'android') return;
-    IBGEventEmitter.addListener(InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
-      didSelectPromptOptionHandler(payload.promptOption);
-    });
-    Instabug.didSelectPromptOptionHandler(didSelectPromptOptionHandler);
+    BugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
   /**
@@ -730,7 +727,7 @@ const InstabugModule = {
     }
     
     // send bug report
-    IBGEventEmitter.addListener(InstabugConstants.PRESENDING_HANDLER, (report) => {
+    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
       const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
       preSendingHandler(reportObj);
@@ -740,7 +737,7 @@ const InstabugModule = {
 
     // handled js crash
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
           try {
             let report = await Instabug.getReport();
             const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -754,7 +751,7 @@ const InstabugModule = {
     }
 
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
         
           let report = await Instabug.getReport();
           const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;

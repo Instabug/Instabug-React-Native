@@ -15,6 +15,7 @@ export namespace BugReporting {
   function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
+  function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
   function setPromptOptionsEnabled(
     chat: boolean,
     bug: boolean,

@@ -2,7 +2,7 @@ import {
   NativeModules,
   Platform
 } from 'react-native';
-let { Instabug } = NativeModules;
+let { Instabug, IBGBugReporting } = NativeModules;
 import InstabugModule from '../index';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
@@ -17,7 +17,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    Instabug.setBugReportingEnabled(isEnabled);
+    IBGBugReporting.setEnabled(isEnabled);
   },
 
   /**
@@ -27,7 +27,7 @@ export default {
    * feedback form.
    */
   setInvocationEvents: function(invocationEvents) {
-    Instabug.setInvocationEvents(invocationEvents);
+    IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
   /**
@@ -37,16 +37,26 @@ export default {
    * a problem or suggest an improvement.
    */
   invoke: function() {
-    Instabug.invoke();
+    IBGBugReporting.invoke();
   },
 
   /**
+   * @deprecated
    * Sets the invocation options.
    * Default is set by `Instabug.startWithToken`.
    * @param {invocationOptions} invocationOptions Array of invocation options
    */
   setInvocationOptions: function(invocationOptions) {
-    Instabug.setInvocationOptions(invocationOptions);
+    this.setOptions(invocationOptions);
+  },
+
+  /**
+   * Sets the invocation options.
+   * Default is set by `Instabug.startWithToken`.
+   * @param {invocationOptions} options Array of invocation options
+   */
+  setOptions: function(options) {
+    IBGBugReporting.setOptions(options);
   },
 
   /**
@@ -79,8 +89,8 @@ export default {
    * @param {function} handler - A callback that gets executed before invoking the SDK
    */
   onInvokeHandler: function(handler) {
-    IBGEventEmitter.addListener(InstabugConstants.ON_INVOKE_HANDLER, handler);
-    Instabug.setPreInvocationHandler(handler);
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
+    IBGBugReporting.setOnInvokeHandler(handler);
   },
 
   /**
@@ -103,10 +113,10 @@ export default {
    * dismissing the SDK.
    */
   onSDKDismissedHandler: function(handler) {
-    IBGEventEmitter.addListener(InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
       handler(payload.dismissType, payload.reportType);
     });
-    Instabug.setPostInvocationHandler(handler);
+    IBGBugReporting.setOnSDKDismissedHandler(handler);
   },
 
   /**
@@ -122,7 +132,7 @@ export default {
    * @param  {boolean} feedback  whether General Feedback  is enable or not
    * */
   setPromptOptionsEnabled: function(chat, bug, feedback) {
-    Instabug.setPromptOptionsEnabled(chat, bug, feedback);
+    IBGBugReporting.setPromptOptionsEnabled(chat, bug, feedback);
   },
 
   /**
@@ -132,7 +142,7 @@ export default {
    */
   setShakingThresholdForiPhone: function(iPhoneShakingThreshold) {
     if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPhone(iPhoneShakingThreshold);
+      IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
   },
 
   /**
@@ -142,7 +152,7 @@ export default {
    */
   setShakingThresholdForiPad: function(iPadShakingThreshold) {
     if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPad(iPadShakingThreshold);
+      IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
   },
 
   /**
@@ -154,7 +164,7 @@ export default {
    */
   setShakingThresholdForAndroid: function(androidThreshold) {
     if (Platform.OS === 'android')
-      Instabug.setShakingThresholdForAndroid(androidThreshold);
+      IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
   },
 
   /**
@@ -165,7 +175,7 @@ export default {
    *                                with required or with optional fields.
    */
   setExtendedBugReportMode: function(extendedBugReportMode) {
-    Instabug.setExtendedBugReportMode(extendedBugReportMode);
+    IBGBugReporting.setExtendedBugReportMode(extendedBugReportMode);
   },
 
   /**
@@ -173,7 +183,7 @@ export default {
    * @param {array} types - Array of reportTypes
    */
   setReportTypes(types) {
-    Instabug.setReportTypes(types);
+    IBGBugReporting.setReportTypes(types);
   },
 
   /**
@@ -195,7 +205,7 @@ export default {
     if (!options) {
       options = [];
     }
-      Instabug.showBugReportingWithReportTypeAndOptions(type, options);
+    IBGBugReporting.show(type, options);
   },
 
   /**
@@ -204,7 +214,7 @@ export default {
    * screen recording on crash feature
    */
   setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
-    Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+    IBGBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
   },
 
   /**
@@ -215,7 +225,7 @@ export default {
    * The maximum duration is 30 seconds
    */
   setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
-    Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+    IBGBugReporting.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
   },
 
   /**
@@ -224,7 +234,20 @@ export default {
    * or disabled.
    */
   setViewHierarchyEnabled: function(viewHierarchyEnabled) {
-    Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
+    IBGBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
+  },
+
+  /**
+   * Sets a block of code to be executed when a prompt option is selected.
+   * @param {function} didSelectPromptOptionHandler - A block of code that
+   *                  gets executed when a prompt option is selected.
+   */
+  setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
+    if (Platform.OS === 'android') return;
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
+      didSelectPromptOptionHandler(payload.promptOption);
+    });
+    IBGBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
   /**
