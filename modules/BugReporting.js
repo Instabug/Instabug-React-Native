@@ -1,11 +1,11 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
   Platform
 } from 'react-native';
 let { Instabug } = NativeModules;
 import InstabugModule from '../index';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
 
 /**
  * BugReporting
@@ -76,23 +76,11 @@ export default {
    * Sets a block of code to be executed just before the SDK's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes before the SDK's UI is shown.
-   * @param {function} preInvocationHandler - A callback that gets executed before invoking the SDK
+   * @param {function} handler - A callback that gets executed before invoking the SDK
    */
-  onInvokeHandler: function(preInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreInvocationHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    }
-
-    Instabug.setPreInvocationHandler(preInvocationHandler);
+  onInvokeHandler: function(handler) {
+    IBGEventEmitter.addListener(InstabugConstants.ON_INVOKE_HANDLER, handler);
+    Instabug.setPreInvocationHandler(handler);
   },
 
   /**
@@ -111,26 +99,14 @@ export default {
    * Sets a block of code to be executed right after the SDK's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes after the SDK's UI is dismissed.
-   * @param {function} postInvocationHandler - A callback to get executed after
+   * @param {function} handler - A callback to get executed after
    * dismissing the SDK.
    */
-  onSDKDismissedHandler: function(postInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpostInvocationHandler');
-      NativeAppEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload['dismissType'], payload['reportType']);
-      });
-    } else {
-      DeviceEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload.dismissType, payload.reportType);
-      });
-    }
-
-    Instabug.setPostInvocationHandler(postInvocationHandler);
+  onSDKDismissedHandler: function(handler) {
+    IBGEventEmitter.addListener(InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
+      handler(payload.dismissType, payload.reportType);
+    });
+    Instabug.setPostInvocationHandler(handler);
   },
 
   /**

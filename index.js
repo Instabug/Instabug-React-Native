@@ -1,7 +1,5 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
   Platform,
   findNodeHandle,
   processColor
@@ -129,23 +127,10 @@ const InstabugModule = {
    *                  gets executed when a prompt option is selected.
    */
   setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGDidSelectPromptOptionHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGDidSelectPromptOptionHandler',
-        function(payload) {
-          didSelectPromptOptionHandler(payload['promptOption']);
-        }
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGDidSelectPromptOptionHandler',
-        function(payload) {
-          didSelectPromptOptionHandler(payload.promptOption);
-        }
-      );
-    }
-
+    if (Platform.OS === 'android') return;
+    IBGEventEmitter.addListener(InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
+      didSelectPromptOptionHandler(payload.promptOption);
+    });
     Instabug.didSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
@@ -562,20 +547,7 @@ const InstabugModule = {
    * executed when a new message is received.
    */
   setOnNewMessageHandler: function(onNewMessageHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGonNewMessageHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGonNewMessageHandler',
-        onNewMessageHandler
-      );
-    }
-
-    Instabug.setOnNewMessageHandler(onNewMessageHandler);
+    Replies.setOnNewReplyReceivedHandler(onNewMessageHandler);
   },
 
   /**

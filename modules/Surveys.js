@@ -1,9 +1,8 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
-  Platform
 } from 'react-native';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
 let { Instabug } = NativeModules;
 
 /**
@@ -92,19 +91,7 @@ export default {
    * presenting the survey's UI.
    */
   setOnShowHandler: function(onShowHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGWillShowSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        onShowHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        onShowHandler
-      );
-    }
-
+    IBGEventEmitter.addListener(InstabugConstants.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
     Instabug.setWillShowSurveyHandler(onShowHandler);
   },
 
@@ -128,19 +115,7 @@ export default {
    * the survey's UI is dismissed.
    */
   setOnDismissHandler: function(onDismissHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGDidDismissSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        onDismissHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        onDismissHandler
-      );
-    }
-
+    IBGEventEmitter.addListener(InstabugConstants.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
     Instabug.setDidDismissSurveyHandler(onDismissHandler);
   },
 
