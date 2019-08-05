@@ -946,6 +946,31 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void logVerbose(String message) {
+        InstabugLog.v(message);
+    }
+
+    @ReactMethod
+    public void logDebug(String message) {
+        InstabugLog.d(message);
+    }
+
+    @ReactMethod
+    public void logInfo(String message) {
+        InstabugLog.i(message);
+    }
+
+    @ReactMethod
+    public void logError(String message) {
+        InstabugLog.e(message);
+    }
+
+    @ReactMethod
+    public void logWarn(String message) {
+        InstabugLog.w(message);
+    }
+
     /**
      * Clears Instabug internal log
      */
