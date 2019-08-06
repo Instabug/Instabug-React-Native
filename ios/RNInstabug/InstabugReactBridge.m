@@ -832,7 +832,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,
               @"commentFieldHintForBugReport": kIBGCommentFieldPlaceholderForBugReportStringName,
               @"commentFieldHintForFeedback": kIBGCommentFieldPlaceholderForFeedbackStringName,
-              @"addScreenRecordingMessage": kIBGAddScreenRecordingMessageStringName,
+              @"addVideoMessage": kIBGAddScreenRecordingMessageStringName,
               @"addVoiceMessage": kIBGAddVoiceMessageStringName,
               @"addImageFromGallery": kIBGAddImageFromGalleryStringName,
               @"addExtraScreenshot": kIBGAddExtraScreenshotStringName,
