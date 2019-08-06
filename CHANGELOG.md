@@ -1,3 +1,7 @@
+## Master
+
+* Fixes hang/crash issues on iOS 9 devices
+
 ## v8.5.2 (2019-08-04)
 
 * Fixes an issue that would cause Android to throw ArrayIndexOutOfBoundsException.
