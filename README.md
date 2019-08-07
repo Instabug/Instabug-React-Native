@@ -87,35 +87,19 @@ pod install
 ```
 
 ## Using Instabug
-1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
+1. To start using Instabug, import it into your `index.js` file.
 
 ```javascript
 import Instabug from 'instabug-reactnative';
 ```
-2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs (You can skip this step if you are building an Android app only).
+2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
 ```javascript
-Instabug.startWithToken('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
-```
-3. Open `android/app/src/main/java/[...]/MainApplication.java`
-   You should find the getPackages method looks like the following snippet. You just need to add your Android app token (You can skip this step if you are building an iOS app only). You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
-   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number.
-```javascript
-@Override
-protected List<ReactPackage> getPackages() {
-	return Arrays.<ReactPackage>asList(
-	new MainReactPackage(),
-	new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
-                            .setInvocationEvent("shake")
-                            .setPrimaryColor("#1D82DC")
-                            .setFloatingEdge("left")
-                            .setFloatingButtonOffsetFromTop(250)
-                            .build()
-}
+Instabug.startWithToken('APP_TOKEN', [Instabug.invocationEvent.shake]);
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
-4. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
+3. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
 ```dart
 allprojects {
 	repositories {
