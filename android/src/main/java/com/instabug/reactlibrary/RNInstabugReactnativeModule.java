@@ -236,6 +236,39 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return "Instabug";
     }
 
+  /**
+   * Starts the SDK.
+   * @param token string The token that identifies the app, you can find
+   * it on your dashboard.
+   * @param invocationEventValues ReadableArray The events that invokes
+   * the SDK's UI.
+   */
+    @ReactMethod
+    public void startWithToken(final String token, final ReadableArray invocationEventValues) {
+        try {
+            Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
+            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+            final InstabugInvocationEvent[] invocationEventsArray = new InstabugInvocationEvent[stringArray.length];
+
+            for (int i = 0; i < stringArray.length; i++) {
+                String key = stringArray[i];
+                invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
+            }
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new Instabug.Builder(getCurrentActivity().getApplication(), token).setInvocationEvents(invocationEventsArray).build();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * invoke sdk manually with mode and options
      *
