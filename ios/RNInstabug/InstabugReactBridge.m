@@ -78,10 +78,9 @@ RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) para
 }
 
 RCT_EXPORT_METHOD(invoke) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGBugReporting invoke];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(invoke) target:[IBGBugReporting class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
+
 
 RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
     [[NSRunLoop mainRunLoop] performBlock:^{
@@ -360,15 +359,11 @@ RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBug
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
         [Instabug setColorTheme:colorTheme];
-    }];
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
         Instabug.tintColor = color;
-    }];
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -571,9 +566,8 @@ RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
 }
 
 RCT_EXPORT_METHOD(showFeatureRequests) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGFeatureRequests show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGFeatureRequests class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
+
 }
 
 RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
@@ -673,10 +667,10 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [Instabug show];
-    }];
+
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
+
 
 RCT_EXPORT_METHOD(setReportTypes:(NSArray*) types ) {
     IBGBugReportingReportType reportTypes = 0;
@@ -691,13 +685,18 @@ RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType)type options:(NSArray*) options) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
         IBGBugReportingOption parsedOptions = 0;
         for (NSNumber *boxedValue in options) {
             parsedOptions |= [boxedValue intValue];
         }
-        [IBGBugReporting showWithReportType:type options:parsedOptions];
-    }];
+    NSArray* args = @[@(type), @(parsedOptions)];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(showBugReportingWithReportTypeAndOptionsHelper:) target:self argument:args order:0 modes:@[NSDefaultRunLoopMode]];
+}
+
+- (void) showBugReportingWithReportTypeAndOptionsHelper:(NSArray*)args {
+    IBGBugReportingReportType parsedreportType = [args[0] intValue];
+    IBGBugReportingOption parsedOptions = [args[1] intValue];
+    [IBGBugReporting showWithReportType:parsedreportType options:parsedOptions];
 }
 
 RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
@@ -705,9 +704,7 @@ RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(showChats) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGChats show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGChats class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 RCT_EXPORT_METHOD(setRepliesEnabled:(BOOL) isEnabled) {
@@ -721,9 +718,7 @@ RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
 }
 
 RCT_EXPORT_METHOD(showReplies) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGReplies show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGReplies class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback) {
