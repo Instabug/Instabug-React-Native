@@ -1,3 +1,7 @@
+## Master
+
+* Adds initializing android sdk from using `Instabug.start` instead of inside the application class
+
 ## v8.5.2 (2019-08-04)
 
 * Fixes an issue that would cause Android to throw ArrayIndexOutOfBoundsException.
