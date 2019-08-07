@@ -839,6 +839,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"audioRecordingPermissionDeniedTitle": kIBGAudioRecordingPermissionDeniedTitleStringName,
               @"audioRecordingPermissionDeniedMessage": kIBGAudioRecordingPermissionDeniedMessageStringName,
               @"microphonePermissionAlertSettingsButtonTitle": kIBGMicrophonePermissionAlertSettingsButtonTitleStringName,
+              @"conversationsHeaderTitle": kIBGChatsTitleStringName,
               @"chatsHeaderTitle": kIBGChatsTitleStringName,
               @"team": kIBGTeamStringName,
               @"recordingMessageToHoldText": kIBGRecordingMessageToHoldTextStringName,
