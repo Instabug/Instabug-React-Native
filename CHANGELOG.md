@@ -1,6 +1,7 @@
 ## Master
 
 * Fixes hang/crash issues on iOS 9 devices
+* Fixes string mappings for addVideoMessage and conversationsHeaderTitle in iOS.
 
 ## v8.5.2 (2019-08-04)
 
