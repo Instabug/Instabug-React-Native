@@ -964,6 +964,9 @@ const InstabugModule = {
     audio: Instabug.audio,
     video: Instabug.video,
     image: Instabug.image,
+    /**
+     * @deprecated use {@link Instabug.strings.conversationsHeaderTitle}
+     */
     chatsHeaderTitle: Instabug.chatsHeaderTitle,
     team: Instabug.team,
     messagesNotification: Instabug.messagesNotification,

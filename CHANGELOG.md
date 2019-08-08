@@ -1,3 +1,12 @@
+## Master
+
+* Fixes hang/crash issues on iOS 9 devices
+* Fixes string mappings for addVideoMessage and conversationsHeaderTitle in iOS.
+
+## v8.5.2 (2019-08-04)
+
+* Fixes an issue that would cause Android to throw ArrayIndexOutOfBoundsException.
+
 ## v8.5.1 (2019-07-22)
 
 * Fixes an issue that would cause Instabug.framework to appear twice when using CocoaPods.

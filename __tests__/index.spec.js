@@ -151,7 +151,17 @@ describe('Instabug Module', () => {
     expect(setIBGLogPrintsToConsole.notCalled).toBe(true);
 
   });
-  
+
+  it('should return on calling setDidSelectPromptOptionHandler when Platform is android', () => {
+
+    Platform.OS = 'android';
+
+    Instabug.setDidSelectPromptOptionHandler(jest.fn());
+    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
+
+    expect(didSelectPromptOptionHandler.notCalled).toBe(true);
+    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(0);
+  });
 
   it('should call the native method setSessionProfilerEnabled', () => {
 

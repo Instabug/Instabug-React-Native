@@ -210,15 +210,11 @@ RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
 }
 
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
         [Instabug setColorTheme:colorTheme];
-    }];
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
         Instabug.tintColor = color;
-    }];
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -386,9 +382,8 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [Instabug show];
-    }];
+
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 - (NSDictionary *)constantsToExport
@@ -491,13 +486,14 @@ RCT_EXPORT_METHOD(show) {
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,
               @"commentFieldHintForBugReport": kIBGCommentFieldPlaceholderForBugReportStringName,
               @"commentFieldHintForFeedback": kIBGCommentFieldPlaceholderForFeedbackStringName,
-              @"addScreenRecordingMessage": kIBGAddScreenRecordingMessageStringName,
+              @"addVideoMessage": kIBGAddScreenRecordingMessageStringName,
               @"addVoiceMessage": kIBGAddVoiceMessageStringName,
               @"addImageFromGallery": kIBGAddImageFromGalleryStringName,
               @"addExtraScreenshot": kIBGAddExtraScreenshotStringName,
               @"audioRecordingPermissionDeniedTitle": kIBGAudioRecordingPermissionDeniedTitleStringName,
               @"audioRecordingPermissionDeniedMessage": kIBGAudioRecordingPermissionDeniedMessageStringName,
               @"microphonePermissionAlertSettingsButtonTitle": kIBGMicrophonePermissionAlertSettingsButtonTitleStringName,
+              @"conversationsHeaderTitle": kIBGChatsTitleStringName,
               @"chatsHeaderTitle": kIBGChatsTitleStringName,
               @"team": kIBGTeamStringName,
               @"recordingMessageToHoldText": kIBGRecordingMessageToHoldTextStringName,
