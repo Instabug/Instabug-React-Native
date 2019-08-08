@@ -6,7 +6,12 @@ android/.DS_Store
 ios/.DS_Store
 
 build/
+.gradle
+local.properties
+.idea
 /android/src/main/java/com/instabug/reactlibrary/wrappedAPIs
+
+.vscode/
 
 # Xcode
 
@@ -26,6 +31,7 @@ DerivedData/
 xcuserdata/
 
 
+coverage/
 *node_modules/
 *Pods/
 *Podfile.lock

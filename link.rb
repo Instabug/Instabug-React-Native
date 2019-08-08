@@ -21,6 +21,13 @@ INSTABUG_PHASE_SCRIPT = <<-SCRIPTEND
 bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/strip-frameworks.sh"
   SCRIPTEND
 
+INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
+
+INSTABUG_UPLOAD_SCRIPT = <<-SCRIPTEND
+export INSTABUG_APP_TOKEN="YOUR_APP_TOKEN"
+bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
+SCRIPTEND
+
 # Get useful variables
 project = Xcodeproj::Project.open(project_location)
 frameworks_group = project.groups.find { |group| group.display_name == 'Frameworks' }
@@ -68,6 +75,11 @@ targets.each do |target|
 	#Add New Run Script Phase to Build Phases
 	phase = target.new_shell_script_build_phase(INSTABUG_PHASE_NAME)
 	phase.shell_script = INSTABUG_PHASE_SCRIPT
+
+	#Add New Run Script Phase to Build Phases
+	upload_build_phase = target.new_shell_script_build_phase(INSTABUG_UPLOAD_NAME)
+	upload_build_phase.shell_script = INSTABUG_UPLOAD_SCRIPT
+	upload_build_phase.run_only_for_deployment_postprocessing = '1'
 end
 
 # Save Xcode project

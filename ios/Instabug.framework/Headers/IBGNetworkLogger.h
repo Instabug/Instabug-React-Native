@@ -1,10 +1,12 @@
-//
-//  IBGNetworkLogger.h
-//  InstabugCore
-//
-//  Created by Yousef Hamza on 5/17/18.
-//  Copyright © 2018 Instabug. All rights reserved.
-//
+/*
+ File:       Instabug/IBGNetworkLogger.h
+ 
+ Contains:   API for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
+ 
+ Version:    8.5.2
+ */
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"

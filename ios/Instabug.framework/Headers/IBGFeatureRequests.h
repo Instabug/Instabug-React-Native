@@ -1,16 +1,27 @@
-//
-//  IBGFeatureRequests.h
-//  Instabug
-//
-//  Created by Yousef Hamza on 5/17/18.
-//  Copyright © 2018 Moataz. All rights reserved.
-//
+/*
+ File:       Instabug/IBGFeatureRequests.h
+ 
+ Contains:   API for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
+ 
+ Version:    8.5.2
+ */
+
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"
 
 NS_SWIFT_NAME(FeatureRequests)
 @interface IBGFeatureRequests : NSObject
+
+/**
+ @brief Acts as a master switch for the Feature Requests.
+ 
+ @discussion It's enabled by default. When disabled, all the functionalities related to the Feature Requests is disabled.
+ */
+@property (class, atomic, assign) BOOL enabled;
+
 /**
  @brief Sets whether users are required to enter an email address or not when doing a certain action `IBGAction`.
  

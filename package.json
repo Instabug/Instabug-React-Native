@@ -1,8 +1,9 @@
 {
   "name": "instabug-reactnative",
-  "version": "8.0.20",
+  "version": "8.5.2", 
   "description": "React Native plugin for integrating the Instabug SDK",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Instabug/instabug-reactnative.git"
@@ -23,11 +24,33 @@
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
   "rnpm": {
     "commands": {
-      "postlink": "ruby ./node_modules/instabug-reactnative/link.rb || echo \"Ruby doesn't exist, if you're building this for Android only, then feel free to ignore this error, otherwise please install Ruby and run 'react-native link instabug-reactnative' again\"",
-      "preunlink": "ruby ./node_modules/instabug-reactnative/unlink.rb || echo \"Ruby doesn't exist, if you're building this for Android only, then feel free to ignore this error, otherwise please install Ruby and run 'react-native link instabug-reactnative' again\""
+      "postlink": "node node_modules/instabug-reactnative/link_bridge.js",
+      "preunlink": "node node_modules/instabug-reactnative/unlink_bridge.js"
     },
     "android": {
       "packageInstance": "\t\tnew RNInstabugReactnativePackage.Builder(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this)\n\t\t\t\t\t\t\t.setInvocationEvent(\"shake\")\n\t\t\t\t\t\t\t.setPrimaryColor(\"#1D82DC\")\n\t\t\t\t\t\t\t.setFloatingEdge(\"left\")\n\t\t\t\t\t\t\t.setFloatingButtonOffsetFromTop(250)\n\t\t\t\t\t\t\t.build()"
     }
+  },
+  "devDependencies": {
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^24.8.0",
+    "codecov": "^3.5.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react": "^16.8.6",
+    "react-native": "^0.59.8",
+    "sinon": "^7.3.2",
+    "wait-for-expect": "^1.2.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "InstabugSample"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  },
+  "scripts": {
+    "test": "jest && ./node_modules/.bin/codecov"
   }
 }

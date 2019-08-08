@@ -14,18 +14,20 @@ import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.visualusersteps.State;
-import android.graphics.Color;
-import android.util.Log;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 
+import android.graphics.Color;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RNInstabugReactnativePackage implements ReactPackage {
 
     private static final String TAG = RNInstabugReactnativePackage.class.getSimpleName();
-
+    
     private Application androidApplication;
     private String mAndroidApplicationToken;
     private Instabug mInstabug;
@@ -33,18 +35,22 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<>();
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
+    public RNInstabugReactnativePackage() {}
+
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor,
-                                        InstabugFloatingButtonEdge floatingButtonEdge, Integer offset) {
+                                        InstabugFloatingButtonEdge floatingButtonEdge, Integer offset, boolean crashReportingEnabled) {
         this.androidApplication = androidApplication;
         this.mAndroidApplicationToken = androidApplicationToken;
 
         //setting invocation event
         this.parseInvocationEvent(invocationEventValues);
 
-        mInstabug = new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
+        setBaseUrlForDeprecationLogs();
+        
+        new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
-                .setCrashReportingState(Feature.State.ENABLED)
+                .setCrashReportingState(crashReportingEnabled ? Feature.State.ENABLED: Feature.State.DISABLED)
                 .setReproStepsState(State.DISABLED)
                 .build();
 
@@ -60,7 +66,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor) {
         new RNInstabugReactnativePackage(androidApplicationToken,androidApplication,invocationEventValues,primaryColor,
-                InstabugFloatingButtonEdge.LEFT,250);
+                InstabugFloatingButtonEdge.LEFT,250, true);
     }
 
     private void parseInvocationEvent(String[] invocationEventValues) {
@@ -75,7 +81,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
                 this.invocationEvents.add(InstabugInvocationEvent.SHAKE);
 
             } else if (invocationEventValues[i].equals("screenshot")) {
-                this.invocationEvents.add(InstabugInvocationEvent.SCREENSHOT_GESTURE);
+                this.invocationEvents.add(InstabugInvocationEvent.SCREENSHOT);
 
             } else if (invocationEventValues[i].equals("none")) {
                 this.invocationEvents.add(InstabugInvocationEvent.NONE);
@@ -84,6 +90,21 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         if (invocationEvents.isEmpty()) {
             invocationEvents.add(InstabugInvocationEvent.SHAKE);
+        }
+    }
+
+    private void setBaseUrlForDeprecationLogs() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
+            if (method != null) {
+                method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
@@ -115,6 +136,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         String primaryColor;
         InstabugFloatingButtonEdge floatingButtonEdge;
         int offset;
+        boolean isCrashReportingEnabled = true;
 
         public Builder(String androidApplicationToken, Application application) {
             this.androidApplicationToken = androidApplicationToken;
@@ -123,6 +145,11 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         public Builder setInvocationEvent(String... invocationEvents) {
             this.invocationEvents = invocationEvents;
+            return this;
+        }
+
+        public Builder setCrashReportingEnabled(boolean enabled) {
+            this.isCrashReportingEnabled = enabled;
             return this;
         }
 
@@ -142,7 +169,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         }
 
         public RNInstabugReactnativePackage build() {
-            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvents,primaryColor,floatingButtonEdge,offset);
+            return new RNInstabugReactnativePackage(androidApplicationToken,application,invocationEvents,primaryColor,floatingButtonEdge,offset, isCrashReportingEnabled);
         }
 
         private InstabugFloatingButtonEdge getFloatingButtonEdge(String floatingButtonEdgeValue) {
