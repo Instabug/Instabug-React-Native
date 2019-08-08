@@ -40,7 +40,6 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
-import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
@@ -945,6 +944,31 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @ReactMethod
+    public void logVerbose(String message) {
+        InstabugLog.v(message);
+    }
+
+    @ReactMethod
+    public void logDebug(String message) {
+        InstabugLog.d(message);
+    }
+
+    @ReactMethod
+    public void logInfo(String message) {
+        InstabugLog.i(message);
+    }
+
+    @ReactMethod
+    public void logError(String message) {
+        InstabugLog.e(message);
+    }
+
+    @ReactMethod
+    public void logWarn(String message) {
+        InstabugLog.w(message);
     }
 
     /**

@@ -61,7 +61,12 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
+        registerInstabugReportTypesArgs(ARGS);
+        registerReproStepsModeArgs(ARGS);
+        registerWelcomeMessageArgs(ARGS);
+        registerInstabugFeatureRequestsActionTypes(ARGS);
     }
+
 
     /**
      * This acts as a safe get() method.
@@ -202,7 +207,7 @@ final class ArgsRegistry {
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {
         args.put("enabledWithRequiredFields", ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
         args.put("enabledWithOptionalFields", ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-        args.put("disabled", ExtendedBugReport.State.DISABLED);
+        args.put("disabledExtendedBugReportState", ExtendedBugReport.State.DISABLED);
     }
 
     static void registerInstabugActionTypesArgs(Map<String, Object> args) {
@@ -223,5 +228,10 @@ final class ArgsRegistry {
         args.put("enabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
         args.put("enabled", State.ENABLED);
         args.put("disabled", State.DISABLED);
+    }
+
+    static void registerInstabugFeatureRequestsActionTypes(Map<String, Object> args) {
+        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
+        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
     }
 }

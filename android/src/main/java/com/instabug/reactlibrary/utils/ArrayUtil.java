@@ -50,6 +50,28 @@ public class ArrayUtil {
         return jsonArray;
     }
 
+    public static WritableArray convertJsonToWritableArray(JSONArray jsonArray) throws JSONException {
+        WritableArray array = Arguments.createArray();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (value instanceof JSONObject) {
+                array.pushMap(MapUtil.convertJsonToWritableMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                array.pushArray(convertJsonToWritableArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                array.pushBoolean((Boolean) value);
+            } else if (value instanceof  Integer) {
+                array.pushInt((Integer) value);
+            } else if (value instanceof  Double) {
+                array.pushDouble((Double) value);
+            } else if (value instanceof String)  {
+                array.pushString((String) value);
+            }
+        }
+        return array;
+    }
+
     public static Object[] toArray(JSONArray jsonArray) throws JSONException {
         Object[] array = new Object[jsonArray.length()];
 

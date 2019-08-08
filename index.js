@@ -28,6 +28,8 @@ var _isOnReportHandlerSet = false;
  * @exports Instabug
  */
 const InstabugModule = {
+
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Instabug.start}
    * Starts the SDK.
@@ -39,7 +41,7 @@ const InstabugModule = {
    * @param {invocationEvent} invocationEvent The event that invokes
    * the SDK's UI.
    */
-  startWithToken: function(token, invocationEvent) {
+  startWithToken(token, invocationEvent) {
     this.start(token, invocationEvent);
   },
 
@@ -53,7 +55,7 @@ const InstabugModule = {
    * @param {invocationEvent} invocationEvent The event that invokes
    * the SDK's UI.
    */
-  start: function(token, invocationEvent) {
+  start(token, invocationEvent) {
     if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
   },
 
@@ -64,20 +66,22 @@ const InstabugModule = {
    * @param {string} userData A string to be attached to each report, with a
    * maximum size of 1,000 characters.
    */
-  setUserData: function(userData) {
+  setUserData(userData) {
     Instabug.setUserData(userData);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.setAutoScreenRecordingEnabled}
    * Enable/Disable screen recording
    * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
    * screen recording on crash feature
    */
-  setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+  setAutoScreenRecordingEnabled(autoScreenRecordingEnabled) {
     Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.setAutoScreenRecordingMaxDuration}
    * Sets auto screen recording maximum duration
@@ -86,7 +90,7 @@ const InstabugModule = {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
+  setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration) {
     Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
   },
 
@@ -98,7 +102,7 @@ const InstabugModule = {
    * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
    * to being enabled or disabled.
    */
-  setTrackUserSteps: function(isEnabled) {
+  setTrackUserSteps(isEnabled) {
     if (Platform.OS === 'ios') Instabug.setTrackUserSteps(isEnabled);
   },
 
@@ -107,31 +111,30 @@ const InstabugModule = {
    * @param {boolean} printsToConsole A boolean to set whether printing to
    *                  Xcode's console is enabled or not.
    */
-  setIBGLogPrintsToConsole: function(printsToConsole) {
+  setIBGLogPrintsToConsole(printsToConsole) {
     if (Platform.OS === 'ios')
       Instabug.setIBGLogPrintsToConsole(printsToConsole);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link CrashReporting.setEnabled}
    * Report un-caught exceptions to Instabug dashboard
    * We don't send exceptions from __DEV__, since it's way too noisy!
    */
-  setCrashReportingEnabled: function(enableCrashReporter) {
+  setCrashReportingEnabled(enableCrashReporter) {
     Instabug.setCrashReportingEnabled(enableCrashReporter);
   },
 
+  /* istanbul ignore next */
   /**
+   * @deprecated use {@link BugReporting.setDidSelectPromptOptionHandler}
    * Sets a block of code to be executed when a prompt option is selected.
    * @param {function} didSelectPromptOptionHandler - A block of code that
    *                  gets executed when a prompt option is selected.
    */
-  setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
-    if (Platform.OS === 'android') return;
-    IBGEventEmitter.addListener(InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
-      didSelectPromptOptionHandler(payload.promptOption);
-    });
-    Instabug.didSelectPromptOptionHandler(didSelectPromptOptionHandler);
+  setDidSelectPromptOptionHandler(didSelectPromptOptionHandler) {
+    BugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
   /**
@@ -140,10 +143,11 @@ const InstabugModule = {
    * @param {boolean} sessionProfilerEnabled - A boolean parameter to enable or disable the feature.
    *
    */
-  setSessionProfilerEnabled: function(sessionProfilerEnabled) {
+  setSessionProfilerEnabled(sessionProfilerEnabled) {
     Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Replies.getUnreadRepliesCount}
    * Returns the number of unread messages the user currently has.
@@ -153,7 +157,7 @@ const InstabugModule = {
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
 
-  getUnreadMessagesCount: function(messageCountCallback) {
+  getUnreadMessagesCount(messageCountCallback) {
     Instabug.getUnreadMessagesCount(messageCountCallback);
   },
 
@@ -163,11 +167,12 @@ const InstabugModule = {
    * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
    * notifications are enabled or disabled.
    */
-  setPushNotificationsEnabled: function(isPushNotificationEnabled) {
+  setPushNotificationsEnabled(isPushNotificationEnabled) {
     if (Platform.OS === 'ios')
       Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.setInvocationOptions}
    * Sets whether users are required to enter an email address or not when
@@ -179,7 +184,7 @@ const InstabugModule = {
    *                                  types will have the isEmailFieldRequired
    */
 
-  setEmailFieldRequiredForActions: function(isEmailFieldRequired, actionTypes) {
+  setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes) {
     Instabug.setEmailFieldRequiredForActions(isEmailFieldRequired, actionTypes);
   },
 
@@ -193,7 +198,7 @@ const InstabugModule = {
    * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
    * floating button.
    */
-  setFloatingButtonEdge: function(floatingButtonEdge, offsetFromTop) {
+  setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
       Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
   },
 
@@ -203,7 +208,7 @@ const InstabugModule = {
    * Defaults to the device's current locale.
    * @param {locale} locale A locale to set the SDK to.
    */
-  setLocale: function(locale) {
+  setLocale(locale) {
     Instabug.setLocale(locale);
   },
 
@@ -212,7 +217,7 @@ const InstabugModule = {
    * the SDK's UI to.
    * @param colorTheme
    */
-  setColorTheme: function(colorTheme) {
+  setColorTheme(colorTheme) {
     Instabug.setColorTheme(colorTheme);
   },
 
@@ -223,7 +228,7 @@ const InstabugModule = {
    * as argument.
    * @param {color} primaryColor A color to set the UI elements of the SDK to.
    */
-  setPrimaryColor: function(primaryColor) {
+  setPrimaryColor(primaryColor) {
     Instabug.setPrimaryColor(processColor(primaryColor));
   },
 
@@ -232,14 +237,14 @@ const InstabugModule = {
    * bug or crash.
    * @param {string[]} tags An array of tags to append to current tags.
    */
-  appendTags: function(tags) {
+  appendTags(tags) {
     Instabug.appendTags(tags);
   },
 
   /**
    * Manually removes all tags of reported feedback, bug or crash.
    */
-  resetTags: function() {
+  resetTags() {
     Instabug.resetTags();
   },
 
@@ -247,10 +252,11 @@ const InstabugModule = {
    * Gets all tags of reported feedback, bug or crash.
    * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
    */
-  getTags: function(tagsCallback) {
+  getTags(tagsCallback) {
     Instabug.getTags(tagsCallback);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Instabug.setString}
    * Overrides any of the strings shown in the SDK with custom ones.
@@ -258,7 +264,7 @@ const InstabugModule = {
    * @param {string} string String value to override the default one.
    * @param {strings} key Key of string to override.
    */
-  setStringToKey: function(string, key) {
+  setStringToKey(string, key) {
     this.setString(key, string);
   },
 
@@ -268,7 +274,7 @@ const InstabugModule = {
    * @param {string} string String value to override the default one.
    * @param {strings} key Key of string to override.
    */
-  setString: function(key, string) {
+  setString(key, string) {
     Instabug.setString(string, key);
   },
 
@@ -282,7 +288,7 @@ const InstabugModule = {
    * info.plist to enable gallery image attachments.
    * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
    */
-  setEnabledAttachmentTypes: function(
+  setEnabledAttachmentTypes(
     screenshot,
     extraScreenshot,
     galleryImage,
@@ -296,6 +302,7 @@ const InstabugModule = {
     );
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Instabug.identifyUser}
    * Sets the default value of the user's email and hides the email field from the reporting UI
@@ -305,7 +312,7 @@ const InstabugModule = {
    * @param {string} email Email address to be set as the user's email.
    * @param {string} name Name of the user to be set.
    */
-  identifyUserWithEmail: function(email, name) {
+  identifyUserWithEmail(email, name) {
     this.identifyUser(email, name);
   },
 
@@ -317,7 +324,7 @@ const InstabugModule = {
    * @param {string} email Email address to be set as the user's email.
    * @param {string} name Name of the user to be set.
    */
-  identifyUser: function(email, name) {
+  identifyUser(email, name) {
     Instabug.identifyUserWithEmail(email, name);
   },
 
@@ -326,17 +333,18 @@ const InstabugModule = {
    * from all reports
    * It also reset the chats on device and removes user attributes, user data and completed surveys.
    */
-  logOut: function() {
+  logOut() {
     Instabug.logOut();
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Instabug.logUserEvent}
    * Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
    * @param {string} name Event name.
    */
-  logUserEventWithName: function(name) {
+  logUserEventWithName(name) {
     this.logUserEvent(name);
   },
 
@@ -345,7 +353,7 @@ const InstabugModule = {
    * Logged user events are going to be sent with each report, as well as at the end of a session.
    * @param {string} name Event name.
    */
-  logUserEvent: function(name) {
+  logUserEvent(name) {
     Instabug.logUserEventWithName(name);
   },
 
@@ -362,13 +370,9 @@ const InstabugModule = {
    *
    * @param message    the message
    */
-  logVerbose: function(message) {
+  logVerbose(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('v', message);
-    } else {
-      Instabug.logVerbose(message);
-    }
+    Instabug.logVerbose(message);
   },
 
   /**
@@ -384,13 +388,9 @@ const InstabugModule = {
    *
    * @param message    the message
    */
-  logInfo: function(message) {
+  logInfo(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('i', message);
-    } else {
-      Instabug.logInfo(message);
-    }
+    Instabug.logInfo(message);
   },
 
   /**
@@ -406,13 +406,9 @@ const InstabugModule = {
    *
    * @param message    the message
    */
-  logDebug: function(message) {
+  logDebug(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('d', message);
-    } else {
-      Instabug.logDebug(message);
-    }
+    Instabug.logDebug(message);
   },
 
   /**
@@ -428,13 +424,9 @@ const InstabugModule = {
    *
    * @param message    the message
    */
-  logError: function(message) {
+  logError(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('e', message);
-    } else {
-      Instabug.logError(message);
-    }
+    Instabug.logError(message);
   },
 
   /**
@@ -450,19 +442,15 @@ const InstabugModule = {
    *
    * @param message    the message
    */
-  logWarn: function(message) {
+  logWarn(message) {
     if (!message) return;
-    if (Platform.OS === 'android') {
-      Instabug.log('w', message);
-    } else {
-      Instabug.logWarn(message);
-    }
+    Instabug.logWarn(message);
   },
 
   /**
    * Clear all Instabug logs, console logs, network logs and user steps.
    */
-  clearLogs: function() {
+  clearLogs() {
     Instabug.clearLogs();
   },
 
@@ -474,7 +462,7 @@ const InstabugModule = {
    * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking
    * to be enabled, non visual or disabled.
    */
-  setReproStepsMode: function(reproStepsMode) {
+  setReproStepsMode(reproStepsMode) {
     Instabug.setReproStepsMode(reproStepsMode);
   },
 
@@ -484,7 +472,7 @@ const InstabugModule = {
    * @param key   the attribute
    * @param value the value
    */
-  setUserAttribute: function(key, value) {
+  setUserAttribute(key, value) {
     if (!key || !value || typeof key !== 'string' || typeof value !== 'string')
       throw new TypeError('Invalid param, Expected String');
     Instabug.setUserAttribute(key, value);
@@ -496,7 +484,7 @@ const InstabugModule = {
      * @param {string} key The attribute key as string
      * @param {function} userAttributeCallback callback with argument as the desired user attribute value
      */
-  getUserAttribute: function(key, userAttributeCallback) {
+  getUserAttribute(key, userAttributeCallback) {
     Instabug.getUserAttribute(key, userAttributeCallback);
   },
 
@@ -506,7 +494,7 @@ const InstabugModule = {
    * @param key the attribute key as string
    * @see #setUserAttribute(String, String)
    */
-  removeUserAttribute: function(key) {
+  removeUserAttribute(key) {
     if (!key || typeof key !== 'string')
       throw new TypeError('Invalid param, Expected String');
     Instabug.removeUserAttribute(key);
@@ -517,17 +505,18 @@ const InstabugModule = {
    * @param {function} userAttributesCallback callback with argument A new dictionary containing
    * all the currently set user attributes, or an empty dictionary if no user attributes have been set.
    */
-  getAllUserAttributes: function(userAttributesCallback) {
+  getAllUserAttributes(userAttributesCallback) {
     Instabug.getAllUserAttributes(userAttributesCallback);
   },
 
   /**
    * Clears all user attributes if exists.
    */
-  clearAllUserAttributes: function() {
+  clearAllUserAttributes() {
     Instabug.clearAllUserAttributes();
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Replies.setInAppNotificationsEnabled}
    * Enables/disables showing in-app notifications when the user receives a
@@ -536,30 +525,33 @@ const InstabugModule = {
    * notifications are enabled or disabled.
    */
 
-  setChatNotificationEnabled: function(isChatNotificationEnabled) {
+  setChatNotificationEnabled(isChatNotificationEnabled) {
     Instabug.setChatNotificationEnabled(isChatNotificationEnabled);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
    * Sets a block of code that gets executed when a new message is received.
    * @param {function} onNewMessageHandler - A callback that gets
    * executed when a new message is received.
    */
-  setOnNewMessageHandler: function(onNewMessageHandler) {
+  setOnNewMessageHandler(onNewMessageHandler) {
     Replies.setOnNewReplyReceivedHandler(onNewMessageHandler);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.setViewHierarchyEnabled}
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
    */
-  setViewHierarchyEnabled: function(viewHierarchyEnabled) {
+  setViewHierarchyEnabled(viewHierarchyEnabled) {
     Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Surveys.setEnabled}
    * @summary Sets whether surveys are enabled or not.
@@ -571,7 +563,7 @@ const InstabugModule = {
    * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
 
-  setSurveysEnabled: function(surveysEnabled) {
+  setSurveysEnabled(surveysEnabled) {
     Instabug.setSurveysEnabled(surveysEnabled);
   },
 
@@ -581,7 +573,7 @@ const InstabugModule = {
    *
    * @param isDebugEnabled whether debug logs should be printed or not into LogCat
    */
-  setDebugEnabled: function(isDebugEnabled) {
+  setDebugEnabled(isDebugEnabled) {
     if (Platform.OS === 'android') {
       Instabug.setDebugEnabled(isDebugEnabled);
     }
@@ -591,7 +583,7 @@ const InstabugModule = {
    * Enables all Instabug functionality
    * It works on android only
    */
-  enable: function() {
+  enable() {
     if (Platform.OS === 'android') {
       Instabug.enable();
     }
@@ -601,12 +593,13 @@ const InstabugModule = {
    * Disables all Instabug functionality
    * It works on android only
    */
-  disable: function() {
+  disable() {
     if (Platform.OS === 'android') {
       Instabug.disable();
     }
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Replies.setInAppNotificationSound}
    * Set whether new in app notification received will play a small sound notification
@@ -616,12 +609,13 @@ const InstabugModule = {
    * @since 4.1.0
    */
 
-  setEnableInAppNotificationSound: function(shouldPlaySound) {
+  setEnableInAppNotificationSound(shouldPlaySound) {
     if (Platform.OS === 'android') {
       Instabug.setEnableInAppNotificationSound(shouldPlaySound);
     }
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link CrashReporting.reportJSException}
    * Send handled JS error object
@@ -629,7 +623,7 @@ const InstabugModule = {
    * @param errorObject   Error object to be sent to Instabug's servers
    */
 
-  reportJSException: function(errorObject) {
+  reportJSException(errorObject) {
     CrashReporting.reportJSException(errorObject);
   },
 
@@ -640,7 +634,7 @@ const InstabugModule = {
    * true if app is live on the app store.
    * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
    */
-  isRunningLive: function(runningLiveCallBack) {
+  isRunningLive(runningLiveCallBack) {
     if (Platform.OS === 'ios') {
       Instabug.isRunningLive(runningLiveCallBack);
     }
@@ -654,10 +648,11 @@ const InstabugModule = {
    * @param position is of type IBGPosition `topLeft` to show on the top left of screen,
    * or `bottomRight` to show on the bottom right of scrren.
    */
-  setVideoRecordingFloatingButtonPosition: function(position) {
+  setVideoRecordingFloatingButtonPosition(position) {
     Instabug.setVideoRecordingFloatingButtonPosition(position);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link Surveys.setShouldShowWelcomeScreen}
    * Setting an option for all the surveys to show a welcome screen before
@@ -666,7 +661,7 @@ const InstabugModule = {
    *                                welcome screen should show.
    *
    */
-  setShouldShowSurveysWelcomeScreen: function(shouldShowWelcomeScreen) {
+  setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen) {
     Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
   },
 
@@ -676,7 +671,7 @@ const InstabugModule = {
    *                           live, or beta.
    *
    */
-  showWelcomeMessage: function(welcomeMessageMode) {
+  showWelcomeMessage(welcomeMessageMode) {
     Instabug.showWelcomeMessageWithMode(welcomeMessageMode);
   },
 
@@ -686,7 +681,7 @@ const InstabugModule = {
    *                           live, beta or disabled.
    *
    */
-  setWelcomeMessageMode: function(welcomeMessageMode) {
+  setWelcomeMessageMode(welcomeMessageMode) {
     Instabug.setWelcomeMessageMode(welcomeMessageMode);
   },
 
@@ -695,7 +690,7 @@ const InstabugModule = {
    * @param {string} filePath
    * @param {string} fileName
    */
-  addFileAttachment: function(filePath, fileName) {
+  addFileAttachment(filePath, fileName) {
     if (Platform.OS === 'android') {
       Instabug.setFileAttachment(filePath, fileName);
     } else {
@@ -707,7 +702,7 @@ const InstabugModule = {
    * Hides component from screenshots, screen recordings and view hierarchy.
    * @param {Object} viewRef the ref of the component to hide
    */
-  setPrivateView: function(viewRef) {
+  setPrivateView(viewRef) {
     const nativeTag = findNodeHandle(viewRef);
     if (Platform.OS === 'ios') {
       Instabug.hideView(nativeTag);
@@ -722,7 +717,7 @@ const InstabugModule = {
     Instabug.show();
   },
 
-  onReportSubmitHandler: function(preSendingHandler) {
+  onReportSubmitHandler(preSendingHandler) {
     if (preSendingHandler) {
       _isOnReportHandlerSet = true;
     } else {
@@ -730,7 +725,7 @@ const InstabugModule = {
     }
     
     // send bug report
-    IBGEventEmitter.addListener(InstabugConstants.PRESENDING_HANDLER, (report) => {
+    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
       const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
       preSendingHandler(reportObj);
@@ -740,7 +735,7 @@ const InstabugModule = {
 
     // handled js crash
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
           try {
             let report = await Instabug.getReport();
             const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -754,7 +749,7 @@ const InstabugModule = {
     }
 
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
         
           let report = await Instabug.getReport();
           const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -767,7 +762,7 @@ const InstabugModule = {
     Instabug.setPreSendingHandler(preSendingHandler);
   },
 
-  callPrivateApi: function(apiName, param) {
+  callPrivateApi(apiName, param) {
     Instabug.callPrivateApi(apiName, param);
   },
 

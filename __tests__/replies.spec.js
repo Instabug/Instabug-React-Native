@@ -13,13 +13,13 @@ import IBGEventEmitter from '../utils/IBGEventEmitter';
 
 describe('Replies Module', () => {
   
-  const setRepliesEnabled = sinon.spy(NativeModules.Instabug, 'setRepliesEnabled');
-  const hasChats = sinon.spy(NativeModules.Instabug, 'hasChats');
-  const showReplies = sinon.spy(NativeModules.Instabug, 'showReplies');
-  const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.Instabug, 'setOnNewReplyReceivedCallback');
-  const getUnreadMessagesCount = sinon.spy(NativeModules.Instabug, 'getUnreadMessagesCount');
-  const setChatNotificationEnabled = sinon.spy(NativeModules.Instabug, 'setChatNotificationEnabled');
-  const setEnableInAppNotificationSound = sinon.spy(NativeModules.Instabug, 'setEnableInAppNotificationSound');
+  const setRepliesEnabled = sinon.spy(NativeModules.IBGReplies, 'setEnabled');
+  const hasChats = sinon.spy(NativeModules.IBGReplies, 'hasChats');
+  const showReplies = sinon.spy(NativeModules.IBGReplies, 'show');
+  const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.IBGReplies, 'setOnNewReplyReceivedHandler');
+  const getUnreadMessagesCount = sinon.spy(NativeModules.IBGReplies, 'getUnreadRepliesCount');
+  const setChatNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
+  const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
 
   beforeEach(() => {
     setOnNewReplyReceivedCallback.resetHistory();
