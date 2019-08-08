@@ -30,6 +30,7 @@ export default {
     IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated
    * Invokes the SDK manually with the default invocation mode.
@@ -40,6 +41,7 @@ export default {
     IBGBugReporting.invoke();
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated
    * Sets the invocation options.
@@ -59,6 +61,7 @@ export default {
     IBGBugReporting.setOptions(options);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated
    * Invokes the SDK with a specific mode.
@@ -93,6 +96,7 @@ export default {
     IBGBugReporting.setOnInvokeHandler(handler);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated Use {@link Instabug.onReportSubmitHandler} instead.
    * Sets a block of code to be executed before sending each report.
