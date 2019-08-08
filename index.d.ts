@@ -11,7 +11,7 @@ export namespace BugReporting {
   function invokeWithInvocationModeAndOptions(
     invocationMode: invocationMode,
     invocationOptions: invocationOptions[]
-    ): void;
+  ): void;
   function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
@@ -19,7 +19,7 @@ export namespace BugReporting {
     chat: boolean,
     bug: boolean,
     feedback: boolean
-    ): void;
+  ): void;
   function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
@@ -79,7 +79,7 @@ export namespace FeatureRequests {
   function setEmailFieldRequired(
     isEmailFieldRequired: boolean,
     actionTypes: actionTypes[]
-    ): void;
+  ): void;
   function show(): void;
   enum actionTypes {
     allActions,
@@ -90,7 +90,7 @@ export namespace FeatureRequests {
 }
 export namespace Replies {
   function setEnabled(isEnabled: boolean): void;
-  function hasChats(callback: (previousChats : boolean) => void): void;
+  function hasChats(callback: (previousChats: boolean) => void): void;
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
   function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
@@ -104,7 +104,7 @@ export namespace Surveys {
   function setThresholdForReshowingSurveyAfterDismiss(
     sessionCount: number,
     daysCount: number
-    ): void;
+  ): void;
   function getAvailableSurveys(availableSurveysCallback: (surveys: Survey[]) => void): void;
   function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   function onShowCallback(willShowSurveyHandler: () => void): void;
@@ -115,7 +115,7 @@ export namespace Surveys {
   function hasRespondedToSurvey(
     surveyToken: string,
     surveyTokenCallback: () => void
-    ): void;
+  ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
 }
 export namespace NetworkLogger {
@@ -127,11 +127,11 @@ export namespace NetworkLogger {
 export function startWithToken(
   token: string,
   invocationEvent: invocationEvent[]
-  ): void;
+): void;
 export function start(
   token: string,
   invocationEvent: invocationEvent[]
-  ): void;
+): void;
 export function setUserData(userData: string): void;
 export function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolean): void;
 export function setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration: number): void;
@@ -145,11 +145,11 @@ export function setPushNotificationsEnabled(isPushNotificationEnabled: boolean):
 export function setEmailFieldRequiredForActions(
   isEmailFieldRequired: boolean,
   actionTypes: actionTypes
-  ): void;
+): void;
 export function setFloatingButtonEdge(
   floatingButtonEdge: number,
   offsetFromTop: number
-  ): void;
+): void;
 export function setLocale(locale: locale): void;
 export function setColorTheme(colorTheme: colorTheme): void;
 export function setPrimaryColor(setPrimaryColor: number): void;
@@ -159,27 +159,27 @@ export function getTags(tagsCallback: () => void): void;
 export function setStringToKey(
   string: string,
   key: strings,
-  ): void;
+): void;
 export function setString(
   key: strings,
   string: string,
-  ): void;
+): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
   extraScreenshot: boolean,
   galleryImage: boolean,
   screenRecording: boolean
-  ): void;
+): void;
 export function identifyUserWithEmail(
   email: string,
   name: string
-  ): void;
+): void;
 export function identifyUser(
   email: string,
   name: string
-  ): void;
+): void;
 export function logOut(): void;
-export function logUserEventWithName(name: string,  params?: any): void;
+export function logUserEventWithName(name: string, params?: any): void;
 export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
@@ -191,7 +191,7 @@ export function setReproStepsMode(reproStepsMode: reproStepsMode): void;
 export function setUserAttribute(
   key: string,
   value: string
-  ): void;
+): void;
 export function getUserAttribute(
   key: string,
   userAttributeCallback: () => void)
@@ -208,7 +208,7 @@ export function enable(): void;
 export function disable(): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
 export function reportJSException(Exception: object): void;
-export function isRunningLive(runningLiveCallBack: () => void): void;
+export function isRunningLive(runningLiveCallBack: (isLive: boolean) => void): void;
 export function setVideoRecordingFloatingButtonPosition(position: IBGPosition): void;
 export function setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
 export function showWelcomeMessage(welcomeMessageMode: welcomeMessageMode): void;
@@ -216,13 +216,13 @@ export function setWelcomeMessageMode(welcomeMessageMode: welcomeMessageMode): v
 export function addFileAttachment(
   filePath: string,
   fileName: string
-  ): void;
+): void;
 export function show(): void;
 export function onReportSubmitHandler(preSendingHandler: (presendingHandler: Report) => void): void;
 export function callPrivateApi(
   apiName: string,
   param: any
-  ): void;
+): void;
 export enum invocationEvent {
   none,
   shake,
@@ -363,7 +363,7 @@ export enum strings {
   welcomeMessageLiveWelcomeStepContent
 }
 
- interface Report {
+interface Report {
   logDebug(log: string);
   logVerbose(log: string);
   logWarn(log: string);
