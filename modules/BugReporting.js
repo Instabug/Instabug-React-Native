@@ -26,7 +26,7 @@ export default {
    * @param {invocationEvent} invocationEvent Array of events that invokes the
    * feedback form.
    */
-  setInvocationEvents: function(invocationEvents) {
+  setInvocationEvents(invocationEvents) {
     IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
@@ -36,7 +36,7 @@ export default {
    * Shows a view that asks the user whether they want to start a chat, report
    * a problem or suggest an improvement.
    */
-  invoke: function() {
+  invoke() {
     IBGBugReporting.invoke();
   },
 
@@ -46,7 +46,7 @@ export default {
    * Default is set by `Instabug.startWithToken`.
    * @param {invocationOptions} invocationOptions Array of invocation options
    */
-  setInvocationOptions: function(invocationOptions) {
+  setInvocationOptions(invocationOptions) {
     this.setOptions(invocationOptions);
   },
 
@@ -55,7 +55,7 @@ export default {
    * Default is set by `Instabug.startWithToken`.
    * @param {invocationOptions} options Array of invocation options
    */
-  setOptions: function(options) {
+  setOptions(options) {
     IBGBugReporting.setOptions(options);
   },
 
@@ -69,7 +69,7 @@ export default {
    * @param {invocationOptions} invocationOptions Specifies which mode the
    * SDK is going to start with.
    */
-  invokeWithInvocationModeAndOptions: function(
+  invokeWithInvocationModeAndOptions(
     invocationMode,
     invocationOptions
   ) {
@@ -88,7 +88,7 @@ export default {
    * UI changes before the SDK's UI is shown.
    * @param {function} handler - A callback that gets executed before invoking the SDK
    */
-  onInvokeHandler: function(handler) {
+  onInvokeHandler(handler) {
     IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
     IBGBugReporting.setOnInvokeHandler(handler);
   },
@@ -101,7 +101,7 @@ export default {
    * @param {function} preSendingHandler - A callback that gets executed before sending each bug
    * report.
    */
-  onReportSubmitHandler: function(preSendingHandler) {
+  onReportSubmitHandler(preSendingHandler) {
     InstabugModule.onReportSubmitHandler(preSendingHandler);
   },
 
@@ -112,13 +112,14 @@ export default {
    * @param {function} handler - A callback to get executed after
    * dismissing the SDK.
    */
-  onSDKDismissedHandler: function(handler) {
+  onSDKDismissedHandler(handler) {
     IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
       handler(payload.dismissType, payload.reportType);
     });
     IBGBugReporting.setOnSDKDismissedHandler(handler);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated
    * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
@@ -131,7 +132,7 @@ export default {
    * @param  {boolean} bug       whether Report a Problem is enable or not
    * @param  {boolean} feedback  whether General Feedback  is enable or not
    * */
-  setPromptOptionsEnabled: function(chat, bug, feedback) {
+  setPromptOptionsEnabled(chat, bug, feedback) {
     IBGBugReporting.setPromptOptionsEnabled(chat, bug, feedback);
   },
 
@@ -140,7 +141,7 @@ export default {
    * Default for iPhone is 2.5.
    * @param {number} iPhoneShakingThreshold Threshold for iPhone.
    */
-  setShakingThresholdForiPhone: function(iPhoneShakingThreshold) {
+  setShakingThresholdForiPhone(iPhoneShakingThreshold) {
     if (Platform.OS === 'ios')
       IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
   },
@@ -150,7 +151,7 @@ export default {
    * Default for iPad is 0.6.
    * @param {number} iPadShakingThreshold Threshold for iPad.
    */
-  setShakingThresholdForiPad: function(iPadShakingThreshold) {
+  setShakingThresholdForiPad(iPadShakingThreshold) {
     if (Platform.OS === 'ios')
       IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
   },
@@ -162,7 +163,7 @@ export default {
    * increasing the `350` value and vice versa
    * @param {number} androidThreshold Threshold for android devices.
    */
-  setShakingThresholdForAndroid: function(androidThreshold) {
+  setShakingThresholdForAndroid(androidThreshold) {
     if (Platform.OS === 'android')
       IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
   },
@@ -174,7 +175,7 @@ export default {
    *                                the extended bug report mode, enable it
    *                                with required or with optional fields.
    */
-  setExtendedBugReportMode: function(extendedBugReportMode) {
+  setExtendedBugReportMode(extendedBugReportMode) {
     IBGBugReporting.setExtendedBugReportMode(extendedBugReportMode);
   },
 
@@ -186,6 +187,7 @@ export default {
     IBGBugReporting.setReportTypes(types);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.show}
    * Invoke bug reporting with report type and options.
