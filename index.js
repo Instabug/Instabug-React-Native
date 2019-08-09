@@ -4,7 +4,7 @@ import {
   findNodeHandle,
   processColor
 } from 'react-native';
-let { Instabug } = NativeModules;
+let { Instabug, IBGBugReporting } = NativeModules;
 import IBGEventEmitter from './utils/IBGEventEmitter';
 import { captureJsErrors } from './utils/InstabugUtils';
 import InstabugConstants from './utils/InstabugConstants';
@@ -199,7 +199,7 @@ const InstabugModule = {
    * floating button.
    */
   setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
-      Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
   },
 
   /**
@@ -294,7 +294,7 @@ const InstabugModule = {
     galleryImage,
     screenRecording
   ) {
-    Instabug.setEnabledAttachmentTypes(
+    IBGBugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,
