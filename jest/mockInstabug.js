@@ -8,7 +8,6 @@ jest.mock('NativeModules', () => {
             didSelectPromptOptionHandler: jest.fn(),
             setSessionProfilerEnabled: jest.fn(),
             setPushNotificationsEnabled: jest.fn(),
-            setFloatingButtonEdge: jest.fn(),
             setLocale: jest.fn(),
             setColorTheme: jest.fn(),
             setPrimaryColor: jest.fn(),

@@ -25,7 +25,6 @@ describe('Instabug Module', () => {
   const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
   const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.Instabug, 'setPushNotificationsEnabled');
-  const setFloatingButtonEdge = sinon.spy(NativeModules.Instabug, 'setFloatingButtonEdge');
   const setLocale = sinon.spy(NativeModules.Instabug, 'setLocale');
   const setColorTheme = sinon.spy(NativeModules.Instabug, 'setColorTheme');
   const setPrimaryColor = sinon.spy(NativeModules.Instabug, 'setPrimaryColor');
@@ -71,7 +70,6 @@ describe('Instabug Module', () => {
     setTrackUserSteps.resetHistory();
     setIBGLogPrintsToConsole.resetHistory();
     setPushNotificationsEnabled.resetHistory();
-    setFloatingButtonEdge.resetHistory();
     log.resetHistory();
     setDebugEnabled.resetHistory();
     enable.resetHistory();
@@ -175,26 +173,6 @@ describe('Instabug Module', () => {
     Instabug.setPushNotificationsEnabled(true);
 
     expect(setPushNotificationsEnabled.notCalled).toBe(true);
-
-  });
-
-  it('should call the native method setFloatingButtonEdge', () => {
-
-    Platform.OS = 'ios';
-    const offsetFromTop = 10;
-    const edge = Instabug.floatingButtonEdge.left;
-    Instabug.setFloatingButtonEdge(edge, offsetFromTop);
-
-    expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
-
-  });
-
-  it('should not call the native method setFloatingButtonEdge when platform is android', () => {
-
-    Platform.OS = 'android';
-    Instabug.setPushNotificationsEnabled(Instabug.floatingButtonEdge.left, 10);
-
-    expect(setFloatingButtonEdge.notCalled).toBe(true);
 
   });
 

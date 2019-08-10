@@ -4,6 +4,7 @@ jest.mock('NativeModules', () => {
           setEnabled: jest.fn(),
           setInvocationEvents: jest.fn(),
           setOptions: jest.fn(),
+          setFloatingButtonEdge: jest.fn(),
           setShakingThresholdForiPhone: jest.fn(),
           setShakingThresholdForiPad: jest.fn(),
           setShakingThresholdForAndroid: jest.fn(),
