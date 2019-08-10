@@ -25,6 +25,7 @@ describe('Instabug Module', () => {
   const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
   const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.Instabug, 'setPushNotificationsEnabled');
+  const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
   const setLocale = sinon.spy(NativeModules.Instabug, 'setLocale');
   const setColorTheme = sinon.spy(NativeModules.Instabug, 'setColorTheme');
   const setPrimaryColor = sinon.spy(NativeModules.Instabug, 'setPrimaryColor');
@@ -164,6 +165,16 @@ describe('Instabug Module', () => {
     Instabug.setPushNotificationsEnabled(true);
 
     expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
+
+  });
+
+  it('should call the native method setFloatingButtonEdge', () => {
+
+    const offsetFromTop = 10;
+    const edge = Instabug.floatingButtonEdge.left;
+    Instabug.setFloatingButtonEdge(edge, offsetFromTop);
+
+    expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
 
   });
 
