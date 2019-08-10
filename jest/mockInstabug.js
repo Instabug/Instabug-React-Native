@@ -8,7 +8,6 @@ jest.mock('NativeModules', () => {
             didSelectPromptOptionHandler: jest.fn(),
             setSessionProfilerEnabled: jest.fn(),
             setPushNotificationsEnabled: jest.fn(),
-            setFloatingButtonEdge: jest.fn(),
             setLocale: jest.fn(),
             setColorTheme: jest.fn(),
             setPrimaryColor: jest.fn(),
@@ -16,7 +15,6 @@ jest.mock('NativeModules', () => {
             resetTags: jest.fn(),
             getTags: jest.fn(cb => cb(['tags1', 'tags2'])),
             setString: jest.fn(),
-            setEnabledAttachmentTypes: jest.fn(),
             identifyUserWithEmail: jest.fn(),
             logOut: jest.fn(),
             logUserEventWithName: jest.fn(),
@@ -52,5 +50,9 @@ jest.mock('NativeModules', () => {
             sendJSCrash: jest.fn()
 
         },
+        IBGBugReporting: {
+            setFloatingButtonEdge: jest.fn(),
+            setEnabledAttachmentTypes: jest.fn(),
+        }
     };
 });

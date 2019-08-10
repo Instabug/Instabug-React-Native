@@ -189,6 +189,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setFloatingButtonEdge}
    * Sets the default edge and offset from the top at which the floating button
    * will be shown. Different orientations are already handled.
    * Default for `floatingButtonEdge` is `rectEdge.maxX`.
@@ -199,7 +200,7 @@ const InstabugModule = {
    * floating button.
    */
   setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
-      Instabug.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+      BugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
   },
 
   /**
@@ -279,6 +280,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setEnabledAttachmentTypes}
    * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
    * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
    * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -294,7 +296,7 @@ const InstabugModule = {
     galleryImage,
     screenRecording
   ) {
-    Instabug.setEnabledAttachmentTypes(
+    BugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,

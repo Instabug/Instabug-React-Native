@@ -257,6 +257,44 @@ export default {
   },
 
   /**
+   * Sets the default edge and offset from the top at which the floating button
+   * will be shown. Different orientations are already handled.
+   * Default for `floatingButtonEdge` is `rectEdge.maxX`.
+   * Default for `floatingButtonOffsetFromTop` is 50
+   * @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
+   * or `minX` to show on the left.
+   * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
+   * floating button.
+   */
+  setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
+    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+},
+
+ /**
+   * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+   * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+   * @param {boolean} extraScreenshot A boolean to enable or disable extra
+   * screenshot attachments.
+   * @param {boolean} galleryImage A boolean to enable or disable gallery image
+   * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
+   * info.plist to enable gallery image attachments.
+   * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+   */
+  setEnabledAttachmentTypes(
+    screenshot,
+    extraScreenshot,
+    galleryImage,
+    screenRecording
+  ) {
+    IBGBugReporting.setEnabledAttachmentTypes(
+      screenshot,
+      extraScreenshot,
+      galleryImage,
+      screenRecording
+    );
+  },
+
+  /**
    * The event used to invoke the feedback form
    * @readonly
    * @enum {number}

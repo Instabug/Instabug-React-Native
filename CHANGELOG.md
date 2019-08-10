@@ -1,3 +1,7 @@
+## v8.5.4 (2019-08-10)
+
+* Hot Fixes an issue with `Instabug.setFloatingButtonEdge` and `Instabug.setEnabledAttachmentTypes` causing the app to crash.
+
 ## v8.5.3 (2019-08-08)
 
 * Fixes hang/crash issues on iOS 9 devices

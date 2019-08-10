@@ -33,6 +33,9 @@ describe('Testing BugReporting Module', () => {
   const setAutoScreenRecordingMaxDuration = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingMaxDuration');
   const setViewHierarchyEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setViewHierarchyEnabled');
   const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
+  const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
+  const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
+
 
   beforeEach(() => {
     setShakingThresholdForiPhone.resetHistory();
@@ -255,6 +258,24 @@ describe('Testing BugReporting Module', () => {
     BugReporting.setDidSelectPromptOptionHandler(callback);
 
     expect(didSelectPromptOptionHandler.calledOnceWithExactly(callback)).toBe(true);
+
+  });
+
+  it('should call the native method setFloatingButtonEdge', () => {
+
+    const offsetFromTop = 10;
+    const edge = Instabug.floatingButtonEdge.left;
+    BugReporting.setFloatingButtonEdge(edge, offsetFromTop);
+
+    expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
+
+  });
+
+  it('should call the native method setEnabledAttachmentTypes', () => {
+
+    BugReporting.setEnabledAttachmentTypes(true, true, false, true);
+
+    expect(setEnabledAttachmentTypes.calledOnceWithExactly(true, true, false, true)).toBe(true);
 
   });
 

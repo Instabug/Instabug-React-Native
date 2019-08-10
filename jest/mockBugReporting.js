@@ -4,6 +4,7 @@ jest.mock('NativeModules', () => {
           setEnabled: jest.fn(),
           setInvocationEvents: jest.fn(),
           setOptions: jest.fn(),
+          setFloatingButtonEdge: jest.fn(),
           setShakingThresholdForiPhone: jest.fn(),
           setShakingThresholdForiPad: jest.fn(),
           setShakingThresholdForAndroid: jest.fn(),
@@ -16,6 +17,7 @@ jest.mock('NativeModules', () => {
           setAutoScreenRecordingEnabled: jest.fn(),
           setAutoScreenRecordingMaxDuration: jest.fn(),
           setViewHierarchyEnabled: jest.fn(),
+          setEnabledAttachmentTypes: jest.fn(),
           setDidSelectPromptOptionHandler: jest.fn()
       },
       Instabug: {}
