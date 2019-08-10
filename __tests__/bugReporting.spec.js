@@ -34,6 +34,8 @@ describe('Testing BugReporting Module', () => {
   const setViewHierarchyEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setViewHierarchyEnabled');
   const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
   const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
+  const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
+
 
   beforeEach(() => {
     setShakingThresholdForiPhone.resetHistory();
@@ -266,6 +268,14 @@ describe('Testing BugReporting Module', () => {
     BugReporting.setFloatingButtonEdge(edge, offsetFromTop);
 
     expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
+
+  });
+
+  it('should call the native method setEnabledAttachmentTypes', () => {
+
+    BugReporting.setEnabledAttachmentTypes(true, true, false, true);
+
+    expect(setEnabledAttachmentTypes.calledOnceWithExactly(true, true, false, true)).toBe(true);
 
   });
 

@@ -270,6 +270,30 @@ export default {
     IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
 },
 
+ /**
+   * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+   * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+   * @param {boolean} extraScreenshot A boolean to enable or disable extra
+   * screenshot attachments.
+   * @param {boolean} galleryImage A boolean to enable or disable gallery image
+   * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
+   * info.plist to enable gallery image attachments.
+   * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+   */
+  setEnabledAttachmentTypes(
+    screenshot,
+    extraScreenshot,
+    galleryImage,
+    screenRecording
+  ) {
+    IBGBugReporting.setEnabledAttachmentTypes(
+      screenshot,
+      extraScreenshot,
+      galleryImage,
+      screenRecording
+    );
+  },
+
   /**
    * The event used to invoke the feedback form
    * @readonly

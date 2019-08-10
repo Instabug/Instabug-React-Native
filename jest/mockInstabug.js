@@ -15,7 +15,6 @@ jest.mock('NativeModules', () => {
             resetTags: jest.fn(),
             getTags: jest.fn(cb => cb(['tags1', 'tags2'])),
             setString: jest.fn(),
-            setEnabledAttachmentTypes: jest.fn(),
             identifyUserWithEmail: jest.fn(),
             logOut: jest.fn(),
             logUserEventWithName: jest.fn(),
@@ -53,6 +52,7 @@ jest.mock('NativeModules', () => {
         },
         IBGBugReporting: {
             setFloatingButtonEdge: jest.fn(),
+            setEnabledAttachmentTypes: jest.fn(),
         }
     };
 });

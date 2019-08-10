@@ -280,6 +280,7 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link BugReporting.setEnabledAttachmentTypes}
    * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
    * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
    * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -295,7 +296,7 @@ const InstabugModule = {
     galleryImage,
     screenRecording
   ) {
-    Instabug.setEnabledAttachmentTypes(
+    BugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,

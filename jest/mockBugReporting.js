@@ -17,6 +17,7 @@ jest.mock('NativeModules', () => {
           setAutoScreenRecordingEnabled: jest.fn(),
           setAutoScreenRecordingMaxDuration: jest.fn(),
           setViewHierarchyEnabled: jest.fn(),
+          setEnabledAttachmentTypes: jest.fn(),
           setDidSelectPromptOptionHandler: jest.fn()
       },
       Instabug: {}

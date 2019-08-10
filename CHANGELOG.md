@@ -1,6 +1,6 @@
 ## v8.5.4 (2019-08-10)
 
-* Hot Fixes an issue with `Instabug.setFloatingButtonEdge` causing the app to crash.
+* Hot Fixes an issue with `Instabug.setFloatingButtonEdge` and `Instabug.setEnabledAttachmentTypes` causing the app to crash.
 
 ## v8.5.3 (2019-08-08)
 
