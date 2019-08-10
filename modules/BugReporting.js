@@ -257,6 +257,20 @@ export default {
   },
 
   /**
+   * Sets the default edge and offset from the top at which the floating button
+   * will be shown. Different orientations are already handled.
+   * Default for `floatingButtonEdge` is `rectEdge.maxX`.
+   * Default for `floatingButtonOffsetFromTop` is 50
+   * @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
+   * or `minX` to show on the left.
+   * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
+   * floating button.
+   */
+  setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
+    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+},
+
+  /**
    * The event used to invoke the feedback form
    * @readonly
    * @enum {number}

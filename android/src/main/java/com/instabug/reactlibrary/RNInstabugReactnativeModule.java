@@ -2079,22 +2079,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-
-    @ReactMethod
-    public void setFloatingButtonEdge(final String floatingButtonEdge, final int floatingButtonOffset) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                BugReporting.setFloatingButtonOffset(floatingButtonOffset);
-                if (floatingButtonEdge.equals("left"))
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
-                else
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
-            }
-        });
-    }
-
-
     private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
         switch (key) {
             case SHAKE_HINT:
