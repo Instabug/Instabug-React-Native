@@ -455,7 +455,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void sendJSCrash(String exceptionObject) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, false, null);
+            sendJSCrashByReflection(jsonObject, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -470,7 +470,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public void sendHandledJSCrash(String exceptionObject) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, true, null);
+            sendJSCrashByReflection(jsonObject, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -494,11 +494,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
- private void sendJSCrashByReflection(JSONObject exceptionObject, boolean isHandled, Report report) {
+ private void sendJSCrashByReflection(JSONObject exceptionObject, boolean isHandled) {
         try {
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
             if (method != null) {
-                method.invoke(null, exceptionObject, isHandled, currentReport);
+                method.invoke(null, exceptionObject, isHandled);
                 currentReport = null;
             }
         } catch (ClassNotFoundException e) {
