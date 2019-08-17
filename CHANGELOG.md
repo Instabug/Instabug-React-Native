@@ -1,3 +1,8 @@
+## v8.5.5 (2019-08-17)
+
+* Fixes an issue with the email validation when reporting a bug on Android.
+* Fixes an issue with the crash reporting which prevented the report from being submitted on Android.
+
 ## v8.5.4 (2019-08-10)
 
 * Hot Fixes an issue with `Instabug.setFloatingButtonEdge` and `Instabug.setEnabledAttachmentTypes` causing the app to crash.
