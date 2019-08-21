@@ -475,7 +475,7 @@ const InstabugModule = {
    * @param value the value
    */
   setUserAttribute(key, value) {
-    if (!key || !value || typeof key !== 'string' || typeof value !== 'string')
+    if (!key || typeof key !== 'string' || typeof value !== 'string')
       throw new TypeError('Invalid param, Expected String');
     Instabug.setUserAttribute(key, value);
   },
