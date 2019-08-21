@@ -1,3 +1,8 @@
+## v8.5.6 (2019-08-21)
+
+* Fixes an issue that crashes the SDK when calling `Instabug.onReportSubmitHandler` on iOS.
+* Fixes an issue with passing empty string value to `Instabug.setUserAttribute`.
+
 ## v8.5.5 (2019-08-17)
 
 * Fixes an issue with the email validation when reporting a bug on Android.
