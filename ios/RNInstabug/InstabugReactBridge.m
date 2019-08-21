@@ -24,6 +24,7 @@
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
+             @"IBGpreSendingHandler",
              @"IBGSendHandledJSCrash",
              @"IBGSendUnhandledJSCrash",
              @"IBGSetNetworkDataObfuscationHandler",
