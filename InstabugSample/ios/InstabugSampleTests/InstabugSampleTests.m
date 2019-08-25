@@ -98,7 +98,7 @@
 }
 
 - (void)testSetPushNotificationsEnabled {
-  id mock = OCMClassMock([Instabug class]);
+  id mock = OCMClassMock([IBGReplies class]);
   BOOL isPushNotificationEnabled = true;
   
   OCMStub([mock setPushNotificationsEnabled:isPushNotificationEnabled]);

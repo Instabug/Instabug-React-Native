@@ -162,23 +162,6 @@ RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
     IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
 }
 
-RCT_EXPORT_METHOD(setPromptOptionsEnabled:(BOOL)chatEnabled
-                  feedback:(BOOL)bugReportEnabled
-                  chat:(BOOL)feedbackEnabled) {
-    IBGPromptOption promptOption = IBGPromptOptionNone;
-    if (chatEnabled) {
-        promptOption |= IBGPromptOptionChat;
-    }
-    if (bugReportEnabled) {
-        promptOption |= IBGPromptOptionBug;
-    }
-    if (feedbackEnabled) {
-        promptOption |= IBGPromptOptionFeedback;
-    }
-    
-    [IBGBugReporting setPromptOptions:promptOption];
-}
-
 RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
     IBGBugReporting.shouldCaptureViewHierarchy = viewHirearchyEnabled;
 }
@@ -196,29 +179,18 @@ RCT_EXPORT_METHOD(setReportTypes:(NSArray*) types ) {
 }
 
 RCT_EXPORT_METHOD(show:(IBGBugReportingReportType)type options:(NSArray*) options) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        IBGBugReportingOption parsedOptions = 0;
-        for (NSNumber *boxedValue in options) {
-            parsedOptions |= [boxedValue intValue];
-        }
-        [IBGBugReporting showWithReportType:type options:parsedOptions];
-    }];
+    IBGBugReportingOption parsedOptions = 0;
+    for (NSNumber *boxedValue in options) {
+        parsedOptions |= [boxedValue intValue];
+    }
+    NSArray* args = @[@(type), @(parsedOptions)];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(showBugReportingWithReportTypeAndOptionsHelper:) target:self argument:args order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
-RCT_EXPORT_METHOD(invoke) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGBugReporting invoke];
-    }];
-}
-
-RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        IBGBugReportingInvocationOption invocationOptions = 0;
-        for (NSNumber *boxedValue in options) {
-            invocationOptions |= [boxedValue intValue];
-        }
-        [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
-    }];
+- (void) showBugReportingWithReportTypeAndOptionsHelper:(NSArray*)args {
+    IBGBugReportingReportType parsedreportType = [args[0] intValue];
+    IBGBugReportingOption parsedOptions = [args[1] intValue];
+    [IBGBugReporting showWithReportType:parsedreportType options:parsedOptions];
 }
 
 RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold) {

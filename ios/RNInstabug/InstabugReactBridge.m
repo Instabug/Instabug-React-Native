@@ -383,7 +383,6 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
@@ -419,6 +418,7 @@ RCT_EXPORT_METHOD(show) {
               
               @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
               @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
+              @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion),
               
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),
@@ -480,7 +480,7 @@ RCT_EXPORT_METHOD(show) {
               @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
               @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
               @"invocationHeader": kIBGInvocationTitleStringName,
-              @"talkToUs": kIBGTalkToUsStringName,
+              //@"talkToUs": kIBGTalkToUsStringName,
               @"startChats": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,

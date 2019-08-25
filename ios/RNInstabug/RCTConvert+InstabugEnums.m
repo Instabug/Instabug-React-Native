@@ -120,7 +120,8 @@ RCT_ENUM_CONVERTER(IBGAction, (@{
 
 RCT_ENUM_CONVERTER(IBGBugReportingReportType, (@{
                                  @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
-                                 @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback)
+                                 @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
+                                 @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion)
                                  }), IBGBugReportingReportTypeBug, integerValue);
 
 RCT_ENUM_CONVERTER(IBGBugReportingOption, (@{

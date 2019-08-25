@@ -202,6 +202,7 @@ final class ArgsRegistry {
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
+        args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
     }
 
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {

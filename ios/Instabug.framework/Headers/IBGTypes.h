@@ -5,12 +5,10 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.5.2
+ Version:    8.6.1
  */
 
 #import <UIKit/UIKit.h>
-
-#define IBG_DEPRECATED_ATTRIBUTE DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide for instructions on migrating to SDK v8.1 APIs.")
 
 /// ------------------------------
 /// @name User-facing Strings Keys
@@ -38,7 +36,6 @@ extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
 extern NSString * const kIBGInvalidCommentTitleStringName;
 extern NSString * const kIBGInvocationTitleStringName;
-extern NSString * const kIBGTalkToUsStringName DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-setvalue-string-forstringwithkey-kibgtalktousstringname for instructions on migrating to SDK v8.1 APIs.");
 extern NSString * const kIBGFeatureRequetsPromptName;
 extern NSString * const kIBGAskAQuestionStringName;
 extern NSString * const kIBGReportBugStringName;
@@ -54,6 +51,7 @@ extern NSString * const kIBGiCloudImportErrorAlertMessage;
 extern NSString * const kIBGEmailFieldPlaceholderStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForBugReportStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForFeedbackStringName;
+extern NSString * const kIBGCommentFieldPlaceholderForQuestionStringName;
 extern NSString * const kIBGChatReplyFieldPlaceholderStringName;
 extern NSString * const kIBGAddScreenRecordingMessageStringName;
 extern NSString * const kIBGAddVoiceMessageStringName;
@@ -213,8 +211,10 @@ typedef NS_ENUM(NSInteger, IBGInvocationMode) {
     IBGInvocationModeNA,
     IBGInvocationModeNewBug,
     IBGInvocationModeNewFeedback,
+    IBGInvocationModeNewQuestion,
     IBGInvocationModeNewChat,
-    IBGInvocationModeChatsList
+    IBGInvocationModeChatsList,
+    IBGInvocationModeNewQuestionManually        //Only when you call Chats.show()
 };
 
 /**
@@ -235,6 +235,7 @@ typedef NS_OPTIONS(NSInteger, IBGBugReportingInvocationOption) {
 typedef NS_OPTIONS(NSInteger, IBGBugReportingReportType) {
     IBGBugReportingReportTypeBug = 1 << 0,
     IBGBugReportingReportTypeFeedback = 1 << 1,
+    IBGBugReportingReportTypeQuestion = 1 << 2,
 };
 
 
@@ -248,7 +249,8 @@ typedef NS_OPTIONS(NSInteger, IBGBugReportingOption) {
 
 typedef NS_ENUM(NSInteger, IBGReportType) {
     IBGReportTypeBug,
-    IBGReportTypeFeedback
+    IBGReportTypeFeedback,
+    IBGReportTypeQuestion
 };
 
 /**

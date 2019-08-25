@@ -48,21 +48,6 @@
   XCTAssertEqual(IBGBugReporting.invocationEvents, invocationEvents);
 }
 
-- (void)testgiven$invoke_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  
-  OCMStub([mock invoke]);
-  [self.instabugBridge invoke];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock invoke]);
-    [expectation fulfill];
-  }];
-  
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
 - (void) testgivenOptions$setOptions_whenQuery_thenShouldCallNativeApiWithArgs {
   NSArray *invocationOptionsArr = [NSArray arrayWithObjects:  @(IBGBugReportingInvocationOptionEmailFieldHidden), nil];
   
@@ -72,26 +57,6 @@
     invocationOptions |= [boxedValue intValue];
   }
   XCTAssertEqual(IBGBugReporting.bugReportingOptions, invocationOptions);
-}
-
-- (void) testgivenInvocationModeAndOptiond$invokeWithModeOptions_whenQuery_thenShouldCallNativeApiWithArgs {
-  NSArray *invocationOptionsArr = [NSArray arrayWithObjects:  @(IBGBugReportingInvocationOptionEmailFieldHidden), nil];
-  IBGBugReportingInvocationOption invocationOptions = 0;
-  for (NSNumber *boxedValue in invocationOptionsArr) {
-    invocationOptions |= [boxedValue intValue];
-  }
-  IBGInvocationMode invocationMode = IBGInvocationModeNewBug;
-  id mock = OCMClassMock([IBGBugReporting class]);
-  OCMStub([mock invokeWithMode:invocationMode options:invocationOptions]);
-  [self.instabugBridge invokeWithInvocationModeAndOptions:invocationMode options:invocationOptionsArr];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock invokeWithMode:invocationMode options:invocationOptions]);
-    [expectation fulfill];
-  }];
-  
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
 - (void) testgivenHandler$setOnInvokeHandler_whenQuery_thenShouldCallNativeApi {
@@ -140,15 +105,6 @@
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
   IBGBugReporting.didDismissHandler(IBGDismissTypeAddAttachment,IBGReportTypeFeedback);
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-}
-
-- (void) testgivenBooleans$setPromptOptionsEnabled_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  BOOL enabled = true;
-  IBGPromptOption promptOption = IBGPromptOptionNone + IBGPromptOptionChat + IBGPromptOptionBug + IBGPromptOptionFeedback;
-  OCMStub([mock setPromptOptions:promptOption]);
-  [self.instabugBridge setPromptOptionsEnabled:enabled feedback:enabled chat:enabled];
-  OCMVerify([mock setPromptOptions:promptOption]);
 }
 
 - (void) skip_testgivenDouble$setShakingThresholdForiPhone_whenQuery_thenShouldCallNativeApi {

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    8.5.2
+ Version:    8.6.1
  */
 
 #import <Foundation/Foundation.h>
@@ -17,7 +17,7 @@ NS_SWIFT_NAME(BugReporting)
 /**
  @brief Acts as master switch for the Bug Reporting.
  
- @discussion It's enabled by default. When disabled, both "Report a problem" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
+ @discussion It's enabled by default. When disabled, both "Report a bug" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
  */
 @property (class, atomic, assign) BOOL enabled;
 
@@ -184,13 +184,5 @@ NS_SWIFT_NAME(BugReporting)
  | https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide             |
  +------------------------------------------------------------------------+
  */
-
-+ (void)invoke DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invoke for instructions on migrating to SDK v8.1 APIs.");
-
-+ (void)invokeWithMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invokewithmode for instructions on migrating to SDK v8.1 APIs.");
-
-@property(class, atomic, assign) IBGPromptOption promptOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-promptoptions for instructions on migrating to SDK v8.1 APIs.");
-
-@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invocationoptions for instructions on migrating to SDK v8.1 APIs.");
 
 @end

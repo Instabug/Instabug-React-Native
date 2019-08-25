@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    8.5.2
+ Version:    8.6.1
  */
 
 #import <Foundation/Foundation.h>
@@ -320,35 +320,6 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
  */
 @property (class, atomic, assign) IBGSDKDebugLogsLevel sdkDebugLogsLevel;
-
-/*
- +------------------------------------------------------------------------+
- |                            Deprecated APIs                             |
- +------------------------------------------------------------------------+
- | The following section includes all deprecated APIs.                    |
- |                                                                        |
- | We've made a few changes to our APIs starting from version 8.1 to make |
- | them more intuitive and easily reachable.                              |
- |                                                                        |
- | While the APIs below still function, they will be completely removed   |
- | in a future release.                                                   |
- |                                                                        |
- | To adopt the new changes, please refer to our migration guide at:      |
- | https://docs.instabug.com/docs/ios-migration-guide                     |
- +------------------------------------------------------------------------+
- */
-
-+ (void)setPushNotificationsEnabled:(BOOL)isPushNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-setpushnotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
-
-+ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didreceiveremotenotification for instructions on migrating to SDK v8.1 APIs.");
-
-+ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didregisterforremotenotificationswithdevicetoken for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, strong) void (^didRecieveReplyHandler)(void) DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didrecievereplyhandler for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, assign) BOOL replyNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-replynotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, assign, readonly) NSInteger unreadMessagesCount DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-unreadmessagescount for instructions on migrating to SDK v8.1 APIs.");
 
 @end
 

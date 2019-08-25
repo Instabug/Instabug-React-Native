@@ -25,7 +25,6 @@ import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.PromptOption;
 import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
@@ -169,6 +168,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private final String BUG_REPORTING_REPORT_TYPE_BUG = "bugReportingReportTypeBug";
     private final String BUG_REPORTING_REPORT_TYPE_FEEDBACK = "bugReportingReportTypeFeedback";
+    private final String BUG_REPORTING_REPORT_TYPE_QUESTION = "bugReportingReportTypeQuestion";
 
     private final String EMAIL_FIELD_HIDDEN = "emailFieldHidden";
     private final String EMAIL_FIELD_OPTIONAL = "emailFieldOptional";
@@ -233,82 +233,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "Instabug";
-    }
-
-    /**
-     * invoke sdk manually with mode and options
-     *
-     * @param
-     */
-    @ReactMethod
-    public void invoke() {
-        try {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    BugReporting.invoke();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * invoke sdk manually with desire invocation mode
-     *
-     * @param invocationMode the invocation mode
-     * @param invocationOptions the array of invocation options
-     */
-    @SuppressLint("WrongConstant")
-    @ReactMethod
-    public void invokeWithInvocationModeAndOptions(String invocationMode, ReadableArray invocationOptions) {
-
-
-        InvocationMode mode;
-
-
-        if (invocationMode.equals(INVOCATION_MODE_NEW_BUG)) {
-            mode = InvocationMode.NEW_BUG;
-        } else if (invocationMode.equals(INVOCATION_MODE_NEW_FEEDBACK)) {
-            mode = InvocationMode.NEW_FEEDBACK;
-        } else if (invocationMode.equals(INVOCATION_MODE_NEW_CHAT)) {
-            mode = InvocationMode.NEW_CHAT;
-        } else if (invocationMode.equals(INVOCATION_MODE_CHATS_LIST)) {
-            mode = InvocationMode.CHATS_LIST;
-        } else {
-            mode = InvocationMode.PROMPT_OPTION;
-        }
-
-        Object[] objectArray = ArrayUtil.toArray(invocationOptions);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-
-        int[] arrayOfParsedOptions = new int[stringArray.length];
-        int i = 0;
-        for (String option : stringArray) {
-            switch (option) {
-                case EMAIL_FIELD_HIDDEN:
-                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_HIDDEN;
-                    break;
-                case EMAIL_FIELD_OPTIONAL:
-                    arrayOfParsedOptions[i++] = InvocationOption.EMAIL_FIELD_OPTIONAL;
-                    break;
-                case COMMENT_FIELD_REQUIRED:
-                    arrayOfParsedOptions[i++] = InvocationOption.COMMENT_FIELD_REQUIRED;
-                    break;
-                case DISABLE_POST_SENDING_DIALOG:
-                    arrayOfParsedOptions[i++] = InvocationOption.DISABLE_POST_SENDING_DIALOG;
-                    break;
-                default:
-                    break;
-            }
-        }
-        try {
-            BugReporting.invoke(mode, arrayOfParsedOptions);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -1096,24 +1020,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
-
-    /**
-     * @deprecated
-     * Sets whether users are required to enter a comment or not when sending reports.
-     * Defaults to NO.
-     *
-     * @param isCommentFieldRequired A boolean to indicate whether comment
-     *                               field is required or not.
-     */
-    @ReactMethod
-    public void setCommentFieldRequired(boolean isCommentFieldRequired) {
-        try {
-            BugReporting.setInvocationOptions(InvocationOption.COMMENT_FIELD_REQUIRED);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
+    
     /**
      * Overrides any of the strings shown in the SDK with custom ones.
      * Allows you to customize any of the strings shown to users in the SDK.
@@ -1464,72 +1371,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             });
     }
 
-    /**
-     * @deprecated
-     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-     * becomes the default invocation option that SDK gets invoked with and prompt options screen
-     * will not show. When none is enabled, Bug reporting becomes the default invocation option.
-     *
-     * @param chat     weather Talk to us is enable or not
-     * @param bug      weather Report a Problem is enable or not
-     * @param feedback weather General Feedback  is enable or not
-     */
-    @ReactMethod
-    public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
-
-        ArrayList<PromptOption> options = new ArrayList<>();
-
-        if (chat) {
-            options.add(PromptOption.CHAT);
-        }
-
-        if (feedback) {
-            options.add(PromptOption.FEEDBACK);
-        }
-
-        if (bug) {
-            options.add(PromptOption.BUG);
-        }
-
-        try {
-            BugReporting.setPromptOptionsEnabled(options.toArray(new PromptOption[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @deprecated
-     * Sets whether email field is required or not when submitting
-     * bug/feedback/new-feature-request/new-comment-on-feature
-     *
-     * @param promptOptions Bitwise-or of prompt option types
-     */
-    @ReactMethod
-    public void setPromptOptions(ReadableArray promptOptions) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(promptOptions);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            for (String action : stringArray) {
-                switch (action) {
-                    case PROMPT_OPTION_BUG:
-                        BugReporting.setPromptOptionsEnabled();
-                        return;
-                    case PROMPT_OPTION_CHAT:
-                        BugReporting.setPromptOptionsEnabled();
-                        break;
-                    case PROMPT_OPTION_FEEDBACK:
-                        BugReporting.setPromptOptionsEnabled();
-                        break;
-                    default:
-                        BugReporting.setPromptOptionsEnabled();
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Clears all Uris of the attached files.
@@ -1680,21 +1521,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @param enabled true to show success dialog after submitting a bug report
-     */
-    @ReactMethod
-    public void setSuccessDialogEnabled(boolean enabled) {
-        if (enabled) {
-            try {
-                BugReporting.setInvocationOptions(InvocationOption.DISABLE_POST_SENDING_DIALOG);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    /**
      * Set after how many sessions should the dismissed survey would show again.
      *
      * @param sessionsCount number of sessions that the dismissed survey will be shown after.
@@ -1732,22 +1558,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         Instabug.show();
     }
 
-    @SuppressLint("WrongConstant")
-    @ReactMethod
-    public void setReportTypes(ReadableArray types) {
-        Object[] objectArray = ArrayUtil.toArray(types);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        int[] parsedReportTypes = new int[stringArray.length];
-        for (int i = 0; i < stringArray.length; i++) {
-            if (stringArray[i].equals(BUG_REPORTING_REPORT_TYPE_BUG)) {
-                parsedReportTypes[i] = BugReporting.ReportType.BUG;
-            } else if (stringArray[i].equals(BUG_REPORTING_REPORT_TYPE_FEEDBACK)) {
-                parsedReportTypes[i] = BugReporting.ReportType.FEEDBACK;
-            }
-        }
-        BugReporting.setReportTypes(parsedReportTypes);
-    }
-
     @ReactMethod
     public void setBugReportingEnabled(final boolean isEnabled) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -1764,20 +1574,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-
-    }
-
-    @ReactMethod
-    public void showBugReportingWithReportTypeAndOptions(String reportType, ReadableArray options) {
-        if (!reportType.equals(BUG_REPORTING_REPORT_TYPE_BUG) && !reportType.equals(BUG_REPORTING_REPORT_TYPE_FEEDBACK)) {
-            return;
-        }
-        if (reportType.equals(BUG_REPORTING_REPORT_TYPE_BUG)) {
-            BugReporting.show(BugReporting.ReportType.BUG);
-        } else if(reportType.equals(BUG_REPORTING_REPORT_TYPE_FEEDBACK)) {
-            BugReporting.show(BugReporting.ReportType.FEEDBACK);
-        }
-        setInvocationOptions(options);
 
     }
 
@@ -2191,6 +1987,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
         constants.put(BUG_REPORTING_REPORT_TYPE_BUG, BUG_REPORTING_REPORT_TYPE_BUG);
         constants.put(BUG_REPORTING_REPORT_TYPE_FEEDBACK, BUG_REPORTING_REPORT_TYPE_FEEDBACK);
+        constants.put(BUG_REPORTING_REPORT_TYPE_QUESTION, BUG_REPORTING_REPORT_TYPE_QUESTION);
 
         constants.put("localeArabic", LOCALE_ARABIC);
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);

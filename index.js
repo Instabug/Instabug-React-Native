@@ -803,40 +803,6 @@ const InstabugModule = {
   },
 
   /**
-   * Type of SDK dismiss
-   * @readonly
-   * @enum {number}
-   */
-  promptOption: {
-    bug: Instabug.promptOptionBug,
-    chat: Instabug.promptOptionChat,
-    feedback: Instabug.promptOptionFeedback
-  },
-
-  /**
-   * Type of report to be submit
-   * @readonly
-   * @enum {number}
-   */
-  reportType: {
-    bug: Instabug.reportTypeBug,
-    feedback: Instabug.reportTypeFeedback
-  },
-
-  /**
-   *  The mode used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationMode: {
-    NA: Instabug.invocationModeNA,
-    newBug: Instabug.invocationModeNewBug,
-    newFeedback: Instabug.invocationModeNewFeedback,
-    newChat: Instabug.invocationModeNewChat,
-    chatsList: Instabug.invocationModeChatsList
-  },
-
-  /**
    *  The options used upon invocating the SDK
    * @readonly
    * @enum {number}

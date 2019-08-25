@@ -43,9 +43,7 @@ RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGReplies show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGReplies class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 RCT_EXPORT_METHOD(setOnNewReplyReceivedHandler:(RCTResponseSenderBlock) callback) {

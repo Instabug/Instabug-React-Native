@@ -33,17 +33,6 @@ export default {
   /* istanbul ignore next */
   /**
    * @deprecated
-   * Invokes the SDK manually with the default invocation mode.
-   * Shows a view that asks the user whether they want to start a chat, report
-   * a problem or suggest an improvement.
-   */
-  invoke() {
-    IBGBugReporting.invoke();
-  },
-
-  /* istanbul ignore next */
-  /**
-   * @deprecated
    * Sets the invocation options.
    * Default is set by `Instabug.startWithToken`.
    * @param {invocationOptions} invocationOptions Array of invocation options
@@ -59,30 +48,6 @@ export default {
    */
   setOptions(options) {
     IBGBugReporting.setOptions(options);
-  },
-
-  /* istanbul ignore next */
-  /**
-   * @deprecated
-   * Invokes the SDK with a specific mode.
-   * Invokes the SDK and show a specific view, instead of showing a prompt for
-   * users to choose from.
-   * @param {invocationMode} invocationMode Specifies which mode the
-   * SDK is going to start with.
-   * @param {invocationOptions} invocationOptions Specifies which mode the
-   * SDK is going to start with.
-   */
-  invokeWithInvocationModeAndOptions(
-    invocationMode,
-    invocationOptions
-  ) {
-    if (!invocationOptions) {
-      invocationOptions = [];
-    }
-    Instabug.invokeWithInvocationModeAndOptions(
-      invocationMode,
-      invocationOptions
-    );
   },
 
   /**
@@ -121,23 +86,6 @@ export default {
       handler(payload.dismissType, payload.reportType);
     });
     IBGBugReporting.setOnSDKDismissedHandler(handler);
-  },
-
-  /* istanbul ignore next */
-  /**
-   * @deprecated
-   * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-   * becomes the default
-   * invocation option that SDK gets invoked with and prompt options screen will not show. When
-   * none is enabled, Bug
-   * reporting becomes the default invocation option.
-   *
-   * @param  {boolean} chat      whether Talk to us is enable or not
-   * @param  {boolean} bug       whether Report a Problem is enable or not
-   * @param  {boolean} feedback  whether General Feedback  is enable or not
-   * */
-  setPromptOptionsEnabled(chat, bug, feedback) {
-    IBGBugReporting.setPromptOptionsEnabled(chat, bug, feedback);
   },
 
   /**
@@ -307,19 +255,7 @@ export default {
     floatingButton: Instabug.invocationEventFloatingButton
   },
 
-  /**
-   *  The mode used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationMode: {
-    NA: Instabug.invocationModeNA,
-    newBug: Instabug.invocationModeNewBug,
-    newFeedback: Instabug.invocationModeNewFeedback,
-    newChat: Instabug.invocationModeNewChat,
-    chatsList: Instabug.invocationModeChatsList
-  },
-
+  
   /**
    * @deprecated use @link { option }
    * The options used upon invocating the SDK
@@ -351,7 +287,8 @@ export default {
    */
   reportType: {
     bug: Instabug.bugReportingReportTypeBug,
-    feedback: Instabug.bugReportingReportTypeFeedback
+    feedback: Instabug.bugReportingReportTypeFeedback,
+    question: Instabug.bugReportingReportTypeQuestion
   },
 
   /**
