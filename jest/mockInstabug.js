@@ -53,6 +53,9 @@ jest.mock('NativeModules', () => {
         IBGBugReporting: {
             setFloatingButtonEdge: jest.fn(),
             setEnabledAttachmentTypes: jest.fn(),
+        },
+        IBGReplies: {
+            setPushNotificationsEnabled: jest.fn(),
         }
     };
 });

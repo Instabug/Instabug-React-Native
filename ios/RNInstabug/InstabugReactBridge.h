@@ -32,8 +32,6 @@
 
 - (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled;
 
-- (void)setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled;
-
 - (void)setLocale:(IBGLocale)locale;
 
 - (void)setColorTheme:(IBGColorTheme)colorTheme;

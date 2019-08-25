@@ -202,10 +202,6 @@ RCT_EXPORT_METHOD(submitReport) {
     currentReport = nil;
 }
 
-RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
-    [Instabug setPushNotificationsEnabled:isPushNotificationEnabled];
-}
-
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }

@@ -65,6 +65,9 @@ RCT_EXPORT_METHOD(setInAppNotificationEnabled:(BOOL)isChatNotificationEnabled) {
     IBGReplies.inAppNotificationsEnabled = isChatNotificationEnabled;
 }
 
+RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
+    [IBGReplies setPushNotificationsEnabled:isPushNotificationEnabled];
+}
 
 @synthesize description;
 

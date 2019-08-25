@@ -31,6 +31,9 @@
 
 - (void)setInAppNotificationEnabled:(BOOL)isChatNotificationEnabled;
 
+- (void)setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled;
+
+
 
 @end
 

@@ -162,14 +162,14 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setPushNotificationsEnabled}
    * Enables/disables the use of push notifications in the SDK.
    * Defaults to YES.
    * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
    * notifications are enabled or disabled.
    */
   setPushNotificationsEnabled(isPushNotificationEnabled) {
-    if (Platform.OS === 'ios')
-      Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
+      Replies.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
   /* istanbul ignore next */
