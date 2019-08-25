@@ -1,3 +1,7 @@
+## Master
+
+* Bump native SDKs to 8.6.1
+
 ## v8.5.6 (2019-08-21)
 
 * Fixes an issue that crashes the SDK when calling `Instabug.onReportSubmitHandler` on iOS.
