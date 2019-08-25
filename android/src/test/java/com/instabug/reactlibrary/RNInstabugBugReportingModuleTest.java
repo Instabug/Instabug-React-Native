@@ -73,16 +73,6 @@ public class RNInstabugBugReportingModuleTest {
 
     /********BugReporting*********/
 
-    @Test
-    public void given$invoke_whenQuery_thenShouldCallNativeApi() {
-        // given
-        PowerMockito.mockStatic(BugReporting.class);
-        // when
-        bugReportingModule.invoke();
-        // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-        BugReporting.invoke();
-    }
 
     @Test
     public void givenShakingThreshold$setShakingThresholdForAndroid_whenQuery_thenShouldCallNativeApiWithShakingThreshold() {
