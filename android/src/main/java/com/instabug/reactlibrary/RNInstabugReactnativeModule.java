@@ -151,6 +151,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String EMAIL_FIELD_HINT = "emailFieldHint";
     private final String COMMENT_FIELD_HINT_FOR_BUG_REPORT = "commentFieldHintForBugReport";
     private final String COMMENT_FIELD_HINT_FOR_FEEDBACK = "commentFieldHintForFeedback";
+    private final String COMMENT_FIELD_HINT_FOR_QUESTION = "commentFieldHintForQuestion";
+
 
     private final String INVOCATION_HEADER = "invocationHeader";
     private final String START_CHATS = "startChats";
@@ -1872,6 +1874,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT;
             case COMMENT_FIELD_HINT_FOR_FEEDBACK:
                 return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK;
+            case COMMENT_FIELD_HINT_FOR_QUESTION:
+                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION;
             case INVOCATION_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
             case START_CHATS:
@@ -2055,6 +2059,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("emailFieldHint", EMAIL_FIELD_HINT);
         constants.put("commentFieldHintForBugReport", COMMENT_FIELD_HINT_FOR_BUG_REPORT);
         constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
+        constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
         constants.put("invocationHeader", INVOCATION_HEADER);
         constants.put("talkToUs", START_CHATS);
         constants.put("startChats", START_CHATS);

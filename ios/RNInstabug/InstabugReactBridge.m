@@ -404,9 +404,6 @@ RCT_EXPORT_METHOD(show) {
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
               
-              @"reportTypeBug": @(IBGReportTypeBug),
-              @"reportTypeFeedback": @(IBGReportTypeFeedback),
-              
               @"optionEmailFieldHidden": @(IBGBugReportingOptionEmailFieldHidden),
               @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
               @"optionCommentFieldRequired": @(IBGBugReportingOptionCommentFieldRequired),
@@ -483,6 +480,7 @@ RCT_EXPORT_METHOD(show) {
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,
               @"commentFieldHintForBugReport": kIBGCommentFieldPlaceholderForBugReportStringName,
               @"commentFieldHintForFeedback": kIBGCommentFieldPlaceholderForFeedbackStringName,
+              @"commentFieldHintForQuestion": kIBGCommentFieldPlaceholderForQuestionStringName,
               @"addVideoMessage": kIBGAddScreenRecordingMessageStringName,
               @"addVoiceMessage": kIBGAddVoiceMessageStringName,
               @"addImageFromGallery": kIBGAddImageFromGalleryStringName,

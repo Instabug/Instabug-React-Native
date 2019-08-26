@@ -176,6 +176,7 @@ final class ArgsRegistry {
         args.put("emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
         args.put("commentFieldHintForBugReport", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
         args.put("commentFieldHintForFeedback", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
+        args.put("commentFieldHintForQuestion", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION);
         args.put("addVoiceMessage", InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE);
         args.put("addImageFromGallery", InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY);
         args.put("addExtraScreenshot", InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT);

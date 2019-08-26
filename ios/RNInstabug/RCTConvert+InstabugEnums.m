@@ -41,12 +41,6 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
 
-RCT_ENUM_CONVERTER(IBGPromptOption, (@{
-                                      @"promptOptionChat": @(IBGPromptOptionChat),
-                                      @"promptOptionBug": @(IBGPromptOptionBug),
-                                      @"promptOptionBugFeedback": @(IBGPromptOptionFeedback)
-                                      }), IBGPromptOptionChat, integerValue)
-
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
                                       @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
@@ -57,12 +51,6 @@ RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{
                                       @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
                                       @"disabled": @(IBGExtendedBugReportModeDisabled)
                                       }), IBGExtendedBugReportModeDisabled, integerValue)
-
-
-RCT_ENUM_CONVERTER(IBGReportType, (@{
-                                     @"reportTypeBug": @(IBGReportTypeBug),
-                                     @"reportTypeFeedback": @(IBGReportTypeFeedback)
-                                     }), IBGReportTypeBug, integerValue);
 
 RCT_ENUM_CONVERTER(CGRectEdge, (@{
                                   @"rectMinXEdge": @(CGRectMinXEdge),
