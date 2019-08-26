@@ -1,6 +1,8 @@
-## Master
+## v8.6.1 (2019-08-26)
 
-* Bump native SDKs to 8.6.1
+* Introducing our new logo and branding. Meet the new Instabug: the platform for Real-Time Contextual Insights.
+* Updates native SDK dependencies to 8.6.1.
+* Adds the `enabled` key to `Instabug.reproStepsMode` enum to be able to use it with `Instabug.setReproStepsMode` API.
 
 ## v8.5.6 (2019-08-21)
 
