@@ -202,10 +202,6 @@ RCT_EXPORT_METHOD(submitReport) {
     currentReport = nil;
 }
 
-RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
-    [Instabug setPushNotificationsEnabled:isPushNotificationEnabled];
-}
-
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
@@ -383,7 +379,6 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 }
 
 RCT_EXPORT_METHOD(show) {
-
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
@@ -409,9 +404,6 @@ RCT_EXPORT_METHOD(show) {
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
               
-              @"reportTypeBug": @(IBGReportTypeBug),
-              @"reportTypeFeedback": @(IBGReportTypeFeedback),
-              
               @"optionEmailFieldHidden": @(IBGBugReportingOptionEmailFieldHidden),
               @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
               @"optionCommentFieldRequired": @(IBGBugReportingOptionCommentFieldRequired),
@@ -419,6 +411,7 @@ RCT_EXPORT_METHOD(show) {
               
               @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
               @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
+              @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion),
               
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),
@@ -480,13 +473,14 @@ RCT_EXPORT_METHOD(show) {
               @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
               @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
               @"invocationHeader": kIBGInvocationTitleStringName,
-              @"talkToUs": kIBGTalkToUsStringName,
+              //@"talkToUs": kIBGTalkToUsStringName,
               @"startChats": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,
               @"commentFieldHintForBugReport": kIBGCommentFieldPlaceholderForBugReportStringName,
               @"commentFieldHintForFeedback": kIBGCommentFieldPlaceholderForFeedbackStringName,
+              @"commentFieldHintForQuestion": kIBGCommentFieldPlaceholderForQuestionStringName,
               @"addVideoMessage": kIBGAddScreenRecordingMessageStringName,
               @"addVoiceMessage": kIBGAddVoiceMessageStringName,
               @"addImageFromGallery": kIBGAddImageFromGalleryStringName,

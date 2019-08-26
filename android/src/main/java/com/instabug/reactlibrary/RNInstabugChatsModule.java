@@ -24,6 +24,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated Use {@link BugReporting.setReportTypes} instead.
      * Enables or disables the feature Chats.
      * @param isEnabled boolean indicating enabled or disabled.
      */
@@ -46,6 +47,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * @deprecated Use {@link BugReporting.show} instead.
      * Show the chats view.
      */
     @ReactMethod

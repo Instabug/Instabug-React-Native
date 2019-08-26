@@ -23,19 +23,13 @@
 
 - (void)setInvocationEvents:(NSArray *)invocationEventsArray;
 
-- (void)invoke;
-
 - (void)setOptions:(NSArray *)optionsArray;
 
 - (void)setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop;
 
-- (void)invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray *)options;
-
 - (void)setOnInvokeHandler:(RCTResponseSenderBlock)callBack;
 
 - (void)setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack;
-
-- (void)setPromptOptionsEnabled:(BOOL)chatEnabled feedback:(BOOL)bugReportEnabled chat:(BOOL)feedbackEnabled;
 
 - (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold;
 

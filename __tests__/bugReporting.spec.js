@@ -226,20 +226,6 @@ describe('Testing BugReporting Module', () => {
 
   });
 
-  it('should invoke callback on emitting the event IBGDidSelectPromptOptionHandler', (done) => {
-
-    Platform.OS = 'ios';
-    const payload = { promptOption: Instabug.promptOption.bug };
-    const callback = (promptOption) => {
-      expect(promptOption).toBe(payload.promptOption);
-      done();
-    }
-    BugReporting.setDidSelectPromptOptionHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
-
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(1);
-  });
-
   it('should return on calling setDidSelectPromptOptionHandler when Platform is android', () => {
 
     Platform.OS = 'android';

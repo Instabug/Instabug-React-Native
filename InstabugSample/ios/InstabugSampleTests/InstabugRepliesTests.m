@@ -85,6 +85,15 @@
   XCTAssertFalse(IBGReplies.inAppNotificationsEnabled);
 }
 
+- (void)testSetPushNotificationsEnabled {
+  id mock = OCMClassMock([IBGReplies class]);
+  BOOL isPushNotificationEnabled = true;
+  
+  OCMStub([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
+  [self.instabugBridge setPushNotificationsEnabled:isPushNotificationEnabled];
+  OCMVerify([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
+}
+
 
 @end
 

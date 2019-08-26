@@ -13,8 +13,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.PromptOption;
-import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.Option;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
@@ -66,54 +64,6 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
 
     }
 
-    /**
-     * @deprecated
-     * invoke sdk manually with mode and options
-     */
-    @ReactMethod
-    public void invoke() {
-        try {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    BugReporting.invoke();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @deprecated
-     * invoke sdk manually with desire invocation mode
-     *
-     * @param invocationMode the invocation mode
-     * @param invocationOptions the array of invocation options
-     */
-    @SuppressLint("WrongConstant")
-    @ReactMethod
-    public void invokeWithInvocationModeAndOptions(String invocationMode, ReadableArray invocationOptions) {
-
-
-        InvocationMode mode = ArgsRegistry.getDeserializedValue(invocationMode, InvocationMode.class);
-
-
-        Object[] objectArray = ArrayUtil.toArray(invocationOptions);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-
-        int[] arrayOfParsedOptions = new int[stringArray.length];
-        int i = 0;
-        for (String option : stringArray) {
-            arrayOfParsedOptions[i++] = ArgsRegistry.getDeserializedValue(option, int.class);
-        }
-        try {
-            BugReporting.invoke(mode, arrayOfParsedOptions);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Enable/Disable screen recording
@@ -339,40 +289,6 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @deprecated
-     * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-     * becomes the default invocation option that SDK gets invoked with and prompt options screen
-     * will not show. When none is enabled, Bug reporting becomes the default invocation option.
-     *
-     * @param chat     weather Talk to us is enable or not
-     * @param bug      weather Report a Problem is enable or not
-     * @param feedback weather General Feedback  is enable or not
-     */
-    @ReactMethod
-    public void setPromptOptionsEnabled(boolean chat, boolean bug, boolean feedback) {
-
-        ArrayList<PromptOption> options = new ArrayList<>();
-
-        if (chat) {
-            options.add(PromptOption.CHAT);
-        }
-
-        if (feedback) {
-            options.add(PromptOption.FEEDBACK);
-        }
-
-        if (bug) {
-            options.add(PromptOption.BUG);
-        }
-
-        try {
-            BugReporting.setPromptOptionsEnabled(options.toArray(new PromptOption[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Sets the threshold value of the shake gesture for android devices.
      * Default for android is an integer value equals 350.
      * you could increase the shaking difficulty level by
@@ -399,11 +315,20 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     public void setReportTypes(ReadableArray types) {
         Object[] objectArray = ArrayUtil.toArray(types);
         String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        int[] parsedReportTypes = new int[stringArray.length];
+        final int[] parsedReportTypes = new int[stringArray.length];
         for (int i = 0; i < stringArray.length; i++) {
             parsedReportTypes[i] = (int) ArgsRegistry.getRawValue(stringArray[i]);
         }
-        BugReporting.setReportTypes(parsedReportTypes);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setReportTypes(parsedReportTypes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

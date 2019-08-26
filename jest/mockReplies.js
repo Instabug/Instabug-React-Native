@@ -8,7 +8,8 @@ jest.mock('NativeModules', () => {
             getUnreadRepliesCount: jest.fn(cb => cb(2)),
             setInAppNotificationEnabled: jest.fn(),
             setInAppNotificationSound: jest.fn(),
-            addListener: jest.fn()
+            addListener: jest.fn(),
+            setPushNotificationsEnabled: jest.fn()
         },
     };
 });

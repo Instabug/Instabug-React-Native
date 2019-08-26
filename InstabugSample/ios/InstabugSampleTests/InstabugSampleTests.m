@@ -97,15 +97,6 @@
   OCMVerify([mock setSessionProfilerEnabled:sessionProfilerEnabled]);
 }
 
-- (void)testSetPushNotificationsEnabled {
-  id mock = OCMClassMock([Instabug class]);
-  BOOL isPushNotificationEnabled = true;
-  
-  OCMStub([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
-  [self.instabugBridge setPushNotificationsEnabled:isPushNotificationEnabled];
-  OCMVerify([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
-}
-
 - (void)testSetLocale {
   id<InstabugCPTestProtocol> mock = OCMClassMock([Instabug class]);
 

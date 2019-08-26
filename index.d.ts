@@ -6,21 +6,11 @@
 export namespace BugReporting {
   function setEnabled(isEnabled: boolean): void;
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
-  function invoke(): void;
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
-  function invokeWithInvocationModeAndOptions(
-    invocationMode: invocationMode,
-    invocationOptions: invocationOptions[]
-    ): void;
   function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
   function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
-  function setPromptOptionsEnabled(
-    chat: boolean,
-    bug: boolean,
-    feedback: boolean
-    ): void;
   function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
@@ -39,13 +29,6 @@ export namespace BugReporting {
     twoFingersSwipe,
     floatingButton
   }
-  enum invocationMode {
-    NA,
-    newBug,
-    newFeedback,
-    newChat,
-    chatsList
-  }
   enum invocationOptions {
     emailFieldHidden,
     emailFieldOptional,
@@ -59,7 +42,8 @@ export namespace BugReporting {
   }
   enum reportType {
     bug,
-    feedback
+    feedback,
+    question
   }
   enum option {
     emailFieldHidden,
@@ -241,22 +225,6 @@ export enum dismissType {
   cancel,
   addAttachment
 }
-export enum promptOption {
-  bug,
-  chat,
-  feedback
-}
-export enum reportType {
-  bug,
-  feedback
-}
-export enum invocationMode {
-  NA,
-  newBug,
-  newFeedback,
-  newChat,
-  chatsList
-}
 export enum invocationOptions {
   invocationOptionsEmailFieldHidden,
   invocationOptionsEmailFieldOptional,
@@ -329,6 +297,7 @@ export enum strings {
   emailFieldHint,
   commentFieldHintForBugReport,
   commentFieldHintForFeedback,
+  commentFieldHintForQuestion,
   addVideoMessage,
   addVoiceMessage,
   addImageFromGallery,

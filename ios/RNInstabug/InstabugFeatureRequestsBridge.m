@@ -32,9 +32,7 @@
 RCT_EXPORT_MODULE(IBGFeatureRequests)
 
 RCT_EXPORT_METHOD(show) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGFeatureRequests show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGFeatureRequests class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired

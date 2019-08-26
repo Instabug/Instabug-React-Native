@@ -36,9 +36,7 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(show) {
-    [[NSRunLoop mainRunLoop] performBlock:^{
-        [IBGChats show];
-    }];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGChats class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 @synthesize description;

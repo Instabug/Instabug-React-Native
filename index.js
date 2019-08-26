@@ -162,14 +162,14 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated use {@link Replies.setPushNotificationsEnabled}
    * Enables/disables the use of push notifications in the SDK.
    * Defaults to YES.
    * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
    * notifications are enabled or disabled.
    */
   setPushNotificationsEnabled(isPushNotificationEnabled) {
-    if (Platform.OS === 'ios')
-      Instabug.setPushNotificationsEnabled(isPushNotificationEnabled);
+      Replies.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
   /* istanbul ignore next */
@@ -803,40 +803,6 @@ const InstabugModule = {
   },
 
   /**
-   * Type of SDK dismiss
-   * @readonly
-   * @enum {number}
-   */
-  promptOption: {
-    bug: Instabug.promptOptionBug,
-    chat: Instabug.promptOptionChat,
-    feedback: Instabug.promptOptionFeedback
-  },
-
-  /**
-   * Type of report to be submit
-   * @readonly
-   * @enum {number}
-   */
-  reportType: {
-    bug: Instabug.reportTypeBug,
-    feedback: Instabug.reportTypeFeedback
-  },
-
-  /**
-   *  The mode used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationMode: {
-    NA: Instabug.invocationModeNA,
-    newBug: Instabug.invocationModeNewBug,
-    newFeedback: Instabug.invocationModeNewFeedback,
-    newChat: Instabug.invocationModeNewChat,
-    chatsList: Instabug.invocationModeChatsList
-  },
-
-  /**
    *  The options used upon invocating the SDK
    * @readonly
    * @enum {number}
@@ -955,13 +921,13 @@ const InstabugModule = {
     invalidCommentMessage: Instabug.invalidCommentMessage,
     invalidCommentTitle: Instabug.invalidCommentTitle,
     invocationHeader: Instabug.invocationHeader,
-    talkToUs: Instabug.talkToUs,
     startChats: Instabug.startChats,
     reportBug: Instabug.reportBug,
     reportFeedback: Instabug.reportFeedback,
     emailFieldHint: Instabug.emailFieldHint,
     commentFieldHintForBugReport: Instabug.commentFieldHintForBugReport,
     commentFieldHintForFeedback: Instabug.commentFieldHintForFeedback,
+    commentFieldHintForQuestion: Instabug.commentFieldHintForQuestion,
     addVideoMessage: Instabug.addVideoMessage,
     addVoiceMessage: Instabug.addVoiceMessage,
     addImageFromGallery: Instabug.addImageFromGallery,
