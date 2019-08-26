@@ -401,6 +401,7 @@ RCT_EXPORT_METHOD(show) {
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
               
+              @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
               

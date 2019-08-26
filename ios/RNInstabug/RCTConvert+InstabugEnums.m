@@ -42,6 +42,7 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       }), IBGDismissTypeSubmit, integerValue)
 
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
+                                      @"reproStepsEnabled": @(IBGUserStepsModeEnable),
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
                                       @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnabledWithNoScreenshots, integerValue)
