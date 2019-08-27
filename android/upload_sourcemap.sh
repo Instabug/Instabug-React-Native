@@ -34,7 +34,7 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ] || [ "${INSTA
     exit 0
 else
     echo "Instabug: Uploading files..."
-    #Upload ios sourcemap
+    #Upload android sourcemap
     curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files'  -F "symbols_file=@./android-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=android" 
     echo 
 fi
