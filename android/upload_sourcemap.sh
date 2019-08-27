@@ -9,7 +9,7 @@ elif [[ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]]; then
 fi
 export NODE_BINARY=node
 
-if [ ! "${INSTABUG_APP_TOKEN}" || [ -z "${INSTABUG_APP_TOKEN}" ]; then
+if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: Looking for Token..."
     INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2)
 fi
