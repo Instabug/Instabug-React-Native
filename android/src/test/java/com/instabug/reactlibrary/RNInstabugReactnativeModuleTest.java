@@ -130,10 +130,8 @@ public class RNInstabugReactnativeModuleTest {
             // when
             rnModule.sendHandledJSCrash("exception");
             // then
-            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
             JSONObject jsonObject = new JSONObject("exception");
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
-            method.invoke(null, jsonObject, true);
+            PowerMockito.verifyPrivate(CrashReporting.class, VerificationModeFactory.times(1)).invoke("reportException", jsonObject, true);
     }
 
     @Test
@@ -147,10 +145,8 @@ public class RNInstabugReactnativeModuleTest {
             // when
             rnModule.sendJSCrash("exception");
             // then
-            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
             JSONObject jsonObject = new JSONObject("exception");
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
-            method.invoke(null, jsonObject, false);
+            PowerMockito.verifyPrivate(CrashReporting.class, VerificationModeFactory.times(1)).invoke("reportException", jsonObject, false);
     }
 
     /********Instabug*********/
