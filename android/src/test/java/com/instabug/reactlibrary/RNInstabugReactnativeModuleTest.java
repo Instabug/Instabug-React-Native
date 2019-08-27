@@ -2,39 +2,30 @@ package com.instabug.reactlibrary;
 
 import android.os.Handler;
 import android.os.Looper;
-
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.JavaOnlyArray;
-import com.facebook.react.bridge.JavaOnlyMap;
-import com.facebook.react.bridge.WritableMap;
-import com.instabug.bug.BugReporting;
-
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
+import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
-import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.InstabugState;
-
-import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
-import com.instabug.survey.OnDismissCallback;
-import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,7 +40,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -57,14 +47,11 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
