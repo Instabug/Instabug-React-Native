@@ -120,9 +120,8 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenString$sendHandledJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void givenString$sendHandledJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() throws Exception {
 
-        try {
             JSONObject json = mock(JSONObject.class);
             PowerMockito.whenNew(JSONObject.class).withArguments("exception").thenReturn(json);
 
@@ -133,20 +132,13 @@ public class RNInstabugReactnativeModuleTest {
             // then
             PowerMockito.verifyStatic(VerificationModeFactory.times(1));
             JSONObject jsonObject = new JSONObject("exception");
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
-            if (method != null) {
-                method.invoke(null, jsonObject, true, null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+            method.invoke(null, jsonObject, true);
     }
 
     @Test
-    public void givenString$sendJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void givenString$sendJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() throws Exception {
 
-        try {
             JSONObject json = mock(JSONObject.class);
             PowerMockito.whenNew(JSONObject.class).withArguments("exception").thenReturn(json);
 
@@ -157,14 +149,8 @@ public class RNInstabugReactnativeModuleTest {
             // then
             PowerMockito.verifyStatic(VerificationModeFactory.times(1));
             JSONObject jsonObject = new JSONObject("exception");
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Report.class);
-            if (method != null) {
-                method.invoke(null, jsonObject, false, null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
+            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+            method.invoke(null, jsonObject, false);
     }
 
     /********Instabug*********/
