@@ -1,3 +1,7 @@
+## master
+
+* Fixes various bugs and improvements in automatic sourcemap upload scripts.
+
 ## v8.6.1 (2019-08-26)
 
 * Introducing our new logo and branding. Meet the new Instabug: the platform for Real-Time Contextual Insights.
