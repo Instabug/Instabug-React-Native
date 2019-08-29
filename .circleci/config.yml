@@ -192,14 +192,12 @@ workflows:
       - test_sample
       - test_android
       - test_ios
-      - e2e_ios
       - hold:
           requires:
             - test_module
             - test_sample
             - test_android
             - test_ios
-            - e2e_ios
           type: approval
           filters:
             branches:
