@@ -1,5 +1,6 @@
-## master
+## v8.6.2 (2019-08-29)
 
+* Updates native Android SDK to v8.6.2
 * Fixes various bugs and improvements in automatic sourcemap upload scripts.
 
 ## v8.6.1 (2019-08-26)
