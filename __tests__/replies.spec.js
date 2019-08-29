@@ -13,18 +13,20 @@ import IBGEventEmitter from '../utils/IBGEventEmitter';
 
 describe('Replies Module', () => {
   
-  const setRepliesEnabled = sinon.spy(NativeModules.Instabug, 'setRepliesEnabled');
-  const hasChats = sinon.spy(NativeModules.Instabug, 'hasChats');
-  const showReplies = sinon.spy(NativeModules.Instabug, 'showReplies');
-  const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.Instabug, 'setOnNewReplyReceivedCallback');
-  const getUnreadMessagesCount = sinon.spy(NativeModules.Instabug, 'getUnreadMessagesCount');
-  const setChatNotificationEnabled = sinon.spy(NativeModules.Instabug, 'setChatNotificationEnabled');
-  const setEnableInAppNotificationSound = sinon.spy(NativeModules.Instabug, 'setEnableInAppNotificationSound');
+  const setRepliesEnabled = sinon.spy(NativeModules.IBGReplies, 'setEnabled');
+  const hasChats = sinon.spy(NativeModules.IBGReplies, 'hasChats');
+  const showReplies = sinon.spy(NativeModules.IBGReplies, 'show');
+  const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.IBGReplies, 'setOnNewReplyReceivedHandler');
+  const getUnreadMessagesCount = sinon.spy(NativeModules.IBGReplies, 'getUnreadRepliesCount');
+  const setChatNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
+  const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
+  const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
 
   beforeEach(() => {
     setOnNewReplyReceivedCallback.resetHistory();
     setEnableInAppNotificationSound.resetHistory();
     IBGEventEmitter.removeAllListeners();
+    setPushNotificationsEnabled.resetHistory();
   });
 
   it('should call the native method setRepliesEnabled', () => {
@@ -110,6 +112,25 @@ describe('Replies Module', () => {
     Replies.setInAppNotificationSound(true);
 
     expect(setEnableInAppNotificationSound.notCalled).toBe(true);
+
+  });
+
+  it('should call the native method setPushNotificationsEnabled', () => {
+
+    Platform.OS = 'ios';
+    Replies.setPushNotificationsEnabled(true);
+
+    expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
+
+  });
+
+
+  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
+
+    Platform.OS = 'android';
+    Replies.setPushNotificationsEnabled(true);
+
+    expect(setPushNotificationsEnabled.notCalled).toBe(true);
 
   });
 

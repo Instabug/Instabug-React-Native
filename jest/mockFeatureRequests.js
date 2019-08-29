@@ -1,8 +1,10 @@
 jest.mock('NativeModules', () => {
     return {
-      Instabug: {
+      IBGFeatureRequests: {
         setEmailFieldRequiredForFeatureRequests: jest.fn(),
-        showFeatureRequests: jest.fn()
+        show: jest.fn(),
+        setEnabled: jest.fn()
       },
+      Instabug: {}
     };
   });

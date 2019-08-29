@@ -1,10 +1,9 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
-  Platform
 } from 'react-native';
-let { Instabug } = NativeModules;
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
+let { IBGSurveys } = NativeModules;
 
 /**
  * Surveys
@@ -21,7 +20,7 @@ export default {
    * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
   setEnabled: function(isEnabled) {
-    Instabug.setSurveysEnabled(isEnabled);
+    IBGSurveys.setEnabled(isEnabled);
   },
 
   /**
@@ -31,7 +30,7 @@ export default {
    * in the current session.
    */
   showSurveyIfAvailable: function() {
-    Instabug.showSurveysIfAvailable();
+    IBGSurveys.showSurveysIfAvailable();
   },
 
   /**
@@ -46,7 +45,7 @@ export default {
     sessionCount,
     daysCount
   ) {
-    Instabug.setThresholdForReshowingSurveyAfterDismiss(
+    IBGSurveys.setThresholdForReshowingSurveyAfterDismiss(
       sessionCount,
       daysCount
     );
@@ -59,7 +58,7 @@ export default {
    *
    */
   getAvailableSurveys: function(availableSurveysCallback) {
-    Instabug.getAvailableSurveys(availableSurveysCallback);
+    IBGSurveys.getAvailableSurveys(availableSurveysCallback);
   },
 
   /**
@@ -69,7 +68,7 @@ export default {
    *
    */
   setAutoShowingEnabled: function(autoShowingSurveysEnabled) {
-    Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
+    IBGSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
   },
 
   /**
@@ -92,20 +91,8 @@ export default {
    * presenting the survey's UI.
    */
   setOnShowHandler: function(onShowHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGWillShowSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        onShowHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        onShowHandler
-      );
-    }
-
-    Instabug.setWillShowSurveyHandler(onShowHandler);
+    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
+    IBGSurveys.setOnShowHandler(onShowHandler);
   },
 
   /**
@@ -128,20 +115,8 @@ export default {
    * the survey's UI is dismissed.
    */
   setOnDismissHandler: function(onDismissHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGDidDismissSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        onDismissHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        onDismissHandler
-      );
-    }
-
-    Instabug.setDidDismissSurveyHandler(onDismissHandler);
+    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
+    IBGSurveys.setOnDismissHandler(onDismissHandler);
   },
 
   /**
@@ -152,7 +127,7 @@ export default {
    *
    */
   showSurvey: function(surveyToken) {
-    Instabug.showSurveyWithToken(surveyToken);
+    IBGSurveys.showSurvey(surveyToken);
   },
 
   /**
@@ -164,7 +139,7 @@ export default {
    *
    */
   hasRespondedToSurvey: function(surveyToken, surveyTokenCallback) {
-    Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
+    IBGSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
   },
 
   /**
@@ -175,6 +150,6 @@ export default {
    *
    */
   setShouldShowWelcomeScreen: function(shouldShowWelcomeScreen) {
-    Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
+    IBGSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
   }
 };

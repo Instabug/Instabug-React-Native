@@ -50,10 +50,10 @@ export default {
     if (handler === null) {
       _networkDataObfuscationHandlerSet = false;
       return;
-    } 
+    }
     _networkDataObfuscationHandlerSet = true;
 
-    IBGEventEmitter.addListener(
+    IBGEventEmitter.addListener(Instabug,
       InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
       async data => {
         try {
@@ -87,5 +87,5 @@ export default {
     xhr.setOnProgressCallback(handler);
   },
 
- 
+
 };

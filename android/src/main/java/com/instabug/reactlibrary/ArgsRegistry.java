@@ -61,7 +61,12 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
+        registerInstabugReportTypesArgs(ARGS);
+        registerReproStepsModeArgs(ARGS);
+        registerWelcomeMessageArgs(ARGS);
+        registerInstabugFeatureRequestsActionTypes(ARGS);
     }
+
 
     /**
      * This acts as a safe get() method.
@@ -171,6 +176,7 @@ final class ArgsRegistry {
         args.put("emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
         args.put("commentFieldHintForBugReport", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
         args.put("commentFieldHintForFeedback", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
+        args.put("commentFieldHintForQuestion", InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION);
         args.put("addVoiceMessage", InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE);
         args.put("addImageFromGallery", InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY);
         args.put("addExtraScreenshot", InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT);
@@ -183,7 +189,7 @@ final class ArgsRegistry {
         args.put("voiceMessageReleaseToAttach", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
         args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
         args.put("successDialogHeader", InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER);
-        args.put("addVideo", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
+        args.put("addVideoMessage", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
         args.put("betaWelcomeMessageWelcomeStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE);
         args.put("betaWelcomeMessageWelcomeStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT);
         args.put("betaWelcomeMessageHowToReportStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
@@ -197,12 +203,13 @@ final class ArgsRegistry {
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
+        args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
     }
 
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {
         args.put("enabledWithRequiredFields", ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
         args.put("enabledWithOptionalFields", ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-        args.put("disabled", ExtendedBugReport.State.DISABLED);
+        args.put("disabledExtendedBugReportState", ExtendedBugReport.State.DISABLED);
     }
 
     static void registerInstabugActionTypesArgs(Map<String, Object> args) {
@@ -223,5 +230,10 @@ final class ArgsRegistry {
         args.put("enabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
         args.put("enabled", State.ENABLED);
         args.put("disabled", State.DISABLED);
+    }
+
+    static void registerInstabugFeatureRequestsActionTypes(Map<String, Object> args) {
+        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
+        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
     }
 }

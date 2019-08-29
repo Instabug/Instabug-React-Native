@@ -61,7 +61,7 @@ describe('Test global error handler', () => {
         Platform.OS = 'android';
         Instabug._isOnReportHandlerSet = jest.fn(() => true);
         const handler = global.ErrorUtils.getGlobalHandler();
-        IBGEventEmitter.addListener(IBGConstants.SEND_UNHANDLED_CRASH, (actual) => {
+        IBGEventEmitter.addListener(Instabug, IBGConstants.SEND_UNHANDLED_CRASH, (actual) => {
             const expected = {
                 message: 'TypeError - This is a type error.',
                 os: 'android',

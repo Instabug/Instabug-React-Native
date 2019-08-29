@@ -6,20 +6,11 @@
 export namespace BugReporting {
   function setEnabled(isEnabled: boolean): void;
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
-  function invoke(): void;
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
-  function invokeWithInvocationModeAndOptions(
-    invocationMode: invocationMode,
-    invocationOptions: invocationOptions[]
-    ): void;
-  function onInvokeHandler(preInvocationHandler: () => void): void;
+  function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
-  function onSDKDismissedHandler(postInvocationHandler: (dismiss: dismissType, report: reportType) => void): void;
-  function setPromptOptionsEnabled(
-    chat: boolean,
-    bug: boolean,
-    feedback: boolean
-    ): void;
+  function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
+  function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
   function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
@@ -38,13 +29,6 @@ export namespace BugReporting {
     twoFingersSwipe,
     floatingButton
   }
-  enum invocationMode {
-    NA,
-    newBug,
-    newFeedback,
-    newChat,
-    chatsList
-  }
   enum invocationOptions {
     emailFieldHidden,
     emailFieldOptional,
@@ -58,7 +42,8 @@ export namespace BugReporting {
   }
   enum reportType {
     bug,
-    feedback
+    feedback,
+    question
   }
   enum option {
     emailFieldHidden,
@@ -80,6 +65,7 @@ export namespace FeatureRequests {
     isEmailFieldRequired: boolean,
     actionTypes: actionTypes[]
     ): void;
+  function setEnabled(isEnabled: boolean): void;
   function show(): void;
   enum actionTypes {
     allActions,
@@ -231,6 +217,7 @@ export enum invocationEvent {
   floatingButton
 }
 export enum reproStepsMode {
+  enabled,
   disabled,
   enabledWithNoScreenshots
 }
@@ -238,22 +225,6 @@ export enum dismissType {
   submit,
   cancel,
   addAttachment
-}
-export enum promptOption {
-  bug,
-  chat,
-  feedback
-}
-export enum reportType {
-  bug,
-  feedback
-}
-export enum invocationMode {
-  NA,
-  newBug,
-  newFeedback,
-  newChat,
-  chatsList
 }
 export enum invocationOptions {
   invocationOptionsEmailFieldHidden,
@@ -327,6 +298,7 @@ export enum strings {
   emailFieldHint,
   commentFieldHintForBugReport,
   commentFieldHintForFeedback,
+  commentFieldHintForQuestion,
   addVideoMessage,
   addVoiceMessage,
   addImageFromGallery,

@@ -11,6 +11,7 @@
 #import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 #import <Instabug/IBGTypes.h>
+#import "IBGConstants.h"
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -23,13 +24,22 @@
 
 @end
 
+@protocol SurveysCPTestProtocol <NSObject>
+/**
+ * This protocol helps in correctly mapping Surveys mocked methods
+ * when their method name matches another method in a different
+ * module that differs in method signature.
+ */
+- (void)setEnabled:(BOOL)isEnabled;
+
+@end
+
 @interface InstabugSampleTests : XCTestCase
 @property (nonatomic, retain) InstabugReactBridge *instabugBridge;
 @end
 
 @implementation InstabugSampleTests
 
-NSTimeInterval EXPECTATION_TIMEOUT = 10;
 
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -85,15 +95,6 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   OCMStub([mock setSessionProfilerEnabled:sessionProfilerEnabled]);
   [self.instabugBridge setSessionProfilerEnabled:sessionProfilerEnabled];
   OCMVerify([mock setSessionProfilerEnabled:sessionProfilerEnabled]);
-}
-
-- (void)testSetPushNotificationsEnabled {
-  id mock = OCMClassMock([Instabug class]);
-  BOOL isPushNotificationEnabled = true;
-  
-  OCMStub([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
-  [self.instabugBridge setPushNotificationsEnabled:isPushNotificationEnabled];
-  OCMVerify([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
 }
 
 - (void)testSetLocale {
@@ -306,217 +307,6 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
-/*
- +------------------------------------------------------------------------+
- |                            Surveys Module                              |
- +------------------------------------------------------------------------+
- */
-
-- (void)testShowingSurveyWithToken {
-  id mock = OCMClassMock([IBGSurveys class]);
-  NSString *token = @"token";
-  
-  OCMStub([mock showSurveyWithToken:token]);
-  [self.instabugBridge showSurveyWithToken:token];
-  OCMVerify([mock showSurveyWithToken:token]);
-}
-
-/*
- +------------------------------------------------------------------------+
- |                          Bug Reporting Module                          |
- +------------------------------------------------------------------------+
- */
-
-- (void) testgivenBoolean$setBugReportingEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = true;
-  [self.instabugBridge setBugReportingEnabled:enabled];
-  XCTAssertTrue(IBGBugReporting.enabled);
-}
-
-- (void) testgivenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs {
-  NSArray *invocationEventsArr;
-  invocationEventsArr = [NSArray arrayWithObjects:  @(IBGInvocationEventScreenshot), nil];
-  
-  [self.instabugBridge setInvocationEvents:invocationEventsArr];
-  IBGInvocationEvent invocationEvents = 0;
-  for (NSNumber *boxedValue in invocationEventsArr) {
-    invocationEvents |= [boxedValue intValue];
-  }
-  XCTAssertEqual(IBGBugReporting.invocationEvents, invocationEvents);
-}
-
-- (void)testgiven$invoke_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  
-  OCMStub([mock invoke]);
-  [self.instabugBridge invoke];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock invoke]);
-    [expectation fulfill];
-  }];
-  
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
-- (void) testgivenOptions$setInvocationOptions_whenQuery_thenShouldCallNativeApiWithArgs {
-  NSArray *invocationOptionsArr = [NSArray arrayWithObjects:  @(IBGBugReportingInvocationOptionEmailFieldHidden), nil];
-  
-  [self.instabugBridge setInvocationOptions:invocationOptionsArr];
-  IBGBugReportingInvocationOption invocationOptions = 0;
-  for (NSNumber *boxedValue in invocationOptionsArr) {
-    invocationOptions |= [boxedValue intValue];
-  }
-  XCTAssertEqual(IBGBugReporting.invocationOptions, invocationOptions);
-}
-
-- (void) testgivenInvocationModeAndOptiond$invokeWithModeOptions_whenQuery_thenShouldCallNativeApiWithArgs {
-  NSArray *invocationOptionsArr = [NSArray arrayWithObjects:  @(IBGBugReportingInvocationOptionEmailFieldHidden), nil];
-  IBGBugReportingInvocationOption invocationOptions = 0;
-  for (NSNumber *boxedValue in invocationOptionsArr) {
-    invocationOptions |= [boxedValue intValue];
-  }
-  IBGInvocationMode invocationMode = IBGInvocationModeNewBug;
-  id mock = OCMClassMock([IBGBugReporting class]);
-  OCMStub([mock invokeWithMode:invocationMode options:invocationOptions]);
-  [self.instabugBridge invokeWithInvocationModeAndOptions:invocationMode options:invocationOptionsArr];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock invokeWithMode:invocationMode options:invocationOptions]);
-    [expectation fulfill];
-  }];
-  
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
-- (void) testgivenPreInvocationHandler$setPreInvocationHandler_whenQuery_thenShouldCallNativeApi {
-  id partialMock = OCMPartialMock(self.instabugBridge);
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setPreInvocationHandler:callback];
-  XCTAssertNotNil(IBGBugReporting.willInvokeHandler);
-  OCMStub([partialMock sendEventWithName:@"IBGpreInvocationHandler" body:nil]);
-  IBGBugReporting.willInvokeHandler();
-  OCMVerify([partialMock sendEventWithName:@"IBGpreInvocationHandler" body:nil]);
-}
-
-
-- (void) testgivenPostInvocationHandlerCANCEL$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
-  id partialMock = OCMPartialMock(self.instabugBridge);
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setPostInvocationHandler:callback];
-  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  NSDictionary *result = @{ @"dismissType": @"CANCEL",
-                            @"reportType": @"bug"};
-  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeCancel,IBGReportTypeBug);
-  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-}
-
-- (void) testgivenPostInvocationHandlerSUBMIT$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
-  id partialMock = OCMPartialMock(self.instabugBridge);
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setPostInvocationHandler:callback];
-  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  
-  NSDictionary *result = @{ @"dismissType": @"SUBMIT",
-                             @"reportType": @"feedback"};
-  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeSubmit,IBGReportTypeFeedback);
-  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-}
-
-- (void) testgivenPostInvocationHandlerADD_ATTACHMENT$setPostInvocationHandler_whenQuery_thenShouldCallNativeApi {
-  id partialMock = OCMPartialMock(self.instabugBridge);
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setPostInvocationHandler:callback];
-  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  NSDictionary *result = @{ @"dismissType": @"ADD_ATTACHMENT",
-                             @"reportType": @"feedback"};
-  OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeAddAttachment,IBGReportTypeFeedback);
-  OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-}
-
-- (void) testgivenBooleans$setPromptOptionsEnabled_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  BOOL enabled = true;
-  IBGPromptOption promptOption = IBGPromptOptionNone + IBGPromptOptionChat + IBGPromptOptionBug + IBGPromptOptionFeedback;
-  OCMStub([mock setPromptOptions:promptOption]);
-  [self.instabugBridge setPromptOptionsEnabled:enabled feedback:enabled chat:enabled];
-  OCMVerify([mock setPromptOptions:promptOption]);
-}
-
-- (void) testgivenDouble$setShakingThresholdForiPhone_whenQuery_thenShouldCallNativeApi {
-  double threshold = 12;
-  [self.instabugBridge setShakingThresholdForiPhone:threshold];
-  XCTAssertEqual(IBGBugReporting.shakingThresholdForiPhone, threshold);
-}
-
-- (void) testgivenDouble$setShakingThresholdForiPad_whenQuery_thenShouldCallNativeApi {
-  double threshold = 12;
-  [self.instabugBridge setShakingThresholdForiPad:threshold];
-  XCTAssertEqual(IBGBugReporting.shakingThresholdForiPad, threshold);
-}
-
-- (void) testgivenExtendedBugReportMode$setExtendedBugReportMode_whenQuery_thenShouldCallNativeApi {
-  IBGExtendedBugReportMode extendedBugReportMode = IBGExtendedBugReportModeEnabledWithOptionalFields;
-  [self.instabugBridge setExtendedBugReportMode:extendedBugReportMode];
-  XCTAssertEqual(IBGBugReporting.extendedBugReportMode, extendedBugReportMode);
-}
-
-- (void) testgivenArray$setReportTypes_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  NSArray *reportTypesArr = [NSArray arrayWithObjects:  @(IBGReportTypeBug), nil];
-  IBGBugReportingReportType reportTypes = 0;
-  for (NSNumber *boxedValue in reportTypesArr) {
-    reportTypes |= [boxedValue intValue];
-  }
-  OCMStub([mock setPromptOptionsEnabledReportTypes:reportTypes]);
-  [self.instabugBridge setReportTypes:reportTypesArr];
-  OCMVerify([mock setPromptOptionsEnabledReportTypes:reportTypes]);
-}
-
-
-- (void) testgivenArgs$showBugReportingWithReportTypeAndOptions_whenQuery_thenShouldCallNativeApi {
-  id mock = OCMClassMock([IBGBugReporting class]);
-  IBGBugReportingReportType reportType = IBGBugReportingReportTypeBug;
-  NSArray *options = [NSArray arrayWithObjects:  @(IBGBugReportingOptionEmailFieldOptional), nil];
-  IBGBugReportingOption parsedOptions = 0;
-  for (NSNumber *boxedValue in options) {
-    parsedOptions |= [boxedValue intValue];
-  }
-  OCMStub([mock showWithReportType:reportType options:parsedOptions]);
-  [self.instabugBridge showBugReportingWithReportTypeAndOptions:reportType options:options];
-  
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock showWithReportType:reportType options:parsedOptions]);
-    [expectation fulfill];
-  }];
-  
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
-- (void) testgivenBoolean$setAutoScreenRecordingEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = true;
-  [self.instabugBridge setAutoScreenRecordingEnabled:enabled];
-  XCTAssertTrue(IBGBugReporting.autoScreenRecordingEnabled);
-}
-
-- (void) testgivenArgs$setAutoScreenRecordingMaxDuration_whenQuery_thenShouldCallNativeApi {
-  CGFloat duration = 12.3;
-  [self.instabugBridge setAutoScreenRecordingMaxDuration:duration];
-  XCTAssertEqual(IBGBugReporting.autoScreenRecordingDuration, duration);
-}
-
-- (void) testgivenBoolean$setViewHierarchyEnabled_whenQuery_thenShouldCallNativeApi {
-  BOOL enabled = true;
-  [self.instabugBridge setViewHirearchyEnabled:enabled];
-  XCTAssertTrue(IBGBugReporting.shouldCaptureViewHierarchy);
-}
 
 /*
  +------------------------------------------------------------------------+
@@ -534,5 +324,68 @@ NSTimeInterval EXPECTATION_TIMEOUT = 10;
   XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
+/*
+ +------------------------------------------------------------------------+
+ |                              Log Module                                |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)testSetIBGLogPrintsToConsole {
+  [self.instabugBridge setIBGLogPrintsToConsole:YES];
+  XCTAssertTrue(IBGLog.printsToConsole);
+}
+
+- (void)testLogVerbose {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logVerbose:log]);
+  [self.instabugBridge logVerbose:log];
+  OCMVerify([mock logVerbose:log]);
+}
+
+- (void)testLogDebug {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logDebug:log]);
+  [self.instabugBridge logDebug:log];
+  OCMVerify([mock logDebug:log]);
+}
+
+- (void)testLogInfo {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logInfo:log]);
+  [self.instabugBridge logInfo:log];
+  OCMVerify([mock logInfo:log]);
+}
+
+- (void)testLogWarn {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logWarn:log]);
+  [self.instabugBridge logWarn:log];
+  OCMVerify([mock logWarn:log]);
+}
+
+- (void)testLogError {
+  id mock = OCMClassMock([IBGLog class]);
+  NSString *log = @"some log";
+  
+  OCMStub([mock logError:log]);
+  [self.instabugBridge logError:log];
+  OCMVerify([mock logError:log]);
+}
+
+- (void)testClearLogs {
+  id mock = OCMClassMock([IBGLog class]);
+  
+  OCMStub([mock clearAllLogs]);
+  [self.instabugBridge clearLogs];
+  OCMVerify([mock clearAllLogs]);
+}
 
 @end

@@ -1,3 +1,36 @@
+## master
+
+* Fixes various bugs and improvements in automatic sourcemap upload scripts.
+
+## v8.6.1 (2019-08-26)
+
+* Introducing our new logo and branding. Meet the new Instabug: the platform for Real-Time Contextual Insights.
+* Updates native SDK dependencies to 8.6.1.
+* Adds the `enabled` key to `Instabug.reproStepsMode` enum to be able to use it with `Instabug.setReproStepsMode` API.
+
+## v8.5.6 (2019-08-21)
+
+* Fixes an issue that crashes the SDK when calling `Instabug.onReportSubmitHandler` on iOS.
+* Fixes an issue with passing empty string value to `Instabug.setUserAttribute`.
+
+## v8.5.5 (2019-08-17)
+
+* Fixes an issue with the email validation when reporting a bug on Android.
+* Fixes an issue with the crash reporting which prevented the report from being submitted on Android.
+
+## v8.5.4 (2019-08-10)
+
+* Hot Fixes an issue with `Instabug.setFloatingButtonEdge` and `Instabug.setEnabledAttachmentTypes` causing the app to crash.
+
+## v8.5.3 (2019-08-08)
+
+* Fixes hang/crash issues on iOS 9 devices
+* Fixes string mappings for addVideoMessage and conversationsHeaderTitle in iOS.
+
+## v8.5.2 (2019-08-04)
+
+* Fixes an issue that would cause Android to throw ArrayIndexOutOfBoundsException.
+
 ## v8.5.1 (2019-07-22)
 
 * Fixes an issue that would cause Instabug.framework to appear twice when using CocoaPods.
@@ -59,5 +92,3 @@
 * Added new OnReportSubmitHandler API
 * Fixed linking script
 * Api Name Changes
-
-

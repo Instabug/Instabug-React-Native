@@ -1,11 +1,11 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
   Platform
 } from 'react-native';
-let { Instabug } = NativeModules;
+let { Instabug, IBGBugReporting } = NativeModules;
 import InstabugModule from '../index';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
 
 /**
  * BugReporting
@@ -17,7 +17,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    Instabug.setBugReportingEnabled(isEnabled);
+    IBGBugReporting.setEnabled(isEnabled);
   },
 
   /**
@@ -26,75 +26,42 @@ export default {
    * @param {invocationEvent} invocationEvent Array of events that invokes the
    * feedback form.
    */
-  setInvocationEvents: function(invocationEvents) {
-    Instabug.setInvocationEvents(invocationEvents);
+  setInvocationEvents(invocationEvents) {
+    IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated
-   * Invokes the SDK manually with the default invocation mode.
-   * Shows a view that asks the user whether they want to start a chat, report
-   * a problem or suggest an improvement.
+   * Sets the invocation options.
+   * Default is set by `Instabug.startWithToken`.
+   * @param {invocationOptions} invocationOptions Array of invocation options
    */
-  invoke: function() {
-    Instabug.invoke();
+  setInvocationOptions(invocationOptions) {
+    this.setOptions(invocationOptions);
   },
 
   /**
    * Sets the invocation options.
    * Default is set by `Instabug.startWithToken`.
-   * @param {invocationOptions} invocationOptions Array of invocation options
+   * @param {invocationOptions} options Array of invocation options
    */
-  setInvocationOptions: function(invocationOptions) {
-    Instabug.setInvocationOptions(invocationOptions);
-  },
-
-  /**
-   * @deprecated
-   * Invokes the SDK with a specific mode.
-   * Invokes the SDK and show a specific view, instead of showing a prompt for
-   * users to choose from.
-   * @param {invocationMode} invocationMode Specifies which mode the
-   * SDK is going to start with.
-   * @param {invocationOptions} invocationOptions Specifies which mode the
-   * SDK is going to start with.
-   */
-  invokeWithInvocationModeAndOptions: function(
-    invocationMode,
-    invocationOptions
-  ) {
-    if (!invocationOptions) {
-      invocationOptions = [];
-    }
-    Instabug.invokeWithInvocationModeAndOptions(
-      invocationMode,
-      invocationOptions
-    );
+  setOptions(options) {
+    IBGBugReporting.setOptions(options);
   },
 
   /**
    * Sets a block of code to be executed just before the SDK's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes before the SDK's UI is shown.
-   * @param {function} preInvocationHandler - A callback that gets executed before invoking the SDK
+   * @param {function} handler - A callback that gets executed before invoking the SDK
    */
-  onInvokeHandler: function(preInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpreInvocationHandler');
-      NativeAppEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGpreInvocationHandler',
-        preInvocationHandler
-      );
-    }
-
-    Instabug.setPreInvocationHandler(preInvocationHandler);
+  onInvokeHandler(handler) {
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
+    IBGBugReporting.setOnInvokeHandler(handler);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated Use {@link Instabug.onReportSubmitHandler} instead.
    * Sets a block of code to be executed before sending each report.
@@ -103,7 +70,7 @@ export default {
    * @param {function} preSendingHandler - A callback that gets executed before sending each bug
    * report.
    */
-  onReportSubmitHandler: function(preSendingHandler) {
+  onReportSubmitHandler(preSendingHandler) {
     InstabugModule.onReportSubmitHandler(preSendingHandler);
   },
 
@@ -111,42 +78,14 @@ export default {
    * Sets a block of code to be executed right after the SDK's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes after the SDK's UI is dismissed.
-   * @param {function} postInvocationHandler - A callback to get executed after
+   * @param {function} handler - A callback to get executed after
    * dismissing the SDK.
    */
-  onSDKDismissedHandler: function(postInvocationHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGpostInvocationHandler');
-      NativeAppEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload['dismissType'], payload['reportType']);
-      });
-    } else {
-      DeviceEventEmitter.addListener('IBGpostInvocationHandler', function(
-        payload
-      ) {
-        postInvocationHandler(payload.dismissType, payload.reportType);
-      });
-    }
-
-    Instabug.setPostInvocationHandler(postInvocationHandler);
-  },
-
-  /**
-   * @deprecated
-   * Enable/Disable prompt options when SDK invoked. When only a single option is enabled it
-   * becomes the default
-   * invocation option that SDK gets invoked with and prompt options screen will not show. When
-   * none is enabled, Bug
-   * reporting becomes the default invocation option.
-   *
-   * @param  {boolean} chat      whether Talk to us is enable or not
-   * @param  {boolean} bug       whether Report a Problem is enable or not
-   * @param  {boolean} feedback  whether General Feedback  is enable or not
-   * */
-  setPromptOptionsEnabled: function(chat, bug, feedback) {
-    Instabug.setPromptOptionsEnabled(chat, bug, feedback);
+  onSDKDismissedHandler(handler) {
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
+      handler(payload.dismissType, payload.reportType);
+    });
+    IBGBugReporting.setOnSDKDismissedHandler(handler);
   },
 
   /**
@@ -154,9 +93,9 @@ export default {
    * Default for iPhone is 2.5.
    * @param {number} iPhoneShakingThreshold Threshold for iPhone.
    */
-  setShakingThresholdForiPhone: function(iPhoneShakingThreshold) {
+  setShakingThresholdForiPhone(iPhoneShakingThreshold) {
     if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPhone(iPhoneShakingThreshold);
+      IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
   },
 
   /**
@@ -164,9 +103,9 @@ export default {
    * Default for iPad is 0.6.
    * @param {number} iPadShakingThreshold Threshold for iPad.
    */
-  setShakingThresholdForiPad: function(iPadShakingThreshold) {
+  setShakingThresholdForiPad(iPadShakingThreshold) {
     if (Platform.OS === 'ios')
-      Instabug.setShakingThresholdForiPad(iPadShakingThreshold);
+      IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
   },
 
   /**
@@ -176,9 +115,9 @@ export default {
    * increasing the `350` value and vice versa
    * @param {number} androidThreshold Threshold for android devices.
    */
-  setShakingThresholdForAndroid: function(androidThreshold) {
+  setShakingThresholdForAndroid(androidThreshold) {
     if (Platform.OS === 'android')
-      Instabug.setShakingThresholdForAndroid(androidThreshold);
+      IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
   },
 
   /**
@@ -188,8 +127,8 @@ export default {
    *                                the extended bug report mode, enable it
    *                                with required or with optional fields.
    */
-  setExtendedBugReportMode: function(extendedBugReportMode) {
-    Instabug.setExtendedBugReportMode(extendedBugReportMode);
+  setExtendedBugReportMode(extendedBugReportMode) {
+    IBGBugReporting.setExtendedBugReportMode(extendedBugReportMode);
   },
 
   /**
@@ -197,9 +136,10 @@ export default {
    * @param {array} types - Array of reportTypes
    */
   setReportTypes(types) {
-    Instabug.setReportTypes(types);
+    IBGBugReporting.setReportTypes(types);
   },
 
+  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.show}
    * Invoke bug reporting with report type and options.
@@ -219,7 +159,7 @@ export default {
     if (!options) {
       options = [];
     }
-      Instabug.showBugReportingWithReportTypeAndOptions(type, options);
+    IBGBugReporting.show(type, options);
   },
 
   /**
@@ -228,7 +168,7 @@ export default {
    * screen recording on crash feature
    */
   setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
-    Instabug.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+    IBGBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
   },
 
   /**
@@ -239,7 +179,7 @@ export default {
    * The maximum duration is 30 seconds
    */
   setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
-    Instabug.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+    IBGBugReporting.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
   },
 
   /**
@@ -248,7 +188,58 @@ export default {
    * or disabled.
    */
   setViewHierarchyEnabled: function(viewHierarchyEnabled) {
-    Instabug.setViewHierarchyEnabled(viewHierarchyEnabled);
+    IBGBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
+  },
+
+  /**
+   * Sets a block of code to be executed when a prompt option is selected.
+   * @param {function} didSelectPromptOptionHandler - A block of code that
+   *                  gets executed when a prompt option is selected.
+   */
+  setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
+    if (Platform.OS === 'android') return;
+    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
+      didSelectPromptOptionHandler(payload.promptOption);
+    });
+    IBGBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
+  },
+
+  /**
+   * Sets the default edge and offset from the top at which the floating button
+   * will be shown. Different orientations are already handled.
+   * Default for `floatingButtonEdge` is `rectEdge.maxX`.
+   * Default for `floatingButtonOffsetFromTop` is 50
+   * @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
+   * or `minX` to show on the left.
+   * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
+   * floating button.
+   */
+  setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
+    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+},
+
+ /**
+   * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
+   * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
+   * @param {boolean} extraScreenshot A boolean to enable or disable extra
+   * screenshot attachments.
+   * @param {boolean} galleryImage A boolean to enable or disable gallery image
+   * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
+   * info.plist to enable gallery image attachments.
+   * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+   */
+  setEnabledAttachmentTypes(
+    screenshot,
+    extraScreenshot,
+    galleryImage,
+    screenRecording
+  ) {
+    IBGBugReporting.setEnabledAttachmentTypes(
+      screenshot,
+      extraScreenshot,
+      galleryImage,
+      screenRecording
+    );
   },
 
   /**
@@ -264,19 +255,7 @@ export default {
     floatingButton: Instabug.invocationEventFloatingButton
   },
 
-  /**
-   *  The mode used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationMode: {
-    NA: Instabug.invocationModeNA,
-    newBug: Instabug.invocationModeNewBug,
-    newFeedback: Instabug.invocationModeNewFeedback,
-    newChat: Instabug.invocationModeNewChat,
-    chatsList: Instabug.invocationModeChatsList
-  },
-
+  
   /**
    * @deprecated use @link { option }
    * The options used upon invocating the SDK
@@ -308,7 +287,8 @@ export default {
    */
   reportType: {
     bug: Instabug.bugReportingReportTypeBug,
-    feedback: Instabug.bugReportingReportTypeFeedback
+    feedback: Instabug.bugReportingReportTypeFeedback,
+    question: Instabug.bugReportingReportTypeQuestion
   },
 
   /**
