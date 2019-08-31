@@ -125,6 +125,13 @@ allprojects {
 	}
 }
 ```
+5. Customize uploading bundler or not
+```dart
+ext {
+    instabugUploadEnable = false;
+}
+```
+
 ## Update Guide
 ### Updating to versions 8.0-8.4.x
 
