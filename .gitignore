@@ -11,6 +11,8 @@ local.properties
 .idea
 /android/src/main/java/com/instabug/reactlibrary/wrappedAPIs
 
+.vscode/
+
 # Xcode
 
 ## Build generated
@@ -29,6 +31,7 @@ DerivedData/
 xcuserdata/
 
 
+coverage/
 *node_modules/
 *Pods/
 *Podfile.lock

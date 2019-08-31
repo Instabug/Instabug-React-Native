@@ -1,17 +1,22 @@
 'use strict';
 import {NativeModules, Platform} from 'react-native';
 let {Instabug} = NativeModules;
+import IBGEventEmitter from './IBGEventEmitter';
+import InstabugConstants from './InstabugConstants';
 import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
+import IBG from '../index';
 
-let parseErrorStack = (error) => {
+export const parseErrorStack = (error) => {
     return parseErrorStackLib(error);
 };
 
 const originalHandler = global.ErrorUtils.getGlobalHandler();
 
-let init = () => {
-    if (__DEV__) {
-        return;
+export const captureJsErrors = () => {
+    if (!process.env.JEST_WORKER_ID) {
+      if (__DEV__) {
+          return;
+      }
     }
 
     function errorHandler(e, isFatal) {
@@ -24,12 +29,18 @@ let init = () => {
         platform: 'react_native',
         exception: jsStackTrace
       }
+      
       if(Platform.OS === 'android') {
-        Instabug.sendJSCrash(JSON.stringify(jsonObject));
+        if (IBG._isOnReportHandlerSet()) {
+          IBGEventEmitter.emit( InstabugConstants.SEND_UNHANDLED_CRASH, jsonObject);
+        } else {
+          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+        }
       } else {
         Instabug.sendJSCrash(jsonObject);
       }
-      if (originalHandler) {
+
+      if (originalHandler && !process.env.JEST_WORKER_ID) {
         if (Platform.OS === 'ios') {
           originalHandler(e, isFatal);
         } else {
@@ -42,7 +53,7 @@ let init = () => {
     global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 
-module.exports = {
-    parseErrorStack: parseErrorStack,
-    captureJsErrors: init
+export default {
+    parseErrorStack,
+    captureJsErrors
 };

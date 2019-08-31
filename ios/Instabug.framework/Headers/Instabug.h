@@ -3,9 +3,9 @@
 
  Contains:   API for using Instabug's SDK.
 
- Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    8.0.8
+ Version:    8.6.1
  */
 
 #import <Foundation/Foundation.h>
@@ -32,15 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Instabug : NSObject
 
 /**
- @brief Sets whether the SDK is recording the screen or not.
- 
- @discussion Enabling auto screen recording would give you an insight on the scenario a user has performed before encountering a bug or a crash. screen recording is attached with each report being sent.
- 
- Auto screen recording is disabled by default.
- */
-@property (class, atomic, assign) BOOL autoScreenRecordingEnabled DEPRECATED_MSG_ATTRIBUTE("AutoScreen recording is disabled please contact support for further details.");
-
-/**
  @brief Sets whether the session profiler is enabled or disabled.
  
  @discussion The session profiler is enabled by default and it attaches to the bug and crash reports the following information during the last 60 seconds before the report is sent.
@@ -59,12 +50,12 @@ NS_ASSUME_NONNULL_BEGIN
  
  @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
  */
-@property (class, atomic, assign) CGFloat autoScreenRecordingDuration;
+@property (class, atomic, assign) CGFloat autoScreenRecordingDuration DEPRECATED_MSG_ATTRIBUTE("'autoScreenRecordingDuration' is deprecated: first deprecated in SDK 8.2.3 - autoScreenRecordingDuration is deprecated. Use IBGBugReporting.autoScreenRecordingDuration instead.");
 
 /**
  @brief Enables/disables inspect view hierarchy when reporting a bug/feedback.
  */
-@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy;
+@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy DEPRECATED_MSG_ATTRIBUTE("'shouldCaptureViewHierarchy' is deprecated: first deprecated in SDK 8.2.3 - shouldCaptureViewHierarchy is deprecated. Use IBGBugReporting.shouldCaptureViewHierarchy instead.");
 
 /**
  @brief Sets the primary color of the SDK's UI.
@@ -111,6 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
  The live mode consists of one step to inform the users how to report a bug or feedback. The beta mode consists of three steps to welcome your testers on board, inform them how to report a bug or feedback and to motivate them to always be on the latest app version. Please note, the into message appears only if the invocation event isn't set to none.
  */
 @property (class, atomic, assign) IBGWelcomeMessageMode welcomeMessageMode;
+
+/**
+ @brief Sets a block of code to be executed when a welcome message is dismissed
+ 
+ @param didDismissWelcomeMessageHandler A block of code that gets executed when a welcome message is dismissed.
+ 
+ */
+@property(class, atomic, strong) void(^didDismissWelcomeMessageHandler)(void);
 
 /**
  @brief Attaches user data to each report being sent.
@@ -321,35 +320,6 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
  */
 @property (class, atomic, assign) IBGSDKDebugLogsLevel sdkDebugLogsLevel;
-
-/*
- +------------------------------------------------------------------------+
- |                            Deprecated APIs                             |
- +------------------------------------------------------------------------+
- | The following section includes all deprecated APIs.                    |
- |                                                                        |
- | We've made a few changes to our APIs starting from version 8.1 to make |
- | them more intuitive and easily reachable.                              |
- |                                                                        |
- | While the APIs below still function, they will be completely removed   |
- | in a future release.                                                   |
- |                                                                        |
- | To adopt the new changes, please refer to our migration guide at:      |
- | https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide             |
- +------------------------------------------------------------------------+
- */
-
-+ (void)setPushNotificationsEnabled:(BOOL)isPushNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-setpushnotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
-
-+ (BOOL)didReceiveRemoteNotification:(NSDictionary *)userInfo DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didreceiveremotenotification for instructions on migrating to SDK v8.1 APIs.");
-
-+ (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didregisterforremotenotificationswithdevicetoken for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, strong) void (^didRecieveReplyHandler)(void) DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-didrecievereplyhandler for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, assign) BOOL replyNotificationsEnabled DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-replynotificationsenabled for instructions on migrating to SDK v8.1 APIs.");
-
-@property (class, atomic, assign, readonly) NSInteger unreadMessagesCount DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-unreadmessagescount for instructions on migrating to SDK v8.1 APIs.");
 
 @end
 

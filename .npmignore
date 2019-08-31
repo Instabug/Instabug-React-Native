@@ -11,4 +11,6 @@ android/local.properties
 ios/.DS_Store
 
 build/
-InstabugSample
+InstabugSample/
+node_modules/
+coverage/

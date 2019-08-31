@@ -1,18 +1,19 @@
 import { NativeModules, Platform } from 'react-native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
-let { Instabug } = NativeModules;
+import InstabugConstants from '../utils/InstabugConstants';
+let { IBGReplies } = NativeModules;
 
 /**
  * Replies
  * @exports Replies
  */
-module.exports = {
+export default {
   /**
    * Enables and disables everything related to receiving replies.
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    Instabug.setRepliesEnabled(isEnabled);
+    IBGReplies.setEnabled(isEnabled);
   },
 
   /**
@@ -20,27 +21,38 @@ module.exports = {
    * @param {function} callback - callback that is invoked if chats exist
    */
   hasChats(callback) {
-    Instabug.hasChats(callback);
+    IBGReplies.hasChats(callback);
   },
 
   /**
    * Manual invocation for replies.
    */
   show() {
-    Instabug.showReplies();
+    IBGReplies.show();
   },
 
   /**
+   * @deprecated use {@link Replies.setOnNewReplyReceivedHandler}
    * Sets a block of code that gets executed when a new message is received.
    * @param {function} onNewReplyReceivedCallback - A callback that gets
    * executed when a new message is received.
    */
   setOnNewReplyReceivedCallback(onNewReplyReceivedCallback) {
+    this.setOnNewReplyReceivedHandler(onNewReplyReceivedCallback);
+  },
+
+  /**
+   * Sets a block of code that gets executed when a new message is received.
+   * @param {function} onNewReplyReceivedHandler - A callback that gets
+   * executed when a new message is received.
+   */
+  setOnNewReplyReceivedHandler(onNewReplyReceivedHandler) {
     IBGEventEmitter.addListener(
-      'IBGOnNewReplyReceivedCallback',
-      onNewReplyReceivedCallback
+      IBGReplies,
+      InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
+      onNewReplyReceivedHandler
     );
-    Instabug.setOnNewReplyReceivedCallback(onNewReplyReceivedCallback);
+    IBGReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
   },
 
   /**
@@ -51,7 +63,7 @@ module.exports = {
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
   getUnreadRepliesCount: function(messageCountCallback) {
-    Instabug.getUnreadMessagesCount(messageCountCallback);
+    IBGReplies.getUnreadRepliesCount(messageCountCallback);
   },
 
   /**
@@ -61,7 +73,7 @@ module.exports = {
    * notifications are enabled or disabled.
    */
   setInAppNotificationsEnabled: function(inAppNotificationsEnabled) {
-    Instabug.setChatNotificationEnabled(inAppNotificationsEnabled);
+    IBGReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
   },
 
   /**
@@ -73,7 +85,18 @@ module.exports = {
    */
   setInAppNotificationSound: function(shouldPlaySound) {
     if (Platform.OS === 'android') {
-      Instabug.setEnableInAppNotificationSound(shouldPlaySound);
+      IBGReplies.setInAppNotificationSound(shouldPlaySound);
     }
+  },
+
+  /**
+   * Enables/disables the use of push notifications in the SDK.
+   * Defaults to YES.
+   * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
+   * notifications are enabled or disabled.
+   */
+  setPushNotificationsEnabled(isPushNotificationEnabled) {
+    if (Platform.OS === 'ios')
+      IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
   }
 };

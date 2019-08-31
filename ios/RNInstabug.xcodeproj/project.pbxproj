@@ -10,6 +10,11 @@
 		133CC8091F578E5C00CF3492 /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; };
 		24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */; };
 		24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */; };
+		BAD36E1A22F0763A007F5E74 /* InstabugBugReportingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */; };
+		BAD36E2222F19248007F5E74 /* InstabugSurveysBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2122F19248007F5E74 /* InstabugSurveysBridge.m */; };
+		BAD36E2522F19265007F5E74 /* InstabugRepliesBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2422F19265007F5E74 /* InstabugRepliesBridge.m */; };
+		BAD36E2822F19283007F5E74 /* InstabugChatsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2722F19283007F5E74 /* InstabugChatsBridge.m */; };
+		BAD36E2B22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2A22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +37,16 @@
 		24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugReactBridge.m; sourceTree = "<group>"; };
 		24DF11FB1DA3A2F30056F77C /* RCTConvert+InstabugEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+InstabugEnums.h"; sourceTree = "<group>"; };
 		24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+InstabugEnums.m"; sourceTree = "<group>"; };
+		BAD36E1822F075DD007F5E74 /* InstabugBugReportingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugBugReportingBridge.h; sourceTree = "<group>"; };
+		BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugBugReportingBridge.m; sourceTree = "<group>"; };
+		BAD36E2022F19230007F5E74 /* InstabugSurveysBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugSurveysBridge.h; sourceTree = "<group>"; };
+		BAD36E2122F19248007F5E74 /* InstabugSurveysBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysBridge.m; sourceTree = "<group>"; };
+		BAD36E2322F19258007F5E74 /* InstabugRepliesBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugRepliesBridge.h; sourceTree = "<group>"; };
+		BAD36E2422F19265007F5E74 /* InstabugRepliesBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugRepliesBridge.m; sourceTree = "<group>"; };
+		BAD36E2622F19272007F5E74 /* InstabugChatsBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugChatsBridge.h; sourceTree = "<group>"; };
+		BAD36E2722F19283007F5E74 /* InstabugChatsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugChatsBridge.m; sourceTree = "<group>"; };
+		BAD36E2922F192B8007F5E74 /* InstabugFeatureRequestsBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugFeatureRequestsBridge.h; sourceTree = "<group>"; };
+		BAD36E2A22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugFeatureRequestsBridge.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +94,16 @@
 				24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */,
 				24DF11FB1DA3A2F30056F77C /* RCTConvert+InstabugEnums.h */,
 				24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */,
+				BAD36E1822F075DD007F5E74 /* InstabugBugReportingBridge.h */,
+				BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */,
+				BAD36E2022F19230007F5E74 /* InstabugSurveysBridge.h */,
+				BAD36E2122F19248007F5E74 /* InstabugSurveysBridge.m */,
+				BAD36E2322F19258007F5E74 /* InstabugRepliesBridge.h */,
+				BAD36E2422F19265007F5E74 /* InstabugRepliesBridge.m */,
+				BAD36E2622F19272007F5E74 /* InstabugChatsBridge.h */,
+				BAD36E2722F19283007F5E74 /* InstabugChatsBridge.m */,
+				BAD36E2922F192B8007F5E74 /* InstabugFeatureRequestsBridge.h */,
+				BAD36E2A22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m */,
 			);
 			path = RNInstabug;
 			sourceTree = "<group>";
@@ -140,6 +165,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAD36E1A22F0763A007F5E74 /* InstabugBugReportingBridge.m in Sources */,
+				BAD36E2222F19248007F5E74 /* InstabugSurveysBridge.m in Sources */,
+				BAD36E2522F19265007F5E74 /* InstabugRepliesBridge.m in Sources */,
+				BAD36E2822F19283007F5E74 /* InstabugChatsBridge.m in Sources */,
+				BAD36E2B22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m in Sources */,
 				24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */,
 				24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */,
 			);

@@ -14,19 +14,20 @@
 #import <React/RCTLog.h>
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
+#import <React/RCTUIManager.h>
+
+@interface Instabug (PrivateWillSendAPI)
++ (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
+@end
 
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
              @"IBGpreSendingHandler",
-             @"IBGpreInvocationHandler",
-             @"IBGpostInvocationHandler",
-             @"IBGonNewMessageHandler",
-             @"IBGWillShowSurvey",
-             @"IBGDidDismissSurvey",
-             @"IBGDidSelectPromptOptionHandler",
-             @"IBGOnNewReplyReceivedCallback"
+             @"IBGSendHandledJSCrash",
+             @"IBGSendUnhandledJSCrash",
+             @"IBGSetNetworkDataObfuscationHandler",
              ];
 }
 
@@ -43,15 +44,18 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
         invocationEvents |= [boxedValue intValue];
     }
     [Instabug startWithToken:token invocationEvents:invocationEvents];
+    
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    IBGNetworkLogger.enabled = NO;
+    
     SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
     if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
         [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
     }
     
+    IBGNetworkLogger.enabled = YES;
     [self setBaseUrlForDeprecationLogs];
+    
 }
 
 RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
@@ -61,21 +65,9 @@ RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) para
             [[Instabug class] performSelector:setPrivateApiSEL];
         } else {
             [[Instabug class] performSelector:setPrivateApiSEL withObject:param];
-
+            
         }
     }
-}
-
-RCT_EXPORT_METHOD(invoke) {
-    [IBGBugReporting invoke];
-}
-
-RCT_EXPORT_METHOD(invokeWithInvocationModeAndOptions:(IBGInvocationMode)invocationMode options:(NSArray*)options) {
-    IBGBugReportingInvocationOption invocationOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        invocationOptions |= [boxedValue intValue];
-    }
-    [IBGBugReporting invokeWithMode:invocationMode options:invocationOptions];
 }
 
 RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
@@ -88,29 +80,27 @@ RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
 }
 
 RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace) {
-    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(false)];
-    }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+    dispatch_async(queue, ^{
+        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
+        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(NO)];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(sendHandledJSCrash:(NSDictionary *)stackTrace) {
-    SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-    if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-        [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(true)];
-    }
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+    dispatch_async(queue, ^{
+        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
+        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
+            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(YES)];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
     [Instabug setUserData:userData];
-}
-
-RCT_EXPORT_METHOD(showSurveyWithToken:(NSString *)surveyToken) {
-    [IBGSurveys showSurveyWithToken:surveyToken];
-}
-
-RCT_EXPORT_METHOD(hasRespondedToSurveyWithToken:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
-    callback(@[@([IBGSurveys hasRespondedToSurveyWithToken:surveyToken])]);
 }
 
 RCT_EXPORT_METHOD(setTrackUserSteps:(BOOL)isEnabled) {
@@ -118,24 +108,18 @@ RCT_EXPORT_METHOD(setTrackUserSteps:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
-  if(enabledCrashReporter) {
-    IBGCrashReporting.enabled = YES;
-  } else {
-    IBGCrashReporting.enabled = NO;
-  }
+    if(enabledCrashReporter) {
+        IBGCrashReporting.enabled = YES;
+    } else {
+        IBGCrashReporting.enabled = NO;
+    }
 }
 
-RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
-    Instabug.autoScreenRecordingEnabled = enabled;
-}
-
-RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
-    Instabug.autoScreenRecordingDuration = duration;
-}
-
+void (^globalReportCompletionHandler)(IBGReport *);
+IBGReport *currentReport = nil;
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        Instabug.willSendReportHandler = ^(IBGReport* report){
+        [Instabug setWillSendReportHandler_private:^(IBGReport *report, void (^reportCompletionHandler)(IBGReport *)) {
             NSArray *tagsArray = report.tags;
             NSArray *instabugLogs= report.instabugLogs;
             NSArray *consoleLogs= report.consoleLogs;
@@ -143,140 +127,91 @@ RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
             NSArray *fileAttachments= report.fileLocations;
             NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
             [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
-            return report;
-        };
+            currentReport = report;
+            globalReportCompletionHandler = reportCompletionHandler;
+        }];
     } else {
         Instabug.willSendReportHandler = nil;
     }
 }
 
-RCT_EXPORT_METHOD(setPreInvocationHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        IBGBugReporting.willInvokeHandler = ^{
-            [self sendEventWithName:@"IBGpreInvocationHandler" body:nil];
-        };
-    } else {
-        IBGBugReporting.willInvokeHandler = nil;
+RCT_EXPORT_METHOD(appendTagToReport:(NSString*) tag) {
+    if (currentReport != nil) {
+        [currentReport appendTag:tag];
     }
 }
 
-RCT_EXPORT_METHOD(setPostInvocationHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
-            NSLog(@"Dismiss Type: %ld",(long)dismissType);
-            NSLog(@"Report Type: %ld",(long)reportType);
-            
-            //parse dismiss type enum
-            NSString* dismissTypeString;
-            if (dismissType == IBGDismissTypeCancel) {
-                dismissTypeString = @"CANCEL";
-            } else if (dismissType == IBGDismissTypeSubmit) {
-                dismissTypeString = @"SUBMIT";
-            } else if (dismissType == IBGDismissTypeAddAttachment) {
-                dismissTypeString = @"ADD_ATTACHMENT";
-            }
-            
-            //parse report type enum
-            NSString* reportTypeString;
-            if (reportType == IBGReportTypeBug) {
-                reportTypeString = @"bug";
-            } else if (reportType == IBGReportTypeFeedback) {
-                reportTypeString = @"feedback";
-            } else {
-                reportTypeString = @"other";
-            }
-            NSDictionary *result = @{ @"dismissType": dismissTypeString,
-                                     @"reportType": reportTypeString};
-            [self sendEventWithName:@"IBGpostInvocationHandler" body: result];
-        };
-    } else {
-        IBGBugReporting.didDismissHandler = nil;
+RCT_EXPORT_METHOD(appendConsoleLogToReport:(NSString*) consoleLog) {
+    if (currentReport != nil) {
+        [currentReport appendToConsoleLogs:consoleLog];
     }
 }
 
-RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        
-        IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
-            
-            NSString *promptOptionString;
-            if (promptOption == IBGPromptOptionBug) {
-                promptOptionString = @"bug";
-            } else if (promptOption == IBGReportTypeFeedback) {
-                promptOptionString = @"feedback";
-            } else if (promptOption == IBGPromptOptionChat) {
-                promptOptionString = @"chat";
-            } else {
-                promptOptionString = @"none";
-            }
-            
-            [self sendEventWithName:@"IBGDidSelectPromptOptionHandler" body:@{
-                                                                       @"promptOption": promptOptionString
-                                                                       }];
-        };
-    } else {
-        IBGBugReporting.didSelectPromptOptionHandler = nil;
+RCT_EXPORT_METHOD(setUserAttributeToReport:(NSString*) key:(NSString*) value) {
+    if (currentReport != nil) {
+        [currentReport setUserAttribute:value withKey:key];
     }
 }
 
-RCT_EXPORT_METHOD(getUnreadMessagesCount:(RCTResponseSenderBlock)callBack) {
-    callBack(@[@(IBGReplies.unreadRepliesCount)]);
-}
-
-RCT_EXPORT_METHOD(setInvocationEvents:(NSArray*)invocationEventsArray) {
-    IBGInvocationEvent invocationEvents = 0;
-    for (NSNumber *boxedValue in invocationEventsArray) {
-        invocationEvents |= [boxedValue intValue];
+RCT_EXPORT_METHOD(logDebugToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logDebug:log];
     }
-    IBGBugReporting.invocationEvents = invocationEvents;
 }
 
-RCT_EXPORT_METHOD(setInvocationOptions:(NSArray*)invocationOptionsArray) {
-    IBGBugReportingInvocationOption invocationOptions = 0;
-    
-    for (NSNumber *boxedValue in invocationOptionsArray) {
-        invocationOptions |= [boxedValue intValue];
+RCT_EXPORT_METHOD(logVerboseToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logVerbose:log];
     }
-    
-    IBGBugReporting.invocationOptions = invocationOptions;
 }
 
-RCT_EXPORT_METHOD(setPushNotificationsEnabled:(BOOL)isPushNotificationEnabled) {
-    [Instabug setPushNotificationsEnabled:isPushNotificationEnabled];
+RCT_EXPORT_METHOD(logWarnToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logWarn:log];
+    }
 }
 
-RCT_EXPORT_METHOD(setShakingThresholdForIPhone:(double)iPhoneShakingThreshold forIPad:(double)iPadShakingThreshold) {
-    [IBGBugReporting setShakingThresholdForiPhone:iPhoneShakingThreshold];
-    [IBGBugReporting setShakingThresholdForiPad:iPadShakingThreshold];
+RCT_EXPORT_METHOD(logErrorToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logError:log];
+    }
 }
 
-RCT_EXPORT_METHOD(setShakingThresholdForiPhone:(double)iPhoneShakingThreshold) {
-    IBGBugReporting.shakingThresholdForiPhone = iPhoneShakingThreshold;
+RCT_EXPORT_METHOD(logInfoToReport:(NSString*) log) {
+    if (currentReport != nil) {
+        [currentReport logInfo:log];
+    }
 }
 
-RCT_EXPORT_METHOD(setShakingThresholdForiPad:(double)iPadShakingThreshold) {
-    IBGBugReporting.shakingThresholdForiPad = iPadShakingThreshold;
+RCT_EXPORT_METHOD(addFileAttachmentWithURLToReport:(NSString*) urlString) {
+    if (currentReport != nil) {
+        NSURL *url = [NSURL URLWithString:urlString];
+        [currentReport addFileAttachmentWithURL:url];
+    }
 }
 
-RCT_EXPORT_METHOD(setFloatingButtonEdge:(CGRectEdge)floatingButtonEdge withTopOffset:(double)floatingButtonOffsetFromTop) {
-    IBGBugReporting.floatingButtonEdge = floatingButtonEdge;
-    IBGBugReporting.floatingButtonTopOffset = floatingButtonOffsetFromTop;
+RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
+    if (currentReport != nil) {
+        NSData* data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
+        [currentReport addFileAttachmentWithData:data];
+    }
+}
+
+RCT_EXPORT_METHOD(submitReport) {
+    globalReportCompletionHandler(currentReport);
+    currentReport = nil;
 }
 
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
 
-RCT_EXPORT_METHOD(setExtendedBugReportMode:(IBGExtendedBugReportMode)extendedBugReportMode) {
-    IBGBugReporting.extendedBugReportMode = extendedBugReportMode;
-}
-
 RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
-    [Instabug setColorTheme:colorTheme];
+        [Instabug setColorTheme:colorTheme];
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-    Instabug.tintColor = color;
+        Instabug.tintColor = color;
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -293,58 +228,6 @@ RCT_EXPORT_METHOD(getTags:(RCTResponseSenderBlock)callBack) {
 
 RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(NSString*)key) {
     [Instabug setValue:value forStringWithKey:key];
-}
-
-RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
-                    extraScreenShot:(BOOL)extraScreenShot
-                    galleryImage:(BOOL)galleryImage
-                    screenRecording:(BOOL)screenRecording) {
-     IBGAttachmentType attachmentTypes = 0;
-     if(screenShot) {
-         attachmentTypes = IBGAttachmentTypeScreenShot;
-     }
-     if(extraScreenShot) {
-         attachmentTypes |= IBGAttachmentTypeExtraScreenShot;
-     }
-     if(galleryImage) {
-         attachmentTypes |= IBGAttachmentTypeGalleryImage;
-     }
-     if(screenRecording) {
-         attachmentTypes |= IBGAttachmentTypeScreenRecording;
-     }
-
-     IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
-  }
-
-RCT_EXPORT_METHOD(setChatNotificationEnabled:(BOOL)isChatNotificationEnabled) {
-    IBGReplies.inAppNotificationsEnabled = isChatNotificationEnabled;
-}
-
-RCT_EXPORT_METHOD(setOnNewMessageHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        IBGReplies.didReceiveReplyHandler= ^{
-            [self sendEventWithName:@"IBGonNewMessageHandler" body:nil];
-        };
-    } else {
-        IBGReplies.didReceiveReplyHandler = nil;
-    }
-}
-
-RCT_EXPORT_METHOD(setPromptOptionsEnabled:(BOOL)chatEnabled
-                  feedback:(BOOL)bugReportEnabled
-                  chat:(BOOL)feedbackEnabled) {
-    IBGPromptOption promptOption = IBGPromptOptionNone;
-    if (chatEnabled) {
-        promptOption |= IBGPromptOptionChat;
-    }
-    if (bugReportEnabled) {
-        promptOption |= IBGPromptOptionBug;
-    }
-    if (feedbackEnabled) {
-        promptOption |= IBGPromptOptionFeedback;
-    }
-    
-    [IBGBugReporting setPromptOptions:promptOption];
 }
 
 RCT_EXPORT_METHOD(addFileAttachment:(NSString *)fileURLString) {
@@ -389,10 +272,6 @@ RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
     Instabug.shouldCaptureViewHierarchy = viewHierarchyEnabled;
 }
 
-RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
-    callback(@[[IBGSurveys availableSurveys]]);
-}
-
 RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
     [Instabug logUserEventWithName:name];
 }
@@ -425,72 +304,9 @@ RCT_EXPORT_METHOD(clearLogs) {
     [IBGLog clearAllLogs];
 }
 
-RCT_EXPORT_METHOD(setSurveysEnabled:(BOOL)surveysEnabled) {
-    IBGSurveys.enabled = surveysEnabled;
-}
-
-RCT_EXPORT_METHOD(showSurveysIfAvailable) {
-    [IBGSurveys showSurveyIfAvailable];
-}
-
-RCT_EXPORT_METHOD(setWillShowSurveyHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        IBGSurveys.willShowSurveyHandler = ^{
-            [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
-        };
-    } else {
-        IBGSurveys.willShowSurveyHandler = nil;
-    }
-}
-
-RCT_EXPORT_METHOD(setDidDismissSurveyHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        IBGSurveys.didDismissSurveyHandler = ^{
-            [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
-        };
-    } else {
-        IBGSurveys.didDismissSurveyHandler = nil;
-    }
-}
-
-RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
-    Instabug.shouldCaptureViewHierarchy = viewHirearchyEnabled;
-}
-
-RCT_EXPORT_METHOD(setAutoShowingSurveysEnabled:(BOOL)autoShowingSurveysEnabled) {
-    IBGSurveys.autoShowingEnabled = autoShowingSurveysEnabled;
-}
-
-RCT_EXPORT_METHOD(setVideoRecordingFloatingButtonPosition:(IBGPosition)position) {
-//    IBGBugReporting.videoRecordingFloatingButtonPosition = position;
-}
-
-RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
-    [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
-}
-
 RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
     [Instabug setSessionProfilerEnabled:sessionProfilerEnabled];
 }
-
-RCT_EXPORT_METHOD(showFeatureRequests) {
-    [IBGFeatureRequests show];
-}
-
-RCT_EXPORT_METHOD(setShouldShowSurveysWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
-    IBGSurveys.shouldShowWelcomeScreen = shouldShowWelcomeScreen;
-}
-
-RCT_EXPORT_METHOD(setEmailFieldRequiredForActions:(BOOL)isEmailFieldRequired
-                 forAction:(NSArray *)actionTypesArray) {
-    IBGAction actionTypes = 0;
-    
-    for (NSNumber *boxedValue in actionTypesArray) {
-         actionTypes |= [boxedValue intValue];
-    }
-
-     [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
-  }
 
 RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
     [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
@@ -500,20 +316,9 @@ RCT_EXPORT_METHOD(setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMod
     [Instabug setWelcomeMessageMode:welcomeMessageMode];
 }
 
-RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired
-                  forAction:(NSArray *)actionTypesArray) {
-    IBGAction actionTypes = 0;
-    
-    for (NSNumber *boxedValue in actionTypesArray) {
-        actionTypes |= [boxedValue intValue];
-    }
-    
-    [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
-}
-
 
 RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
-  BOOL result = NO;
+    BOOL result = NO;
 #if TARGET_OS_SIMULATOR
     result = NO;
 #else
@@ -529,62 +334,52 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     callback(@[[NSNumber numberWithBool:result]]);
 }
 
-RCT_EXPORT_METHOD(show) {
-    [Instabug show];
-}
-
-RCT_EXPORT_METHOD(setReportTypes:(NSArray*) types ) {
-    IBGBugReportingReportType reportTypes = 0;
-    for (NSNumber *boxedValue in types) {
-        reportTypes |= [boxedValue intValue];
+RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
+    NSString* url = networkData[@"url"];
+    NSString* method = networkData[@"method"];
+    NSString* requestBody = networkData[@"requestBody"];
+    NSString* responseBody = networkData[@"responseBody"];
+    int32_t responseCode = [networkData[@"responseCode"] integerValue];
+    NSDictionary* requestHeaders = @{};
+    if([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]){
+        requestHeaders = networkData[@"requestHeaders"];
     }
-    [IBGBugReporting setPromptOptionsEnabledReportTypes: reportTypes];
-}
-
-RCT_EXPORT_METHOD(setBugReportingEnabled:(BOOL) isEnabled) {
-    IBGBugReporting.enabled = isEnabled;
-}
-
-RCT_EXPORT_METHOD(showBugReportingWithReportTypeAndOptions:(IBGBugReportingReportType) type: (NSArray*) options) {
-    IBGBugReportingOption parsedOptions = 0;
-    for (NSNumber *boxedValue in options) {
-        parsedOptions |= [boxedValue intValue];
+    NSDictionary* responseHeaders = @{};
+    if([networkData[@"responseHeaders"] isKindOfClass:[NSDictionary class]]){
+        responseHeaders = networkData[@"responseHeaders"];
     }
-    [IBGBugReporting showWithReportType:type options:parsedOptions];
-}
-
-RCT_EXPORT_METHOD(setChatsEnabled:(BOOL)isEnabled) {
-    IBGChats.enabled = isEnabled;
-}
-
-RCT_EXPORT_METHOD(showChats) {
-    [IBGChats show];
-}
-
-RCT_EXPORT_METHOD(setRepliesEnabled:(BOOL) isEnabled) {
-    IBGReplies.enabled = isEnabled;
-}
-
-RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
-    BOOL hasChats = IBGReplies.hasChats;
-    if (hasChats) {
-        callback(nil);
-        
-    }
-}
-
-RCT_EXPORT_METHOD(showReplies) {
-    [IBGReplies show];
-}
+    NSString* contentType = networkData[@"contentType"];
+    double duration = [networkData[@"duration"] doubleValue];
     
-RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callback) {
-    if (callback != nil) {
-        IBGReplies.didReceiveReplyHandler = ^{
-            [self sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil];
-        };
-    } else {
-        IBGReplies.didReceiveReplyHandler = nil;
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:");
+    
+    if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
+        [inv setSelector:networkLogSEL];
+        [inv setTarget:[IBGNetworkLogger class]];
+        
+        [inv setArgument:&(url) atIndex:2];
+        [inv setArgument:&(method) atIndex:3];
+        [inv setArgument:&(requestBody) atIndex:4];
+        [inv setArgument:&(responseBody) atIndex:5];
+        [inv setArgument:&(responseCode) atIndex:6];
+        [inv setArgument:&(requestHeaders) atIndex:7];
+        [inv setArgument:&(responseHeaders) atIndex:8];
+        [inv setArgument:&(contentType) atIndex:9];
+        [inv setArgument:&(duration) atIndex:10];
+        
+        [inv invoke];
     }
+}
+
+RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = true;
+    
+}
+
+RCT_EXPORT_METHOD(show) {
+    [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
 - (NSDictionary *)constantsToExport
@@ -595,23 +390,20 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
               @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
               @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton),
-
+              
               @"invocationModeNA": @(IBGInvocationModeNA),
               @"invocationModeNewBug": @(IBGInvocationModeNewBug),
               @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
               @"invocationModeNewChat": @(IBGInvocationModeNewChat),
               @"invocationModeChatsList": @(IBGInvocationModeChatsList),
-
+              
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
               @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
-
+              
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
               @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
-
-              @"reportTypeBug": @(IBGReportTypeBug),
-              @"reportTypeFeedback": @(IBGReportTypeFeedback),
               
               @"optionEmailFieldHidden": @(IBGBugReportingOptionEmailFieldHidden),
               @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
@@ -620,22 +412,23 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               
               @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
               @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
-
+              @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion),
+              
               @"rectMinXEdge": @(CGRectMinXEdge),
               @"rectMinYEdge": @(CGRectMinYEdge),
               @"rectMaxXEdge": @(CGRectMaxXEdge),
               @"rectMaxYEdge": @(CGRectMaxYEdge),
-
+              
               @"bottomRight": @(IBGPositionBottomRight),
               @"topRight": @(IBGPositionTopRight),
               @"bottomLeft": @(IBGPositionBottomLeft),
               @"topLeft": @(IBGPositionTopLeft),
-
+              
               @"allActions": @(IBGActionAllActions),
               @"reportBugAction": @(IBGActionReportBug),
               @"requestNewFeature": @(IBGActionRequestNewFeature),
               @"addCommentToFeature": @(IBGActionAddCommentToFeature),
-
+              
               @"localeArabic": @(IBGLocaleArabic),
               @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
@@ -654,7 +447,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"localeSpanish": @(IBGLocaleSpanish),
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
-
+              
               
               @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
               @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
@@ -663,15 +456,15 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
-
+              
               @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
               @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
               @"disabled": @(IBGExtendedBugReportModeDisabled),
-
+              
               @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
               @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),
               @"welcomeMessageModeDisabled": @(IBGWelcomeMessageModeDisabled),
-
+              
               @"shakeHint": kIBGShakeStartAlertTextStringName,
               @"swipeHint": kIBGTwoFingerSwipeStartAlertTextStringName,
               @"edgeSwipeStartHint": kIBGEdgeSwipeStartAlertTextStringName,
@@ -681,20 +474,22 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
               @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
               @"invocationHeader": kIBGInvocationTitleStringName,
-              @"talkToUs": kIBGTalkToUsStringName,
+              //@"talkToUs": kIBGTalkToUsStringName,
               @"startChats": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,
               @"commentFieldHintForBugReport": kIBGCommentFieldPlaceholderForBugReportStringName,
               @"commentFieldHintForFeedback": kIBGCommentFieldPlaceholderForFeedbackStringName,
-              @"addScreenRecordingMessage": kIBGAddScreenRecordingMessageStringName,
+              @"commentFieldHintForQuestion": kIBGCommentFieldPlaceholderForQuestionStringName,
+              @"addVideoMessage": kIBGAddScreenRecordingMessageStringName,
               @"addVoiceMessage": kIBGAddVoiceMessageStringName,
               @"addImageFromGallery": kIBGAddImageFromGalleryStringName,
               @"addExtraScreenshot": kIBGAddExtraScreenshotStringName,
               @"audioRecordingPermissionDeniedTitle": kIBGAudioRecordingPermissionDeniedTitleStringName,
               @"audioRecordingPermissionDeniedMessage": kIBGAudioRecordingPermissionDeniedMessageStringName,
               @"microphonePermissionAlertSettingsButtonTitle": kIBGMicrophonePermissionAlertSettingsButtonTitleStringName,
+              @"conversationsHeaderTitle": kIBGChatsTitleStringName,
               @"chatsHeaderTitle": kIBGChatsTitleStringName,
               @"team": kIBGTeamStringName,
               @"recordingMessageToHoldText": kIBGRecordingMessageToHoldTextStringName,
@@ -712,7 +507,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"videPressRecord": kIBGVideoPressRecordTitle,
               @"collectingDataText": kIBGCollectingDataText,
               @"thankYouAlertText": kIBGThankYouAlertMessageStringName,
-
+              
               @"welcomeMessageBetaWelcomeStepTitle": kIBGBetaWelcomeMessageWelcomeStepTitle,
               @"welcomeMessageBetaWelcomeStepContent": kIBGBetaWelcomeMessageWelcomeStepContent,
               @"welcomeMessageBetaHowToReportStepTitle": kIBGBetaWelcomeMessageHowToReportStepTitle,
@@ -720,7 +515,14 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedCallback:(RCTResponseSenderBlock) callbac
               @"welcomeMessageBetaFinishStepTitle": kIBGBetaWelcomeMessageFinishStepTitle,
               @"welcomeMessageBetaFinishStepContent": kIBGBetaWelcomeMessageFinishStepContent,
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
-              @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent
+              @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
+              
+              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
+              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
+              
+              @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
+              @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText
+              
               };
 };
 
@@ -756,16 +558,16 @@ void RNIBGLog(IBGLogLevel logLevel, NSString *format,  ...) {
 }
 
 RCTLogFunction InstabugReactLogFunction = ^(
-                                               RCTLogLevel level,
-                                               __unused RCTLogSource source,
-                                               NSString *fileName,
-                                               NSNumber *lineNumber,
-                                               NSString *message
-                                               )
+                                            RCTLogLevel level,
+                                            __unused RCTLogSource source,
+                                            NSString *fileName,
+                                            NSNumber *lineNumber,
+                                            NSString *message
+                                            )
 {
     NSString *formatString = @"Instabug - REACT LOG: %@";
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-
+    
     switch(level) {
         case RCTLogLevelTrace:
             RNIBGLog(IBGLogLevelTrace, formatString, log);

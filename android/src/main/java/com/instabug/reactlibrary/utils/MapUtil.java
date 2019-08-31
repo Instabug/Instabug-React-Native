@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -140,4 +141,31 @@ public class MapUtil {
 
         return writableMap;
     }
+
+    public static WritableMap convertJsonToWritableMap(JSONObject jsonObject) throws JSONException {
+        WritableMap map = new WritableNativeMap();
+
+        Iterator<String> iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                map.putMap(key, convertJsonToWritableMap((JSONObject) value));
+            } else if (value instanceof  JSONArray) {
+                map.putArray(key, ArrayUtil.convertJsonToWritableArray((JSONArray) value));
+            } else if (value instanceof  Boolean) {
+                map.putBoolean(key, (Boolean) value);
+            } else if (value instanceof  Integer) {
+                map.putInt(key, (Integer) value);
+            } else if (value instanceof  Double) {
+                map.putDouble(key, (Double) value);
+            } else if (value instanceof String)  {
+                map.putString(key, (String) value);
+            } else {
+                map.putString(key, value.toString());
+            }
+        }
+        return map;
+    }
+
 }

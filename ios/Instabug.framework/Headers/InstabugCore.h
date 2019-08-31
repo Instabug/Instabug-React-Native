@@ -3,9 +3,9 @@
  
  Contains:   Enums and Constants for using Instabug's SDK.
  
- Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    0.0.0
+ Version:    8.6.1
  */
 
 #import <Foundation/Foundation.h>

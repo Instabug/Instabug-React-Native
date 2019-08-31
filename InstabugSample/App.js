@@ -16,7 +16,7 @@ import {
   ScrollView
 } from 'react-native';
 
-import Instabug, {BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies} from'instabug-reactnative';
+import Instabug, { BugReporting, FeatureRequests, Surveys, Chats, CrashReporting, Replies } from'instabug-reactnative';
 
 
 const instructions = Platform.select({
@@ -35,14 +35,12 @@ export default class App extends Component<{}> {
       colorTheme: 'Light'
     };
 
-    Instabug.startWithToken("APP_TOKEN", [Instabug.invocationEvent.shake]);
-    BugReporting.setReportTypes([BugReporting.reportType.bug, BugReporting.reportType.feedback]);
-    Instabug.setLocale(Instabug.locale.english);
+    Instabug.startWithToken("YOUR_TOKEN", [Instabug.invocationEvent.shake]);
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View testID='welcome' style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer} >
           <Text style={styles.details}>
             Hello {"Instabug's"} awesome user! The purpose of this application is to show you the different
@@ -57,11 +55,11 @@ export default class App extends Component<{}> {
           <TouchableOpacity style={styles.button} onPress={()=>this.sendFeedback()}>
             <Text style={styles.text}> SEND FEEDBACK </Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={()=>this.startNewConversation()}>
+            <Text style={styles.text}> ASK A QUESTION </Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.sendCrashReport()}>
             <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={()=>this.startNewConversation()}>
-            <Text style={styles.text}> START A NEW CONVERSATION </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=>this.showNpsSurvey()}>
             <Text style={styles.text}> SHOW NPS SURVEY </Text>
@@ -131,7 +129,7 @@ export default class App extends Component<{}> {
    }
 
   setPrimaryColor(color) {
-    Instabug.setPrimaryColor(processColor(color));
+    Instabug.setPrimaryColor(color);
   }
 
   showIntroMessage() {
@@ -186,7 +184,7 @@ export default class App extends Component<{}> {
   }
 
   startNewConversation() {
-    Chats.show();
+    BugReporting.showWithOptions(BugReporting.reportType.question);
   }
 
   showUnreadMessagesCount() {

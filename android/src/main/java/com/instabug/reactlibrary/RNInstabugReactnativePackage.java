@@ -3,11 +3,11 @@ package com.instabug.reactlibrary;
 import android.app.Application;
 
 import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.instabug.bug.BugReporting;
+import com.instabug.crash.CrashReporting;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -35,6 +35,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     private ArrayList<InstabugInvocationEvent> invocationEvents = new ArrayList<>();
     private InstabugColorTheme instabugColorTheme = InstabugColorTheme.InstabugColorThemeLight;
 
+    public RNInstabugReactnativePackage() {}
+
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
                                         String[] invocationEventValues, String primaryColor,
                                         InstabugFloatingButtonEdge floatingButtonEdge, Integer offset, boolean crashReportingEnabled) {
@@ -48,9 +50,12 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         
         new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
-                .setCrashReportingState(crashReportingEnabled ? Feature.State.ENABLED: Feature.State.DISABLED)
                 .setReproStepsState(State.DISABLED)
                 .build();
+        if (crashReportingEnabled)
+            CrashReporting.setState(Feature.State.ENABLED);
+        else
+            CrashReporting.setState(Feature.State.DISABLED);
 
         if(primaryColor != null)
             Instabug.setPrimaryColor(Color.parseColor(primaryColor));
@@ -110,11 +115,12 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new RNInstabugReactnativeModule(reactContext, this.androidApplication, this.mInstabug));
+        modules.add(new RNInstabugBugReportingModule(reactContext));
+        modules.add(new RNInstabugSurveysModule(reactContext));
+        modules.add(new RNInstabugFeatureRequestsModule(reactContext));
+        modules.add(new RNInstabugRepliesModule(reactContext));
+        modules.add(new RNInstabugChatsModule(reactContext));
         return modules;
-    }
-
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return Collections.emptyList();
     }
 
     @Override

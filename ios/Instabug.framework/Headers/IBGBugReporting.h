@@ -1,10 +1,12 @@
-//
-//  IBGBugReporting.h
-//  InstabugBugReporting
-//
-//  Created by Yousef Hamza on 5/17/18.
-//  Copyright © 2018 Moataz. All rights reserved.
-//
+/*
+ File:       Instabug/IBGBugReporting.h
+ 
+ Contains:   API for using Instabug's SDK.
+ 
+ Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
+ 
+ Version:    8.6.1
+ */
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"
@@ -15,7 +17,7 @@ NS_SWIFT_NAME(BugReporting)
 /**
  @brief Acts as master switch for the Bug Reporting.
  
- @discussion It's enabled by default. When disabled, both "Report a problem" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
+ @discussion It's enabled by default. When disabled, both "Report a bug" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
  */
 @property (class, atomic, assign) BOOL enabled;
 
@@ -145,6 +147,27 @@ NS_SWIFT_NAME(BugReporting)
  */
 + (void)dismiss;
 
+/**
+ @brief Enables/disables inspect view hierarchy when reporting a bug/feedback.
+ */
+@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy;
+
+/**
+ @brief Sets whether the SDK is recording the screen or not.
+ 
+ @discussion Enabling auto screen recording would give you an insight on the scenario a user has performed before encountering a bug. screen recording is attached with each bug being sent.
+ 
+ Auto screen recording is disabled by default.
+ */
+@property (class, atomic, assign) BOOL autoScreenRecordingEnabled;
+
+/**
+ @brief Sets maximum auto screen recording video duration.
+ 
+ @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
+ */
+@property (class, atomic, assign) CGFloat autoScreenRecordingDuration;
+
 /*
  +------------------------------------------------------------------------+
  |                            Deprecated APIs                             |
@@ -161,13 +184,5 @@ NS_SWIFT_NAME(BugReporting)
  | https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide             |
  +------------------------------------------------------------------------+
  */
-
-+ (void)invoke DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invoke for instructions on migrating to SDK v8.1 APIs.");
-
-+ (void)invokeWithMode:(IBGInvocationMode)invocationMode options:(IBGBugReportingInvocationOption)options DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invokewithmode for instructions on migrating to SDK v8.1 APIs.");
-
-@property(class, atomic, assign) IBGPromptOption promptOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-promptoptions for instructions on migrating to SDK v8.1 APIs.");
-
-@property(class, atomic, assign) IBGBugReportingInvocationOption invocationOptions DEPRECATED_MSG_ATTRIBUTE("See https://docs.instabug.com/docs/ios-sdk-8-1-migration-guide#section-invocationoptions for instructions on migrating to SDK v8.1 APIs.");
 
 @end

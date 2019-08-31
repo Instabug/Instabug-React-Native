@@ -41,29 +41,17 @@ RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
 
-RCT_ENUM_CONVERTER(IBGPromptOption, (@{
-                                      @"promptOptionChat": @(IBGPromptOptionChat),
-                                      @"promptOptionBug": @(IBGPromptOptionBug),
-                                      @"promptOptionBugFeedback": @(IBGPromptOptionFeedback)
-                                      }), IBGPromptOptionChat, integerValue)
-
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabled": @(IBGUserStepsModeEnable),
                                       @"reproStepsDisabled": @(IBGUserStepsModeDisable),
                                       @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
-                                      }), IBGUserStepsModeEnable, integerValue)
+                                      }), IBGUserStepsModeEnabledWithNoScreenshots, integerValue)
 
 RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{
                                       @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
                                       @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
                                       @"disabled": @(IBGExtendedBugReportModeDisabled)
                                       }), IBGExtendedBugReportModeDisabled, integerValue)
-
-
-RCT_ENUM_CONVERTER(IBGReportType, (@{
-                                     @"reportTypeBug": @(IBGReportTypeBug),
-                                     @"reportTypeFeedback": @(IBGReportTypeFeedback)
-                                     }), IBGReportTypeBug, integerValue);
 
 RCT_ENUM_CONVERTER(CGRectEdge, (@{
                                   @"rectMinXEdge": @(CGRectMinXEdge),
@@ -121,7 +109,8 @@ RCT_ENUM_CONVERTER(IBGAction, (@{
 
 RCT_ENUM_CONVERTER(IBGBugReportingReportType, (@{
                                  @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
-                                 @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback)
+                                 @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
+                                 @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion)
                                  }), IBGBugReportingReportTypeBug, integerValue);
 
 RCT_ENUM_CONVERTER(IBGBugReportingOption, (@{

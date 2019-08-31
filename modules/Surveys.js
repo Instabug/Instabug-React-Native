@@ -1,16 +1,15 @@
 import {
   NativeModules,
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
-  Platform
 } from 'react-native';
-let { Instabug } = NativeModules;
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
+let { IBGSurveys } = NativeModules;
 
 /**
  * Surveys
  * @exports Surveys
  */
-module.exports = {
+export default {
   /**
    * @summary Sets whether surveys are enabled or not.
    * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
@@ -21,7 +20,7 @@ module.exports = {
    * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
   setEnabled: function(isEnabled) {
-    Instabug.setSurveysEnabled(isEnabled);
+    IBGSurveys.setEnabled(isEnabled);
   },
 
   /**
@@ -31,7 +30,7 @@ module.exports = {
    * in the current session.
    */
   showSurveyIfAvailable: function() {
-    Instabug.showSurveysIfAvailable();
+    IBGSurveys.showSurveysIfAvailable();
   },
 
   /**
@@ -46,7 +45,7 @@ module.exports = {
     sessionCount,
     daysCount
   ) {
-    Instabug.setThresholdForReshowingSurveyAfterDismiss(
+    IBGSurveys.setThresholdForReshowingSurveyAfterDismiss(
       sessionCount,
       daysCount
     );
@@ -59,7 +58,7 @@ module.exports = {
    *
    */
   getAvailableSurveys: function(availableSurveysCallback) {
-    Instabug.getAvailableSurveys(availableSurveysCallback);
+    IBGSurveys.getAvailableSurveys(availableSurveysCallback);
   },
 
   /**
@@ -69,10 +68,11 @@ module.exports = {
    *
    */
   setAutoShowingEnabled: function(autoShowingSurveysEnabled) {
-    Instabug.setAutoShowingSurveysEnabled(autoShowingSurveysEnabled);
+    IBGSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
   },
 
   /**
+   * @deprecated use {@link Surveys.setOnShowHandler}
    * @summary Sets a block of code to be executed just before the survey's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any UI changes before
    * the survey's UI is shown.
@@ -80,23 +80,23 @@ module.exports = {
    * presenting the survey's UI.
    */
   onShowCallback: function(willShowSurveyHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGWillShowSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        willShowSurveyHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGWillShowSurvey',
-        willShowSurveyHandler
-      );
-    }
-
-    Instabug.setWillShowSurveyHandler(willShowSurveyHandler);
+    this.setOnShowHandler(willShowSurveyHandler);
   },
 
   /**
+   * @summary Sets a block of code to be executed just before the survey's UI is presented.
+   * This block is executed on the UI thread. Could be used for performing any UI changes before
+   * the survey's UI is shown.
+   * @param {function} onShowHandler - A block of code that gets executed before
+   * presenting the survey's UI.
+   */
+  setOnShowHandler: function(onShowHandler) {
+    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
+    IBGSurveys.setOnShowHandler(onShowHandler);
+  },
+
+  /**
+   * @deprecated use {@link Surveys.setOnDismissHandler}
    * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any UI
    * changes after the survey's UI is dismissed.
@@ -104,20 +104,19 @@ module.exports = {
    * the survey's UI is dismissed.
    */
   onDismissCallback: function(didDismissSurveyHandler) {
-    if (Platform.OS === 'ios') {
-      Instabug.addListener('IBGDidDismissSurvey');
-      NativeAppEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        didDismissSurveyHandler
-      );
-    } else {
-      DeviceEventEmitter.addListener(
-        'IBGDidDismissSurvey',
-        didDismissSurveyHandler
-      );
-    }
+    this.setOnDismissHandler(didDismissSurveyHandler);
+  },
 
-    Instabug.setDidDismissSurveyHandler(didDismissSurveyHandler);
+  /**
+   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
+   * This block is executed on the UI thread. Could be used for performing any UI
+   * changes after the survey's UI is dismissed.
+   * @param {function} onDismissHandler - A block of code that gets executed after
+   * the survey's UI is dismissed.
+   */
+  setOnDismissHandler: function(onDismissHandler) {
+    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
+    IBGSurveys.setOnDismissHandler(onDismissHandler);
   },
 
   /**
@@ -128,7 +127,7 @@ module.exports = {
    *
    */
   showSurvey: function(surveyToken) {
-    Instabug.showSurveyWithToken(surveyToken);
+    IBGSurveys.showSurvey(surveyToken);
   },
 
   /**
@@ -140,7 +139,7 @@ module.exports = {
    *
    */
   hasRespondedToSurvey: function(surveyToken, surveyTokenCallback) {
-    Instabug.hasRespondedToSurveyWithToken(surveyToken, surveyTokenCallback);
+    IBGSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
   },
 
   /**
@@ -151,6 +150,6 @@ module.exports = {
    *
    */
   setShouldShowWelcomeScreen: function(shouldShowWelcomeScreen) {
-    Instabug.setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen);
+    IBGSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
   }
 };

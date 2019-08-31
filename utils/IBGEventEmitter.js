@@ -1,10 +1,9 @@
-import { NativeAppEventEmitter, DeviceEventEmitter, NativeModules, Platform } from 'react-native';
-let { Instabug } = NativeModules;
+import { NativeAppEventEmitter, DeviceEventEmitter, Platform } from 'react-native';
 
 const IBGEventEmitter = {
-    addListener: (eventName, callback) => {
+    addListener: (nativeModule, eventName, callback) => {
         if (Platform.OS === 'ios') {
-            Instabug.addListener(eventName);
+            nativeModule.addListener(eventName);
             NativeAppEventEmitter.addListener(eventName, callback);
           } else {
             DeviceEventEmitter.addListener(eventName, callback);
@@ -16,7 +15,21 @@ const IBGEventEmitter = {
         } else {
             DeviceEventEmitter.emit(eventName, eventParams);
         }
-    }
+    },
+    removeAllListeners: () => {
+        if (Platform.OS === 'ios') {
+            NativeAppEventEmitter.removeAllListeners()
+        } else {
+            DeviceEventEmitter.removeAllListeners();
+        }
+    },
+    getListeners: (eventName) => {
+        if (Platform.OS === 'ios') {
+            return NativeAppEventEmitter.listeners(eventName)
+        } else {
+            return DeviceEventEmitter.listeners(eventName);
+        }
+    } 
 };
 
 export default IBGEventEmitter;
