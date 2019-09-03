@@ -1,5 +1,6 @@
 ## Master
 
+**⚠️ If you are using android, please make sure to follow the migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-85)**
 * Adds initializing android sdk from using `Instabug.start` instead of inside the application class
 * Updates native iOS SDK to v8.6.2
 

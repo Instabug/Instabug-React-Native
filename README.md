@@ -95,7 +95,7 @@ import Instabug from 'instabug-reactnative';
 2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
 ```javascript
-Instabug.startWithToken('APP_TOKEN', [Instabug.invocationEvent.shake]);
+Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
 ```
 You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
@@ -149,6 +149,25 @@ npm install instabug-reactnative
 ```bash
 react-native add-instabug
 ```
+
+### Updating to version 8.6.3
+
+Starting 8.6.3, starting the SDK on Android can now be done from the JS side and no longer requires the integration code inside Android's `MainApplication.java`.
+
+1) Remove the android integration code from your `MainApplication.java`, it should look something like this:
+
+```java
+new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
+                            .setInvocationEvent("shake")
+                            .build();
+```
+
+2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
+
+```javascript
+Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
+```
+
 
 ## Microphone and Photo Library Usage Description (iOS Only)
 
