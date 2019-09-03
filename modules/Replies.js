@@ -1,7 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-let { Instabug } = NativeModules;
+let { IBGReplies } = NativeModules;
 
 /**
  * Replies
@@ -13,7 +13,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    Instabug.setRepliesEnabled(isEnabled);
+    IBGReplies.setEnabled(isEnabled);
   },
 
   /**
@@ -21,14 +21,14 @@ export default {
    * @param {function} callback - callback that is invoked if chats exist
    */
   hasChats(callback) {
-    Instabug.hasChats(callback);
+    IBGReplies.hasChats(callback);
   },
 
   /**
    * Manual invocation for replies.
    */
   show() {
-    Instabug.showReplies();
+    IBGReplies.show();
   },
 
   /**
@@ -48,10 +48,11 @@ export default {
    */
   setOnNewReplyReceivedHandler(onNewReplyReceivedHandler) {
     IBGEventEmitter.addListener(
+      IBGReplies,
       InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
       onNewReplyReceivedHandler
     );
-    Instabug.setOnNewReplyReceivedCallback(onNewReplyReceivedHandler);
+    IBGReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
   },
 
   /**
@@ -62,7 +63,7 @@ export default {
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
   getUnreadRepliesCount: function(messageCountCallback) {
-    Instabug.getUnreadMessagesCount(messageCountCallback);
+    IBGReplies.getUnreadRepliesCount(messageCountCallback);
   },
 
   /**
@@ -72,7 +73,7 @@ export default {
    * notifications are enabled or disabled.
    */
   setInAppNotificationsEnabled: function(inAppNotificationsEnabled) {
-    Instabug.setChatNotificationEnabled(inAppNotificationsEnabled);
+    IBGReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
   },
 
   /**
@@ -84,7 +85,18 @@ export default {
    */
   setInAppNotificationSound: function(shouldPlaySound) {
     if (Platform.OS === 'android') {
-      Instabug.setEnableInAppNotificationSound(shouldPlaySound);
+      IBGReplies.setInAppNotificationSound(shouldPlaySound);
     }
+  },
+
+  /**
+   * Enables/disables the use of push notifications in the SDK.
+   * Defaults to YES.
+   * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
+   * notifications are enabled or disabled.
+   */
+  setPushNotificationsEnabled(isPushNotificationEnabled) {
+    if (Platform.OS === 'ios')
+      IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
   }
 };

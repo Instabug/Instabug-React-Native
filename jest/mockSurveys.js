@@ -1,16 +1,16 @@
 jest.mock('NativeModules', () => {
     return {
-        Instabug: {
-            setSurveysEnabled: jest.fn(),
+        IBGSurveys: {
+            setEnabled: jest.fn(),
             showSurveysIfAvailable: jest.fn(),
             setThresholdForReshowingSurveyAfterDismiss: jest.fn(),
             getAvailableSurveys: jest.fn(),
-            setAutoShowingSurveysEnabled: jest.fn(),
-            setWillShowSurveyHandler: jest.fn(),
-            setDidDismissSurveyHandler: jest.fn(),
-            showSurveyWithToken: jest.fn(),
-            hasRespondedToSurveyWithToken: jest.fn((_, cb) => cb(true)),
-            setShouldShowSurveysWelcomeScreen: jest.fn(),
+            setAutoShowingEnabled: jest.fn(),
+            setOnShowHandler: jest.fn(),
+            setOnDismissHandler: jest.fn(),
+            showSurvey: jest.fn(),
+            hasRespondedToSurvey: jest.fn((_, cb) => cb(true)),
+            setShouldShowWelcomeScreen: jest.fn(),
             addListener: jest.fn()
         },
     };

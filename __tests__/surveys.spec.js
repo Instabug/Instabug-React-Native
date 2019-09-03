@@ -14,16 +14,16 @@ import IBGEventEmitter from '../utils/IBGEventEmitter';
 
 describe('Surveys Module', () => {
   
-  const setSurveysEnabled = sinon.spy(NativeModules.Instabug, 'setSurveysEnabled');
-  const showSurveysIfAvailable = sinon.spy(NativeModules.Instabug, 'showSurveysIfAvailable');
-  const setThresholdForReshowingSurveyAfterDismiss = sinon.spy(NativeModules.Instabug, 'setThresholdForReshowingSurveyAfterDismiss');
-  const getAvailableSurveys = sinon.spy(NativeModules.Instabug, 'getAvailableSurveys');
-  const setAutoShowingSurveysEnabled = sinon.spy(NativeModules.Instabug, 'setAutoShowingSurveysEnabled');
-  const setWillShowSurveyHandler = sinon.spy(NativeModules.Instabug, 'setWillShowSurveyHandler');
-  const setDidDismissSurveyHandler = sinon.spy(NativeModules.Instabug, 'setDidDismissSurveyHandler');
-  const showSurveyWithToken = sinon.spy(NativeModules.Instabug, 'showSurveyWithToken');
-  const hasRespondedToSurveyWithToken = sinon.spy(NativeModules.Instabug, 'hasRespondedToSurveyWithToken');
-  const setShouldShowSurveysWelcomeScreen = sinon.spy(NativeModules.Instabug, 'setShouldShowSurveysWelcomeScreen');
+  const setSurveysEnabled = sinon.spy(NativeModules.IBGSurveys, 'setEnabled');
+  const showSurveysIfAvailable = sinon.spy(NativeModules.IBGSurveys, 'showSurveysIfAvailable');
+  const setThresholdForReshowingSurveyAfterDismiss = sinon.spy(NativeModules.IBGSurveys, 'setThresholdForReshowingSurveyAfterDismiss');
+  const getAvailableSurveys = sinon.spy(NativeModules.IBGSurveys, 'getAvailableSurveys');
+  const setAutoShowingSurveysEnabled = sinon.spy(NativeModules.IBGSurveys, 'setAutoShowingEnabled');
+  const setWillShowSurveyHandler = sinon.spy(NativeModules.IBGSurveys, 'setOnShowHandler');
+  const setDidDismissSurveyHandler = sinon.spy(NativeModules.IBGSurveys, 'setOnDismissHandler');
+  const showSurveyWithToken = sinon.spy(NativeModules.IBGSurveys, 'showSurvey');
+  const hasRespondedToSurveyWithToken = sinon.spy(NativeModules.IBGSurveys, 'hasRespondedToSurvey');
+  const setShouldShowSurveysWelcomeScreen = sinon.spy(NativeModules.IBGSurveys, 'setShouldShowWelcomeScreen');
 
   beforeEach(() => {
     setWillShowSurveyHandler.resetHistory();

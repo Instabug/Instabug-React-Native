@@ -4,19 +4,20 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest __tests__",
     "lint": "eslint ."
   },
   "dependencies": {
+    "instabug-reactnative": "../",
     "react": "16.8.6",
-    "react-native": "0.60.0",
-    "instabug-reactnative": "../"
+    "react-native": "0.60.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
     "@babel/runtime": "^7.5.4",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.8.0",
+    "detox": "^13.2.0",
     "eslint": "^6.0.1",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.55.0",
@@ -27,5 +28,23 @@
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|react-navigation)/"
     ]
+  },
+  "detox": {
+    "test-runner": "jest",
+    "runner-config": "__e2e__/config.json",
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/InstabugSample.app",
+        "build": "xcodebuild -workspace ios/InstabugSample.xcworkspace -scheme InstabugSample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/InstabugSample.app",
+        "build": "xcodebuild -workspace ios/InstabugSample.xcworkspace -scheme InstabugSample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "name": "iPhone X"
+      }
+    }
   }
 }

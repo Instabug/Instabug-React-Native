@@ -11,8 +11,8 @@ import sinon from 'sinon';
 
 describe('Testing Chats Module', () => {
   
-  const setChatsEnabled = sinon.spy(NativeModules.Instabug, 'setChatsEnabled');
-  const showChats = sinon.spy(NativeModules.Instabug, 'showChats');
+  const setChatsEnabled = sinon.spy(NativeModules.IBGChats, 'setEnabled');
+  const showChats = sinon.spy(NativeModules.IBGChats, 'show');
 
   it('should call the native method setChatsEnabled', () => {
 

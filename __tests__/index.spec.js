@@ -23,10 +23,9 @@ describe('Instabug Module', () => {
   const setUserData = sinon.spy(NativeModules.Instabug, 'setUserData');
   const setTrackUserSteps = sinon.spy(NativeModules.Instabug, 'setTrackUserSteps');
   const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
-  const didSelectPromptOptionHandler = sinon.spy(NativeModules.Instabug, 'didSelectPromptOptionHandler');
   const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
-  const setPushNotificationsEnabled = sinon.spy(NativeModules.Instabug, 'setPushNotificationsEnabled');
-  const setFloatingButtonEdge = sinon.spy(NativeModules.Instabug, 'setFloatingButtonEdge');
+  const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
+  const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
   const setLocale = sinon.spy(NativeModules.Instabug, 'setLocale');
   const setColorTheme = sinon.spy(NativeModules.Instabug, 'setColorTheme');
   const setPrimaryColor = sinon.spy(NativeModules.Instabug, 'setPrimaryColor');
@@ -34,7 +33,7 @@ describe('Instabug Module', () => {
   const resetTags = sinon.spy(NativeModules.Instabug, 'resetTags');
   const getTags = sinon.spy(NativeModules.Instabug, 'getTags');
   const setString = sinon.spy(NativeModules.Instabug, 'setString');
-  const setEnabledAttachmentTypes = sinon.spy(NativeModules.Instabug, 'setEnabledAttachmentTypes');
+  const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
   const identifyUserWithEmail = sinon.spy(NativeModules.Instabug, 'identifyUserWithEmail');
   const logOut = sinon.spy(NativeModules.Instabug, 'logOut');
   const logUserEventWithName = sinon.spy(NativeModules.Instabug, 'logUserEventWithName');
@@ -71,9 +70,7 @@ describe('Instabug Module', () => {
     startWithToken.resetHistory();
     setTrackUserSteps.resetHistory();
     setIBGLogPrintsToConsole.resetHistory();
-    didSelectPromptOptionHandler.resetHistory();
     setPushNotificationsEnabled.resetHistory();
-    setFloatingButtonEdge.resetHistory();
     log.resetHistory();
     setDebugEnabled.resetHistory();
     enable.resetHistory();
@@ -154,41 +151,6 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method didSelectPromptOptionHandler with a function', () => {
-
-    Platform.OS = 'ios';
-    const callback = jest.fn()
-    Instabug.setDidSelectPromptOptionHandler(callback);
-
-    expect(didSelectPromptOptionHandler.calledOnceWithExactly(callback)).toBe(true);
-
-  });
-
-  it('should invoke callback on emitting the event IBGDidSelectPromptOptionHandler', (done) => {
-
-    Platform.OS = 'ios';
-    const payload = { promptOption: Instabug.promptOption.bug };
-    const callback = (promptOption) => {
-      expect(promptOption).toBe(payload.promptOption);
-      done();
-    }
-    Instabug.setDidSelectPromptOptionHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
-
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(1);
-  });
-
-  it('should return on calling setDidSelectPromptOptionHandler when Platform is android', () => {
-
-    Platform.OS = 'android';
-
-    Instabug.setDidSelectPromptOptionHandler(jest.fn());
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
-
-    expect(didSelectPromptOptionHandler.notCalled).toBe(true);
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(0);
-  });
-
   it('should call the native method setSessionProfilerEnabled', () => {
 
     Instabug.setSessionProfilerEnabled(true);
@@ -206,18 +168,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
-
-    Platform.OS = 'android';
-    Instabug.setPushNotificationsEnabled(true);
-
-    expect(setPushNotificationsEnabled.notCalled).toBe(true);
-
-  });
-
   it('should call the native method setFloatingButtonEdge', () => {
 
-    Platform.OS = 'ios';
     const offsetFromTop = 10;
     const edge = Instabug.floatingButtonEdge.left;
     Instabug.setFloatingButtonEdge(edge, offsetFromTop);
@@ -226,12 +178,12 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should not call the native method setFloatingButtonEdge when platform is android', () => {
+  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
 
     Platform.OS = 'android';
-    Instabug.setPushNotificationsEnabled(Instabug.floatingButtonEdge.left, 10);
+    Instabug.setPushNotificationsEnabled(true);
 
-    expect(setFloatingButtonEdge.notCalled).toBe(true);
+    expect(setPushNotificationsEnabled.notCalled).toBe(true);
 
   });
 
@@ -336,9 +288,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method logVerbose platform is iOS', () => {
+  it('should call the native method logVerbose', () => {
 
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logVerbose(message);
 
@@ -346,18 +297,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with v when platform is android', () => {
+  it('should call the native method logDebug', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logVerbose(message);
-    expect(log.calledOnceWithExactly('v', message)).toBe(true);
-
-  });
-
-  it('should call the native method logDebug platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logDebug(message);
 
@@ -365,18 +306,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with d when platform is android', () => {
+  it('should call the native method logInfo', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logDebug(message);
-    expect(log.calledOnceWithExactly('d', message)).toBe(true);
-
-  });
-
-  it('should call the native method logInfo platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logInfo(message);
 
@@ -384,18 +315,8 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with i when platform is android', () => {
+  it('should call the native method logWarn', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logInfo(message);
-    expect(log.calledOnceWithExactly('i', message)).toBe(true);
-
-  });
-
-  it('should call the native method logWarn platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logWarn(message);
 
@@ -403,31 +324,12 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method log with w when platform is android', () => {
+  it('should call the native method logError', () => {
 
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logWarn(message);
-    expect(log.calledOnceWithExactly('w', message)).toBe(true);
-
-  });
-
-  it('should call the native method logError platform is iOS', () => {
-
-    Platform.OS = 'ios';
     const message = 'log';
     Instabug.logError(message);
 
     expect(logError.calledOnceWithExactly(message)).toBe(true);
-
-  });
-
-  it('should call the native method log with e when platform is android', () => {
-
-    Platform.OS = 'android';
-    const message = 'log';
-    Instabug.logError(message);
-    expect(log.calledOnceWithExactly('e', message)).toBe(true);
 
   });
 

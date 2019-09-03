@@ -1,14 +1,15 @@
 jest.mock('NativeModules', () => {
     return {
-        Instabug: {
-            setRepliesEnabled: jest.fn(),
+        IBGReplies: {
+            setEnabled: jest.fn(),
             hasChats: jest.fn(cb => cb(true)),
-            showReplies: jest.fn(),
-            setOnNewReplyReceivedCallback: jest.fn(),
-            getUnreadMessagesCount: jest.fn(cb => cb(2)),
-            setChatNotificationEnabled: jest.fn(),
-            setEnableInAppNotificationSound: jest.fn(),
-            addListener: jest.fn()
+            show: jest.fn(),
+            setOnNewReplyReceivedHandler: jest.fn(),
+            getUnreadRepliesCount: jest.fn(cb => cb(2)),
+            setInAppNotificationEnabled: jest.fn(),
+            setInAppNotificationSound: jest.fn(),
+            addListener: jest.fn(),
+            setPushNotificationsEnabled: jest.fn()
         },
     };
 });
