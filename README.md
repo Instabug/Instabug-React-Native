@@ -125,13 +125,6 @@ allprojects {
 	}
 }
 ```
-5. Customize uploading bundler or not
-```dart
-ext {
-    instabugUploadEnable = false;
-}
-```
-
 ## Update Guide
 ### Updating to versions 8.0-8.4.x
 
@@ -195,6 +188,13 @@ If your app doesn’t already access the microphone or photo library, we recomme
 For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.start('YOUR_APP_TOKEN')` in JavaScript. 
 
 If your app token is defined as a constant, you can set an environment variable `INSTABUG_APP_TOKEN` to be used instead.
+
+To disable the automatic upload in android, you can set the following property your build.gradle:
+```dart
+ext {
+    instabugUploadEnable = false;
+}
+```
 
 ## Network Logging
 
