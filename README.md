@@ -189,6 +189,13 @@ For your app crashes to show up with a fully symbolicated stack trace, we will a
 
 If your app token is defined as a constant, you can set an environment variable `INSTABUG_APP_TOKEN` to be used instead.
 
+To disable the automatic upload in android, you can set the following property your build.gradle:
+```dart
+ext {
+    instabugUploadEnable = false;
+}
+```
+
 ## Network Logging
 
 Instabug network logging is enabled by default. It intercepts any requests performed with `fetch` or `XMLHttpRequest` and attaches them to the report that will be sent to the dashboard. To disable network logs:
