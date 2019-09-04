@@ -138,7 +138,7 @@ export function setFloatingButtonEdge(
   ): void;
 export function setLocale(locale: locale): void;
 export function setColorTheme(colorTheme: colorTheme): void;
-export function setPrimaryColor(setPrimaryColor: number): void;
+export function setPrimaryColor(color: string): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
