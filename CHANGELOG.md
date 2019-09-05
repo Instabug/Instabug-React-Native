@@ -1,3 +1,9 @@
+## Master
+
+**⚠️ If you are using Android, please make sure to follow the migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-863)**
+* You can now initialize Instabug on Android by calling `Instabug.start` from Javascript, instead of calling the builder method from the application class.
+* Updates native iOS SDK to v8.6.2
+
 ## v8.6.2 (2019-08-29)
 
 * Updates native Android SDK to v8.6.2

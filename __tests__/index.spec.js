@@ -102,7 +102,7 @@ describe('Instabug Module', () => {
     const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
     Instabug.start(token, invocationEvents);
 
-    expect(startWithToken.notCalled).toBe(true);
+    expect(startWithToken.calledOnceWithExactly(token, invocationEvents)).toBe(true);
 
   });
 

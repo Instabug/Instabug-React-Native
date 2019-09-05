@@ -55,8 +55,8 @@ const InstabugModule = {
    * @param {invocationEvent} invocationEvent The event that invokes
    * the SDK's UI.
    */
-  start(token, invocationEvent) {
-    if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
+  start: function(token, invocationEvent) {
+    Instabug.startWithToken(token, invocationEvent);
   },
 
   /**
