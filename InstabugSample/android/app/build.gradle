@@ -176,7 +176,7 @@ dependencies {
         implementation 'org.webkit:android-jsc:+'
     }
 
-    // androidTestImplementation(project(path: ":detox"))
+    // Detox
     implementation "androidx.annotation:annotation:1.1.0"
     androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
