@@ -150,9 +150,9 @@ npm install instabug-reactnative
 react-native add-instabug
 ```
 
-### Updating to version 8.6.3
+### Updating to version 8.6.4
 
-Starting 8.6.3, starting the SDK on Android can now be done from the JS side and no longer requires the integration code inside Android's `MainApplication.java`.
+Starting the SDK on Android can now be done from the JS side and no longer requires the integration code inside Android's `MainApplication.java`.
 
 1) Remove the android integration code from your `MainApplication.java`, it should look something like this:
 
@@ -162,7 +162,9 @@ new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
                             .build();
 ```
 
-2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
+2. If you are on React Native < 0.60, unlink instabug using `react-native unlink instabug-reactnative` then link again using `react-native link instabug-reactnative`.
+
+3. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
 ```javascript
 Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
