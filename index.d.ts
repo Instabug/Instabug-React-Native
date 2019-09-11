@@ -336,16 +336,16 @@ export enum strings {
 }
 
  interface Report {
-  logDebug(log: string);
-  logVerbose(log: string);
-  logWarn(log: string);
-  logError(log: string);
-  logInfo(log: string);
-  appendTag(tag: string);
-  appendConsoleLog(consoleLog: string);
-  setUserAttribute(key: string, value: string);
-  addFileAttachmentWithUrl(url: string, filename: string);
-  addFileAttachmentWithData(data: string, filename: string);
+  logDebug(log: string): void;
+  logVerbose(log: string): void;
+  logWarn(log: string): void;
+  logError(log: string): void;
+  logInfo(log: string): void;
+  appendTag(tag: string): void;
+  appendConsoleLog(consoleLog: string): void;
+  setUserAttribute(key: string, value: string): void;
+  addFileAttachmentWithUrl(url: string, filename: string): void;
+  addFileAttachmentWithData(data: string, filename: string): void;
 }
 
 interface Survey {
