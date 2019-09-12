@@ -1,7 +1,7 @@
-## v8.6.4 (2019-08-29)
+## v8.6.4 (2019-09-12)
 
 **If you are on React Native pre 0.60, please follow the steps [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-864)**
-* Fixes an issue on android that would result in `null is not an object (evaluating u.invocationEventNone)`
+* Fixes an issue on Android that would result in a build error with the message `null is not an object (evaluating u.invocationEventNone)`
 
 ## v8.6.3 (2019-08-29)
 
