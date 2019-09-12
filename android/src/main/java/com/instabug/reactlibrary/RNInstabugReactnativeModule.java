@@ -52,6 +52,7 @@ import com.instabug.library.model.NetworkLog;
 import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.ReportUtil;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
@@ -246,7 +247,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
    */
     @ReactMethod
     public void startWithToken(final String token, final ReadableArray invocationEventValues) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -274,7 +275,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void appendTags(final ReadableArray tags) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -297,7 +298,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -318,7 +319,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAutoScreenRecordingMaxDuration(final int autoScreenRecordingMaxDuration) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -338,7 +339,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setLocale(final String instabugLocale) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -358,7 +359,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setExtendedBugReportMode(final String extendedBugReportMode) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -384,7 +385,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setViewHierarchyEnabled(final boolean enabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -407,7 +408,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setVideoRecordingFloatingButtonPosition(final String corner) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -428,7 +429,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setFileAttachment(final String fileUri, final String fileNameWithExtension) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -481,7 +482,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setCrashReportingEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -498,7 +499,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
  private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled) {
-     new Handler(Looper.getMainLooper()).post(new Runnable() {
+     InstabugUtil.runOnMainThread(new Runnable() {
          @Override
          public void run() {
              try {
@@ -526,7 +527,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setUserData(final String userData) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -547,7 +548,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPrimaryColor(final int primaryColor) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -567,7 +568,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getTags(final Callback tagsCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 WritableArray tagsArray;
@@ -595,7 +596,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void identifyUserWithEmail(final String userEmail, final String userName) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -612,7 +613,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void resetTags() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -648,7 +649,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void enable() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -665,7 +666,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void disable() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -682,7 +683,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showFeatureRequests() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -717,7 +718,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getUnreadMessagesCount(final Callback messageCountCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 int unreadMessages = 0;
@@ -741,7 +742,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvent(final String invocationEventValue) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -789,7 +790,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         break;
                 }
             }
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
+            InstabugUtil.runOnMainThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -833,7 +834,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationOptions(final ReadableArray invocationOptionValues) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -875,7 +876,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setChatNotificationEnabled(final boolean isChatNotificationEnable) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -896,7 +897,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setDebugEnabled(final boolean isDebugEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -917,7 +918,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void reportJsException(final ReadableArray stack, final String message, final String errorIdentifier) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -962,7 +963,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void log(final String level, final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -998,7 +999,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logVerbose(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1012,7 +1013,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logDebug(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1026,7 +1027,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logInfo(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1040,7 +1041,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logError(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1054,7 +1055,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void logWarn(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1071,7 +1072,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearLogs() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1094,7 +1095,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void hasRespondedToSurveyWithToken(final String surveyToken, final Callback hasRespondedCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasResponded;
@@ -1117,7 +1118,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveyWithToken(final String surveyToken) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1137,7 +1138,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setUserAttribute(final String key, final String value) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1157,7 +1158,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getUserAttribute(final String key, final Callback userAttributeCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 String userAttribute;
@@ -1179,7 +1180,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void removeUserAttribute(final String key) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1198,7 +1199,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAllUserAttributes(final Callback userAttributesCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 WritableMap writableMap = Arguments.createMap();
@@ -1220,7 +1221,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearAllUserAttributes() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1239,7 +1240,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setColorTheme(final String theme) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1265,7 +1266,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setString(final String string, final String key) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1286,7 +1287,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void logOut() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1306,7 +1307,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void logUserEventWithName(final String name) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1328,7 +1329,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPreInvocationHandler(final Callback preInvocationHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1356,7 +1357,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Report.OnReportCreatedListener listener = new Report.OnReportCreatedListener() {
@@ -1553,7 +1554,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1580,7 +1581,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1599,7 +1600,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setSurveysEnabled(final boolean surveysEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1620,7 +1621,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnShowCallback(new OnShowCallback() {
@@ -1642,7 +1643,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
@@ -1662,7 +1663,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearFileAttachment() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1682,7 +1683,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setReproStepsMode(final String reproStepsMode) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1712,7 +1713,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showWelcomeMessageWithMode(final String welcomeMessageMode) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1744,7 +1745,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setWelcomeMessageMode(final String welcomeMessageMode) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1778,7 +1779,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setShakingThresholdForAndroid(final int androidThreshold) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1799,7 +1800,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1819,7 +1820,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1845,7 +1846,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1864,7 +1865,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAvailableSurveys(final Callback availableSurveysCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1881,7 +1882,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Instabug.show();
@@ -1891,7 +1892,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setBugReportingEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1910,7 +1911,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setChatsEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1928,7 +1929,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void showChats() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Chats.show();
@@ -1938,7 +1939,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setRepliesEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -1956,7 +1957,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hasChats(final Callback callback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasChats = Replies.hasChats();
@@ -1967,7 +1968,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void showReplies() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Replies.show();
@@ -2070,7 +2071,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAutoShowingSurveysEnabled(final boolean autoShowingSurveysEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2091,7 +2092,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnableInAppNotificationSound(final boolean shouldPlaySound) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2114,7 +2115,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setSessionProfilerEnabled(final boolean sessionProfilerEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2138,7 +2139,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setShouldShowSurveysWelcomeScreen(final boolean shouldShow) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2160,7 +2161,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @SuppressLint("WrongConstant")
     @ReactMethod
     public void setEmailFieldRequiredForFeatureRequests(final boolean isEmailRequired, final ReadableArray actionTypes) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -2216,7 +2217,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hideView(final ReadableArray ids) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);

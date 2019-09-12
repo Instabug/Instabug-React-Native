@@ -1,5 +1,8 @@
 package com.instabug.reactlibrary.utils;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
@@ -64,5 +67,12 @@ public class InstabugUtil {
             e.printStackTrace();
         }
         return jsonArray;
+    }
+
+    /**
+     * Runs a block of code on the Main Thread
+     */
+    public static void runOnMainThread(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
     }
 }

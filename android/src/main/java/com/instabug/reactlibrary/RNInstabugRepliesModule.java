@@ -27,7 +27,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -45,7 +45,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hasChats(final Callback callback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasChats = Replies.hasChats();
@@ -56,7 +56,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Replies.show();
@@ -73,7 +73,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInAppNotificationSound(final boolean shouldPlaySound) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -92,7 +92,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getUnreadRepliesCount(final Callback messageCountCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 int unreadMessages = 0;
@@ -114,7 +114,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInAppNotificationEnabled(final boolean isChatNotificationEnable) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -128,7 +128,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setOnNewReplyReceivedHandler(final Callback onNewReplyReceivedCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {

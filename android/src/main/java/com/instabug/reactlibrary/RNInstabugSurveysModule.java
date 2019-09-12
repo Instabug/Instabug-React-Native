@@ -45,7 +45,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void hasRespondedToSurvey(final String surveyToken, final Callback hasRespondedCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasResponded;
@@ -68,7 +68,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurvey(final String surveyToken) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -87,7 +87,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -106,7 +106,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -131,7 +131,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnShowHandler(final Callback handler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnShowCallback(new OnShowCallback() {
@@ -153,7 +153,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnDismissHandler(final Callback handler) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
@@ -175,7 +175,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -194,7 +194,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAvailableSurveys(final Callback availableSurveysCallback) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -216,7 +216,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAutoShowingEnabled(final boolean autoShowingSurveysEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -236,7 +236,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setShouldShowWelcomeScreen(final boolean shouldShow) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        InstabugUtil.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
