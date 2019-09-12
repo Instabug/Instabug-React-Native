@@ -25,6 +25,8 @@ import com.instabug.library.InstabugState;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.Surveys;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.json.JSONObject;
 import org.junit.Assert;

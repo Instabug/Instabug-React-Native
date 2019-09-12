@@ -12,6 +12,7 @@ import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.Surveys;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONObject;
 import org.junit.Before;

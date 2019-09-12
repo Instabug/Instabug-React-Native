@@ -8,6 +8,8 @@ import com.facebook.react.bridge.Arguments;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.junit.Before;
 import org.junit.Test;
