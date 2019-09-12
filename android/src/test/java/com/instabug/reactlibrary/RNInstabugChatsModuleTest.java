@@ -26,7 +26,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Chats.class, SystemClock.class, RNInstabugChatsModule.class, Arguments.class, InstabugUtil.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, Chats.class, SystemClock.class, RNInstabugChatsModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
 
 
 public class RNInstabugChatsModuleTest {

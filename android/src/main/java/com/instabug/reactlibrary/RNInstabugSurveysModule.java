@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
@@ -45,7 +46,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void hasRespondedToSurvey(final String surveyToken, final Callback hasRespondedCallback) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasResponded;
@@ -68,7 +69,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurvey(final String surveyToken) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -87,7 +88,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -106,7 +107,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -131,7 +132,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnShowHandler(final Callback handler) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnShowCallback(new OnShowCallback() {
@@ -153,7 +154,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnDismissHandler(final Callback handler) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
@@ -175,7 +176,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -194,7 +195,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getAvailableSurveys(final Callback availableSurveysCallback) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -216,7 +217,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setAutoShowingEnabled(final boolean autoShowingSurveysEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -236,7 +237,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setShouldShowWelcomeScreen(final boolean shouldShow) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {

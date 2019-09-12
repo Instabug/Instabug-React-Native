@@ -39,7 +39,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Surveys.class, SystemClock.class, Runnable.class, RNInstabugSurveysModule.class, Arguments.class, InstabugUtil.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, Surveys.class, SystemClock.class, Runnable.class, RNInstabugSurveysModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
 
 public class RNInstabugSurveysModuleTest {
 

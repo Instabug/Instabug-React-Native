@@ -10,6 +10,7 @@ import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +33,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -54,7 +55,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void show() {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Chats.show();

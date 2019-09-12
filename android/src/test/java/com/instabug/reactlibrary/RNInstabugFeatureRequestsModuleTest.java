@@ -36,7 +36,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, FeatureRequests.class, SystemClock.class, Runnable.class, RNInstabugFeatureRequestsModule.class, Arguments.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, FeatureRequests.class, SystemClock.class, Runnable.class, RNInstabugFeatureRequestsModule.class, Arguments.class, MainThreadHandler.class})
 
 public class RNInstabugFeatureRequestsModuleTest {
     private RNInstabugFeatureRequestsModule featureRequestsModule = new RNInstabugFeatureRequestsModule(null);

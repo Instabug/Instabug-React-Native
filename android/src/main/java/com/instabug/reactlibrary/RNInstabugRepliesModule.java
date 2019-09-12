@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +28,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -45,7 +46,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hasChats(final Callback callback) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasChats = Replies.hasChats();
@@ -56,7 +57,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void show() {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Replies.show();
@@ -73,7 +74,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInAppNotificationSound(final boolean shouldPlaySound) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -92,7 +93,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void getUnreadRepliesCount(final Callback messageCountCallback) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 int unreadMessages = 0;
@@ -114,7 +115,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInAppNotificationEnabled(final boolean isChatNotificationEnable) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -128,7 +129,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setOnNewReplyReceivedHandler(final Callback onNewReplyReceivedCallback) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {

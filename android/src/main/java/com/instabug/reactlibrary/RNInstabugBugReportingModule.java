@@ -24,6 +24,7 @@ import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -75,7 +76,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     @TargetApi(21)
     @ReactMethod
     public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -95,7 +96,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setExtendedBugReportMode(final String extendedBugReportMode) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -114,7 +115,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setViewHierarchyEnabled(final boolean isEnabled) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -137,7 +138,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setVideoRecordingFloatingButtonPosition(final String corner) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -161,7 +162,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setEnabledAttachmentTypes(final boolean screenshot, final boolean extraScreenshot, final boolean
             galleryImage, final boolean screenRecording) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -183,7 +184,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvent(final String invocationEventValue) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -213,7 +214,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
             for (String event : stringArray) {
                 parsedInvocationEvents.add(ArgsRegistry.getDeserializedValue(event, InstabugInvocationEvent.class));
             }
-            InstabugUtil.runOnMainThread(new Runnable() {
+            MainThreadHandler.runOnMainThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -235,7 +236,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOptions(final ReadableArray optionValues) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -261,11 +262,11 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnInvokeHandler(final Callback onInvokeHandler) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                         @Override
                         public void onInvoke() {
                             InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_PRE_INVOCATION_HANDLER, null);
@@ -285,7 +286,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setFloatingButtonEdge(final String floatingButtonEdge, final int floatingButtonOffset) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 BugReporting.setFloatingButtonOffset(floatingButtonOffset);
@@ -307,7 +308,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnSDKDismissedHandler(final Callback handler) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -337,7 +338,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setShakingThresholdForAndroid(final int androidThreshold) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -363,7 +364,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
         for (int i = 0; i < stringArray.length; i++) {
             parsedReportTypes[i] = (int) ArgsRegistry.getRawValue(stringArray[i]);
         }
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -384,7 +385,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void show(final String reportType, final ReadableArray options) {
-        InstabugUtil.runOnMainThread(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 if (ArgsRegistry.getDeserializedValue(reportType, Integer.class) == null) {
