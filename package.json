@@ -28,7 +28,7 @@
       "preunlink": "node node_modules/instabug-reactnative/unlink_bridge.js"
     },
     "android": {
-      "packageInstance": "\t\tnew RNInstabugReactnativePackage.Builder(\"YOUR_ANDROID_APPLICATION_TOKEN\",MainApplication.this)\n\t\t\t\t\t\t\t.setInvocationEvent(\"shake\")\n\t\t\t\t\t\t\t.setPrimaryColor(\"#1D82DC\")\n\t\t\t\t\t\t\t.setFloatingEdge(\"left\")\n\t\t\t\t\t\t\t.setFloatingButtonOffsetFromTop(250)\n\t\t\t\t\t\t\t.build()"
+      "packageInstance": "\t\tnew RNInstabugReactnativePackage()"
     }
   },
   "devDependencies": {
