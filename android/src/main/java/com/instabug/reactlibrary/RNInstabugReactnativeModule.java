@@ -451,17 +451,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void sendJSCrash(final String exceptionObject) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    JSONObject jsonObject = new JSONObject(exceptionObject);
-                    sendJSCrashByReflection(jsonObject, false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            JSONObject jsonObject = new JSONObject(exceptionObject);
+            sendJSCrashByReflection(jsonObject, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -471,17 +466,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void sendHandledJSCrash(final String exceptionObject) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    JSONObject jsonObject = new JSONObject(exceptionObject);
-                    sendJSCrashByReflection(jsonObject, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            JSONObject jsonObject = new JSONObject(exceptionObject);
+            sendJSCrashByReflection(jsonObject, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
