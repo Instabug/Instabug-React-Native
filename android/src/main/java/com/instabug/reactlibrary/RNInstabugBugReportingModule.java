@@ -14,6 +14,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
+import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -73,12 +74,17 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @TargetApi(21)
     @ReactMethod
-    public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
-        try {
-            BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -88,13 +94,18 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param extendedBugReportMode
      */
     @ReactMethod
-    public void setExtendedBugReportMode(String extendedBugReportMode) {
-        try {
-            BugReporting.setExtendedBugReportState(
-                    ArgsRegistry.getDeserializedValue(extendedBugReportMode, ExtendedBugReport.State.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setExtendedBugReportMode(final String extendedBugReportMode) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setExtendedBugReportState(
+                            ArgsRegistry.getDeserializedValue(extendedBugReportMode, ExtendedBugReport.State.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -102,16 +113,21 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
-    public void setViewHierarchyEnabled(boolean isEnabled) {
-        try {
-            if (isEnabled) {
-                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
-            } else {
-                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
+    public void setViewHierarchyEnabled(final boolean isEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        BugReporting.setViewHierarchyState(Feature.State.ENABLED);
+                    } else {
+                        BugReporting.setViewHierarchyState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -120,13 +136,18 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param corner corner to stick the video recording floating button to
      */
     @ReactMethod
-    public void setVideoRecordingFloatingButtonPosition(String corner) {
-        try {
-            BugReporting.setVideoRecordingFloatingButtonPosition(
-                    ArgsRegistry.getDeserializedValue(corner, InstabugVideoRecordingButtonPosition.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setVideoRecordingFloatingButtonPosition(final String corner) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setVideoRecordingFloatingButtonPosition(
+                            ArgsRegistry.getDeserializedValue(corner, InstabugVideoRecordingButtonPosition.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -138,14 +159,19 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
-    public void setEnabledAttachmentTypes(boolean screenshot, boolean extraScreenshot, boolean
-            galleryImage, boolean screenRecording) {
-        try {
-            BugReporting.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
-                    screenRecording);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setEnabledAttachmentTypes(final boolean screenshot, final boolean extraScreenshot, final boolean
+            galleryImage, final boolean screenRecording) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setAttachmentTypesEnabled(screenshot, extraScreenshot, galleryImage,
+                            screenRecording);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -208,18 +234,21 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param optionValues the invocation option value
      */
     @ReactMethod
-    public void setOptions(ReadableArray optionValues) {
-        try {
-
-            Object[] objectArray = ArrayUtil.toArray(optionValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            for (String option : stringArray) {
-                BugReporting.setOptions((int) ArgsRegistry.getRawValue(option));
+    public void setOptions(final ReadableArray optionValues) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(optionValues);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    for (String option : stringArray) {
+                        BugReporting.setOptions((int) ArgsRegistry.getRawValue(option));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -232,16 +261,21 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnInvokeHandler(final Callback onInvokeHandler) {
-        try {
-            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
-                @Override
-                public void onInvoke() {
-                    InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_PRE_INVOCATION_HANDLER, null);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                        @Override
+                        public void onInvoke() {
+                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_PRE_INVOCATION_HANDLER, null);
+                        }
+                    });
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            });
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -273,19 +307,24 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnSDKDismissedHandler(final Callback handler) {
-        try {
-            BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
-                @Override
-                public void call(DismissType dismissType, ReportType reportType) {
-                    WritableMap params = Arguments.createMap();
-                    params.putString("dismissType", dismissType.toString());
-                    params.putString("reportType", reportType.toString());
-                    InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_POST_INVOCATION_HANDLER, params);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+                        @Override
+                        public void call(DismissType dismissType, ReportType reportType) {
+                            WritableMap params = Arguments.createMap();
+                            params.putString("dismissType", dismissType.toString());
+                            params.putString("reportType", reportType.toString());
+                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_POST_INVOCATION_HANDLER, params);
+                        }
+                    });
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            });
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -297,12 +336,17 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param androidThreshold Threshold for android devices.
      */
     @ReactMethod
-    public void setShakingThresholdForAndroid(int androidThreshold) {
-        try {
-            BugReporting.setShakingThreshold(androidThreshold);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setShakingThresholdForAndroid(final int androidThreshold) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setShakingThreshold(androidThreshold);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -339,13 +383,17 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @see Option
      */
     @ReactMethod
-    public void show(String reportType, ReadableArray options) {
-        if (ArgsRegistry.getDeserializedValue(reportType, Integer.class) == null) {
-            return;
-        }
-        BugReporting.show((int) ArgsRegistry.getRawValue(reportType));
-        setOptions(options);
-
+    public void show(final String reportType, final ReadableArray options) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                if (ArgsRegistry.getDeserializedValue(reportType, Integer.class) == null) {
+                    return;
+                }
+                BugReporting.show((int) ArgsRegistry.getRawValue(reportType));
+                setOptions(options);
+            }
+        });
     }
 
 

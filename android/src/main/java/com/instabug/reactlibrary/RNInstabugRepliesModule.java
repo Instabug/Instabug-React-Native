@@ -44,15 +44,24 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void hasChats(Callback callback) {
-        boolean hasChats = Replies.hasChats();
-        callback.invoke(hasChats);
-
+    public void hasChats(final Callback callback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                boolean hasChats = Replies.hasChats();
+                callback.invoke(hasChats);
+            }
+        });
     }
 
     @ReactMethod
     public void show() {
-        Replies.show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Replies.show();
+            }
+        });
     }
 
     /**
@@ -63,12 +72,17 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @since 4.1.0
      */
     @ReactMethod
-    public void setInAppNotificationSound(boolean shouldPlaySound) {
-        try {
-            Replies.setInAppNotificationSound(shouldPlaySound);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setInAppNotificationSound(final boolean shouldPlaySound) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setInAppNotificationSound(shouldPlaySound);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -77,15 +91,20 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @return number of messages that are unread for this user
      */
     @ReactMethod
-    public void getUnreadRepliesCount(Callback messageCountCallback) {
-        int unreadMessages = 0;
-        try {
-            unreadMessages = Replies.getUnreadRepliesCount();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void getUnreadRepliesCount(final Callback messageCountCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                int unreadMessages = 0;
+                try {
+                    unreadMessages = Replies.getUnreadRepliesCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        messageCountCallback.invoke(unreadMessages);
+                messageCountCallback.invoke(unreadMessages);
+            }
+        });
     }
 
     /**
@@ -94,26 +113,36 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
      * @param isChatNotificationEnable whether chat notification is reburied or not
      */
     @ReactMethod
-    public void setInAppNotificationEnabled(boolean isChatNotificationEnable) {
-        try {
-            Replies.setInAppNotificationEnabled(isChatNotificationEnable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setInAppNotificationEnabled(final boolean isChatNotificationEnable) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setInAppNotificationEnabled(isChatNotificationEnable);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
     public void setOnNewReplyReceivedHandler(final Callback onNewReplyReceivedCallback) {
-        try {
-            Runnable onNewReplyReceivedRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_NEW_REPLY_RECEIVED_CALLBACK, null);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Runnable onNewReplyReceivedRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_NEW_REPLY_RECEIVED_CALLBACK, null);
+                        }
+                    };
+                    Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            };
-            Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 }

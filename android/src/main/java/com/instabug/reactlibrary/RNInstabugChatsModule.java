@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 
@@ -52,6 +53,11 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void show() {
-        Chats.show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Chats.show();
+            }
+        });
     }
 }

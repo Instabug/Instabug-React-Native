@@ -246,28 +246,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
    */
     @ReactMethod
     public void startWithToken(final String token, final ReadableArray invocationEventValues) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            final InstabugInvocationEvent[] invocationEventsArray = new InstabugInvocationEvent[stringArray.length];
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    final InstabugInvocationEvent[] invocationEventsArray = new InstabugInvocationEvent[stringArray.length];
 
-            for (int i = 0; i < stringArray.length; i++) {
-                String key = stringArray[i];
-                invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
-            }
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        new Instabug.Builder(getCurrentActivity().getApplication(), token).setInvocationEvents(invocationEventsArray).build();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    for (int i = 0; i < stringArray.length; i++) {
+                        String key = stringArray[i];
+                        invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
                     }
+                    new Instabug.Builder(getCurrentActivity().getApplication(), token).setInvocationEvents(invocationEventsArray).build();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
+
     }
 
     /**
@@ -276,14 +273,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param tags
      */
     @ReactMethod
-    public void appendTags(ReadableArray tags) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(tags);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            mInstabug.addTags(stringArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void appendTags(final ReadableArray tags) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(tags);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    Instabug.addTags(stringArray);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     /**
@@ -293,12 +296,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                                   screen recording on crash feature
      */
     @ReactMethod
-    public void setAutoScreenRecordingEnabled(boolean autoScreenRecordingEnabled) {
-        try {
-            BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -309,13 +317,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                                       The maximum duration is 30000 milliseconds
      */
     @ReactMethod
-    public void setAutoScreenRecordingMaxDuration(int autoScreenRecordingMaxDuration) {
-        try {
-            int durationInMilli = autoScreenRecordingMaxDuration * 1000;
-            Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setAutoScreenRecordingMaxDuration(final int autoScreenRecordingMaxDuration) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int durationInMilli = autoScreenRecordingMaxDuration * 1000;
+                    Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -324,12 +337,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param instabugLocale
      */
     @ReactMethod
-    public void setLocale(String instabugLocale) {
-        try {
-            Instabug.setLocale(getLocaleByKey(instabugLocale));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setLocale(final String instabugLocale) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setLocale(getLocaleByKey(instabugLocale));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -339,37 +357,47 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param extendedBugReportMode
      */
     @ReactMethod
-    public void setExtendedBugReportMode(String extendedBugReportMode) {
-        try {
-            switch (extendedBugReportMode) {
-                case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
-                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
-                    break;
-                case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
-                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-                    break;
-                case EXTENDED_BUG_REPORT_DISABLED:
-                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                    break;
-                default:
-                    BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+    public void setExtendedBugReportMode(final String extendedBugReportMode) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (extendedBugReportMode) {
+                        case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
+                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
+                            break;
+                        case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
+                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
+                            break;
+                        case EXTENDED_BUG_REPORT_DISABLED:
+                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                            break;
+                        default:
+                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @ReactMethod
-    public void setViewHierarchyEnabled(boolean enabled) {
-        try {
-            if (enabled) {
-                BugReporting.setViewHierarchyState(Feature.State.ENABLED);
-            } else {
-                BugReporting.setViewHierarchyState(Feature.State.DISABLED);
+    public void setViewHierarchyEnabled(final boolean enabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (enabled) {
+                        BugReporting.setViewHierarchyState(Feature.State.ENABLED);
+                    } else {
+                        BugReporting.setViewHierarchyState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -378,12 +406,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param corner corner to stick the video recording floating button to
      */
     @ReactMethod
-    public void setVideoRecordingFloatingButtonPosition(String corner) {
-        try {
-            BugReporting.setVideoRecordingFloatingButtonPosition(getVideoRecordingButtonCorner(corner));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setVideoRecordingFloatingButtonPosition(final String corner) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setVideoRecordingFloatingButtonPosition(getVideoRecordingButtonCorner(corner));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -394,15 +427,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param fileNameWithExtension the file name with extension
      */
     @ReactMethod
-    public void setFileAttachment(String fileUri, String fileNameWithExtension) {
-        try {
-            File file = new File(fileUri);
-            if (file.exists()) {
-                Instabug.addFileAttachment(Uri.fromFile(file), fileNameWithExtension);
+    public void setFileAttachment(final String fileUri, final String fileNameWithExtension) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    File file = new File(fileUri);
+                    if (file.exists()) {
+                        Instabug.addFileAttachment(Uri.fromFile(file), fileNameWithExtension);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
     }
 
     /**
@@ -411,13 +450,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param exceptionObject Exception object to be sent to Instabug's servers
      */
     @ReactMethod
-    public void sendJSCrash(String exceptionObject) {
-        try {
-            JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendJSCrash(final String exceptionObject) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject(exceptionObject);
+                    sendJSCrashByReflection(jsonObject, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -426,13 +470,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param exceptionObject Exception object to be sent to Instabug's servers
      */
     @ReactMethod
-    public void sendHandledJSCrash(String exceptionObject) {
-        try {
-            JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void sendHandledJSCrash(final String exceptionObject) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject(exceptionObject);
+                    sendJSCrashByReflection(jsonObject, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -441,32 +490,43 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param isEnabled Exception object to be sent to Instabug's servers
      */
     @ReactMethod
-    public void setCrashReportingEnabled(boolean isEnabled) {
-        try {
-            if (isEnabled) {
-                CrashReporting.setState(Feature.State.ENABLED);
-            } else {
-                CrashReporting.setState(Feature.State.DISABLED);
+    public void setCrashReportingEnabled(final boolean isEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        CrashReporting.setState(Feature.State.ENABLED);
+                    } else {
+                        CrashReporting.setState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
- private void sendJSCrashByReflection(JSONObject exceptionObject, boolean isHandled) {
-        try {
-            Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
-            if (method != null) {
-                method.invoke(null, exceptionObject, isHandled);
-                currentReport = null;
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+ private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled) {
+     new Handler(Looper.getMainLooper()).post(new Runnable() {
+         @Override
+         public void run() {
+             try {
+                 Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+                 if (method != null) {
+                     method.invoke(null, exceptionObject, isHandled);
+                     currentReport = null;
+                 }
+             } catch (ClassNotFoundException e) {
+                 e.printStackTrace();
+             } catch (IllegalAccessException e) {
+                 e.printStackTrace();
+             } catch (InvocationTargetException e) {
+                 e.printStackTrace();
+             }
+         }
+     });
+
     }
 
     /**
@@ -475,12 +535,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param userData
      */
     @ReactMethod
-    public void setUserData(String userData) {
-        try {
-            Instabug.setUserData(userData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setUserData(final String userData) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setUserData(userData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -511,19 +576,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @see #resetTags()
      */
     @ReactMethod
-    public void getTags(Callback tagsCallback) {
-        WritableArray tagsArray;
-        try {
-            ArrayList<String> tags = mInstabug.getTags();
-            tagsArray = Arguments.createArray();
-            for (int i = 0; i < tags.size(); i++) {
-                tagsArray.pushString(tags.get(i));
-            }
-            tagsCallback.invoke(tagsArray);
+    public void getTags(final Callback tagsCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                WritableArray tagsArray;
+                try {
+                    ArrayList<String> tags = Instabug.getTags();
+                    tagsArray = Arguments.createArray();
+                    for (int i = 0; i < tags.size(); i++) {
+                        tagsArray.pushString(tags.get(i));
+                    }
+                    tagsCallback.invoke(tagsArray);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -534,12 +604,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param userEmail User's default email
      */
     @ReactMethod
-    public void identifyUserWithEmail(String userEmail, String userName) {
-        try {
-            Instabug.identifyUser(userName, userEmail);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void identifyUserWithEmail(final String userEmail, final String userName) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.identifyUser(userName, userEmail);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -547,11 +622,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void resetTags() {
-        try {
-            Instabug.resetTags();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.resetTags();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -595,11 +675,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void disable() {
-        try {
-            Instabug.disable();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.disable();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -607,11 +692,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showFeatureRequests() {
-        try {
-            FeatureRequests.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FeatureRequests.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -636,15 +726,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return number of messages that are unread for this user
      */
     @ReactMethod
-    public void getUnreadMessagesCount(Callback messageCountCallback) {
-        int unreadMessages = 0;
-        try {
-            unreadMessages = Replies.getUnreadRepliesCount();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void getUnreadMessagesCount(final Callback messageCountCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                int unreadMessages = 0;
+                try {
+                    unreadMessages = Replies.getUnreadRepliesCount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-        messageCountCallback.invoke(unreadMessages);
+                messageCountCallback.invoke(unreadMessages);
+            }
+        });
     }
 
     /**
@@ -747,36 +842,40 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @see InstabugInvocationEvent
      */
     @ReactMethod
-    public void setInvocationOptions(ReadableArray invocationOptionValues) {
-        try {
-
-            Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            for (String option : stringArray) {
-                switch (option) {
-                    case EMAIL_FIELD_HIDDEN:
-                        BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN);
-                        return;
-                    case EMAIL_FIELD_OPTIONAL:
-                        BugReporting.setOptions(Option.EMAIL_FIELD_OPTIONAL);
-                        break;
-                    case COMMENT_FIELD_REQUIRED:
-                        BugReporting.setOptions(Option.COMMENT_FIELD_REQUIRED);
-                        break;
-                    case DISABLE_POST_SENDING_DIALOG:
-                        BugReporting.setOptions(Option.DISABLE_POST_SENDING_DIALOG);
-                        break;
-                    default:
-                        BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN,
-                                Option.EMAIL_FIELD_OPTIONAL,
-                                Option.COMMENT_FIELD_REQUIRED,
-                                Option.DISABLE_POST_SENDING_DIALOG);
-                        break;
+    public void setInvocationOptions(final ReadableArray invocationOptionValues) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    for (String option : stringArray) {
+                        switch (option) {
+                            case EMAIL_FIELD_HIDDEN:
+                                BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN);
+                                return;
+                            case EMAIL_FIELD_OPTIONAL:
+                                BugReporting.setOptions(Option.EMAIL_FIELD_OPTIONAL);
+                                break;
+                            case COMMENT_FIELD_REQUIRED:
+                                BugReporting.setOptions(Option.COMMENT_FIELD_REQUIRED);
+                                break;
+                            case DISABLE_POST_SENDING_DIALOG:
+                                BugReporting.setOptions(Option.DISABLE_POST_SENDING_DIALOG);
+                                break;
+                            default:
+                                BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN,
+                                        Option.EMAIL_FIELD_OPTIONAL,
+                                        Option.COMMENT_FIELD_REQUIRED,
+                                        Option.DISABLE_POST_SENDING_DIALOG);
+                                break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -785,12 +884,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param isChatNotificationEnable whether chat notification is reburied or not
      */
     @ReactMethod
-    public void setChatNotificationEnabled(boolean isChatNotificationEnable) {
-        try {
-            Replies.setInAppNotificationEnabled(isChatNotificationEnable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setChatNotificationEnabled(final boolean isChatNotificationEnable) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setInAppNotificationEnabled(isChatNotificationEnable);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -801,12 +905,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param isDebugEnabled whether debug logs should be printed or not into LogCat
      */
     @ReactMethod
-    public void setDebugEnabled(boolean isDebugEnabled) {
-        try {
-            Instabug.setDebugEnabled(isDebugEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setDebugEnabled(final boolean isDebugEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setDebugEnabled(isDebugEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -817,29 +926,34 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param errorIdentifier used to group issues manually reported
      */
     @ReactMethod
-    public void reportJsException(ReadableArray stack, String message, String errorIdentifier) {
-        try {
-            int size = stack != null ? stack.size() : 0;
-            StackTraceElement[] stackTraceElements = new StackTraceElement[size];
-            for (int i = 0; i < size; i++) {
-                ReadableMap frame = stack.getMap(i);
-                String methodName = frame.getString("methodName");
-                String fileName = frame.getString("file");
-                int lineNumber = frame.getInt("lineNumber");
+    public void reportJsException(final ReadableArray stack, final String message, final String errorIdentifier) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int size = stack != null ? stack.size() : 0;
+                    StackTraceElement[] stackTraceElements = new StackTraceElement[size];
+                    for (int i = 0; i < size; i++) {
+                        ReadableMap frame = stack.getMap(i);
+                        String methodName = frame.getString("methodName");
+                        String fileName = frame.getString("file");
+                        int lineNumber = frame.getInt("lineNumber");
 
-                stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName,
-                        lineNumber);
+                        stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName,
+                                lineNumber);
+                    }
+                    Throwable throwable = new Throwable(message);
+                    throwable.setStackTrace(stackTraceElements);
+                    if (errorIdentifier != null)
+                        CrashReporting.reportException(throwable);
+                    else
+                        CrashReporting.reportException(throwable, errorIdentifier);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            Throwable throwable = new Throwable(message);
-            throwable.setStackTrace(stackTraceElements);
-            if (errorIdentifier != null)
-                CrashReporting.reportException(throwable);
-            else
-                CrashReporting.reportException(throwable, errorIdentifier);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
 
@@ -857,58 +971,109 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param message the message
      */
     @ReactMethod
-    public void log(String level, String message) {
-        try {
-            switch (level) {
-                case "v":
-                    InstabugLog.v(message);
-                    break;
-                case "i":
-                    InstabugLog.i(message);
-                    break;
-                case "d":
-                    InstabugLog.d(message);
-                    break;
-                case "e":
-                    InstabugLog.e(message);
-                    break;
-                case "w":
-                    InstabugLog.w(message);
-                    break;
-                case "wtf":
-                    InstabugLog.wtf(message);
-                    break;
-                default:
-                    InstabugLog.d(message);
+    public void log(final String level, final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (level) {
+                        case "v":
+                            InstabugLog.v(message);
+                            break;
+                        case "i":
+                            InstabugLog.i(message);
+                            break;
+                        case "d":
+                            InstabugLog.d(message);
+                            break;
+                        case "e":
+                            InstabugLog.e(message);
+                            break;
+                        case "w":
+                            InstabugLog.w(message);
+                            break;
+                        case "wtf":
+                            InstabugLog.wtf(message);
+                            break;
+                        default:
+                            InstabugLog.d(message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
     }
 
     @ReactMethod
-    public void logVerbose(String message) {
-        InstabugLog.v(message);
+    public void logVerbose(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.v(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
-    public void logDebug(String message) {
-        InstabugLog.d(message);
+    public void logDebug(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.d(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
-    public void logInfo(String message) {
-        InstabugLog.i(message);
+    public void logInfo(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.i(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
-    public void logError(String message) {
-        InstabugLog.e(message);
+    public void logError(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.e(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
-    public void logWarn(String message) {
-        InstabugLog.w(message);
+    public void logWarn(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.w(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -916,11 +1081,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearLogs() {
-        try {
-            InstabugLog.clearLogs();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstabugLog.clearLogs();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -933,14 +1103,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return the desired value of whether the user has responded to the survey or not.
      */
     @ReactMethod
-    public void hasRespondedToSurveyWithToken(String surveyToken, Callback hasRespondedCallback) {
-        boolean hasResponded;
-        try {
-            hasResponded = Surveys.hasRespondToSurvey(surveyToken);
-            hasRespondedCallback.invoke(hasResponded);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void hasRespondedToSurveyWithToken(final String surveyToken, final Callback hasRespondedCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                boolean hasResponded;
+                try {
+                    hasResponded = Surveys.hasRespondToSurvey(surveyToken);
+                    hasRespondedCallback.invoke(hasResponded);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -951,12 +1126,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param surveyToken A String with a survey token.
      */
     @ReactMethod
-    public void showSurveyWithToken(String surveyToken) {
-        try {
-            Surveys.showSurvey(surveyToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void showSurveyWithToken(final String surveyToken) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.showSurvey(surveyToken);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -966,12 +1146,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param value the value
      */
     @ReactMethod
-    public void setUserAttribute(String key, String value) {
-        try {
-            Instabug.setUserAttribute(key, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setUserAttribute(final String key, final String value) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setUserAttribute(key, value);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -981,14 +1166,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return the desired user attribute
      */
     @ReactMethod
-    public void getUserAttribute(String key, Callback userAttributeCallback) {
-        String userAttribute;
-        try {
-            userAttribute = Instabug.getUserAttribute(key);
-            userAttributeCallback.invoke(userAttribute);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void getUserAttribute(final String key, final Callback userAttributeCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                String userAttribute;
+                try {
+                    userAttribute = Instabug.getUserAttribute(key);
+                    userAttributeCallback.invoke(userAttribute);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -998,12 +1188,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @see #setUserAttribute(String, String)
      */
     @ReactMethod
-    public void removeUserAttribute(String key) {
-        try {
-            Instabug.removeUserAttribute(key);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void removeUserAttribute(final String key) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.removeUserAttribute(key);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1012,17 +1207,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return all user attributes as HashMap<String, String>
      */
     @ReactMethod
-    public void getAllUserAttributes(Callback userAttributesCallback) {
-        WritableMap writableMap = Arguments.createMap();
-        try {
-            HashMap<String, String> map = mInstabug.getAllUserAttributes();
-            for (HashMap.Entry<String, String> entry : map.entrySet()) {
-                writableMap.putString(entry.getKey(), entry.getValue());
+    public void getAllUserAttributes(final Callback userAttributesCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                WritableMap writableMap = Arguments.createMap();
+                try {
+                    HashMap<String, String> map = mInstabug.getAllUserAttributes();
+                    for (HashMap.Entry<String, String> entry : map.entrySet()) {
+                        writableMap.putString(entry.getKey(), entry.getValue());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                userAttributesCallback.invoke(writableMap);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        userAttributesCallback.invoke(writableMap);
+        });
     }
 
     /**
@@ -1030,11 +1230,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearAllUserAttributes() {
-        try {
-            Instabug.clearAllUserAttributes();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.clearAllUserAttributes();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1043,17 +1248,22 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param theme which is a constant String "light" or "dark"
      */
     @ReactMethod
-    public void setColorTheme(String theme) {
-        try {
-            if (theme.equals(COLOR_THEME_LIGHT)) {
-                Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
+    public void setColorTheme(final String theme) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (theme.equals(COLOR_THEME_LIGHT)) {
+                        Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
 
-            } else if (theme.equals(COLOR_THEME_DARK)) {
-                Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+                    } else if (theme.equals(COLOR_THEME_DARK)) {
+                        Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
     
     /**
@@ -1064,13 +1274,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param key    Key of string to override.
      */
     @ReactMethod
-    public void setString(String string, String key) {
-        try {
-            placeHolders.set(getStringToKeyConstant(key), string);
-            Instabug.setCustomTextPlaceHolders(placeHolders);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+    public void setString(final String string, final String key) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    placeHolders.set(getStringToKeyConstant(key), string);
+                    Instabug.setCustomTextPlaceHolders(placeHolders);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1081,11 +1296,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void logOut() {
-        try {
-            Instabug.logoutUser();
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.logoutUser();
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1095,12 +1315,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param name Event name.
      */
     @ReactMethod
-    public void logUserEventWithName(String name) {
-        try {
-            Instabug.logUserEvent(name);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+    public void logUserEventWithName(final String name) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.logUserEvent(name);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1113,16 +1338,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPreInvocationHandler(final Callback preInvocationHandler) {
-        try {
-            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
-                @Override
-                public void onInvoke() {
-                    sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                        @Override
+                        public void onInvoke() {
+                            sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
+                        }
+                    });
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            });
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -1136,30 +1366,36 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPreSendingHandler(final Callback preSendingHandler) {
-        Report.OnReportCreatedListener listener = new Report.OnReportCreatedListener() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void onReportCreated(Report report) {
-                WritableMap reportParam = Arguments.createMap();
-                reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
-                reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
-                reportParam.putString("userData", report.getUserData());
-                reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
-                reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
-                sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
-                currentReport = report;
-            }
-        };
+            public void run() {
+                Report.OnReportCreatedListener listener = new Report.OnReportCreatedListener() {
+                    @Override
+                    public void onReportCreated(Report report) {
+                        WritableMap reportParam = Arguments.createMap();
+                        reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
+                        reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
+                        reportParam.putString("userData", report.getUserData());
+                        reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
+                        reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
+                        sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
+                        currentReport = report;
+                    }
+                };
 
-        Method method = getMethod(Instabug.class, "onReportSubmitHandler_Private", Report.OnReportCreatedListener.class);
-        if (method != null) {
-            try {
-                method.invoke(null, listener);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                Method method = getMethod(Instabug.class, "onReportSubmitHandler_Private", Report.OnReportCreatedListener.class);
+                if (method != null) {
+                    try {
+                        method.invoke(null, listener);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        });
+
     }
 
     @ReactMethod
@@ -1327,19 +1563,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setPostInvocationHandler(final Callback postInvocationHandler) {
-        try {
-           BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
-               @Override
-               public void call(DismissType dismissType, ReportType reportType) {
-                   WritableMap params = Arguments.createMap();
-                   params.putString("dismissType", dismissType.toString());
-                   params.putString("reportType", reportType.toString());
-                   sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
-               }
-           });
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
+                        @Override
+                        public void call(DismissType dismissType, ReportType reportType) {
+                            WritableMap params = Arguments.createMap();
+                            params.putString("dismissType", dismissType.toString());
+                            params.putString("reportType", reportType.toString());
+                            sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
+                        }
+                    });
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1349,11 +1590,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
-        try {
-            Surveys.showSurveyIfAvailable();
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.showSurveyIfAvailable();
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1362,12 +1608,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @return true if a valid survey was shown otherwise false
      */
     @ReactMethod
-    public void setSurveysEnabled(boolean surveysEnabled) {
-        try {
-            Surveys.setAutoShowingEnabled(surveysEnabled);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+    public void setSurveysEnabled(final boolean surveysEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setAutoShowingEnabled(surveysEnabled);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1379,13 +1630,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
-
-            Surveys.setOnShowCallback(new OnShowCallback() {
-                @Override
-                public void onShow() {
-                    sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
-                }
-            });
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Surveys.setOnShowCallback(new OnShowCallback() {
+                    @Override
+                    public void onShow() {
+                        sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -1397,13 +1652,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
-
-            Surveys.setOnDismissCallback(new OnDismissCallback() {
-                @Override
-                public void onDismiss() {
-                    sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
-                }
-            });
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Surveys.setOnDismissCallback(new OnDismissCallback() {
+                    @Override
+                    public void onDismiss() {
+                        sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
+                    }
+                });
+            }
+        });
     }
 
 
@@ -1413,11 +1672,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void clearFileAttachment() {
-        try {
-            Instabug.clearFileAttachment();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.clearFileAttachment();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1427,22 +1691,27 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                       enabled, non visual or disabled.
      */
     @ReactMethod
-    public void setReproStepsMode(String reproStepsMode) {
-        try {
-            switch (reproStepsMode) {
-                case ENABLED_WITH_NO_SCREENSHOTS:
-                    Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
-                    break;
-                case DISABLED:
-                    Instabug.setReproStepsState(State.DISABLED);
-                    break;
-                default:
-                    Instabug.setReproStepsState(State.ENABLED);
-            }
+    public void setReproStepsMode(final String reproStepsMode) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (reproStepsMode) {
+                        case ENABLED_WITH_NO_SCREENSHOTS:
+                            Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
+                            break;
+                        case DISABLED:
+                            Instabug.setReproStepsState(State.DISABLED);
+                            break;
+                        default:
+                            Instabug.setReproStepsState(State.ENABLED);
+                    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1452,25 +1721,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
       *                          live, or beta.
      */
     @ReactMethod
-    public void showWelcomeMessageWithMode(String welcomeMessageMode) {
-        try {
-            switch (welcomeMessageMode) {
-                case WELCOME_MESSAGE_MODE_LIVE:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-                    break;
-                case WELCOME_MESSAGE_MODE_BETA:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
-                    break;
-                case WELCOME_MESSAGE_MODE_DISABLED:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
-                    break;
-                default:
-                    Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+    public void showWelcomeMessageWithMode(final String welcomeMessageMode) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (welcomeMessageMode) {
+                        case WELCOME_MESSAGE_MODE_LIVE:
+                            Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                            break;
+                        case WELCOME_MESSAGE_MODE_BETA:
+                            Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
+                            break;
+                        case WELCOME_MESSAGE_MODE_DISABLED:
+                            Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
+                            break;
+                        default:
+                            Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -1480,25 +1753,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
       *                          live, beta or disabled.
      */
     @ReactMethod
-    public void setWelcomeMessageMode(String welcomeMessageMode) {
-        try {
-            switch (welcomeMessageMode) {
-                case WELCOME_MESSAGE_MODE_LIVE:
-                    Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
-                    break;
-                case WELCOME_MESSAGE_MODE_BETA:
-                    Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
-                    break;
-                case WELCOME_MESSAGE_MODE_DISABLED:
-                    Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
-                    break;
-                default:
-                    Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
+    public void setWelcomeMessageMode(final String welcomeMessageMode) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    switch (welcomeMessageMode) {
+                        case WELCOME_MESSAGE_MODE_LIVE:
+                            Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
+                            break;
+                        case WELCOME_MESSAGE_MODE_BETA:
+                            Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
+                            break;
+                        case WELCOME_MESSAGE_MODE_DISABLED:
+                            Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
+                            break;
+                        default:
+                            Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -1510,12 +1787,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param androidThreshold Threshold for android devices.
      */
     @ReactMethod
-    public void setShakingThresholdForAndroid(int androidThreshold) {
-        try {
-            BugReporting.setShakingThreshold(androidThreshold);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setShakingThresholdForAndroid(final int androidThreshold) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BugReporting.setShakingThreshold(androidThreshold);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1527,32 +1809,42 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
-        try {
-            Runnable onNewMessageRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Runnable onNewMessageRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
+                        }
+                    };
+                    Replies.setOnNewReplyReceivedCallback(onNewMessageRunnable);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            };
-            Replies.setOnNewReplyReceivedCallback(onNewMessageRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 
     @ReactMethod
     public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
-        try {
-            Runnable onNewReplyReceivedRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    sendEvent(getReactApplicationContext(), "IBGOnNewReplyReceivedCallback", null);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Runnable onNewReplyReceivedRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            sendEvent(getReactApplicationContext(), "IBGOnNewReplyReceivedCallback", null);
+                        }
+                    };
+                    Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
                 }
-            };
-            Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -1562,12 +1854,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param daysCount     number of days that the dismissed survey will show after
      */
     @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
-        try {
-            Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1576,21 +1873,30 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *
      */
     @ReactMethod
-    public void getAvailableSurveys(Callback availableSurveysCallback) {
-        try {
-            List<Survey> availableSurveys = Surveys.getAvailableSurveys();
-            JSONArray surveysArray = toJson(availableSurveys);
-            WritableArray array = convertJsonToArray(surveysArray);
-            availableSurveysCallback.invoke(array);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public void getAvailableSurveys(final Callback availableSurveysCallback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Survey> availableSurveys = Surveys.getAvailableSurveys();
+                    JSONArray surveysArray = toJson(availableSurveys);
+                    WritableArray array = convertJsonToArray(surveysArray);
+                    availableSurveysCallback.invoke(array);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @ReactMethod
     public void show() {
-        Instabug.show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Instabug.show();
+            }
+        });
     }
 
     @ReactMethod
@@ -1632,7 +1938,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void showChats() {
-        Chats.show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Chats.show();
+            }
+        });
     }
 
     @ReactMethod
@@ -1654,15 +1965,24 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void hasChats(Callback callback) {
-        boolean hasChats = Replies.hasChats();
-        callback.invoke(hasChats);
-
+    public void hasChats(final Callback callback) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                boolean hasChats = Replies.hasChats();
+                callback.invoke(hasChats);
+            }
+        });
     }
 
     @ReactMethod
     public void showReplies() {
-        Replies.show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Replies.show();
+            }
+        });
     }
 
     @ReactMethod
@@ -1759,12 +2079,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param autoShowingSurveysEnabled whether Surveys should be auto-showing or not
      */
     @ReactMethod
-    public void setAutoShowingSurveysEnabled(boolean autoShowingSurveysEnabled) {
-        try {
-            Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setAutoShowingSurveysEnabled(final boolean autoShowingSurveysEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1775,12 +2100,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @since 4.1.0
      */
     @ReactMethod
-    public void setEnableInAppNotificationSound(boolean shouldPlaySound) {
-        try {
-            Replies.setInAppNotificationSound(shouldPlaySound);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setEnableInAppNotificationSound(final boolean shouldPlaySound) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    try {
+                        Replies.setInAppNotificationSound(shouldPlaySound);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1789,16 +2123,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param sessionProfilerEnabled desired state of the session profiler feature
      */
     @ReactMethod
-    public void setSessionProfilerEnabled(boolean sessionProfilerEnabled) {
-        try {
-            if (sessionProfilerEnabled) {
-                Instabug.setSessionProfilerState(Feature.State.ENABLED);
-            } else {
-                Instabug.setSessionProfilerState(Feature.State.DISABLED);
+    public void setSessionProfilerEnabled(final boolean sessionProfilerEnabled) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (sessionProfilerEnabled) {
+                        Instabug.setSessionProfilerState(Feature.State.ENABLED);
+                    } else {
+                        Instabug.setSessionProfilerState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -1808,12 +2147,17 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      *                   before taking surveys or not
      */
     @ReactMethod
-    public void setShouldShowSurveysWelcomeScreen(boolean shouldShow) {
-        try {
-            Surveys.setShouldShowWelcomeScreen(shouldShow);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+    public void setShouldShowSurveysWelcomeScreen(final boolean shouldShow) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setShouldShowWelcomeScreen(shouldShow);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -1825,30 +2169,35 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @SuppressLint("WrongConstant")
     @ReactMethod
-    public void setEmailFieldRequiredForFeatureRequests(boolean isEmailRequired, ReadableArray actionTypes) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(actionTypes);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            int[] parsedActionTypes = new int[stringArray.length];
-            int i = 0;
-            for (String action : stringArray) {
-                switch (action) {
-                    case ACTION_TYPE_REQUEST_NEW_FEATURE:
-                        parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
-                        break;
-                    case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
-                        parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
-                        break;
-                    default:
+    public void setEmailFieldRequiredForFeatureRequests(final boolean isEmailRequired, final ReadableArray actionTypes) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(actionTypes);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    int[] parsedActionTypes = new int[stringArray.length];
+                    int i = 0;
+                    for (String action : stringArray) {
+                        switch (action) {
+                            case ACTION_TYPE_REQUEST_NEW_FEATURE:
+                                parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
+                                break;
+                            case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
+                                parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
+                                break;
+                            default:
 
-                        break;
+                                break;
+                        }
+                    }
+
+                    FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            
-            FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     /**
@@ -1877,16 +2226,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void hideView(final ReadableArray ids) {
-        UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-        uiManagerModule.prependUIBlock(new UIBlock() {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
-            public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                final View[] arrayOfViews = new View[ids.size()];
-                for (int i = 0; i < ids.size(); i++) {
-                    int viewId = (int) ids.getDouble(i);
-                    arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
-                }
-                Instabug.setViewsAsPrivate(arrayOfViews);
+            public void run() {
+                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+                uiManagerModule.prependUIBlock(new UIBlock() {
+                    @Override
+                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                        final View[] arrayOfViews = new View[ids.size()];
+                        for (int i = 0; i < ids.size(); i++) {
+                            int viewId = (int) ids.getDouble(i);
+                            arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
+                        }
+                        Instabug.setViewsAsPrivate(arrayOfViews);
+                    }
+                });
             }
         });
     }

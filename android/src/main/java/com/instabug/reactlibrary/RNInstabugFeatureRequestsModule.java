@@ -37,20 +37,25 @@ public class RNInstabugFeatureRequestsModule extends ReactContextBaseJavaModule 
      */
     @SuppressLint("WrongConstant")
     @ReactMethod
-    public void setEmailFieldRequiredForFeatureRequests(boolean isEmailRequired, ReadableArray actionTypes) {
-        try {
-            Object[] objectArray = ArrayUtil.toArray(actionTypes);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            int[] parsedActionTypes = new int[stringArray.length];
-            int i = 0;
-            for (String action : stringArray) {
-                parsedActionTypes[i++] = (int) ArgsRegistry.getRawValue(action);
-            }
+    public void setEmailFieldRequiredForFeatureRequests(final boolean isEmailRequired, final ReadableArray actionTypes) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(actionTypes);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    int[] parsedActionTypes = new int[stringArray.length];
+                    int i = 0;
+                    for (String action : stringArray) {
+                        parsedActionTypes[i++] = (int) ArgsRegistry.getRawValue(action);
+                    }
 
-            FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -58,11 +63,16 @@ public class RNInstabugFeatureRequestsModule extends ReactContextBaseJavaModule 
      */
     @ReactMethod
     public void show() {
-        try {
-            FeatureRequests.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FeatureRequests.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
