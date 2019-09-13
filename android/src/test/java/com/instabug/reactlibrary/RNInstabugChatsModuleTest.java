@@ -8,6 +8,8 @@ import com.facebook.react.bridge.Arguments;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +28,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Chats.class, SystemClock.class, RNInstabugChatsModule.class, Arguments.class, InstabugUtil.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, Chats.class, SystemClock.class, RNInstabugChatsModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
 
 
 public class RNInstabugChatsModuleTest {

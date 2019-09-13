@@ -11,6 +11,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
@@ -44,14 +45,19 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @return the desired value of whether the user has responded to the survey or not.
      */
     @ReactMethod
-    public void hasRespondedToSurvey(String surveyToken, Callback hasRespondedCallback) {
-        boolean hasResponded;
-        try {
-            hasResponded = Surveys.hasRespondToSurvey(surveyToken);
-            hasRespondedCallback.invoke(hasResponded);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void hasRespondedToSurvey(final String surveyToken, final Callback hasRespondedCallback) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean hasResponded;
+                try {
+                    hasResponded = Surveys.hasRespondToSurvey(surveyToken);
+                    hasRespondedCallback.invoke(hasResponded);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -62,12 +68,17 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @param surveyToken A String with a survey token.
      */
     @ReactMethod
-    public void showSurvey(String surveyToken) {
-        try {
-            Surveys.showSurvey(surveyToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void showSurvey(final String surveyToken) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.showSurvey(surveyToken);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -77,11 +88,16 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showSurveysIfAvailable() {
-        try {
-            Surveys.showSurveyIfAvailable();
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.showSurveyIfAvailable();
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -91,7 +107,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -116,10 +132,15 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnShowHandler(final Callback handler) {
-        Surveys.setOnShowCallback(new OnShowCallback() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
-            public void onShow() {
-                InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
+            public void run() {
+                Surveys.setOnShowCallback(new OnShowCallback() {
+                    @Override
+                    public void onShow() {
+                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
+                    }
+                });
             }
         });
     }
@@ -133,11 +154,15 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setOnDismissHandler(final Callback handler) {
-
-        Surveys.setOnDismissCallback(new OnDismissCallback() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
-            public void onDismiss() {
-                InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
+            public void run() {
+                Surveys.setOnDismissCallback(new OnDismissCallback() {
+                    @Override
+                    public void onDismiss() {
+                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
+                    }
+                });
             }
         });
     }
@@ -150,12 +175,17 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @param daysCount     number of days that the dismissed survey will show after
      */
     @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(int sessionsCount, int daysCount) {
-        try {
-            Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -164,16 +194,20 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      *
      */
     @ReactMethod
-    public void getAvailableSurveys(Callback availableSurveysCallback) {
-        try {
-            List<Survey> availableSurveys = Surveys.getAvailableSurveys();
-            JSONArray surveysArray = InstabugUtil.surveyObjectToJson(availableSurveys);
-            WritableArray array = ArrayUtil.convertJsonToWritableArray(surveysArray);
-            availableSurveysCallback.invoke(array);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public void getAvailableSurveys(final Callback availableSurveysCallback) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Survey> availableSurveys = Surveys.getAvailableSurveys();
+                    JSONArray surveysArray = InstabugUtil.surveyObjectToJson(availableSurveys);
+                    WritableArray array = ArrayUtil.convertJsonToWritableArray(surveysArray);
+                    availableSurveysCallback.invoke(array);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -182,12 +216,17 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      * @param autoShowingSurveysEnabled whether Surveys should be auto-showing or not
      */
     @ReactMethod
-    public void setAutoShowingEnabled(boolean autoShowingSurveysEnabled) {
-        try {
-            Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setAutoShowingEnabled(final boolean autoShowingSurveysEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -197,11 +236,16 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
      *                   before taking surveys or not
      */
     @ReactMethod
-    public void setShouldShowWelcomeScreen(boolean shouldShow) {
-        try {
-            Surveys.setShouldShowWelcomeScreen(shouldShow);
-        } catch (java.lang.Exception exception) {
-            exception.printStackTrace();
-        }
+    public void setShouldShowWelcomeScreen(final boolean shouldShow) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.setShouldShowWelcomeScreen(shouldShow);
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
     }
 }

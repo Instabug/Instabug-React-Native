@@ -6,8 +6,11 @@ import android.os.Looper;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
+import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
 
@@ -30,7 +33,7 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setEnabled(final boolean isEnabled) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -52,6 +55,11 @@ public class RNInstabugChatsModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void show() {
-        Chats.show();
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                Chats.show();
+            }
+        });
     }
 }

@@ -14,6 +14,8 @@ import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -36,7 +38,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, FeatureRequests.class, SystemClock.class, Runnable.class, RNInstabugFeatureRequestsModule.class, Arguments.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, FeatureRequests.class, SystemClock.class, Runnable.class, RNInstabugFeatureRequestsModule.class, Arguments.class, MainThreadHandler.class})
 
 public class RNInstabugFeatureRequestsModuleTest {
     private RNInstabugFeatureRequestsModule featureRequestsModule = new RNInstabugFeatureRequestsModule(null);

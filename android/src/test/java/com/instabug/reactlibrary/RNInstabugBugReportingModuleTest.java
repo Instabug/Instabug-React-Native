@@ -19,6 +19,8 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -45,7 +47,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, SystemClock.class, Runnable.class, WritableNativeArray.class, JSONObject.class, RNInstabugBugReportingModule.class, Arguments.class, InstabugUtil.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, SystemClock.class, Runnable.class, WritableNativeArray.class, JSONObject.class, RNInstabugBugReportingModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
 
 public class RNInstabugBugReportingModuleTest {
 

@@ -25,6 +25,8 @@ import com.instabug.library.InstabugState;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.Surveys;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -55,7 +57,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Instabug.class, BugReporting.class, CrashReporting.class, FeatureRequests.class, Chats.class, Replies.class, SystemClock.class, Surveys.class, Runnable.class, WritableNativeArray.class, JSONObject.class, RNInstabugReactnativeModule.class, Arguments.class, Log.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, Instabug.class, BugReporting.class, CrashReporting.class, FeatureRequests.class, Chats.class, Replies.class, SystemClock.class, Surveys.class, Runnable.class, WritableNativeArray.class, JSONObject.class, RNInstabugReactnativeModule.class, Arguments.class, Log.class,  MainThreadHandler.class})
 
 public class RNInstabugReactnativeModuleTest {
 

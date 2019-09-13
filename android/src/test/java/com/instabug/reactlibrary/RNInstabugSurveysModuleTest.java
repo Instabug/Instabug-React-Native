@@ -14,6 +14,8 @@ import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.OnDismissCallback;
 import com.instabug.survey.OnShowCallback;
 import com.instabug.survey.Surveys;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 
 import org.json.JSONArray;
 import org.junit.Before;
@@ -39,7 +41,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Surveys.class, SystemClock.class, Runnable.class, RNInstabugSurveysModule.class, Arguments.class, InstabugUtil.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, Surveys.class, SystemClock.class, Runnable.class, RNInstabugSurveysModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
 
 public class RNInstabugSurveysModuleTest {
 

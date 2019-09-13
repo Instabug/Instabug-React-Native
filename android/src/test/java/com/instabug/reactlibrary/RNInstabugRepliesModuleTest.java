@@ -12,6 +12,7 @@ import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.Surveys;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -35,7 +36,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, Replies.class, Surveys.class, SystemClock.class, Runnable.class, WritableNativeArray.class, JSONObject.class, Arguments.class, InstabugUtil.class, RNInstabugRepliesModule.class})
+@PrepareForTest({Looper.class, android.os.Handler.class, BugReporting.class, Replies.class, Surveys.class, SystemClock.class, Runnable.class, WritableNativeArray.class, JSONObject.class, Arguments.class, InstabugUtil.class, RNInstabugRepliesModule.class, MainThreadHandler.class})
 
 public class RNInstabugRepliesModuleTest {
     private RNInstabugRepliesModule rnModule = new RNInstabugRepliesModule(null);
