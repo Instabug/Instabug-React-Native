@@ -95,16 +95,16 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should not call the native method startWithToken when platform is android', () => {
+  // it('should not call the native method startWithToken when platform is android', () => {
 
-    Platform.OS = 'android';
-    const token = 'some-token';
-    const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
-    Instabug.start(token, invocationEvents);
+  //   Platform.OS = 'android';
+  //   const token = 'some-token';
+  //   const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
+  //   Instabug.start(token, invocationEvents);
 
-    expect(startWithToken.calledOnceWithExactly(token, invocationEvents)).toBe(true);
+  //   expect(startWithToken.calledOnceWithExactly(token, invocationEvents)).toBe(true);
 
-  });
+  // });
 
   it('should call the native method setUserData', () => {
 

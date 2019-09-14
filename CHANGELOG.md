@@ -1,13 +1,9 @@
-## v8.6.4 (2019-09-12)
+## v8.6.4 (2019-09-13)
 
-**If you are on React Native pre 0.60, please follow the steps [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-864)**
 * Fixes an issue on Android that would result in a build error with the message `null is not an object (evaluating u.invocationEventNone)`
-* Fixes an issue on Android that would result in some APIs not working when called immediately after `Instabug.start`
 
 ## v8.6.3 (2019-08-29)
 
-* **⚠️ If you are using Android, please make sure to follow the migration guide [here](https://github.com/Instabug/Instabug-React-Native/blob/master/README.md#updating-to-version-863)**
-* You can now initialize Instabug on Android by calling `Instabug.start` from Javascript, instead of calling the builder method from the application class.
 * Updates native iOS SDK to v8.6.2
 
 ## v8.6.2 (2019-08-29)
