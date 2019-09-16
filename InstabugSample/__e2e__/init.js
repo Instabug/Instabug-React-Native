@@ -16,6 +16,10 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  if (device === undefined) {
+    await detox.init(config);
+  }
+  await device.launchApp({newInstance: true});
   await adapter.beforeEach();
 });
 

@@ -117,6 +117,11 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Set Application Token
+          command: |
+            echo 'export INSTABUG_APP_TOKEN="$RN_E2E_APP_TOKEN"' >> $BASH_ENV
+            sed -i.bak 's|YOUR_TOKEN|'"$RN_E2E_APP_TOKEN"'|g' App.js
+      - run:
           name: Install React Native CLI
           command: npm install -g react-native-cli
       - run:
@@ -149,13 +154,16 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-          name: Install Android SDK
+          name: Set Application Token
           command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
+            echo 'export INSTABUG_APP_TOKEN="$RN_E2E_APP_TOKEN"' >> $BASH_ENV
+            sed -i.bak 's|YOUR_TOKEN|'"$RN_E2E_APP_TOKEN"'|g' App.js
+            sed -i.bak 's|YOUR_TOKEN|'"$RN_E2E_APP_TOKEN"'|g' android/app/src/main/java/com/instabugsample/MainApplication.java
       - run:
-          name: Accept Android SDK Licenses
-          command: (yes | sdkmanager --licenses) || true
+          name: Install Java 8
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew tap AdoptOpenJDK/openjdk
+            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install adoptopenjdk/openjdk/adoptopenjdk8
       - run:
           name: Setup Android Environment Variables
           command: |
@@ -164,14 +172,22 @@ jobs:
             echo 'export ANDROID_SDK_ROOT=/usr/local/share/android-sdk' >> $BASH_ENV
             echo 'export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools' >> $BASH_ENV
       - run:
+          name: Install Android SDK
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
+            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
+      - run:
+          name: Accept Android SDK Licenses
+          command: (yes | sdkmanager --licenses) || true
+      - run:
           name: SDK Manager - Download Emulator Image
           command: (yes | sdkmanager "platform-tools" "platforms;android-27" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;27.0.3" "system-images;android-27;google_apis;x86" "emulator" --verbose) || true
       - run:
           name: AVD Manager - Setup Emulator
-          command: avdmanager create avd -n Nexus_6P_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 6P"
+          command: avdmanager create avd -n Nexus_9_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 9"
       - run:
           name: Run Emulator in background
-          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_6P_API_27 -noaudio -no-boot-anim -no-window
+          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_9_API_27 -noaudio -no-boot-anim -no-window
           background: true
       - run:
           name: Install Node Packages
@@ -192,12 +208,13 @@ jobs:
           name: Detox - Build Release App
           command: |
             sudo chmod -R 777 /Users/distiller/project/InstabugSample/node_modules/instabug-reactnative
+            sudo chmod -R 777 /Users/distiller/project/InstabugSample/node_modules/detox
             detox build --configuration android.emu.release
       - run:
           name: Detox - Run E2E Tests
           command: |
             sudo chmod -R 777 /Users/distiller/Library/Detox
-            detox test --configuration android.emu.release --cleanup
+            detox test --configuration android.emu.release --loglevel verbose
 
 
   publish:
@@ -220,8 +237,10 @@ workflows:
       - test_sample
       - test_android
       - test_ios
-      - e2e_ios
-      # - e2e_android
+      - e2e_ios:
+          context: cross-platform
+      - e2e_android:
+          context: cross-platform
       - hold:
           requires:
             - test_module
@@ -229,7 +248,7 @@ workflows:
             - test_android
             - test_ios
             - e2e_ios
-            # - e2e_android
+            - e2e_android
           type: approval
           filters:
             branches:
@@ -241,4 +260,3 @@ workflows:
           filters:
             branches:
               only: master
-

@@ -38,21 +38,22 @@ export default class App extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
+    Instabug.start('YOUR_TOKEN', [
+      Instabug.invocationEvent.shake,
       Instabug.invocationEvent.floatingButton,
     ]);
   }
 
   render() {
     return (
-      <View testID="welcome" style={styles.container}>
+      <View testID="appMainView" style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <Text style={styles.details}>
             Hello {"Instabug's"} awesome user! The purpose of this application is to show you the
             different options for customizing the SDK and how easy it is to integrate it to your
             existing app
           </Text>
-          <TouchableOpacity style={styles.button} onPress={() => this.invoke()}>
+          <TouchableOpacity testID="invokeBtn" style={styles.button} onPress={() => this.invoke()}>
             <Text style={styles.text}> INVOKE </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => this.sendBugReport()}>
@@ -132,6 +133,7 @@ export default class App extends Component<{}> {
             <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            testID="enableFloatingBtnVisibilityBtn"
             style={styles.buttonColor}
             onPress={() => this.changeInvocationEvent('Button')}
           >
@@ -225,7 +227,7 @@ export default class App extends Component<{}> {
     });
   }
 }
-buttonColor = function(myColor) {
+buttonColor = function (myColor) {
   return {
     marginTop: 10,
     padding: 20,
