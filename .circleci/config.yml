@@ -158,7 +158,7 @@ jobs:
           name: Install Detox Utils
           command: brew tap wix/brew && brew install applesimutils
       - run:
-          name: Install node_modules
+          name: Install Node Packages
           command: yarn
       - run:
           name: Fetch CocoaPods Specs
@@ -172,6 +172,65 @@ jobs:
       - run:
           name: Detox - Run E2E Tests
           command: detox test --configuration ios.sim.release --cleanup
+
+  e2e_android:
+    macos:
+      xcode: "10.2.0"
+    working_directory: ~/project/InstabugSample
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install Android SDK
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
+            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
+      - run:
+          name: Accept Android SDK Licenses
+          command: (yes | sdkmanager --licenses) || true
+      - run:
+          name: Setup Android Environment Variables
+          command: |
+            echo 'export JAVA_HOME=`/usr/libexec/java_home -v 1.8`' >> $BASH_ENV
+            echo 'export ANDROID_HOME=/usr/local/share/android-sdk' >> $BASH_ENV
+            echo 'export ANDROID_SDK_ROOT=/usr/local/share/android-sdk' >> $BASH_ENV
+            echo 'export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools' >> $BASH_ENV
+      - run:
+          name: SDK Manager - Download Emulator Image
+          command: (yes | sdkmanager "platform-tools" "platforms;android-27" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;27.0.3" "system-images;android-27;google_apis;x86" "emulator" --verbose) || true
+      - run:
+          name: AVD Manager - Setup Emulator
+          command: avdmanager create avd -n Nexus_6P_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 6P"
+      - run:
+          name: Run Emulator in background
+          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_6P_API_27 -noaudio -no-boot-anim -no-window
+          background: true
+      - run:
+          name: Install Node Packages
+          command: sudo yarn
+      - run:
+          name: Generate Android Keystore
+          command: cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=AA, OU=AA, O=AA, L=AA, S=AA, C=EG"
+      - run:
+          name: Make gradlew Executable
+          command: cd android && chmod +x ./gradlew
+      - run:
+          name: Download Android Dependencies
+          command: cd android && ./gradlew androidDependencies
+      - run:
+          name: Install Detox CLI
+          command: sudo npm install -g detox-cli
+      - run:
+          name: Detox - Build Release App
+          command: |
+            sudo chmod -R 777 /Users/distiller/project/InstabugSample/node_modules/instabug-reactnative
+            detox build --configuration android.emu.release
+      - run:
+          name: Detox - Run E2E Tests
+          command: |
+            sudo chmod -R 777 /Users/distiller/Library/Detox
+            detox test --configuration android.emu.release --cleanup
+
 
   publish:
     macos:
@@ -192,12 +251,16 @@ workflows:
       - test_sample
       - test_android
       - test_ios
+      - e2e_ios
+      - e2e_android
       - hold:
           requires:
             - test_module
             - test_sample
             - test_android
             - test_ios
+            - e2e_ios
+            - e2e_android
           type: approval
           filters:
             branches:
