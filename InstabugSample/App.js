@@ -35,11 +35,7 @@ export default class App extends Component<{}> {
       colorTheme: 'Light'
     };
 
-    Instabug.startWithToken("068ba9a8c3615035e163dc5f829c73be", [Instabug.invocationEvent.button]);
-    Instabug.setString(Instabug.strings.reportBugDescription, "report us out pls senpai");
-    Instabug.setString(Instabug.strings.reportFeedbackDescription, "feedback us out pls senpai");
-    Instabug.setString(Instabug.strings.reportQuestionDescription, "question us out pls senpai");
-    Instabug.setString(Instabug.strings.requestFeatureDescription, "feature us out pls senpai");
+    Instabug.startWithToken("YOUR_TOKEN", [Instabug.invocationEvent.floatingButton]);
   }
 
   render() {
