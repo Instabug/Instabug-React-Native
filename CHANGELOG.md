@@ -1,3 +1,7 @@
+## v8.7.0 (2019-09-19)
+
+* Updates native SDKs to v8.7
+
 ## v8.6.4 (2019-09-13)
 
 * Fixes an issue on Android that would result in a build error with the message `null is not an object (evaluating u.invocationEventNone)`

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.6.2
+ Version:    8.7.1
  */
 
 #import <UIKit/UIKit.h>
@@ -40,6 +40,10 @@ extern NSString * const kIBGFeatureRequetsPromptName;
 extern NSString * const kIBGAskAQuestionStringName;
 extern NSString * const kIBGReportBugStringName;
 extern NSString * const kIBGReportFeedbackStringName;
+extern NSString * const kIBGReportBugDescriptionStringName;
+extern NSString * const kIBGReportFeedbackDescriptionStringName;
+extern NSString * const kIBGReportQuestionDescriptionStringName;
+extern NSString * const kIBGRequestFeatureDescriptionStringName;
 extern NSString * const kIBGPhotoPickerTitle;
 extern NSString * const kIBGProgressViewTitle;
 extern NSString * const kIBGGalleryPermissionDeniedAlertTitle;

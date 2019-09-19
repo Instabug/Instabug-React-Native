@@ -980,7 +980,11 @@ const InstabugModule = {
     surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
     surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
-    surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle
+    surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle,
+    reportBugDescription: Instabug.reportBugDescription,
+    reportFeedbackDescription: Instabug.reportFeedbackDescription,
+    reportQuestionDescription: Instabug.reportQuestionDescription,
+    requestFeatureDescription: Instabug.requestFeatureDescription
   },
 
   _isOnReportHandlerSet() {
