@@ -252,7 +252,7 @@ workflows:
       - test_android
       - test_ios
       - e2e_ios
-      - e2e_android
+      # - e2e_android
       - hold:
           requires:
             - test_module
@@ -260,7 +260,7 @@ workflows:
             - test_android
             - test_ios
             - e2e_ios
-            - e2e_android
+            # - e2e_android
           type: approval
           filters:
             branches:
