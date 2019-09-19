@@ -24,12 +24,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      new RNInstabugReactnativePackage.Builder("YOUR_TOKEN", MainApplication.this)
-                            .setInvocationEvent("button")
-                            .setPrimaryColor("#1D82DC")
-                            .setFloatingEdge("left")
-                            .setFloatingButtonOffsetFromTop(250)
-                            .build();
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
       return packages;
@@ -49,6 +43,12 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    new RNInstabugReactnativePackage.Builder("068ba9a8c3615035e163dc5f829c73be", MainApplication.this)
+            .setInvocationEvent("button")
+            .setPrimaryColor("#1D82DC")
+            .setFloatingEdge("left")
+            .setFloatingButtonOffsetFromTop(250)
+            .build();
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

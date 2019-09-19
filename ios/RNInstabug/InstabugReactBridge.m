@@ -521,7 +521,12 @@ RCT_EXPORT_METHOD(show) {
               @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
               
               @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
-              @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText
+              @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,
+
+              @"reportBugDescription": kIBGReportBugDescriptionStringName,
+              @"reportFeedbackDescription": kIBGReportFeedbackDescriptionStringName,
+              @"reportQuestionDescription": kIBGReportQuestionDescriptionStringName,
+              @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName
               
               };
 };

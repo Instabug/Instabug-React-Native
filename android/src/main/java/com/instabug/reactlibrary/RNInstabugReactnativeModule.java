@@ -213,6 +213,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
 
+    private final String REPORT_BUG_DESCRIPTION = "reportBugDescription";
+    private final String REPORT_FEEDBACK_DESCRIPTION = "reportFeedbackDescription";
+    private final String REPORT_QUESTION_DESCRIPTION = "reportQuestionDescription";
+    private final String REQUEST_FEATURE_DESCRIPTION = "requestFeatureDescription";
+
     private Application androidApplication;
     private Instabug mInstabug;
     private InstabugInvocationEvent invocationEvent;
@@ -2311,6 +2316,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
             case STORE_RATING_THANKS_SUBTITLE:
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_SUBTITLE;
+            case REPORT_BUG_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_BUG_DESCRIPTION;
+            case REPORT_FEEDBACK_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK_DESCRIPTION;
+            case REPORT_QUESTION_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION_DESCRIPTION;
+            case REQUEST_FEATURE_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REQUEST_FEATURE_DESCRIPTION;
             default:
                 return null;
         }
@@ -2470,6 +2483,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
         constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
         constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);
+
+        constants.put(REPORT_BUG_DESCRIPTION, REPORT_BUG_DESCRIPTION);
+        constants.put(REPORT_FEEDBACK_DESCRIPTION, REPORT_FEEDBACK_DESCRIPTION);
+        constants.put(REPORT_QUESTION_DESCRIPTION, REPORT_QUESTION_DESCRIPTION);
+        constants.put(REQUEST_FEATURE_DESCRIPTION, REQUEST_FEATURE_DESCRIPTION);
 
         return constants;
     }
