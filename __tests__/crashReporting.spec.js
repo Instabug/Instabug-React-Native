@@ -9,7 +9,7 @@ import '../jest/mockXhrNetworkInterceotor';
 import '../jest/mockInstabugUtils';
 import sinon from 'sinon';
 import CrashReporting from '../modules/CrashReporting';
-import { parseErrorStack } from '../utils/InstabugUtils';
+import InstabugUtils from '../utils/InstabugUtils';
 import Instabug from '../';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import IBGConstants from '../utils/InstabugConstants';
@@ -44,7 +44,7 @@ describe('CrashReporting Module', () => {
     it('should call the native method sendHandledJSCrash when platform is ios', () => {
 
         Platform.OS = 'ios';
-        parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
+        InstabugUtils.parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
         const errorObject = { name: 'TypeError', message: 'Invalid type' };
         CrashReporting.reportJSException(errorObject);
 
@@ -62,7 +62,7 @@ describe('CrashReporting Module', () => {
     it('should call the native method sendHandledJSCrash when platform is android', () => {
 
         Platform.OS = 'android';
-        parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
+        InstabugUtils.parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
         const errorObject = { name: 'TypeError', message: 'Invalid type' };
         CrashReporting.reportJSException(errorObject);
 
@@ -81,8 +81,8 @@ describe('CrashReporting Module', () => {
     it('should emit event IBGSendHandledJSCrash with the error object when platform is android', (done) => {
 
         Platform.OS = 'android';
-        parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
-        Instabug._isOnReportHandlerSet = jest.fn(() => true);
+        InstabugUtils.parseErrorStack.mockImplementation(() => 'javascriptStackTrace');
+        InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
 
         const errorObject = { name: 'TypeError', message: 'Invalid type' };
         const expectedObject = {

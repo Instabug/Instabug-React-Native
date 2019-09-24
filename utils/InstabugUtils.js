@@ -15,7 +15,6 @@ var _isOnReportHandlerSet = false;
 
 export const setOnReportHandler = (flag) => {
   _isOnReportHandlerSet = flag;
-  console.log(_isOnReportHandlerSet);
 };
 
 export const isOnReportHandlerSet = () => {
