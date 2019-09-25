@@ -20,6 +20,7 @@ import NetworkLogger from './modules/NetworkLogger';
 InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
 
+var _currentScreen = null;
 /**
  * Instabug
  * @exports Instabug
@@ -769,12 +770,37 @@ const InstabugModule = {
       const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
       if (prevScreen !== currentScreen) {
-        // the line below uses the Google Analytics tracker
-        // change the tracker here to use other Mobile analytics SDK.
         console.log(currentScreen);
+        if (_currentScreen != null) {
+          Instabug.reportScreenChange(currentScreen);
+          _currentScreen = null;
+        }
+        _currentScreen = currentScreen;
+        setTimeout(function() { 
+          if (_currentScreen == currentScreen) {
+            Instabug.reportScreenChange(currentScreen);
+            _currentScreen = null;
+          }
+        }, 1000);
       }
   },
 
+  componentDidAppearListener(componentId, componentName, passProps) {
+      console.log(componentName);
+      if (_currentScreen != null) {
+        Instabug.reportScreenChange(componentName);
+        _currentScreen = null;
+      }
+      _currentScreen = componentName;
+      setTimeout(function() { 
+        if (_currentScreen == componentName) {
+          Instabug.reportScreenChange(componentName);
+          _currentScreen = null;
+        }
+      }, 1000);
+},
+
+  
   /**
    * The event used to invoke the feedback form
    * @readonly

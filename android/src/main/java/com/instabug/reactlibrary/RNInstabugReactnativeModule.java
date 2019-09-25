@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -2238,6 +2239,29 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         Instabug.setViewsAsPrivate(arrayOfViews);
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
+     *
+     * @param screenName string containing the screen name
+     *
+     */
+    @ReactMethod
+    public void reportScreenChange(final String screenName) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportScreenChange", Bitmap.class, String.class);
+                    if (method != null) {
+                        method.invoke(null , null, screenName);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
