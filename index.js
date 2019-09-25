@@ -21,6 +21,7 @@ InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
 
 var _currentScreen = null;
+var _lastScreen = null;
 /**
  * Instabug
  * @exports Instabug
@@ -785,19 +786,22 @@ const InstabugModule = {
       }
   },
 
-  componentDidAppearListener(componentId, componentName, passProps) {
+  componentDidAppearListener({componentId, componentName, passProps}) {
+    if (_lastScreen != componentName) {
       console.log(componentName);
       if (_currentScreen != null) {
         Instabug.reportScreenChange(componentName);
         _currentScreen = null;
       }
       _currentScreen = componentName;
+      _lastScreen = componentName;
       setTimeout(function() { 
         if (_currentScreen == componentName) {
           Instabug.reportScreenChange(componentName);
           _currentScreen = null;
         }
       }, 1000);
+    }
 },
 
   
