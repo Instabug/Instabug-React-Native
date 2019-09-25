@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './utils/IBGEventEmitter';
-import { captureJsErrors } from './utils/InstabugUtils';
+import InstabugUtils from './utils/InstabugUtils';
 import InstabugConstants from './utils/InstabugConstants';
 import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
@@ -17,11 +17,8 @@ import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
 import NetworkLogger from './modules/NetworkLogger';
 
-captureJsErrors();
+InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
-
-var _isOnReportHandlerSet = false;
-
 
 /**
  * Instabug
@@ -721,11 +718,10 @@ const InstabugModule = {
 
   onReportSubmitHandler(preSendingHandler) {
     if (preSendingHandler) {
-      _isOnReportHandlerSet = true;
+      InstabugUtils.setOnReportHandler(true);
     } else {
-      _isOnReportHandlerSet = false;
+      InstabugUtils.setOnReportHandler(false);
     }
-    
     // send bug report
     IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -987,12 +983,7 @@ const InstabugModule = {
     requestFeatureDescription: Instabug.requestFeatureDescription
   },
 
-  _isOnReportHandlerSet() {
-    return _isOnReportHandlerSet;
-  }
 };
-
-export { _isOnReportHandlerSet };
 
 export {
   BugReporting,

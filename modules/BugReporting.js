@@ -3,7 +3,6 @@ import {
   Platform
 } from 'react-native';
 let { Instabug, IBGBugReporting } = NativeModules;
-import InstabugModule from '../index';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
@@ -59,19 +58,6 @@ export default {
   onInvokeHandler(handler) {
     IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
     IBGBugReporting.setOnInvokeHandler(handler);
-  },
-
-  /* istanbul ignore next */
-  /**
-   * @deprecated Use {@link Instabug.onReportSubmitHandler} instead.
-   * Sets a block of code to be executed before sending each report.
-   * This block is executed in the background before sending each report. Could
-   * be used for attaching logs and extra data to reports.
-   * @param {function} preSendingHandler - A callback that gets executed before sending each bug
-   * report.
-   */
-  onReportSubmitHandler(preSendingHandler) {
-    InstabugModule.onReportSubmitHandler(preSendingHandler);
   },
 
   /**

@@ -4,13 +4,22 @@ let {Instabug} = NativeModules;
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
 import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
-import IBG from '../index';
 
 export const parseErrorStack = (error) => {
     return parseErrorStackLib(error);
 };
 
 const originalHandler = global.ErrorUtils.getGlobalHandler();
+var _isOnReportHandlerSet = false;
+
+
+export const setOnReportHandler = (flag) => {
+  _isOnReportHandlerSet = flag;
+};
+
+export const isOnReportHandlerSet = () => {
+  return _isOnReportHandlerSet;
+};
 
 export const captureJsErrors = () => {
     if (!process.env.JEST_WORKER_ID) {
@@ -31,7 +40,7 @@ export const captureJsErrors = () => {
       }
       
       if(Platform.OS === 'android') {
-        if (IBG._isOnReportHandlerSet()) {
+        if (_isOnReportHandlerSet) {
           IBGEventEmitter.emit( InstabugConstants.SEND_UNHANDLED_CRASH, jsonObject);
         } else {
           Instabug.sendJSCrash(JSON.stringify(jsonObject));
@@ -55,5 +64,7 @@ export const captureJsErrors = () => {
 
 export default {
     parseErrorStack,
-    captureJsErrors
+    captureJsErrors,
+    setOnReportHandler,
+    isOnReportHandlerSet
 };

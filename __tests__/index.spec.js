@@ -16,6 +16,7 @@ import sinon from 'sinon';
 import IBGConstants from '../utils/InstabugConstants';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import { green } from 'ansi-colors';
+import InstabugUtils from '../utils/InstabugUtils';
 
 describe('Instabug Module', () => {
 
@@ -555,7 +556,8 @@ describe('Instabug Module', () => {
   it('should set _isOnReportHandlerSet to true on calling onReportSubmitHandler', () => {
 
     Instabug.onReportSubmitHandler(jest.fn());
-    const isReportHandlerSet = Instabug._isOnReportHandlerSet();
+    InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
+    const isReportHandlerSet = InstabugUtils.isOnReportHandlerSet();
     
     expect(isReportHandlerSet).toBe(true);
     
