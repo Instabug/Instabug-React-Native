@@ -764,6 +764,17 @@ const InstabugModule = {
     Instabug.callPrivateApi(apiName, param);
   },
 
+  onNavigationStateChange(prevState, currentState, action) {
+      const currentScreen = InstabugUtils.getActiveRouteName(currentState);
+      const prevScreen = InstabugUtils.getActiveRouteName(prevState);
+
+      if (prevScreen !== currentScreen) {
+        // the line below uses the Google Analytics tracker
+        // change the tracker here to use other Mobile analytics SDK.
+        console.log(currentScreen);
+      }
+  },
+
   /**
    * The event used to invoke the feedback form
    * @readonly
