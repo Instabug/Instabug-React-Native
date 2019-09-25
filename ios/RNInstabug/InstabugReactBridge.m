@@ -38,6 +38,16 @@ RCT_EXPORT_MODULE(Instabug)
 }
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
+    SEL setPrivateApiSEL = NSSelectorFromString(@"setCrossPlatform:");
+    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
+        BOOL flag = true;
+        NSNumber *enableCross = [NSNumber numberWithBool:flag];
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
+        [inv setSelector:setPrivateApiSEL];
+        [inv setTarget:[Instabug class]];
+        [inv setArgument:&(enableCross) atIndex:2];
+        [inv invoke];
+    }
     IBGInvocationEvent invocationEvents = 0;
     NSLog(@"invocation events: %ld",(long)invocationEvents);
     for (NSNumber *boxedValue in invocationEventsArray) {
@@ -380,6 +390,17 @@ RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
 
 RCT_EXPORT_METHOD(show) {
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
+}
+
+RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
+    SEL setPrivateApiSEL = NSSelectorFromString(@"addReproStepForView:");
+    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
+        [inv setSelector:setPrivateApiSEL];
+        [inv setTarget:[Instabug class]];
+        [inv setArgument:&(screenName) atIndex:2];
+        [inv invoke];
+    }
 }
 
 - (NSDictionary *)constantsToExport
