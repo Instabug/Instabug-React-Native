@@ -337,7 +337,7 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArg$setReproStepsMode_whenQuery_thenShouldCallNativeApiWithArg() {
+    public void givenArg$setReproStepsMode_whenQuery_thenShouldCallNativeApiWithArg() throws Exception {
         // given
         PowerMockito.mockStatic(Instabug.class);
         Map<String, Object> args = new HashMap<>();
@@ -348,10 +348,9 @@ public class RNInstabugReactnativeModuleTest {
             rnModule.setReproStepsMode(key);
         }
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         for (String key : keysArray) {
             State mode = (State) args.get(key);
-            Instabug.setReproStepsState(mode);
+            PowerMockito.verifyPrivate(Instabug.class, VerificationModeFactory.times(1)).invoke("setRnReproStepsState", mode);
         }
 
     }
@@ -543,6 +542,17 @@ public class RNInstabugReactnativeModuleTest {
             InstabugCustomTextPlaceHolder.Key placeHolder = (InstabugCustomTextPlaceHolder.Key) args.get(key);
             Assert.assertEquals(placeHolders.get(placeHolder), key);
         }
+    }
+
+    @Test
+    public void givenString$reportScreenChange_whenQuery_thenShouldCallNativeApiWithString() throws Exception {
+        // given
+        PowerMockito.mockStatic(Instabug.class);
+        rnModule.reportScreenChange("screen");
+
+        // then
+        PowerMockito.verifyPrivate(Instabug.class, VerificationModeFactory.times(1)).invoke("reportScreenChange", null,"screen");
+
     }
 
 }
