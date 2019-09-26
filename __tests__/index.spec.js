@@ -66,6 +66,7 @@ describe('Instabug Module', () => {
   const callPrivateApi = sinon.spy(NativeModules.Instabug, 'callPrivateApi');
   const sendHandledJSCrash = sinon.spy(NativeModules.Instabug, 'sendHandledJSCrash');
   const sendJSCrash = sinon.spy(NativeModules.Instabug, 'sendJSCrash');
+  const reportScreenChange = sinon.spy(NativeModules.Instabug, 'reportScreenChange');
 
   beforeEach(() => {
     startWithToken.resetHistory();
@@ -83,6 +84,22 @@ describe('Instabug Module', () => {
     setPreSendingHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
     
+  });
+
+  it('componentDidAppearListener should call the native method reportScreenChange', () => {
+    const screenName = "some-screen";
+    var obj = {componentId: "1",
+              componentName: screenName,
+              "passProps": "screenName"};
+    Instabug.componentDidAppearListener(obj);
+    expect(reportScreenChange.calledOnceWithExactly(screenName)).toBe(true);
+  });
+
+  it('onNavigationStateChange should call the native method reportScreenChange', () => {
+    const screenName = "some-screen";
+    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
+    Instabug.onNavigationStateChange(screenName, screenName, screenName);
+    expect(reportScreenChange.calledOnceWithExactly(screenName)).toBe(true);
   });
 
   it('should call the native method startWithToken', () => {
