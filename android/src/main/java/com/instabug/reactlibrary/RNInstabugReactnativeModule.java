@@ -1694,17 +1694,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    switch (reproStepsMode) {
-                        case ENABLED_WITH_NO_SCREENSHOTS:
-                            Instabug.setReproStepsState(State.ENABLED_WITH_NO_SCREENSHOTS);
-                            break;
-                        case DISABLED:
-                            Instabug.setReproStepsState(State.DISABLED);
-                            break;
-                        default:
-                            Instabug.setReproStepsState(State.ENABLED);
+                    State reproStepsState = ArgsRegistry.getDeserializedValue(
+                            reproStepsMode, State.class);
+                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setRnReproStepsState", State.class);
+                    if (method != null) {
+                        method.invoke(null , reproStepsState);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
