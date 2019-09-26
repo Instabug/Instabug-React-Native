@@ -22,6 +22,8 @@ NetworkLogger.setEnabled(true);
 
 var _currentScreen = null;
 var _lastScreen = null;
+var _isFirstScreen = false;
+const firstScreen = "Initial Screen";
 /**
  * Instabug
  * @exports Instabug
@@ -55,7 +57,17 @@ const InstabugModule = {
    * the SDK's UI.
    */
   start: function(token, invocationEvent) {
-    if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
+    if (Platform.OS === 'ios') {
+      Instabug.startWithToken(token, invocationEvent);
+    }
+    _isFirstScreen = true;
+    _currentScreen = firstScreen;
+    setTimeout(function() {
+      if (_currentScreen == firstScreen) {
+        Instabug.reportScreenChange(firstScreen);
+        _currentScreen = null;
+      }
+    }, 1000); 
   },
 
   /**
@@ -771,9 +783,8 @@ const InstabugModule = {
       const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
       if (prevScreen !== currentScreen) {
-        console.log(currentScreen);
         if (_currentScreen != null) {
-          Instabug.reportScreenChange(currentScreen);
+          Instabug.reportScreenChange(_currentScreen);
           _currentScreen = null;
         }
         _currentScreen = currentScreen;
@@ -787,20 +798,14 @@ const InstabugModule = {
   },
 
   componentDidAppearListener({componentId, componentName, passProps}) {
-    if (_lastScreen != componentName) {
-      console.log(componentName);
-      if (_currentScreen != null) {
-        Instabug.reportScreenChange(componentName);
-        _currentScreen = null;
-      }
-      _currentScreen = componentName;
+    if (_isFirstScreen) {
       _lastScreen = componentName;
-      setTimeout(function() { 
-        if (_currentScreen == componentName) {
-          Instabug.reportScreenChange(componentName);
-          _currentScreen = null;
-        }
-      }, 1000);
+      _isFirstScreen = false;
+      return;
+    }
+    if (_lastScreen != componentName) {
+      Instabug.reportScreenChange(componentName);
+      _lastScreen = componentName;
     }
 },
 
