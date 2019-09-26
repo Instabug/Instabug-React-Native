@@ -2,6 +2,7 @@
 
 * Fixes `Warning: Require cycle` warnings.
 
+
 ## v8.7.0 (2019-09-19)
 
 * Updates native SDKs to v8.7
