@@ -80,7 +80,7 @@ export namespace Replies {
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
   function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
-  function getUnreadRepliesCount(messageCountCallback: () => void): void;
+  function getUnreadRepliesCount(messageCountCallback: (count: number) => void): number;
   function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
 }
