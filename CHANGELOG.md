@@ -1,5 +1,6 @@
-## master
+## v8.7.1 (2019-10-02)
 
+* Updates native iOS SDK to v8.7.2
 * Fixes `Warning: Require cycle` warnings.
 
 ## v8.7.0 (2019-09-19)
