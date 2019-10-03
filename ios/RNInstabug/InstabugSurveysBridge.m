@@ -43,12 +43,13 @@ RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResp
 }
 
 RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
-    NSArray<IBGSurvey* >* availableSurveys = [IBGSurveys availableSurveys];
-    NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
-    for (IBGSurvey* survey in availableSurveys) {
-        [mappedSurveys addObject:@{@"title": survey.title }];
-    }
-    callback(@[mappedSurveys]);
+    [IBGSurveys availableSurveysWithCompletionHandler:^(NSArray<IBGSurvey *> *availableSurveys) {
+        NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
+        for (IBGSurvey* survey in availableSurveys) {
+            [mappedSurveys addObject:@{@"title": survey.title }];
+        }
+        callback(@[mappedSurveys]);
+    }];
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)surveysEnabled) {
