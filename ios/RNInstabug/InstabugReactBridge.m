@@ -476,6 +476,7 @@ RCT_EXPORT_METHOD(show) {
               @"invocationHeader": kIBGInvocationTitleStringName,
               //@"talkToUs": kIBGTalkToUsStringName,
               @"startChats": kIBGAskAQuestionStringName,
+              @"reportQuestion": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,

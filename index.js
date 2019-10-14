@@ -919,6 +919,7 @@ const InstabugModule = {
     invalidCommentTitle: Instabug.invalidCommentTitle,
     invocationHeader: Instabug.invocationHeader,
     startChats: Instabug.startChats,
+    reportQuestion: Instabug.reportQuestion,
     reportBug: Instabug.reportBug,
     reportFeedback: Instabug.reportFeedback,
     emailFieldHint: Instabug.emailFieldHint,

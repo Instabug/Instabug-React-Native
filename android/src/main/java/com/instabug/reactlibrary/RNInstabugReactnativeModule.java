@@ -158,6 +158,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private final String INVOCATION_HEADER = "invocationHeader";
     private final String START_CHATS = "startChats";
+    private final String REPORT_QUESTION = "reportQuestion";
     private final String REPORT_BUG = "reportBug";
     private final String REPORT_FEEDBACK = "reportFeedback";
 
@@ -2264,6 +2265,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
             case START_CHATS:
                 return InstabugCustomTextPlaceHolder.Key.START_CHATS;
+            case REPORT_QUESTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION;
             case REPORT_BUG:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_BUG;
             case REPORT_FEEDBACK:
@@ -2454,6 +2457,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
         constants.put("invocationHeader", INVOCATION_HEADER);
         constants.put("startChats", START_CHATS);
+        constants.put("reportQuestion", REPORT_QUESTION);
         constants.put("reportBug", REPORT_BUG);
         constants.put("reportFeedback", REPORT_FEEDBACK);
         constants.put("conversationsHeaderTitle", CONVERSATIONS_LIST_TITLE);
