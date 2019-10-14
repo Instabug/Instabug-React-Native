@@ -1,3 +1,7 @@
+## master
+
+* Fixes automatic upload soucemap files failing to find the correct token in some cases
+
 ## v8.7.1 (2019-10-02)
 
 * Updates native iOS SDK to v8.7.2
