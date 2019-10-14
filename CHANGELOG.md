@@ -1,6 +1,6 @@
 ## master
 
-* Fixes automatic upload soucemap files failing to find the correct token in some cases
+* Fixes the automatic uploading of the source map files in some cases due to incorrect regex.
 
 ## v8.7.1 (2019-10-02)
 
