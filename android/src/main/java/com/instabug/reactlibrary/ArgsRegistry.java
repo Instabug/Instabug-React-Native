@@ -171,6 +171,7 @@ final class ArgsRegistry {
         args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
         args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
         args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
+        args.put("reportQuestion", InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION);
         args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
         args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
         args.put("emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
@@ -183,8 +184,6 @@ final class ArgsRegistry {
         args.put("conversationsListTitle", InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE);
         args.put("audioRecordingPermissionDenied", InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED);
         args.put("conversationTextFieldHint", InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT);
-//        args.put("bugReportHeader", InstabugCustomTextPlaceHolder.Key.BUG_REPORT_HEADER);
-//        args.put("feedbackReportHeader", InstabugCustomTextPlaceHolder.Key.FEEDBACK_REPORT_HEADER);
         args.put("voiceMessagePressAndHoldToRecord", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         args.put("voiceMessageReleaseToAttach", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
         args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
