@@ -20,12 +20,35 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
 else
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Generating sourcemap files..."
-    #Generate android sourcemap
-    react-native bundle --platform android \
-    --entry-file index.js \
-    --dev false \
-    --bundle-output ./android/main.jsbundle \
-    --sourcemap-output ./android-sourcemap.json
+    IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle)
+    if [[ $IS_HERMES == *"true"* ]]; then
+        #Generate android sourcemap (HERMES)
+        react-native bundle --platform android \
+        --reset-cache \
+        --entry-file index.js \
+        --dev false \
+        --bundle-output index.android.bundle \
+        --sourcemap-output index.android.bundle.packager.map \
+
+        node_modules/hermes-engine/osx-bin/hermes -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
+
+        cp index.android.bundle.hbc.map index.android.bundle.compiler.map
+
+        node node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.compiler.map -o android-sourcemap.json
+        rm -rf index.android.bundle
+        rm -rf index.android.bundle.hbc.map
+        rm -rf index.android.bundle.compiler.map
+        rm -rf index.android.bundle.hbc 
+        rm -rf index.android.bundle.packager.map
+        rm -rf index.android.bundle.map
+    else
+        #Generate android sourcemap
+        react-native bundle --platform android \
+        --entry-file index.js \
+        --dev false \
+        --bundle-output ./android/main.jsbundle \
+        --sourcemap-output ./android-sourcemap.json
+    fi
     echo "Instabug: Uploading files..."
     #Upload android sourcemap
     curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files'  -F "symbols_file=@./android-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=android"
