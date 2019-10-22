@@ -80,7 +80,7 @@ export namespace Replies {
   function show(): void;
   function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
   function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
-  function getUnreadRepliesCount(messageCountCallback: () => void): void;
+  function getUnreadRepliesCount(messageCountCallback: (count: number) => void): void;
   function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
 }
@@ -126,7 +126,7 @@ export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
 export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
 export function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
 export function setSessionProfilerEnabled(sessionProfilerEnabled: boolean): void;
-export function getUnreadMessagesCount(messageCountCallback: () => void): void;
+export function getUnreadMessagesCount(messageCountCallback: (count: number) => void): void;
 export function setPushNotificationsEnabled(isPushNotificationEnabled: boolean): void;
 export function setEmailFieldRequiredForActions(
   isEmailFieldRequired: boolean,
