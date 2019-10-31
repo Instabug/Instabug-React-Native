@@ -15,6 +15,7 @@ describe('Invoking Prompt Options', () => {
     
     // Expectation
     await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
   });
 
   it('should show instabug prompt options when tapping the floating button', async () => {
@@ -26,6 +27,7 @@ describe('Invoking Prompt Options', () => {
     
     // Expectation
     await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
   });
 
   it('[iOS_Only] should show instabug prompt options when shaking the device', async () => {
@@ -35,6 +37,7 @@ describe('Invoking Prompt Options', () => {
 
       // Expectation
       await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+      await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
     }
   });
 });

@@ -24,8 +24,10 @@ describe('Bug Reporting', () => {
     // Expect a "Thank you" popup
     if (device.getPlatform() === 'ios') {
       await waitFor(element(by.text('Thank you'))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+      await expect(element(by.text('Thank you'))).toBeVisible();
     } else {
       await waitFor(element(by.nativeId(getId(BugReportingNativeIds.SUCCESS_POPUP_MSG)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+      await expect(element(by.nativeId(getId(BugReportingNativeIds.SUCCESS_POPUP_MSG)))).toBeVisible();
     }
   });
 });
