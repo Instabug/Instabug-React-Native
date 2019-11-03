@@ -145,6 +145,8 @@ jobs:
       - run:
           name: Detox - Run E2E Tests
           command: detox test --configuration ios.sim.release --loglevel verbose --debug-synchronization 9000 --take-screenshots failing
+      - store_artifacts:
+          path: ./artifacts
 
   e2e_android:
     macos:
@@ -215,7 +217,8 @@ jobs:
           command: |
             sudo chmod -R 777 /Users/distiller/Library/Detox
             detox test --configuration android.emu.release --loglevel verbose --debug-synchronization 9000 --take-screenshots failing
-
+      - store_artifacts:
+          path: ./artifacts
 
   publish:
     macos:
