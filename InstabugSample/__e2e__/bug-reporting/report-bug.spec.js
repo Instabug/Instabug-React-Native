@@ -10,7 +10,7 @@ describe('Bug Reporting', () => {
     await ReactNativeActions.checkRnSanity();
 
     // Invoke Prompt Options
-    await ReactNativeActions.tapOnInvokeBtn();
+    await InstabugNativeActions.tapOnFloatingBtn();
 
     // Tap on Report a Bug option
     await InstabugNativeActions.tapOnBugPromptOption();
