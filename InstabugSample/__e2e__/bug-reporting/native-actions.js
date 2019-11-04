@@ -1,4 +1,5 @@
 import { getId } from '../utilities/native-utility';
+import { DEFAULT_TIMEOUT } from '../utilities/settings';
 import TestData from './test-data';
 
 export const NativeIds = {
@@ -24,12 +25,15 @@ export const NativeTexts = {
 
 export const NativeActions = {
   async fillOnBugPromptOption() {
-    var emailField = element(by.nativeId(getId(NativeIds.EMAIL_FIELD)));
+    const emailField = element(by.nativeId(getId(NativeIds.EMAIL_FIELD)));
+    await waitFor(emailField).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
     await emailField.tap();
     await emailField.clearText();
     await emailField.typeText(TestData.email);
   },
   async tapOnSendBugReportBtn() {
-    await element(by.nativeId(getId(NativeIds.SEND_BUG_BTN))).tap();
+    const sendBugBtn = element(by.nativeId(getId(NativeIds.SEND_BUG_BTN)));
+    await waitFor(sendBugBtn).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await sendBugBtn.tap();
   },
 };

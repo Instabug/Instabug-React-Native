@@ -1,4 +1,5 @@
 import { getId } from '../utilities/native-utility';
+import { DEFAULT_TIMEOUT } from '../utilities/settings';
 
 export const NativeIds = {
   PROMPT_TITLE: {
@@ -17,10 +18,12 @@ export const NativeIds = {
 
 export const NativeActions = {
   async tapOnFloatingBtn() {
-    await element(by.nativeId(getId(NativeIds.FLOATING_BUTTON))).tap();
+    const floatingBtn = element(by.nativeId(getId(NativeIds.FLOATING_BUTTON)));
+    await waitFor(floatingBtn).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await floatingBtn.tap();
   },
   async tapOnBugPromptOption() {
-    var promptOption;
+    let promptOption;
 
     if (device.getPlatform() === 'ios') {
       // iOS has a unique id for each prompt option.
@@ -31,6 +34,7 @@ export const NativeActions = {
       promptOption = element(by.nativeId(getId(NativeIds.PROMPT_OPTION_BUG)).and(by.text('Report a bug')));
     }
 
+    await waitFor(promptOption).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
     await promptOption.tap();
   },
 };

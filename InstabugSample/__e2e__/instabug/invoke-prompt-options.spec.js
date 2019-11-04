@@ -10,15 +10,20 @@ describe('Invoking Prompt Options', () => {
   });
   
   it('should show instabug prompt options when calling Instabug.show()', async () => {
+    let promptOption;
+
     // Action
     await ReactNativeActions.tapOnInvokeBtn();
     
     // Expectation
-    await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
-    await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
+    promptOption = element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)));
+    await waitFor(promptOption).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await expect(promptOption).toBeVisible();
   });
 
   it('should show instabug prompt options when tapping the floating button', async () => {
+    let promptOption;
+
     // Prepare
     await ReactNativeActions.tapOnEnableFloatingBtn();
 
@@ -26,18 +31,22 @@ describe('Invoking Prompt Options', () => {
     await InstabugNativeActions.tapOnFloatingBtn();
     
     // Expectation
-    await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
-    await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
+    promptOption = element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)));
+    await waitFor(promptOption).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+    await expect(promptOption).toBeVisible();
   });
 
   it('[iOS_Only] should show instabug prompt options when shaking the device', async () => {
+    let promptOption;
+
     if (device.getPlatform() === 'ios') {
       // Action
       await device.shake();
 
       // Expectation
-      await waitFor(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
-      await expect(element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)))).toBeVisible();
+      promptOption = element(by.nativeId(getId(InstabugNativeIds.PROMPT_TITLE)));
+      await waitFor(promptOption).toBeVisible().withTimeout(DEFAULT_TIMEOUT);
+      await expect(promptOption).toBeVisible();
     }
   });
 });
