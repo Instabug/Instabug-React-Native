@@ -189,7 +189,7 @@ jobs:
           command: avdmanager create avd -n Nexus_9_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 9"
       - run:
           name: Run Emulator in background
-          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_9_API_27 -noaudio -no-boot-anim -no-window
+          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_9_API_27 -noaudio -no-boot-anim -no-window -memory 1024
           background: true
       - run:
           name: Install Node Packages
