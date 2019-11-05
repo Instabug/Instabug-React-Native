@@ -35,7 +35,8 @@ export default class App extends Component<{}> {
       colorTheme: 'Light'
     };
 
-    Instabug.startWithToken("YOUR_TOKEN", [Instabug.invocationEvent.floatingButton]);
+    Instabug.startWithToken("068ba9a8c3615035e163dc5f829c73be", [Instabug.invocationEvent.floatingButton]);
+    FeatureRequests.setEnabled(true);
   }
 
   render() {
