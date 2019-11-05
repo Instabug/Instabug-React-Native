@@ -16,7 +16,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  if (device === undefined) {
+  if (typeof(device) == 'undefined') {
     await detox.init(config);
   }
   await device.launchApp({newInstance: true});
