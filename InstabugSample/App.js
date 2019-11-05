@@ -36,7 +36,6 @@ export default class App extends Component<{}> {
     };
 
     Instabug.startWithToken("YOUR_TOKEN", [Instabug.invocationEvent.floatingButton]);
-    FeatureRequests.setEnabled(true);
   }
 
   render() {
