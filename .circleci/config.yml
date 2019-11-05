@@ -144,7 +144,7 @@ jobs:
           command: detox build --configuration ios.sim.release
       - run:
           name: Detox - Run E2E Tests
-          command: detox test --configuration ios.sim.release --loglevel verbose --debug-synchronization 9000 --take-screenshots failing
+          command: detox test --configuration ios.sim.release --loglevel trace --debug-synchronization 9000 --take-screenshots failing
       - store_artifacts:
           path: ./artifacts
 
@@ -186,10 +186,10 @@ jobs:
           command: (yes | sdkmanager "platform-tools" "platforms;android-27" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;27.0.3" "system-images;android-27;google_apis;x86" "emulator" --verbose) || true
       - run:
           name: AVD Manager - Setup Emulator
-          command: avdmanager create avd -n Nexus_9_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 9"
+          command: avdmanager create avd -n Pixel_2_XL_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "pixel_xl"
       - run:
           name: Run Emulator in background
-          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_9_API_27 -noaudio -no-boot-anim -no-window -memory 1024
+          command: /usr/local/share/android-sdk/emulator/emulator @Pixel_2_XL_API_27 -noaudio -no-boot-anim -no-window -memory 1024
           background: true
       - run:
           name: Install Node Packages
@@ -216,7 +216,7 @@ jobs:
           name: Detox - Run E2E Tests
           command: |
             sudo chmod -R 777 /Users/distiller/Library/Detox
-            detox test --configuration android.emu.release --loglevel verbose --debug-synchronization 9000 --take-screenshots failing
+            detox test --configuration android.emu.release --loglevel trace --debug-synchronization 9000 --take-screenshots failing
       - store_artifacts:
           path: ./artifacts
 
