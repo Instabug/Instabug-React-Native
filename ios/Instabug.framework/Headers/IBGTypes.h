@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.7.2
+ Version:    8.7.3
  */
 
 #import <UIKit/UIKit.h>
@@ -300,20 +300,6 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
 };
 
 /**
- Verbosity level of the SDK debug logs. This has nothing to do with IBGLog, and only affect the logs used to debug the
- SDK itself.
- 
- Defaults to IBGSDKDebugLogsLevelError. Make sure you only use IBGSDKDebugLogsLevelError or IBGSDKDebugLogsLevelNone in
- production builds.
- */
-typedef NS_ENUM(NSInteger, IBGSDKDebugLogsLevel) {
-    IBGSDKDebugLogsLevelVerbose,
-    IBGSDKDebugLogsLevelDebug,
-    IBGSDKDebugLogsLevelError,
-    IBGSDKDebugLogsLevelNone
-};
-
-/**
  The prompt option selected in Instabug prompt.
  */
 typedef NS_OPTIONS(NSInteger, IBGPromptOption) {
@@ -343,6 +329,20 @@ typedef NS_ENUM(NSInteger, IBGLogLevel) {
     IBGLogLevelWarning,
     IBGLogLevelError,
     IBGLogLevelFatal
+};
+
+/**
+ Verbosity level of the SDK debug logs. This has nothing to do with IBGLog, and only affect the logs used to debug the
+ SDK itself.
+ 
+ Defaults to IBGSDKDebugLogsLevelError. Make sure you only use IBGSDKDebugLogsLevelError or IBGSDKDebugLogsLevelNone in
+ production builds.
+ */
+typedef NS_ENUM(NSInteger, IBGSDKDebugLogsLevel) {
+    IBGSDKDebugLogsLevelVerbose = 1,
+    IBGSDKDebugLogsLevelDebug = 2,
+    IBGSDKDebugLogsLevelError = 3,
+    IBGSDKDebugLogsLevelNone = 4
 };
 
 /**

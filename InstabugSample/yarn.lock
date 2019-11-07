@@ -2756,7 +2756,7 @@ inquirer@^6.4.1:
     through "^2.3.6"
 
 instabug-reactnative@../:
-  version "8.6.1"
+  version "8.7.1"
 
 invariant@^2.2.4:
   version "2.2.4"

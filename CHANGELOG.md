@@ -1,7 +1,8 @@
-## master
+## v8.7.2 (2019-11-05)
 
 * Fixes the automatic uploading of the source map files in some cases due to incorrect regex.
 * Add a new string reportQuestion to replace the deprecated string startChats.
+* Updates native SDKs
 
 ## v8.7.1 (2019-10-02)
 
