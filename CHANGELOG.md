@@ -1,3 +1,7 @@
+## v8.7.3 (2019-11-14)
+
+* Fixes `BugReporting.setViewHierarchyEnabled` crashing on iOS.
+
 ## v8.7.2 (2019-11-05)
 
 * Fixes the automatic uploading of the source map files in some cases due to incorrect regex.
