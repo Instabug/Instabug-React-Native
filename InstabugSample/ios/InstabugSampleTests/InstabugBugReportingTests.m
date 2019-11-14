@@ -173,7 +173,7 @@
 
 - (void) testgivenBoolean$setViewHierarchyEnabled_whenQuery_thenShouldCallNativeApi {
   BOOL enabled = true;
-  [self.instabugBridge setViewHirearchyEnabled:enabled];
+  [self.instabugBridge setViewHierarchyEnabled:enabled];
   XCTAssertTrue(IBGBugReporting.shouldCaptureViewHierarchy);
 }
 

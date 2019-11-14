@@ -162,7 +162,7 @@ RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
     IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
 }
 
-RCT_EXPORT_METHOD(setViewHirearchyEnabled:(BOOL)viewHirearchyEnabled) {
+RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHirearchyEnabled) {
     IBGBugReporting.shouldCaptureViewHierarchy = viewHirearchyEnabled;
 }
 
