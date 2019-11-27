@@ -333,7 +333,15 @@ export enum strings {
   welcomeMessageBetaFinishStepTitle,
   welcomeMessageBetaFinishStepContent,
   welcomeMessageLiveWelcomeStepTitle,
-  welcomeMessageLiveWelcomeStepContent
+  welcomeMessageLiveWelcomeStepContent,
+  surveysCustomThanksTitle,
+  surveysCustomThanksSubTitle,
+  surveysStoreRatingThanksTitle,
+  surveysStoreRatingThanksSubtitle,
+  reportBugDescription,
+  reportFeedbackDescription,
+  reportQuestionDescription,
+  requestFeatureDescription
 }
 
  interface Report {
