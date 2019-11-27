@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
-import com.instabug.library.ActionType;
+import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -59,7 +59,6 @@ final class ArgsRegistry {
         registerCustomTextPlaceHolderKeysArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
         registerInstabugExtendedBugReportModeArgs(ARGS);
-        registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
         registerReproStepsModeArgs(ARGS);
@@ -211,13 +210,6 @@ final class ArgsRegistry {
         args.put("disabledExtendedBugReportState", ExtendedBugReport.State.DISABLED);
     }
 
-    static void registerInstabugActionTypesArgs(Map<String, Object> args) {
-        args.put("ActionType.allActions", ActionType.ALL_ACTIONS);
-        args.put("ActionType.reportBug", ActionType.REPORT_BUG);
-        args.put("ActionType.requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
-        args.put("ActionType.addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
-    }
-
     static void registerInstabugVideoRecordingFloatingButtonPositionArgs(Map<String, Object> args) {
         args.put("topRight", InstabugVideoRecordingButtonPosition.TOP_RIGHT);
         args.put("topLeft", InstabugVideoRecordingButtonPosition.TOP_LEFT);
@@ -231,8 +223,8 @@ final class ArgsRegistry {
         args.put("disabled", State.DISABLED);
     }
 
-    static void registerInstabugFeatureRequestsActionTypes(Map<String, Object> args) {
-        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
-        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
+    static void registerInstabugFeatureRequestsActionTypes(Map< String, Object> args) {
+        args.put("requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
+        args.put("addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
     }
 }
