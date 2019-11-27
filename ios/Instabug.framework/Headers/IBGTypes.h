@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    8.7.3
+ Version:    9.0.1
  */
 
 #import <UIKit/UIKit.h>
@@ -35,6 +35,8 @@ extern NSString * const kIBGInvalidEmailMessageStringName;
 extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
 extern NSString * const kIBGInvalidCommentTitleStringName;
+extern NSString * const kIBGInvalidNumberTitleStringName;
+extern NSString * const kIBGInvalidNumberMessageStringName;
 extern NSString * const kIBGInvocationTitleStringName;
 extern NSString * const kIBGFeatureRequetsPromptName;
 extern NSString * const kIBGAskAQuestionStringName;
@@ -53,6 +55,8 @@ extern NSString * const kIBGMaximumSizeExceededAlertMessage;
 extern NSString * const kIBGiCloudImportErrorAlertTitle;
 extern NSString * const kIBGiCloudImportErrorAlertMessage;
 extern NSString * const kIBGEmailFieldPlaceholderStringName;
+extern NSString * const kIBGNumberFieldPlaceholderStringName;
+extern NSString * const kIBGNumberInfoAlertMessageStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForBugReportStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForFeedbackStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForQuestionStringName;

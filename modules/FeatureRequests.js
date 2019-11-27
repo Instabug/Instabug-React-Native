@@ -42,8 +42,6 @@ export default {
      * @enum {number}
      */
     actionTypes: {
-        allActions: Instabug.allActions,
-        reportBug: Instabug.reportBugAction,
         requestNewFeature: Instabug.requestNewFeature,
         addCommentToFeature: Instabug.addCommentToFeature
     }
