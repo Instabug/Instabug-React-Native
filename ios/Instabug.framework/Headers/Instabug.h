@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    8.7.3
+ Version:    9.0.1
  */
 
 #import <Foundation/Foundation.h>
@@ -320,12 +320,6 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug mode is IBGSDKDebugLogsLevelVerbose and in production is IBGSDKDebugLogsLevelError.
  */
 @property (class, atomic, assign) IBGSDKDebugLogsLevel sdkDebugLogsLevel;
-
-
-#pragma mark - Private Methods for CrossPlatform   /// Will  be removed before the release
-+ (void)addReproStepForView:(NSString *)viewName;
-+ (void)addEvent:(NSString *)eventName forView:(NSString *)viewName;
-
 
 @end
 
