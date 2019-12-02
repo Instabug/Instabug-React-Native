@@ -1,3 +1,8 @@
+## v9.0.0 (2019-12-02)
+
+* Updated native SDKs to v9.0
+* Fixes Descrepencies in typescript definition file
+
 ## v8.7.3 (2019-11-14)
 
 * Fixes `BugReporting.setViewHierarchyEnabled` crashing on iOS.
