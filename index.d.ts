@@ -22,6 +22,8 @@ export namespace BugReporting {
   function show(
     type: reportType,
     options: option[]): void;
+  function setAutoScreenRecordingEnabled(isEnabled: boolean): void; 
+  function setViewHierarchyEnabled(isEnabled: boolean): void;  
   enum invocationEvent {
     none,
     shake,
@@ -203,6 +205,7 @@ export function addFileAttachment(
   filePath: string,
   fileName: string
   ): void;
+export function setPrivateView(viewRef: object): void;  
 export function show(): void;
 export function onReportSubmitHandler(preSendingHandler: (presendingHandler: Report) => void): void;
 export function callPrivateApi(
