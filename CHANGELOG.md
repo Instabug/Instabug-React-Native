@@ -1,3 +1,7 @@
+## v9.0.1 (2019-12-14)
+
+* Updated iOS native SDK to v9.0.3
+
 ## v9.0.0 (2019-12-02)
 
 * Updated native SDKs to v9.0
