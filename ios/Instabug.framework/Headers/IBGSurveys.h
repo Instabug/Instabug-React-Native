@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    9.0.3
+ Version:    9.0.4
  */
 
 #import <Foundation/Foundation.h>
@@ -94,5 +94,13 @@ NS_SWIFT_NAME(Surveys)
  */
 + (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
 
+
+/**
+ @brief Sets url for the published iOS app on AppStore.
+ 
+ @discussion You can redirect NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
+ 
+ */
+@property (class, atomic, strong) NSString *appStoreURL;
 
 @end
