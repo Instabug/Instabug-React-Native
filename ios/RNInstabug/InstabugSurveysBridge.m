@@ -92,6 +92,10 @@ RCT_EXPORT_METHOD(setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
     IBGSurveys.shouldShowWelcomeScreen = shouldShowWelcomeScreen;
 }
 
+RCT_EXPORT_METHOD(setAppStoreURL:(NSString *)appStoreURL) {
+    IBGSurveys.appStoreURL = appStoreURL;
+}
+
 @synthesize description;
 
 @synthesize hash;

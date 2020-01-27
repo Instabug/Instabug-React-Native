@@ -38,6 +38,8 @@
 
 - (void)setEnabled:(BOOL)surveysEnabled;
 
+- (void)setAppStoreURL:(BOOL)appStoreURL;
+
 
 @end
 

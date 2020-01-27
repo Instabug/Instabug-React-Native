@@ -142,5 +142,13 @@
 }
 
 
+- (void) testSetAppStoreURL {
+  NSString *appStoreURL = @"http://test";
+  
+  [self.instabugBridge setAppStoreURL:appStoreURL];
+  XCTAssertEqual(IBGSurveys.appStoreURL, appStoreURL);
+}
+
+
 @end
 
