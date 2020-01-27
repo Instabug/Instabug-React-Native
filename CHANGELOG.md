@@ -1,3 +1,8 @@
+## v9.0.5 (2020-01-27)
+
+* Bump iOS Native SDK to v9.0.4
+* Bump Android Native SDK to v9.0.5
+
 ## v9.0.1 (2019-12-14)
 
 * Updated iOS native SDK to v9.0.3

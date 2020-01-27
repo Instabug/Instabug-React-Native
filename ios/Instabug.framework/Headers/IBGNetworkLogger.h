@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    9.0.3
+ Version:    9.0.5
  */
 
 #import <Foundation/Foundation.h>
@@ -91,7 +91,7 @@ NS_SWIFT_NAME(NetworkLogger)
  
  @param reciveChallengeHandler A block that takes the authentication challenge and returns NSURLCredential.
  */
-+ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* _Nonnull (^_Nonnull)(NSURLAuthenticationChallenge * _Nonnull challenge))reciveChallengeHandler;
++ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* _Nullable (^_Nonnull)(NSURLAuthenticationChallenge * _Nonnull challenge))reciveChallengeHandler;
 
 
 /**
