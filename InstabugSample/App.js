@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -13,8 +13,8 @@ import {
   TouchableOpacity,
   processColor,
   Switch,
-  ScrollView
-} from "react-native";
+  ScrollView,
+} from 'react-native';
 
 import Instabug, {
   BugReporting,
@@ -22,14 +22,12 @@ import Instabug, {
   Surveys,
   Chats,
   CrashReporting,
-  Replies
-} from "instabug-reactnative";
+  Replies,
+} from 'instabug-reactnative';
 
 const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu',
 });
 
 export default class App extends Component<{}> {
@@ -37,11 +35,11 @@ export default class App extends Component<{}> {
     super(props);
     this.state = {
       switchValue: true,
-      colorTheme: "Light"
+      colorTheme: 'Light',
     };
 
-    Instabug.startWithToken("068ba9a8c3615035e163dc5f829c73be", [
-      Instabug.invocationEvent.floatingButton
+    Instabug.startWithToken('068ba9a8c3615035e163dc5f829c73be', [
+      Instabug.invocationEvent.floatingButton,
     ]);
   }
 
@@ -50,89 +48,60 @@ export default class App extends Component<{}> {
       <View testID="welcome" style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <Text style={styles.details}>
-            Hello {"Instabug's"} awesome user! The purpose of this application
-            is to show you the different options for customizing the SDK and how
-            easy it is to integrate it to your existing app
+            Hello {"Instabug's"} awesome user! The purpose of this application is to show you the
+            different options for customizing the SDK and how easy it is to integrate it to your
+            existing app
           </Text>
           <TouchableOpacity style={styles.button} onPress={() => this.invoke()}>
             <Text style={styles.text}> INVOKE </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.sendBugReport()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.sendBugReport()}>
             <Text style={styles.text}> SEND BUG REPORT </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.sendFeedback()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.sendFeedback()}>
             <Text style={styles.text}> SEND FEEDBACK </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.startNewConversation()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.startNewConversation()}>
             <Text style={styles.text}> ASK A QUESTION </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.sendCrashReport()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.sendCrashReport()}>
             <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.showNpsSurvey()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.showNpsSurvey()}>
             <Text style={styles.text}> SHOW NPS SURVEY </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.showMultipleQuestionSurvey()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.showMultipleQuestionSurvey()}>
             <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.showFeatureRequests()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.showFeatureRequests()}>
             <Text style={styles.text}> SHOW FEATURE REQUESTS </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.showUnreadMessagesCount()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
           </TouchableOpacity>
           {this.invocationEvent()}
           <Text style={styles.textColor}> Set primary color </Text>
           <View style={styles.rowView}>
             <TouchableOpacity
-              style={buttonColor("#FF0000")}
-              onPress={() => this.setPrimaryColor("#FF0000")}
+              style={buttonColor('#FF0000')}
+              onPress={() => this.setPrimaryColor('#FF0000')}
             />
             <TouchableOpacity
-              style={buttonColor("#00FF00")}
-              onPress={() => this.setPrimaryColor("#00FF00")}
+              style={buttonColor('#00FF00')}
+              onPress={() => this.setPrimaryColor('#00FF00')}
             />
             <TouchableOpacity
-              style={buttonColor("#0000FF")}
-              onPress={() => this.setPrimaryColor("#0000FF")}
+              style={buttonColor('#0000FF')}
+              onPress={() => this.setPrimaryColor('#0000FF')}
             />
             <TouchableOpacity
-              style={buttonColor("#FFFF00")}
-              onPress={() => this.setPrimaryColor("#FFFF00")}
+              style={buttonColor('#FFFF00')}
+              onPress={() => this.setPrimaryColor('#FFFF00')}
             />
           </View>
           <View style={styles.switchView}>
-            <Text style={styles.textSwitchStyle}>
-              Color Theme: {this.state.colorTheme}
-            </Text>
-            <Switch
-              onValueChange={this.toggleSwitch}
-              value={this.state.switchValue}
-            />
+            <Text style={styles.textSwitchStyle}>Color Theme: {this.state.colorTheme}</Text>
+            <Switch onValueChange={this.toggleSwitch} value={this.state.switchValue} />
           </View>
         </ScrollView>
       </View>
@@ -146,31 +115,31 @@ export default class App extends Component<{}> {
         <View style={styles.rowView}>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent("Shake")}
+            onPress={() => this.changeInvocationEvent('Shake')}
           >
             <Text style={styles.textInvoke}> SHAKE </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent("Screenshot")}
+            onPress={() => this.changeInvocationEvent('Screenshot')}
           >
             <Text style={styles.textInvoke}> SCREENSHOT </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent("twoFingersSwipe")}
+            onPress={() => this.changeInvocationEvent('twoFingersSwipe')}
           >
             <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent("Button")}
+            onPress={() => this.changeInvocationEvent('Button')}
           >
             <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent("None")}
+            onPress={() => this.changeInvocationEvent('None')}
           >
             <Text style={styles.textInvoke}> NONE </Text>
           </TouchableOpacity>
@@ -182,10 +151,10 @@ export default class App extends Component<{}> {
   toggleSwitch = value => {
     this.setState({ switchValue: value });
     if (value) {
-      this.setState({ colorTheme: "Light" });
+      this.setState({ colorTheme: 'Light' });
       Instabug.setColorTheme(Instabug.colorTheme.light);
     } else {
-      this.setState({ colorTheme: "Dark" });
+      this.setState({ colorTheme: 'Dark' });
       Instabug.setColorTheme(Instabug.colorTheme.dark);
     }
   };
@@ -203,11 +172,11 @@ export default class App extends Component<{}> {
   }
 
   showMultipleQuestionSurvey() {
-    Surveys.showSurvey("ZAKSlVz98QdPyOx1wIt8BA");
+    Surveys.showSurvey('ZAKSlVz98QdPyOx1wIt8BA');
   }
 
   showNpsSurvey() {
-    Surveys.showSurvey("pcV_mE2ttqHxT1iqvBxL0w");
+    Surveys.showSurvey('pcV_mE2ttqHxT1iqvBxL0w');
   }
 
   showFeatureRequests() {
@@ -220,35 +189,29 @@ export default class App extends Component<{}> {
 
   sendCrashReport() {
     try {
-      throw new Error("Text Handled Exception From Instabug Test App");
+      throw new Error('Text Handled Exception From Instabug Test App');
     } catch (Exception) {
       CrashReporting.reportJSException(Exception);
-      alert("Crash report Sent!");
+      alert('Crash report Sent!');
     }
   }
 
   sendFeedback() {
     BugReporting.showWithOptions(BugReporting.reportType.feedback, [
-      BugReporting.option.emailFieldHidden
+      BugReporting.option.emailFieldHidden,
     ]);
   }
 
   changeInvocationEvent(invocationEvent) {
-    if (invocationEvent === "Shake")
+    if (invocationEvent === 'Shake')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
-    if (invocationEvent === "Button")
-      BugReporting.setInvocationEvents([
-        BugReporting.invocationEvent.floatingButton
-      ]);
-    if (invocationEvent === "Screenshot")
-      BugReporting.setInvocationEvents([
-        BugReporting.invocationEvent.screenshot
-      ]);
-    if (invocationEvent === "twoFingersSwipe")
-      BugReporting.setInvocationEvents([
-        BugReporting.invocationEvent.twoFingersSwipe
-      ]);
-    if (invocationEvent === "None")
+    if (invocationEvent === 'Button')
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.floatingButton]);
+    if (invocationEvent === 'Screenshot')
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
+    if (invocationEvent === 'twoFingersSwipe')
+      BugReporting.setInvocationEvents([BugReporting.invocationEvent.twoFingersSwipe]);
+    if (invocationEvent === 'None')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
   }
 
@@ -258,7 +221,7 @@ export default class App extends Component<{}> {
 
   showUnreadMessagesCount() {
     Replies.getUnreadRepliesCount(count => {
-      alert("Messages: " + count);
+      alert('Messages: ' + count);
     });
   }
 }
@@ -267,71 +230,71 @@ buttonColor = function(myColor) {
     marginTop: 10,
     padding: 20,
     paddingRight: 40,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: 5,
     marginRight: 5,
-    backgroundColor: myColor
+    backgroundColor: myColor,
   };
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
   details: {
-    textAlign: "center",
-    color: "#333333",
+    textAlign: 'center',
+    color: '#333333',
     margin: 20,
-    marginTop: Platform.OS === "ios" ? 40 : 20
+    marginTop: Platform.OS === 'ios' ? 40 : 20,
   },
   text: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   button: {
     marginTop: 10,
-    backgroundColor: "#1D82DC",
+    backgroundColor: '#1D82DC',
     padding: 10,
-    alignItems: "center",
-    borderRadius: 5
+    alignItems: 'center',
+    borderRadius: 5,
   },
   rowView: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
-    maxWidth: "100%",
+    maxWidth: '100%',
     flexGrow: 1,
-    flexWrap: "wrap"
+    flexWrap: 'wrap',
   },
   textColor: {
     fontSize: 14,
-    fontWeight: "bold",
-    marginTop: 10
+    fontWeight: 'bold',
+    marginTop: 10,
   },
   buttonColor: {
     marginTop: 10,
-    backgroundColor: "#1D82DC",
+    backgroundColor: '#1D82DC',
     padding: 10,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: 5,
-    marginRight: 5
+    marginRight: 5,
   },
   textSwitchStyle: {
     marginTop: 10,
     marginRight: 5,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   switchView: {
-    flexDirection: "row",
-    marginTop: 20
+    flexDirection: 'row',
+    marginTop: 20,
   },
   textInvoke: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   contentContainer: {
-    padding: 10
-  }
+    padding: 10,
+  },
 });
