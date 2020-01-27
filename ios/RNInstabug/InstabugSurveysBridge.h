@@ -38,7 +38,7 @@
 
 - (void)setEnabled:(BOOL)surveysEnabled;
 
-- (void)setAppStoreURL:(BOOL)appStoreURL;
+- (void)setAppStoreURL:(NSString *)appStoreURL;
 
 
 @end
