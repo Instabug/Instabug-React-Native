@@ -9,21 +9,23 @@ export namespace BugReporting {
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
   function onInvokeHandler(handler: () => void): void;
   function onReportSubmitHandler(preSendingHandler: () => void): void;
-  function onSDKDismissedHandler(handler: (dismiss: dismissType, report: reportType) => void): void;
-  function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
+  function onSDKDismissedHandler(
+    handler: (dismiss: dismissType, report: reportType) => void
+  ): void;
+  function setDidSelectPromptOptionHandler(
+    didSelectPromptOptionHandler: () => void
+  ): void;
   function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
   function setShakingThresholdForAndroid(androidThreshold: number): void;
-  function setExtendedBugReportMode(extendedBugReportMode: extendedBugReportMode): void;
+  function setExtendedBugReportMode(
+    extendedBugReportMode: extendedBugReportMode
+  ): void;
   function setReportTypes(types: reportType[]): void;
-  function showWithOptions(
-    type: reportType,
-    options: option[]): void;
-  function show(
-    type: reportType,
-    options: option[]): void;
-  function setAutoScreenRecordingEnabled(isEnabled: boolean): void; 
-  function setViewHierarchyEnabled(isEnabled: boolean): void;  
+  function showWithOptions(type: reportType, options: option[]): void;
+  function show(type: reportType, options: option[]): void;
+  function setAutoScreenRecordingEnabled(isEnabled: boolean): void;
+  function setViewHierarchyEnabled(isEnabled: boolean): void;
   enum invocationEvent {
     none,
     shake,
@@ -66,7 +68,7 @@ export namespace FeatureRequests {
   function setEmailFieldRequired(
     isEmailFieldRequired: boolean,
     actionTypes: actionTypes[]
-    ): void;
+  ): void;
   function setEnabled(isEnabled: boolean): void;
   function show(): void;
   enum actionTypes {
@@ -78,12 +80,20 @@ export namespace FeatureRequests {
 }
 export namespace Replies {
   function setEnabled(isEnabled: boolean): void;
-  function hasChats(callback: (previousChats : boolean) => void): void;
+  function hasChats(callback: (previousChats: boolean) => void): void;
   function show(): void;
-  function setOnNewReplyReceivedCallback(onNewReplyReceivedCallback: () => void): void;
-  function setOnNewReplyReceivedHandler(onNewReplyReceivedHandler: () => void): void;
-  function getUnreadRepliesCount(messageCountCallback: (count: number) => void): void;
-  function setInAppNotificationsEnabled(inAppNotificationsEnabled: boolean): void;
+  function setOnNewReplyReceivedCallback(
+    onNewReplyReceivedCallback: () => void
+  ): void;
+  function setOnNewReplyReceivedHandler(
+    onNewReplyReceivedHandler: () => void
+  ): void;
+  function getUnreadRepliesCount(
+    messageCountCallback: (count: number) => void
+  ): void;
+  function setInAppNotificationsEnabled(
+    inAppNotificationsEnabled: boolean
+  ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
 }
 export namespace Surveys {
@@ -92,8 +102,10 @@ export namespace Surveys {
   function setThresholdForReshowingSurveyAfterDismiss(
     sessionCount: number,
     daysCount: number
-    ): void;
-  function getAvailableSurveys(availableSurveysCallback: (surveys: Survey[]) => void): void;
+  ): void;
+  function getAvailableSurveys(
+    availableSurveysCallback: (surveys: Survey[]) => void
+  ): void;
   function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   function onShowCallback(willShowSurveyHandler: () => void): void;
   function setOnShowHandler(onShowHandler: () => void): void;
@@ -103,8 +115,9 @@ export namespace Surveys {
   function hasRespondedToSurvey(
     surveyToken: string,
     surveyTokenCallback: () => void
-    ): void;
+  ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
+  function setAppStoreURL(appStoreURL: string): void;
 }
 export namespace NetworkLogger {
   function setEnabled(isEnabled: boolean): void;
@@ -115,59 +128,56 @@ export namespace NetworkLogger {
 export function startWithToken(
   token: string,
   invocationEvent: invocationEvent[]
-  ): void;
-export function start(
-  token: string,
-  invocationEvent: invocationEvent[]
-  ): void;
+): void;
+export function start(token: string, invocationEvent: invocationEvent[]): void;
 export function setUserData(userData: string): void;
-export function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolean): void;
-export function setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration: number): void;
+export function setAutoScreenRecordingEnabled(
+  autoScreenRecordingEnabled: boolean
+): void;
+export function setAutoScreenRecordingMaxDuration(
+  autoScreenRecordingMaxDuration: number
+): void;
 export function setTrackUserSteps(isEnabled: boolean): void;
 export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
 export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
-export function setDidSelectPromptOptionHandler(didSelectPromptOptionHandler: () => void): void;
-export function setSessionProfilerEnabled(sessionProfilerEnabled: boolean): void;
-export function getUnreadMessagesCount(messageCountCallback: (count: number) => void): void;
-export function setPushNotificationsEnabled(isPushNotificationEnabled: boolean): void;
+export function setDidSelectPromptOptionHandler(
+  didSelectPromptOptionHandler: () => void
+): void;
+export function setSessionProfilerEnabled(
+  sessionProfilerEnabled: boolean
+): void;
+export function getUnreadMessagesCount(
+  messageCountCallback: (count: number) => void
+): void;
+export function setPushNotificationsEnabled(
+  isPushNotificationEnabled: boolean
+): void;
 export function setEmailFieldRequiredForActions(
   isEmailFieldRequired: boolean,
   actionTypes: actionTypes
-  ): void;
+): void;
 export function setFloatingButtonEdge(
   floatingButtonEdge: number,
   offsetFromTop: number
-  ): void;
+): void;
 export function setLocale(locale: locale): void;
 export function setColorTheme(colorTheme: colorTheme): void;
 export function setPrimaryColor(color: string): void;
 export function appendTags(tags: string[]): void;
 export function resetTags(): void;
 export function getTags(tagsCallback: () => void): void;
-export function setStringToKey(
-  string: string,
-  key: strings,
-  ): void;
-export function setString(
-  key: strings,
-  string: string,
-  ): void;
+export function setStringToKey(string: string, key: strings): void;
+export function setString(key: strings, string: string): void;
 export function setEnabledAttachmentTypes(
   screenshot: boolean,
   extraScreenshot: boolean,
   galleryImage: boolean,
   screenRecording: boolean
-  ): void;
-export function identifyUserWithEmail(
-  email: string,
-  name: string
-  ): void;
-export function identifyUser(
-  email: string,
-  name: string
-  ): void;
+): void;
+export function identifyUserWithEmail(email: string, name: string): void;
+export function identifyUser(email: string, name: string): void;
 export function logOut(): void;
-export function logUserEventWithName(name: string,  params?: any): void;
+export function logUserEventWithName(name: string, params?: any): void;
 export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
@@ -176,18 +186,17 @@ export function logError(message: string): void;
 export function logWarn(message: string): void;
 export function clearLogs(): void;
 export function setReproStepsMode(reproStepsMode: reproStepsMode): void;
-export function setUserAttribute(
-  key: string,
-  value: string
-  ): void;
+export function setUserAttribute(key: string, value: string): void;
 export function getUserAttribute(
   key: string,
-  userAttributeCallback: () => void)
-  : void;
+  userAttributeCallback: () => void
+): void;
 export function removeUserAttribute(key: string): void;
 export function getAllUserAttributes(userAttributesCallback: () => void): void;
 export function clearAllUserAttributes(): void;
-export function setChatNotificationEnabled(isChatNotificationEnabled: boolean): void;
+export function setChatNotificationEnabled(
+  isChatNotificationEnabled: boolean
+): void;
 export function setOnNewMessageHandler(onNewMessageHandler: () => void): void;
 export function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
 export function setSurveysEnabled(surveysEnabled: boolean): void;
@@ -197,21 +206,25 @@ export function disable(): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
 export function reportJSException(Exception: object): void;
 export function isRunningLive(runningLiveCallBack: () => void): void;
-export function setVideoRecordingFloatingButtonPosition(position: IBGPosition): void;
-export function setShouldShowSurveysWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
-export function showWelcomeMessage(welcomeMessageMode: welcomeMessageMode): void;
-export function setWelcomeMessageMode(welcomeMessageMode: welcomeMessageMode): void;
-export function addFileAttachment(
-  filePath: string,
-  fileName: string
-  ): void;
-export function setPrivateView(viewRef: object): void;  
+export function setVideoRecordingFloatingButtonPosition(
+  position: IBGPosition
+): void;
+export function setShouldShowSurveysWelcomeScreen(
+  shouldShowWelcomeScreen: boolean
+): void;
+export function showWelcomeMessage(
+  welcomeMessageMode: welcomeMessageMode
+): void;
+export function setWelcomeMessageMode(
+  welcomeMessageMode: welcomeMessageMode
+): void;
+export function addFileAttachment(filePath: string, fileName: string): void;
+export function setPrivateView(viewRef: object): void;
 export function show(): void;
-export function onReportSubmitHandler(preSendingHandler: (presendingHandler: Report) => void): void;
-export function callPrivateApi(
-  apiName: string,
-  param: any
-  ): void;
+export function onReportSubmitHandler(
+  preSendingHandler: (presendingHandler: Report) => void
+): void;
+export function callPrivateApi(apiName: string, param: any): void;
 export enum invocationEvent {
   none,
   shake,
@@ -347,7 +360,7 @@ export enum strings {
   requestFeatureDescription
 }
 
- interface Report {
+interface Report {
   logDebug(log: string): void;
   logVerbose(log: string): void;
   logWarn(log: string): void;
@@ -361,5 +374,5 @@ export enum strings {
 }
 
 interface Survey {
-  title: string
+  title: string;
 }
