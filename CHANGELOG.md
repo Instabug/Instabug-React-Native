@@ -1,3 +1,8 @@
+## v9.0.6 (2020-01-29)
+
+* Bump iOS Native SDK to v9.0.6
+
+
 ## v9.0.5 (2020-01-27)
 
 * Bump iOS Native SDK to v9.0.4
