@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    9.0.5
+ Version:    9.0.6
  */
 
 #import <UIKit/UIKit.h>
