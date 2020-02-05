@@ -36,16 +36,16 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
     gem install xcodeproj
     ```
 
-3. If you are using React Native < 0.60 link the bridging files in the `instabug-reactnative` package:
-
-    ```bash
-    react-native link instabug-reactnative
-    ```
-
-    If you are on React Native > 0.60, then simply run the command:
+3.  **For React Native >= 0.60**, simply run the command:
 
     ```bash
     react-native add-instabug
+    ```
+    
+    **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
+
+    ```bash
+    react-native link instabug-reactnative
     ```
 
 ### Using CocoaPods (iOS only)
@@ -105,24 +105,7 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
 3. Open `android/app/src/main/java/[...]/MainApplication.java` (You can skip this step if you are building an iOS app only)
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
-    * React Native < 0.60  
-   You should find the `getPackages()` method looks like the following snippet. You just need to add your Android app token. You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
-   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number.
-
-        ```javascript
-        @Override
-        protected List<ReactPackage> getPackages() {
-        	return Arrays.<ReactPackage>asList(
-        	new MainReactPackage(),
-        	new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
-                                    .setInvocationEvent("shake")
-                                    .setPrimaryColor("#1D82DC")
-                                    .setFloatingEdge("left")
-                                    .setFloatingButtonOffsetFromTop(250)
-                                    .build()
-        }
-        ```
-    * React Native > 0.60   
+    * **For React Native >= 0.60**   
    Add the above integration code to the `onCreate()` method instead: 
    
        ```java
@@ -139,6 +122,23 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
             SoLoader.init(this, /* native exopackage */ false);
           }
       ```
+    * **For React Native < 0.60**  
+   You should find the `getPackages()` method looks like the following snippet. You just need to add your Android app token. You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
+   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number.
+
+        ```javascript
+        @Override
+        protected List<ReactPackage> getPackages() {
+        	return Arrays.<ReactPackage>asList(
+        	new MainReactPackage(),
+        	new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
+                                    .setInvocationEvent("shake")
+                                    .setPrimaryColor("#1D82DC")
+                                    .setFloatingEdge("left")
+                                    .setFloatingButtonOffsetFromTop(250)
+                                    .build()
+        }
+        ```
   
     You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
