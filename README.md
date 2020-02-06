@@ -106,11 +106,12 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
     * **For React Native >= 0.60**   
-   Add the above integration code to the `onCreate()` method instead: 
-   
+   Add the integration code to the `onCreate()` method like the below snippet. 
+
        ```java
-       @Override
-          public void onCreate() {
+        @Override
+        public void onCreate() {
+        	super.onCreate();
             new RNInstabugReactnativePackage
                     .Builder("APP_TOKEN", MainApplication.this)
                     .setInvocationEvent("shake")
@@ -118,13 +119,10 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
                     .setFloatingEdge("left")
                     .setFloatingButtonOffsetFromTop(250)
                     .build();
-            super.onCreate();
-            SoLoader.init(this, /* native exopackage */ false);
-          }
+        }
       ```
     * **For React Native < 0.60**  
-   You should find the `getPackages()` method looks like the following snippet. You just need to add your Android app token. You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any colour of your choice.
-   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number.
+   You should find the `getPackages()` method looks like the below snippet. You just need to add your Android app token. 
 
         ```javascript
         @Override
@@ -139,7 +137,9 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
                                     .build()
         }
         ```
-  
+    * You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any color of your choice.
+   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
+   
     You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
 4. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
