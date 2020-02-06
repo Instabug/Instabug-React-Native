@@ -111,14 +111,14 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
        ```java
         @Override
         public void onCreate() {
-        	super.onCreate();
+            super.onCreate();
             new RNInstabugReactnativePackage
-                    .Builder("APP_TOKEN", MainApplication.this)
-                    .setInvocationEvent("shake")
-                    .setPrimaryColor("#1D82DC")
-                    .setFloatingEdge("left")
-                    .setFloatingButtonOffsetFromTop(250)
-                    .build();
+                .Builder("APP_TOKEN", MainApplication.this)
+                .setInvocationEvent("shake")
+                .setPrimaryColor("#1D82DC")
+                .setFloatingEdge("left")
+                .setFloatingButtonOffsetFromTop(250)
+                .build();
         }
       ```
     * **For React Native < 0.60**  
@@ -127,14 +127,15 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
         ```javascript
         @Override
         protected List<ReactPackage> getPackages() {
-        	return Arrays.<ReactPackage>asList(
-        	new MainReactPackage(),
-        	new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
-                                    .setInvocationEvent("shake")
-                                    .setPrimaryColor("#1D82DC")
-                                    .setFloatingEdge("left")
-                                    .setFloatingButtonOffsetFromTop(250)
-                                    .build()
+            return Arrays.<ReactPackage>asList(
+                new MainReactPackage(),
+                new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
+                .setInvocationEvent("shake")
+                .setPrimaryColor("#1D82DC")
+                .setFloatingEdge("left")
+                .setFloatingButtonOffsetFromTop(250)
+                .build()
+            );
         }
         ```
     * You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any color of your choice.
