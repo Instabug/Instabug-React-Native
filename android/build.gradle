@@ -17,6 +17,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        multiDexEnabled true
     }
     lintOptions {
        warning 'InvalidPackage'
@@ -26,6 +27,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.react:react-native:+'
     api('com.instabug.library:instabug:9.0.5.0') {
         exclude group: 'com.android.support:appcompat-v7'
