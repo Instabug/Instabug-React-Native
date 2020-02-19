@@ -448,6 +448,11 @@ RCT_EXPORT_METHOD(show) {
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
               
+              @"sdkDebugLogsLevelVerbose": @(IBGSDKDebugLogsLevelVerbose),
+              @"sdkDebugLogsLevelDebug": @(IBGSDKDebugLogsLevelDebug),
+              @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
+              @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
+
               
               @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
               @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),

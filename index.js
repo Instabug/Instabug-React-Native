@@ -812,6 +812,19 @@ const InstabugModule = {
   },
 
   /**
+   * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
+   * and only affect the logs used to debug the SDK itself.
+   * @readonly
+   * @enum {number}
+   */
+  sdkDebugLogsLevel: {
+    sdkDebugLogsLevelVerbose: Instabug.sdkDebugLogsLevelVerbose,
+    sdkDebugLogsLevelDebug: Instabug.sdkDebugLogsLevelDebug,
+    sdkDebugLogsLevelError: Instabug.sdkDebugLogsLevelError,
+    sdkDebugLogsLevelNone: Instabug.sdkDebugLogsLevelNone,
+  },
+
+  /**
    *  The extended bug report mode
    * @readonly
    * @enum {number}

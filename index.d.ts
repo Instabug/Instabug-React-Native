@@ -248,6 +248,12 @@ export enum invocationOptions {
   invocationOptionsCommentFieldRequired,
   invocationOptionsDisablePostSendingDialog
 }
+export enum sdkDebugLogsLevel {
+  sdkDebugLogsLevelVerbose,
+  sdkDebugLogsLevelDebug,
+  sdkDebugLogsLevelError,
+  sdkDebugLogsLevelNone,
+}
 export enum extendedBugReportMode {
   enabledWithRequiredFields,
   enabledWithOptionalFields,
