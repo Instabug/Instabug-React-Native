@@ -202,6 +202,10 @@ RCT_EXPORT_METHOD(submitReport) {
     currentReport = nil;
 }
 
+RCT_EXPORT_METHOD(setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
+    [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
+}
+
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
@@ -453,7 +457,7 @@ RCT_EXPORT_METHOD(show) {
               @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
               @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
 
-              
+
               @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
               @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
               @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),

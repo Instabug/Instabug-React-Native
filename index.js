@@ -144,6 +144,16 @@ const InstabugModule = {
     Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
   },
 
+  /**
+   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug 
+   * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
+   * @param {sdkDebugLogsLevel} sdkDebugLogsLevel - The verbosity level of logs.
+   *
+   */
+  setSdkDebugLogsLevel(sdkDebugLogsLevel) {
+    Instabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
+  },
+
   /* istanbul ignore next */
   /**
    * @deprecated use {@link Replies.getUnreadRepliesCount}
