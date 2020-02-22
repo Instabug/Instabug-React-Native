@@ -207,6 +207,15 @@
   OCMVerify([mock setReproStepsMode:reproStepsMode]);
 }
 
+- (void)testSetSdkDebugLogsLevel {
+  id mock = OCMClassMock([Instabug class]);
+  IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelVerbose;
+  
+  OCMStub([mock setSdkDebugLogsLevel:sdkDebugLogsLevel]);
+  [self.instabugBridge setSdkDebugLogsLevel:sdkDebugLogsLevel];
+  OCMVerify([mock setSdkDebugLogsLevel:sdkDebugLogsLevel]);
+}
+
 - (void)testSetUserAttribute {
   id mock = OCMClassMock([Instabug class]);
   NSString *key = @"key";

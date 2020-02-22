@@ -146,6 +146,9 @@ export function setDidSelectPromptOptionHandler(
 export function setSessionProfilerEnabled(
   sessionProfilerEnabled: boolean
 ): void;
+export function setSdkDebugLogsLevel(
+  sdkDebugLogsLevel: sdkDebugLogsLevel
+): void;
 export function getUnreadMessagesCount(
   messageCountCallback: (count: number) => void
 ): void;
@@ -247,6 +250,12 @@ export enum invocationOptions {
   invocationOptionsEmailFieldOptional,
   invocationOptionsCommentFieldRequired,
   invocationOptionsDisablePostSendingDialog
+}
+export enum sdkDebugLogsLevel {
+  sdkDebugLogsLevelVerbose,
+  sdkDebugLogsLevelDebug,
+  sdkDebugLogsLevelError,
+  sdkDebugLogsLevelNone,
 }
 export enum extendedBugReportMode {
   enabledWithRequiredFields,

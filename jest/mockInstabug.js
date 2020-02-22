@@ -26,6 +26,7 @@ jest.mock('NativeModules', () => {
             logDebug: jest.fn(),
             clearLogs: jest.fn(),
             setReproStepsMode: jest.fn(),
+            setSdkDebugLogsLevel: jest.fn(),
             setUserAttribute: jest.fn(),
             getUserAttribute: jest.fn((_, cb) => cb('24')),
             removeUserAttribute: jest.fn(),

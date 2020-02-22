@@ -47,6 +47,13 @@ RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
                                       @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots)
                                       }), IBGUserStepsModeEnabledWithNoScreenshots, integerValue)
 
+RCT_ENUM_CONVERTER(IBGSDKDebugLogsLevel, (@{
+                                      @"sdkDebugLogsLevelVerbose": @(IBGSDKDebugLogsLevelVerbose),
+                                      @"sdkDebugLogsLevelDebug": @(IBGSDKDebugLogsLevelDebug),
+                                      @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
+                                      @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
+                                      }), IBGSDKDebugLogsLevelError, integerValue)
+
 RCT_ENUM_CONVERTER(IBGExtendedBugReportMode, (@{
                                       @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),
                                       @"enabledWithOptionalFields": @(IBGExtendedBugReportModeEnabledWithOptionalFields),
