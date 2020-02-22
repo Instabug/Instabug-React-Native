@@ -2234,7 +2234,11 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         final View[] arrayOfViews = new View[ids.size()];
                         for (int i = 0; i < ids.size(); i++) {
                             int viewId = (int) ids.getDouble(i);
-                            arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
+                            try {
+                                arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         Instabug.setViewsAsPrivate(arrayOfViews);
                     }
