@@ -135,7 +135,6 @@
 				A0EF1FBF0176E13B30EA2D29 /* libPods-InstabugSample.a */,
 				7A03A15E2685C1231729CA8B /* libPods-InstabugSampleTests.a */,
 				736C2E3EDEA69CCD5B8A53AE /* Instabug.framework */,
-				FA49CB8462F384E9EDD7DDFD /* Instabug.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -220,7 +219,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				21BA34F4E1FA153B4E4FB519 /* Upload Sourcemap */,
 				A4F6B49E8609FD1652D0F43E /* [CP] Embed Pods Frameworks */,
-				05789DEC4A38F7C08B90F11D /* Upload Sourcemap */,
 			);
 			buildRules = (
 			);
@@ -301,25 +299,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		05789DEC4A38F7C08B90F11D /* Upload Sourcemap */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Sourcemap";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "bash \"../node_modules/instabug-reactnative/ios/upload_sourcemap.sh\"\n";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		21BA34F4E1FA153B4E4FB519 /* Upload Sourcemap */ = {
 			isa = PBXShellScriptBuildPhase;
