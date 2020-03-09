@@ -1,5 +1,8 @@
 framework module Instabug {
     umbrella header "Instabug.h"
+
+    header "Instabug-Swift.h"
+    header "InstabugStatic-Swift.h"
     
     export *
     module * { export * }

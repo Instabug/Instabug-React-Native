@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    9.0.6
+ Version:    9.0.11
  */
 
 #import <Foundation/Foundation.h>
@@ -68,7 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
  @brief Sets a block of code to be executed before sending each report.
  
  @discussion This block is executed in the background before sending each report. Could be used for attaching logs
- and extra data to reports.
+ and extra data to reports. In case of a crash report, the block will be executed before sending the crash which is on the
+ following session, not while the app is crashing.
  
  @param willSendReportHandler A block of code that gets executed before sending each bug report.
  */
