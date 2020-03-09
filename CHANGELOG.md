@@ -1,3 +1,8 @@
+## v9.0.7 (2020-03-10)
+
+* Bump iOS Native SDK to v9.0.11
+* Enables MultiDex for android
+
 ## v9.0.6 (2020-01-29)
 
 * Bump iOS Native SDK to v9.0.6
