@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    9.0.6
+ Version:    9.0.11
  */
 
 #import <UIKit/UIKit.h>
@@ -145,7 +145,7 @@ extern NSString * const kIBGStringFeatureRequestMyFeaturesText;
 extern NSString * const kIBGSurveyIntroTitleText;
 extern NSString * const kIBGSurveyIntroDescriptionText;
 extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
-extern NSString * const kIBGSurveyIntroDismissButtonText;
+extern NSString * const kIBDismissButtonTitleStringName;
 extern NSString * const kIBGSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouTitleText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouTitleText for Custom surveys.");
 extern NSString * const kIBGSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouDescriptionText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouDescriptionText for Custom surveys.");
 extern NSString * const kIBGStoreRatingThankYouTitleText;
