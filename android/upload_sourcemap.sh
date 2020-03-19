@@ -67,6 +67,6 @@ else
     echo "Instabug: Uploading files..."
     #Upload android sourcemap
     curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files' -F "app_version=${VERSION}"  -F "symbols_file=@./android-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=android"
-    # rm -rf android-sourcemap.json
+    rm -rf android-sourcemap.json
     echo 
 fi
