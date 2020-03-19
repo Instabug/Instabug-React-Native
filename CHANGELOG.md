@@ -1,3 +1,8 @@
+## v9.1.0 (2020-03-19)
+
+* Bump Native SDKs to v9.1
+* Adds automatic sourcemap upload support for Hermes.
+
 ## v9.0.7 (2020-03-10)
 
 * Bump iOS Native SDK to v9.0.12

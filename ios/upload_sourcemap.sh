@@ -1,6 +1,5 @@
 #!/bin/sh
-cd ..
-cd ..
+cd ${PROJECT_DIR}
 cd ..
 if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
 . "$HOME/.nvm/nvm.sh"
@@ -18,6 +17,21 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: err: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
+    if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+        INSTABUG_APP_VERSION_CODE=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleVersion )
+        if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+            echo "CFBundleVersion could not be found, please upload the sourcemap files manually"
+            exit 0
+        fi
+    fi
+    if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
+        INSTABUG_APP_VERSION_NAME=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleShortVersionString )
+        if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
+            echo "CFBundleShortVersionString could not be found, please upload the sourcemap files manually"
+            exit 0
+        fi
+    fi
+    VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Generating sourcemap files..."
     #Generate ios sourcemap
@@ -28,8 +42,7 @@ else
     --sourcemap-output ./ios-sourcemap.json
     echo "Instabug: Uploading files..."
     #Upload ios sourcemap
-    curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files'  -F "symbols_file=@./ios-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=ios" 
+    curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files' -F "app_version=${VERSION}" -F "symbols_file=@./ios-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=ios" 
     rm -rf ios-sourcemap.json
     echo 
 fi
-
