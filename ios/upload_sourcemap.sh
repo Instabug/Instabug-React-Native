@@ -17,21 +17,21 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: err: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
-    if [ ! "${VERSION_CODE}" ] || [ -z "${VERSION_CODE}" ]; then
-        VERSION_CODE=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleVersion )
-        if [ ! "${VERSION_CODE}" ] || [ -z "${VERSION_CODE}" ]; then
+    if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+        INSTABUG_APP_VERSION_CODE=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleVersion )
+        if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
             echo "CFBundleVersion could not be found, please upload the sourcemap files manually"
             exit 0
         fi
     fi
-    if [ ! "${VERSION_NAME}" ] || [ -z "${VERSION_NAME}" ]; then
-        VERSION_NAME=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleShortVersionString )
-        if [ ! "${VERSION_NAME}" ] || [ -z "${VERSION_NAME}" ]; then
+    if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
+        INSTABUG_APP_VERSION_NAME=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleShortVersionString )
+        if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
             echo "CFBundleShortVersionString could not be found, please upload the sourcemap files manually"
             exit 0
         fi
     fi
-    VERSION='{"code":"'"$VERSION_CODE"'","name":"'"$VERSION_NAME"'"}'
+    VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Generating sourcemap files..."
     #Generate ios sourcemap
@@ -46,4 +46,3 @@ else
     rm -rf ios-sourcemap.json
     echo 
 fi
-

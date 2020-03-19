@@ -18,21 +18,21 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: err: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
-    if [ ! "${VERSION_CODE}" ] || [ -z "${VERSION_CODE}" ]; then
-        VERSION_CODE=$(grep -o "versionCode\s\+\d\+" android/app/build.gradle | awk '{ print $2 }')
-        if [ ! "${VERSION_CODE}" ] || [ -z "${VERSION_CODE}" ]; then
+    if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+        INSTABUG_APP_VERSION_CODE=$(grep -o "versionCode\s\+\d\+" android/app/build.gradle | awk '{ print $2 }')
+        if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
             echo "versionCode could not be found, please upload the sourcemap files manually"
             exit 0
         fi
     fi
-    if [ ! "${VERSION_CODE}" ] || [ -z "${VERSION_CODE}" ]; then
-         VERSION_NAME=$(grep "versionName" android/app/build.gradle | awk '{print $2}' | tr -d \''"\')
-        if [ ! "${VERSION_NAME}" ] || [ -z "${VERSION_NAME}" ]; then
+    if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+         INSTABUG_APP_VERSION_NAME=$(grep "versionName" android/app/build.gradle | awk '{print $2}' | tr -d \''"\')
+        if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
         echo "versionName could not be found, please upload the sourcemap files manually"
         exit 0
         fi
     fi
-    VERSION='{"code":"'"$VERSION_CODE"'","name":"'"$VERSION_NAME"'"}'
+    VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Generating sourcemap files..."
     IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle)
