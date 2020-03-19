@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    9.0.12
+ Version:    9.1
  */
 
 
