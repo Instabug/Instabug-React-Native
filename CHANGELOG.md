@@ -1,3 +1,7 @@
+## v9.1.1 (2020-04-06)
+
+* Fixes an issue with the version name while uploading the sourcemap on Android.
+
 ## v9.1.0 (2020-03-19)
 
 * Bump Native SDKs to v9.1

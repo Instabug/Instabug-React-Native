@@ -25,7 +25,7 @@ else
             exit 0
         fi
     fi
-    if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+    if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
          INSTABUG_APP_VERSION_NAME=$(grep "versionName" android/app/build.gradle | awk '{print $2}' | tr -d \''"\')
         if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
         echo "versionName could not be found, please upload the sourcemap files manually"
@@ -34,6 +34,8 @@ else
     fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
+    echo "Instabug: Version Code found" "\""${INSTABUG_APP_VERSION_CODE}"\""
+    echo "Instabug: Version Name found" "\""${INSTABUG_APP_VERSION_NAME}"\""
     echo "Instabug: Generating sourcemap files..."
     IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle)
     if [[ $IS_HERMES == *"true"* ]]; then
