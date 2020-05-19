@@ -46,6 +46,7 @@ describe('Instabug Module', () => {
   const logDebug = sinon.spy(NativeModules.Instabug, 'logDebug');
   const clearLogs = sinon.spy(NativeModules.Instabug, 'clearLogs');
   const setReproStepsMode = sinon.spy(NativeModules.Instabug, 'setReproStepsMode');
+  const setSdkDebugLogsLevel = sinon.spy(NativeModules.Instabug, 'setSdkDebugLogsLevel');
   const setUserAttribute = sinon.spy(NativeModules.Instabug, 'setUserAttribute');
   const getUserAttribute = sinon.spy(NativeModules.Instabug, 'getUserAttribute');
   const removeUserAttribute = sinon.spy(NativeModules.Instabug, 'removeUserAttribute');
@@ -366,6 +367,13 @@ describe('Instabug Module', () => {
 
     expect(setReproStepsMode.calledOnceWithExactly(mode)).toBe(true);
 
+  });
+
+  it('should call the native method setSdkDebugLogsLevel', () => {
+    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
+    Instabug.setSdkDebugLogsLevel(debugLevel);
+
+    expect(setSdkDebugLogsLevel.calledOnceWithExactly(debugLevel)).toBe(true);
   });
 
   it('should call the native method setUserAttribute', () => {

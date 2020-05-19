@@ -212,6 +212,10 @@ RCT_EXPORT_METHOD(submitReport) {
     currentReport = nil;
 }
 
+RCT_EXPORT_METHOD(setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
+    [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
+}
+
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
@@ -469,7 +473,12 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"localeSwedish": @(IBGLocaleSwedish),
               @"localeTurkish": @(IBGLocaleTurkish),
               
-              
+              @"sdkDebugLogsLevelVerbose": @(IBGSDKDebugLogsLevelVerbose),
+              @"sdkDebugLogsLevelDebug": @(IBGSDKDebugLogsLevelDebug),
+              @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
+              @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
+
+
               @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
               @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
               @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
@@ -497,6 +506,7 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"invocationHeader": kIBGInvocationTitleStringName,
               //@"talkToUs": kIBGTalkToUsStringName,
               @"startChats": kIBGAskAQuestionStringName,
+              @"reportQuestion": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,
               @"emailFieldHint": kIBGEmailFieldPlaceholderStringName,

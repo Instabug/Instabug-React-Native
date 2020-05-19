@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
-import com.instabug.library.ActionType;
+import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -59,7 +59,6 @@ final class ArgsRegistry {
         registerCustomTextPlaceHolderKeysArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
         registerInstabugExtendedBugReportModeArgs(ARGS);
-        registerInstabugActionTypesArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
         registerReproStepsModeArgs(ARGS);
@@ -171,6 +170,7 @@ final class ArgsRegistry {
         args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
         args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
         args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
+        args.put("reportQuestion", InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION);
         args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
         args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
         args.put("emailFieldHint", InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT);
@@ -183,8 +183,6 @@ final class ArgsRegistry {
         args.put("conversationsListTitle", InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE);
         args.put("audioRecordingPermissionDenied", InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED);
         args.put("conversationTextFieldHint", InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT);
-//        args.put("bugReportHeader", InstabugCustomTextPlaceHolder.Key.BUG_REPORT_HEADER);
-//        args.put("feedbackReportHeader", InstabugCustomTextPlaceHolder.Key.FEEDBACK_REPORT_HEADER);
         args.put("voiceMessagePressAndHoldToRecord", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         args.put("voiceMessageReleaseToAttach", InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
         args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
@@ -212,13 +210,6 @@ final class ArgsRegistry {
         args.put("disabledExtendedBugReportState", ExtendedBugReport.State.DISABLED);
     }
 
-    static void registerInstabugActionTypesArgs(Map<String, Object> args) {
-        args.put("ActionType.allActions", ActionType.ALL_ACTIONS);
-        args.put("ActionType.reportBug", ActionType.REPORT_BUG);
-        args.put("ActionType.requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
-        args.put("ActionType.addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
-    }
-
     static void registerInstabugVideoRecordingFloatingButtonPositionArgs(Map<String, Object> args) {
         args.put("topRight", InstabugVideoRecordingButtonPosition.TOP_RIGHT);
         args.put("topLeft", InstabugVideoRecordingButtonPosition.TOP_LEFT);
@@ -232,8 +223,8 @@ final class ArgsRegistry {
         args.put("disabled", State.DISABLED);
     }
 
-    static void registerInstabugFeatureRequestsActionTypes(Map<String, Object> args) {
-        args.put("requestNewFeature", com.instabug.featuresrequest.ActionType.REQUEST_NEW_FEATURE);
-        args.put("addCommentToFeature", com.instabug.featuresrequest.ActionType.ADD_COMMENT_TO_FEATURE);
+    static void registerInstabugFeatureRequestsActionTypes(Map< String, Object> args) {
+        args.put("requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
+        args.put("addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
     }
 }

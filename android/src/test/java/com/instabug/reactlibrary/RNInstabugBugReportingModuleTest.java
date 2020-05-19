@@ -11,7 +11,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.OnSdkDismissedCallback;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -257,7 +256,7 @@ public class RNInstabugBugReportingModuleTest {
             bugReportingModule.setOnSDKDismissedHandler(null);
             // then
             WritableMap params = new JavaOnlyMap();
-            params.putString("dismissType", OnSdkDismissedCallback.DismissType.CANCEL.toString());
+            params.putString("dismissType", OnSdkDismissCallback.DismissType.CANCEL.toString());
             params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
             PowerMockito.verifyStatic(VerificationModeFactory.times(1));
             InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_POST_INVOCATION_HANDLER), eq(params));

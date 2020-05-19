@@ -1,8 +1,6 @@
-import {
-  NativeModules,
-} from 'react-native';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
+import { NativeModules, Platform } from "react-native";
+import IBGEventEmitter from "../utils/IBGEventEmitter";
+import InstabugConstants from "../utils/InstabugConstants";
 let { IBGSurveys } = NativeModules;
 
 /**
@@ -91,7 +89,11 @@ export default {
    * presenting the survey's UI.
    */
   setOnShowHandler: function(onShowHandler) {
-    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
+    IBGEventEmitter.addListener(
+      IBGSurveys,
+      InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
+      onShowHandler
+    );
     IBGSurveys.setOnShowHandler(onShowHandler);
   },
 
@@ -115,7 +117,11 @@ export default {
    * the survey's UI is dismissed.
    */
   setOnDismissHandler: function(onDismissHandler) {
-    IBGEventEmitter.addListener(IBGSurveys, InstabugConstants.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
+    IBGEventEmitter.addListener(
+      IBGSurveys,
+      InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
+      onDismissHandler
+    );
     IBGSurveys.setOnDismissHandler(onDismissHandler);
   },
 
@@ -151,5 +157,18 @@ export default {
    */
   setShouldShowWelcomeScreen: function(shouldShowWelcomeScreen) {
     IBGSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
+  },
+
+  /**
+   * iOS Only
+   * @summary Sets url for the published iOS app on AppStore, You can redirect
+   * NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
+   * @param {String} appStoreURL A String url for the published iOS app on AppStore
+   */
+
+  setAppStoreURL: function(appStoreURL) {
+    if (Platform.OS === "ios") {
+      IBGSurveys.setAppStoreURL(appStoreURL);
+    }
   }
 };

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    8.7.1
+ Version:    9.1
  */
 
 #import <Foundation/Foundation.h>
@@ -27,9 +27,9 @@ NS_SWIFT_NAME(Surveys)
 @property (class, atomic, assign) BOOL autoShowingEnabled;
 
 /**
- @brief Returns array of available surveys that match the current device/user.
+ @brief Returns array of available surveys that match the current device/user asynchronous.
  */
-@property (class, atomic, readonly, strong) NSArray<IBGSurvey *> *availableSurveys;
++ (void)availableSurveysWithCompletionHandler:(void (^)(NSArray<IBGSurvey *> * validSurveys))completionHandler;
 
 /**
  @brief Sets a block of code to be executed just before the survey's UI is presented.
@@ -94,5 +94,13 @@ NS_SWIFT_NAME(Surveys)
  */
 + (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
 
+
+/**
+ @brief Sets url for the published iOS app on AppStore.
+ 
+ @discussion You can redirect NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
+ 
+ */
+@property (class, atomic, strong) NSString *appStoreURL;
 
 @end

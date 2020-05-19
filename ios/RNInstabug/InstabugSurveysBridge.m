@@ -43,12 +43,13 @@ RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResp
 }
 
 RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
-    NSArray<IBGSurvey* >* availableSurveys = [IBGSurveys availableSurveys];
-    NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
-    for (IBGSurvey* survey in availableSurveys) {
-        [mappedSurveys addObject:@{@"title": survey.title }];
-    }
-    callback(@[mappedSurveys]);
+    [IBGSurveys availableSurveysWithCompletionHandler:^(NSArray<IBGSurvey *> *availableSurveys) {
+        NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
+        for (IBGSurvey* survey in availableSurveys) {
+            [mappedSurveys addObject:@{@"title": survey.title }];
+        }
+        callback(@[mappedSurveys]);
+    }];
 }
 
 RCT_EXPORT_METHOD(setEnabled:(BOOL)surveysEnabled) {
@@ -89,6 +90,10 @@ RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionC
 
 RCT_EXPORT_METHOD(setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
     IBGSurveys.shouldShowWelcomeScreen = shouldShowWelcomeScreen;
+}
+
+RCT_EXPORT_METHOD(setAppStoreURL:(NSString *)appStoreURL) {
+    IBGSurveys.appStoreURL = appStoreURL;
 }
 
 @synthesize description;

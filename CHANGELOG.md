@@ -1,5 +1,49 @@
-## master
+## v9.1.1 (2020-04-06)
 
+* Fixes an issue with the version name while uploading the sourcemap on Android.
+
+## v9.1.0 (2020-03-19)
+
+* Bump Native SDKs to v9.1
+* Adds automatic sourcemap upload support for Hermes.
+
+## v9.0.7 (2020-03-10)
+
+* Bump iOS Native SDK to v9.0.12
+* Enables MultiDex for android
+
+## v9.0.6 (2020-01-29)
+
+* Bump iOS Native SDK to v9.0.6
+
+
+## v9.0.5 (2020-01-27)
+
+* Bump iOS Native SDK to v9.0.4
+* Bump Android Native SDK to v9.0.5
+
+## v9.0.1 (2019-12-14)
+
+* Updated iOS native SDK to v9.0.3
+
+## v9.0.0 (2019-12-02)
+
+* Updated native SDKs to v9.0
+* Fixes Descrepencies in typescript definition file
+
+## v8.7.3 (2019-11-14)
+
+* Fixes `BugReporting.setViewHierarchyEnabled` crashing on iOS.
+
+## v8.7.2 (2019-11-05)
+
+* Fixes the automatic uploading of the source map files in some cases due to incorrect regex.
+* Add a new string reportQuestion to replace the deprecated string startChats.
+* Updates native SDKs
+
+## v8.7.1 (2019-10-02)
+
+* Updates native iOS SDK to v8.7.2
 * Fixes `Warning: Require cycle` warnings.
 
 
