@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-
+s
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -910,6 +910,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             public void run() {
                 try {
                     Instabug.setDebugEnabled(isDebugEnabled);
+                    Instabug.setReproStepsState(State.ENABLED);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
