@@ -208,7 +208,7 @@ export function enable(): void;
 export function disable(): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
 export function reportJSException(Exception: object): void;
-export function isRunningLive(runningLiveCallBack: () => void): void;
+export function isRunningLive(runningLiveCallBack: (isLive: boolean) => void): void;
 export function setVideoRecordingFloatingButtonPosition(
   position: IBGPosition
 ): void;
