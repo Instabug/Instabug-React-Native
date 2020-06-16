@@ -1,138 +1,183 @@
 'use strict';
 
 const XMLHttpRequest = global.XMLHttpRequest;
-const originalXHROpen = XMLHttpRequest.prototype.open;
-const originalXHRSend = XMLHttpRequest.prototype.send;
-const originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+const _xhrDefaultOpen = XMLHttpRequest.prototype.open;
+const _xhrDefaultSend = XMLHttpRequest.prototype.send;
+const _xhrDefaultSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
 
-var onProgressCallback;
-var onDoneCallback;
-var isInterceptorEnabled = false;
-var network;
+let onProgressCallback;
+let onDoneCallback;
+let isInterceptorEnabled = false;
+let loggedNetworkData;
 
-const _reset = () => {
-  network = {
-    url: '',
-    requestBody: '',
-    requestHeaders: {},
+const enableInterception = () => {
+  isInterceptorEnabled = true;
+
+  XMLHttpRequest.prototype.open = _xhrInterceptorOpen;
+  XMLHttpRequest.prototype.send = _xhrInterceptorSend;
+  XMLHttpRequest.prototype.setRequestHeader = _xhrInterceptorSetRequestHeader;
+};
+
+const disableInterception = () => {
+  isInterceptorEnabled = false;
+  onDoneCallback = null;
+  onProgressCallback = null;
+
+  XMLHttpRequest.prototype.open = _xhrDefaultOpen;
+  XMLHttpRequest.prototype.send = _xhrDefaultSend;
+  XMLHttpRequest.prototype.setRequestHeader = _xhrDefaultSetRequestHeader;
+};
+
+const setOnDoneCallback = (callback) => {
+  onDoneCallback = callback;
+};
+
+const setOnProgressCallback = (callback) => {
+  onProgressCallback = callback;
+};
+
+function _xhrInterceptorOpen(method, url) {
+  _resetLoggedNetworkData();
+  _logRequestMethod(loggedNetworkData, { method });
+  _logRequestUrl(loggedNetworkData, { url });
+
+  _xhrDefaultOpen.apply(this, arguments);
+}
+
+function _xhrInterceptorSetRequestHeader(header, value) {
+  _logRequestHeader(loggedNetworkData, { header, value });
+
+  _xhrDefaultSetRequestHeader.apply(this, arguments);
+}
+
+function _xhrInterceptorSend(data) {
+  const loggedNetworkDataClone = JSON.parse(JSON.stringify(loggedNetworkData));
+  _logRequestBody(loggedNetworkDataClone, data);
+  
+  if (this.addEventListener) {
+    this.addEventListener(
+      'readystatechange',
+      async () => {
+        if (!isInterceptorEnabled) {
+          return;
+        }
+
+        if (this.readyState === this.HEADERS_RECEIVED) {
+          _logResponseHeaders(loggedNetworkDataClone, this);
+        } else if (this.readyState === this.DONE) {
+          _logDuration(loggedNetworkDataClone);
+          _logResponseCode(loggedNetworkDataClone, this);
+          _logResponseBody(loggedNetworkDataClone, this);
+
+          if (onDoneCallback) {
+            onDoneCallback(loggedNetworkDataClone);
+          }
+        }
+      }
+    );
+
+    const downloadUploadProgressCallback = event => {
+      if (!isInterceptorEnabled) {
+        return;
+      }
+      // check if will be able to compute progress
+      if (event.lengthComputable && onProgressCallback) {
+        let totalBytesSent = event.loaded;
+        let totalBytesExpectedToSend = event.total - event.loaded;
+        onProgressCallback(totalBytesSent, totalBytesExpectedToSend);
+      }
+    };
+    this.addEventListener('progress', downloadUploadProgressCallback);
+    this.upload.addEventListener('progress', downloadUploadProgressCallback);
+  }
+
+  _logStartTime(loggedNetworkDataClone);
+
+  _xhrDefaultSend.apply(this, arguments);
+}
+
+function _logRequestMethod(loggedNetworkData, { method }) {
+  loggedNetworkData.method = method;
+}
+
+function _logRequestUrl(loggedNetworkData, { url }) {
+  loggedNetworkData.url = url;
+}
+
+function _logRequestHeader(loggedNetworkData, { header, value }) {
+  if (loggedNetworkData.requestHeaders === '') {
+    loggedNetworkData.requestHeaders = {};
+  }
+  loggedNetworkData.requestHeaders[header] = value;
+}
+
+function _logRequestBody(loggedNetworkDataClone, data) {
+  loggedNetworkDataClone.requestBody = data ? data : '';
+}
+
+function _logResponseHeaders(loggedNetworkDataClone, interceptedRequest) {
+  const contentTypeString = interceptedRequest.getResponseHeader('Content-Type');
+  if (contentTypeString) {
+    loggedNetworkDataClone.contentType = contentTypeString.split(';')[0];
+  }
+    
+  if (interceptedRequest.getAllResponseHeaders()) {
+    const responseHeaders = interceptedRequest.getAllResponseHeaders().split('\r\n');
+    const responseHeadersDictionary = {};
+    responseHeaders.forEach(element => {
+      const key = element.split(':')[0];
+      const value = element.split(':')[1];
+      responseHeadersDictionary[key] = value;
+    });
+    loggedNetworkDataClone.responseHeaders = responseHeadersDictionary;
+  }
+}
+
+function _logStartTime(loggedNetworkDataClone) {
+  loggedNetworkDataClone.start = Date.now();
+}
+
+function _logDuration(loggedNetworkDataClone) {
+  loggedNetworkDataClone.duration = (Date.now() - loggedNetworkDataClone.start);
+}
+
+function _logResponseCode(loggedNetworkDataClone, interceptedRequest) {
+  loggedNetworkDataClone.responseCode = interceptedRequest.status ? interceptedRequest.status : 0;
+}
+
+function _logResponseBody (loggedNetworkDataClone, interceptedRequest) {
+  if (interceptedRequest.response) {
+    if (interceptedRequest.responseType === 'blob') {
+      const responseBody = await (new Response(interceptedRequest.response)).text();
+      loggedNetworkDataClone.responseBody = responseBody;
+    } else if (interceptedRequest.responseType === 'text') {
+      loggedNetworkDataClone.responseBody = interceptedRequest.response;
+    }
+  }
+
+  if (interceptedRequest._hasError) {
+    loggedNetworkDataClone.requestBody = interceptedRequest._response;
+  }
+}
+
+function _resetLoggedNetworkData() {
+  loggedNetworkData = {
     method: '',
+    url: '',
+    requestHeaders: {},
+    requestBody: '',
+    responseHeaders: {},
     responseBody: '',
     responseCode: 0,
-    responseHeaders: {},
     contentType: '',
     duration: 0,
     start: 0
   };
 }
 
-const XHRInterceptor = {
-  setOnDoneCallback(callback) {
-    onDoneCallback = callback;
-  },
-  setOnProgressCallback(callback) {
-    onProgressCallback = callback;
-  },
-  enableInterception() {
-    XMLHttpRequest.prototype.open = function(method, url) {
-      _reset();
-      network.url = url;
-      network.method = method;
-      originalXHROpen.apply(this, arguments);
-    };
-
-    XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
-      if (network.requestHeaders === '') {
-        network.requestHeaders = {};
-      }
-      network.requestHeaders[header] = value;
-      originalXHRSetRequestHeader.apply(this, arguments);
-    };
-
-    XMLHttpRequest.prototype.send = function(data) {
-      var cloneNetwork = JSON.parse(JSON.stringify(network));
-      cloneNetwork.requestBody = data ? data : '';
-      
-      if (this.addEventListener) {
-        this.addEventListener(
-          'readystatechange',
-          async () => {
-            if (!isInterceptorEnabled) {
-              return;
-            }
-            if (this.readyState === this.HEADERS_RECEIVED) {
-              const contentTypeString = this.getResponseHeader('Content-Type');
-              if (contentTypeString) {
-                cloneNetwork.contentType = contentTypeString.split(';')[0];
-              }
-                
-              if (this.getAllResponseHeaders()) {
-                const responseHeaders = this.getAllResponseHeaders().split('\r\n');
-                const responseHeadersDictionary = {};
-                responseHeaders.forEach(element => {
-                  const key = element.split(':')[0];
-                  const value = element.split(':')[1];
-                  responseHeadersDictionary[key] = value;
-                });
-                cloneNetwork.responseHeaders = responseHeadersDictionary;
-              }
-            }
-            if (this.readyState === this.DONE) {
-              cloneNetwork.duration = (Date.now() - cloneNetwork.start);
-              if (this.status == null) {
-                cloneNetwork.responseCode = 0;
-              } else {
-                cloneNetwork.responseCode = this.status;
-              }
-              
-              if (this.response) {
-                if (this.responseType === 'blob') {
-                  var responseText = await (new Response(this.response)).text();
-                  cloneNetwork.responseBody = responseText;
-                } else if (this.responseType === 'text') {
-                  cloneNetwork.responseBody = this.response;
-                }
-              }
-
-              if (this._hasError) {
-                cloneNetwork.requestBody = this._response;
-              }
-              if (onDoneCallback) {
-                onDoneCallback(cloneNetwork);
-              }
-            }
-          },
-          false
-        );
-
-        const downloadUploadProgressCallback = event => {
-          if (!isInterceptorEnabled) {
-            return;
-          }
-          // check if will be able to compute progress
-          if (event.lengthComputable && onProgressCallback) {
-            let totalBytesSent = event.loaded;
-            let totalBytesExpectedToSend = event.total - event.loaded;
-            onProgressCallback(totalBytesSent, totalBytesExpectedToSend);
-          }
-        };
-        this.addEventListener('progress', downloadUploadProgressCallback);
-        this.upload.addEventListener('progress', downloadUploadProgressCallback);
-      }
-
-      cloneNetwork.start = Date.now();
-      originalXHRSend.apply(this, arguments);
-    };
-    isInterceptorEnabled = true;
-  },
-
-  disableInterception() {
-    isInterceptorEnabled = false;
-    XMLHttpRequest.prototype.send = originalXHRSend;
-    XMLHttpRequest.prototype.open = originalXHROpen;
-    XMLHttpRequest.prototype.setRequestHeader = originalXHRSetRequestHeader;
-    onDoneCallback = null;
-    onProgressCallback = null;
-  }
+module.exports = {
+  enableInterception,
+  disableInterception,
+  setOnDoneCallback,
+  setOnProgressCallback,
 };
-
-module.exports = XHRInterceptor;
