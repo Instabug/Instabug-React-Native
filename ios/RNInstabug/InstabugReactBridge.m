@@ -38,14 +38,13 @@ RCT_EXPORT_MODULE(Instabug)
 }
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"setCrossPlatform:");
+    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        BOOL flag = true;
-        NSNumber *enableCross = [NSNumber numberWithBool:flag];
+        NSInteger *platformID = IBGPlatformReactNative;
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
         [inv setSelector:setPrivateApiSEL];
         [inv setTarget:[Instabug class]];
-        [inv setArgument:&(enableCross) atIndex:2];
+        [inv setArgument:&(platformID) atIndex:2];
         [inv invoke];
     }
     IBGInvocationEvent invocationEvents = 0;
