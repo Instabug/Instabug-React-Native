@@ -1683,7 +1683,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
+ /**
      * Sets whether user steps tracking is visual, non visual or disabled.
      *
      * @param reproStepsMode A string to set user steps tracking to be
@@ -1695,12 +1695,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    State reproStepsState = ArgsRegistry.getDeserializedValue(
-                            reproStepsMode, State.class);
-                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setRnReproStepsState", State.class);
-                    if (method != null) {
-                        method.invoke(null , reproStepsState);
-                    }
+                    Instabug.setReproStepsState( ArgsRegistry.getDeserializedValue(reproStepsMode, State.class));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

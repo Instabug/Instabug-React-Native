@@ -100,22 +100,17 @@ public class RNInstabugReactnativePackage implements ReactPackage {
     }
 
     private void setCrossPlatform() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCrossPlatform", int.class);
-                    if (method != null) {
-                        Log.i("IB-CP-Bridge", "invoking setCrossPlatform with platform: " + Platform.RN);
-                        method.invoke(null, Platform.RN);
-                    } else {
-                        Log.e("IB-CP-Bridge", "setCrossPlatform was not found by reflection");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCrossPlatform", int.class);
+            if (method != null) {
+                Log.i("IB-CP-Bridge", "invoking setCrossPlatform with platform: " + Platform.RN);
+                method.invoke(null, Platform.RN);
+            } else {
+                Log.e("IB-CP-Bridge", "setCrossPlatform was not found by reflection");
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setBaseUrlForDeprecationLogs() {
