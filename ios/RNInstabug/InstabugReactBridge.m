@@ -57,13 +57,13 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
-    SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
-    if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
-        [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
-    }
+    // SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
+    // if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
+    //     [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
+    // }
     
     IBGNetworkLogger.enabled = YES;
-    [self setBaseUrlForDeprecationLogs];
+    // [self setBaseUrlForDeprecationLogs];
     
 }
 
