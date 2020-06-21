@@ -793,7 +793,7 @@ const InstabugModule = {
       const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
       if (prevScreen !== currentScreen) {
-        if (_currentScreen != null) {
+        if (_currentScreen != null && _currentScreen != firstScreen) {
           Instabug.reportScreenChange(_currentScreen);
           _currentScreen = null;
         }
