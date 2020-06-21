@@ -38,10 +38,9 @@ RCT_EXPORT_MODULE(Instabug)
 }
 
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"setCrossPlatform:");
+     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        BOOL flag = true;
-        NSNumber *enableCross = [NSNumber numberWithBool:flag];
+        NSInteger *enableCross = IBGPlatformReactNative;
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
         [inv setSelector:setPrivateApiSEL];
         [inv setTarget:[Instabug class]];
@@ -58,13 +57,8 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
-    SEL setCrossPlatformSEL = NSSelectorFromString(@"setCrossPlatform:");
-    if ([[Instabug class] respondsToSelector:setCrossPlatformSEL]) {
-        [[Instabug class] performSelector:setCrossPlatformSEL withObject:@(true)];
-    }
-    
     IBGNetworkLogger.enabled = YES;
-    [self setBaseUrlForDeprecationLogs];
+    //[self setBaseUrlForDeprecationLogs];
     
 }
 
@@ -397,7 +391,7 @@ RCT_EXPORT_METHOD(show) {
 }
 
 RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"addReproStepForView:");
+    SEL setPrivateApiSEL = NSSelectorFromString(@"logViewDidAppearEvent:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
         [inv setSelector:setPrivateApiSEL];
