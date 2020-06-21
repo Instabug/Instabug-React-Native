@@ -210,12 +210,13 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 SWIFT_CLASS("_TtC14InstabugStatic15IBGCrashManager")
 @interface IBGCrashManager : NSObject
-@property (nonatomic, copy) NSArray<IBGOperation *> * _Nonnull initializationOperations;
+@property (nonatomic, copy) NSArray<IBGOperation *> * _Nonnull pendingCrashesOperations;
 @property (nonatomic, readonly) BOOL hasPendingCrashReport;
 + (IBGCrashManager * _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
 @property (nonatomic) BOOL shouldRunMigration;
 @property (nonatomic, strong) IBGPLCrashReporter * _Nullable crashReporter;
 - (nonnull instancetype)initWithDeviceState:(IBGDeviceState * _Nonnull)deviceState OBJC_DESIGNATED_INITIALIZER;
+- (void)startCrashReportingListeners;
 - (void)reportExceptionWith:(NSException * _Nonnull)exception;
 - (void)reportErrorWith:(NSError * _Nonnull)error;
 - (void)reportCrashWithStackTrace:(NSString * _Nonnull)stackTrace handled:(BOOL)handled;
@@ -446,12 +447,13 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 SWIFT_CLASS("_TtC14InstabugStatic15IBGCrashManager")
 @interface IBGCrashManager : NSObject
-@property (nonatomic, copy) NSArray<IBGOperation *> * _Nonnull initializationOperations;
+@property (nonatomic, copy) NSArray<IBGOperation *> * _Nonnull pendingCrashesOperations;
 @property (nonatomic, readonly) BOOL hasPendingCrashReport;
 + (IBGCrashManager * _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
 @property (nonatomic) BOOL shouldRunMigration;
 @property (nonatomic, strong) IBGPLCrashReporter * _Nullable crashReporter;
 - (nonnull instancetype)initWithDeviceState:(IBGDeviceState * _Nonnull)deviceState OBJC_DESIGNATED_INITIALIZER;
+- (void)startCrashReportingListeners;
 - (void)reportExceptionWith:(NSException * _Nonnull)exception;
 - (void)reportErrorWith:(NSError * _Nonnull)error;
 - (void)reportCrashWithStackTrace:(NSString * _Nonnull)stackTrace handled:(BOOL)handled;
