@@ -1,3 +1,7 @@
+## master
+
+* Fixes an issue that caused XHR Response not to be logged.
+
 ## v9.1.1 (2020-04-06)
 
 * Fixes an issue with the version name while uploading the sourcemap on Android.
