@@ -40,11 +40,11 @@ RCT_EXPORT_MODULE(Instabug)
 RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
      SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        NSInteger *enableCross = IBGPlatformReactNative;
+        NSInteger *platform = IBGPlatformReactNative;
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
         [inv setSelector:setPrivateApiSEL];
         [inv setTarget:[Instabug class]];
-        [inv setArgument:&(enableCross) atIndex:2];
+        [inv setArgument:&(platform) atIndex:2];
         [inv invoke];
     }
     IBGInvocationEvent invocationEvents = 0;
@@ -57,9 +57,7 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
-    IBGNetworkLogger.enabled = YES;
-    //[self setBaseUrlForDeprecationLogs];
-    
+    IBGNetworkLogger.enabled = YES;    
 }
 
 RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
