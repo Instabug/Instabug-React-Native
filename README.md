@@ -48,61 +48,21 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
     react-native link instabug-reactnative
     ```
 
-### Using CocoaPods (iOS only)
+## Initializing Instabug
 
-Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for managing dependencies. 
+ To start using Instabug, import it as follows.
 
-1. In Terminal, navigate to your React Native directory and install the `instabug-reactnative` package:
-
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-2. Add the following to your `Podfile`:
-
-    ```ruby
-    pod 'instabug-reactnative', :path => '../node_modules/instabug-reactnative'
-    pod 'React', :path => '../node_modules/react-native', :subspecs => [
-      'Core',
-      'CxxBridge',
-      'DevSupport'
-    ]
-    
-    # Required React native dependencies
-    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-    pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-    pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/GLog.podspec'
-    pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-    
-    # To make sure that archiving works correctly in Xcode, React has to be 
-    # removed from the Pods project as it's already included in the main project.
-    post_install do |installer|
-       installer.pods_project.targets.each do |target|
-          if target.name == "React"
-             target.remove_from_project
-          end
-       end
-    end
-    ```
-
-3. Install `instabug-reactnative`:
-
-    ```bash
-    pod install
-    ```
-
-## Using Instabug
-1. To start using Instabug, import it into your `index.ios.js` and `index.android.js` file.
-
-    ```javascript
-    import Instabug from 'instabug-reactnative';
-    ```
-2. Then initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs (You can skip this step if you are building an Android app only).
+```javascript
+import Instabug from 'instabug-reactnative';
+```
+ * ### iOS
+     Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
     ```javascript
     Instabug.startWithToken('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
-3. Open `android/app/src/main/java/[...]/MainApplication.java` (You can skip this step if you are building an iOS app only)
+ * ### Android
+1. Open `android/app/src/main/java/[...]/MainApplication.java`
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
     * **For React Native >= 0.60**   
@@ -143,7 +103,7 @@ Alternatively, for iOS you can use [CocoaPods](https://cocoapods.org/) for manag
    
     You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
 
-4. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
+2. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
     ```dart
     allprojects {
     	repositories {
