@@ -1,6 +1,7 @@
 package com.instabug.reactlibrary;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -8,6 +9,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.instabug.bug.BugReporting;
 import com.instabug.crash.CrashReporting;
+import com.instabug.library.Platform;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -15,6 +17,7 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import android.graphics.Color;
 
@@ -47,10 +50,10 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         this.parseInvocationEvent(invocationEventValues);
 
         setBaseUrlForDeprecationLogs();
-        
+        setCrossPlatform();
+
         new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
-                .setReproStepsState(State.DISABLED)
                 .build();
         if (crashReportingEnabled)
             CrashReporting.setState(Feature.State.ENABLED);
@@ -93,6 +96,20 @@ public class RNInstabugReactnativePackage implements ReactPackage {
 
         if (invocationEvents.isEmpty()) {
             invocationEvents.add(InstabugInvocationEvent.SHAKE);
+        }
+    }
+
+    private void setCrossPlatform() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCrossPlatform", int.class);
+            if (method != null) {
+                Log.i("IB-CP-Bridge", "invoking setCrossPlatform with platform: " + Platform.RN);
+                method.invoke(null, Platform.RN);
+            } else {
+                Log.e("IB-CP-Bridge", "setCrossPlatform was not found by reflection");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

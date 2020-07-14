@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
 
- Version:    9.1
+ Version:    9.1.6
  */
 
 #import <Foundation/Foundation.h>
@@ -308,6 +308,33 @@ NS_ASSUME_NONNULL_BEGIN
  @param name Event name.
  */
 + (void)logUserEventWithName:(NSString *)name;
+
+/**
+ @brief Disable all method swizzling inside SDK. You need to call this API before startWithToken:
+ 
+ @discussion Disable all method swizzling inside SDK. Disable method swizzling will affect the automatic capturing of user steps and repro steps inside the SDK so you need to use manual APIs to make it work again.
+ 
+ */
++ (void)disableMethodSwizzling;
+
+/**
+@brief Log view did appear event when you disable method swizzling
+
+@discussion Log  view did appear event when you disable method swizzling. This will be reflected in user steps and repro steps.
+ 
+@param viewName Name of view controller.
+*/
++ (void)logViewDidAppearEvent:(NSString *)viewName;
+
+/**
+@brief Log user's touch event when you disable method swizzling
+
+@discussion Log user's touch event when you disable method swizzlin. This will be reflected in user steps and repro steps.
+ 
+@param event An enum to set user's touch event.
+@param viewName View that recieves this event.
+*/
++ (void)logTouchEvent:(IBGUIEventType)event viewName:(NSString *)viewName;
 
 #pragma mark - SDK Debugging
 
