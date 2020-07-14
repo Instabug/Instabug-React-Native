@@ -63,7 +63,6 @@ describe('Instabug Module', () => {
   const hideView = sinon.spy(NativeModules.Instabug, 'hideView');
   const show = sinon.spy(NativeModules.Instabug, 'show');
   const setPreSendingHandler = sinon.spy(NativeModules.Instabug, 'setPreSendingHandler');
-  const submitReport = sinon.spy(NativeModules.Instabug, 'submitReport');
   const callPrivateApi = sinon.spy(NativeModules.Instabug, 'callPrivateApi');
   const sendHandledJSCrash = sinon.spy(NativeModules.Instabug, 'sendHandledJSCrash');
   const sendJSCrash = sinon.spy(NativeModules.Instabug, 'sendJSCrash');
@@ -80,10 +79,9 @@ describe('Instabug Module', () => {
     isRunningLive.resetHistory();
     setFileAttachment.resetHistory();
     hideView.resetHistory();
-    submitReport.resetHistory();
     setPreSendingHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
-    
+
   });
 
   it('should call the native method startWithToken', () => {
@@ -566,9 +564,9 @@ describe('Instabug Module', () => {
     Instabug.onReportSubmitHandler(jest.fn());
     InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
     const isReportHandlerSet = InstabugUtils.isOnReportHandlerSet();
-    
+
     expect(isReportHandlerSet).toBe(true);
-    
+
   });
 
   it('should call the native method setPreSendingHandler with a function', () => {
@@ -602,7 +600,6 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.PRESENDING_HANDLER, report);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.PRESENDING_HANDLER).length).toEqual(1);
-    expect(submitReport.calledOnce).toBe(true);
 
   });
 
@@ -617,7 +614,7 @@ describe('Instabug Module', () => {
       fileAttachments: ['path']
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
-    const jsonObject = {stack: 'error'};
+    const jsonObject = { stack: 'error' };
     const callback = (rep) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
@@ -641,7 +638,7 @@ describe('Instabug Module', () => {
     Instabug.onReportSubmitHandler(jest.fn());
     IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, {});
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(0);
-  
+
   });
 
   it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async (done) => {
@@ -655,7 +652,7 @@ describe('Instabug Module', () => {
       fileAttachments: ['path']
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
-    const jsonObject = {stack: 'error'};
+    const jsonObject = { stack: 'error' };
     const callback = (rep) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
@@ -679,7 +676,7 @@ describe('Instabug Module', () => {
     Instabug.onReportSubmitHandler(jest.fn());
     IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, {});
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(0);
-  
+
   });
 
   it('should invoke the native method callPrivateApi', () => {
