@@ -197,10 +197,6 @@ RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
     }
 }
 
-RCT_EXPORT_METHOD(submitReport) {
-    currentReport = nil;
-}
-
 RCT_EXPORT_METHOD(setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
     [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
 }

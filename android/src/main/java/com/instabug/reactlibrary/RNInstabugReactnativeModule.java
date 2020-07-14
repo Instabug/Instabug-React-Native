@@ -1367,7 +1367,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                Report.OnReportCreatedListener listener = new Report.OnReportCreatedListener() {
+                Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                     @Override
                     public void onReportCreated(Report report) {
                         WritableMap reportParam = Arguments.createMap();
@@ -1379,18 +1379,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
                         currentReport = report;
                     }
-                };
-
-                Method method = getMethod(Instabug.class, "onReportSubmitHandler_Private", Report.OnReportCreatedListener.class);
-                if (method != null) {
-                    try {
-                        method.invoke(null, listener);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
+                });
             }
         });
 
@@ -1467,21 +1456,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void submitReport() {
-        Method method = getMethod(Instabug.class, "setReport", Report.class);
-        if (method != null) {
-            try {
-                method.invoke(null, currentReport);
-                currentReport = null;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    
     @ReactMethod
     public void getReport(Promise promise) {
         try {

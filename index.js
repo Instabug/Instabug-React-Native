@@ -737,7 +737,6 @@ const InstabugModule = {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
       const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
       preSendingHandler(reportObj);
-      Instabug.submitReport();
 
     });
 
