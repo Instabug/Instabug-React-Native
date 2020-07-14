@@ -352,7 +352,8 @@ public class RNInstabugReactnativeModuleTest {
         // then
         for (String key : keysArray) {
             State mode = (State) args.get(key);
-            PowerMockito.verifyPrivate(Instabug.class, VerificationModeFactory.times(1)).invoke("setRnReproStepsState", mode);
+            PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+            Instabug.setReproStepsState(mode);
         }
 
     }
