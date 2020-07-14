@@ -120,11 +120,11 @@ RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         Instabug.willSendReportHandler = ^IBGReport * _Nonnull(IBGReport * _Nonnull report) {
             NSArray *tagsArray = report.tags;
-             NSArray *instabugLogs= report.instabugLogs;
-             NSArray *consoleLogs= report.consoleLogs;
-             NSDictionary *userAttributes= report.userAttributes;
-             NSArray *fileAttachments= report.fileLocations;
-             NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
+            NSArray *instabugLogs= report.instabugLogs;
+            NSArray *consoleLogs= report.consoleLogs;
+            NSDictionary *userAttributes= report.userAttributes;
+            NSArray *fileAttachments= report.fileLocations;
+            NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
             [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
 
             currentReport = report;
