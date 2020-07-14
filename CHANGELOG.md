@@ -1,6 +1,7 @@
 ## master
 
 * Fixes an issue that caused XHR Response not to be logged.
+* Fixes an issue with `onReportSubmitHandler` on iOS
 
 ## v9.1.1 (2020-04-06)
 
