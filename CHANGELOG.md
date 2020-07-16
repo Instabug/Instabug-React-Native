@@ -1,6 +1,8 @@
-## master
+## v9.1.6 (2020-07-16)
 
 * Fixes an issue that caused XHR Response not to be logged.
+* Adds support for Repro Steps. Repro Steps list all of the actions an app user took before reporting a bug or crash, grouped by the screens they visited in your app.
+* Bump Native SDKs to v9.1.6
 
 ## v9.1.1 (2020-04-06)
 
