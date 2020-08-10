@@ -233,6 +233,9 @@ export function onNavigationStateChange(
   currentState: any,
   action: any
 ): void;
+export function componentDidAppearListener(componentObj:
+  { componentId: any, componentName: any, passProps: any }
+): void;
 export enum invocationEvent {
   none,
   shake,
