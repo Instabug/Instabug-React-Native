@@ -1,3 +1,7 @@
+## v9.1.7 (2020-08-10)
+
+* Fixes missing typescript definitions
+
 ## v9.1.6 (2020-07-16)
 
 * Fixes an issue that caused XHR Response not to be logged.
