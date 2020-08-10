@@ -228,6 +228,11 @@ export function onReportSubmitHandler(
   preSendingHandler: (presendingHandler: Report) => void
 ): void;
 export function callPrivateApi(apiName: string, param: any): void;
+export function onNavigationStateChange(
+  prevState: any,
+  currentState: any,
+  action: any
+): void;
 export enum invocationEvent {
   none,
   shake,
