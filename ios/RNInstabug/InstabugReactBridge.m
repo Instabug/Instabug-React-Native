@@ -339,6 +339,14 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     callback(@[[NSNumber numberWithBool:result]]);
 }
 
+RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
+    if(isEnabled) {
+        IBGNetworkLogger.enabled = YES;
+    } else {
+        IBGNetworkLogger.enabled = NO;
+    }
+}
+
 RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     NSString* url = networkData[@"url"];
     NSString* method = networkData[@"method"];

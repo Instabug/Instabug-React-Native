@@ -1,17 +1,18 @@
 import {
-    NativeModules
+    NativeModules,
+    Platform,
 } from 'react-native';
 import Trace from '../models/Trace';
-let { IBGAPM } = NativeModules;
+let { Instabug, IBGAPM } = NativeModules;
+
 
 /**
  * APM
  * @exports APM
  */
 export default {
-
     /**
-     * Enables and disables APM
+     * Enables or disables APM
      * @param {boolean} isEnabled 
      */
     setEnabled(isEnabled) {
@@ -19,21 +20,30 @@ export default {
     },
 
     /**
-  * Enables and disables App Launch
-  * @param {boolean} isEnabled 
-  */
+     * Enables or disables APM App Launch
+     * @param {boolean} isEnabled 
+     */
     setAppLaunchEnabled(isEnabled) {
         IBGAPM.setEnabled(isEnabled);
     },
 
     /**
-    * Enables and disables App Launch
-    * @param {boolean} isEnabled 
-    */
+     * Enables or disables APM Network Metric
+     * @param {boolean} isEnabled 
+     */
+    setNetworkEnabledIOS(isEnabled) {
+        if (Platform.OS === 'ios') {
+            Instabug.setNetworkLoggingEnabled(isEnabled);
+        }
+    },
+
+    /**
+     * Starts a custom trace
+     * @param {string} name 
+     */
     startTrace(name) {
-        const id = Date.now() + "";
+        const id = Date.now() + '';
         IBGAPM.startTrace(name, id);
         return new Trace(id, name);
     },
-
-}
+};

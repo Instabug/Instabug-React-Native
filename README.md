@@ -202,6 +202,23 @@ You can disable Repro Steps using the following API:
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
 
+## APM
+
+### Network metric is enabled by default. To disable it:
+
+* #### In iOS:
+    Call `APM.setNetworkEnabledIOS(false)`
+
+* #### In Android:
+    In build.gradle, set `networkInterceptingEnabled` to `false`
+    ```
+    Instabug {
+        APM {
+            networkInterceptingEnabled false
+        }
+    }
+    ```
+
 ## Update Guide
 ### Updating to versions 8.0-8.4.x
 
