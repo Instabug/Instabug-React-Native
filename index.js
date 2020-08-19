@@ -56,18 +56,18 @@ const InstabugModule = {
    * @param {invocationEvent} invocationEvent The event that invokes
    * the SDK's UI.
    */
-  start: function(token, invocationEvent) {
+  start: function (token, invocationEvent) {
     if (Platform.OS === 'ios') {
       Instabug.startWithToken(token, invocationEvent);
     }
     _isFirstScreen = true;
     _currentScreen = firstScreen;
-    setTimeout(function() {
+    setTimeout(function () {
       if (_currentScreen == firstScreen) {
         Instabug.reportScreenChange(firstScreen);
         _currentScreen = null;
       }
-    }, 1000); 
+    }, 1000);
   },
 
   /**
@@ -190,7 +190,7 @@ const InstabugModule = {
    * notifications are enabled or disabled.
    */
   setPushNotificationsEnabled(isPushNotificationEnabled) {
-      Replies.setPushNotificationsEnabled(isPushNotificationEnabled);
+    Replies.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
   /* istanbul ignore next */
@@ -221,7 +221,7 @@ const InstabugModule = {
    * floating button.
    */
   setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
-      BugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
+    BugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
   },
 
   /**
@@ -758,28 +758,28 @@ const InstabugModule = {
     // handled js crash
     if (Platform.OS === 'android') {
       IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
-          try {
-            let report = await Instabug.getReport();
-            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-            const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-            preSendingHandler(reportObj);
-            Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-          } catch (e) {
-            console.error(e);
-          }
+        try {
+          let report = await Instabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+          preSendingHandler(reportObj);
+          Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+        } catch (e) {
+          console.error(e);
+        }
       });
     }
 
     if (Platform.OS === 'android') {
       IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
-        
-          let report = await Instabug.getReport();
-          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-          preSendingHandler(reportObj);
-          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+
+        let report = await Instabug.getReport();
+        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+        preSendingHandler(reportObj);
+        Instabug.sendJSCrash(JSON.stringify(jsonObject));
       });
-    } 
+    }
 
     Instabug.setPreSendingHandler(preSendingHandler);
   },
@@ -789,25 +789,41 @@ const InstabugModule = {
   },
 
   onNavigationStateChange(prevState, currentState, action) {
-      const currentScreen = InstabugUtils.getActiveRouteName(currentState);
-      const prevScreen = InstabugUtils.getActiveRouteName(prevState);
+    const currentScreen = InstabugUtils.getActiveRouteName(currentState);
+    const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
-      if (prevScreen !== currentScreen) {
-        if (_currentScreen != null && _currentScreen != firstScreen) {
-          Instabug.reportScreenChange(_currentScreen);
+    if (prevScreen !== currentScreen) {
+      if (_currentScreen != null && _currentScreen != firstScreen) {
+        Instabug.reportScreenChange(_currentScreen);
+        _currentScreen = null;
+      }
+      _currentScreen = currentScreen;
+      setTimeout(function () {
+        if (_currentScreen == currentScreen) {
+          Instabug.reportScreenChange(currentScreen);
           _currentScreen = null;
         }
-        _currentScreen = currentScreen;
-        setTimeout(function() { 
-          if (_currentScreen == currentScreen) {
-            Instabug.reportScreenChange(currentScreen);
-            _currentScreen = null;
-          }
-        }, 1000);
-      }
+      }, 1000);
+    }
   },
 
-  componentDidAppearListener({componentId, componentName, passProps}) {
+  onStateChange(state) {
+    const currentScreen = InstabugUtils.getFullRoute(state);
+    console.log(currentScreen);
+    if (_currentScreen != null && _currentScreen != firstScreen) {
+      Instabug.reportScreenChange(_currentScreen);
+      _currentScreen = null;
+    }
+    _currentScreen = currentScreen;
+    setTimeout(function () {
+      if (_currentScreen == currentScreen) {
+        Instabug.reportScreenChange(currentScreen);
+        _currentScreen = null;
+      }
+    }, 1000);
+  },
+
+  componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
       _lastScreen = componentName;
       _isFirstScreen = false;
@@ -817,9 +833,9 @@ const InstabugModule = {
       Instabug.reportScreenChange(componentName);
       _lastScreen = componentName;
     }
-},
+  },
 
-  
+
   /**
    * The event used to invoke the feedback form
    * @readonly
