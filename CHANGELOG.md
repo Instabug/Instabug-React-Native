@@ -1,3 +1,7 @@
+## master
+
+* Support react-navigation v5
+
 ## v9.1.7 (2020-08-10)
 
 * Fixes missing typescript definitions
