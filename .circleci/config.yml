@@ -107,6 +107,7 @@ jobs:
       - checkout:
           path: ~/project
       - run: yarn install
+      - run: sudo rm -rf /home/circleci/.gradle/caches/transforms-2/files-2.1/1ab73da4ffeffa3f2358453a88426740/android.jar 
       - run:
           name: chmod permissions
           command: cd android && chmod +x ./gradlew
