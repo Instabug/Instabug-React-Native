@@ -809,7 +809,6 @@ const InstabugModule = {
 
   onStateChange(state) {
     const currentScreen = InstabugUtils.getFullRoute(state);
-    console.log(currentScreen);
     if (_currentScreen != null && _currentScreen != firstScreen) {
       Instabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
@@ -821,6 +820,10 @@ const InstabugModule = {
         _currentScreen = null;
       }
     }, 1000);
+  },
+
+  reportScreenChange(screenName) {
+    Instabug.reportScreenChange(screenName);
   },
 
   componentDidAppearListener({ componentId, componentName, passProps }) {
