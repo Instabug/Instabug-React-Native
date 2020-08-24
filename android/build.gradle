@@ -57,15 +57,3 @@ tasks.whenTaskAdded { task ->
         task.dependsOn upload_sourcemap 
     }
 }
-
-task cleanAndroidMock(type: Delete) {
-    description = 'Deletes the mockable Android jar'
-
-    delete fileTree("${project.buildDir}/generated") {
-        include 'mockable-android*.jar'
-    }
-}
-
-project.afterEvaluate {
-    tasks['mockableAndroidJar'].dependsOn cleanAndroidMock
-}
