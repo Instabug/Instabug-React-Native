@@ -103,6 +103,7 @@ jobs:
       - image: circleci/android:api-29-node
     environment:
       JVM_OPTS: -Xmx3200m
+      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
     steps:
       - checkout:
           path: ~/project
