@@ -115,7 +115,7 @@ jobs:
           command: cd android && ./gradlew androidDependencies
       - run:
           name: Run UnitTest
-          command: cd android && sudo ./gradlew test
+          command: cd android && sudo ./gradlew test --no-daemon
 
   test_ios:
     macos:
