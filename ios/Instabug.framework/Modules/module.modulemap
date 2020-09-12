@@ -1,9 +1,11 @@
 framework module Instabug {
-    umbrella header "Instabug.h"
+  umbrella header "Instabug.h"
 
+  export *
+  module * { export * }
+}
+
+module Instabug.Swift {
     header "Instabug-Swift.h"
-    header "InstabugStatic-Swift.h"
-    
-    export *
-    module * { export * }
+    requires objc
 }
