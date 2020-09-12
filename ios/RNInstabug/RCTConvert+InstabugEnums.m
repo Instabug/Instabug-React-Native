@@ -69,6 +69,7 @@ RCT_ENUM_CONVERTER(CGRectEdge, (@{
 
 RCT_ENUM_CONVERTER(IBGLocale, (@{
                                  @"localeArabic": @(IBGLocaleArabic),
+                                 @"localeAzerbaijani": @(IBGLocaleAzerbaijani),
                                  @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
                                  @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
                                  @"localeCzech": @(IBGLocaleCzech),

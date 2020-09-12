@@ -14,6 +14,7 @@ import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition
 import com.instabug.library.visualusersteps.State;
 
 import static com.instabug.library.internal.module.InstabugLocale.ARABIC;
+import static com.instabug.library.internal.module.InstabugLocale.AZERBAIJANI;
 import static com.instabug.library.internal.module.InstabugLocale.CZECH;
 import static com.instabug.library.internal.module.InstabugLocale.DANISH;
 import static com.instabug.library.internal.module.InstabugLocale.ENGLISH;
@@ -139,6 +140,7 @@ final class ArgsRegistry {
     }
 
     static void registerLocaleArgs(Map<String, Object> args) {
+        args.put("azerbaijani", new Locale(AZERBAIJANI.getCode(), AZERBAIJANI.getCountry()));
         args.put("chineseTraditional", new Locale(TRADITIONAL_CHINESE.getCode(), TRADITIONAL_CHINESE.getCountry()));
         args.put("portuguesePortugal", new Locale(PORTUGUESE_PORTUGAL.getCode(), PORTUGUESE_PORTUGAL.getCountry()));
         args.put("chineseSimplified", new Locale(SIMPLIFIED_CHINESE.getCode(), SIMPLIFIED_CHINESE.getCountry()));
