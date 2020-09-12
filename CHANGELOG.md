@@ -1,3 +1,7 @@
+## v9.1.8 (2020-09-14)
+
+* Bump Native SDKs to v9.1.7
+
 ## v9.1.7 (2020-08-10)
 
 * Fixes missing typescript definitions
