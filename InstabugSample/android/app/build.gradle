@@ -191,16 +191,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-task cleanAndroidMock(type: Delete) {
-    description = 'Deletes the mockable Android jar'
-
-    delete fileTree("${project.buildDir}/generated") {
-        include 'mockable-android*.jar'
-    }
-}
-
-tasks.whenTaskAdded { task ->
-    task.dependsOn cleanAndroidMock
-}
-
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
