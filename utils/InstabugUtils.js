@@ -30,10 +30,14 @@ export const getActiveRouteName = (navigationState) => {
 }
 
 function getFullRoute(state) {
-  if (!state.routes[state.index].state) {
-    return state.routes[state.index].name;
+  try {
+    if (!state.routes[state.index].state) {
+      return state.routes[state.index].name;
+    }
+    return getFullRoute(state.routes[state.index].state);
+  } catch (e) {
+    return "";
   }
-  return getFullRoute(state.routes[state.index].state);
 }
 
 export const isOnReportHandlerSet = () => {
