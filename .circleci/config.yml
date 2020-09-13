@@ -101,8 +101,8 @@ jobs:
     working_directory: ~/project/InstabugSample
     docker:
       - image: circleci/android:api-28-node
-    # environment:
-    #   JVM_OPTS: -Xmx3200m
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
           path: ~/project
@@ -115,7 +115,7 @@ jobs:
           command: cd android && ./gradlew androidDependencies
       - run:
           name: Run UnitTest
-          command: cd android && sudo ./gradlew test --no-daemon --max-workers 2
+          command: cd android && ./gradlew test
 
   test_ios:
     macos:
