@@ -100,7 +100,7 @@ jobs:
   test_android:
     working_directory: ~/project/InstabugSample
     docker:
-      - image: circleci/android:api-28-node8-alpha
+      - image: circleci/android@sha256:793ae9aa1777ba7fc375109978b307ed03a49be468295a8778d588eba0670e4b
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
