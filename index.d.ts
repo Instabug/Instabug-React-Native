@@ -278,6 +278,7 @@ export enum extendedBugReportMode {
 }
 export enum locale {
   arabic,
+  azerbaijani,
   chineseSimplified,
   chineseTraditional,
   czech,

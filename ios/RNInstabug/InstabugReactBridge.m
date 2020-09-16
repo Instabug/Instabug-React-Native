@@ -442,6 +442,7 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"addCommentToFeature": @(IBGActionAddCommentToFeature),
               
               @"localeArabic": @(IBGLocaleArabic),
+              @"localeAzerbaijani": @(IBGLocaleAzerbaijani),
               @"localeChineseSimplified": @(IBGLocaleChineseSimplified),
               @"localeChineseTraditional": @(IBGLocaleChineseTraditional),
               @"localeCzech": @(IBGLocaleCzech),

@@ -1,6 +1,9 @@
-## master
+
+## v9.1.8 (2020-09-16)
 
 * Adds support for react-navigation v5
+* Adds support for the Azerbaijani locale
+* Bumps Instabug native SDKs to v9.1.7
 * Fixes an issue with `onReportSubmitHandler` on iOS
 
 ## v9.1.7 (2020-08-10)

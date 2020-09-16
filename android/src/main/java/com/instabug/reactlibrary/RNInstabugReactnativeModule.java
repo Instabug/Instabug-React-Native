@@ -104,6 +104,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String FLOATING_BUTTON_EDGE_LEFT = "left";
     //locales
     private final String LOCALE_ARABIC = "arabic";
+    private final String LOCALE_AZERBAIJANI = "azerbaijani";
     private final String LOCALE_CHINESE_SIMPLIFIED = "chineseSimplified";
     private final String LOCALE_CHINESE_TRADITIONAL = "chineseTraditional";
     private final String LOCALE_CZECH = "czech";
@@ -2382,6 +2383,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(BUG_REPORTING_REPORT_TYPE_QUESTION, BUG_REPORTING_REPORT_TYPE_QUESTION);
 
         constants.put("localeArabic", LOCALE_ARABIC);
+        constants.put("localeAzerbaijani", LOCALE_AZERBAIJANI);
         constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
         constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
         constants.put("localeCzech", LOCALE_CZECH);

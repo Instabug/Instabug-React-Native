@@ -916,6 +916,7 @@ const InstabugModule = {
    */
   locale: {
     arabic: Instabug.localeArabic,
+    azerbaijani: Instabug.localeAzerbaijani,
     chineseSimplified: Instabug.localeChineseSimplified,
     chineseTraditional: Instabug.localeChineseTraditional,
     czech: Instabug.localeCzech,
