@@ -47,7 +47,8 @@ jest.mock('NativeModules', () => {
             addListener: jest.fn(),
             getReport: jest.fn(),
             sendHandledJSCrash: jest.fn(),
-            sendJSCrash: jest.fn()
+            sendJSCrash: jest.fn(),
+            reportScreenChange: jest.fn()
 
         },
         IBGBugReporting: {

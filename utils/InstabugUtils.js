@@ -17,6 +17,18 @@ export const setOnReportHandler = (flag) => {
   _isOnReportHandlerSet = flag;
 };
 
+export const getActiveRouteName = (navigationState) => {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index];
+  // dive into nested navigators
+  if (route.routes) {
+    return getActiveRouteName(route);
+  }
+  return route.routeName;
+}
+
 export const isOnReportHandlerSet = () => {
   return _isOnReportHandlerSet;
 };
@@ -66,5 +78,6 @@ export default {
     parseErrorStack,
     captureJsErrors,
     setOnReportHandler,
-    isOnReportHandlerSet
+    isOnReportHandlerSet,
+    getActiveRouteName
 };

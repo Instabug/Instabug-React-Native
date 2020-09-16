@@ -20,6 +20,10 @@ import NetworkLogger from './modules/NetworkLogger';
 InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);
 
+var _currentScreen = null;
+var _lastScreen = null;
+var _isFirstScreen = false;
+const firstScreen = "Initial Screen";
 /**
  * Instabug
  * @exports Instabug
@@ -53,7 +57,17 @@ const InstabugModule = {
    * the SDK's UI.
    */
   start: function(token, invocationEvent) {
-    if (Platform.OS === 'ios') Instabug.startWithToken(token, invocationEvent);
+    if (Platform.OS === 'ios') {
+      Instabug.startWithToken(token, invocationEvent);
+    }
+    _isFirstScreen = true;
+    _currentScreen = firstScreen;
+    setTimeout(function() {
+      if (_currentScreen == firstScreen) {
+        Instabug.reportScreenChange(firstScreen);
+        _currentScreen = null;
+      }
+    }, 1000); 
   },
 
   /**
@@ -773,6 +787,38 @@ const InstabugModule = {
     Instabug.callPrivateApi(apiName, param);
   },
 
+  onNavigationStateChange(prevState, currentState, action) {
+      const currentScreen = InstabugUtils.getActiveRouteName(currentState);
+      const prevScreen = InstabugUtils.getActiveRouteName(prevState);
+
+      if (prevScreen !== currentScreen) {
+        if (_currentScreen != null && _currentScreen != firstScreen) {
+          Instabug.reportScreenChange(_currentScreen);
+          _currentScreen = null;
+        }
+        _currentScreen = currentScreen;
+        setTimeout(function() { 
+          if (_currentScreen == currentScreen) {
+            Instabug.reportScreenChange(currentScreen);
+            _currentScreen = null;
+          }
+        }, 1000);
+      }
+  },
+
+  componentDidAppearListener({componentId, componentName, passProps}) {
+    if (_isFirstScreen) {
+      _lastScreen = componentName;
+      _isFirstScreen = false;
+      return;
+    }
+    if (_lastScreen != componentName) {
+      Instabug.reportScreenChange(componentName);
+      _lastScreen = componentName;
+    }
+},
+
+  
   /**
    * The event used to invoke the feedback form
    * @readonly

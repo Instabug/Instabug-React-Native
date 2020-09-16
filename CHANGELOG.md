@@ -1,7 +1,16 @@
 ## master
 
-* Fixes an issue that caused XHR Response not to be logged.
 * Fixes an issue with `onReportSubmitHandler` on iOS
+
+## v9.1.7 (2020-08-10)
+
+* Fixes missing typescript definitions
+
+## v9.1.6 (2020-07-16)
+
+* Fixes an issue that caused XHR Response not to be logged.
+* Adds support for Repro Steps. Repro Steps list all of the actions an app user took before reporting a bug or crash, grouped by the screens they visited in your app.
+* Bump Native SDKs to v9.1.6
 
 ## v9.1.1 (2020-04-06)
 
@@ -50,6 +59,7 @@
 
 * Updates native iOS SDK to v8.7.2
 * Fixes `Warning: Require cycle` warnings.
+
 
 ## v8.7.0 (2019-09-19)
 

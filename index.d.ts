@@ -114,7 +114,7 @@ export namespace Surveys {
   function showSurvey(surveyToken: string): void;
   function hasRespondedToSurvey(
     surveyToken: string,
-    surveyTokenCallback: () => void
+    surveyTokenCallback: (hasResponded: boolean) => void
   ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
   function setAppStoreURL(appStoreURL: string): void;
@@ -228,6 +228,14 @@ export function onReportSubmitHandler(
   preSendingHandler: (presendingHandler: Report) => void
 ): void;
 export function callPrivateApi(apiName: string, param: any): void;
+export function onNavigationStateChange(
+  prevState: any,
+  currentState: any,
+  action: any
+): void;
+export function componentDidAppearListener(componentObj:
+  { componentId: any, componentName: any, passProps: any }
+): void;
 export enum invocationEvent {
   none,
   shake,

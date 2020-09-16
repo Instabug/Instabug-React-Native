@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    9.1
+ Version:    9.1.6
  */
 
 #import <UIKit/UIKit.h>
@@ -145,7 +145,8 @@ extern NSString * const kIBGStringFeatureRequestMyFeaturesText;
 extern NSString * const kIBGSurveyIntroTitleText;
 extern NSString * const kIBGSurveyIntroDescriptionText;
 extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
-extern NSString * const kIBDismissButtonTitleStringName;
+extern NSString * const kIBDismissButtonTitleStringName DEPRECATED_MSG_ATTRIBUTE("kIBDismissButtonTitleStringName is deprecated. You can use kIBGDismissButtonTitleStringName instead.");
+extern NSString * const kIBGDismissButtonTitleStringName;
 extern NSString * const kIBGSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouTitleText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouTitleText for Custom surveys.");
 extern NSString * const kIBGSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouDescriptionText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouDescriptionText for Custom surveys.");
 extern NSString * const kIBGStoreRatingThankYouTitleText;
@@ -300,7 +301,8 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleSpanish,
     IBGLocaleSwedish,
     IBGLocaleTurkish,
-    IBGLocaleHungarian
+    IBGLocaleHungarian,
+    IBGLocaleFinnish
 };
 
 /**
@@ -401,5 +403,19 @@ typedef NS_ENUM(NSInteger, IBGPlatform) {
     IBGPlatformIOS,
     IBGPlatformReactNative,
     IBGPlatformCordova,
-    IBGPlatformXamarin
+    IBGPlatformXamarin,
+    IBGPlatformUnity,
+    IBGPlatformFlutter
+};
+
+/**
+User's touch event types
+*/
+typedef NS_ENUM(NSInteger, IBGUIEventType) {
+    IBGUIEventTypeTap,
+    IBGUIEventTypeForceTouch,
+    IBGUIEventTypeLongPress,
+    IBGUIEventTypePinch,
+    IBGUIEventTypeSwipe,
+    IBGUIEventTypeScroll
 };
