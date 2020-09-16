@@ -59,23 +59,7 @@ jobs:
       - checkout:
           path: ~/project
 
-      - restore_cache:
-          key: yarn-v1-{{ checksum "InstabugSample/yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
-
       - run: cd InstabugSample && yarn install
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "InstabugSample/yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "InstabugSample/package.json" }}-{{ arch }}
-          paths:
-            - InstabugSample/node_modules
 
       - run:
           name: jest tests
