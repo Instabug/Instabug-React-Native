@@ -114,7 +114,7 @@ export namespace Surveys {
   function showSurvey(surveyToken: string): void;
   function hasRespondedToSurvey(
     surveyToken: string,
-    surveyTokenCallback: () => void
+    surveyTokenCallback: (hasResponded: boolean) => void
   ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
   function setAppStoreURL(appStoreURL: string): void;
