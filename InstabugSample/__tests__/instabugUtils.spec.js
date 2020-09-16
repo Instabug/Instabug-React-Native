@@ -3,7 +3,6 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
 import '../../jest/mockInstabug';
 import Instabug from 'instabug-reactnative';
