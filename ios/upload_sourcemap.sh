@@ -1,9 +1,9 @@
 #!/bin/sh
 cd ${PROJECT_DIR}
 cd ..
-if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+if [ -s "$HOME/.nvm/nvm.sh" ]; then
 . "$HOME/.nvm/nvm.sh"
-elif [[ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]]; then
+elif [ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]; then
 . "$(brew --prefix nvm)/nvm.sh"
 fi
 export NODE_BINARY=node

@@ -233,6 +233,12 @@ export function onNavigationStateChange(
   currentState: any,
   action: any
 ): void;
+export function onStateChange(
+  state: any
+): void;
+export function reportScreenChange(
+  screenName: string
+): void;
 export function componentDidAppearListener(componentObj:
   { componentId: any, componentName: any, passProps: any }
 ): void;
