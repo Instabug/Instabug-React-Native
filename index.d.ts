@@ -114,7 +114,7 @@ export namespace Surveys {
   function showSurvey(surveyToken: string): void;
   function hasRespondedToSurvey(
     surveyToken: string,
-    surveyTokenCallback: () => void
+    surveyTokenCallback: (hasResponded: boolean) => void
   ): void;
   function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
   function setAppStoreURL(appStoreURL: string): void;
@@ -232,6 +232,12 @@ export function onNavigationStateChange(
   prevState: any,
   currentState: any,
   action: any
+): void;
+export function onStateChange(
+  state: any
+): void;
+export function reportScreenChange(
+  screenName: string
 ): void;
 export function componentDidAppearListener(componentObj:
   { componentId: any, componentName: any, passProps: any }

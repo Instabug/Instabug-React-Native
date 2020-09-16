@@ -117,11 +117,10 @@ RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
     }
 }
 
-void (^globalReportCompletionHandler)(IBGReport *);
 IBGReport *currentReport = nil;
 RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        [Instabug setWillSendReportHandler_private:^(IBGReport *report, void (^reportCompletionHandler)(IBGReport *)) {
+        Instabug.willSendReportHandler = ^IBGReport * _Nonnull(IBGReport * _Nonnull report) {
             NSArray *tagsArray = report.tags;
             NSArray *instabugLogs= report.instabugLogs;
             NSArray *consoleLogs= report.consoleLogs;
@@ -129,9 +128,10 @@ RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
             NSArray *fileAttachments= report.fileLocations;
             NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
             [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
+
             currentReport = report;
-            globalReportCompletionHandler = reportCompletionHandler;
-        }];
+            return report;
+        };
     } else {
         Instabug.willSendReportHandler = nil;
     }
@@ -197,11 +197,6 @@ RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
         NSData* data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
         [currentReport addFileAttachmentWithData:data];
     }
-}
-
-RCT_EXPORT_METHOD(submitReport) {
-    globalReportCompletionHandler(currentReport);
-    currentReport = nil;
 }
 
 RCT_EXPORT_METHOD(setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {

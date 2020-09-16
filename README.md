@@ -203,24 +203,40 @@ Instabug Repro Steps are enabled by default. It captures a screenshot of each sc
 
 We support the 2 most popular React Native navigation libraries:
 
-* **react-navigation**
-1) Set the `onNavigationStateChange` to `Instabug.onNavigationStateChange` in your App wrapper as follows:
+  *  **react-navigation**
 
-    ```javascript
-    export default () => (
-      <App
-        onNavigationStateChange={ Instabug.onNavigationStateChange } />
-    );
-    ```
+	  *  **v5**
+		set the `onStateChange` to `Instabug.onStateChange` in your NavigationContainer as follows:
 
-* **react-native-navigation**
-1) Register `Instabug.componentDidAppearListener` listener using: 
+			```javascript
+			<NavigationContainer
+			onStateChange={  Instabug.onStateChange  }  />
+			```
 
-    ```javascript
-    Navigation.events().registerComponentDidAppearListener( Instabug.componentDidAppearListener );
-    ```
+	 *  **<=v4**
+		set the `onNavigationStateChange` to `Instabug.onNavigationStateChange` in your App wrapper as follows:
+
+		```javascript
+		export  default () => (
+		<App
+		onNavigationStateChange={  Instabug.onNavigationStateChange  }  />
+		);
+		```
+	*  **react-native-navigation**
+
+		 Register `Instabug.componentDidAppearListener` listener using:
+		```javascript
+		Navigation.events().registerComponentDidAppearListener( Instabug.componentDidAppearListener );
+		```
+		
+Alternatively, you can report your screen changes manually using the following API
+  
+  ```javascript
+Instabug.reportScreenChange('screenName');
+```
 
 You can disable Repro Steps using the following API:
+
 ```javascript
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
