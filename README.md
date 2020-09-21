@@ -222,9 +222,10 @@ We support the 2 most popular React Native navigation libraries:
 		onNavigationStateChange={  Instabug.onNavigationStateChange  }  />
 		);
 		```
-	*  **react-native-navigation**
 
-		 Register `Instabug.componentDidAppearListener` listener using:
+  *  **react-native-navigation**
+
+		Register `Instabug.componentDidAppearListener` listener using:
 		```javascript
 		Navigation.events().registerComponentDidAppearListener( Instabug.componentDidAppearListener );
 		```
