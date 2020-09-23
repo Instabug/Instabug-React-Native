@@ -242,6 +242,8 @@ You can disable Repro Steps using the following API:
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
 
+⚠️ Note: [User Steps](https://help.instabug.com/en/articles/2515300-instabug-report-logs-user-steps) isn't officially supported yet.
+
 ## Features that are not supported yet
 
 - Push Notification Support for In-App Messaging
