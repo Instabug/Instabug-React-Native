@@ -161,9 +161,9 @@ NetworkLogger.setEnabled(false);
 
 Instabug Repro Steps are enabled by default. It captures a screenshot of each screen the user navigates to. These screens are attached to the BugReport when sent.
 
-We support the 2 most popular React Native navigation libraries:
+We support the two most popular React Native navigation libraries:
 
-  *  **react-navigation**
+  *  **[react-navigation](https://github.com/react-navigation/react-navigation)**
 
 	  *  **v5**
 		set the `onStateChange` to `Instabug.onStateChange` in your NavigationContainer as follows:
@@ -183,7 +183,7 @@ We support the 2 most popular React Native navigation libraries:
 		);
 		```
 
-  *  **react-native-navigation**
+  *  **[react-native-navigation](https://github.com/wix/react-native-navigation)**
 
 		Register `Instabug.componentDidAppearListener` listener using:
 		```javascript
