@@ -33,6 +33,10 @@ jobs:
             - node_modules
 
       - run:
+          name: Typescript Definitions Validation
+          command: node typescript_validator.js
+
+      - run:
           name: jest tests
           command: |
             mkdir -p test-results/jest
