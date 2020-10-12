@@ -90,7 +90,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: yarn install
+      - run: yarn --ignore-engines
       - run:
           name: chmod permissions
           command: cd android && chmod +x ./gradlew
@@ -112,7 +112,7 @@ jobs:
           path: ~/project
       - run:
           name: Install node_modules
-          command: cd .. && yarn
+          command: cd .. && yarn --ignore-engines
       - run:
           name: Fetch CocoaPods Specs
           command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
@@ -143,7 +143,7 @@ jobs:
           command: brew tap wix/brew && brew install applesimutils
       - run:
           name: Install Node Packages
-          command: yarn
+          command: yarn --ignore-engines
       - run:
           name: Fetch CocoaPods Specs
           command: cd ios && curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
@@ -191,7 +191,7 @@ jobs:
           background: true
       - run:
           name: Install Node Packages
-          command: sudo yarn
+          command: sudo yarn --ignore-engines
       - run:
           name: Generate Android Keystore
           command: cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=AA, OU=AA, O=AA, L=AA, S=AA, C=EG"
