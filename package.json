@@ -34,7 +34,7 @@
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
-    "codecov": "^3.7.0",
+    "codecov": "~3.7.0",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react": "^16.8.6",
