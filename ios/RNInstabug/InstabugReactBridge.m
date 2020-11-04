@@ -252,7 +252,11 @@ RCT_EXPORT_METHOD(setUserAttribute:(NSString *)key withValue:(NSString *)value) 
 }
 
 RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key callback:(RCTResponseSenderBlock)callback) {
+    @try {
     callback(@[[Instabug userAttributeForKey:key]]);
+    } @catch (NSException *exception) {
+        callback(nil);
+    }
 }
 
 RCT_EXPORT_METHOD(removeUserAttribute:(NSString *)key) {
