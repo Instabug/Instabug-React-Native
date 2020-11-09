@@ -19,7 +19,7 @@ export default class Trace {
      * @param {string} value 
      */
     setAttribute(key, value) {
-        IBGAPM.setTraceAttribute(this.id, key, value);
+        IBGAPM.setExecutionTraceAttribute(this.id, key, value);
         this.attributes[key] = value;
     }
 
@@ -29,6 +29,6 @@ export default class Trace {
      * @param {string} value 
      */
     end() {
-        IBGAPM.endTrace(this.id);
+        IBGAPM.endExecutionTrace(this.id);
     }
 }

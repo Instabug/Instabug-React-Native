@@ -9,7 +9,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
-import com.instabug.apm.model.Trace;
+import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
@@ -25,7 +25,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     public RNInstabugAPMModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
     }
-    HashMap<String, Trace> traces = new HashMap<String, Trace>();
+    HashMap<String, ExecutionTrace> traces = new HashMap<String, ExecutionTrace>();
 
     @Nonnull
     @Override
@@ -70,16 +70,16 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Starts a trace
+     * Starts an execution trace
      * @param name string name of the trace.
      */
     @ReactMethod
-    public void startTrace(final String name, final String id) {
+    public void startExecutionTrace(final String name, final String id) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Trace trace = APM.startTrace(name);
+                    ExecutionTrace trace = APM.startExecutionTrace(name);
                     traces.put(id,trace);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -95,7 +95,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * @param value attribute value. Null to remove attribute
      */
     @ReactMethod
-    public void setTraceAttribute(final String id, final String key, final String value) {
+    public void setExecutionTraceAttribute(final String id, final String key, final String value) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -113,7 +113,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * @param id string id of the trace.
      */
     @ReactMethod
-    public void endTrace(final String id) {
+    public void endExecutionTrace(final String id) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

@@ -13,11 +13,11 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 - (void)setAppLaunchEnabled:(BOOL)isEnabled;
-- (void)setUIHangEnabled:(BOOL)isEnabled;
-- (void)startTrace:(NSString *)name:(NSString *)id;
-- (void)setTraceAttribute:(NSString *)id:(NSString *)key
-                         :(NSString *)value;
-- (void)endTrace:(NSString *)id;
+- (void)setAutoUITraceEnabled:(BOOL)isEnabled;
+- (void)startExecutionTrace:(NSString *)name:(NSString *)id;
+- (void)setExecutionTraceAttribute:(NSString *)id:(NSString *)key
+                                  :(NSString *)value;
+- (void)endExecutionTrace:(NSString *)id;
 - (void)startUITrace:(NSString *)name;
 - (void)endUITrace;
 

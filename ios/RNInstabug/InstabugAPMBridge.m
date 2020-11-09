@@ -2,7 +2,7 @@
 
 #import "InstabugAPMBridge.h"
 #import <Instabug/IBGAPM.h>
-#import <Instabug/IBGTrace.h>
+#import <Instabug/IBGExecutionTrace.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -43,22 +43,22 @@ RCT_EXPORT_METHOD(setAppLaunchEnabled:(BOOL)isEnabled) {
     IBGAPM.appLaunchEnabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(setUIHangEnabled:(BOOL)isEnabled) {
-    IBGAPM.UIHangEnabled = isEnabled;
+RCT_EXPORT_METHOD(setAutoUITraceEnabled:(BOOL)isEnabled) {
+    IBGAPM.autoUITraceEnabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(startTrace:(NSString *)name :(NSString *)id) {
-    IBGTrace *trace = [IBGAPM startTraceWithName:name];
+RCT_EXPORT_METHOD(startExecutionTrace:(NSString *)name :(NSString *)id) {
+    IBGExecutionTrace *trace = [IBGAPM startExecutionTraceWithName:name];
     [traces setObject: trace forKey: id];
 }
 
-RCT_EXPORT_METHOD(setTraceAttribute:(NSString *)id :(NSString *)key :(NSString *)value) {
-    IBGTrace *trace = [traces objectForKey:id];
+RCT_EXPORT_METHOD(setExecutionTraceAttribute:(NSString *)id :(NSString *)key :(NSString *)value) {
+    IBGExecutionTrace *trace = [traces objectForKey:id];
     [trace setAttributeWithKey:key value:value];
 }
 
-RCT_EXPORT_METHOD(endTrace:(NSString *)id) {
-    IBGTrace *trace = [traces objectForKey:id];
+RCT_EXPORT_METHOD(endExecutionTrace:(NSString *)id) {
+    IBGExecutionTrace *trace = [traces objectForKey:id];
     [trace end];
 }
 

@@ -134,8 +134,8 @@ export namespace APM {
   function setEnabled(isEnabled: boolean): void;
   function setAppLaunchEnabled(isEnabled: boolean): void;
   function setNetworkEnabledIOS(isEnabled: boolean): void;
-  function setUIHangEnabled(isEnabled: boolean): void;
-  function startTrace(name: string): Trace;
+  function setAutoUITraceEnabled(isEnabled: boolean): void;
+  function startExecutionTrace(name: string): Trace;
   function startUITrace(name: string): void;
   function endUITrace(): void;
 }

@@ -41,9 +41,9 @@ export default {
      * Enables or disables APM UI Responsivenes tracking feature
      * @param {boolean} isEnabled 
      */
-    setUIHangEnabled(isEnabled) {
+    setAutoUITraceEnabled(isEnabled) {
         if (Platform.OS === 'ios') {
-            IBGAPM.setUIHangEnabled(isEnabled);
+            IBGAPM.setAutoUITraceEnabled(isEnabled);
         }
     },
 
@@ -51,9 +51,9 @@ export default {
      * Starts a custom trace
      * @param {string} name 
      */
-    startTrace(name) {
+    startExecutionTrace(name) {
         const id = Date.now() + '';
-        IBGAPM.startTrace(name, id);
+        IBGAPM.startExecutionTrace(name, id);
         return new Trace(id, name);
     },
 
