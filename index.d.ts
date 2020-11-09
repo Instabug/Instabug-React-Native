@@ -125,6 +125,20 @@ export namespace NetworkLogger {
   function setRequestFilterExpression(expression: string): void;
   function setProgressHandlerForRequest(handler: () => void): void;
 }
+export class Trace {
+  constructor(id: string, name?: string, attributes?: object);
+  setAttribute(key: string, value: string): void;
+  end(): void;
+}
+export namespace APM {
+  function setEnabled(isEnabled: boolean): void;
+  function setAppLaunchEnabled(isEnabled: boolean): void;
+  function setNetworkEnabledIOS(isEnabled: boolean): void;
+  function setUIHangEnabled(isEnabled: boolean): void;
+  function startTrace(name: string): Trace;
+  function startUITrace(name: string): void;
+  function endUITrace(): void;
+}
 export function startWithToken(
   token: string,
   invocationEvent: invocationEvent[]

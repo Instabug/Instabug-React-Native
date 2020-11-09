@@ -38,6 +38,16 @@ export default {
     },
 
     /**
+     * Enables or disables APM UI Responsivenes tracking feature
+     * @param {boolean} isEnabled 
+     */
+    setUIHangEnabled(isEnabled) {
+        if (Platform.OS === 'ios') {
+            IBGAPM.setUIHangEnabled(isEnabled);
+        }
+    },
+
+    /**
      * Starts a custom trace
      * @param {string} name 
      */
@@ -45,5 +55,21 @@ export default {
         const id = Date.now() + '';
         IBGAPM.startTrace(name, id);
         return new Trace(id, name);
+    },
+
+    /**
+     * Starts a custom trace
+     * @param {string} name 
+     */
+    startUITrace(name) {
+        IBGAPM.startUITrace(name);
+    },
+
+    /**
+     * Starts a custom trace
+     * @param {string} name 
+     */
+    endUITrace() {
+        IBGAPM.endUITrace();
     },
 };

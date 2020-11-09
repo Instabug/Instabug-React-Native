@@ -43,6 +43,10 @@ RCT_EXPORT_METHOD(setAppLaunchEnabled:(BOOL)isEnabled) {
     IBGAPM.appLaunchEnabled = isEnabled;
 }
 
+RCT_EXPORT_METHOD(setUIHangEnabled:(BOOL)isEnabled) {
+    IBGAPM.UIHangEnabled = isEnabled;
+}
+
 RCT_EXPORT_METHOD(startTrace:(NSString *)name :(NSString *)id) {
     IBGTrace *trace = [IBGAPM startTraceWithName:name];
     [traces setObject: trace forKey: id];
@@ -56,6 +60,14 @@ RCT_EXPORT_METHOD(setTraceAttribute:(NSString *)id :(NSString *)key :(NSString *
 RCT_EXPORT_METHOD(endTrace:(NSString *)id) {
     IBGTrace *trace = [traces objectForKey:id];
     [trace end];
+}
+
+RCT_EXPORT_METHOD(startUITrace:(NSString *)name) {
+    [IBGAPM startUITraceWithName:name];
+}
+
+RCT_EXPORT_METHOD(endUITrace) {
+    [IBGAPM endUITrace];
 }
 
 

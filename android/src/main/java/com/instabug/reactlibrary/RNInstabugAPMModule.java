@@ -34,7 +34,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Enables or disables the feature Chats.
+     * Enables or disables APM.
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -52,7 +52,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Enables or disables the feature Chats.
+     * Enables or disables app launch tracking.
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -89,8 +89,10 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Starts a trace
+     * Adds a new attribute to trace
      * @param id String id of the trace.
+     * @param key   attribute key
+     * @param value attribute value. Null to remove attribute
      */
     @ReactMethod
     public void setTraceAttribute(final String id, final String key, final String value) {
@@ -107,7 +109,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Starts a trace
+     * Ends a trace
      * @param id string id of the trace.
      */
     @ReactMethod
@@ -124,5 +126,38 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
         });
     }
 
+    /**
+     * Starts a UI trace
+     * @param name string name of the UI trace.
+     */
+    @ReactMethod
+    public void startUITrace(final String name) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.startUITrace(name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
+    /**
+     * Ends the current running UI trace
+     */
+    @ReactMethod
+    public void endUITrace() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.endUITrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
