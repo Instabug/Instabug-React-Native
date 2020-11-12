@@ -20,7 +20,7 @@ jobs:
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+      - run: yarn
 
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -94,7 +94,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - run: yarn install
+      - run: yarn
       - run:
           name: chmod permissions
           command: cd android && chmod +x ./gradlew

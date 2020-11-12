@@ -1,4 +1,8 @@
 
+## v9.1.9 (2020-10-01)
+
+* Bumps Instabug native Android SDK to v9.1.8
+
 ## v9.1.8 (2020-09-16)
 
 * Adds support for react-navigation v5
