@@ -448,6 +448,13 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"bottomLeft": @(IBGPositionBottomLeft),
               @"topLeft": @(IBGPositionTopLeft),
               
+              @"logLevelNone": @(IBGLogLevelNone),
+              @"logLevelError": @(IBGLogLevelError),
+              @"logLevelWarning": @(IBGLogLevelWarning),
+              @"logLevelInfo": @(IBGLogLevelInfo),
+              @"logLevelDebug": @(IBGLogLevelDebug),
+              @"logLevelVerbose": @(IBGLogLevelVerbose),
+              
               @"allActions": @(IBGActionAllActions),
               @"reportBugAction": @(IBGActionReportBug),
               @"requestNewFeature": @(IBGActionRequestNewFeature),

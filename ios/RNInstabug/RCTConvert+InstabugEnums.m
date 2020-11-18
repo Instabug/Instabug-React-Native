@@ -101,6 +101,15 @@ RCT_ENUM_CONVERTER(IBGPosition, (@{
                                     @"topLeft": @(IBGPositionTopLeft)
                                     }), IBGPositionBottomRight, integerValue);
 
+RCT_ENUM_CONVERTER(IBGLogLevel, (@{
+                                    @"logLevelNone": @(IBGLogLevelNone),
+                                    @"logLevelError": @(IBGLogLevelError),
+                                    @"logLevelWarning": @(IBGLogLevelWarning),
+                                    @"logLevelInfo": @(IBGLogLevelInfo),
+                                    @"logLevelDebug": @(IBGLogLevelDebug),
+                                    @"logLevelVerbose": @(IBGLogLevelVerbose)
+                                    }), IBGLogLevelInfo, integerValue);
+
 RCT_ENUM_CONVERTER(IBGWelcomeMessageMode, (@{
                                     @"welcomeMessageModeLive": @(IBGWelcomeMessageModeLive),
                                     @"welcomeMessageModeBeta": @(IBGWelcomeMessageModeBeta),

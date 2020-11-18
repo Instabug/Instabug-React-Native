@@ -45,6 +45,8 @@ import static com.instabug.library.ui.onboarding.WelcomeMessage.State.BETA;
 import static com.instabug.library.ui.onboarding.WelcomeMessage.State.DISABLED;
 import static com.instabug.library.ui.onboarding.WelcomeMessage.State.LIVE;
 
+import static com.instabug.apm.model.LogLevel;
+
 @SuppressWarnings({"SameParameterValue", "unchecked"})
 final class ArgsRegistry {
 
@@ -65,6 +67,7 @@ final class ArgsRegistry {
         registerReproStepsModeArgs(ARGS);
         registerWelcomeMessageArgs(ARGS);
         registerInstabugFeatureRequestsActionTypes(ARGS);
+        registerLogLevelArgs(ARGS);
     }
 
 
@@ -204,6 +207,15 @@ final class ArgsRegistry {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
         args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
+    }
+
+    static void registerLogLevelArgs(Map<String, Object> args) {
+        args.put("logLevelNone", LogLevel.NONE);
+        args.put("logLevelError", LogLevel.ERROR);
+        args.put("logLevelWarning", LogLevel.WARNING);
+        args.put("logLevelInfo", LogLevel.INFO);
+        args.put("logLevelDebug", LogLevel.DEBUG);
+        args.put("logLevelVerbose", LogLevel.VERBOSE);
     }
 
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {

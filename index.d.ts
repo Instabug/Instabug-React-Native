@@ -138,6 +138,7 @@ export namespace APM {
   function startExecutionTrace(name: string): Trace;
   function startUITrace(name: string): void;
   function endUITrace(): void;
+  function setLogLevel(logLevel: logLevel): void;
 }
 export function startWithToken(
   token: string,
@@ -284,6 +285,14 @@ export enum sdkDebugLogsLevel {
   sdkDebugLogsLevelDebug,
   sdkDebugLogsLevelError,
   sdkDebugLogsLevelNone,
+}
+export enum logLevel {
+  logLevelNone,
+  logLevelError,
+  logLevelWarning,
+  logLevelInfo,
+  logLevelDebug,
+  logLevelVerbose,
 }
 export enum extendedBugReportMode {
   enabledWithRequiredFields,

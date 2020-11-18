@@ -34,6 +34,28 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Sets the printed logs priority. Filter to one of the following levels.
+     *
+     * @param logLevel the priority level.
+     */
+    @ReactMethod
+    public void setLogLevel(final String logLevel) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (ArgsRegistry.getDeserializedValue(logLevel, Integer.class) == null) {
+                        return;
+                    }
+                    APM.setLogLevel((int) ArgsRegistry.getRawValue(logLevel));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Enables or disables APM.
      * @param isEnabled boolean indicating enabled or disabled.
      */
