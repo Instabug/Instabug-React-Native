@@ -165,7 +165,9 @@ const InstabugModule = {
    *
    */
   setSdkDebugLogsLevel(sdkDebugLogsLevel) {
-    Instabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
+    if (Platform.OS === 'ios') {
+      Instabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
+    }
   },
 
   /* istanbul ignore next */
