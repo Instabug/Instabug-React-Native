@@ -49,17 +49,23 @@ RCT_EXPORT_METHOD(setAutoUITraceEnabled:(BOOL)isEnabled) {
 
 RCT_EXPORT_METHOD(startExecutionTrace:(NSString *)name :(NSString *)id) {
     IBGExecutionTrace *trace = [IBGAPM startExecutionTraceWithName:name];
-    [traces setObject: trace forKey: id];
+    if (trace != nil) {
+        [traces setObject: trace forKey: id];
+    }
 }
 
 RCT_EXPORT_METHOD(setExecutionTraceAttribute:(NSString *)id :(NSString *)key :(NSString *)value) {
     IBGExecutionTrace *trace = [traces objectForKey:id];
-    [trace setAttributeWithKey:key value:value];
+    if (trace != nil) {
+        [trace setAttributeWithKey:key value:value];
+    }
 }
 
 RCT_EXPORT_METHOD(endExecutionTrace:(NSString *)id) {
     IBGExecutionTrace *trace = [traces objectForKey:id];
-    [trace end];
+    if (trace != nil) {
+        [trace end];
+    }
 }
 
 RCT_EXPORT_METHOD(startUITrace:(NSString *)name) {
