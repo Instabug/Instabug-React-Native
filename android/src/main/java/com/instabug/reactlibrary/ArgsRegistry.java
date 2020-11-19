@@ -12,6 +12,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.visualusersteps.State;
+import com.instabug.apm.model.LogLevel;
 
 import static com.instabug.library.internal.module.InstabugLocale.ARABIC;
 import static com.instabug.library.internal.module.InstabugLocale.AZERBAIJANI;
@@ -44,8 +45,6 @@ import static com.instabug.library.invocation.InstabugInvocationEvent.TWO_FINGER
 import static com.instabug.library.ui.onboarding.WelcomeMessage.State.BETA;
 import static com.instabug.library.ui.onboarding.WelcomeMessage.State.DISABLED;
 import static com.instabug.library.ui.onboarding.WelcomeMessage.State.LIVE;
-
-import static com.instabug.apm.model.LogLevel;
 
 @SuppressWarnings({"SameParameterValue", "unchecked"})
 final class ArgsRegistry {
