@@ -3,6 +3,7 @@ package com.instabug.reactlibrary;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -31,6 +32,21 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "IBGAPM";
+    }
+
+    /**
+     * Sets the printed logs priority. Filter to one of the following levels.
+     *
+     * @param logLevel the priority level.
+     */
+    @ReactMethod
+    public void ibgSleep() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(3000);
+            }
+        });
     }
 
     /**

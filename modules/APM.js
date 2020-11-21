@@ -100,4 +100,11 @@ export default {
     endUITrace() {
         IBGAPM.endUITrace();
     },
+
+    /**
+     * Used for internal testing.
+     */
+    _ibgSleep() {
+        IBGAPM.ibgSleep();
+    }
 };

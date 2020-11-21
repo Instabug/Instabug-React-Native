@@ -35,6 +35,21 @@ NSMutableDictionary *traces;
     return self;
 }
 
+RCT_EXPORT_METHOD(ibgSleep) {
+    [NSThread sleepForTimeInterval:3.0f];
+    // for (int i = 1; i <= 1000000; i++)
+    // {
+    //     double value = sqrt(i);
+
+    //     printf("%@", [NSNumber numberWithDouble:value]);
+    // }
+    // [NSThread sleepForTimeInterval:3.0f];
+}
+
+RCT_EXPORT_METHOD(setLogLevel:(IBGLogLevel)_logLevel) {
+    IBGAPM.logLevel = _logLevel;
+}
+
 RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     IBGAPM.enabled = isEnabled;
 }
