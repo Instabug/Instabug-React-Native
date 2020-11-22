@@ -74,6 +74,7 @@ describe('Instabug Module', () => {
     setIBGLogPrintsToConsole.resetHistory();
     setPushNotificationsEnabled.resetHistory();
     log.resetHistory();
+    setSdkDebugLogsLevel.resetHistory();
     setDebugEnabled.resetHistory();
     enable.resetHistory();
     disable.resetHistory();
