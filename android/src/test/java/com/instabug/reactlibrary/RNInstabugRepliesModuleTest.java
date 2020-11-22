@@ -159,4 +159,48 @@ public class RNInstabugRepliesModuleTest {
         Replies.setInAppNotificationSound(true);
     }
 
+    @Test
+    public void givenBoolean$setPushNotificationRegistrationToken_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setPushNotificationRegistrationToken("123");
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setPushNotificationRegistrationToken("123");
+    }
+
+    @Test
+    public void givenBoolean$setNotificationIcon_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setNotificationIcon(123);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setNotificationIcon(123);
+    }
+
+    @Test
+    public void givenBoolean$setPushNotificationChannelId_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setPushNotificationChannelId("123");
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setPushNotificationChannelId("123");
+    }
+
+    @Test
+    public void givenBoolean$setSystemReplyNotificationSoundEnabled_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        // when
+        rnModule.setSystemReplyNotificationSoundEnabled(true);
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.setSystemReplyNotificationSoundEnabled(true);
+    }
+
 }

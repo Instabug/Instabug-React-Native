@@ -21,12 +21,20 @@ describe('Replies Module', () => {
   const setChatNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
   const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
+  const setPushNotificationRegistrationToken = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationRegistrationToken');
+  const setNotificationIcon = sinon.spy(NativeModules.IBGReplies, 'setNotificationIcon');
+  const setPushNotificationChannelId = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationChannelId');
+  const setSystemReplyNotificationSoundEnabled = sinon.spy(NativeModules.IBGReplies, 'setSystemReplyNotificationSoundEnabled');
 
   beforeEach(() => {
     setOnNewReplyReceivedCallback.resetHistory();
     setEnableInAppNotificationSound.resetHistory();
     IBGEventEmitter.removeAllListeners();
     setPushNotificationsEnabled.resetHistory();
+    setPushNotificationRegistrationToken.resetHistory();
+    setNotificationIcon.resetHistory();
+    setPushNotificationChannelId.resetHistory();
+    setSystemReplyNotificationSoundEnabled.resetHistory();
   });
 
   it('should call the native method setRepliesEnabled', () => {
@@ -115,6 +123,7 @@ describe('Replies Module', () => {
 
   });
 
+
   it('should call the native method setPushNotificationsEnabled', () => {
 
     Platform.OS = 'ios';
@@ -123,7 +132,6 @@ describe('Replies Module', () => {
     expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
-
 
   it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
 
@@ -134,5 +142,64 @@ describe('Replies Module', () => {
 
   });
 
+
+  it('should call the native method setPushNotificationRegistrationToken on Android', () => {
+    Platform.OS = 'android';
+    Replies.setPushNotificationRegistrationTokenAndroid('123');
+
+    expect(setPushNotificationRegistrationToken.calledOnceWithExactly('123')).toBe(true);
+  });
+
+  it('should not call the native method setPushNotificationRegistrationToken on iOS', () => {
+    Platform.OS = 'ios';
+    Replies.setPushNotificationRegistrationTokenAndroid(true);
+
+    expect(setPushNotificationRegistrationToken.notCalled).toBe(true);
+  });
+
+
+  it('should call the native method setNotificationIcon on Android', () => {
+    Platform.OS = 'android';
+    Replies.setNotificationIconAndroid(123);
+
+    expect(setNotificationIcon.calledOnceWithExactly(123)).toBe(true);
+  });
+
+  it('should not call the native method setNotificationIcon on iOS', () => {
+    Platform.OS = 'ios';
+    Replies.setNotificationIconAndroid(123);
+
+    expect(setNotificationIcon.notCalled).toBe(true);
+  });
+
+
+  it('should call the native method setPushNotificationChannelId on Android', () => {
+    Platform.OS = 'android';
+    Replies.setPushNotificationChannelIdAndroid('123');
+
+    expect(setPushNotificationChannelId.calledOnceWithExactly('123')).toBe(true);
+  });
+
+  it('should not call the native method setPushNotificationChannelId on iOS', () => {
+    Platform.OS = 'ios';
+    Replies.setPushNotificationChannelIdAndroid('123');
+
+    expect(setPushNotificationChannelId.notCalled).toBe(true);
+  });
+
+
+  it('should call the native method setSystemReplyNotificationSoundEnabled on Android', () => {
+    Platform.OS = 'android';
+    Replies.setSystemReplyNotificationSoundEnabledAndroid(true);
+
+    expect(setSystemReplyNotificationSoundEnabled.calledOnceWithExactly(true)).toBe(true);
+  });
+
+  it('should not call the native method setSystemReplyNotificationSoundEnabled on iOS', () => {
+    Platform.OS = 'ios';
+    Replies.setSystemReplyNotificationSoundEnabledAndroid(true);
+
+    expect(setSystemReplyNotificationSoundEnabled.notCalled).toBe(true);
+  });
 
 });

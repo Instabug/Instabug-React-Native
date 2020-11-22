@@ -98,5 +98,51 @@ export default {
   setPushNotificationsEnabled(isPushNotificationEnabled) {
     if (Platform.OS === 'ios')
       IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
+  },
+
+  /**
+   * Set the GCM registration token to Instabug
+   *
+   * @param token the GCM registration token
+   */
+  setPushNotificationRegistrationTokenAndroid(token) {
+    if (Platform.OS === 'android') {
+      IBGReplies.setPushNotificationRegistrationToken(token);
+    }
+  },
+
+  /**
+   * Set the push notification's icon that will be shown with Instabug notifications
+   *
+   * @param notificationIcon the notification icon resource ID
+   */
+  setNotificationIconAndroid(notificationIcon) {
+    if (Platform.OS === 'android') {
+      IBGReplies.setNotificationIcon(notificationIcon);
+    }
+  },
+
+  /**
+   * Set a notification channel id to a notification channel that notifications
+   * can be posted to.
+   *
+   * @param pushNotificationChannelId an id to a notification channel that notifications
+   */
+  setPushNotificationChannelIdAndroid(pushNotificationChannelId) {
+    if (Platform.OS === 'android') {
+      IBGReplies.setPushNotificationChannelId(pushNotificationChannelId);
+    }
+  },
+
+  /**
+   * Set whether new system notification received will play the default sound from
+   * RingtoneManager or not (Default is {@code false})
+   *
+   * @param shouldPlaySound desired state of conversation sounds
+   */
+  setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound) {
+    if (Platform.OS === 'android') {
+      IBGReplies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
+    }
   }
 };
