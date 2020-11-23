@@ -52,7 +52,7 @@ export default {
      * @param {boolean} isEnabled 
      */
     setAppLaunchEnabled(isEnabled) {
-        IBGAPM.setEnabled(isEnabled);
+        IBGAPM.setAppLaunchEnabled(isEnabled);
     },
 
     /**
