@@ -112,13 +112,18 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * @param name string name of the trace.
      */
     @ReactMethod
-    public void startExecutionTrace(final String name, final String id) {
+    public void startExecutionTrace(final String name, final String id, final Callback callback) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    String result = "";
                     ExecutionTrace trace = APM.startExecutionTrace(name);
-                    traces.put(id,trace);
+                    if (trace == null) {
+                        result = id;
+                        traces.put(id, trace);
+                    }
+                    callback.invoke(result);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

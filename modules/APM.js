@@ -77,12 +77,22 @@ export default {
 
     /**
      * Starts a custom trace
+     * Returns a promise, the promise delivers the trace reference if APM is enabled, otherwise it gets rejected
      * @param {string} name 
      */
     startExecutionTrace(name) {
-        const id = Date.now() + '';
-        IBGAPM.startExecutionTrace(name, id);
-        return new Trace(id, name);
+        const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;
+        const timestamp = Date.now() + '';
+
+        return new Promise((resolve, reject) => {
+            IBGAPM.startExecutionTrace(name, timestamp, (id) => {
+                if (id) {
+                    resolve(new Trace(id, name));
+                } else {
+                    reject(new Error(TRACE_NOT_STARTED_APM_NOT_ENABLED));
+                }
+            });
+        });
     },
 
     /**

@@ -62,10 +62,13 @@ RCT_EXPORT_METHOD(setAutoUITraceEnabled:(BOOL)isEnabled) {
     IBGAPM.autoUITraceEnabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(startExecutionTrace:(NSString *)name :(NSString *)id) {
+RCT_EXPORT_METHOD(startExecutionTrace:(NSString *)name :(NSString *)id:(RCTResponseSenderBlock)callBack) {
     IBGExecutionTrace *trace = [IBGAPM startExecutionTraceWithName:name];
     if (trace != nil) {
         [traces setObject: trace forKey: id];
+        callBack(@[id]);
+    } else {
+        callBack(@[[NSNull null]]);
     }
 }
 
