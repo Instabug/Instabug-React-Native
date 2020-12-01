@@ -1,3 +1,6 @@
+## master
+
+* Fixes a crash caused by the network logger when the object passed is too large
 
 ## v9.1.9 (2020-10-01)
 
