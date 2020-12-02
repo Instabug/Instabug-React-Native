@@ -255,7 +255,7 @@ RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key callback:(RCTResponseSenderBl
     @try {
     callback(@[[Instabug userAttributeForKey:key]]);
     } @catch (NSException *exception) {
-        callback(nil);
+        callback(@[[NSNull null]]);
     }
 }
 
