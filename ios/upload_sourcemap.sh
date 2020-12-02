@@ -27,7 +27,7 @@ else
         if !([ ! "${INSTABUG_APP_VERSION_CODE_ENV}" ] || [ -z "${INSTABUG_APP_VERSION_CODE_ENV}" ]); then
             INSTABUG_APP_VERSION_CODE=${!INSTABUG_APP_VERSION_CODE_ENV}
             if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
-                echo "Environment variable $INSTABUG_APP_VERSION_CODE_ENV was specified inside info.plist but was not found, please upload the sourcemap files manually" 
+                echo "Environment variable $INSTABUG_APP_VERSION_CODE_ENV was specified inside Info.plist but was not found, please upload the sourcemap files manually" 
                 exit 0
             fi
         fi
@@ -42,7 +42,7 @@ else
         if !([ ! "${INSTABUG_APP_VERSION_NAME_ENV}" ] || [ -z "${INSTABUG_APP_VERSION_NAME_ENV}" ]); then
             INSTABUG_APP_VERSION_NAME=${!INSTABUG_APP_VERSION_NAME_ENV}
             if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
-                echo "Environment variable $INSTABUG_APP_VERSION_NAME_ENV was specified inside info.plist but was not found, please upload the sourcemap files manually" 
+                echo "Environment variable $INSTABUG_APP_VERSION_NAME_ENV was specified inside Info.plist but was not found, please upload the sourcemap files manually" 
                 exit 0
             fi
         fi
