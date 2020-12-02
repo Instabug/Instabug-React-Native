@@ -3,7 +3,7 @@ cd ${PROJECT_DIR}
 cd ..
 if [ -s "$HOME/.nvm/nvm.sh" ]; then
 . "$HOME/.nvm/nvm.sh"
-elif [ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]; then
+elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 . "$(brew --prefix nvm)/nvm.sh"
 fi
 export NODE_BINARY=node
@@ -23,12 +23,28 @@ else
             echo "CFBundleVersion could not be found, please upload the sourcemap files manually"
             exit 0
         fi
+        INSTABUG_APP_VERSION_CODE_ENV=$(grep -o '$(.*)' <<< $INSTABUG_APP_VERSION_CODE | cut -d "(" -f2 | cut -d ")" -f1)
+        if !([ ! "${INSTABUG_APP_VERSION_CODE_ENV}" ] || [ -z "${INSTABUG_APP_VERSION_CODE_ENV}" ]); then
+            INSTABUG_APP_VERSION_CODE=${!INSTABUG_APP_VERSION_CODE_ENV}
+            if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
+                echo "Environment variable $INSTABUG_APP_VERSION_CODE_ENV was specified inside Info.plist but was not found, please upload the sourcemap files manually" 
+                exit 0
+            fi
+        fi
     fi
     if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
         INSTABUG_APP_VERSION_NAME=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleShortVersionString )
         if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
             echo "CFBundleShortVersionString could not be found, please upload the sourcemap files manually"
             exit 0
+        fi
+        INSTABUG_APP_VERSION_NAME_ENV=$(grep -o '$(.*)' <<< $INSTABUG_APP_VERSION_NAME | cut -d "(" -f2 | cut -d ")" -f1)
+        if !([ ! "${INSTABUG_APP_VERSION_NAME_ENV}" ] || [ -z "${INSTABUG_APP_VERSION_NAME_ENV}" ]); then
+            INSTABUG_APP_VERSION_NAME=${!INSTABUG_APP_VERSION_NAME_ENV}
+            if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
+                echo "Environment variable $INSTABUG_APP_VERSION_NAME_ENV was specified inside Info.plist but was not found, please upload the sourcemap files manually" 
+                exit 0
+            fi
         fi
     fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
