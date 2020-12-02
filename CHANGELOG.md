@@ -2,6 +2,8 @@
 
 * Fixes a crash caused by the network logger when the object passed is too large
 * Adds source map upload script support for environment variables use inside Info.plist
+* Fixes a crash when using `getUserAttribute` on an attribute that does not exist 
+* Fixes a crash when calling `setSdkDebugLogsLevel` on android 
 
 ## v9.1.9 (2020-10-01)
 
