@@ -1,4 +1,4 @@
-## master
+## v9.1.10 (2020-12-02)
 
 * Fixes a crash caused by the network logger when the object passed is too large
 * Adds source map upload script support for environment variables use inside Info.plist
