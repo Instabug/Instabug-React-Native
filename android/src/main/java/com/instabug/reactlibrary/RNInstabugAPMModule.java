@@ -119,7 +119,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 try {
                     String result = "";
                     ExecutionTrace trace = APM.startExecutionTrace(name);
-                    if (trace == null) {
+                    if (trace != null) {
                         result = id;
                         traces.put(id, trace);
                     }
