@@ -116,5 +116,19 @@ export default {
      */
     _ibgSleep() {
         IBGAPM.ibgSleep();
-    }
+    },
+
+  /**
+   * APM Log Level.
+   * @readonly
+   * @enum {number}
+   */
+  logLevel: {
+    none: Instabug.logLevelNone,
+    error: Instabug.logLevelError,
+    warning: Instabug.logLevelWarning,
+    info: Instabug.logLevelInfo,
+    debug: Instabug.logLevelDebug,
+    verbose: Instabug.logLevelVerbose,
+  },
 };

@@ -287,12 +287,12 @@ export enum sdkDebugLogsLevel {
   sdkDebugLogsLevelNone,
 }
 export enum logLevel {
-  logLevelNone,
-  logLevelError,
-  logLevelWarning,
-  logLevelInfo,
-  logLevelDebug,
-  logLevelVerbose,
+  none,
+  error,
+  warning,
+  info,
+  debug,
+  verbose,
 }
 export enum extendedBugReportMode {
   enabledWithRequiredFields,
