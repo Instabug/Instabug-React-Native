@@ -70,9 +70,7 @@ export default {
      * @param {boolean} isEnabled 
      */
     setAutoUITraceEnabled(isEnabled) {
-        if (Platform.OS === 'ios') {
-            IBGAPM.setAutoUITraceEnabled(isEnabled);
-        }
+        IBGAPM.setAutoUITraceEnabled(isEnabled);
     },
 
     /**

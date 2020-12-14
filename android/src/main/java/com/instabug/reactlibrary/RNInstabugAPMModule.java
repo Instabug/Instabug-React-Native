@@ -108,6 +108,24 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enables or disables auto UI tracing
+     * @param isEnabled boolean indicating enabled or disabled.
+     */
+    @ReactMethod
+    public void setAutoUITraceEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.setAutoUITraceEnabled(isEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Starts an execution trace
      * @param name string name of the trace.
      */
