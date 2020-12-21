@@ -109,6 +109,29 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enabled/disable push notifications
+     *
+     * @param isEnabled whether chat push notifications is enabled or not
+     */
+    @ReactMethod
+    public void setPushNotificationsEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        Replies.setPushNotificationState(Feature.State.ENABLED);
+                    } else {
+                        Replies.setPushNotificationState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Enabled/disable chat notification
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not

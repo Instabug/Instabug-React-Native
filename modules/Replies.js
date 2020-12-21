@@ -96,8 +96,7 @@ export default {
    * notifications are enabled or disabled.
    */
   setPushNotificationsEnabled(isPushNotificationEnabled) {
-    if (Platform.OS === 'ios')
-      IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
+    IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
   /**

@@ -126,19 +126,9 @@ describe('Replies Module', () => {
 
   it('should call the native method setPushNotificationsEnabled', () => {
 
-    Platform.OS = 'ios';
     Replies.setPushNotificationsEnabled(true);
 
     expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
-
-  });
-
-  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
-
-    Platform.OS = 'android';
-    Replies.setPushNotificationsEnabled(true);
-
-    expect(setPushNotificationsEnabled.notCalled).toBe(true);
 
   });
 

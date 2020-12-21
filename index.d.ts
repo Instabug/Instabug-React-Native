@@ -94,6 +94,9 @@ export namespace Replies {
   function setInAppNotificationsEnabled(
     inAppNotificationsEnabled: boolean
   ): void;
+  function setPushNotificationsEnabled(
+    isPushNotificationEnabled: boolean
+  ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
   function setPushNotificationRegistrationTokenAndroid(token: string): void;
   function setNotificationIconAndroid(notificationIcon: int): void;
