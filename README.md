@@ -59,7 +59,7 @@ import Instabug from 'instabug-reactnative';
      Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
     ```javascript
-    Instabug.startWithToken('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
+    Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
  * ### Android
 1. Open `android/app/src/main/java/[...]/MainApplication.java`
