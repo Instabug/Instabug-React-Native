@@ -180,7 +180,7 @@ export function setEnabledAttachmentTypes(
 export function identifyUserWithEmail(email: string, name: string): void;
 export function identifyUser(email: string, name: string): void;
 export function logOut(): void;
-export function logUserEventWithName(name: string, params?: any): void;
+export function logUserEventWithName(name: string): void;
 export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
