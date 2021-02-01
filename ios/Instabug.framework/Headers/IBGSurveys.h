@@ -3,9 +3,9 @@
  
  Contains:   API for using Instabug's SDK.
  
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
- 
- Version:    9.1.7
+ Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
+
+ Version:    10.1.2
  */
 
 #import <Foundation/Foundation.h>
@@ -92,7 +92,18 @@ NS_SWIFT_NAME(Surveys)
  
  @param surveyToken A String with a survey token.
  */
-+ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken;
++ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken DEPRECATED_MSG_ATTRIBUTE("hasRespondedToSurveyWithToken: is deprecated. Please use hasRespondedToSurveyWithToken:completionHandler:");
+
+/**
+ @brief Returns true in the completion handler if the survey with a specific token was answered before .
+ 
+ @discussion Will return false if the token does not exist or if the survey was not answered before.
+ 
+ @param surveyToken A String with a survey token.
+ @param completionHandler A CompletionHandler for the result..
+ */
++ (void)hasRespondedToSurveyWithToken:(NSString *)surveyToken
+                    completionHandler:(void(^)(BOOL hasResponded))completionHandler;
 
 
 /**

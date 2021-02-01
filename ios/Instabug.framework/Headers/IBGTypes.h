@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    9.1.7
+ Version:    10.1.2
  */
 
 #import <UIKit/UIKit.h>
@@ -294,7 +294,7 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleKorean,
     IBGLocaleNorwegian,
     IBGLocalePolish,
-    IBGLocalePortugese DEPRECATED_MSG_ATTRIBUTE("Please use IBGLocalePortuguese"), // Fixing typo https://instabug.atlassian.net/browse/INSD-2731
+    IBGLocalePortugese DEPRECATED_MSG_ATTRIBUTE("Please use IBGLocalePortuguese"), // Fixing typo
     IBGLocalePortuguese,
     IBGLocalePortugueseBrazil,
     IBGLocaleRussian,
@@ -330,12 +330,15 @@ typedef NS_ENUM(NSInteger, IBGPosition) {
  The Conosle Log Level.
  */
 typedef NS_ENUM(NSInteger, IBGLogLevel) {
-    IBGLogLevelDefault,
-    IBGLogLevelTrace,
-    IBGLogLevelInfo,
-    IBGLogLevelWarning,
+    IBGLogLevelNone = 0,
     IBGLogLevelError,
-    IBGLogLevelFatal
+    IBGLogLevelFatal DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
+    IBGLogLevelWarning,
+    IBGLogLevelInfo,
+    IBGLogLevelDefault DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
+    IBGLogLevelDebug,
+    IBGLogLevelTrace DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
+    IBGLogLevelVerbose,
 };
 
 /**
