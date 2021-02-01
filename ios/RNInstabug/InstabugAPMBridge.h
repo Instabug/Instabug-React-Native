@@ -15,7 +15,8 @@
 - (void)setEnabled:(BOOL)isEnabled;
 - (void)setAppLaunchEnabled:(BOOL)isEnabled;
 - (void)setAutoUITraceEnabled:(BOOL)isEnabled;
-- (void)startExecutionTrace:(NSString *)name:(NSString *)id;
+- (void)startExecutionTrace:(NSString *)name:(NSString *)id
+                           :(RCTResponseSenderBlock)callBack;
 - (void)setExecutionTraceAttribute:(NSString *)id:(NSString *)key
                                   :(NSString *)value;
 - (void)endExecutionTrace:(NSString *)id;
