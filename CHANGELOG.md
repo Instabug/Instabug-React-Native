@@ -1,7 +1,7 @@
-## v10.0.0 (2021-02-01)
+## v10.0.0 (2021-02-10)
 
 * Introduces Instabug’s new App Performance Monitoring (APM)
-* Adds support of Push Notifications
+* Adds support for Push Notifications
 * Bumps the minimum supported iOS version to iOS 10
 * Various bug fixes and improvements
 
