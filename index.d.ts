@@ -94,7 +94,14 @@ export namespace Replies {
   function setInAppNotificationsEnabled(
     inAppNotificationsEnabled: boolean
   ): void;
+  function setPushNotificationsEnabled(
+    isPushNotificationEnabled: boolean
+  ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
+  function setPushNotificationRegistrationTokenAndroid(token: string): void;
+  function setNotificationIconAndroid(notificationIcon: int): void;
+  function setPushNotificationChannelIdAndroid(pushNotificationChannelId: int): void;
+  function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: int): void;
 }
 export namespace Surveys {
   function setEnabled(isEnabled: boolean): void;
