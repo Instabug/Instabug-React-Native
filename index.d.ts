@@ -100,8 +100,8 @@ export namespace Replies {
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
   function setPushNotificationRegistrationTokenAndroid(token: string): void;
   function setNotificationIconAndroid(notificationIcon: int): void;
-  function setPushNotificationChannelIdAndroid(pushNotificationChannelId: int): void;
-  function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: int): void;
+  function setPushNotificationChannelIdAndroid(pushNotificationChannelId: string): void;
+  function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: boolean): void;
 }
 export namespace Surveys {
   function setEnabled(isEnabled: boolean): void;
