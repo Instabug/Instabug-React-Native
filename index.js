@@ -10,6 +10,7 @@ import InstabugUtils from './utils/InstabugUtils';
 import InstabugConstants from './utils/InstabugConstants';
 import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
+import APM from './modules/APM';
 import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
 import Chats from './modules/Chats';
@@ -1083,7 +1084,8 @@ export {
   Chats,
   Replies,
   CrashReporting,
-  NetworkLogger
+  NetworkLogger,
+  APM,
 };
 
 export default InstabugModule;

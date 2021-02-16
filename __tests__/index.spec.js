@@ -196,15 +196,6 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
-
-    Platform.OS = 'android';
-    Instabug.setPushNotificationsEnabled(true);
-
-    expect(setPushNotificationsEnabled.notCalled).toBe(true);
-
-  });
-
   it('should call the native method setLocale', () => {
 
     const locale = Instabug.locale.english;

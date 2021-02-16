@@ -339,11 +339,24 @@ RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
     callback(@[[NSNumber numberWithBool:result]]);
 }
 
+RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
+    if(isEnabled) {
+        IBGNetworkLogger.enabled = YES;
+    } else {
+        IBGNetworkLogger.enabled = NO;
+    }
+}
+
 RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     NSString* url = networkData[@"url"];
     NSString* method = networkData[@"method"];
     NSString* requestBody = networkData[@"requestBody"];
-    NSString* responseBody = networkData[@"responseBody"];
+    int64_t requestBodySize = [networkData[@"requestBodySize"] integerValue];
+    NSString* responseBody = nil;
+    if (networkData[@"responseBody"] != [NSNull null]) {
+        responseBody = networkData[@"responseBody"];
+    }
+    int64_t responseBodySize = [networkData[@"responseBodySize"] integerValue];
     int32_t responseCode = [networkData[@"responseCode"] integerValue];
     NSDictionary* requestHeaders = @{};
     if([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]){
@@ -354,9 +367,12 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
         responseHeaders = networkData[@"responseHeaders"];
     }
     NSString* contentType = networkData[@"contentType"];
-    double duration = [networkData[@"duration"] doubleValue];
+    NSString* errorDomain = networkData[@"errorDomain"];
+    int32_t errorCode = [networkData[@"errorCode"] integerValue];
+    int64_t startTime = [networkData[@"startTime"] integerValue] * 1000;
+    int64_t duration = [networkData[@"duration"] doubleValue] * 1000;
     
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:");
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:");
     
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
@@ -366,12 +382,17 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
         [inv setArgument:&(url) atIndex:2];
         [inv setArgument:&(method) atIndex:3];
         [inv setArgument:&(requestBody) atIndex:4];
-        [inv setArgument:&(responseBody) atIndex:5];
-        [inv setArgument:&(responseCode) atIndex:6];
-        [inv setArgument:&(requestHeaders) atIndex:7];
-        [inv setArgument:&(responseHeaders) atIndex:8];
-        [inv setArgument:&(contentType) atIndex:9];
-        [inv setArgument:&(duration) atIndex:10];
+        [inv setArgument:&(requestBodySize) atIndex:5];
+        [inv setArgument:&(responseBody) atIndex:6];
+        [inv setArgument:&(responseBodySize) atIndex:7];
+        [inv setArgument:&(responseCode) atIndex:8];
+        [inv setArgument:&(requestHeaders) atIndex:9];
+        [inv setArgument:&(responseHeaders) atIndex:10];
+        [inv setArgument:&(contentType) atIndex:11];
+        [inv setArgument:&(errorDomain) atIndex:12];
+        [inv setArgument:&(errorCode) atIndex:13];
+        [inv setArgument:&(startTime) atIndex:14];
+        [inv setArgument:&(duration) atIndex:15];
         
         [inv invoke];
     }
@@ -439,6 +460,13 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"topRight": @(IBGPositionTopRight),
               @"bottomLeft": @(IBGPositionBottomLeft),
               @"topLeft": @(IBGPositionTopLeft),
+              
+              @"logLevelNone": @(IBGLogLevelNone),
+              @"logLevelError": @(IBGLogLevelError),
+              @"logLevelWarning": @(IBGLogLevelWarning),
+              @"logLevelInfo": @(IBGLogLevelInfo),
+              @"logLevelDebug": @(IBGLogLevelDebug),
+              @"logLevelVerbose": @(IBGLogLevelVerbose),
               
               @"allActions": @(IBGActionAllActions),
               @"reportBugAction": @(IBGActionReportBug),

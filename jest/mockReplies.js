@@ -9,7 +9,11 @@ jest.mock('NativeModules', () => {
             setInAppNotificationEnabled: jest.fn(),
             setInAppNotificationSound: jest.fn(),
             addListener: jest.fn(),
-            setPushNotificationsEnabled: jest.fn()
+            setPushNotificationsEnabled: jest.fn(),
+            setPushNotificationRegistrationToken: jest.fn(),
+            setNotificationIcon: jest.fn(),
+            setPushNotificationChannelId: jest.fn(),
+            setSystemReplyNotificationSoundEnabled: jest.fn(),
         },
     };
 });

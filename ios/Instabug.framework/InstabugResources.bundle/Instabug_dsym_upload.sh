@@ -31,16 +31,26 @@ fi
 # Check to make sure the app token exists
 # Objective-C
 if [ ! "${APP_TOKEN}" ]; then
-    APP_TOKEN=$(grep -r 'Instabug startWithToken:@\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+    APP_TOKEN=$(grep -r 'Instabug startWithToken:@\"[0-9a-zA-Z]*\"' ./ --include="AppDelegate.m" -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+fi
+if [ ! "${APP_TOKEN}" ]; then
+    APP_TOKEN=$(grep -r 'Instabug startWithToken:@\"[0-9a-zA-Z]*\"' ./ --include=*.{m,h,c,mm} -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 fi
 
-# Swift
+# Swift - Instabug.startWithToken(
 if [ ! "${APP_TOKEN}" ]; then
-    APP_TOKEN=$(grep -r 'Instabug.startWithToken(\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+    APP_TOKEN=$(grep -r 'Instabug.startWithToken([ ]*\"[0-9a-zA-Z]*\"' ./ -m 1 --include="AppDelegate.swift" | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+fi
+if [ ! "${APP_TOKEN}" ]; then
+    APP_TOKEN=$(grep -r 'Instabug.startWithToken([ ]*\"[0-9a-zA-Z]*\"' ./ -m 1 --include="*.swift"} | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 fi
 
+# Swift - Instabug.start(withToken:
 if [ ! "${APP_TOKEN}" ]; then
-    APP_TOKEN=$(grep -r 'Instabug.start(withToken:\"[0-9a-zA-Z]*\"' ./ -m 1 | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+    APP_TOKEN=$(grep -r 'Instabug.start(withToken:[ ]*\"[0-9a-zA-Z]*\"' ./ -m 1  --include="AppDelegate.swift" | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
+fi
+if [ ! "${APP_TOKEN}" ]; then
+    APP_TOKEN=$(grep -r 'Instabug.start(withToken:[ ]*\"[0-9a-zA-Z]*\"' ./ -m 1  --include="*.swift" | grep -o '\"[0-9a-zA-Z]*\"' | cut -d "\"" -f 2)
 fi
 
 if [ ! "${APP_TOKEN}" ] || [ -z "${APP_TOKEN}" ];then
@@ -50,7 +60,6 @@ fi
 echo "Instabug: found APP_TOKEN=${APP_TOKEN}"
 
 # Check internet connection
-set -x
 
 CURL_RESPONSE=$(curl 'https://api.instabug.com')
 
@@ -58,11 +67,7 @@ if [[ $CURL_RESPONSE != *"OK"* ]]; then
     echo "ERROR connecting to api.instabug.com."
     echo "${CURL_RESPONSE}"
     exit 0
-else
-  echo SUCCESS
 fi
-
-set +x
 
 # Create temp directory if not exists
 CURRENT_USER=$(whoami| tr -dc '[:alnum:]\n\r' | tr '[:upper:]' '[:lower:]')
@@ -93,36 +98,63 @@ if [ -d "${DSYMS_DIR}" ]; then
 fi
 
 mkdir "$DSYMS_DIR"
-DSYM_UUIDs=""
-SEPARATOR=$'\n'
 DSYM_UUIDs_PATH="${TEMP_DIRECTORY}/UUIDs.dat"
 
+# Create temp .dat file to save the output to it
+DSYM_UUIDs_TMP_PATH="${TEMP_DIRECTORY}/UUIDs.dat.tmp"
+rm -f DSYM_UUIDs_TMP_PATH
 
-find "${DWARF_DSYM_FOLDER_PATH}" -name "*.dSYM" | (while read -r file
-do
+process_dsym_file() {
+    file=$1
     UUIDs=$(dwarfdump --uuid "${file}" | cut -d ' ' -f2)
     if [ -f "${DSYM_UUIDs_PATH}" ]; then
         for uuid in $UUIDs
             do
                 UUIDTOKEN="${uuid}"-"${APP_TOKEN}"
                 if ! grep -w "${UUIDTOKEN}" "${DSYM_UUIDs_PATH}" ; then
+                    echo "Instabug: Sending dSYM with UUID: ${uuid}"
                     cp -r "${file}" "${DSYMS_DIR}"
-                    DSYM_UUIDs+=$uuid$SEPARATOR
+                    echo "${UUIDTOKEN}" >> "${DSYM_UUIDs_TMP_PATH}"
+                else
+                    echo "Instabug: ${uuid} already uploaded."
                 fi
         done
     else
         cp -r "${file}" "${DSYMS_DIR}"
-        DSYM_UUIDs+=${UUIDs}$SEPARATOR
+        echo "${UUIDs}$SEPARATOR" >> "${DSYM_UUIDs_TMP_PATH}"
     fi
-done
+}
 
-if [ -z "$DSYM_UUIDs" ]; then
-    rm -rf "${DSYMS_DIR}"
-    exit 0
+# 1. Process app `.dSYM`
+process_dsym_file "$DSYM_PATH"
+
+# 2. Process app's frameworks' `.dSYMs`
+if [ ! "${FRAMEWORKS_FOLDER_PATH}" ]; then
+    find "${DWARF_DSYM_FOLDER_PATH}" -name "*.dSYM" | while read -r file
+    do
+        process_dsym_file "$file"
+    done
+ else
+     find "${DWARF_DSYM_FOLDER_PATH}/${FRAMEWORKS_FOLDER_PATH}" -name "*.framework" | while read -r framework
+     do
+         framework_name="$(basename -- $framework)"
+         framework_dsym="$(find ${DWARF_DSYM_FOLDER_PATH} -name ${framework_name}.dSYM)"
+          if [ ! "${framework_dsym}" ]; then
+             echo "Instabug: Cannot find ${framework_name}.dSYM"
+          else
+              echo "Instabug: found DSYM_PATH=${framework_dsym}"
+              process_dsym_file "$framework_dsym"
+          fi
+     done
+
 fi
 
-
-DSYM_UUIDs_TOKEN="${DSYM_UUIDs//${SEPARATOR}/-${APP_TOKEN}$'\n'}"
+DSYM_UUIDs=$(cat ${DSYM_UUIDs_TMP_PATH})
+if [ -z "$DSYM_UUIDs" ]; then
+    rm -rf "${DSYMS_DIR}"
+    echo "Instabug: No new dSYMs to upload."
+    exit 0
+fi
 
 # Create dSYM .zip file
 DSYM_PATH_ZIP="${TEMP_DIRECTORY}/$DWARF_DSYM_FILE_NAME.zip"
@@ -144,13 +176,14 @@ if [ $STATUS -ne 200 ]; then
   exit 0
 fi
 
+# Save UUIDs
+echo "${DSYM_UUIDs}" >> "${DSYM_UUIDs_PATH}"
+
 # Remove temp dSYM archive and dSYM DIR
 echo "Instabug: deleting temporary dSYM archive..."
 rm -f "${DSYM_PATH_ZIP}"
 rm -rf "${DSYMS_DIR}"
-
-# Save UUIDs
-echo "${DSYM_UUIDs_TOKEN}" >> "${DSYM_UUIDs_PATH}"
+rm -f "${DSYM_UUIDs_TMP_PATH}"
 
 # Finalize
 echo "Instabug: dSYM upload complete."
@@ -158,4 +191,3 @@ if [ "$?" -ne 0 ]; then
   echo "Instabug: err: an error was encountered uploading dSYM"
   exit 0
 fi
-)

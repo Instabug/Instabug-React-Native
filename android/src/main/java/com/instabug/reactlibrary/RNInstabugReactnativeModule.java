@@ -87,6 +87,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
+    //LogLevel
+    private final String LOG_LEVEL_NONE = "logLevelNone";
+    private final String LOG_LEVEL_ERROR = "logLevelError";
+    private final String LOG_LEVEL_WARNING = "logLevelWarning";
+    private final String LOG_LEVEL_INFO = "logLevelInfo";
+    private final String LOG_LEVEL_DEBUG = "logLevelDebug";
+    private final String LOG_LEVEL_VERBOSE = "logLevelVerbose";
+
     //InvocationEvents
     private final String INVOCATION_EVENT_NONE = "invocationEventNone";
     private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
@@ -2360,6 +2368,14 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
+
+        constants.put("logLevelNone", LOG_LEVEL_NONE);
+        constants.put("logLevelError", LOG_LEVEL_ERROR);
+        constants.put("logLevelWarning", LOG_LEVEL_WARNING);
+        constants.put("logLevelInfo", LOG_LEVEL_INFO);
+        constants.put("logLevelDebug", LOG_LEVEL_DEBUG);
+        constants.put("logLevelVerbose", LOG_LEVEL_VERBOSE);
+
         constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
         constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
         constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
