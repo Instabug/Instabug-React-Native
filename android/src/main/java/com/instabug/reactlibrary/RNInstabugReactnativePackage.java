@@ -50,7 +50,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         this.parseInvocationEvent(invocationEventValues);
 
         setBaseUrlForDeprecationLogs();
-        setCrossPlatform();
+        setCurrentPlatform();
 
         new Instabug.Builder(this.androidApplication, this.mAndroidApplicationToken)
                 .setInvocationEvents(this.invocationEvents.toArray(new InstabugInvocationEvent[0]))
@@ -99,14 +99,14 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         }
     }
 
-    private void setCrossPlatform() {
+    private void setCurrentPlatform() {
         try {
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCrossPlatform", int.class);
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
             if (method != null) {
-                Log.i("IB-CP-Bridge", "invoking setCrossPlatform with platform: " + Platform.RN);
+                Log.i("IB-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
                 method.invoke(null, Platform.RN);
             } else {
-                Log.e("IB-CP-Bridge", "setCrossPlatform was not found by reflection");
+                Log.e("IB-CP-Bridge", "setCurrentPlatform was not found by reflection");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +137,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         modules.add(new RNInstabugFeatureRequestsModule(reactContext));
         modules.add(new RNInstabugRepliesModule(reactContext));
         modules.add(new RNInstabugChatsModule(reactContext));
+        modules.add(new RNInstabugAPMModule(reactContext));
         return modules;
     }
 

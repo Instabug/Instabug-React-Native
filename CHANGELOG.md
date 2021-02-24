@@ -1,3 +1,16 @@
+## v10.0.0 (2021-02-16)
+
+* Introduces Instabug’s new App Performance Monitoring (APM)
+* Adds support for Push Notifications
+* Bumps the minimum supported iOS version to iOS 10
+* Various bug fixes and improvements
+
+## v9.1.10 (2020-12-02)
+
+* Fixes a crash caused by the network logger when the object passed is too large
+* Adds source map upload script support for environment variables use inside Info.plist
+* Fixes a crash when using `getUserAttribute` on an attribute that does not exist 
+* Fixes a crash when calling `setSdkDebugLogsLevel` on Android 
 
 ## v9.1.9 (2020-10-01)
 

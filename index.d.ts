@@ -94,7 +94,14 @@ export namespace Replies {
   function setInAppNotificationsEnabled(
     inAppNotificationsEnabled: boolean
   ): void;
+  function setPushNotificationsEnabled(
+    isPushNotificationEnabled: boolean
+  ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
+  function setPushNotificationRegistrationTokenAndroid(token: string): void;
+  function setNotificationIconAndroid(notificationIcon: int): void;
+  function setPushNotificationChannelIdAndroid(pushNotificationChannelId: string): void;
+  function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: boolean): void;
 }
 export namespace Surveys {
   function setEnabled(isEnabled: boolean): void;
@@ -124,6 +131,21 @@ export namespace NetworkLogger {
   function setNetworkDataObfuscationHandler(handler: () => void): void;
   function setRequestFilterExpression(expression: string): void;
   function setProgressHandlerForRequest(handler: () => void): void;
+}
+export class Trace {
+  constructor(id: string, name?: string, attributes?: object);
+  setAttribute(key: string, value: string): void;
+  end(): void;
+}
+export namespace APM {
+  function setEnabled(isEnabled: boolean): void;
+  function setAppLaunchEnabled(isEnabled: boolean): void;
+  function setNetworkEnabledIOS(isEnabled: boolean): void;
+  function setAutoUITraceEnabled(isEnabled: boolean): void;
+  function startExecutionTrace(name: string): Trace;
+  function startUITrace(name: string): void;
+  function endUITrace(): void;
+  function setLogLevel(logLevel: logLevel): void;
 }
 export function startWithToken(
   token: string,
@@ -180,7 +202,7 @@ export function setEnabledAttachmentTypes(
 export function identifyUserWithEmail(email: string, name: string): void;
 export function identifyUser(email: string, name: string): void;
 export function logOut(): void;
-export function logUserEventWithName(name: string, params?: any): void;
+export function logUserEventWithName(name: string): void;
 export function logUserEvent(name: string): void;
 export function logVerbose(message: string): void;
 export function logInfo(message: string): void;
@@ -270,6 +292,14 @@ export enum sdkDebugLogsLevel {
   sdkDebugLogsLevelDebug,
   sdkDebugLogsLevelError,
   sdkDebugLogsLevelNone,
+}
+export enum logLevel {
+  none,
+  error,
+  warning,
+  info,
+  debug,
+  verbose,
 }
 export enum extendedBugReportMode {
   enabledWithRequiredFields,

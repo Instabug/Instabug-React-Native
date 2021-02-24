@@ -100,4 +100,12 @@
 - (void)logError:(NSString *)log;
 - (void)clearLogs;
 
+/*
+ +------------------------------------------------------------------------+
+ |                           Network Logging                              |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
+
 @end

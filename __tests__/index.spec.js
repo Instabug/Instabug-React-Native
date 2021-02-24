@@ -74,6 +74,7 @@ describe('Instabug Module', () => {
     setIBGLogPrintsToConsole.resetHistory();
     setPushNotificationsEnabled.resetHistory();
     log.resetHistory();
+    setSdkDebugLogsLevel.resetHistory();
     setDebugEnabled.resetHistory();
     enable.resetHistory();
     disable.resetHistory();
@@ -192,15 +193,6 @@ describe('Instabug Module', () => {
     Instabug.setFloatingButtonEdge(edge, offsetFromTop);
 
     expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
-
-  });
-
-  it('should not call the native method setPushNotificationsEnabled when platform is android', () => {
-
-    Platform.OS = 'android';
-    Instabug.setPushNotificationsEnabled(true);
-
-    expect(setPushNotificationsEnabled.notCalled).toBe(true);
 
   });
 
@@ -367,11 +359,22 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method setSdkDebugLogsLevel', () => {
+  it('should call the native method setSdkDebugLogsLevel on iOS', () => {
     const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
+    
+    Platform.OS = 'ios';
     Instabug.setSdkDebugLogsLevel(debugLevel);
 
     expect(setSdkDebugLogsLevel.calledOnceWithExactly(debugLevel)).toBe(true);
+  });
+
+  it('should not call the native method setSdkDebugLogsLevel on Android', () => {
+    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
+    
+    Platform.OS = 'android';
+    Instabug.setSdkDebugLogsLevel(debugLevel);
+
+    expect(setSdkDebugLogsLevel.notCalled).toBe(true);
   });
 
   it('should call the native method setUserAttribute', () => {

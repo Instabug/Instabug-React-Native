@@ -21,6 +21,7 @@
 		BAD36E3122F19973007F5E74 /* InstabugRepliesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E3022F19973007F5E74 /* InstabugRepliesTests.m */; };
 		BAD36E3322F19B1B007F5E74 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E3222F19B1B007F5E74 /* InstabugSurveysTests.m */; };
 		C006102922E9EBCA00EDC852 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C006102822E9EBCA00EDC852 /* libOCMock.a */; };
+		C0AB369625854A6100F1E21E /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AB369525854A6100F1E21E /* InstabugAPMTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,9 +64,9 @@
 		BAD36E3022F19973007F5E74 /* InstabugRepliesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugRepliesTests.m; sourceTree = "<group>"; };
 		BAD36E3222F19B1B007F5E74 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
 		C006102822E9EBCA00EDC852 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
+		C0AB369525854A6100F1E21E /* InstabugAPMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		C74E4010ABE7AFC7DB5E79DC /* Pods-InstabugSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstabugSampleTests/Pods-InstabugSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FA49CB8462F384E9EDD7DDFD /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Instabug.framework; path = "../node_modules/instabug-reactnative/ios/Instabug.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +102,7 @@
 				BAD36E2E22F19788007F5E74 /* InstabugFeatureRequestsTests.m */,
 				BAD36E3022F19973007F5E74 /* InstabugRepliesTests.m */,
 				BAD36E3222F19B1B007F5E74 /* InstabugSurveysTests.m */,
+				C0AB369525854A6100F1E21E /* InstabugAPMTests.m */,
 			);
 			path = InstabugSampleTests;
 			sourceTree = "<group>";
@@ -410,6 +412,7 @@
 				BAD36E1E22F0906A007F5E74 /* IBGConstants.m in Sources */,
 				BAD36E3322F19B1B007F5E74 /* InstabugSurveysTests.m in Sources */,
 				BAD36E2F22F19788007F5E74 /* InstabugFeatureRequestsTests.m in Sources */,
+				C0AB369625854A6100F1E21E /* InstabugAPMTests.m in Sources */,
 				BAD36E1C22F08B27007F5E74 /* InstabugBugReportingTests.m in Sources */,
 				BAD36E2D22F1955C007F5E74 /* InstabugChatsTests.m in Sources */,
 				00E356F31AD99517003FC87E /* InstabugSampleTests.m in Sources */,

@@ -3,9 +3,9 @@
  
  Contains:   API for using Instabug's SDK.
  
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
- 
- Version:    9.1.7
+ Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
+
+ Version:    10.1.2
  */
 
 #import <Foundation/Foundation.h>
