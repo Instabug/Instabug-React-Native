@@ -250,4 +250,4 @@ Version 8.5 adds support for React Native 0.60. To use Instabug 8.5 with React N
 
 ## Documentation
 
-For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
+For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).   
