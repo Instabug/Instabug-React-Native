@@ -167,7 +167,7 @@ function compareModuleDefinition(module, definition, baseFile) {
             }
         }
         if (!enumFound) {
-            logEnumDiscrepency(en.name, module.moduleName, fileName);
+            logEnumDiscrepency(en.name, module.moduleName, baseFile);
             flag = false;
         }
     });
