@@ -86,8 +86,6 @@ export namespace FeatureRequests {
   function setEnabled(isEnabled: boolean): void;
   function show(): void;
   enum actionTypes {
-    // allActions,
-    // reportBug,
     requestNewFeature,
     addCommentToFeature
   }
@@ -378,7 +376,6 @@ export enum strings {
   invalidCommentTitle,
   invocationHeader,
   startChats,
-  //talkToUs,
   reportQuestion,
   reportBug,
   reportFeedback,
