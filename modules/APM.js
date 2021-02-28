@@ -33,7 +33,7 @@ export default {
      * logLevelInfo will include logLevelInfo logs as well as logLevelWarning
      * and logLevelError logs.
 
-     * @param {logLevel} the printed logs priority.
+     * @param {logLevel} logLevel the printed logs priority.
      */
     setLogLevel(logLevel) {
         IBGAPM.setLogLevel(logLevel);
