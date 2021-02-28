@@ -251,10 +251,10 @@ const InstabugModule = {
    * Sets the color of UI elements indicating interactivity or call to action.
    * To use, import processColor and pass to it with argument the color hex
    * as argument.
-   * @param {color} primaryColor A color to set the UI elements of the SDK to.
+   * @param {color} color A color to set the UI elements of the SDK to.
    */
-  setPrimaryColor(primaryColor) {
-    Instabug.setPrimaryColor(processColor(primaryColor));
+  setPrimaryColor(color) {
+    Instabug.setPrimaryColor(processColor(color));
   },
 
   /**
@@ -646,11 +646,11 @@ const InstabugModule = {
    * @deprecated use {@link CrashReporting.reportJSException}
    * Send handled JS error object
    *
-   * @param errorObject   Error object to be sent to Instabug's servers
+   * @param Exception   Error object to be sent to Instabug's servers
    */
 
-  reportJSException(errorObject) {
-    CrashReporting.reportJSException(errorObject);
+  reportJSException(Exception) {
+    CrashReporting.reportJSException(Exception);
   },
 
   /**
