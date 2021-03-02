@@ -29,10 +29,14 @@ export default {
               network
             );
           } else {
-            if (Platform.OS === 'android') {
-              Instabug.networkLog(JSON.stringify(network));
-            } else {
-              Instabug.networkLog(network);
+            try {
+              if (Platform.OS === 'android') {
+                Instabug.networkLog(JSON.stringify(network));
+              } else {
+                Instabug.networkLog(network);
+              }
+            } catch (e) {
+              console.error(e);
             }
           }
         }

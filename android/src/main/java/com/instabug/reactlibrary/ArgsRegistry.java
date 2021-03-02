@@ -12,6 +12,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.visualusersteps.State;
+import com.instabug.apm.model.LogLevel;
 
 import static com.instabug.library.internal.module.InstabugLocale.ARABIC;
 import static com.instabug.library.internal.module.InstabugLocale.AZERBAIJANI;
@@ -65,6 +66,7 @@ final class ArgsRegistry {
         registerReproStepsModeArgs(ARGS);
         registerWelcomeMessageArgs(ARGS);
         registerInstabugFeatureRequestsActionTypes(ARGS);
+        registerLogLevelArgs(ARGS);
     }
 
 
@@ -204,6 +206,15 @@ final class ArgsRegistry {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
         args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
+    }
+
+    static void registerLogLevelArgs(Map<String, Object> args) {
+        args.put("logLevelNone", LogLevel.NONE);
+        args.put("logLevelError", LogLevel.ERROR);
+        args.put("logLevelWarning", LogLevel.WARNING);
+        args.put("logLevelInfo", LogLevel.INFO);
+        args.put("logLevelDebug", LogLevel.DEBUG);
+        args.put("logLevelVerbose", LogLevel.VERBOSE);
     }
 
     static void registerInstabugExtendedBugReportModeArgs(Map<String, Object> args) {

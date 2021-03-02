@@ -13,15 +13,19 @@ var network;
 const _reset = () => {
   network = {
     url: '',
-    requestBody: '',
-    requestHeaders: {},
     method: '',
+    requestBody: '',
+    requestBodySize: 0,
     responseBody: '',
+    responseBodySize: 0,
     responseCode: 0,
+    requestHeaders: {},
     responseHeaders: {},
     contentType: '',
+    errorDomain: '',
+    errorCode: 0,
+    startTime: 0,
     duration: 0,
-    start: 0
   };
 }
 
@@ -64,6 +68,12 @@ const XHRInterceptor = {
               if (contentTypeString) {
                 cloneNetwork.contentType = contentTypeString.split(';')[0];
               }
+              const responseBodySizeString = this.getResponseHeader('Content-Length');
+              if (responseBodySizeString) {
+                const responseBodySizeNumber = Number(responseBodySizeString);
+
+                if (!isNaN(responseBodySizeNumber)) cloneNetwork.responseBodySize = responseBodySizeNumber;
+              }
                 
               if (this.getAllResponseHeaders()) {
                 const responseHeaders = this.getAllResponseHeaders().split('\r\n');
@@ -77,7 +87,7 @@ const XHRInterceptor = {
               }
             }
             if (this.readyState === this.DONE) {
-              cloneNetwork.duration = (Date.now() - cloneNetwork.start);
+              cloneNetwork.duration = (Date.now() - cloneNetwork.startTime);
               if (this.status == null) {
                 cloneNetwork.responseCode = 0;
               } else {
@@ -94,7 +104,11 @@ const XHRInterceptor = {
               }
 
               if (this._hasError) {
+                cloneNetwork.errorCode = 0;
+                cloneNetwork.errorDomain = 'ClientError';
+
                 cloneNetwork.requestBody = this._response;
+                cloneNetwork.responseBody = null;
               }
               if (onDoneCallback) {
                 onDoneCallback(cloneNetwork);
@@ -119,7 +133,7 @@ const XHRInterceptor = {
         this.upload.addEventListener('progress', downloadUploadProgressCallback);
       }
 
-      cloneNetwork.start = Date.now();
+      cloneNetwork.startTime = Date.now();
       originalXHRSend.apply(this, arguments);
     };
     isInterceptorEnabled = true;

@@ -3,14 +3,13 @@
 
  Contains:   API for using Instabug's SDK.
 
- Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
+ Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    9.1.7
+ Version:    10.1.2
  */
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "InstabugCore.h"
 #import "IBGNetworkLogger.h"
 #import "IBGReport.h"
 #import "IBGLog.h"
@@ -20,6 +19,8 @@
 #import "IBGFeatureRequests.h"
 #import "IBGChats.h"
 #import "IBGReplies.h"
+#import "IBGAPM.h"
+#import "IBGExecutionTrace.h"
 #import "UIView+Instabug.h"
 
 /**
@@ -30,6 +31,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Instabug : NSObject
+
+/**
+ @brief Acts as master switch for Instabug.
+ 
+ @discussion It's enabled by default. When disabled, We will send pending data then disable all features related to Instabug.
+ */
+@property (class, atomic, assign) BOOL enabled;
+
 
 /**
  @brief Sets whether the session profiler is enabled or disabled.
@@ -215,6 +224,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief Sets the color theme of the SDK's whole UI.
+ 
+ @discussion Defaults is `IBGColorThemeLight`. Color theme is not updated
+ automatically based on iOS Light or Dark mode changes.
 
  @param colorTheme An `IBGColorTheme` to set the SDK's UI to.
  

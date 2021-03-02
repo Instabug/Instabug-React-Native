@@ -109,6 +109,29 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enabled/disable push notifications
+     *
+     * @param isEnabled whether chat push notifications is enabled or not
+     */
+    @ReactMethod
+    public void setPushNotificationsEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        Replies.setPushNotificationState(Feature.State.ENABLED);
+                    } else {
+                        Replies.setPushNotificationState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Enabled/disable chat notification
      *
      * @param isChatNotificationEnable whether chat notification is reburied or not
@@ -120,6 +143,85 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
             public void run() {
                 try {
                     Replies.setInAppNotificationEnabled(isChatNotificationEnable);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Set the GCM registration token to Instabug
+     *
+     * @param token the GCM registration token
+     */
+    @ReactMethod
+    public void setPushNotificationRegistrationToken(final String token) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setPushNotificationRegistrationToken(token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Set the push notification's icon that will be shown with Instabug notifications
+     *
+     * @param notificationIcon the notification icon resource ID
+     */
+    @ReactMethod
+    public void setNotificationIcon(final int notificationIcon) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setNotificationIcon(notificationIcon);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    /**
+    * Set a notification channel id to a notification channel that notifications
+    * can be posted to.
+    *
+    * @param pushNotificationChannelId an id to a notification channel that notifications
+    */
+    @ReactMethod
+    public void setPushNotificationChannelId(final String pushNotificationChannelId) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setPushNotificationChannelId(pushNotificationChannelId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Set whether new system notification received will play the default sound from
+     * RingtoneManager or not (Default is {@code false})
+     *
+     * @param shouldPlaySound desired state of conversation sounds
+     */
+    @ReactMethod
+    public void setSystemReplyNotificationSoundEnabled(final boolean shouldPlaySound) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Replies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

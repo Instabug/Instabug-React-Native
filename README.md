@@ -59,7 +59,7 @@ import Instabug from 'instabug-reactnative';
      Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
     ```javascript
-    Instabug.startWithToken('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
+    Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
  * ### Android
 1. Open `android/app/src/main/java/[...]/MainApplication.java`
@@ -113,46 +113,6 @@ import Instabug from 'instabug-reactnative';
     	}
     }
     ```
-## Update Guide
-### Updating to versions 8.0-8.4.x
-
-When updating to version 8.0 through 8.4.x, you'll need to perform the steps below.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Link Instabug
-    ```bash
-    react-native link instabug-reactnative
-    ```
-
-### Updating to version 8.5
-
-_Only for apps using React Native >= 0.60. If you're using a lower version, you don't need to perform any extra steps when updating._
-
-Version 8.5 adds support for React Native 0.60. To use Instabug 8.5 with React Native 0.60, you'll need to perform the following steps.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Add Instabug to your project
-    ```bash
-    react-native add-instabug
-    ```
 
 ## Microphone and Photo Library Usage Description (iOS Only)
 
@@ -201,9 +161,9 @@ NetworkLogger.setEnabled(false);
 
 Instabug Repro Steps are enabled by default. It captures a screenshot of each screen the user navigates to. These screens are attached to the BugReport when sent.
 
-We support the 2 most popular React Native navigation libraries:
+We support the two most popular React Native navigation libraries:
 
-  *  **react-navigation**
+  *  **[react-navigation](https://github.com/react-navigation/react-navigation)**
 
 	  *  **v5**
 		set the `onStateChange` to `Instabug.onStateChange` in your NavigationContainer as follows:
@@ -222,9 +182,10 @@ We support the 2 most popular React Native navigation libraries:
 		onNavigationStateChange={  Instabug.onNavigationStateChange  }  />
 		);
 		```
-	*  **react-native-navigation**
 
-		 Register `Instabug.componentDidAppearListener` listener using:
+  *  **[react-native-navigation](https://github.com/wix/react-native-navigation)**
+
+		Register `Instabug.componentDidAppearListener` listener using:
 		```javascript
 		Navigation.events().registerComponentDidAppearListener( Instabug.componentDidAppearListener );
 		```
@@ -241,9 +202,51 @@ You can disable Repro Steps using the following API:
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
 
+## Update Guide
+### Updating to versions 8.0-8.4.x
+
+When updating to version 8.0 through 8.4.x, you'll need to perform the steps below.
+
+1. Unlink Instabug
+    ```bash
+    react-native unlink instabug-reactnative
+    ```
+
+2. Install the new version of Instabug
+    ```bash
+    npm install instabug-reactnative
+    ```
+
+3. Link Instabug
+    ```bash
+    react-native link instabug-reactnative
+    ```
+
+### Updating to version 8.5
+
+_Only for apps using React Native >= 0.60. If you're using a lower version, you don't need to perform any extra steps when updating._
+
+Version 8.5 adds support for React Native 0.60. To use Instabug 8.5 with React Native 0.60, you'll need to perform the following steps.
+
+1. Unlink Instabug
+    ```bash
+    react-native unlink instabug-reactnative
+    ```
+
+2. Install the new version of Instabug
+    ```bash
+    npm install instabug-reactnative
+    ```
+
+3. Add Instabug to your project
+    ```bash
+    react-native add-instabug
+    ```
+
 ## Features that are not supported yet
 
 - Push Notification Support for In-App Messaging
+- [User Steps](https://help.instabug.com/en/articles/2515300-instabug-report-logs-user-steps).
 
 ## Documentation
 
