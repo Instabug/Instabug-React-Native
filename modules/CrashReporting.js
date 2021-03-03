@@ -21,7 +21,7 @@ export default {
   /**
    * Send handled JS error object
    *
-   * @param errorObject   Error object to be sent to Instabug's servers
+   * @param errorObject Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
     let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);

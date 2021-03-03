@@ -139,7 +139,7 @@ function compareModuleDefinition(module, definition, baseFile) {
                 break;
             }
         }
-        if (!funcFound) {
+        if (!funcFound && func.name[0] !== "_") {
             logFunctionDiscrepency(module.moduleName, func.name, baseFile);
             flag = false;
         }
@@ -167,7 +167,7 @@ function compareModuleDefinition(module, definition, baseFile) {
             }
         }
         if (!enumFound) {
-            logEnumDiscrepency(en.name, module.moduleName, fileName);
+            logEnumDiscrepency(en.name, module.moduleName, baseFile);
             flag = false;
         }
     });
