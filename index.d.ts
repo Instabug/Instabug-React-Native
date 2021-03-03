@@ -9,7 +9,6 @@ export namespace BugReporting {
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
   function setOptions(options: invocationOptions[]): void;
   function onInvokeHandler(handler: () => void): void;
-  //function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(
     handler: (dismiss: dismissType, report: reportType) => void
   ): void;
@@ -76,7 +75,7 @@ export namespace Chats {
 }
 export namespace CrashReporting {
   function setEnabled(isEnabled: boolean): void;
-  function reportJSException(Exception: object): void;
+  function reportJSException(errorObject: object): void;
 }
 export namespace FeatureRequests {
   function setEmailFieldRequired(
@@ -157,7 +156,6 @@ export namespace APM {
   function startExecutionTrace(name: string): Trace;
   function startUITrace(name: string): void;
   function endUITrace(): void;
-  function _ibgSleep(): void;
   function setLogLevel(logLevel: logLevel): void;
   enum logLevel {
     none,
@@ -250,7 +248,7 @@ export function setDebugEnabled(isDebugEnabled: boolean): void;
 export function enable(): void;
 export function disable(): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
-export function reportJSException(Exception: object): void;
+export function reportJSException(errorObject: object): void;
 export function isRunningLive(runningLiveCallBack: () => void): void;
 export function setVideoRecordingFloatingButtonPosition(
   position: IBGPosition

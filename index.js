@@ -646,11 +646,11 @@ const InstabugModule = {
    * @deprecated use {@link CrashReporting.reportJSException}
    * Send handled JS error object
    *
-   * @param Exception   Error object to be sent to Instabug's servers
+   * @param errorObject Error object to be sent to Instabug's servers
    */
 
-  reportJSException(Exception) {
-    CrashReporting.reportJSException(Exception);
+  reportJSException(errorObject) {
+    CrashReporting.reportJSException(errorObject);
   },
 
   /**
