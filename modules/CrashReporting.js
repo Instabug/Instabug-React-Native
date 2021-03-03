@@ -21,7 +21,7 @@ export default {
   /**
    * Send handled JS error object
    *
-   * @param errorObject Error object to be sent to Instabug's servers
+   * @param Exception   Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
     let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
@@ -29,7 +29,7 @@ export default {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,
       platform: 'react_native',
-      errorObject: jsStackTrace
+      exception: jsStackTrace
     };
     
     if (InstabugUtils.isOnReportHandlerSet() && Platform.OS === 'android') {
