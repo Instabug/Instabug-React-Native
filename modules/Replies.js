@@ -111,6 +111,17 @@ export default {
   },
 
   /**
+   * Show in-app Messaging's notifications
+   *
+   * @param data the data bundle related to Instabug
+   */
+   showNotificationAndroid(data) {
+    if (Platform.OS === 'android') {
+      IBGReplies.showNotification(data);
+    }
+  },
+
+  /**
    * Set the push notification's icon that will be shown with Instabug notifications
    *
    * @param notificationIcon the notification icon resource ID
