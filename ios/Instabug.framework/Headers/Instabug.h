@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.1.2
+ Version:    10.4.2
  */
 
 #import <Foundation/Foundation.h>
@@ -307,6 +307,27 @@ NS_ASSUME_NONNULL_BEGIN
  @return A new dictionary containing all the currently set user attributes, or an empty dictionary if no user attributes have been set.
  */
 + (nullable NSDictionary *)userAttributes;
+
+/**
+ @brief Added Experiments will be attached with all crash reports, including Fatal, Non-fatal and OOM crashes.
+ 
+ @discussion You can have a total of 600 experiments. Exceeding maximum limit will cause previously added experiments to be dropped.
+
+ An Experiment string length shouldn't exceed 70 characters limit. Experiments which exceed that limit won't be added.
+
+ Experiments strings are not case-sensitive.
+ */
++ (void)addExperiments:(NSArray<NSString *> *)experiments;
+
+/**
+ @brief Remove previously added Experiments.
+ */
++ (void)removeExperiments:(NSArray<NSString *> *)experiments;
+
+/**
+ @brief Clear all saved experiments.
+ */
++ (void)clearAllExperiments;
 
 /// -------------------
 /// @name SDK Reporting

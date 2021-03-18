@@ -5,11 +5,14 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.1.2
+ Version:    10.4.2
  */
 
 #import <Foundation/Foundation.h>
 #import "IBGSurvey.h"
+#import "IBGSurveyFinishedState.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(Surveys)
 @interface IBGSurveys : NSObject
@@ -46,6 +49,20 @@ NS_SWIFT_NAME(Surveys)
  is dismissed.
  */
 @property (class, atomic, strong) void(^didDismissSurveyHandler)(void);
+
+/**
+ *  @brief Sets a block of code to be executed when the survey finishes.
+ *
+ *  @discussion This block is executed when the survey is dismissed at the start or midway, or when the survey is submitted. The block is passed the following:
+ *
+ *      * `IBGSurveyFinishedState state` - An enum describing the state of the survey on finishing, whether it was dismissed at start
+ *      or midway or completed.
+ *
+ *      * `NSDictionary *info` - A dictionary carrying info about the survey and the questions' responses
+ *
+ *      * `NSString *identifier` - A string with the survey's identifier
+ */
+@property (class, atomic, strong, nullable) void(^didFinishSurveyHandler)(IBGSurveyFinishedState state, NSDictionary *info, NSString *identifier);
 
 /**
  @brief Setting an option for all the surveys to show a welcome screen before the user starts taking the survey.
@@ -115,3 +132,5 @@ NS_SWIFT_NAME(Surveys)
 @property (class, atomic, strong) NSString *appStoreURL;
 
 @end
+
+NS_ASSUME_NONNULL_END
