@@ -7,12 +7,17 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
 
@@ -162,6 +167,41 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
             public void run() {
                 try {
                     Replies.setPushNotificationRegistrationToken(token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Show in-app Messaging's notifications
+     *
+     * @param data the data bundle related to Instabug
+     */
+    @ReactMethod
+    public void showNotification(final ReadableMap data) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    ReadableMapKeySetIterator iterator = data.keySetIterator();
+
+                    while (iterator.hasNextKey()) {
+                        String key = iterator.nextKey();
+                        ReadableType type = data.getType(key);
+
+                        switch(type) {
+                            case String:
+                                String value = data.getString(key);
+                                map.put(key, value);
+                                break;
+                        }
+                    }
+                    if (Replies.isInstabugNotification(map)) {
+                        Replies.showNotification(map);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

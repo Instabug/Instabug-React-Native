@@ -99,7 +99,8 @@ export namespace Replies {
   ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
   function setPushNotificationRegistrationTokenAndroid(token: string): void;
-  function setNotificationIconAndroid(notificationIcon: int): void;
+  function showNotificationAndroid(data: object): void;
+  function setNotificationIconAndroid(notificationIcon: number): void;
   function setPushNotificationChannelIdAndroid(pushNotificationChannelId: string): void;
   function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: boolean): void;
 }
