@@ -7,13 +7,23 @@ export namespace BugReporting {
   function setEnabled(isEnabled: boolean): void;
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
   function setInvocationOptions(invocationOptions: invocationOptions[]): void;
+  function setOptions(options: invocationOptions[]): void;
   function onInvokeHandler(handler: () => void): void;
-  function onReportSubmitHandler(preSendingHandler: () => void): void;
   function onSDKDismissedHandler(
     handler: (dismiss: dismissType, report: reportType) => void
   ): void;
   function setDidSelectPromptOptionHandler(
     didSelectPromptOptionHandler: () => void
+  ): void;
+  function setFloatingButtonEdge(
+    floatingButtonEdge: number,
+    offsetFromTop: number
+  ): void;
+  function setEnabledAttachmentTypes(
+    screenshot: boolean,
+    extraScreenshot: boolean,
+    galleryImage: boolean,
+    screenRecording: boolean
   ): void;
   function setShakingThresholdForiPhone(iPhoneShakingThreshold: number): void;
   function setShakingThresholdForiPad(iPadShakingThreshold: number): void;
@@ -24,8 +34,11 @@ export namespace BugReporting {
   function setReportTypes(types: reportType[]): void;
   function showWithOptions(type: reportType, options: option[]): void;
   function show(type: reportType, options: option[]): void;
-  function setAutoScreenRecordingEnabled(isEnabled: boolean): void;
-  function setViewHierarchyEnabled(isEnabled: boolean): void;
+  function setAutoScreenRecordingEnabled(autoScreenRecordingEnabled: boolean): void;
+  function setAutoScreenRecordingMaxDuration(
+    autoScreenRecordingMaxDuration: number
+  ): void;
+  function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
   enum invocationEvent {
     none,
     shake,
@@ -62,7 +75,7 @@ export namespace Chats {
 }
 export namespace CrashReporting {
   function setEnabled(isEnabled: boolean): void;
-  function reportJSException(Exception: object): void;
+  function reportJSException(errorObject: object): void;
 }
 export namespace FeatureRequests {
   function setEmailFieldRequired(
@@ -72,8 +85,6 @@ export namespace FeatureRequests {
   function setEnabled(isEnabled: boolean): void;
   function show(): void;
   enum actionTypes {
-    allActions,
-    reportBug,
     requestNewFeature,
     addCommentToFeature
   }
@@ -146,6 +157,14 @@ export namespace APM {
   function startUITrace(name: string): void;
   function endUITrace(): void;
   function setLogLevel(logLevel: logLevel): void;
+  enum logLevel {
+    none,
+    error,
+    warning,
+    info,
+    debug,
+    verbose,
+  }
 }
 export function startWithToken(
   token: string,
@@ -229,7 +248,7 @@ export function setDebugEnabled(isDebugEnabled: boolean): void;
 export function enable(): void;
 export function disable(): void;
 export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
-export function reportJSException(Exception: object): void;
+export function reportJSException(errorObject: object): void;
 export function isRunningLive(runningLiveCallBack: () => void): void;
 export function setVideoRecordingFloatingButtonPosition(
   position: IBGPosition
@@ -293,14 +312,6 @@ export enum sdkDebugLogsLevel {
   sdkDebugLogsLevelError,
   sdkDebugLogsLevelNone,
 }
-export enum logLevel {
-  none,
-  error,
-  warning,
-  info,
-  debug,
-  verbose,
-}
 export enum extendedBugReportMode {
   enabledWithRequiredFields,
   enabledWithOptionalFields,
@@ -362,7 +373,7 @@ export enum strings {
   invalidCommentMessage,
   invalidCommentTitle,
   invocationHeader,
-  talkToUs,
+  startChats,
   reportQuestion,
   reportBug,
   reportFeedback,
