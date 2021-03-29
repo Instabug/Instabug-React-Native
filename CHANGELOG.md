@@ -1,3 +1,7 @@
+## master
+
+* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition
+
 ## v10.0.0 (2021-02-16)
 
 * Introduces Instabug’s new App Performance Monitoring (APM)
