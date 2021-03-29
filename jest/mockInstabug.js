@@ -48,8 +48,7 @@ jest.mock('NativeModules', () => {
             getReport: jest.fn(),
             sendHandledJSCrash: jest.fn(),
             sendJSCrash: jest.fn(),
-            reportScreenChange: jest.fn()
-
+            reportScreenChange: jest.fn(),
         },
         IBGBugReporting: {
             setFloatingButtonEdge: jest.fn(),
@@ -57,6 +56,6 @@ jest.mock('NativeModules', () => {
         },
         IBGReplies: {
             setPushNotificationsEnabled: jest.fn(),
-        }
+        },
     };
 });
