@@ -33,6 +33,9 @@ export default {
               if (Platform.OS === 'android') {
                 Instabug.networkLog(JSON.stringify(network));
               } else {
+                if (typeof network.requestBody !== "string") {
+                  network.requestBody = JSON.stringify(network.requestBody);
+                }
                 Instabug.networkLog(network);
               }
             } catch (e) {
