@@ -56,6 +56,10 @@ const XHRInterceptor = {
       var cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
       
+      if (typeof cloneNetwork.requestBody !== "string") {
+        cloneNetwork.requestBody = JSON.stringify(cloneNetwork.requestBody);
+      }
+      
       if (this.addEventListener) {
         this.addEventListener(
           'readystatechange',
