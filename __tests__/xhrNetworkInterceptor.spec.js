@@ -61,12 +61,9 @@ describe('Network Interceptor', () => {
     it('should set requestBody in network object', (done) => {
 
         let requestBody = { data: [{ item: 'first' }, { item: 'second' }] };
-        if(typeof requestBody !== 'string') {
-            requestBody = JSON.stringify(requestBody);
-        }
         Interceptor.enableInterception();
         Interceptor.setOnDoneCallback((network) => {
-            expect(network.requestBody).toEqual(requestBody);
+            expect(network.requestBody).toEqual(JSON.stringify(requestBody));
             done();
         })
         FakeRequest.open(method, url);
