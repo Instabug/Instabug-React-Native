@@ -63,7 +63,7 @@ describe('Network Interceptor', () => {
         const requestBody = { data: [{ item: 'first' }, { item: 'second' }] };
         Interceptor.enableInterception();
         Interceptor.setOnDoneCallback((network) => {
-            expect(network.requestBody).toEqual(requestBody);
+            expect(network.requestBody).toEqual(JSON.stringify(requestBody));
             done();
         })
         FakeRequest.open(method, url);
