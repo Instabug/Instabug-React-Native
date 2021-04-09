@@ -12,7 +12,7 @@ project_path = Dir.glob("#{current_path}/ios/*.xcodeproj").first
 file_name = File.basename(project_path, ".xcodeproj")
 project_location = "./ios/#{file_name}.xcodeproj"
 framework_root = '../node_modules/instabug-reactnative/ios'
-framework_name = 'Instabug.framework'
+framework_name = 'Instabug.xcframework'
 
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
