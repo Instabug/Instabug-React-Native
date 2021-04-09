@@ -19,12 +19,6 @@ default_target_name = file_name
 framework_root = '../node_modules/instabug-reactnative/ios'
 framework_name = 'Instabug.framework'
 
-INSTABUG_PHASE_NAME = "Strip Frameworks"
-
-INSTABUG_PHASE_SCRIPT = <<-SCRIPTEND
-bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/strip-frameworks.sh"
-  SCRIPTEND
-
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 INSTABUG_UPLOAD_SCRIPT = <<-SCRIPTEND

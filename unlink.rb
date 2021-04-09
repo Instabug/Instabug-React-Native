@@ -14,8 +14,6 @@ project_location = "./ios/#{file_name}.xcodeproj"
 framework_root = '../node_modules/instabug-reactnative/ios'
 framework_name = 'Instabug.framework'
 
-INSTABUG_PHASE_NAME = "Strip Frameworks"
-
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 # Get useful variables
@@ -43,10 +41,6 @@ targets.each do |target|
 
 	# Remove framework from target from "Embedded Frameworks"
 	target.frameworks_build_phase.remove_file_reference(framework_ref)
-
-	#Delete New Run Script Phase from Build Phases
-	shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_PHASE_NAME }
-	target.build_phases.delete(shell_script_build_phase)
 
 	#Delete New Run Script Phase from Build Phases
 	shell_script_build_phase = target.shell_script_build_phases.find { |build_phase| build_phase.to_s == INSTABUG_UPLOAD_NAME }

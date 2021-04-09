@@ -14,8 +14,6 @@ project_location = "./ios/#{file_name}.xcodeproj"
 framework_root = '../node_modules/instabug-reactnative/ios'
 framework_name = 'Instabug.framework'
 
-INSTABUG_PHASE_NAME = "Strip Frameworks"
-
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 # Get useful variables
