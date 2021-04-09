@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		133CC8091F578E5C00CF3492 /* Instabug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248766451DA3E8ED00D93EDA /* Instabug.framework */; };
 		24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */; };
 		24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */; };
 		BAD36E1A22F0763A007F5E74 /* InstabugBugReportingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */; };
@@ -15,6 +14,7 @@
 		BAD36E2522F19265007F5E74 /* InstabugRepliesBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2422F19265007F5E74 /* InstabugRepliesBridge.m */; };
 		BAD36E2822F19283007F5E74 /* InstabugChatsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2722F19283007F5E74 /* InstabugChatsBridge.m */; };
 		BAD36E2B22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2A22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m */; };
+		C063F52D2620B0220039EDEA /* Instabug.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C063F52C2620B0220039EDEA /* Instabug.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,8 +30,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		248766441DA3E8ED00D93EDA /* Instabug.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Instabug.bundle; sourceTree = "<group>"; };
-		248766451DA3E8ED00D93EDA /* Instabug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Instabug.framework; sourceTree = "<group>"; };
 		24DF11ED1DA3A2B90056F77C /* libRNInstabug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNInstabug.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		24DF11F91DA3A2F30056F77C /* InstabugReactBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstabugReactBridge.h; sourceTree = "<group>"; };
 		24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugReactBridge.m; sourceTree = "<group>"; };
@@ -47,6 +45,7 @@
 		BAD36E2722F19283007F5E74 /* InstabugChatsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugChatsBridge.m; sourceTree = "<group>"; };
 		BAD36E2922F192B8007F5E74 /* InstabugFeatureRequestsBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugFeatureRequestsBridge.h; sourceTree = "<group>"; };
 		BAD36E2A22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugFeatureRequestsBridge.m; sourceTree = "<group>"; };
+		C063F52C2620B0220039EDEA /* Instabug.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Instabug.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				133CC8091F578E5C00CF3492 /* Instabug.framework in Frameworks */,
+				C063F52D2620B0220039EDEA /* Instabug.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,8 +63,7 @@
 		248766431DA3E8EC00D93EDA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				248766441DA3E8ED00D93EDA /* Instabug.bundle */,
-				248766451DA3E8ED00D93EDA /* Instabug.framework */,
+				C063F52C2620B0220039EDEA /* Instabug.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -148,6 +146,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 24DF11E41DA3A2B90056F77C;
