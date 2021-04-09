@@ -60,7 +60,7 @@ describe('Network Interceptor', () => {
 
     it('should set requestBody in network object', (done) => {
 
-        let requestBody = { data: [{ item: 'first' }, { item: 'second' }] };
+        const requestBody = { data: [{ item: 'first' }, { item: 'second' }] };
         Interceptor.enableInterception();
         Interceptor.setOnDoneCallback((network) => {
             expect(network.requestBody).toEqual(JSON.stringify(requestBody));
