@@ -48,7 +48,7 @@ const XHRInterceptor = {
       if (network.requestHeaders === '') {
         network.requestHeaders = {};
       }
-      network.requestHeaders[header] = value;
+      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
       originalXHRSetRequestHeader.apply(this, arguments);
     };
 
