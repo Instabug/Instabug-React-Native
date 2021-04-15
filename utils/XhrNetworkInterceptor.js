@@ -48,13 +48,17 @@ const XHRInterceptor = {
       if (network.requestHeaders === '') {
         network.requestHeaders = {};
       }
-      network.requestHeaders[header] = value;
+      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
       originalXHRSetRequestHeader.apply(this, arguments);
     };
 
     XMLHttpRequest.prototype.send = function(data) {
       var cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
+      
+      if (typeof cloneNetwork.requestBody !== "string") {
+        cloneNetwork.requestBody = JSON.stringify(cloneNetwork.requestBody);
+      }
       
       if (this.addEventListener) {
         this.addEventListener(
