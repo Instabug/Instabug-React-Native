@@ -1,7 +1,15 @@
 module.exports = {
   dependency: {
     platforms: {
-      ios: {},
+      ios: {
+        scriptPhases: [
+          {
+            name: '[instabug-reactnative] Upload Sourcemap',
+            script: 'bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"',
+            execution_position: 'after_compile',
+          },
+        ],
+      },
       android: {
       },
     },
