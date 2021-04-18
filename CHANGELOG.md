@@ -1,3 +1,7 @@
+## master
+
+* Fixes Autolinking on iOS.
+
 ## v10.0.0 (2021-02-16)
 
 * Introduces Instabug’s new App Performance Monitoring (APM)
