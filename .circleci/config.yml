@@ -87,35 +87,38 @@ jobs:
 
   test_ios:
     macos:
-      xcode: "10.2.0"
-    working_directory: ~/project/InstabugSample/ios
-    environment:
-      FL_OUTPUT_DIR: output
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Install node_modules
-          command: cd .. && yarn
-      - run:
-          name: Fetch CocoaPods Specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
-      - run:
-          name: Install CocoaPods
-          command: pod install
-      - run:
-          name: Build and run tests
-          command: xcodebuild    -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone X,OS=12.2'    test | xcpretty
-
-  e2e_ios:
-    macos:
-      xcode: "10.2.0"
+      xcode: "12.3.0"
     working_directory: ~/project/InstabugSample
     environment:
       FL_OUTPUT_DIR: output
     steps:
       - checkout:
           path: ~/project
+      - run:
+          name: Install CocoaPods
+          command: sudo gem install cocoapods
+      - run:
+          name: Install node_modules
+          command: yarn
+      - run:
+          name: Install Pods
+          command: cd ios && pod install
+      - run:
+          name: Build and run tests
+          command: cd ios && xcodebuild  -allowProvisioningUpdates   -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone 12 Pro Max,OS=14.3'    test | xcpretty
+
+  e2e_ios:
+    macos:
+      xcode: "12.3.0"
+    working_directory: ~/project/InstabugSample
+    environment:
+      FL_OUTPUT_DIR: output
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install CocoaPods
+          command: sudo gem install cocoapods
       - run:
           name: Install React Native CLI
           command: npm install -g react-native-cli
@@ -129,10 +132,7 @@ jobs:
           name: Install Node Packages
           command: yarn
       - run:
-          name: Fetch CocoaPods Specs
-          command: cd ios && curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh  | bash -s cf
-      - run:
-          name: Install CocoaPods
+          name: Install Pods
           command: cd ios && pod install
       - run:
           name: Detox - Build Release App
