@@ -1,3 +1,8 @@
+## v10.3.0 (2021-04-21)
+
+* Updates Instabug Android and iOS SDKs
+* Migrates iOS to XCFramework
+
 ## v10.0.0 (2021-02-16)
 
 * Introduces Instabug’s new App Performance Monitoring (APM)
