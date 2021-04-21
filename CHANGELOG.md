@@ -1,6 +1,8 @@
-## master
+## v10.3.0 (2021-04-22)
 
-* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition
+* Updates Instabug Android and iOS SDKs.
+* Migrates iOS to XCFramework.
+* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition.
 
 ## v10.0.0 (2021-02-16)
 
