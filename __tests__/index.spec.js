@@ -56,7 +56,6 @@ describe('Instabug Module', () => {
   const enable = sinon.spy(NativeModules.Instabug, 'enable');
   const disable = sinon.spy(NativeModules.Instabug, 'disable');
   const isRunningLive = sinon.spy(NativeModules.Instabug, 'isRunningLive');
-  const setVideoRecordingFloatingButtonPosition = sinon.spy(NativeModules.Instabug, 'setVideoRecordingFloatingButtonPosition');
   const showWelcomeMessageWithMode = sinon.spy(NativeModules.Instabug, 'showWelcomeMessageWithMode');
   const setWelcomeMessageMode = sinon.spy(NativeModules.Instabug, 'setWelcomeMessageMode');
   const setFileAttachment = sinon.spy(NativeModules.Instabug, 'setFileAttachment');
@@ -503,15 +502,6 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method setVideoRecordingFloatingButtonPosition', () => {
-
-    const position = 30;
-    Instabug.setVideoRecordingFloatingButtonPosition(position);
-
-    expect(setVideoRecordingFloatingButtonPosition.calledOnceWithExactly(position)).toBe(true);
-
-  });
-
   it('should call the native method showWelcomeMessageWithMode', () => {
 
     const mode = Instabug.welcomeMessageMode.beta;
@@ -710,5 +700,3 @@ describe('Instabug Module', () => {
   });
 
 });
-
-
