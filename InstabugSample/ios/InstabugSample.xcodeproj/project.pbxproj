@@ -20,7 +20,6 @@
 		BAD36E2F22F19788007F5E74 /* InstabugFeatureRequestsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2E22F19788007F5E74 /* InstabugFeatureRequestsTests.m */; };
 		BAD36E3122F19973007F5E74 /* InstabugRepliesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E3022F19973007F5E74 /* InstabugRepliesTests.m */; };
 		BAD36E3322F19B1B007F5E74 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E3222F19B1B007F5E74 /* InstabugSurveysTests.m */; };
-		C006102922E9EBCA00EDC852 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C006102822E9EBCA00EDC852 /* libOCMock.a */; };
 		C0AB369625854A6100F1E21E /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AB369525854A6100F1E21E /* InstabugAPMTests.m */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		BAD36E2E22F19788007F5E74 /* InstabugFeatureRequestsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugFeatureRequestsTests.m; sourceTree = "<group>"; };
 		BAD36E3022F19973007F5E74 /* InstabugRepliesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugRepliesTests.m; sourceTree = "<group>"; };
 		BAD36E3222F19B1B007F5E74 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
-		C006102822E9EBCA00EDC852 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = usr/lib/libOCMock.a; sourceTree = "<group>"; };
 		C0AB369525854A6100F1E21E /* InstabugAPMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		C74E4010ABE7AFC7DB5E79DC /* Pods-InstabugSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstabugSampleTests/Pods-InstabugSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -74,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C006102922E9EBCA00EDC852 /* libOCMock.a in Frameworks */,
 				39B75062AA5F42B6E4C8E3C7 /* libPods-InstabugSampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,7 +129,6 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C006102822E9EBCA00EDC852 /* libOCMock.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				A0EF1FBF0176E13B30EA2D29 /* libPods-InstabugSample.a */,
 				7A03A15E2685C1231729CA8B /* libPods-InstabugSampleTests.a */,
@@ -221,6 +217,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				21BA34F4E1FA153B4E4FB519 /* Upload Sourcemap */,
 				A4F6B49E8609FD1652D0F43E /* [CP] Embed Pods Frameworks */,
+				FE69A7F8F5762FFBE1CCA9AC /* [CP-User] [instabug-reactnative] Upload Sourcemap */,
 			);
 			buildRules = (
 			);
@@ -401,6 +398,16 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		FE69A7F8F5762FFBE1CCA9AC /* [CP-User] [instabug-reactnative] Upload Sourcemap */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"../node_modules/instabug-reactnative/ios/upload_sourcemap.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
