@@ -22,6 +22,7 @@ describe('Replies Module', () => {
   const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
   const setPushNotificationRegistrationToken = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationRegistrationToken');
+  const showNotification = sinon.spy(NativeModules.IBGReplies, 'showNotification');
   const setNotificationIcon = sinon.spy(NativeModules.IBGReplies, 'setNotificationIcon');
   const setPushNotificationChannelId = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationChannelId');
   const setSystemReplyNotificationSoundEnabled = sinon.spy(NativeModules.IBGReplies, 'setSystemReplyNotificationSoundEnabled');
@@ -32,6 +33,7 @@ describe('Replies Module', () => {
     IBGEventEmitter.removeAllListeners();
     setPushNotificationsEnabled.resetHistory();
     setPushNotificationRegistrationToken.resetHistory();
+    showNotification.resetHistory();
     setNotificationIcon.resetHistory();
     setPushNotificationChannelId.resetHistory();
     setSystemReplyNotificationSoundEnabled.resetHistory();
@@ -139,6 +141,15 @@ describe('Replies Module', () => {
 
     expect(setPushNotificationRegistrationToken.calledOnceWithExactly('123')).toBe(true);
   });
+
+
+  it('should call the native method showNotification on Android', () => {
+    Platform.OS = 'android';
+    Replies.showNotificationAndroid('test');
+
+    expect(showNotification.calledOnceWithExactly('test')).toBe(true);
+  });
+
 
   it('should not call the native method setPushNotificationRegistrationToken on iOS', () => {
     Platform.OS = 'ios';
