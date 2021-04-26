@@ -277,7 +277,7 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.enable();
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-        Instabug.setState(InstabugState.ENABLED);
+        Instabug.enable();
     }
 
     @Test
