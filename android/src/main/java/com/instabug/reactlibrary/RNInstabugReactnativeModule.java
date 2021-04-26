@@ -56,8 +56,7 @@ import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 import com.instabug.reactlibrary.utils.ReportUtil;
-import com.instabug.survey.OnDismissCallback;
-import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.callbacks.*;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 
@@ -651,7 +650,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    Instabug.setState(InstabugState.ENABLED);
+                    Instabug.enable();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
