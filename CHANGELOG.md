@@ -1,9 +1,11 @@
-## v10.3.0 (2021-04-22)
+## v10.4.0 (2021-04-26)
 
-* Migrates iOS to XCFramework
-* Adds new API: Replies.showNotificationAndroid
-* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition.
 * Updates Instabug Android and iOS SDKs
+* Migrates iOS to XCFramework
+* Adds missing TS definitions
+* Adds new API: Replies.showNotificationAndroid
+* Fixes a couple of crashes related to network request data not being parsed correctly
+* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition
 
 ## v10.0.0 (2021-02-16)
 
