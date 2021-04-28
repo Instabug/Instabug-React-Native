@@ -206,13 +206,15 @@ jobs:
 
   publish:
     macos:
-      xcode: "10.1.0"
+      xcode: "10.2.0"
+    working_directory: ~
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
       - run: cd Escape; swift build -c release -Xswiftc -static-stdlib
       - run: cd Escape/.build/release; cp -f Escape /usr/local/bin/escape
-      - run: Escape react-native publish
+      - run: cd project && Escape react-native publish
 
 workflows:
   version: 2

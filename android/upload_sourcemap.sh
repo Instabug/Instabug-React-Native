@@ -40,7 +40,7 @@ else
     IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle -m 1)
     if [[ $IS_HERMES == *"true"* ]]; then
         #Generate android sourcemap (HERMES)
-        react-native bundle --platform android \
+        npx react-native bundle --platform android \
         --reset-cache \
         --entry-file index.js \
         --dev false \
@@ -60,7 +60,7 @@ else
         rm -rf index.android.bundle.map
     else
         #Generate android sourcemap
-        react-native bundle --platform android \
+        npx react-native bundle --platform android \
         --entry-file index.js \
         --dev false \
         --bundle-output ./android/main.jsbundle \
