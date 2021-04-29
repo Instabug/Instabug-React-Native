@@ -5,21 +5,11 @@ import android.os.Looper;
 import android.os.SystemClock;
 
 import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
-import java.util.HashMap;
-import javax.annotation.Nonnull;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.JavaOnlyArray;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.WritableMap;
-import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
-import com.instabug.survey.callbacks.*;
-import com.instabug.survey.Surveys;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONArray;
