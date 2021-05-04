@@ -39,6 +39,23 @@ else
     echo "Instabug: Generating sourcemap files..."
     IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle -m 1)
     if [[ $IS_HERMES == *"true"* ]]; then
+        #Find HERMES OS bin directory
+        case "$OSTYPE" in
+            darwin*)  HERMES_OS_BIN='osx-bin' ;; 
+            linux*)   HERMES_OS_BIN='linux64-bin' ;;
+            msys*)    HERMES_OS_BIN='win64-bin' ;;
+            *)        echo "unknown: $OSTYPE" ;;
+        esac
+
+        #Find HERMES command file name
+        INSTALLED_RN_VERSION_MAJOR=$(node -p "require('./node_modules/react-native/package.json').version" | cut -d "." -f2)
+        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 63 ]
+            then
+                HERMES_COMMAND_NAME='hermesc'
+            else
+                HERMES_COMMAND_NAME='hermes'
+        
+        fi
         #Generate android sourcemap (HERMES)
         npx react-native bundle --platform android \
         --reset-cache \
@@ -47,7 +64,7 @@ else
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
 
-        node_modules/hermes-engine/osx-bin/hermes -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
+        node_modules/hermes-engine/$HERMES_OS_BIN/$HERMES_COMMAND_NAME -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
         cp index.android.bundle.hbc.map index.android.bundle.compiler.map
 
