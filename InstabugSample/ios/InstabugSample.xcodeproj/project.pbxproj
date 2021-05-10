@@ -217,7 +217,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				21BA34F4E1FA153B4E4FB519 /* Upload Sourcemap */,
 				A4F6B49E8609FD1652D0F43E /* [CP] Embed Pods Frameworks */,
-				FE69A7F8F5762FFBE1CCA9AC /* [CP-User] [instabug-reactnative] Upload Sourcemap */,
 			);
 			buildRules = (
 			);
@@ -347,7 +346,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-InstabugSample/Pods-InstabugSample-frameworks.sh",
-				"${PODS_ROOT}/../../node_modules/instabug-reactnative/ios/Instabug.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Instabug/Instabug.framework/Instabug",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -398,16 +397,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		FE69A7F8F5762FFBE1CCA9AC /* [CP-User] [instabug-reactnative] Upload Sourcemap */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "bash \"../node_modules/instabug-reactnative/ios/upload_sourcemap.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
