@@ -1,12 +1,13 @@
 ## v10.4.0 (2021-05-10)
 
-* Updates Instabug native SDKs
 * Migrates iOS to use XCFramework
-* Adds missing TypeScript definitions
-* Adds new API: Replies.showNotificationAndroid
+* Bumps Instabug native SDKs to v10.4
 * Fixes crashes related to the network request data not being parsed correctly
-* Fixes issues with the automatic sourcemap file upload on Android
+* Fixes issues related to the automatic sourcemap file upload on Android
+* Adds missing TypeScript definitions
 * Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition
+* Includes native fix which removes the usage of android:requestLegacyExternalStorage permission
+* Various other bug fixes and improvements
 
 ## v10.0.0 (2021-02-16)
 
