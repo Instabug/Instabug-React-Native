@@ -149,7 +149,7 @@ export namespace Surveys {
 }
 export namespace NetworkLogger {
   function setEnabled(isEnabled: boolean): void;
-  function setNetworkDataObfuscationHandler(handler: () => void): void;
+  function setNetworkDataObfuscationHandler(handler: (networkData: any) => any): void;
   function setRequestFilterExpression(expression: string): void;
   function setProgressHandlerForRequest(handler: () => void): void;
 }
