@@ -12,8 +12,7 @@ import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-import com.instabug.survey.OnDismissCallback;
-import com.instabug.survey.OnShowCallback;
+import com.instabug.survey.callbacks.*;
 import com.instabug.survey.Surveys;
 import com.instabug.survey.Survey;
 

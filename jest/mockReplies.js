@@ -11,6 +11,7 @@ jest.mock('NativeModules', () => {
             addListener: jest.fn(),
             setPushNotificationsEnabled: jest.fn(),
             setPushNotificationRegistrationToken: jest.fn(),
+            showNotification: jest.fn(),
             setNotificationIcon: jest.fn(),
             setPushNotificationChannelId: jest.fn(),
             setSystemReplyNotificationSoundEnabled: jest.fn(),

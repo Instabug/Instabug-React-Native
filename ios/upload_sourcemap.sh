@@ -51,7 +51,7 @@ else
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Generating sourcemap files..."
     #Generate ios sourcemap
-    react-native bundle --platform ios \
+    npx react-native bundle --platform ios \
     --entry-file index.js \
     --dev false \
     --bundle-output ./ios/main.jsbundle \

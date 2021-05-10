@@ -13,13 +13,7 @@ file_name = File.basename(project_path, ".xcodeproj")
 project_location = "./ios/#{file_name}.xcodeproj"
 default_target_name = file_name
 framework_root = '../node_modules/instabug-reactnative/ios'
-framework_name = 'Instabug.framework'
-
-INSTABUG_PHASE_NAME = "Strip Frameworks"
-
-INSTABUG_PHASE_SCRIPT = <<-SCRIPTEND
-bash "${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instabug.framework/strip-frameworks.sh"
-  SCRIPTEND
+framework_name = 'Instabug.xcframework'
 
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
@@ -69,11 +63,6 @@ targets.each do |target|
 	build_file = embed_frameworks_build_phase.add_file_reference(framework_ref)
 	target.frameworks_build_phase.add_file_reference(framework_ref)
 	build_file.settings = { 'ATTRIBUTES' => ['CodeSignOnCopy', 'RemoveHeadersOnCopy'] }
-
-
-	#Add New Run Script Phase to Build Phases
-	phase = target.new_shell_script_build_phase(INSTABUG_PHASE_NAME)
-	phase.shell_script = INSTABUG_PHASE_SCRIPT
 
 	#Add New Run Script Phase to Build Phases
 	upload_build_phase = target.new_shell_script_build_phase(INSTABUG_UPLOAD_NAME)

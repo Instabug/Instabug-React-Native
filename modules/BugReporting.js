@@ -169,6 +169,18 @@ export default {
   },
 
   /**
+   * Sets the default position at which the Instabug screen recording button will be shown.
+   * Different orientations are already handled.
+   * (Default for `position` is `bottomRight`)
+   *
+   * @param position is of type position `topLeft` to show on the top left of screen,
+   * or `bottomRight` to show on the bottom right of scrren.
+   */
+  setVideoRecordingFloatingButtonPosition(position) {
+    IBGBugReporting.setVideoRecordingFloatingButtonPosition(position);
+  },
+
+  /**
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
@@ -287,5 +299,17 @@ export default {
     emailFieldOptional: Instabug.optionEmailFieldOptional,
     commentFieldRequired: Instabug.optionCommentFieldRequired,
     disablePostSendingDialog: Instabug.optionDisablePostSendingDialog
-  }
+  },
+
+  /**
+   * Instabug floating buttons positions.
+   * @readonly
+   * @enum {number}
+   */
+   position: {
+    bottomRight: Instabug.bottomRight,
+    topRight: Instabug.topRight,
+    bottomLeft: Instabug.bottomLeft,
+    topLeft: Instabug.topLeft
+  },
 };
