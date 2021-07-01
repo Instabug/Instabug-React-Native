@@ -1,3 +1,6 @@
+## master
+* Adds string keys for the discard attachment prompt dialog.
+
 ## v10.4.0 (2021-05-10)
 
 * Migrates iOS to use XCFramework
