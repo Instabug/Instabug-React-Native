@@ -432,7 +432,10 @@ export enum strings {
   reportBugDescription,
   reportFeedbackDescription,
   reportQuestionDescription,
-  requestFeatureDescription
+  requestFeatureDescription,
+  discardAlertCancel,
+  discardAlertAction,
+  addAttachmentButtonTitleStringName
 }
 
 interface Report {

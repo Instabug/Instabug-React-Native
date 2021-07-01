@@ -1074,7 +1074,10 @@ const InstabugModule = {
     reportBugDescription: Instabug.reportBugDescription,
     reportFeedbackDescription: Instabug.reportFeedbackDescription,
     reportQuestionDescription: Instabug.reportQuestionDescription,
-    requestFeatureDescription: Instabug.requestFeatureDescription
+    requestFeatureDescription: Instabug.requestFeatureDescription,
+    discardAlertCancel: Instabug.discardAlertCancel,
+    discardAlertAction: Instabug.discardAlertAction,
+    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName
   },
 
 };
