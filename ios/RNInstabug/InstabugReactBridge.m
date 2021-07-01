@@ -577,9 +577,12 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"reportBugDescription": kIBGReportBugDescriptionStringName,
               @"reportFeedbackDescription": kIBGReportFeedbackDescriptionStringName,
               @"reportQuestionDescription": kIBGReportQuestionDescriptionStringName,
-              @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName
+              @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName,
               
-              };
+              @"discardAlertCancel": kIBGDiscardAlertCancel,
+              @"discardAlertAction": kIBGDiscardAlertAction,
+              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName
+            };
 };
 
 - (void) setBaseUrlForDeprecationLogs {
