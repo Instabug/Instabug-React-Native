@@ -200,6 +200,8 @@ final class ArgsRegistry {
         args.put("betaWelcomeMessageFinishStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_CONTENT);
         args.put("liveWelcomeMessageTitle", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE);
         args.put("liveWelcomeMessageContent", InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT);
+        args.put("discardAlertTitle", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_TITLE);
+        args.put("discardAlertMessage", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_BODY);
         args.put("discardAlertCancel", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         args.put("discardAlertAction", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         args.put("addAttachmentButtonTitleStringName", InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER);

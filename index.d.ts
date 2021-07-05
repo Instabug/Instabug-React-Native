@@ -433,6 +433,8 @@ export enum strings {
   reportFeedbackDescription,
   reportQuestionDescription,
   requestFeatureDescription,
+  discardAlertTitle,
+  discardAlertMessage,
   discardAlertCancel,
   discardAlertAction,
   addAttachmentButtonTitleStringName

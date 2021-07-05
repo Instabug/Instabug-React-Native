@@ -579,6 +579,8 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"reportQuestionDescription": kIBGReportQuestionDescriptionStringName,
               @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName,
               
+              @"discardAlertTitle": kIBGDiscardAlertTitle,
+              @"discardAlertMessage": kIBGDiscardAlertMessage,
               @"discardAlertCancel": kIBGDiscardAlertCancel,
               @"discardAlertAction": kIBGDiscardAlertAction,
               @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName
