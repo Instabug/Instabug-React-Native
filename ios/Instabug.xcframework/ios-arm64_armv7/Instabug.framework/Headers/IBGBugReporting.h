@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.4.4
+ Version:    10.8.0
  */
 
 #import <Foundation/Foundation.h>
@@ -167,6 +167,14 @@ NS_SWIFT_NAME(BugReporting)
  @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
  */
 @property (class, atomic, assign) CGFloat autoScreenRecordingDuration;
+
+/**
+ @brief Sets the disclaimer text in the bug report by parsing it and detecting any kind of link. Embedded links should be in Markdown in the form of @code @"[Link Name](http/https://www.example.com)" @endcode
+ 
+ @discussion if `text` in empty or `nil` the disclaimer text view will be hidden. Max characters of the text without the link url is 100 characters and any extra characters will be truncated.
+ We will accept links starts with `http` and `https` only.
+ */
++ (void)setDisclaimerText:(NSString *)text;
 
 /*
  +------------------------------------------------------------------------+

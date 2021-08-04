@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    10.4.4
+ Version:    10.8.0
  */
 
 #import <UIKit/UIKit.h>
@@ -36,8 +36,28 @@ extern NSString * const kIBGInvalidEmailTitleStringName;
 extern NSString * const kIBGInvalidCommentMessageStringName;
 extern NSString * const kIBGInvalidCommentTitleStringName;
 extern NSString * const kIBGInvalidNumberTitleStringName;
+extern NSString * const kIBGReportCategoriesAccessibilityScrollStringName;
+extern NSString * const kIBGAnnotationCloseButtonStringName;
+extern NSString * const kIBGAnnotationSaveButtonStringName;
+extern NSString * const kIBGAnnotationDrawnShapeStringName;
+extern NSString * const kIBGAttachmentActionSheetStopScreenRecording;
+extern NSString * const kIBGAttachmentActionSheetUnmuteMic;
+extern NSString * const kIBGAttachmentActionSheetMuteMic;
+extern NSString * const kIBGScreenRecordingDuration;
 extern NSString * const kIBGInvalidNumberMessageStringName;
+extern NSString * const kIBGCloseConversationsStringLabel;
+extern NSString * const kIBGBackToConversationsStringLabel;
+extern NSString * const kIBGSendMessageStringLabel;
+extern NSString * const kIBGDismissMessageStringLabel;
+extern NSString * const kIBGReplyToMessageStringLabel;
 extern NSString * const kIBGInvocationTitleStringName;
+extern NSString * const kIBGInvocationTitleHintStringName;
+extern NSString * const kIBGChatsListHintStringName;
+extern NSString * const kIBGOneChatsListHintStringName;
+extern NSString * const kIBGOneChatsListHintStringName;
+extern NSString * const kIBGCancelPromptHintStringName;
+extern NSString * const kIBGReportCategoriesBackButtonStringName;
+extern NSString * const kIBGReportCategoriesBackButtonHintStringName;
 extern NSString * const kIBGFeatureRequetsPromptName;
 extern NSString * const kIBGAskAQuestionStringName;
 extern NSString * const kIBGReportBugStringName;
@@ -46,6 +66,9 @@ extern NSString * const kIBGReportBugDescriptionStringName;
 extern NSString * const kIBGReportFeedbackDescriptionStringName;
 extern NSString * const kIBGReportQuestionDescriptionStringName;
 extern NSString * const kIBGRequestFeatureDescriptionStringName;
+extern NSString * const kIBGAccessibilityReportFeedbackDescriptionStringName;
+extern NSString * const kIBGAccessibilityReportBugDescriptionStringName;
+extern NSString * const kIBGAccessibilityRequestFeatureDescriptionStringName;
 extern NSString * const kIBGPhotoPickerTitle;
 extern NSString * const kIBGProgressViewTitle;
 extern NSString * const kIBGGalleryPermissionDeniedAlertTitle;
@@ -55,16 +78,36 @@ extern NSString * const kIBGMaximumSizeExceededAlertMessage;
 extern NSString * const kIBGiCloudImportErrorAlertTitle;
 extern NSString * const kIBGiCloudImportErrorAlertMessage;
 extern NSString * const kIBGEmailFieldPlaceholderStringName;
+extern NSString * const kIBGEmailFieldAccessibilityStringLabel;
+extern NSString * const kIBGEmailFieldAccessibilityStringHint;
 extern NSString * const kIBGNumberFieldPlaceholderStringName;
 extern NSString * const kIBGNumberInfoAlertMessageStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForBugReportStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForFeedbackStringName;
 extern NSString * const kIBGCommentFieldPlaceholderForQuestionStringName;
+extern NSString * const kIBGCommentFieldAccessibilityStringLabel;
+extern NSString * const kIBGCommentFieldBugAccessibilityStringHint;
+extern NSString * const kIBGCommentFieldImprovementAccessibilityStringHint;
+extern NSString * const kIBGCommentFieldAskQuestionAccessibilityStringHint;
 extern NSString * const kIBGChatReplyFieldPlaceholderStringName;
 extern NSString * const kIBGAddScreenRecordingMessageStringName;
 extern NSString * const kIBGAddVoiceMessageStringName;
 extern NSString * const kIBGAddImageFromGalleryStringName;
+extern NSString * const kIBGExtraFieldsStringLabel;
+extern NSString * const kIBGAccessibilityExtraFieldsStepsLabel;
+extern NSString * const kIBGAccessibilityExtraFieldsStepsRequiredLabel;
+extern NSString * const kIBGRequiredExtraFieldsStringLabel;
 extern NSString * const kIBGAddExtraScreenshotStringName;
+extern NSString * const kIBGAccessibilityReproStepsDisclaimerStringLabel;
+extern NSString * const kIBGAccessibilityImageAttachmentStringHint;
+extern NSString * const kIBGAccessibilityVideoAttachmentStringHint;
+extern NSString * const kIBGTakeScreenshotAccessibilityStringLabel;
+extern NSString * const kIBGTakeScreenRecordingAccessibilityStringLabel;
+extern NSString * const kIBGSelectImageFromGalleryLabel;
+extern NSString * const kIBGAddAttachmentAccessibilityStringLabel;
+extern NSString * const kIBGAddAttachmentAccessibilityStringHint;
+extern NSString * const kIBGExpandAttachmentAccessibilityStringLabel;
+extern NSString * const kIBGCollapseAttachmentAccessibilityStringLabel;
 extern NSString * const kIBGAudioRecordingPermissionDeniedTitleStringName;
 extern NSString * const kIBGAudioRecordingPermissionDeniedMessageStringName;
 extern NSString * const kIBGScreenRecordingPermissionDeniedMessageStringName;
@@ -81,6 +124,7 @@ extern NSString * const kIBGOkButtonTitleStringName;
 extern NSString * const kIBGSendButtonTitleStringName;
 extern NSString * const kIBGCancelButtonTitleStringName;
 extern NSString * const kIBGThankYouAlertTitleStringName;
+extern NSString * const kIBGThankYouAccessibilityConfirmationTitleStringName;
 extern NSString * const kIBGThankYouAlertMessageStringName;
 extern NSString * const kIBGAudioStringName;
 extern NSString * const kIBGScreenRecordingStringName;
@@ -303,7 +347,9 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleSwedish,
     IBGLocaleTurkish,
     IBGLocaleHungarian,
-    IBGLocaleFinnish
+    IBGLocaleFinnish,
+    IBGLocaleCatalan,
+    IBGLocaleCatalanSpain
 };
 
 /**

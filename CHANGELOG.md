@@ -1,3 +1,7 @@
+## v10.8.0 (2021-08-02)
+
+* Bumps Instabug native SDKs to v10.8
+
 ## v10.4.0 (2021-05-10)
 
 * Migrates iOS to use XCFramework
