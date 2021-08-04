@@ -10,6 +10,7 @@
 #import <Instabug/IBGCrashReporting.h>
 #import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
+#import <Instabug/IBGAPM.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -57,7 +58,10 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
     
-    IBGNetworkLogger.enabled = YES;    
+    IBGNetworkLogger.enabled = YES;
+
+    // Temporarily disabling APM hot launches
+    IBGAPM.hotAppLaunchEnabled = NO;
 }
 
 RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
@@ -577,9 +581,14 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"reportBugDescription": kIBGReportBugDescriptionStringName,
               @"reportFeedbackDescription": kIBGReportFeedbackDescriptionStringName,
               @"reportQuestionDescription": kIBGReportQuestionDescriptionStringName,
-              @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName
+              @"requestFeatureDescription": kIBGRequestFeatureDescriptionStringName,
               
-              };
+              @"discardAlertTitle": kIBGDiscardAlertTitle,
+              @"discardAlertMessage": kIBGDiscardAlertMessage,
+              @"discardAlertCancel": kIBGDiscardAlertCancel,
+              @"discardAlertAction": kIBGDiscardAlertAction,
+              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName
+            };
 };
 
 - (void) setBaseUrlForDeprecationLogs {
