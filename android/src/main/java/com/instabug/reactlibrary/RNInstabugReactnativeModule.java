@@ -228,6 +228,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_QUESTION_DESCRIPTION = "reportQuestionDescription";
     private final String REQUEST_FEATURE_DESCRIPTION = "requestFeatureDescription";
 
+    private final String REPORT_DISCARD_DIALOG_TITLE = "discardAlertTitle";
+    private final String REPORT_DISCARD_DIALOG_BODY = "discardAlertMessage";
+    private final String REPORT_DISCARD_DIALOG_NEGATIVE_ACTION = "discardAlertCancel";
+    private final String REPORT_DISCARD_DIALOG_POSITIVE_ACTION = "discardAlertAction";
+    private final String REPORT_ADD_ATTACHMENT_HEADER = "addAttachmentButtonTitleStringName";
+
     private Application androidApplication;
     private Instabug mInstabug;
     private InstabugInvocationEvent invocationEvent;
@@ -2309,6 +2315,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION_DESCRIPTION;
             case REQUEST_FEATURE_DESCRIPTION:
                 return InstabugCustomTextPlaceHolder.Key.REQUEST_FEATURE_DESCRIPTION;
+            case REPORT_DISCARD_DIALOG_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_TITLE;
+            case REPORT_DISCARD_DIALOG_BODY:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_BODY;
+            case REPORT_DISCARD_DIALOG_NEGATIVE_ACTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION;
+            case REPORT_DISCARD_DIALOG_POSITIVE_ACTION:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION;
+            case REPORT_ADD_ATTACHMENT_HEADER:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER;
             default:
                 return null;
         }
@@ -2483,6 +2499,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(REPORT_FEEDBACK_DESCRIPTION, REPORT_FEEDBACK_DESCRIPTION);
         constants.put(REPORT_QUESTION_DESCRIPTION, REPORT_QUESTION_DESCRIPTION);
         constants.put(REQUEST_FEATURE_DESCRIPTION, REQUEST_FEATURE_DESCRIPTION);
+
+        constants.put(REPORT_DISCARD_DIALOG_TITLE, REPORT_DISCARD_DIALOG_TITLE);
+        constants.put(REPORT_DISCARD_DIALOG_BODY, REPORT_DISCARD_DIALOG_BODY);
+        constants.put(REPORT_DISCARD_DIALOG_NEGATIVE_ACTION, REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
+        constants.put(REPORT_DISCARD_DIALOG_POSITIVE_ACTION, REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
+        constants.put(REPORT_ADD_ATTACHMENT_HEADER, REPORT_ADD_ATTACHMENT_HEADER);
 
         return constants;
     }

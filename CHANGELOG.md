@@ -1,6 +1,7 @@
-## v10.8.0 (2021-08-02)
+## v10.8.0 (2021-08-04)
 
 * Bumps Instabug native SDKs to v10.8
+* Adds string keys for the discard attachment prompt dialog.
 
 ## v10.4.0 (2021-05-10)
 
