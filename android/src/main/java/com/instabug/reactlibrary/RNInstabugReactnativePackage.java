@@ -18,6 +18,7 @@ import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.apm.APM;
 
 import android.graphics.Color;
 
@@ -67,6 +68,8 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         if(offset != null)
             BugReporting.setFloatingButtonOffset(offset);
 
+        // Temporarily disabling APM hot launches
+        APM.setHotAppLaunchEnabled(false);
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,

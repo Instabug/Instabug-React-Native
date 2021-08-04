@@ -5,11 +5,12 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.4.4
+ Version:    10.8.0
  */
 
 #import <Foundation/Foundation.h>
 #import "IBGTypes.h"
+#import "IBGNetworkTrace.h"
 
 @class IBGExecutionTrace;
 
@@ -27,7 +28,17 @@ NS_SWIFT_NAME(APM)
 /// Disables/Enables App Launch tracking.
 ///
 /// Defaults to true if APM is enabled. If APM is disabled, App Launch time will not be captured.
-@property (class, atomic, assign) BOOL appLaunchEnabled;
+@property (class, atomic, assign) BOOL appLaunchEnabled DEPRECATED_MSG_ATTRIBUTE("Please use coldAppLaunchEnabled instead.");
+
+/// Disables/Enables Cold App Launch tracking.
+///
+/// Defaults to true if APM is enabled. If APM is disabled, Cold App Launch time will not be captured.
+@property (class, atomic, assign) BOOL coldAppLaunchEnabled;
+
+/// Disables/Enables Hot App Launch tracking.
+///
+/// Defaults to true if APM is enabled. If APM is disabled, Hot App Launch time will not be captured.
+@property (class, atomic, assign) BOOL hotAppLaunchEnabled;
 
 /// Disables/Enables Automatic UI Traces.
 ///
@@ -88,6 +99,26 @@ NS_SWIFT_NAME(APM)
 /// IBGLogLevelInfo will include IBGLogLevelInfo logs as well as IBGLogLevelWarning
 /// and IBGLogLevelError logs.
 @property (class, atomic, assign) IBGLogLevel logLevel;
+
+/// Adds a handler to provide attributes to be attached with Network Traces.
+///
+/// This handler will be executed on a background dispatch queue.
+///
+/// Warning: Calling this method from Network Trace attributes handler will cause a deadlock.
+///
+/// @param urlPredicate If request's URL string matches the predicate, the handler will be executed. Pass nil to execute the handler for any request.
+/// @param owner Handler will be removed if owner is deallocated. Pass nil to keep the handler indefinitely.
+/// @param handler The handler which will be executed to provide Network Trace attributes, giving a Network Trace's URLRequest, URLResponse and response Data.
+/// Return attributes to be attached to a Network Trace. Return nil if there isn't any attributes to be attacthed.
+/// @return Handler's ID to be used for removing it later. If adding handler failed, nil will be returned.
++ (NSString* _Nullable)addNetworkTraceAttributesForURLMatchingPredicate:(NSPredicate* _Nullable)urlPredicate
+                                                                  owner:(NSObject* _Nullable)owner
+                                                           usingHandler:(NSDictionary<NSString *, NSString *> * _Nullable(^)(IBGNetworkTrace *networkTrace))handler;
+
+/// Remove a previously registered attributes handler.
+///
+/// @param handlerID ID of the handler to be removed.
++ (void)removeNetworkTraceAttributesHandlerWithID:(NSString *)handlerID;
 
 @end
 

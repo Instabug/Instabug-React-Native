@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.4.4
+ Version:    10.8.0
  */
 
 #import <Foundation/Foundation.h>
@@ -72,7 +72,6 @@ NS_SWIFT_NAME(NetworkLogger)
 + (void)setProgressHandlerForRequestURL:(nonnull NSURL *)URL
                         progressHandler:(nonnull void (^)(NSURLSessionTask * _Nonnull task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend))requestProgressHandler;
 
-
 /**
  @brief Used to ask whether your app is prepared to handle a particular authentication challenge. Can be called on any thread.
  
@@ -81,7 +80,7 @@ NS_SWIFT_NAME(NetworkLogger)
  @param protectionSpaceHandler A block that takes the protection space for the authentication challenge and should return
  true or false.
  */
-+ (void)setCanAuthenticateAgainstProtectionSpaceHandler:(BOOL(^_Nonnull)(NSURLProtectionSpace * _Nonnull protectionSpace))protectionSpaceHandler;
++ (void)setCanAuthenticateAgainstProtectionSpaceHandler:(BOOL(^_Nonnull)(NSURLProtectionSpace * _Nonnull protectionSpace))protectionSpaceHandler DEPRECATED_MSG_ATTRIBUTE("'setCanAuthenticateAgainstProtectionSpaceHandler:' is deprecated: first deprecated in SDK 10.5.0 - Remove setCanAuthenticateAgainstProtectionSpaceHandler: to use your implementation of -[NSURLSessionTaskDelegate URLSession:task:didReceiveChallenge:completionHandler:].");
 
 
 /**
@@ -91,7 +90,7 @@ NS_SWIFT_NAME(NetworkLogger)
  
  @param reciveChallengeHandler A block that takes the authentication challenge and returns NSURLCredential.
  */
-+ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* _Nullable (^_Nonnull)(NSURLAuthenticationChallenge * _Nonnull challenge))reciveChallengeHandler;
++ (void)setDidReceiveAuthenticationChallengeHandler:(NSURLCredential* _Nullable (^_Nonnull)(NSURLAuthenticationChallenge * _Nonnull challenge))reciveChallengeHandler DEPRECATED_MSG_ATTRIBUTE("'setDidReceiveAuthenticationChallengeHandler:' is deprecated: first deprecated in SDK 10.5.0 - Remove setDidReceiveAuthenticationChallengeHandler: to use your implementation of -[NSURLSessionTaskDelegate URLSession:task:didReceiveChallenge:completionHandler:].");
 
 
 /**
@@ -111,5 +110,14 @@ NS_SWIFT_NAME(NetworkLogger)
  @param responseFilterPredicate An NSPredicate to match against an NSHTTPURLResponse. Matching responses will be omitted.
  */
 + (void)setNetworkLoggingRequestFilterPredicate:(nullable NSPredicate *)requestFilterPredicate responseFilterPredicate:(nullable NSPredicate *)responseFilterPredicate;
+
+/**
+ @brief A block that is used when an HTTP request is attempting to perform a redirection to a different URL
+ 
+ @discussion Set this block if your app has special logic for http redirection and you have network logging enabled.
+ 
+ @param redirectionHandler A block that takes the session, task, redirection response and redirection request and should return the new request to be made for the redirection if any.
+ */
++ (void)setTaskWillPerformHTTPRedirectionBlock:(nullable NSURLRequest * _Nullable (^)(NSURLSession * _Nonnull session, NSURLSessionTask * _Nonnull task, NSURLResponse * _Nonnull response, NSURLRequest * _Nonnull request))redirectionHandler;
 
 @end

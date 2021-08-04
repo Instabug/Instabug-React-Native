@@ -30,10 +30,10 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
     yarn add instabug-reactnative
     ```
 
-2. For projects that build for iOS, install `xcodeproj` gem:
+2. CocoaPods on iOS needs this extra step:
     
     ```bash
-    gem install xcodeproj
+    cd ios && pod install && cd ..
     ```
 
 3.  **For React Native >= 0.60**, simply run the command:
