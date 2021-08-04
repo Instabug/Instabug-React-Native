@@ -11,7 +11,7 @@ export NODE_BINARY=node
 
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: Looking for Token..."
-    INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
+    INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} --exclude='*.json' "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
 fi
 
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
@@ -19,14 +19,14 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     exit 0
 else
     if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
-        INSTABUG_APP_VERSION_CODE=$(grep -o "versionCode\s\+\d\+" android/app/build.gradle | awk '{ print $2 }')
+        INSTABUG_APP_VERSION_CODE=$(grep -o "versionCode\s\+\d\+" android/app/build.gradle -m 1 | awk '{ print $2 }')
         if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
             echo "versionCode could not be found, please upload the sourcemap files manually"
             exit 0
         fi
     fi
     if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
-         INSTABUG_APP_VERSION_NAME=$(grep "versionName" android/app/build.gradle | awk '{print $2}' | tr -d \''"\')
+         INSTABUG_APP_VERSION_NAME=$(grep "versionName" android/app/build.gradle -m 1 | awk '{print $2}' | tr -d \''"\')
         if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
         echo "versionName could not be found, please upload the sourcemap files manually"
         exit 0
@@ -37,17 +37,34 @@ else
     echo "Instabug: Version Code found" "\""${INSTABUG_APP_VERSION_CODE}"\""
     echo "Instabug: Version Name found" "\""${INSTABUG_APP_VERSION_NAME}"\""
     echo "Instabug: Generating sourcemap files..."
-    IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle)
+    IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle -m 1)
     if [[ $IS_HERMES == *"true"* ]]; then
+        #Find HERMES OS bin directory
+        case "$OSTYPE" in
+            darwin*)  HERMES_OS_BIN='osx-bin' ;; 
+            linux*)   HERMES_OS_BIN='linux64-bin' ;;
+            msys*)    HERMES_OS_BIN='win64-bin' ;;
+            *)        echo "unknown: $OSTYPE" ;;
+        esac
+
+        #Find HERMES command file name
+        INSTALLED_RN_VERSION_MAJOR=$(node -p "require('./node_modules/react-native/package.json').version" | cut -d "." -f2)
+        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 63 ]
+            then
+                HERMES_COMMAND_NAME='hermesc'
+            else
+                HERMES_COMMAND_NAME='hermes'
+        
+        fi
         #Generate android sourcemap (HERMES)
-        react-native bundle --platform android \
+        npx react-native bundle --platform android \
         --reset-cache \
         --entry-file index.js \
         --dev false \
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
 
-        node_modules/hermes-engine/osx-bin/hermes -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
+        node_modules/hermes-engine/$HERMES_OS_BIN/$HERMES_COMMAND_NAME -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
         cp index.android.bundle.hbc.map index.android.bundle.compiler.map
 
@@ -60,7 +77,7 @@ else
         rm -rf index.android.bundle.map
     else
         #Generate android sourcemap
-        react-native bundle --platform android \
+        npx react-native bundle --platform android \
         --entry-file index.js \
         --dev false \
         --bundle-output ./android/main.jsbundle \

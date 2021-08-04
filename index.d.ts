@@ -39,6 +39,9 @@ export namespace BugReporting {
     autoScreenRecordingMaxDuration: number
   ): void;
   function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
+  function setVideoRecordingFloatingButtonPosition(
+    position: BugReporting.position
+  ): void;
   enum invocationEvent {
     none,
     shake,
@@ -67,6 +70,12 @@ export namespace BugReporting {
     emailFieldOptional,
     commentFieldRequired,
     disablePostSendingDialog
+  }
+  enum position {
+    bottomRight,
+    topRight,
+    bottomLeft,
+    topLeft
   }
 }
 export namespace Chats {
@@ -110,7 +119,8 @@ export namespace Replies {
   ): void;
   function setInAppNotificationSound(shouldPlaySound: boolean): void;
   function setPushNotificationRegistrationTokenAndroid(token: string): void;
-  function setNotificationIconAndroid(notificationIcon: int): void;
+  function showNotificationAndroid(data: object): void;
+  function setNotificationIconAndroid(notificationIcon: number): void;
   function setPushNotificationChannelIdAndroid(pushNotificationChannelId: string): void;
   function setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound: boolean): void;
 }
@@ -139,7 +149,7 @@ export namespace Surveys {
 }
 export namespace NetworkLogger {
   function setEnabled(isEnabled: boolean): void;
-  function setNetworkDataObfuscationHandler(handler: () => void): void;
+  function setNetworkDataObfuscationHandler(handler: (networkData: any) => any): void;
   function setRequestFilterExpression(expression: string): void;
   function setProgressHandlerForRequest(handler: () => void): void;
 }

@@ -666,7 +666,9 @@ const InstabugModule = {
     }
   },
 
+  /* istanbul ignore next */
   /**
+   * @deprecated use {@link BugReporting.setVideoRecordingFloatingButtonPosition}
    * Sets the default position at which the Instabug screen recording button will be shown.
    * Different orientations are already handled.
    * (Default for `position` is `bottomRight`)
@@ -675,7 +677,7 @@ const InstabugModule = {
    * or `bottomRight` to show on the bottom right of scrren.
    */
   setVideoRecordingFloatingButtonPosition(position) {
-    Instabug.setVideoRecordingFloatingButtonPosition(position);
+    BugReporting.setVideoRecordingFloatingButtonPosition(position);
   },
 
   /* istanbul ignore next */

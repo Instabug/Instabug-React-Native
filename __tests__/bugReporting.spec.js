@@ -35,6 +35,7 @@ describe('Testing BugReporting Module', () => {
   const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
   const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
   const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
+  const setVideoRecordingFloatingButtonPosition = sinon.spy(NativeModules.IBGBugReporting, 'setVideoRecordingFloatingButtonPosition');
 
 
   beforeEach(() => {
@@ -265,4 +266,12 @@ describe('Testing BugReporting Module', () => {
 
   });
 
+  it('should call the native method setVideoRecordingFloatingButtonPosition', () => {
+
+    const position = 30;
+    BugReporting.setVideoRecordingFloatingButtonPosition(position);
+
+    expect(setVideoRecordingFloatingButtonPosition.calledOnceWithExactly(position)).toBe(true);
+
+  });
 });

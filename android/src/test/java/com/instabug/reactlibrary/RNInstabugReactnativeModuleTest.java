@@ -15,18 +15,15 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
-import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
-import com.instabug.library.InstabugState;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.survey.Surveys;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-
 
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -277,7 +274,7 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.enable();
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-        Instabug.setState(InstabugState.ENABLED);
+        Instabug.enable();
     }
 
     @Test

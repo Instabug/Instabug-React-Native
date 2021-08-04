@@ -2,6 +2,17 @@
 
 * Fixes Autolinking on iOS.
 
+## v10.4.0 (2021-05-10)
+
+* Migrates iOS to use XCFramework
+* Bumps Instabug native SDKs to v10.4
+* Fixes crashes related to the network request data not being parsed correctly
+* Fixes issues related to the automatic sourcemap file upload on Android
+* Adds missing TypeScript definitions
+* Deprecates Instabug.setVideoRecordingFloatingButtonPosition in favor of BugReporting.setVideoRecordingFloatingButtonPosition
+* Includes native fix which removes the usage of android:requestLegacyExternalStorage permission
+* Various other bug fixes and improvements
+
 ## v10.0.0 (2021-02-16)
 
 * Introduces Instabug’s new App Performance Monitoring (APM)

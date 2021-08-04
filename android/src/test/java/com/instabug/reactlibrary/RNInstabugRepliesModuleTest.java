@@ -6,11 +6,14 @@ import android.os.SystemClock;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.JavaOnlyMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.instabug.bug.BugReporting;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.MapUtil;
 import com.instabug.survey.Surveys;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -27,6 +30,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
@@ -168,6 +173,40 @@ public class RNInstabugRepliesModuleTest {
         // then
         PowerMockito.verifyStatic(VerificationModeFactory.times(1));
         Replies.setPushNotificationRegistrationToken("123");
+    }
+
+    @Test
+    public void givenBoolean$showNotification_whenQuery_thenShouldCallNativeApi() {
+        // given
+        PowerMockito.mockStatic(Replies.class);
+        PowerMockito.mockStatic(SystemClock.class);
+        PowerMockito.mockStatic(Arguments.class);
+
+        // when
+        PowerMockito.when(Arguments.createMap())
+                .thenAnswer(
+                        new Answer<Object>() {
+                            @Override
+                            public Object answer(InvocationOnMock invocation) throws Throwable {
+                                return new JavaOnlyMap();
+                            }
+                        });
+
+        Map<String, String> map = new HashMap<>();
+        PowerMockito.when(Replies.isInstabugNotification(map))
+                .thenAnswer(
+                        new Answer<Object>() {
+                            @Override
+                            public Object answer(InvocationOnMock invocation) throws Throwable {
+                                return true;
+                            }
+                        });
+
+        WritableMap readableMap = MapUtil.toWritableMap(new HashMap<String, Object>());
+        rnModule.showNotification(readableMap);
+
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        Replies.showNotification(map);
     }
 
     @Test
