@@ -232,7 +232,7 @@ workflows:
           requires:
             - test_module
             - test_sample
-            - test_android
+            # - test_android
             - test_ios
             - e2e_ios
             # - e2e_android
