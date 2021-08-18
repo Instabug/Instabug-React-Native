@@ -111,7 +111,7 @@ const XHRInterceptor = {
                 cloneNetwork.errorCode = 0;
                 cloneNetwork.errorDomain = 'ClientError';
 
-                cloneNetwork.requestBody = this._response;
+                cloneNetwork.requestBody = typeof this._response === "string" ? this._response : JSON.stringify(this._response);
                 cloneNetwork.responseBody = null;
               }
               if (onDoneCallback) {
