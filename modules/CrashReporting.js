@@ -30,10 +30,10 @@ export default {
       if (Platform.constants.reactNativeVersion.minor >= 64)
         // RN version >= 0.64 -> Stacktrace as string
         jsStackTrace = InstabugUtils.parseErrorStack(errorObject.stack);
-      // RN version == 0.63 -> Stacktrace as string
+      // RN version == 0.63 -> Stacktrace as Object
       else jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
     }
-    // RN version < 0.63 -> Stacktrace as string
+    // RN version < 0.63 -> Stacktrace as Object
     else jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,

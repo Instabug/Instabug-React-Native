@@ -58,10 +58,10 @@ export const captureJsErrors = () => {
       if (Platform.constants.reactNativeVersion.minor >= 64)
         // RN version >= 0.64 -> Stacktrace as string
         jsStackTrace = parseErrorStackLib(e.stack);
-      // RN version == 0.63 -> Stacktrace as string
+      // RN version == 0.63 -> Stacktrace as Object
       else jsStackTrace = parseErrorStackLib(e);
     }
-    // RN version < 0.63 -> Stacktrace as string
+    // RN version < 0.63 -> Stacktrace as Object
     else jsStackTrace = parseErrorStackLib(e);
 
     //JSON object to be sent to the native SDK
