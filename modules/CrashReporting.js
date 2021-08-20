@@ -24,17 +24,8 @@ export default {
    * @param errorObject Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
-    let jsStackTrace;
-    if (Platform.hasOwnProperty("constants")) {
-      // RN version >= 0.63
-      if (Platform.constants.reactNativeVersion.minor >= 64)
-        // RN version >= 0.64 -> Stacktrace as string
-        jsStackTrace = InstabugUtils.parseErrorStack(errorObject.stack);
-      // RN version == 0.63 -> Stacktrace as Object
-      else jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
-    }
-    // RN version < 0.63 -> Stacktrace as Object
-    else jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    let jsStackTrace = InstabugUtils.getStackTrace(errorObject);
+    
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,
