@@ -24,7 +24,8 @@ export default {
    * @param errorObject Error object to be sent to Instabug's servers
    */
   reportJSException: function(errorObject) {
-    let jsStackTrace = InstabugUtils.parseErrorStack(errorObject);
+    let jsStackTrace = InstabugUtils.getStackTrace(errorObject);
+    
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       os: Platform.OS,
