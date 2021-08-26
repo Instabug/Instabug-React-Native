@@ -1,3 +1,8 @@
+## v10.8.1 (2021-08-25)
+
+* Fixes a crash that occurs with network requests on slow network connectivity in v10.8
+* Fixes an issue with parseErrorStack whose signature was changed on RN 0.64
+
 ## v10.8.0 (2021-08-04)
 
 * Bumps Instabug native SDKs to v10.8

@@ -4,6 +4,7 @@ jest.mock('../utils/InstabugUtils', () => {
         captureJsErrors: jest.fn(),
         setOnReportHandler: jest.fn(),
         isOnReportHandlerSet: jest.fn(),
-        getActiveRouteName: jest.fn()
+        getActiveRouteName: jest.fn(),
+        getStackTrace: jest.fn(() => 'javascriptStackTrace')
     }
 });
