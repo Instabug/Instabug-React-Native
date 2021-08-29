@@ -48,15 +48,6 @@ export namespace BugReporting {
     handler: (dismiss: dismissType, report: reportType) => void
   ): void;
   /**
-   * Sets a block is executed in the background before sending each 
-   * report and could be used for attaching logs and extra data to reports, for example.
-   * @param {function} preSendingHandler - A callback to get executed before sending each 
-   * report
-   */
-  function onReportSubmitHandler(
-    preSendingHandler: (presendingHandler: Report) => void
-  ): void;
-  /**
    * Sets a block of code to be executed when a prompt option is selected.
    * @param {function} didSelectPromptOptionHandler - A block of code that
    *                  gets executed when a prompt option is selected.
