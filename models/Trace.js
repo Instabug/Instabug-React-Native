@@ -24,10 +24,8 @@ export default class Trace {
     }
 
     /**
-     * Add an attribute with key and value to the Trace to be sent.
-     * @param {string} key 
-     * @param {string} value 
-     */
+    * End Execution Trace
+    */
     end() {
         IBGAPM.endExecutionTrace(this.id);
     }
