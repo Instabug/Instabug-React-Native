@@ -16,7 +16,6 @@ export namespace BugReporting {
    * feedback form.
    */
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
-  /* istanbul ignore next */
   /**
    * @deprecated
    * Sets the invocation options.
@@ -120,7 +119,6 @@ export namespace BugReporting {
    * @param {array} types - Array of reportTypes
    */
   function setReportTypes(types: reportType[]): void;
-  /* istanbul ignore next */
   /**
    * @deprecated use {@link BugReporting.show}
    * Invoke bug reporting with report type and options.
