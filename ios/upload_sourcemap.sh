@@ -18,7 +18,7 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     exit 0
 else
     if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
-        INSTABUG_APP_VERSION_CODE=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleVersion )
+        INSTABUG_APP_VERSION_CODE=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' ${PRODUCT_SETTINGS_PATH} )
         if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
             echo "CFBundleVersion could not be found, please upload the sourcemap files manually"
             exit 0
@@ -33,7 +33,7 @@ else
         fi
     fi
     if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
-        INSTABUG_APP_VERSION_NAME=$( defaults read ${PRODUCT_SETTINGS_PATH} CFBundleShortVersionString )
+        INSTABUG_APP_VERSION_NAME=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' ${PRODUCT_SETTINGS_PATH} )
         if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
             echo "CFBundleShortVersionString could not be found, please upload the sourcemap files manually"
             exit 0
