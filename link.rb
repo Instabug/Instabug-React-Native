@@ -1,8 +1,11 @@
+require 'json'
+package = JSON.parse(File.read('package.json'))
+
 #!/usr/bin/env ruby
 begin
 	require 'xcodeproj'
 rescue LoadError
-	puts('xcodeproj gem doesn\'t exist. Please run \'gem install xcodeproj\' to install it, and re-run \'react-native link instabug-reactnative\' again')
+	puts("xcodeproj gem doesn't exist. Please run \"gem install xcodeproj\" to install it, and re-run \"react-native link #{package["name"]}\" again")
 	Kernel.exit(0)
 end
 
@@ -12,13 +15,13 @@ project_path = Dir.glob("#{current_path}/ios/*.xcodeproj").first
 file_name = File.basename(project_path, ".xcodeproj")
 project_location = "./ios/#{file_name}.xcodeproj"
 default_target_name = file_name
-framework_root = '../node_modules/instabug-reactnative/ios'
+framework_root = "../node_modules/#{package["name"]}/ios"
 framework_name = 'Instabug.xcframework'
 
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 INSTABUG_UPLOAD_SCRIPT = <<-SCRIPTEND
-bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"
+bash "../node_modules/#{package["name"]}/ios/upload_sourcemap.sh"
 SCRIPTEND
 
 # Get useful variables
