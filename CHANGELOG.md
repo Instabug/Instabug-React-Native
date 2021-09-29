@@ -1,5 +1,6 @@
 ## master
 
+* Fixes an issue with network header value formatting.
 * Replaces the defaults tool with PlistBuddy for reading plist files.
 
 ## v10.8.1 (2021-08-25)
