@@ -59,9 +59,6 @@ RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)in
     RCTSetLogThreshold(RCTLogLevelInfo);
     
     IBGNetworkLogger.enabled = YES;
-
-    // Temporarily disabling APM hot launches
-    IBGAPM.hotAppLaunchEnabled = NO;
 }
 
 RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
