@@ -1,3 +1,7 @@
+## master
+
+* Fixes an issue with network header value formatting.
+
 ## v10.8.1 (2021-08-25)
 
 * Fixes a crash that occurs with network requests on slow network connectivity in v10.8
