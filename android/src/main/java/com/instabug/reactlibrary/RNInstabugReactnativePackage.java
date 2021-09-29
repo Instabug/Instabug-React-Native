@@ -67,9 +67,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
             BugReporting.setFloatingButtonEdge(floatingButtonEdge);
         if(offset != null)
             BugReporting.setFloatingButtonOffset(offset);
-
-        // Temporarily disabling APM hot launches
-        APM.setHotAppLaunchEnabled(false);
     }
 
     public RNInstabugReactnativePackage(String androidApplicationToken, Application androidApplication,
