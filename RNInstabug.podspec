@@ -1,9 +1,9 @@
 require 'json'
 package = JSON.parse(File.read('package.json'))
-version = JSON.parse(File.read('package.json'))["version"]
+version = package["version"]
 
 Pod::Spec.new do |s|
-  s.name         = package["name"]
+  s.name         = 'RNInstabug'
   s.version      = version
   s.summary      = package["description"]
   s.author       = package["author"]

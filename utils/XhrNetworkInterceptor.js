@@ -83,8 +83,8 @@ const XHRInterceptor = {
                 const responseHeaders = this.getAllResponseHeaders().split('\r\n');
                 const responseHeadersDictionary = {};
                 responseHeaders.forEach(element => {
-                  const key = element.split(':')[0];
-                  const value = element.split(':')[1];
+                  const key = element.split(/:(.+)/)[0];
+                  const value = element.split(/:(.+)/)[1];
                   responseHeadersDictionary[key] = value;
                 });
                 cloneNetwork.responseHeaders = responseHeadersDictionary;
