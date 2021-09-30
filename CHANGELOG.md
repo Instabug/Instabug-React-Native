@@ -1,7 +1,9 @@
 ## master
 
-* Fixes an issue with network header value formatting.
-* Replaces the defaults tool with PlistBuddy for reading plist files.
+* Bumps Instabug native SDKs to v10.9
+* Fixes an issue with network header value formatting
+* Replaces the defaults tool with PlistBuddy for reading plist files
+* Enhances API documentation for TypeScript
 
 ## v10.8.1 (2021-08-25)
 
