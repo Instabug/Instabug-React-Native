@@ -1,4 +1,4 @@
-## master
+## 10.9.0 (2021-09-30)
 
 * Bumps Instabug native SDKs to v10.9
 * Fixes an issue with network header value formatting
