@@ -1,3 +1,10 @@
+## 10.9.0 (2021-09-30)
+
+* Bumps Instabug native SDKs to v10.9
+* Fixes an issue with network header value formatting
+* Replaces the defaults tool with PlistBuddy for reading plist files
+* Enhances API documentation for TypeScript
+
 ## v10.8.1 (2021-08-25)
 
 * Fixes a crash that occurs with network requests on slow network connectivity in v10.8
