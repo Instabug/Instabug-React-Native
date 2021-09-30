@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.8.0
+ Version:    10.9.2
  */
 
 #import <Foundation/Foundation.h>
@@ -76,6 +76,10 @@ NS_SWIFT_NAME(APM)
 /// Ends the current running Custom UI Trace.
 + (void)endUITrace;
 
+/// Ends the current session’s App Launch. Calling this API is optional, App Launches will still be captured and ended automatically by the SDK;
+/// this API just allows you to change when an App Launch actually ends.
++ (void)endAppLaunch;
+
 /// Sets the printed logs priority. Filter to one of the following levels.
 ///
 /// Sets the printed logs priority. Filter to one of the following levels:
@@ -103,8 +107,6 @@ NS_SWIFT_NAME(APM)
 /// Adds a handler to provide attributes to be attached with Network Traces.
 ///
 /// This handler will be executed on a background dispatch queue.
-///
-/// Warning: Calling this method from Network Trace attributes handler will cause a deadlock.
 ///
 /// @param urlPredicate If request's URL string matches the predicate, the handler will be executed. Pass nil to execute the handler for any request.
 /// @param owner Handler will be removed if owner is deallocated. Pass nil to keep the handler indefinitely.
