@@ -558,6 +558,10 @@ export namespace APM {
    */
   function setAppLaunchEnabled(isEnabled: boolean): void;
   /**
+   * Ends app launch
+   */
+  function endAppLaunch(): void;
+  /**
    * Enables or disables APM Network Metric
    * @param {boolean} isEnabled 
    */

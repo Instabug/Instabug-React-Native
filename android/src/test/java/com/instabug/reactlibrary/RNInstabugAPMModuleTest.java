@@ -109,6 +109,17 @@ public class RNInstabugAPMModuleTest {
     }
 
     @Test
+    public void given$endAppLaunch_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        // given
+        PowerMockito.mockStatic(APM.class);
+        // when
+        apmModule.endAppLaunch();
+        // then
+        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        APM.endAppLaunch();
+    }
+
+    @Test
     public void givenString$startExecutionTrace_whenQuery_thenShouldCallNativeApi() {
         // given
         PowerMockito.mockStatic(APM.class);

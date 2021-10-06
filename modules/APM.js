@@ -56,6 +56,13 @@ export default {
     },
 
     /**
+     * Ends app launch
+     */
+    endAppLaunch() {
+        IBGAPM.endAppLaunch();
+    },
+
+    /**
      * Enables or disables APM Network Metric
      * @param {boolean} isEnabled 
      */

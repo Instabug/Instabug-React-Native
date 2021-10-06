@@ -58,6 +58,10 @@ RCT_EXPORT_METHOD(setAppLaunchEnabled:(BOOL)isEnabled) {
     IBGAPM.appLaunchEnabled = isEnabled;
 }
 
+RCT_EXPORT_METHOD(endAppLaunch) {
+    [IBGAPM endAppLaunch];
+}
+
 RCT_EXPORT_METHOD(setAutoUITraceEnabled:(BOOL)isEnabled) {
     IBGAPM.autoUITraceEnabled = isEnabled;
 }
