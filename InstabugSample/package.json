@@ -25,12 +25,7 @@
     "metro-react-native-babel-preset": "^0.66.2",
     "react-test-renderer": "17.0.2"
   },
-  "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react-navigation)/"
-    ]
-  },
+
   "detox": {
     "test-runner": "jest",
     "runner-config": "__e2e__/config.json",
