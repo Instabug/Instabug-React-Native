@@ -110,7 +110,7 @@ jobs:
       - run:
           name: Build and run tests
           command: cd ios && xcodebuild  -allowProvisioningUpdates   -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone 12 Pro Max,OS=14.3'    test | xcpretty
-
+          no_output_timeout: 30m
   e2e_ios:
     macos:
       xcode: "12.3.0"
@@ -203,7 +203,6 @@ jobs:
             sudo chmod -R 777 /Users/distiller/Library/Detox
             detox test --configuration android.emu.release --cleanup
 
-
   publish:
     macos:
       xcode: "10.1.0"
@@ -247,4 +246,3 @@ workflows:
           filters:
             branches:
               only: master
-
