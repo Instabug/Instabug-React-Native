@@ -12,6 +12,13 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		5614D013CB1F880181CC6385 /* libPods-InstabugSample-InstabugSampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 195CA9739B516DE1C316BC72 /* libPods-InstabugSample-InstabugSampleTests.a */; };
+		63D4BF6E2715AA740039BE63 /* InstabugChatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF662715AA740039BE63 /* InstabugChatsTests.m */; };
+		63D4BF6F2715AA740039BE63 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF682715AA740039BE63 /* InstabugSurveysTests.m */; };
+		63D4BF702715AA740039BE63 /* InstabugFeatureRequestsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF692715AA740039BE63 /* InstabugFeatureRequestsTests.m */; };
+		63D4BF712715AA740039BE63 /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF6A2715AA740039BE63 /* InstabugAPMTests.m */; };
+		63D4BF722715AA740039BE63 /* InstabugRepliesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF6B2715AA740039BE63 /* InstabugRepliesTests.m */; };
+		63D4BF732715AA740039BE63 /* InstabugBugReportingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF6C2715AA740039BE63 /* InstabugBugReportingTests.m */; };
+		63D4BF742715AA740039BE63 /* IBGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D4BF6D2715AA740039BE63 /* IBGConstants.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BAF53C3743DBFA8AF75497E9 /* libPods-InstabugSample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FAC85A98493CDAD1F8FB224 /* libPods-InstabugSample.a */; };
 /* End PBXBuildFile section */
@@ -41,6 +48,14 @@
 		3FAC85A98493CDAD1F8FB224 /* libPods-InstabugSample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InstabugSample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4787814ECE7122710F5A5A59 /* Pods-InstabugSample-InstabugSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSample-InstabugSampleTests.debug.xcconfig"; path = "Target Support Files/Pods-InstabugSample-InstabugSampleTests/Pods-InstabugSample-InstabugSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		618F0D2C25DB5EDD119673AA /* Pods-InstabugSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugSample/Pods-InstabugSample.debug.xcconfig"; sourceTree = "<group>"; };
+		63D4BF662715AA740039BE63 /* InstabugChatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugChatsTests.m; sourceTree = "<group>"; };
+		63D4BF672715AA740039BE63 /* IBGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IBGConstants.h; sourceTree = "<group>"; };
+		63D4BF682715AA740039BE63 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
+		63D4BF692715AA740039BE63 /* InstabugFeatureRequestsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugFeatureRequestsTests.m; sourceTree = "<group>"; };
+		63D4BF6A2715AA740039BE63 /* InstabugAPMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
+		63D4BF6B2715AA740039BE63 /* InstabugRepliesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugRepliesTests.m; sourceTree = "<group>"; };
+		63D4BF6C2715AA740039BE63 /* InstabugBugReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugBugReportingTests.m; sourceTree = "<group>"; };
+		63D4BF6D2715AA740039BE63 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = InstabugSample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A06BD00E5ABB3BFA096B0FBE /* Pods-InstabugSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSample.release.xcconfig"; path = "Target Support Files/Pods-InstabugSample/Pods-InstabugSample.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -69,6 +84,14 @@
 		00E356EF1AD99517003FC87E /* InstabugSampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				63D4BF672715AA740039BE63 /* IBGConstants.h */,
+				63D4BF6D2715AA740039BE63 /* IBGConstants.m */,
+				63D4BF6A2715AA740039BE63 /* InstabugAPMTests.m */,
+				63D4BF6C2715AA740039BE63 /* InstabugBugReportingTests.m */,
+				63D4BF662715AA740039BE63 /* InstabugChatsTests.m */,
+				63D4BF692715AA740039BE63 /* InstabugFeatureRequestsTests.m */,
+				63D4BF6B2715AA740039BE63 /* InstabugRepliesTests.m */,
+				63D4BF682715AA740039BE63 /* InstabugSurveysTests.m */,
 				00E356F21AD99517003FC87E /* InstabugSampleTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
@@ -114,7 +137,6 @@
 				4787814ECE7122710F5A5A59 /* Pods-InstabugSample-InstabugSampleTests.debug.xcconfig */,
 				2891DA2EDEB9913D853E19A2 /* Pods-InstabugSample-InstabugSampleTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -414,7 +436,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D4BF742715AA740039BE63 /* IBGConstants.m in Sources */,
+				63D4BF712715AA740039BE63 /* InstabugAPMTests.m in Sources */,
+				63D4BF6E2715AA740039BE63 /* InstabugChatsTests.m in Sources */,
+				63D4BF702715AA740039BE63 /* InstabugFeatureRequestsTests.m in Sources */,
+				63D4BF732715AA740039BE63 /* InstabugBugReportingTests.m in Sources */,
 				00E356F31AD99517003FC87E /* InstabugSampleTests.m in Sources */,
+				63D4BF6F2715AA740039BE63 /* InstabugSurveysTests.m in Sources */,
+				63D4BF722715AA740039BE63 /* InstabugRepliesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
