@@ -24,6 +24,8 @@ import Instabug, {
   CrashReporting,
   Replies,
 } from 'instabug-reactnative';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -32,7 +34,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-export default class App extends Component<{}> {
+class Home extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
@@ -97,6 +99,78 @@ export default class App extends Component<{}> {
             onPress={() => this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
           </TouchableOpacity>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  showIntroMessage() {
+    Instabug.showIntroMessage();
+  }
+
+  invoke() {
+    Instabug.show();
+  }
+
+  showMultipleQuestionSurvey() {
+    Surveys.showSurvey('ZAKSlVz98QdPyOx1wIt8BA');
+  }
+
+  showNpsSurvey() {
+    Surveys.showSurvey('pcV_mE2ttqHxT1iqvBxL0w');
+  }
+
+  showFeatureRequests() {
+    FeatureRequests.show();
+  }
+
+  sendBugReport() {
+    BugReporting.showWithOptions(BugReporting.reportType.bug);
+  }
+
+  sendCrashReport() {
+    try {
+      throw new Error('Text Handled Exception From Instabug Test App');
+    } catch (Exception) {
+      CrashReporting.reportJSException(Exception);
+      alert('Crash report Sent!');
+    }
+  }
+
+  sendFeedback() {
+    BugReporting.showWithOptions(BugReporting.reportType.feedback, [
+      BugReporting.option.emailFieldHidden,
+    ]);
+  }
+
+  startNewConversation() {
+    BugReporting.showWithOptions(BugReporting.reportType.question);
+  }
+
+  showUnreadMessagesCount() {
+    Replies.getUnreadRepliesCount(count => {
+      alert('Messages: ' + count);
+    });
+  }
+}
+class Settings extends Component<{}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      switchValue: true,
+      colorTheme: 'Light',
+    };
+  }
+
+  render() {
+    return (
+      <View testID="welcome" style={styles.container}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <Text style={styles.details}>
+            Hello {"Instabug's"} awesome user! The purpose of this application
+            is to show you the different options for customizing the SDK and how
+            easy it is to integrate it to your existing app
+          </Text>
           {this.invocationEvent()}
           <Text style={styles.textColor}> Set primary color </Text>
           <View style={styles.rowView}>
@@ -181,45 +255,6 @@ export default class App extends Component<{}> {
     Instabug.setPrimaryColor(color);
   }
 
-  showIntroMessage() {
-    Instabug.showIntroMessage();
-  }
-
-  invoke() {
-    Instabug.show();
-  }
-
-  showMultipleQuestionSurvey() {
-    Surveys.showSurvey('ZAKSlVz98QdPyOx1wIt8BA');
-  }
-
-  showNpsSurvey() {
-    Surveys.showSurvey('pcV_mE2ttqHxT1iqvBxL0w');
-  }
-
-  showFeatureRequests() {
-    FeatureRequests.show();
-  }
-
-  sendBugReport() {
-    BugReporting.showWithOptions(BugReporting.reportType.bug);
-  }
-
-  sendCrashReport() {
-    try {
-      throw new Error('Text Handled Exception From Instabug Test App');
-    } catch (Exception) {
-      CrashReporting.reportJSException(Exception);
-      alert('Crash report Sent!');
-    }
-  }
-
-  sendFeedback() {
-    BugReporting.showWithOptions(BugReporting.reportType.feedback, [
-      BugReporting.option.emailFieldHidden,
-    ]);
-  }
-
   changeInvocationEvent(invocationEvent) {
     if (invocationEvent === 'Shake')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
@@ -237,16 +272,6 @@ export default class App extends Component<{}> {
       ]);
     if (invocationEvent === 'None')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
-  }
-
-  startNewConversation() {
-    BugReporting.showWithOptions(BugReporting.reportType.question);
-  }
-
-  showUnreadMessagesCount() {
-    Replies.getUnreadRepliesCount(count => {
-      alert('Messages: ' + count);
-    });
   }
 }
 buttonColor = function (myColor) {
@@ -324,3 +349,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+export default function App() {
+  const Tab = createBottomTabNavigator();
+  return (
+    <NavigationContainer onStateChange={Instabug.onStateChange}>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Settings" component={Settings} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
