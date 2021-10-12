@@ -185,6 +185,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				A81BBED9C3312B4D853082DA /* [CP] Embed Pods Frameworks */,
 				13C378C335FC13F596D2F0D4 /* [CP] Copy Pods Resources */,
+				B8AD49B72488C8F0D000F195 /* [CP-User] [instabug-reactnative] Upload Sourcemap */,
 			);
 			buildRules = (
 			);
@@ -359,6 +360,16 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-InstabugSample/Pods-InstabugSample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B8AD49B72488C8F0D000F195 /* [CP-User] [instabug-reactnative] Upload Sourcemap */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"../node_modules/instabug-reactnative/ios/upload_sourcemap.sh\"";
 		};
 		DD1AA4DBFEAB75A854826F0C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
