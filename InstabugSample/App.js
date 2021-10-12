@@ -40,7 +40,9 @@ export default class App extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('YOUR_TOKEN', [Instabug.invocationEvent.floatingButton]);
+    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
+      Instabug.invocationEvent.floatingButton,
+    ]);
   }
 
   render() {
@@ -293,6 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 10,
+    color: 'black',
   },
   buttonColor: {
     marginTop: 10,
@@ -306,6 +309,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight: 5,
     fontWeight: 'bold',
+    color: 'black',
   },
   switchView: {
     flexDirection: 'row',
