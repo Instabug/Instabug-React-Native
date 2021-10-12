@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -27,7 +27,9 @@ import Instabug, {
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu',
 });
 
 export default class App extends Component<{}> {
@@ -38,9 +40,7 @@ export default class App extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
-      Instabug.invocationEvent.floatingButton,
-    ]);
+    Instabug.start('YOUR_TOKEN', [Instabug.invocationEvent.floatingButton]);
   }
 
   render() {
@@ -48,35 +48,51 @@ export default class App extends Component<{}> {
       <View testID="welcome" style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <Text style={styles.details}>
-            Hello {"Instabug's"} awesome user! The purpose of this application is to show you the
-            different options for customizing the SDK and how easy it is to integrate it to your
-            existing app
+            Hello {"Instabug's"} awesome user! The purpose of this application
+            is to show you the different options for customizing the SDK and how
+            easy it is to integrate it to your existing app
           </Text>
           <TouchableOpacity style={styles.button} onPress={() => this.invoke()}>
             <Text style={styles.text}> INVOKE </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.sendBugReport()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.sendBugReport()}>
             <Text style={styles.text}> SEND BUG REPORT </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.sendFeedback()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.sendFeedback()}>
             <Text style={styles.text}> SEND FEEDBACK </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.startNewConversation()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.startNewConversation()}>
             <Text style={styles.text}> ASK A QUESTION </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.sendCrashReport()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.sendCrashReport()}>
             <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.showNpsSurvey()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.showNpsSurvey()}>
             <Text style={styles.text}> SHOW NPS SURVEY </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.showMultipleQuestionSurvey()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.showMultipleQuestionSurvey()}>
             <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.showFeatureRequests()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.showFeatureRequests()}>
             <Text style={styles.text}> SHOW FEATURE REQUESTS </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => this.showUnreadMessagesCount()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
           </TouchableOpacity>
           {this.invocationEvent()}
@@ -100,8 +116,13 @@ export default class App extends Component<{}> {
             />
           </View>
           <View style={styles.switchView}>
-            <Text style={styles.textSwitchStyle}>Color Theme: {this.state.colorTheme}</Text>
-            <Switch onValueChange={this.toggleSwitch} value={this.state.switchValue} />
+            <Text style={styles.textSwitchStyle}>
+              Color Theme: {this.state.colorTheme}
+            </Text>
+            <Switch
+              onValueChange={this.toggleSwitch}
+              value={this.state.switchValue}
+            />
           </View>
         </ScrollView>
       </View>
@@ -115,32 +136,27 @@ export default class App extends Component<{}> {
         <View style={styles.rowView}>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Shake')}
-          >
+            onPress={() => this.changeInvocationEvent('Shake')}>
             <Text style={styles.textInvoke}> SHAKE </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Screenshot')}
-          >
+            onPress={() => this.changeInvocationEvent('Screenshot')}>
             <Text style={styles.textInvoke}> SCREENSHOT </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('twoFingersSwipe')}
-          >
+            onPress={() => this.changeInvocationEvent('twoFingersSwipe')}>
             <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Button')}
-          >
+            onPress={() => this.changeInvocationEvent('Button')}>
             <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('None')}
-          >
+            onPress={() => this.changeInvocationEvent('None')}>
             <Text style={styles.textInvoke}> NONE </Text>
           </TouchableOpacity>
         </View>
@@ -149,12 +165,12 @@ export default class App extends Component<{}> {
   }
 
   toggleSwitch = value => {
-    this.setState({ switchValue: value });
+    this.setState({switchValue: value});
     if (value) {
-      this.setState({ colorTheme: 'Light' });
+      this.setState({colorTheme: 'Light'});
       Instabug.setColorTheme(Instabug.colorTheme.light);
     } else {
-      this.setState({ colorTheme: 'Dark' });
+      this.setState({colorTheme: 'Dark'});
       Instabug.setColorTheme(Instabug.colorTheme.dark);
     }
   };
@@ -206,11 +222,17 @@ export default class App extends Component<{}> {
     if (invocationEvent === 'Shake')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
     if (invocationEvent === 'Button')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.floatingButton]);
+      BugReporting.setInvocationEvents([
+        BugReporting.invocationEvent.floatingButton,
+      ]);
     if (invocationEvent === 'Screenshot')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
+      BugReporting.setInvocationEvents([
+        BugReporting.invocationEvent.screenshot,
+      ]);
     if (invocationEvent === 'twoFingersSwipe')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.twoFingersSwipe]);
+      BugReporting.setInvocationEvents([
+        BugReporting.invocationEvent.twoFingersSwipe,
+      ]);
     if (invocationEvent === 'None')
       BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
   }
@@ -225,7 +247,7 @@ export default class App extends Component<{}> {
     });
   }
 }
-buttonColor = function(myColor) {
+buttonColor = function (myColor) {
   return {
     marginTop: 10,
     padding: 20,
