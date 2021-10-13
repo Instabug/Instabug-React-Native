@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.9.2
+ Version:    10.9.3
  */
 
 #import <Foundation/Foundation.h>
