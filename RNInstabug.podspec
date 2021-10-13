@@ -15,4 +15,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
   s.dependency 'Instabug', '10.9.2'
+  s.ios.deployment_target = '10.0'
+  s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-framework "Instabug"'}
 end
