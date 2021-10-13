@@ -328,7 +328,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-InstabugSample/Pods-InstabugSample-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Instabug/Instabug.framework/Instabug",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/RNInstabug/Instabug.framework/Instabug",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
