@@ -2,7 +2,7 @@
 
 * Bumps Instabug Android SDK to v10.9.1
 * Bumps Instabug iOS SDK to v10.9.3
-* Fixes an issue with network requests not getting logged on iOS
+* Fixes an issue with network requests not getting logged in v10.9.0 on iOS
 
 ## 10.9.0 (2021-09-30)
 
