@@ -11,10 +11,11 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Instabug/Instabug-React-Native.git", :tag => 'v' + package["version"] }
   s.source_files     = 'ios/RNInstabug/*'
   s.platform         = :ios, "9.0"
-  s.static_framework = true
+
+  s.static_framework      = true
+  s.ios.deployment_target = '10.0'
+  s.pod_target_xcconfig   = { 'OTHER_LDFLAGS' => '-framework "Instabug"' }
 
   s.dependency 'React'
-  s.dependency 'Instabug', '10.9.2'
-  s.ios.deployment_target = '10.0'
-  s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-framework "Instabug"'}
+  s.dependency 'Instabug', '11.2.0'
 end
