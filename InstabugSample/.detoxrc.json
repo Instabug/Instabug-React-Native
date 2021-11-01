@@ -1,6 +1,6 @@
 {
   "test-runner": "jest",
-  "runner-config": "e2e/config.json",
+  "runner-config": "__e2e__/config.json",
   "configurations": {
     "ios.sim.debug": {
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/InstabugSample.app",
