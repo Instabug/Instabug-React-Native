@@ -9345,7 +9345,7 @@ ___destroy_helper_block_e8_20s36s40s44s48s52s56s60s64s
 ___118-[IBGNetworkLoggerPersistenceManager saveLogWithRequest:body:resposne:data:error:duration:withCompletionHandler:date:]_block_invoke.707
 -[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]
 ___156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke
-___156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke.737
+___156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke.718
 -[IBGNetworkLoggerPersistenceManager loadLogsWithSessionId:completionHandler:]
 ___78-[IBGNetworkLoggerPersistenceManager loadLogsWithSessionId:completionHandler:]_block_invoke
 +[IBGNetworkLoggerPersistenceManager fetchRequest]
@@ -9369,7 +9369,8 @@ ___50-[IBGNetworkLoggerPersistenceManager clearOldLogs]_block_invoke
 ___block_descriptor_72_e8_20s36s40s44s48s52s56s60s64s_e31_v8?0"NSManagedObjectContext"4l
 ___block_descriptor_76_e8_20s36s40s44s48s52s56s60s64s_e31_v8?0"NSManagedObjectContext"4l
 ___block_descriptor_20_e16_v8?0"NSError"4l
-_OBJC_CLASSLIST_REFERENCES_$_.786
+___block_literal_global.719
+_OBJC_CLASSLIST_REFERENCES_$_.813
 __OBJC_$_CLASS_METHODS_IBGNetworkLoggerPersistenceManager
 __OBJC_CLASS_PROTOCOLS_$_IBGNetworkLoggerPersistenceManager
 __OBJC_METACLASS_RO_$_IBGNetworkLoggerPersistenceManager
@@ -9386,7 +9387,7 @@ __63-[IBGNetworkLoggerPersistenceManager clearAllLogsSynchronously]_block_invoke
 __58-[IBGNetworkLoggerPersistenceManager clearLastSessionLogs]_block_invoke
 __50-[IBGNetworkLoggerPersistenceManager clearAllLogs]_block_invoke
 __78-[IBGNetworkLoggerPersistenceManager loadLogsWithSessionId:completionHandler:]_block_invoke
-__156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke.737
+__156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke.718
 __156-[IBGNetworkLoggerPersistenceManager addNetworkLogWithUrl:method:requestBody:responseBody:responseCode:requestHeaders:responseHeaders:contentType:duration:]_block_invoke
 __118-[IBGNetworkLoggerPersistenceManager saveLogWithRequest:body:resposne:data:error:duration:withCompletionHandler:date:]_block_invoke.707
 __destroy_helper_block_e8_20s36s40s44s48s52s56s60s64s
@@ -19287,6 +19288,7 @@ ___62+[IBGExecutionTrace startExecutionTraceWithName:errorHandler:]_block_invoke
 -[IBGExecutionTrace setType:]
 -[IBGExecutionTrace .cxx_destruct]
 ___block_descriptor_20_e30_i12?0"NSNumber"4"NSNumber"8l
+_OBJC_CLASSLIST_REFERENCES_$_.786
 __OBJC_$_CLASS_METHODS_IBGExecutionTrace
 __OBJC_METACLASS_RO_$_IBGExecutionTrace
 __OBJC_$_INSTANCE_METHODS_IBGExecutionTrace
@@ -24081,7 +24083,6 @@ ___63-[IBGChatVC collectionView:willDisplayCell:forItemAtIndexPath:]_block_invok
 -[IBGChatVC setNavigtaionBar:]
 -[IBGChatVC .cxx_destruct]
 _OBJC_IVAR_$_IBGChatVC._shouldShowCloseButton
-_OBJC_CLASSLIST_REFERENCES_$_.813
 _OBJC_CLASSLIST_REFERENCES_$_.878
 _OBJC_IVAR_$_IBGChatVC._presenter
 _OBJC_IVAR_$_IBGChatVC._currentSection
