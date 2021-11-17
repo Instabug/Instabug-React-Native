@@ -38,7 +38,7 @@
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react": "^16.8.6",
-    "react-native": "^0.59.8",
+    "react-native": "^0.62.3",
     "sinon": "^7.3.2",
     "wait-for-expect": "^1.2.0",
     "esprima": "^4.0.1",
