@@ -1,3 +1,6 @@
+## master
+* Adds APM.endAppLaunch API
+
 ## 10.9.0 (2021-09-30)
 
 * Bumps Instabug native SDKs to v10.9
