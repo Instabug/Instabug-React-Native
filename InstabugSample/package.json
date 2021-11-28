@@ -3,62 +3,30 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
     "start": "react-native start",
     "test": "jest __tests__",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/native": "^6.0.6",
     "instabug-reactnative": "../",
-    "react": "16.8.6",
-    "react-native": "0.60.0"
+    "react": "17.0.2",
+    "react-native": "0.66.0",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/runtime": "^7.5.4",
-    "@react-native-community/eslint-config": "^0.0.5",
-    "babel-jest": "^24.8.0",
-    "detox": "18.12.0",
-    "eslint": "^6.0.1",
-    "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "^0.55.0",
-    "react-test-renderer": "16.8.6"
-  },
-  "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react-navigation)/"
-    ]
-  },
-  "detox": {
-    "test-runner": "jest",
-    "runner-config": "__e2e__/config.json",
-    "configurations": {
-      "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/InstabugSample.app",
-        "build": "xcodebuild -workspace ios/InstabugSample.xcworkspace -scheme InstabugSample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
-        "type": "ios.simulator",
-        "name": "iPhone 12"
-      },
-      "ios.sim.release": {
-        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/InstabugSample.app",
-        "build": "xcodebuild -workspace ios/InstabugSample.xcworkspace -scheme InstabugSample -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
-        "type": "ios.simulator",
-        "name": "iPhone 12"
-      },
-      "android.emu.debug": {
-        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build":
-        "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
-        "type": "android.emulator",
-        "name": "Pixel_3_API_28"
-      },
-      "android.emu.release": {
-        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
-        "build":
-        "cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release && cd ..",
-        "type": "android.emulator",
-        "name": "Nexus_6P_API_27"
-      }
-    }
+    "@babel/core": "^7.15.8",
+    "@babel/runtime": "^7.15.4",
+    "@react-native-community/eslint-config": "^3.0.1",
+    "babel-jest": "^27.2.5",
+    "detox": "^18.22.1",
+    "eslint": "^7.32.0",
+    "jest": "^27.2.5",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-test-renderer": "17.0.2"
   }
 }

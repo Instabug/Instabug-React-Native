@@ -1,6 +1,12 @@
 ## master
 * Adds APM.endAppLaunch API
 
+## 10.9.1 (2021-10-13)
+
+* Bumps Instabug Android SDK to v10.9.1
+* Bumps Instabug iOS SDK to v10.9.3
+* Fixes an issue with network requests not getting logged in v10.9.0 on iOS
+
 ## 10.9.0 (2021-09-30)
 
 * Bumps Instabug native SDKs to v10.9
