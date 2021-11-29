@@ -4,6 +4,7 @@ package com.instabug.reactlibrary;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -11,15 +12,35 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
+import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.bug.BugReporting;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import com.instabug.library.Platform;
 
 import javax.annotation.Nonnull;
+
+import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
@@ -220,5 +241,63 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+    /**
+    *  Send Apm network log by Reflection 
+    */
+    @ReactMethod
+    public void networkLog(String networkData) throws JSONException {
+        try{
+            APMNetworkLogger apmNetworkLogger = new APMNetworkLogger();
+            JSONObject jsonObject = new JSONObject(networkData);
+            final String requestUrl = (String) jsonObject.get("url");
+            final String requestBody = (String) jsonObject.get("requestBody");
+            final String responseBody = (String) jsonObject.get("responseBody");
+            final String requestMethod = (String) jsonObject.get("method");
+            //--------------------------------------------
+            final String requestContentType = (String) jsonObject.get("requestContentType");
+            final String responseContentType = (String) jsonObject.get("contentType");
+            //--------------------------------------------
+            final long requestBodySize = ((Number) jsonObject.get("requestBodySize")).longValue();
+            final long responseBodySize = ((Number) jsonObject.get("responseBodySize")).longValue();
+            //--------------------------------------------
+            final String errorDomain = (String) jsonObject.get("errorDomain");
+            final Integer statusCode = (Integer) jsonObject.get("responseCode");
+            final long requestDuration = ((Number) jsonObject.get("duration")).longValue();
+            final long requestStartTime = ((Number) jsonObject.get("startTime")).longValue() * 1000;
+            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString(); 
+            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString(); 
+            final String errorMessage;
+            if(errorDomain.equals("")) {
+                errorMessage = null;
+            } else {
+                errorMessage = errorDomain;
+            }
+            //--------------------------------------------
+            String gqlQueryName = null;
+            if(jsonObject.has("gqlQueryName")){
+                gqlQueryName = (String) jsonObject.get("gqlQueryName");
+            } 
+            final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
+            
+            try {
+                Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
+                if (method != null) {
+                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage);
+                } else {
+                    Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
