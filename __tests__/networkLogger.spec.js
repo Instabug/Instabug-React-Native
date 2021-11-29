@@ -19,6 +19,9 @@ jest.mock('NativeModules', () => {
             networkLog: jest.fn(),
             addListener: jest.fn()
         },
+        IBGAPM: {
+            networkLog: jest.fn(),
+        },
     };
 });
 
@@ -33,6 +36,7 @@ describe('NetworkLogger Module', () => {
     const enableInterception = sinon.spy(Interceptor, 'enableInterception');
     const disableInterception = sinon.spy(Interceptor, 'disableInterception');
     const networkLog = sinon.spy(NativeModules.Instabug, 'networkLog');
+    const apmNetworkLog = sinon.spy(NativeModules.IBGAPM, 'networkLog');
 
     const network = {
         url: 'https://api.instabug.com',
@@ -53,6 +57,7 @@ describe('NetworkLogger Module', () => {
         networkLog.resetHistory();
         IBGEventEmitter.removeAllListeners();
         NetworkLogger.setNetworkDataObfuscationHandler(null);
+        apmNetworkLog.resetHistory();
     });
 
     it('should set onProgressCallback with callback', () => {
@@ -98,7 +103,7 @@ describe('NetworkLogger Module', () => {
         NetworkLogger.setEnabled(true);
 
         expect(networkLog.calledOnceWithExactly(JSON.stringify(network))).toBe(true);
-
+        expect(apmNetworkLog.calledOnceWithExactly(JSON.stringify(network))).toBe(true);
     });
 
     it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
@@ -137,6 +142,7 @@ describe('NetworkLogger Module', () => {
             const newData = clone(network);
             newData.requestHeaders['token'] = randomString;
             expect(networkLog.calledOnceWithExactly(JSON.stringify(newData))).toBe(true);
+            expect(apmNetworkLog.calledOnceWithExactly(JSON.stringify(newData))).toBe(true);
         });
 
     });
@@ -148,7 +154,7 @@ describe('NetworkLogger Module', () => {
         NetworkLogger.setEnabled(true);
 
         expect(networkLog.notCalled).toBe(true);
-
+        expect(apmNetworkLog.notCalled).toBe(true);
     });
 
 

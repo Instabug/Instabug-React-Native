@@ -1,6 +1,7 @@
 import 'react-native';
 import sinon from 'sinon';
 import FakeRequest from '../jest/fakeNetworkRequest';
+import InstabugConstants from '../utils/InstabugConstants';
 
 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
 
@@ -167,6 +168,39 @@ describe('Network Interceptor', () => {
         FakeRequest.send();
         FakeRequest.mockResponse(requests[0]);
         expect(callback).not.toHaveBeenCalled();
+    });
+    it('should set gqlQueryName in network object on receiving response', (done) => {
+      const headers = {};
+      headers[InstabugConstants.GRAPHQL_HEADER] =
+        InstabugConstants.GRAPHQL_HEADER;
+      Interceptor.enableInterception();
+      Interceptor.setOnDoneCallback((network) => {
+        expect(network.gqlQueryName).toEqual(
+          headers[InstabugConstants.GRAPHQL_HEADER]
+        );
+        done();
+      });
+      FakeRequest.open(method, url);
+      FakeRequest.setRequestHeaders(headers);
+      FakeRequest.send();
+      FakeRequest.mockResponse(requests[0]);
+    });
+  
+    it('should set serverErrorMessage in network object on receiving response', (done) => {
+      const headers = {};
+      headers[InstabugConstants.GRAPHQL_HEADER] =
+        InstabugConstants.GRAPHQL_HEADER;
+      const responseBody = { errors: [{ item: 'first' }, { item: 'second' }] };
+      Interceptor.enableInterception();
+      Interceptor.setOnDoneCallback((network) => {
+        expect(network.serverErrorMessage).toEqual('GraphQLError');
+        done();
+      });
+      FakeRequest.open(method, url);
+      FakeRequest.setRequestHeaders(headers);
+      FakeRequest.setResponseType('text');
+      FakeRequest.send();
+      FakeRequest.mockResponse(requests[0], null, JSON.stringify(responseBody));
     });
 
 
