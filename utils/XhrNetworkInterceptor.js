@@ -1,5 +1,7 @@
 'use strict';
 
+import InstabugConstants from './InstabugConstants';
+
 const XMLHttpRequest = global.XMLHttpRequest;
 const originalXHROpen = XMLHttpRequest.prototype.open;
 const originalXHRSend = XMLHttpRequest.prototype.send;
@@ -26,8 +28,11 @@ const _reset = () => {
     errorCode: 0,
     startTime: 0,
     duration: 0,
+    gqlQueryName: '',
+    serverErrorMessage: '',
+    requestContentType: '',
   };
-}
+};
 
 const XHRInterceptor = {
   setOnDoneCallback(callback) {
@@ -37,29 +42,30 @@ const XHRInterceptor = {
     onProgressCallback = callback;
   },
   enableInterception() {
-    XMLHttpRequest.prototype.open = function(method, url) {
+    XMLHttpRequest.prototype.open = function (method, url) {
       _reset();
       network.url = url;
       network.method = method;
       originalXHROpen.apply(this, arguments);
     };
 
-    XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
+    XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
       if (network.requestHeaders === '') {
         network.requestHeaders = {};
       }
-      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
+      network.requestHeaders[header] =
+        typeof value === 'string' ? value : JSON.stringify(value);
       originalXHRSetRequestHeader.apply(this, arguments);
     };
 
-    XMLHttpRequest.prototype.send = function(data) {
+    XMLHttpRequest.prototype.send = function (data) {
       var cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
-      
-      if (typeof cloneNetwork.requestBody !== "string") {
+
+      if (typeof cloneNetwork.requestBody !== 'string') {
         cloneNetwork.requestBody = JSON.stringify(cloneNetwork.requestBody);
       }
-      
+
       if (this.addEventListener) {
         this.addEventListener(
           'readystatechange',
@@ -72,48 +78,95 @@ const XHRInterceptor = {
               if (contentTypeString) {
                 cloneNetwork.contentType = contentTypeString.split(';')[0];
               }
-              const responseBodySizeString = this.getResponseHeader('Content-Length');
+              const responseBodySizeString =
+                this.getResponseHeader('Content-Length');
               if (responseBodySizeString) {
                 const responseBodySizeNumber = Number(responseBodySizeString);
 
-                if (!isNaN(responseBodySizeNumber)) cloneNetwork.responseBodySize = responseBodySizeNumber;
+                if (!isNaN(responseBodySizeNumber))
+                  cloneNetwork.responseBodySize = responseBodySizeNumber;
               }
-                
+
               if (this.getAllResponseHeaders()) {
-                const responseHeaders = this.getAllResponseHeaders().split('\r\n');
+                const responseHeaders =
+                  this.getAllResponseHeaders().split('\r\n');
                 const responseHeadersDictionary = {};
-                responseHeaders.forEach(element => {
+                responseHeaders.forEach((element) => {
                   const key = element.split(/:(.+)/)[0];
                   const value = element.split(/:(.+)/)[1];
                   responseHeadersDictionary[key] = value;
                 });
                 cloneNetwork.responseHeaders = responseHeadersDictionary;
               }
+
+              if(cloneNetwork.requestHeaders['content-type']){
+                cloneNetwork.requestContentType = cloneNetwork.requestHeaders['content-type'].split(';')[0];
+              }
             }
+
             if (this.readyState === this.DONE) {
-              cloneNetwork.duration = (Date.now() - cloneNetwork.startTime);
+              cloneNetwork.duration = Date.now() - cloneNetwork.startTime;
               if (this.status == null) {
                 cloneNetwork.responseCode = 0;
               } else {
                 cloneNetwork.responseCode = this.status;
-              }
-              
-              if (this.response) {
-                if (this.responseType === 'blob') {
-                  var responseText = await (new Response(this.response)).text();
-                  cloneNetwork.responseBody = responseText;
-                } else if (this.responseType === 'text' || this.responseType === '') {
-                  cloneNetwork.responseBody = this.response;
-                }
               }
 
               if (this._hasError) {
                 cloneNetwork.errorCode = 0;
                 cloneNetwork.errorDomain = 'ClientError';
 
-                cloneNetwork.requestBody = typeof this._response === "string" ? this._response : JSON.stringify(this._response);
+                cloneNetwork.requestBody =
+                  typeof this._response === 'string'
+                    ? this._response
+                    : JSON.stringify(this._response);
                 cloneNetwork.responseBody = null;
               }
+
+              if (this.response) {
+                if (this.responseType === 'blob') {
+                  var responseText = await new Response(this.response).text();
+                  cloneNetwork.responseBody = responseText;
+                } else if (
+                  this.responseType === 'text' ||
+                  this.responseType === ''
+                ) {
+                  cloneNetwork.responseBody = this.response;
+                }
+              }
+              
+              cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;
+              
+              if(cloneNetwork.responseBodySize === 0){
+                cloneNetwork.responseBodySize = cloneNetwork.responseBody.length;
+              }
+
+              if (
+                cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER]
+              ) {
+                cloneNetwork.gqlQueryName =
+                  cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER];
+                delete cloneNetwork.requestHeaders[
+                  InstabugConstants.GRAPHQL_HEADER
+                ];
+                if (cloneNetwork.gqlQueryName === 'null') {
+                  cloneNetwork.gqlQueryName = '';
+                }
+                if (cloneNetwork.responseBody) {
+                  let responseObj = JSON.parse(cloneNetwork.responseBody);
+
+                  if (responseObj.errors) {
+                    cloneNetwork.serverErrorMessage = 'GraphQLError';
+                  } else {
+                    cloneNetwork.serverErrorMessage = '';
+                  }
+                }
+              }
+              else
+              {
+                delete cloneNetwork.gqlQueryName;
+              }
+
               if (onDoneCallback) {
                 onDoneCallback(cloneNetwork);
               }
@@ -122,7 +175,7 @@ const XHRInterceptor = {
           false
         );
 
-        const downloadUploadProgressCallback = event => {
+        const downloadUploadProgressCallback = (event) => {
           if (!isInterceptorEnabled) {
             return;
           }
@@ -134,7 +187,10 @@ const XHRInterceptor = {
           }
         };
         this.addEventListener('progress', downloadUploadProgressCallback);
-        this.upload.addEventListener('progress', downloadUploadProgressCallback);
+        this.upload.addEventListener(
+          'progress',
+          downloadUploadProgressCallback
+        );
       }
 
       cloneNetwork.startTime = Date.now();
@@ -150,7 +206,7 @@ const XHRInterceptor = {
     XMLHttpRequest.prototype.setRequestHeader = originalXHRSetRequestHeader;
     onDoneCallback = null;
     onProgressCallback = null;
-  }
+  },
 };
 
 module.exports = XHRInterceptor;
