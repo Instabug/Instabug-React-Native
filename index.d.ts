@@ -532,6 +532,12 @@ export namespace NetworkLogger {
    * @param {function} handler
    */
   function setProgressHandlerForRequest(handler: () => void): void;
+  /**
+   * Apollo Link Request Handler to track network log for graphQL using apollo
+   * @param {any} operation 
+   * @param {any} forward 
+   */
+  function apolloLinkRequestHandler(operation: any, forward: any):any;
 }
 export class Trace {
   constructor(id: string, name?: string, attributes?: object);
