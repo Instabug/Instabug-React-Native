@@ -23,10 +23,21 @@ import Instabug, {
   Chats,
   CrashReporting,
   Replies,
+  APM,
+  NetworkLogger,
 } from 'instabug-reactnative';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, from } from 'apollo-boost';
+import gql from 'graphql-tag';
+const httpLink = new HttpLink({ uri: 'https://graphqlzero.almansi.me/api' });
+const IBGApolloLink = new ApolloLink(NetworkLogger.apolloLinkRequestHandler);
 
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: from([IBGApolloLink, httpLink]),
+});
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -42,9 +53,8 @@ class Home extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
-      Instabug.invocationEvent.floatingButton,
-    ]);
+    Instabug.start('APP_TOKEN', [ Instabug.invocationEvent.floatingButton]);
+    APM.setEnabled(true);
   }
 
   render() {
@@ -99,6 +109,16 @@ class Home extends Component<{}> {
             onPress={() => this.showUnreadMessagesCount()}>
             <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.normalHttp()}>
+            <Text style={styles.text}> NORMAL HTTP REQUEST </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.graphQLRequest()}>
+            <Text style={styles.text}> GRAPHQL REQUEST </Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     );
@@ -150,6 +170,23 @@ class Home extends Component<{}> {
   showUnreadMessagesCount() {
     Replies.getUnreadRepliesCount(count => {
       alert('Messages: ' + count);
+    });
+  }
+
+  normalHttp() {
+    fetch('https://jsonplaceholder.typicode.com/todos/1');
+  }
+
+  graphQLRequest() {
+    client.query({
+      query: gql`
+        query GetUser {
+          user(id: 1) {
+            id
+            name
+          }
+        }
+      `,
     });
   }
 }

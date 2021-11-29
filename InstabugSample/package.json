@@ -12,6 +12,9 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
+    "apollo-boost": "^0.4.9",
+    "graphql": "^15.6.1",
+    "graphql-tag": "^2.12.5",
     "instabug-reactnative": "../",
     "react": "17.0.2",
     "react-native": "0.66.0",
