@@ -1,8 +1,6 @@
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
@@ -13,50 +11,61 @@ import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
-import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.internal.verification.VerificationModeFactory;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, FeatureRequests.class, SystemClock.class, Runnable.class, RNInstabugFeatureRequestsModule.class, Arguments.class, MainThreadHandler.class})
 
 public class RNInstabugFeatureRequestsModuleTest {
     private RNInstabugFeatureRequestsModule featureRequestsModule = new RNInstabugFeatureRequestsModule(null);
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
+    // Mock Objects
+    private MockedStatic<Looper> mockLooper;
+    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic <FeatureRequests> mockFeature;
+
     @Before
     public void mockMainThreadHandler() throws Exception {
-        PowerMockito.mockStatic(Looper.class);
-        Looper mockMainThreadLooper = mock(Looper.class);
-        when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
-        Handler mockMainThreadHandler = mock(Handler.class);
+        // Mock static functions
+        mockFeature = mockStatic(FeatureRequests.class);
+        mockLooper = mockStatic(Looper.class);
+        mockMainThreadHandler = mockStatic(MainThreadHandler.class);
+
+        // Mock Looper class
+        Looper mockMainThreadLooper = Mockito.mock(Looper.class);
+        Mockito.when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
+
+        // Override runOnMainThread
         Answer<Boolean> handlerPostAnswer = new Answer<Boolean>() {
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                invocation.getArgumentAt(0, Runnable.class).run();
+                invocation.getArgument(0, Runnable.class).run();
                 return true;
             }
         };
-        doAnswer(handlerPostAnswer).when(mockMainThreadHandler).post(any(Runnable.class));
-        doAnswer(handlerPostAnswer).when(mockMainThreadHandler).postDelayed(any(Runnable.class), anyLong());
-        PowerMockito.whenNew(Handler.class).withArguments(mockMainThreadLooper).thenReturn(mockMainThreadHandler);
+        Mockito.doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
+        MainThreadHandler.runOnMainThread(any(Runnable.class));
+    }
+    @After
+    public void tearDown() {
+        // Remove static mocks
+        mockLooper.close();
+        mockMainThreadHandler.close();
+        mockFeature.close();
     }
 
     /********Feature Requests*********/
@@ -64,10 +73,9 @@ public class RNInstabugFeatureRequestsModuleTest {
     @Test
     public void givenArgs$setEmailFieldRequiredForFeatureRequests_whenQuery_thenShouldCallNativeApi() {
         // given
-        PowerMockito.mockStatic(FeatureRequests.class);
-        PowerMockito.mockStatic(Arguments.class);
+        MockedStatic mockArgument = mockStatic(Arguments.class);
         // when
-        PowerMockito.when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
+        Mockito.when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
         ReadableArray actionTypes = Arguments.createArray();
         ((WritableArray) actionTypes).pushString("requestNewFeature");
         ((WritableArray) actionTypes).pushString("addCommentToFeature");
@@ -76,40 +84,35 @@ public class RNInstabugFeatureRequestsModuleTest {
         parsedActionTypes[0] = ActionType.REQUEST_NEW_FEATURE;
         parsedActionTypes[1] = ActionType.ADD_COMMENT_TO_FEATURE;
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(FeatureRequests.class, times(1));
         FeatureRequests.setEmailFieldRequired(true, parsedActionTypes);
+        mockArgument.close();
     }
 
     @Test
     public void given$show_whenQuery_thenShouldCallNativeApi() {
-        // given
-        PowerMockito.mockStatic(FeatureRequests.class);
         // when
         featureRequestsModule.show();
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(FeatureRequests.class, times(1));
         FeatureRequests.show();
     }
 
     @Test
     public void givenFalse$setEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() throws Exception{
-        // given
-        PowerMockito.mockStatic(FeatureRequests.class);
         // when
         featureRequestsModule.setEnabled(false);
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(FeatureRequests.class, times(1));
         FeatureRequests.setState(Feature.State.DISABLED);
     }
 
     @Test
     public void givenTrue$setEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
-        // given
-        PowerMockito.mockStatic(FeatureRequests.class);
         // when
         featureRequestsModule.setEnabled(true);
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(FeatureRequests.class, times(1));
         FeatureRequests.setState(Feature.State.ENABLED);
     }
 }

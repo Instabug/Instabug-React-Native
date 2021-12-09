@@ -1,89 +1,93 @@
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 
-import com.facebook.react.bridge.Arguments;
 import com.instabug.chat.Chats;
 import com.instabug.library.Feature;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.internal.verification.VerificationModeFactory;
+import org.mockito.MockedStatic;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Looper.class, android.os.Handler.class, Chats.class, SystemClock.class, RNInstabugChatsModule.class, Arguments.class, InstabugUtil.class, MainThreadHandler.class})
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class RNInstabugChatsModuleTest {
     private RNInstabugChatsModule chatsModule = new RNInstabugChatsModule(null);
 
+    // Mock Objects
+    private MockedStatic<Looper> mockLooper;
+    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic <Chats> mockChats;
+
     @Before
     public void mockMainThreadHandler() throws Exception {
-        PowerMockito.mockStatic(Looper.class);
+        // Mock static functions
+        mockChats = mockStatic(Chats.class);
+        mockLooper = mockStatic(Looper.class);
+        mockMainThreadHandler = mockStatic(MainThreadHandler.class);
+
+        // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
         when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
-        Handler mockMainThreadHandler = mock(Handler.class);
+
+        // Override runOnMainThread
         Answer<Boolean> handlerPostAnswer = new Answer<Boolean>() {
             @Override
             public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                invocation.getArgumentAt(0, Runnable.class).run();
+                invocation.getArgument(0, Runnable.class).run();
                 return true;
             }
         };
-        doAnswer(handlerPostAnswer).when(mockMainThreadHandler).post(any(Runnable.class));
-        doAnswer(handlerPostAnswer).when(mockMainThreadHandler).postDelayed(any(Runnable.class), anyLong());
-        PowerMockito.whenNew(Handler.class).withArguments(mockMainThreadLooper).thenReturn(mockMainThreadHandler);
+        doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
+        MainThreadHandler.runOnMainThread(any(Runnable.class));
     }
+    @After
+    public void tearDown() {
+        // Remove static mocks
+        mockLooper.close();
+        mockMainThreadHandler.close();
+        mockChats.close();
+    }
+
 
     /********Chats*********/
 
     @Test
     public void givenFalse$setChatsEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
-        // given
-        PowerMockito.mockStatic(Chats.class);
         // when
         chatsModule.setEnabled(false);
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(Chats.class,times(1));
         Chats.setState(Feature.State.DISABLED);
     }
 
     @Test
     public void givenTrue$setChatsEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
-        // given
-        PowerMockito.mockStatic(Chats.class);
         // when
         chatsModule.setEnabled(true);
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(Chats.class,times(1));
         Chats.setState(Feature.State.ENABLED);
     }
 
     @Test
     public void given$showChats_whenQuery_thenShouldCallNativeApi() {
-        // given
-        PowerMockito.mockStatic(Chats.class);
         // when
         chatsModule.show();
         // then
-        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
+        verify(Chats.class,times(1));
         Chats.show();
     }
 
