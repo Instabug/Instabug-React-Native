@@ -53,7 +53,7 @@ class Home extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('APP_TOKEN', [ Instabug.invocationEvent.floatingButton]);
+    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [ Instabug.invocationEvent.floatingButton]);
     APM.setEnabled(true);
   }
 

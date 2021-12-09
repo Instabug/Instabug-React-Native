@@ -45,7 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-     new RNInstabugReactnativePackage.Builder("YOUR_TOKEN", MainApplication.this)
+     new RNInstabugReactnativePackage.Builder("068ba9a8c3615035e163dc5f829c73be", MainApplication.this)
             .setInvocationEvent("button")
             .setPrimaryColor("#1D82DC")
             .setFloatingEdge("left")
