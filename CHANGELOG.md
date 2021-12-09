@@ -1,3 +1,7 @@
+## master
+
+* Adds GraphQL support for APM network traces with proper grouping
+
 ## 10.9.1 (2021-10-13)
 
 * Bumps Instabug Android SDK to v10.9.1
