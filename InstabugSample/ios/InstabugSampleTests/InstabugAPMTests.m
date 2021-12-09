@@ -77,6 +77,14 @@
   OCMVerify([mock setAppLaunchEnabled:isEnabled]);
 }
 
+- (void) testEndAppLaunch {
+  id mock = OCMClassMock([IBGAPM class]);
+  
+  OCMStub([mock endAppLaunch]);
+  [self.instabugBridge endAppLaunch];
+  OCMVerify([mock endAppLaunch]);
+}
+
 - (void) testSetAutoUITraceEnabled {
   id mock = OCMClassMock([IBGAPM class]);
   BOOL isEnabled = YES;
