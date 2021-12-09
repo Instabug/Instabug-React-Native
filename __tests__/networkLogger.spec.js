@@ -37,6 +37,7 @@ describe('NetworkLogger Module', () => {
     const disableInterception = sinon.spy(Interceptor, 'disableInterception');
     const networkLog = sinon.spy(NativeModules.Instabug, 'networkLog');
     const apmNetworkLog = sinon.spy(NativeModules.IBGAPM, 'networkLog');
+    const apolloLinkRequestHandler = sinon.spy(NetworkLogger, 'apolloLinkRequestHandler')
 
     const network = {
         url: 'https://api.instabug.com',
@@ -58,6 +59,7 @@ describe('NetworkLogger Module', () => {
         IBGEventEmitter.removeAllListeners();
         NetworkLogger.setNetworkDataObfuscationHandler(null);
         apmNetworkLog.resetHistory();
+        apolloLinkRequestHandler.resetHistory();
     });
 
     it('should set onProgressCallback with callback', () => {
@@ -157,5 +159,24 @@ describe('NetworkLogger Module', () => {
         expect(apmNetworkLog.notCalled).toBe(true);
     });
 
+    it('should test that operationSetContext at apollo handler called', async () => {
+      const operation = {
+        setContext : (callback) => callback({ headers : {} }),
+        operationName : "operationName"
+      };
+      const forward = jest.fn();
+      const operationSetContextMock = sinon.spy(operation, 'setContext')
+      
+      NetworkLogger.apolloLinkRequestHandler(operation, forward);
+      expect(operationSetContextMock.calledOnce).toBe(true);
+    });
+  
+    it('should test that apollo handler called with catch error', async () => {
+      const operation = {};
+      const forward = jest.fn();
+  
+      NetworkLogger.apolloLinkRequestHandler(operation, forward);
+      expect(apolloLinkRequestHandler.calledOnce).toBe(true);
+    });
 
 });

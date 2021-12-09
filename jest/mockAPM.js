@@ -10,7 +10,11 @@ jest.mock("NativeModules", () => {
       endExecutionTrace: jest.fn(),
       startUITrace: jest.fn(),
       endUITrace: jest.fn(),
+      setNetworkEnabledIOS: jest.fn(),
+      ibgSleep: jest.fn(),
     },
-    Instabug: {},
+    Instabug: {
+      setNetworkLoggingEnabled: jest.fn(),
+    },
   };
 });

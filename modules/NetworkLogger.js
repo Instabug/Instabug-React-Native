@@ -6,16 +6,6 @@ let { Instabug, IBGAPM } = NativeModules;
 
 var _networkDataObfuscationHandlerSet = false;
 var _requestFilterExpression = false;
-const appendOperationName = (headers, operationName) => {
-  try {
-    let newHeaders = JSON.parse(JSON.stringify(headers));
-    newHeaders[InstabugConstants.GRAPHQL_HEADER] = operationName;
-    return newHeaders;
-  } catch(e) {
-    console.error(e);
-    return headers;
-  }
-};
 
 /**
  * NetworkLogger
@@ -104,10 +94,11 @@ export default {
 
   apolloLinkRequestHandler(operation, forward) {
     try {
-      operation.setContext(({ headers = {} }) => ({
-        headers: appendOperationName(headers, operation.operationName),
-      }));
-    } catch(e) {
+      operation.setContext(({ headers = {} }) => {
+        headers[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
+        return {headers:headers};
+      });
+    } catch (e) {
       console.error(e);
     }
 
