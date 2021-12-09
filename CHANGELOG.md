@@ -1,3 +1,6 @@
+## master
+* Adds APM.endAppLaunch API
+
 ## 10.9.1 (2021-10-13)
 
 * Bumps Instabug Android SDK to v10.9.1

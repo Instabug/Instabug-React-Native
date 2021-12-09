@@ -108,6 +108,23 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Ends app launch
+     */
+    @ReactMethod
+    public void endAppLaunch() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.endAppLaunch();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Enables or disables auto UI tracing
      * @param isEnabled boolean indicating enabled or disabled.
      */

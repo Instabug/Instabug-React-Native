@@ -21,6 +21,7 @@ describe("APM Module", () => {
   const endExecutionTrace = sinon.spy(NativeModules.IBGAPM, "endExecutionTrace");
   const startUITrace = sinon.spy(NativeModules.IBGAPM, "startUITrace");
   const endUITrace = sinon.spy(NativeModules.IBGAPM, "endUITrace");
+  const endAppLaunch = sinon.spy(NativeModules.IBGAPM, "endAppLaunch");
 
   beforeEach(() => {
     IBGEventEmitter.removeAllListeners();
@@ -36,6 +37,12 @@ describe("APM Module", () => {
     APM.setAppLaunchEnabled(true);
 
     expect(setAppLaunchEnabled.calledOnceWithExactly(true)).toBe(true);
+  });
+
+  it("should call the native method endAppLaunch", () => {
+    APM.endAppLaunch();
+
+    expect(endAppLaunch.calledOnceWithExactly()).toBe(true);
   });
 
   it("should call the native method setAutoUITraceEnabled", () => {

@@ -558,6 +558,11 @@ export namespace APM {
    */
   function setAppLaunchEnabled(isEnabled: boolean): void;
   /**
+   * Ends the current session’s App Launch. Calling this API is optional, App Launches will still be captured and ended automatically by the SDK;
+   * this API just allows you to change when an App Launch actually ends.
+   */
+  function endAppLaunch(): void;
+  /**
    * Enables or disables APM Network Metric
    * @param {boolean} isEnabled 
    */
