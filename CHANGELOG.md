@@ -1,7 +1,8 @@
-## master
+## 10.11.0 (2021-12-12)
 
 * Adds GraphQL support for APM network traces with proper grouping
 * Adds APM.endAppLaunch API
+* Bumps Instabug native SDKs to v10.11
 * Fixes an issue with iOS sourcemap upload that causes the build to fail
 
 ## 10.9.1 (2021-10-13)
