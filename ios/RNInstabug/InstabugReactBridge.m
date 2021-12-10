@@ -376,7 +376,16 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     int64_t startTime = [networkData[@"startTime"] integerValue] * 1000;
     int64_t duration = [networkData[@"duration"] doubleValue] * 1000;
     
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:");
+    NSString* gqlQueryName = nil;
+    NSString* serverErrorMessage = nil;
+    if (networkData[@"gqlQueryName"] != [NSNull null]) {
+        gqlQueryName = networkData[@"gqlQueryName"];
+    }
+    if (networkData[@"serverErrorMessage"] != [NSNull null]) {
+        serverErrorMessage = networkData[@"serverErrorMessage"];
+    }
+
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:");
     
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
@@ -397,7 +406,9 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
         [inv setArgument:&(errorCode) atIndex:13];
         [inv setArgument:&(startTime) atIndex:14];
         [inv setArgument:&(duration) atIndex:15];
-        
+        [inv setArgument:&(gqlQueryName) atIndex:16];
+        [inv setArgument:&(serverErrorMessage) atIndex:17];
+
         [inv invoke];
     }
 }
