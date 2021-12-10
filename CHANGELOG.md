@@ -1,6 +1,8 @@
 ## master
 
 * Adds GraphQL support for APM network traces with proper grouping
+* Adds APM.endAppLaunch API
+* Fixes an issue with iOS sourcemap upload that causes the build to fail
 
 ## 10.9.1 (2021-10-13)
 

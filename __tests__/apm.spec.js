@@ -21,6 +21,7 @@ describe("APM Module", () => {
   const endExecutionTrace = sinon.spy(NativeModules.IBGAPM, "endExecutionTrace");
   const startUITrace = sinon.spy(NativeModules.IBGAPM, "startUITrace");
   const endUITrace = sinon.spy(NativeModules.IBGAPM, "endUITrace");
+  const endAppLaunch = sinon.spy(NativeModules.IBGAPM, "endAppLaunch");
   const setNetworkLoggingEnabled = sinon.spy(NativeModules.Instabug, "setNetworkLoggingEnabled");
   const _ibgSleep = sinon.spy(NativeModules.IBGAPM, "ibgSleep");
 
@@ -45,6 +46,12 @@ describe("APM Module", () => {
     APM.setNetworkEnabledIOS(true);
 
     expect(setNetworkLoggingEnabled.calledOnceWithExactly(true)).toBe(true);
+  });
+
+  it("should call the native method endAppLaunch", () => {
+    APM.endAppLaunch();
+
+    expect(endAppLaunch.calledOnceWithExactly()).toBe(true);
   });
 
   it("should call the native method setAutoUITraceEnabled", () => {

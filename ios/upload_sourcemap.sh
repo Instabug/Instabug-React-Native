@@ -8,17 +8,30 @@ elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 fi
 export NODE_BINARY=node
 
+if [ ! "$INFOPLIST_FILE" ] || [ -z "$INFOPLIST_FILE" ]; then
+    echo "Instabug: INFOPLIST_FILE not found in Xcode build settings, skipping sourcemap upload"
+    exit 0
+fi
+
+if [ ! "${PROJECT_DIR}" ] || [ -z "${PROJECT_DIR}" ]; then
+    echo "Instabug: PROJECT_DIR not found in Xcode build settings, skipping sourcemap upload"
+    exit 0
+fi
+
+PLIST_ABS_PATH="$PROJECT_DIR/$INFOPLIST_FILE"
+echo "Instabug: PLIST_ABS_PATH: $PLIST_ABS_PATH"
+
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: Looking for Token..."
     INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
 fi
 
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
-    echo "Instabug: err: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
+    echo "Instabug: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
     if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
-        INSTABUG_APP_VERSION_CODE=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' ${PRODUCT_SETTINGS_PATH} )
+        INSTABUG_APP_VERSION_CODE=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' ${PLIST_ABS_PATH} )
         if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
             echo "CFBundleVersion could not be found, please upload the sourcemap files manually"
             exit 0
@@ -33,7 +46,7 @@ else
         fi
     fi
     if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
-        INSTABUG_APP_VERSION_NAME=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' ${PRODUCT_SETTINGS_PATH} )
+        INSTABUG_APP_VERSION_NAME=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' ${PLIST_ABS_PATH} )
         if [ ! "${INSTABUG_APP_VERSION_NAME}" ] || [ -z "${INSTABUG_APP_VERSION_NAME}" ]; then
             echo "CFBundleShortVersionString could not be found, please upload the sourcemap files manually"
             exit 0
@@ -48,7 +61,8 @@ else
         fi
     fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
-    echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
+    echo "Instabug: Token:" "\""${INSTABUG_APP_TOKEN}"\""
+    echo "Instabug: VERSION: $VERSION"
     echo "Instabug: Generating sourcemap files..."
     #Generate ios sourcemap
     npx react-native bundle --platform ios \
