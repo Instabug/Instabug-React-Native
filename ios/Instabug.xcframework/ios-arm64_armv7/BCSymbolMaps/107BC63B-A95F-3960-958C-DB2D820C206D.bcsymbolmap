@@ -11918,6 +11918,12 @@ InstabugUtilities/Categories/NSString/NSMutableString+IBGObfuscatedString.m
 ibg_writeArrayData
 InstabugUtilities/Disk/IBGCrashWriteData.c
 ibg_writeData
+-[NSDictionary(IBGMutableDictionary) ibg_addEntries:]
+-[NSDictionary(IBGMutableDictionary) ibg_setObject:forKey:]
+__OBJC_$_CATEGORY_INSTANCE_METHODS_NSDictionary_$_IBGMutableDictionary
+__OBJC_$_CATEGORY_NSDictionary_$_IBGMutableDictionary
+/Users/distiller/project/Instabug/InstabugUtilities/Categories/NSDictionary/NSDictionary+IBGMutableDictionary.m
+InstabugUtilities/Categories/NSDictionary/NSDictionary+IBGMutableDictionary.m
 -[NSString(MD5) ibg_MD5String]
 __OBJC_$_CATEGORY_INSTANCE_METHODS_NSString_$_MD5
 __OBJC_$_CATEGORY_NSString_$_MD5
@@ -35249,6 +35255,7 @@ ___block_descriptor_32_e4_20s24r28r_e21_v8?0"NSDictionary"4l
 ___block_descriptor_36_e4_20s24s28s32r_e23_v16?0c4"NSString"8i12l
 ___block_descriptor_32_e4_20s24bs28r_e5_v4?0l
 ___block_descriptor_28_e4_20s24bs_e16_v8?0"NSArray"4l
+___block_descriptor_28_e4_20bs24w_e16_v8?0"IBGUser"4l
 __OBJC_$_PROTOCOL_INSTANCE_METHODS_IBGSurveyConditionsLoader
 __OBJC_$_PROTOCOL_METHOD_TYPES_IBGSurveyConditionsLoader
 __OBJC_PROTOCOL_$_IBGSurveyConditionsLoader
