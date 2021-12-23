@@ -4,7 +4,7 @@
  */
 
 import "react-native";
-import { NativeModules } from "react-native";
+import { NativeModules, Platform } from "react-native";
 import "../jest/mockAPM";
 import APM from "../modules/APM";
 import sinon from "sinon";
@@ -21,6 +21,9 @@ describe("APM Module", () => {
   const endExecutionTrace = sinon.spy(NativeModules.IBGAPM, "endExecutionTrace");
   const startUITrace = sinon.spy(NativeModules.IBGAPM, "startUITrace");
   const endUITrace = sinon.spy(NativeModules.IBGAPM, "endUITrace");
+  const endAppLaunch = sinon.spy(NativeModules.IBGAPM, "endAppLaunch");
+  const setNetworkLoggingEnabled = sinon.spy(NativeModules.Instabug, "setNetworkLoggingEnabled");
+  const _ibgSleep = sinon.spy(NativeModules.IBGAPM, "ibgSleep");
 
   beforeEach(() => {
     IBGEventEmitter.removeAllListeners();
@@ -38,6 +41,19 @@ describe("APM Module", () => {
     expect(setAppLaunchEnabled.calledOnceWithExactly(true)).toBe(true);
   });
 
+  it("should call the native method setNetworkEnabledIOS", () => {
+    Platform.OS = 'ios';
+    APM.setNetworkEnabledIOS(true);
+
+    expect(setNetworkLoggingEnabled.calledOnceWithExactly(true)).toBe(true);
+  });
+
+  it("should call the native method endAppLaunch", () => {
+    APM.endAppLaunch();
+
+    expect(endAppLaunch.calledOnceWithExactly()).toBe(true);
+  });
+
   it("should call the native method setAutoUITraceEnabled", () => {
     APM.setAutoUITraceEnabled(true);
 
@@ -49,27 +65,27 @@ describe("APM Module", () => {
 
     expect(setLogLevel.calledOnceWithExactly(APM.logLevel.verbose)).toBe(true);
   });
-  
+
   it("should call the native method startExecutionTrace", () => {
     APM.startExecutionTrace("trace");
-    
+
     expect(startExecutionTrace.calledOnceWith("trace")).toBe(true);
   });
-    
+
   it("should call the native method setExecutionTraceAttribute", () => {
     const trace = APM.startExecutionTrace("trace").then(() => {
       trace.setAttribute("key", "value");
       expect(setExecutionTraceAttribute.calledOnceWithExactly(expect.any(String), "key", "value")).toBe(true);
     });
   });
-    
+
   it("should call the native method endExecutionTrace", () => {
     const trace = APM.startExecutionTrace("trace").then(() => {
       trace.end();
       expect(endExecutionTrace.calledOnceWithExactly(expect.any(String))).toBe(true);
     });
   });
-    
+
   it("should call the native method startUITrace", () => {
     APM.startUITrace("uiTrace");
 
@@ -80,5 +96,11 @@ describe("APM Module", () => {
     APM.endUITrace();
 
     expect(endUITrace.calledOnceWithExactly()).toBe(true);
+  });
+
+  it("should call the native method _ibgSleep", () => {
+    APM._ibgSleep();
+
+    expect(_ibgSleep.calledOnceWithExactly()).toBe(true);
   });
 });

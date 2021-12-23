@@ -2,8 +2,7 @@ import { NativeModules, Platform } from 'react-native';
 import xhr from '../utils/XhrNetworkInterceptor';
 import IBGEventEmitter from '../utils/IBGEventEmitter.js';
 import InstabugConstants from '../utils/InstabugConstants';
-let { Instabug } = NativeModules;
-
+let { Instabug, IBGAPM } = NativeModules;
 
 var _networkDataObfuscationHandlerSet = false;
 var _requestFilterExpression = false;
@@ -32,6 +31,7 @@ export default {
             try {
               if (Platform.OS === 'android') {
                 Instabug.networkLog(JSON.stringify(network));
+                IBGAPM.networkLog(JSON.stringify(network));
               } else {
                 Instabug.networkLog(network);
               }
@@ -57,13 +57,15 @@ export default {
     }
     _networkDataObfuscationHandlerSet = true;
 
-    IBGEventEmitter.addListener(Instabug,
+    IBGEventEmitter.addListener(
+      Instabug,
       InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
       async data => {
         try {
           const newData = await handler(data);
           if (Platform.OS === 'android') {
             Instabug.networkLog(JSON.stringify(newData));
+            IBGAPM.networkLog(JSON.stringify(newData));
           } else {
             Instabug.networkLog(newData);
           }
@@ -73,7 +75,6 @@ export default {
       }
     );
   },
-
 
   /**
    * Omit requests from being logged based on either their request or response details
@@ -91,5 +92,16 @@ export default {
     xhr.setOnProgressCallback(handler);
   },
 
+  apolloLinkRequestHandler(operation, forward) {
+    try {
+      operation.setContext(({ headers = {} }) => {
+        headers[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
+        return {headers:headers};
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
+    return forward(operation);
+  },
 };

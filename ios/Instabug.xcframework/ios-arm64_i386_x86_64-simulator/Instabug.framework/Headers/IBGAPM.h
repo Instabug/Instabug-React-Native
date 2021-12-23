@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.9.3
+ Version:    10.11.2
  */
 
 #import <Foundation/Foundation.h>
@@ -43,7 +43,19 @@ NS_SWIFT_NAME(APM)
 /// Disables/Enables Automatic UI Traces.
 ///
 /// Defaults to true if APM is enabled. If APM is disabled, no Automatic UI Traces will be captured.
+///
+/// When disabled, Automatic UI Hangs and Screen Loading are not captured, even if one of them is enabled.
 @property (class, atomic, assign) BOOL autoUITraceEnabled;
+
+/// Disables/Enables Automatic UI Hangs capturing.
+///
+/// Defaults to true if APM is enabled. If APM is disabled, no Automatic UI Hangs will be captured.
+@property (class, atomic, assign) BOOL UIHangsEnabled;
+
+/// Disables/Enables Automatic Screen Loading details capturing.
+///
+/// Defaults to true if APM is enabled. If APM is disabled, no Automatic Screen Loading details will be captured.
+@property (class, atomic, assign) BOOL screenLoadingEnabled;
 
 /// Creates and starts a new Execution Trace with the given name.
 ///
