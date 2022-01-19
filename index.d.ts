@@ -1386,7 +1386,13 @@ export enum strings {
   discardAlertMessage,
   discardAlertCancel,
   discardAlertAction,
-  addAttachmentButtonTitleStringName
+  addAttachmentButtonTitleStringName,
+  reportReproStepsDisclaimerBody,
+  reportReproStepsDisclaimerLink,
+  reproStepsProgressDialogBody,
+  reproStepsListHeader,
+  reproStepsListDescription,
+  reproStepsListEmptyStateDescription
 }
 
 interface Report {

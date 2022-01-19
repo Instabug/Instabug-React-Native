@@ -1079,7 +1079,13 @@ const InstabugModule = {
     discardAlertMessage: Instabug.discardAlertMessage,
     discardAlertCancel: Instabug.discardAlertCancel,
     discardAlertAction: Instabug.discardAlertAction,
-    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName
+    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName,
+    reportReproStepsDisclaimerBody: Instabug.reportReproStepsDisclaimerBody,
+    reportReproStepsDisclaimerLink: Instabug.reportReproStepsDisclaimerLink,
+    reproStepsProgressDialogBody: Instabug.reproStepsProgressDialogBody,
+    reproStepsListHeader: Instabug.reproStepsListHeader,
+    reproStepsListDescription: Instabug.reproStepsListDescription,
+    reproStepsListEmptyStateDescription: Instabug.reproStepsListEmptyStateDescription
   },
 
 };

@@ -205,6 +205,12 @@ final class ArgsRegistry {
         args.put("discardAlertCancel", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         args.put("discardAlertAction", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         args.put("addAttachmentButtonTitleStringName", InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER);
+        args.put("reportReproStepsDisclaimerBody", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY);
+        args.put("reportReproStepsDisclaimerLink", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK);
+        args.put("reproStepsProgressDialogBody", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY);
+        args.put("reproStepsListHeader", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER);
+        args.put("reproStepsListDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION);
+        args.put("reproStepsListEmptyStateDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
     }
 
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {
