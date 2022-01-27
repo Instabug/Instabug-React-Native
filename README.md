@@ -95,7 +95,7 @@ import Instabug from 'instabug-reactnative';
     * You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any color of your choice.
    In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
    
-    You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
+_You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
 
 ## Microphone and Photo Library Usage Description (iOS Only)
 
