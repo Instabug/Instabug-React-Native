@@ -36,13 +36,7 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
     cd ios && pod install && cd ..
     ```
 
-3.  **For React Native >= 0.60**, simply run the command:
-
-    ```bash
-    react-native add-instabug
-    ```
-    
-    **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
+3.  **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
 
     ```bash
     react-native link instabug-reactnative
@@ -62,7 +56,7 @@ import Instabug from 'instabug-reactnative';
     Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
  * ### Android
-1. Open `android/app/src/main/java/[...]/MainApplication.java`
+Open `android/app/src/main/java/[...]/MainApplication.java`
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
     * **For React Native >= 0.60**   
@@ -102,17 +96,6 @@ import Instabug from 'instabug-reactnative';
    In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
    
     You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
-
-2. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
-    ```dart
-    allprojects {
-    	repositories {
-    	    maven {
-    	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-    	    }
-    	}
-    }
-    ```
 
 ## Microphone and Photo Library Usage Description (iOS Only)
 
