@@ -49,14 +49,14 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
 ```javascript
 import Instabug from 'instabug-reactnative';
 ```
- * ### iOS
-     Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
+### iOS
+- Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
     ```javascript
     Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
- * ### Android
-Open `android/app/src/main/java/[...]/MainApplication.java`
+### Android
+- Open `android/app/src/main/java/[...]/MainApplication.java`
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
     * **For React Native >= 0.60**   
