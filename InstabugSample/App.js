@@ -42,7 +42,7 @@ class Home extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
+    Instabug.start('2c63627b9923e10eee2c8abf92e6925f', [
       Instabug.invocationEvent.floatingButton,
     ]);
   }
