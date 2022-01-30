@@ -202,52 +202,6 @@ You can disable Repro Steps using the following API:
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
 
-## Update Guide
-### Updating to versions 8.0-8.4.x
-
-When updating to version 8.0 through 8.4.x, you'll need to perform the steps below.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Link Instabug
-    ```bash
-    react-native link instabug-reactnative
-    ```
-
-### Updating to version 8.5
-
-_Only for apps using React Native >= 0.60. If you're using a lower version, you don't need to perform any extra steps when updating._
-
-Version 8.5 adds support for React Native 0.60. To use Instabug 8.5 with React Native 0.60, you'll need to perform the following steps.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Add Instabug to your project
-    ```bash
-    react-native add-instabug
-    ```
-
-## Features that are not supported yet
-
-- Push Notification Support for In-App Messaging
-- [User Steps](https://help.instabug.com/en/articles/2515300-instabug-report-logs-user-steps).
-
 ## Documentation
 
 For more details about the supported APIs and how to use them, check our [**Documentation**](https://docs.instabug.com/docs/react-native-overview).
