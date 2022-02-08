@@ -28,6 +28,8 @@ export default {
     
     var jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
+      e_message: errorObject.message,
+      e_name: errorObject.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace

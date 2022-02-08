@@ -49,6 +49,8 @@ describe('CrashReporting Module', () => {
 
         const expectedObject = {
             message: 'TypeError - Invalid type',
+            e_message: 'Invalid type',
+            e_name: 'TypeError',
             os: 'ios',
             platform: 'react_native',
             exception: 'javascriptStackTrace'
@@ -66,6 +68,8 @@ describe('CrashReporting Module', () => {
 
         const expectedObject = {
             message: 'TypeError - Invalid type',
+            e_message: 'Invalid type',
+            e_name: 'TypeError',
             os: 'android',
             platform: 'react_native',
             exception: 'javascriptStackTrace'
@@ -84,6 +88,8 @@ describe('CrashReporting Module', () => {
         const errorObject = { name: 'TypeError', message: 'Invalid type' };
         const expectedObject = {
             message: 'TypeError - Invalid type',
+            e_message: 'Invalid type',
+            e_name: 'TypeError',
             os: 'android',
             platform: 'react_native',
             exception: 'javascriptStackTrace'
