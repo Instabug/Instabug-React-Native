@@ -49,6 +49,9 @@ jest.mock("react-native", () => {
     sendHandledJSCrash: jest.fn(),
     sendJSCrash: jest.fn(),
     reportScreenChange: jest.fn(),
+    addExperiments: jest.fn(),
+    removeExperiments: jest.fn(),
+    clearAllExperiments: jest.fn(),
   };
   RN.NativeModules.IBGBugReporting = {
     setFloatingButtonEdge: jest.fn(),
