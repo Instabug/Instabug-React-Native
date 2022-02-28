@@ -1,9 +1,4 @@
-import {
-  NativeModules,
-  Platform,
-  findNodeHandle,
-  processColor
-} from 'react-native';
+import { NativeModules, Platform, findNodeHandle, processColor } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './utils/IBGEventEmitter';
 import InstabugUtils from './utils/InstabugUtils';
@@ -24,13 +19,12 @@ NetworkLogger.setEnabled(true);
 var _currentScreen = null;
 var _lastScreen = null;
 var _isFirstScreen = false;
-const firstScreen = "Initial Screen";
+const firstScreen = 'Initial Screen';
 /**
  * Instabug
  * @exports Instabug
  */
 const InstabugModule = {
-
   /* istanbul ignore next */
   /**
    * @deprecated use {@link Instabug.start}
@@ -124,8 +118,7 @@ const InstabugModule = {
    *                  Xcode's console is enabled or not.
    */
   setIBGLogPrintsToConsole(printsToConsole) {
-    if (Platform.OS === 'ios')
-      Instabug.setIBGLogPrintsToConsole(printsToConsole);
+    if (Platform.OS === 'ios') Instabug.setIBGLogPrintsToConsole(printsToConsole);
   },
 
   /* istanbul ignore next */
@@ -160,7 +153,7 @@ const InstabugModule = {
   },
 
   /**
-   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug 
+   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug
    * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
    * @param {sdkDebugLogsLevel} sdkDebugLogsLevel - The verbosity level of logs.
    *
@@ -314,17 +307,12 @@ const InstabugModule = {
    * info.plist to enable gallery image attachments.
    * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
    */
-  setEnabledAttachmentTypes(
-    screenshot,
-    extraScreenshot,
-    galleryImage,
-    screenRecording
-  ) {
+  setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording) {
     BugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,
-      screenRecording
+      screenRecording,
     );
   },
 
@@ -521,8 +509,7 @@ const InstabugModule = {
    * @see #setUserAttribute(String, String)
    */
   removeUserAttribute(key) {
-    if (!key || typeof key !== 'string')
-      throw new TypeError('Invalid param, Expected String');
+    if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
     Instabug.removeUserAttribute(key);
   },
 
@@ -752,37 +739,61 @@ const InstabugModule = {
       InstabugUtils.setOnReportHandler(false);
     }
     // send bug report
-    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
+    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, report => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-      const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+      const reportObj = new Report(
+        tags,
+        consoleLogs,
+        instabugLogs,
+        userAttributes,
+        fileAttachments,
+      );
       preSendingHandler(reportObj);
-
     });
 
     // handled js crash
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
-        try {
-          let report = await Instabug.getReport();
-          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-          preSendingHandler(reportObj);
-          Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-        } catch (e) {
-          console.error(e);
-        }
-      });
+      IBGEventEmitter.addListener(
+        Instabug,
+        InstabugConstants.SEND_HANDLED_CRASH,
+        async jsonObject => {
+          try {
+            let report = await Instabug.getReport();
+            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+            const reportObj = new Report(
+              tags,
+              consoleLogs,
+              instabugLogs,
+              userAttributes,
+              fileAttachments,
+            );
+            preSendingHandler(reportObj);
+            Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+          } catch (e) {
+            console.error(e);
+          }
+        },
+      );
     }
 
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
-
-        let report = await Instabug.getReport();
-        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-        preSendingHandler(reportObj);
-        Instabug.sendJSCrash(JSON.stringify(jsonObject));
-      });
+      IBGEventEmitter.addListener(
+        Instabug,
+        InstabugConstants.SEND_UNHANDLED_CRASH,
+        async jsonObject => {
+          let report = await Instabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(
+            tags,
+            consoleLogs,
+            instabugLogs,
+            userAttributes,
+            fileAttachments,
+          );
+          preSendingHandler(reportObj);
+          Instabug.sendJSCrash(JSON.stringify(jsonObject));
+        },
+      );
     }
 
     Instabug.setPreSendingHandler(preSendingHandler);
@@ -830,6 +841,29 @@ const InstabugModule = {
     Instabug.reportScreenChange(screenName);
   },
 
+  /**
+   * Add experiments to next report.
+   * @param {string[]} experiments An array of experiments to add to the next report.
+   */
+  addExperiments(experiments) {
+    Instabug.addExperiments(experiments);
+  },
+
+  /**
+   * Remove experiments from next report.
+   * @param {string[]} experiments An array of experiments to remove from the next report.
+   */
+  removeExperiments(experiments) {
+    Instabug.removeExperiments(experiments);
+  },
+
+  /**
+   * Clear all experiments
+   */
+  clearAllExperiments() {
+    Instabug.clearAllExperiments();
+  },
+
   componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
       _lastScreen = componentName;
@@ -842,7 +876,6 @@ const InstabugModule = {
     }
   },
 
-
   /**
    * The event used to invoke the feedback form
    * @readonly
@@ -853,7 +886,7 @@ const InstabugModule = {
     shake: Instabug.invocationEventShake,
     screenshot: Instabug.invocationEventScreenshot,
     twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
-    floatingButton: Instabug.invocationEventFloatingButton
+    floatingButton: Instabug.invocationEventFloatingButton,
   },
 
   /**
@@ -864,7 +897,7 @@ const InstabugModule = {
   reproStepsMode: {
     enabled: Instabug.reproStepsEnabled,
     disabled: Instabug.reproStepsDisabled,
-    enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots
+    enabledWithNoScreenshots: Instabug.reproStepsEnabledWithNoScreenshots,
   },
 
   /**
@@ -875,7 +908,7 @@ const InstabugModule = {
   dismissType: {
     submit: Instabug.dismissTypeSubmit,
     cancel: Instabug.dismissTypeCancel,
-    addAttachment: Instabug.dismissTypeAddAttachment
+    addAttachment: Instabug.dismissTypeAddAttachment,
   },
 
   /**
@@ -887,7 +920,7 @@ const InstabugModule = {
     invocationOptionsEmailFieldHidden: Instabug.emailFieldHidden,
     invocationOptionsEmailFieldOptional: Instabug.emailFieldOptional,
     invocationOptionsCommentFieldRequired: Instabug.commentFieldRequired,
-    invocationOptionsDisablePostSendingDialog: Instabug.disablePostSendingDialog
+    invocationOptionsDisablePostSendingDialog: Instabug.disablePostSendingDialog,
   },
 
   /**
@@ -911,7 +944,7 @@ const InstabugModule = {
   extendedBugReportMode: {
     enabledWithRequiredFields: Instabug.enabledWithRequiredFields,
     enabledWithOptionalFields: Instabug.enabledWithOptionalFields,
-    disabled: Instabug.disabled
+    disabled: Instabug.disabled,
   },
 
   /**
@@ -938,7 +971,7 @@ const InstabugModule = {
     spanish: Instabug.localeSpanish,
     swedish: Instabug.localeSwedish,
     turkish: Instabug.localeTurkish,
-    korean: Instabug.localeKorean
+    korean: Instabug.localeKorean,
   },
 
   /**
@@ -948,7 +981,7 @@ const InstabugModule = {
    */
   colorTheme: {
     light: Instabug.colorThemeLight,
-    dark: Instabug.colorThemeDark
+    dark: Instabug.colorThemeDark,
   },
 
   /**
@@ -958,7 +991,7 @@ const InstabugModule = {
    */
   floatingButtonEdge: {
     left: Instabug.rectMinXEdge,
-    right: Instabug.rectMaxXEdge
+    right: Instabug.rectMaxXEdge,
   },
 
   /**
@@ -970,7 +1003,7 @@ const InstabugModule = {
     bottomRight: Instabug.bottomRight,
     topRight: Instabug.topRight,
     bottomLeft: Instabug.bottomLeft,
-    topLeft: Instabug.topLeft
+    topLeft: Instabug.topLeft,
   },
 
   /**
@@ -981,7 +1014,7 @@ const InstabugModule = {
   welcomeMessageMode: {
     live: Instabug.welcomeMessageModeLive,
     beta: Instabug.welcomeMessageModeBeta,
-    disabled: Instabug.welcomeMessageModeDisabled
+    disabled: Instabug.welcomeMessageModeDisabled,
   },
 
   /**
@@ -993,7 +1026,7 @@ const InstabugModule = {
     allActions: Instabug.allActions,
     reportBug: Instabug.reportBugAction,
     requestNewFeature: Instabug.requestNewFeature,
-    addCommentToFeature: Instabug.addCommentToFeature
+    addCommentToFeature: Instabug.addCommentToFeature,
   },
 
   /**
@@ -1023,10 +1056,8 @@ const InstabugModule = {
     addVoiceMessage: Instabug.addVoiceMessage,
     addImageFromGallery: Instabug.addImageFromGallery,
     addExtraScreenshot: Instabug.addExtraScreenshot,
-    audioRecordingPermissionDeniedTitle:
-      Instabug.audioRecordingPermissionDeniedTitle,
-    audioRecordingPermissionDeniedMessage:
-      Instabug.audioRecordingPermissionDeniedMessage,
+    audioRecordingPermissionDeniedTitle: Instabug.audioRecordingPermissionDeniedTitle,
+    audioRecordingPermissionDeniedMessage: Instabug.audioRecordingPermissionDeniedMessage,
     microphonePermissionAlertSettingsButtonText:
       Instabug.microphonePermissionAlertSettingsButtonTitle,
     recordingMessageToHoldText: Instabug.recordingMessageToHoldText,
@@ -1051,22 +1082,14 @@ const InstabugModule = {
     conversationTextFieldHint: Instabug.conversationTextFieldHint,
     collectingDataText: Instabug.collectingDataText,
     thankYouAlertText: Instabug.thankYouAlertText,
-    welcomeMessageBetaWelcomeStepTitle:
-      Instabug.welcomeMessageBetaWelcomeStepTitle,
-    welcomeMessageBetaWelcomeStepContent:
-      Instabug.welcomeMessageBetaWelcomeStepContent,
-    welcomeMessageBetaHowToReportStepTitle:
-      Instabug.welcomeMessageBetaHowToReportStepTitle,
-    welcomeMessageBetaHowToReportStepContent:
-      Instabug.welcomeMessageBetaHowToReportStepContent,
-    welcomeMessageBetaFinishStepTitle:
-      Instabug.welcomeMessageBetaFinishStepTitle,
-    welcomeMessageBetaFinishStepContent:
-      Instabug.welcomeMessageBetaFinishStepContent,
-    welcomeMessageLiveWelcomeStepTitle:
-      Instabug.welcomeMessageLiveWelcomeStepTitle,
-    welcomeMessageLiveWelcomeStepContent:
-      Instabug.welcomeMessageLiveWelcomeStepContent,
+    welcomeMessageBetaWelcomeStepTitle: Instabug.welcomeMessageBetaWelcomeStepTitle,
+    welcomeMessageBetaWelcomeStepContent: Instabug.welcomeMessageBetaWelcomeStepContent,
+    welcomeMessageBetaHowToReportStepTitle: Instabug.welcomeMessageBetaHowToReportStepTitle,
+    welcomeMessageBetaHowToReportStepContent: Instabug.welcomeMessageBetaHowToReportStepContent,
+    welcomeMessageBetaFinishStepTitle: Instabug.welcomeMessageBetaFinishStepTitle,
+    welcomeMessageBetaFinishStepContent: Instabug.welcomeMessageBetaFinishStepContent,
+    welcomeMessageLiveWelcomeStepTitle: Instabug.welcomeMessageLiveWelcomeStepTitle,
+    welcomeMessageLiveWelcomeStepContent: Instabug.welcomeMessageLiveWelcomeStepContent,
     surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
     surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
@@ -1079,9 +1102,8 @@ const InstabugModule = {
     discardAlertMessage: Instabug.discardAlertMessage,
     discardAlertCancel: Instabug.discardAlertCancel,
     discardAlertAction: Instabug.discardAlertAction,
-    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName
+    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName,
   },
-
 };
 
 export {
