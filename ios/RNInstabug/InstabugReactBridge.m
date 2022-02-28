@@ -434,6 +434,18 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
     }
 }
 
+RCT_EXPORT_METHOD(addExperiments:(NSArray *)experiments) {
+    [Instabug addExperiments:experiments];
+}
+
+RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
+    [Instabug removeExperiments:experiments];
+}
+
+RCT_EXPORT_METHOD(clearAllExperiments:(NSArray *)experiments) {
+    [Instabug clearAllExperiments];
+}
+
 - (NSDictionary *)constantsToExport
 {
     return @{ @"invocationEventNone" : @(IBGInvocationEventNone),
