@@ -1173,6 +1173,24 @@ export function onStateChange(
 export function reportScreenChange(
   screenName: string
 ): void;
+
+/**
+   * Add experiments to next report.
+   * @param {string[]} experiments An array of experiments to add to the next report.
+   */
+export function addExperiments(experiments:string[]): void;
+
+/**
+ * Remove experiments from next report.
+ * @param {string[]} experiments An array of experiments to remove from the next report.
+ */
+export function removeExperiments(experiments: string[]): void;
+
+/**
+ * Clear all experiments
+ */
+export function clearAllExperiments(): void;
+
 export function componentDidAppearListener(componentObj:
   { componentId: any, componentName: any, passProps: any }
 ): void;
