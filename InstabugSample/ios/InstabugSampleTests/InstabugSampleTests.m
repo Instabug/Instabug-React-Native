@@ -397,4 +397,29 @@
   OCMVerify([mock clearAllLogs]);
 }
 
+- (void)testAddExperiments {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *experiments = @[@"exp1", @"exp2"];
+
+  OCMStub([mock addExperiments:experiments]);
+  [self.instabugBridge addExperiments:experiments];
+  OCMVerify([mock addExperiments:experiments]);
+}
+
+- (void)testRemoveExperiments {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *experiments = @[@"exp1", @"exp2"];
+
+  OCMStub([mock removeExperiments:experiments]);
+  [self.instabugBridge removeExperiments:experiments];
+  OCMVerify([mock removeExperiments:experiments]);
+}
+
+- (void)testClearAllExperiments {
+  id mock = OCMClassMock([Instabug class]);
+  OCMStub([mock clearAllExperiments]);
+  [self.instabugBridge clearAllExperiments];
+  OCMVerify([mock clearAllExperiments]);
+}
+
 @end
