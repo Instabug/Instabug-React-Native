@@ -1,8 +1,6 @@
 ## master
 
-* Adds Instabug.addExperiments API
-* Adds Instabug.removeExperiments API
-* Adds Instabug.clearAllExperiments API
+* Adds Instabug Experiments APIs
 
 ## 10.11.0 (2021-12-23)
 
