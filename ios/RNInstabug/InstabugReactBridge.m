@@ -442,7 +442,7 @@ RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
     [Instabug removeExperiments:experiments];
 }
 
-RCT_EXPORT_METHOD(clearAllExperiments:(NSArray *)experiments) {
+RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
 }
 
