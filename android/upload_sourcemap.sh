@@ -32,10 +32,21 @@ else
         exit 0
         fi
     fi
+    if [ -z "${INSTABUG_ENTRY_FILE}" ]; then 
+        ENTRY_FILE='index.js'
+    else 
+        ENTRY_FILE=${INSTABUG_ENTRY_FILE}
+    fi
+    if [ ! -f $ENTRY_FILE ]; then
+        echo "Instabug: err: entry file not found. Make sure" "\"${ENTRY_FILE}\"" "exists in your projects root directory. Or add the environment variable INSTABUG_ENTRY_FILE with the name of your entry file"
+        exit 0
+    fi
+    fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token found" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: Version Code found" "\""${INSTABUG_APP_VERSION_CODE}"\""
     echo "Instabug: Version Name found" "\""${INSTABUG_APP_VERSION_NAME}"\""
+    echo "Instabug: Entry file found" "\""${ENTRY_FILE}"\""
     echo "Instabug: Generating sourcemap files..."
     IS_HERMES=$(grep "enableHermes:" ./android/app/build.gradle -m 1)
     if [[ $IS_HERMES == *"true"* ]]; then
@@ -59,7 +70,7 @@ else
         #Generate android sourcemap (HERMES)
         npx react-native bundle --platform android \
         --reset-cache \
-        --entry-file index.js \
+        --entry-file $ENTRY_FILE \
         --dev false \
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
@@ -78,7 +89,7 @@ else
     else
         #Generate android sourcemap
         npx react-native bundle --platform android \
-        --entry-file index.js \
+        --entry-file $ENTRY_FILE \
         --dev false \
         --bundle-output ./android/main.jsbundle \
         --sourcemap-output ./android-sourcemap.json
