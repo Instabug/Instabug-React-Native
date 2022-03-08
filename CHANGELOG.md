@@ -1,3 +1,7 @@
+## master
+
+* Fixes an issue with GraphQL not being grouped correctly
+
 ## 10.11.0 (2021-12-23)
 
 * Adds GraphQL support for APM network traces with proper grouping
