@@ -100,6 +100,10 @@ export const captureJsErrors = () => {
   global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 
+export const stringifyIfNotString = input => {
+  return typeof input === 'string' ? input : JSON.stringify(input);
+};
+
 export default {
   parseErrorStack,
   captureJsErrors,
@@ -108,4 +112,5 @@ export default {
   getActiveRouteName,
   getFullRoute,
   getStackTrace,
+  stringifyIfNotString,
 };
