@@ -45,6 +45,7 @@ task upload_sourcemap(type: Exec) {
         commandLine 'cmd', '/c', 'echo Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard'
         project.logger.lifecycle('Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard')
     } else {
+        environment INSTABUG_BASE_DIR: System.getProperty('user.dir')
         commandLine 'sh', './upload_sourcemap.sh'
     }
 }

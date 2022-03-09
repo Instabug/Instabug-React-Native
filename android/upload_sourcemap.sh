@@ -1,7 +1,13 @@
 #!/bin/sh
-cd ..
-cd ..
-cd ..
+if [ "${INSTABUG_BASE_DIR}" ]; then
+    cd "${INSTABUG_BASE_DIR}"
+    cd ..
+else
+    cd ..
+    cd ..
+    cd ..
+fi
+
 if [ -s "$HOME/.nvm/nvm.sh" ]; then
 . "$HOME/.nvm/nvm.sh"
 elif [[ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]]; then
