@@ -72,6 +72,8 @@ export const captureJsErrors = () => {
     //JSON object to be sent to the native SDK
     var jsonObject = {
       message: e.name + " - " + e.message,
+      e_message: e.message,
+      e_name: e.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace
