@@ -304,7 +304,7 @@ describe('Instabug Module', () => {
     const message = 'log';
     Instabug.logVerbose(message);
 
-    expect(logVerbose.calledOnceWithExactly(message)).toBe(true);
+    expect(logVerbose.calledOnce).toBe(true);
 
   });
 
@@ -313,7 +313,7 @@ describe('Instabug Module', () => {
     const message = 'log';
     Instabug.logDebug(message);
 
-    expect(logDebug.calledOnceWithExactly(message)).toBe(true);
+    expect(logDebug.calledOnce).toBe(true);
 
   });
 
@@ -322,7 +322,7 @@ describe('Instabug Module', () => {
     const message = 'log';
     Instabug.logInfo(message);
 
-    expect(logInfo.calledOnceWithExactly(message)).toBe(true);
+    expect(logInfo.calledOnce).toBe(true);
 
   });
 
@@ -331,7 +331,7 @@ describe('Instabug Module', () => {
     const message = 'log';
     Instabug.logWarn(message);
 
-    expect(logWarn.calledOnceWithExactly(message)).toBe(true);
+    expect(logWarn.calledOnce).toBe(true);
 
   });
 
@@ -340,7 +340,7 @@ describe('Instabug Module', () => {
     const message = 'log';
     Instabug.logError(message);
 
-    expect(logError.calledOnceWithExactly(message)).toBe(true);
+    expect(logError.calledOnce).toBe(true);
 
   });
 
