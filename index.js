@@ -835,6 +835,29 @@ const InstabugModule = {
     Instabug.reportScreenChange(screenName);
   },
 
+  /**
+   * Add experiments to next report.
+   * @param {string[]} experiments An array of experiments to add to the next report.
+   */
+  addExperiments(experiments) {
+    Instabug.addExperiments(experiments);
+  },
+
+  /**
+   * Remove experiments from next report.
+   * @param {string[]} experiments An array of experiments to remove from the next report.
+   */
+  removeExperiments(experiments) {
+    Instabug.removeExperiments(experiments);
+  },
+
+  /**
+   * Clear all experiments
+   */
+  clearAllExperiments() {
+    Instabug.clearAllExperiments();
+  },  
+
   componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
       _lastScreen = componentName;

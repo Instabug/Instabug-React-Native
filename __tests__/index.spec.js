@@ -66,6 +66,9 @@ describe('Instabug Module', () => {
   const sendHandledJSCrash = sinon.spy(NativeModules.Instabug, 'sendHandledJSCrash');
   const sendJSCrash = sinon.spy(NativeModules.Instabug, 'sendJSCrash');
   const reportScreenChange = sinon.spy(NativeModules.Instabug, 'reportScreenChange');
+  const addExperiments = sinon.spy(NativeModules.Instabug, 'addExperiments');
+  const removeExperiments = sinon.spy(NativeModules.Instabug, 'removeExperiments');
+  const clearAllExperiments = sinon.spy(NativeModules.Instabug, 'clearAllExperiments');
 
   beforeEach(() => {
     startWithToken.resetHistory();
@@ -699,4 +702,20 @@ describe('Instabug Module', () => {
 
   });
 
+  it('should call native addExperiments method', () => {
+    const experiments = ['exp1', 'exp2'];
+    Instabug.addExperiments(experiments);
+    expect(addExperiments.calledOnceWithExactly(experiments)).toBeTruthy();
+  });
+
+  it('should call native removeExperiments method', () => {
+    const experiments = ['exp1', 'exp2'];
+    Instabug.removeExperiments(experiments);
+    expect(removeExperiments.calledOnceWithExactly(experiments)).toBeTruthy();
+  });
+
+  it('should call native clearAllExperiments method', () => {
+    Instabug.clearAllExperiments();
+    expect(clearAllExperiments.calledOnce).toBeTruthy();
+  });
 });
