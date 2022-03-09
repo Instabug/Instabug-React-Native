@@ -570,7 +570,7 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"screenRecording": kIBGScreenRecordingStringName,
               @"image": kIBGImageStringName,
               @"surveyEnterYourAnswer": kIBGSurveyEnterYourAnswerTextPlaceholder,
-              @"videPressRecord": kIBGVideoPressRecordTitle,
+              @"videoPressRecord": kIBGVideoPressRecordTitle,
               @"collectingDataText": kIBGCollectingDataText,
               @"thankYouAlertText": kIBGThankYouAlertMessageStringName,
               
@@ -604,7 +604,8 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"reproStepsProgressDialogBody": kIBGProgressViewTitle,
               @"reproStepsListHeader": kIBGReproStepsListTitle,
               @"reproStepsListDescription": kIBGReproStepsListHeader,
-              @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel
+              @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
+              @"reproStepsListItemTitle": kIBGReproStepsListItemName
             };
 };
 

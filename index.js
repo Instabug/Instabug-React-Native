@@ -1019,6 +1019,7 @@ const InstabugModule = {
     commentFieldHintForBugReport: Instabug.commentFieldHintForBugReport,
     commentFieldHintForFeedback: Instabug.commentFieldHintForFeedback,
     commentFieldHintForQuestion: Instabug.commentFieldHintForQuestion,
+    videoPressRecord: Instabug.videoPressRecord,
     addVideoMessage: Instabug.addVideoMessage,
     addVoiceMessage: Instabug.addVoiceMessage,
     addImageFromGallery: Instabug.addImageFromGallery,
@@ -1085,7 +1086,8 @@ const InstabugModule = {
     reproStepsProgressDialogBody: Instabug.reproStepsProgressDialogBody,
     reproStepsListHeader: Instabug.reproStepsListHeader,
     reproStepsListDescription: Instabug.reproStepsListDescription,
-    reproStepsListEmptyStateDescription: Instabug.reproStepsListEmptyStateDescription
+    reproStepsListEmptyStateDescription: Instabug.reproStepsListEmptyStateDescription,
+    reproStepsListItemTitle: Instabug.reproStepsListItemTitle,
   },
 
 };

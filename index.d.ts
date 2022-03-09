@@ -1340,6 +1340,7 @@ export enum strings {
   commentFieldHintForBugReport,
   commentFieldHintForFeedback,
   commentFieldHintForQuestion,
+  videoPressRecord,
   addVideoMessage,
   addVoiceMessage,
   addImageFromGallery,
@@ -1392,7 +1393,8 @@ export enum strings {
   reproStepsProgressDialogBody,
   reproStepsListHeader,
   reproStepsListDescription,
-  reproStepsListEmptyStateDescription
+  reproStepsListEmptyStateDescription,
+  reproStepsListItemTitle
 }
 
 interface Report {
