@@ -3,7 +3,7 @@ import { NativeModules, Platform } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
-import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
+import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 export const parseErrorStack = (error) => {
   return parseErrorStackLib(error);
