@@ -15,7 +15,7 @@ module.exports = {
       android: {},
     },
     hooks: {
-      postlink: 'node node_modules/instabug-reactnative/link_bridge.js',
+      postlink: `node ${path.resolve(__dirname, 'link_bridge.js')}`,
     },
   },
   commands: [
