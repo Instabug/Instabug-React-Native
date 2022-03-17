@@ -1,12 +1,12 @@
-## 10.13.0 (2022-03-10)
+## 10.13.0 (2022-03-17)
 
-* Bumps Instabug iOS SDK to v10.11.8
-* Bumps Instabug Android SDK to v10.13.0
 * Adds Instabug Experiments APIs
 * Adds defensive type checking in Instabug logging APIs
-* Excludes unnecessary files from the published npm package
+* Bumps Instabug iOS SDK to v10.11.9
+* Bumps Instabug Android SDK to v10.13.0
+* Adapts the strict requirement of newer Expo versions to use the React header with the iOS import statements
 * Fixes an issue with GraphQL requests not being grouped correctly
-* Adapts the strict requirement of newer RN versions to use the React header with the iOS import statements
+* Excludes unnecessary files from the published npm package
 
 ## 10.11.0 (2021-12-23)
 
