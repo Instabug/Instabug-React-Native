@@ -1,12 +1,6 @@
 #!/bin/sh
-if [ "${INSTABUG_BASE_DIR}" ]; then
-    cd "${INSTABUG_BASE_DIR}"
-    cd ..
-else
-    cd ..
-    cd ..
-    cd ..
-fi
+USER_ANDROID_DIR=$1
+cd "${USER_ANDROID_DIR}/.."
 
 if [ -s "$HOME/.nvm/nvm.sh" ]; then
 . "$HOME/.nvm/nvm.sh"
