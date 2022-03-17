@@ -72,6 +72,8 @@ export const captureJsErrors = () => {
     //JSON object to be sent to the native SDK
     var jsonObject = {
       message: e.name + " - " + e.message,
+      e_message: e.message,
+      e_name: e.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace
@@ -100,6 +102,10 @@ export const captureJsErrors = () => {
   global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 
+export const stringifyIfNotString = input => {
+  return typeof input === 'string' ? input : JSON.stringify(input);
+};
+
 export default {
   parseErrorStack,
   captureJsErrors,
@@ -108,4 +114,5 @@ export default {
   getActiveRouteName,
   getFullRoute,
   getStackTrace,
+  stringifyIfNotString,
 };

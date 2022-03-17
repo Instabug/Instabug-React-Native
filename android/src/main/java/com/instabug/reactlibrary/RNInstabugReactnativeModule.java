@@ -2361,6 +2361,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 .emit(eventName, params);
     }
 
+    @ReactMethod
+    public void addExperiments(final ReadableArray experiments) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(experiments);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    Instabug.addExperiments(Arrays.asList(stringArray));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removeExperiments(final ReadableArray experiments) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(experiments);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    Instabug.removeExperiments(Arrays.asList(stringArray));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void clearAllExperiments() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.clearAllExperiments();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();

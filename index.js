@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './utils/IBGEventEmitter';
-import InstabugUtils from './utils/InstabugUtils';
+import InstabugUtils, { stringifyIfNotString } from './utils/InstabugUtils';
 import InstabugConstants from './utils/InstabugConstants';
 import Report from './models/Report';
 import BugReporting from './modules/BugReporting';
@@ -398,6 +398,7 @@ const InstabugModule = {
    */
   logVerbose(message) {
     if (!message) return;
+    message = stringifyIfNotString(message)
     Instabug.logVerbose(message);
   },
 
@@ -416,6 +417,7 @@ const InstabugModule = {
    */
   logInfo(message) {
     if (!message) return;
+    message = stringifyIfNotString(message)
     Instabug.logInfo(message);
   },
 
@@ -434,6 +436,7 @@ const InstabugModule = {
    */
   logDebug(message) {
     if (!message) return;
+    message = stringifyIfNotString(message)
     Instabug.logDebug(message);
   },
 
@@ -452,6 +455,7 @@ const InstabugModule = {
    */
   logError(message) {
     if (!message) return;
+    message = stringifyIfNotString(message)
     Instabug.logError(message);
   },
 
@@ -470,6 +474,7 @@ const InstabugModule = {
    */
   logWarn(message) {
     if (!message) return;
+    message = stringifyIfNotString(message)
     Instabug.logWarn(message);
   },
 
@@ -829,6 +834,29 @@ const InstabugModule = {
   reportScreenChange(screenName) {
     Instabug.reportScreenChange(screenName);
   },
+
+  /**
+   * Add experiments to next report.
+   * @param {string[]} experiments An array of experiments to add to the next report.
+   */
+  addExperiments(experiments) {
+    Instabug.addExperiments(experiments);
+  },
+
+  /**
+   * Remove experiments from next report.
+   * @param {string[]} experiments An array of experiments to remove from the next report.
+   */
+  removeExperiments(experiments) {
+    Instabug.removeExperiments(experiments);
+  },
+
+  /**
+   * Clear all experiments
+   */
+  clearAllExperiments() {
+    Instabug.clearAllExperiments();
+  },  
 
   componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
