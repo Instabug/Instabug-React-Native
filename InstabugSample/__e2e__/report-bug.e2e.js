@@ -1,4 +1,5 @@
 import { getElement } from './utils/elements';
+import mockData from './utils/mock-data';
 
 beforeEach(async () => {
   await device.launchApp();
@@ -12,8 +13,8 @@ it('reports a bug', async () => {
   await getElement('floatingButton').tap();
   await getElement('reportBugMenuItem').tap();
 
-  await getElement('emailField').typeText('rn_e2e@instabug.com');
-  await getElement('commentField').typeText('This is a test bug');
+  await getElement('emailField').typeText(mockData.email);
+  await getElement('commentField').typeText(mockData.bugComment);
   await getElement('sendBugButton').tap();
 
   await expect(getElement('thanksMessage')).toBeVisible();
