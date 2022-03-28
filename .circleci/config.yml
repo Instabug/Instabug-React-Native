@@ -148,17 +148,17 @@ jobs:
   e2e_android:
     executor:
       name: android/android-docker
-      tag: "2022.03.1"
+      tag: "2022.03.1-node"
     working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
           path: ~/project
-      - run: 
-          name: Install Yarn
-          command: npm install --global yarn
+      # - run: 
+      #     name: Install Yarn
+      #     command: npm install --global yarn
       - run:
           name: Install Detox CLI
-          command: npm install --global detox-cli
+          command: yarn global add detox-cli
       - run:
           name: Install Node Packages
           command: yarn
