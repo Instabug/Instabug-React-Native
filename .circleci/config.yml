@@ -147,7 +147,7 @@ jobs:
 
   e2e_android:
     executor:
-      name: android/android-machine
+      name: android/android-docker
       tag: "2022.03.1"
     working_directory: ~/project/InstabugSample/android
     steps:
