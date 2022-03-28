@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  android: circleci/android@2.0
 jobs:
   danger:
     docker:
@@ -70,24 +72,21 @@ jobs:
           path: InstabugSample/test-results
 
   test_android:
-    working_directory: ~/project/InstabugSample
-    docker:
-      - image: circleci/android@sha256:793ae9aa1777ba7fc375109978b307ed03a49be468295a8778d588eba0670e4b
-    environment:
-      JVM_OPTS: -Xmx3200m
+    executor:
+      name: android/android-machine
+      tag: "2022.03.1"
+    working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
           path: ~/project
-      - run: yarn
       - run:
-          name: chmod permissions
-          command: cd android && chmod +x ./gradlew
+          name: Install Yarn
+          command: npm install -g yarn
       - run:
-          name: Download Dependencies
-          command: cd android && ./gradlew androidDependencies
-      - run:
-          name: Run UnitTest
-          command: cd android && ./gradlew test
+          name: Install Node Packages
+          command: yarn
+      - android/run-tests:
+          test-command: ./gradlew test
 
   test_ios:
     macos:
@@ -216,7 +215,6 @@ jobs:
       - run: cd project && Escape react-native publish
 
 workflows:
-  version: 2
   publish:
     jobs:
       - danger:
