@@ -239,7 +239,7 @@ jobs:
           name: Detox - Run E2E Tests
           command: |
             sudo chmod -R 777 ~/Library/Detox
-            detox test --configuration android.emu.release --cleanup
+            detox test --configuration android.emu.release
 
   publish:
     macos:
@@ -258,19 +258,19 @@ workflows:
     jobs:
       - danger:
           context: cross-platform
-      # - test_module
-      # - test_sample
-      # - test_android
-      # - test_ios
-      # - e2e_ios
+      - test_module
+      - test_sample
+      - test_android
+      - test_ios
+      - e2e_ios
       - e2e_android
       - hold:
           requires:
-            # - test_module
-            # - test_sample
-            # - test_android
-            # - test_ios
-            # - e2e_ios
+            - test_module
+            - test_sample
+            - test_android
+            - test_ios
+            - e2e_ios
             - e2e_android
           type: approval
           filters:
