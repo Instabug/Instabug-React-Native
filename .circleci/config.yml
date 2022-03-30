@@ -158,7 +158,7 @@ jobs:
           command: npm install --global yarn
       - run:
           name: Install Detox CLI
-          command: yarn global add detox-cli
+          command: npm install --global detox-cli
       - run:
           name: Install Node Packages
           command: yarn
