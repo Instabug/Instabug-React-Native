@@ -234,7 +234,7 @@ workflows:
       #     context: cross-platform
       - rn/android_build:
           name: build_e2e_android
-          project_path: ./InstabugSample/android
+          workspace_root: ./InstabugSample
           build_type: release
       - rn/android_test:
           name: e2e_android
