@@ -77,7 +77,7 @@ jobs:
       name: android/android-machine
       tag: "2022.03.1"
       resource-class: medium
-    working_directory: ~/project/InstabugSample/android
+    working_directory: ~/project/InstabugSample
     steps:
       - checkout:
           path: ~/project
@@ -89,6 +89,7 @@ jobs:
           command: yarn
       - android/run-tests:
           test-command: ./gradlew test
+          working-directory: ./android
 
   test_ios:
     macos:
