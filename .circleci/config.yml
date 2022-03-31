@@ -86,7 +86,7 @@ jobs:
           name: Install Node Packages
           command: yarn
       - android/run-tests:
-          working_directory: ./android
+          working-directory: ./android
           test-command: ./gradlew test
 
   test_ios:
