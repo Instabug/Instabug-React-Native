@@ -148,67 +148,38 @@ jobs:
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
-    macos:
-      xcode: "13.3.0"
+    executor:
+      name: android/android-machine
+      tag: "2022.03.1"
     working_directory: ~/project/InstabugSample
     steps:
       - checkout:
           path: ~/project
+      - run: 
+          name: Install Yarn
+          command: npm install --global yarn
       - run:
-          name: Install Android SDK
-          command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install android-sdk
-      - run:
-          name: Install Java 8
-          command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap AdoptOpenJDK/openjdk
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install adoptopenjdk/openjdk/adoptopenjdk8
-      - run:
-          name: Accept Android SDK Licenses
-          command: (yes | sdkmanager --licenses) || true
-      - run:
-          name: Setup Android Environment Variables
-          command: |
-            echo 'export JAVA_HOME=`/usr/libexec/java_home -v 1.8`' >> $BASH_ENV
-            echo 'export ANDROID_HOME=/usr/local/share/android-sdk' >> $BASH_ENV
-            echo 'export ANDROID_SDK_ROOT=/usr/local/share/android-sdk' >> $BASH_ENV
-            echo 'export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools' >> $BASH_ENV
-      - run:
-          name: SDK Manager - Download Emulator Image
-          command: (yes | sdkmanager "platform-tools" "platforms;android-27" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;27.0.3" "system-images;android-27;google_apis;x86" "emulator" --verbose) || true
-      - run:
-          name: AVD Manager - Setup Emulator
-          command: avdmanager create avd -n Nexus_6P_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 6P"
-      - run:
-          name: Run Emulator in background
-          command: $ANDROID_HOME/emulator/emulator @Nexus_6P_API_27 -noaudio -no-boot-anim -no-window
-          background: true
+          name: Install Detox CLI
+          command: npm install --global detox-cli
       - run:
           name: Install Node Packages
           command: yarn
-      - run:
-          name: Make gradlew Executable
-          command: cd android && chmod +x ./gradlew
-      - run:
-          name: Download Android Dependencies
-          command: cd android && ./gradlew androidDependencies
-      - run:
-          name: Install Detox CLI
-          command: npm install -g detox-cli
-      - run:
-          name: Detox - Build Release App
-          command: |
-            sudo chmod -R 777 node_modules
-            cd android
-            ./gradlew cleanBuildCache
-            cd ..
-            detox build --configuration android.emu.release
+      - android/create-avd:
+          avd-name: Nexus_6P_API_27
+          install: true
+          system-image: system-images;android-27;default;x86
+      - android/start-emulator:
+          avd-name: Nexus_6P_API_27
+          no-window: true
+          post-emulator-launch-assemble-command: |
+              cd android
+              ./gradlew androidDependencies
+              ./gradlew cleanBuildCache
+              cd ..
+              detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          command: |
-            sudo chmod -R 777 ~/Library/Detox
-            detox test --configuration android.emu.release
+          command: detox test -c android.emu.release
 
   publish:
     macos:
