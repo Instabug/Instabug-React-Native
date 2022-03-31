@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   android: circleci/android@2.0
-  rn: react-native-community/react-native@6.8.1
 jobs:
   danger:
     docker:
@@ -76,7 +75,6 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-      resource-class: medium
     working_directory: ~/project/InstabugSample
     steps:
       - checkout:
@@ -88,8 +86,8 @@ jobs:
           name: Install Node Packages
           command: yarn
       - android/run-tests:
-          test-command: ./gradlew test
           working-directory: ./android
+          test-command: ./gradlew test
 
   test_ios:
     macos:
@@ -151,7 +149,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-    working_directory: ~/project/InstabugSample
+    working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
           path: ~/project
@@ -172,14 +170,13 @@ jobs:
           avd-name: Nexus_6P_API_27
           no-window: true
           post-emulator-launch-assemble-command: |
-              cd android
               ./gradlew androidDependencies
               ./gradlew cleanBuildCache
               cd ..
               detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          command: detox test -c android.emu.release
+          command: cd .. && detox test -c android.emu.release
 
   publish:
     macos:
@@ -203,8 +200,7 @@ workflows:
       - test_android
       - test_ios
       - e2e_ios
-      - e2e_android:
-          context: cross-platform
+      - e2e_android
       - hold:
           requires:
             - test_module
@@ -212,7 +208,7 @@ workflows:
             - test_android
             - test_ios
             - e2e_ios
-            # - e2e_android
+            - e2e_android
           type: approval
           filters:
             branches:
