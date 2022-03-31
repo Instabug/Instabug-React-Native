@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   android: circleci/android@2.0
-  react-native: react-native-community/react-native@6.8.1
+  rn: react-native-community/react-native@6.8.1
 jobs:
   danger:
     docker:
@@ -232,13 +232,20 @@ workflows:
       - e2e_ios
       # - e2e_android:
       #     context: cross-platform
-      - react-native/android_test:
+      - rn/android_build:
+          name: build_e2e_android
+          project_path: ./InstabugSample/android
+          build_type: release
+      - rn/android_test:
+          name: e2e_android
           build_tools_version: 30.0.3
           device_name: Nexus_6P_API_27
           detox_configuration: android.emu.release
           detox_loglevel: verbose
           platform_version: android-27
           workspace_root: ./InstabugSample
+          requires:
+            - build_e2e_android
       - hold:
           requires:
             - test_module
