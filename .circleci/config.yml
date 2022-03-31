@@ -235,7 +235,7 @@ workflows:
       - rn/android_build:
           name: build_e2e_android
           checkout: true
-          workspace_root: ./InstabugSample
+          project_path: ./InstabugSample/android
           build_type: release
       - rn/android_test:
           name: e2e_android
