@@ -75,7 +75,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-    working_directory: ~/project/InstabugSample/android
+    working_directory: ~/project/InstabugSample
     steps:
       - checkout:
           path: ~/project
@@ -86,6 +86,7 @@ jobs:
           name: Install Node Packages
           command: yarn
       - android/run-tests:
+          working_directory: ./android
           test-command: ./gradlew test
 
   test_ios:
