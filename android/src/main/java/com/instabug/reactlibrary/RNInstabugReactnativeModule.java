@@ -98,7 +98,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String INVOCATION_EVENT_NONE = "invocationEventNone";
     private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
     private final String INVOCATION_EVENT_SCREENSHOT = "invocationEventScreenshot";
-    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "invocationEventTwoFingersSwipe";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT = "invocationEventTwoFingersSwipeLeft";
     private final String INVOCATION_EVENT_FLOATING_BUTTON = "invocationEventFloatingButton";
     //InvocationModes
     private final String INVOCATION_MODE_NA = "na";
@@ -776,7 +776,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     case INVOCATION_EVENT_FLOATING_BUTTON:
                         parsedInvocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
                         break;
-                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE:
+                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT:
                         parsedInvocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
                         break;
                     case INVOCATION_EVENT_SHAKE:
@@ -813,7 +813,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             if (invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
                 invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE)) {
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT)) {
                 invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
             } else if (invocationEventValue.equals(INVOCATION_EVENT_SHAKE)) {
                 invocationEvent = InstabugInvocationEvent.SHAKE;
@@ -2421,7 +2421,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
         constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
         constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
-        constants.put("invocationEventTwoFingersSwipe", INVOCATION_EVENT_TWO_FINGERS_SWIPE);
+        constants.put("invocationEventTwoFingersSwipeLeft", INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT);
         constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
 
         constants.put("colorThemeLight", COLOR_THEME_LIGHT);
