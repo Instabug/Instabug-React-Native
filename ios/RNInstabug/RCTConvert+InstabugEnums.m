@@ -38,7 +38,7 @@ RCT_ENUM_CONVERTER(IBGBugReportingInvocationOption, (@{
 RCT_ENUM_CONVERTER(IBGDismissType, (@{
                                       @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
                                       @"dismissTypeCancel": @(IBGDismissTypeCancel),
-                                      @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment)
+                                      @"dismissTypeAddAttachment": @(IBGDismissTypeAddAttachment)
                                       }), IBGDismissTypeSubmit, integerValue)
 
 RCT_ENUM_CONVERTER(IBGUserStepsMode, (@{
