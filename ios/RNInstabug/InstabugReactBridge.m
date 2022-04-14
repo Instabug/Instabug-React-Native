@@ -552,7 +552,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
               @"invocationHeader": kIBGInvocationTitleStringName,
               //@"talkToUs": kIBGTalkToUsStringName,
-              @"startChats": kIBGAskAQuestionStringName,
               @"reportQuestion": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,

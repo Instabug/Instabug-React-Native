@@ -173,7 +173,6 @@ final class ArgsRegistry {
         args.put("invalidEmailMessage", InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE);
         args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
         args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
-        args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
         args.put("reportQuestion", InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION);
         args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
         args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);

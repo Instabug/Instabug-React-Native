@@ -20,7 +20,6 @@ import Instabug, {
   BugReporting,
   FeatureRequests,
   Surveys,
-  Chats,
   CrashReporting,
   Replies,
 } from 'instabug-reactnative';

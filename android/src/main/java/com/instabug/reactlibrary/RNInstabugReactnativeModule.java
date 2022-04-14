@@ -30,7 +30,6 @@ import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
@@ -166,7 +165,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     private final String INVOCATION_HEADER = "invocationHeader";
-    private final String START_CHATS = "startChats";
     private final String REPORT_QUESTION = "reportQuestion";
     private final String REPORT_BUG = "reportBug";
     private final String REPORT_FEEDBACK = "reportFeedback";
@@ -1878,34 +1876,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setChatsEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        Chats.setState(Feature.State.ENABLED);
-                    } else {
-                        Chats.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void showChats() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Chats.show();
-            }
-        });
-    }
-
-    @ReactMethod
     public void setRepliesEnabled(final boolean isEnabled) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -2251,8 +2221,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION;
             case INVOCATION_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
-            case START_CHATS:
-                return InstabugCustomTextPlaceHolder.Key.START_CHATS;
             case REPORT_QUESTION:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION;
             case REPORT_BUG:
@@ -2509,7 +2477,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
         constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
         constants.put("invocationHeader", INVOCATION_HEADER);
-        constants.put("startChats", START_CHATS);
         constants.put("reportQuestion", REPORT_QUESTION);
         constants.put("reportBug", REPORT_BUG);
         constants.put("reportFeedback", REPORT_FEEDBACK);

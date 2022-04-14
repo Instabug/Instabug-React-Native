@@ -232,19 +232,7 @@ export namespace BugReporting {
     topLeft
   }
 }
-export namespace Chats {
-  /**
-   * @deprecated Use {@link BugReporting.setReportTypes} instead.
-   * Enables and disables everything related to creating new chats.
-   * @param {boolean} isEnabled 
-   */
-  function setEnabled(isEnabled: boolean): void;
-  /**
-   * @deprecated Use {@link BugReporting.show} instead.
-   * Manual invocation for chats view. 
-   */
-  function show(): void;
-}
+
 export namespace CrashReporting {
   /**
    * Enables and disables everything related to crash reporting including intercepting
@@ -1350,7 +1338,6 @@ export enum strings {
   invalidCommentMessage,
   invalidCommentTitle,
   invocationHeader,
-  startChats,
   reportQuestion,
   reportBug,
   reportFeedback,
@@ -1369,7 +1356,6 @@ export enum strings {
   recordingMessageToReleaseText,
   conversationsHeaderTitle,
   screenshotHeaderTitle,
-  chatsNoConversationsHeadlineText,
   doneButtonText,
   okButtonText,
   cancelButtonText,

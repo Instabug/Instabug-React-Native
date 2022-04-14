@@ -13,7 +13,6 @@ import BugReporting from './modules/BugReporting';
 import APM from './modules/APM';
 import Surveys from './modules/Surveys';
 import FeatureRequests from './modules/FeatureRequests';
-import Chats from './modules/Chats';
 import Replies from './modules/Replies';
 import CrashReporting from './modules/CrashReporting';
 import NetworkLogger from './modules/NetworkLogger';
@@ -1039,7 +1038,6 @@ const InstabugModule = {
     invalidCommentMessage: Instabug.invalidCommentMessage,
     invalidCommentTitle: Instabug.invalidCommentTitle,
     invocationHeader: Instabug.invocationHeader,
-    startChats: Instabug.startChats,
     reportQuestion: Instabug.reportQuestion,
     reportBug: Instabug.reportBug,
     reportFeedback: Instabug.reportFeedback,
@@ -1061,7 +1059,6 @@ const InstabugModule = {
     recordingMessageToReleaseText: Instabug.recordingMessageToReleaseText,
     conversationsHeaderTitle: Instabug.conversationsHeaderTitle,
     screenshotHeaderTitle: Instabug.screenshotHeaderTitle,
-    chatsNoConversationsHeadlineText: Instabug.chatsNoConversationsHeadlineText,
     doneButtonText: Instabug.doneButtonText,
     okButtonText: Instabug.okButtonTitle,
     cancelButtonText: Instabug.cancelButtonTitle,
@@ -1116,7 +1113,6 @@ export {
   BugReporting,
   Surveys,
   FeatureRequests,
-  Chats,
   Replies,
   CrashReporting,
   NetworkLogger,
