@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.library'
 
 def DEFAULT_COMPILE_SDK_VERSION = 28
@@ -29,7 +28,7 @@ android {
 dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.react:react-native:+'
-    api('com.instabug.library:instabug:10.13.0') {
+    api('com.instabug.library:instabug:11.0.0') {
         exclude group: 'com.android.support:appcompat-v7'
     }
     testImplementation "org.mockito:mockito-inline:3.4.0"
