@@ -1,3 +1,7 @@
+## master
+
+* Fixes an issue with swipe invocation event not working on Android
+
 ## 10.13.0 (2022-03-17)
 
 * Adds Instabug Experiments APIs
