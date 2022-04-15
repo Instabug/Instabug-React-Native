@@ -8,6 +8,11 @@ elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 fi
 export NODE_BINARY=node
 
+if [ "${INSTABUG_AUTO_UPLOAD_ENABLE_IOS}" = "false" ]; then
+    echo "Instabug: Environment variable INSTABUG_AUTO_UPLOAD_ENABLE_IOS was set to $INSTABUG_AUTO_UPLOAD_ENABLE_IOS, skipping sourcemap upload"
+    exit 0
+fi
+
 if [ ! "$INFOPLIST_FILE" ] || [ -z "$INFOPLIST_FILE" ]; then
     echo "Instabug: INFOPLIST_FILE not found in Xcode build settings, skipping sourcemap upload"
     exit 0
