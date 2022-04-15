@@ -1,3 +1,7 @@
+## master
+
+* Adds env variable ```INSTABUG_AUTO_UPLOAD_ENABLE_IOS``` to support skipping iOS source maps auto upload
+
 ## 10.13.0 (2022-03-17)
 
 * Adds Instabug Experiments APIs
