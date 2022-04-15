@@ -30,7 +30,7 @@ if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
-    if [[ $INSTABUG_SKIP_UPLOAD == "true" ]]; then
+    if [[ "${INSTABUG_SKIP_UPLOAD}" == "true" ]]; then
         echo "Instabug: INSTABUG_SKIP_UPLOAD is true, skipping upload"
         exit 0
     fi
