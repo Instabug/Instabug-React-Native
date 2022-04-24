@@ -1099,7 +1099,7 @@ export function reportJSException(errorObject: object): void;
  * true if app is live on the app store.
  * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
  */
-export function isRunningLive(runningLiveCallBack: () => void): void;
+export function isRunningLive(runningLiveCallBack: (isLive?: boolean) => void): void;
 /* istanbul ignore next */
 /**
  * @deprecated use {@link BugReporting.setVideoRecordingFloatingButtonPosition}
