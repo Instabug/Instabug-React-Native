@@ -9,12 +9,12 @@ String getExtOrDefault(String name) {
 }
 
 android {
-    compileSdkVersion getExtOrDefault('compileSdkVersion')
+    compileSdkVersion getExtOrDefault('compileSdkVersion').toInteger()
     buildToolsVersion getExtOrDefault('buildToolsVersion')
 
     defaultConfig {
-        minSdkVersion getExtOrDefault('minSdkVersion')
-        targetSdkVersion getExtOrDefault('targetSdkVersion')
+        minSdkVersion getExtOrDefault('minSdkVersion').toInteger()
+        targetSdkVersion getExtOrDefault('targetSdkVersion').toInteger()
         versionCode 1
         versionName "1.0"
         ndk {
