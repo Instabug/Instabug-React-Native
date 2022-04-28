@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.facebook.react:react-native:+'
     api('com.instabug.library:instabug:10.13.0') {
         exclude group: 'com.android.support:appcompat-v7'
