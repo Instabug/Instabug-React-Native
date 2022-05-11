@@ -2,8 +2,6 @@ package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -14,7 +12,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -27,7 +24,6 @@ import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
@@ -100,8 +96,9 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    BugReporting.setExtendedBugReportState(
-                            ArgsRegistry.getDeserializedValue(extendedBugReportMode, ExtendedBugReport.State.class));
+                    final ExtendedBugReport.State parsedState = ArgsRegistry.extendedBugReportStates.get(extendedBugReportMode);
+                    if (parsedState == null) return;
+                    BugReporting.setExtendedBugReportState(parsedState);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -142,8 +139,9 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    BugReporting.setVideoRecordingFloatingButtonPosition(
-                            ArgsRegistry.getDeserializedValue(corner, InstabugVideoRecordingButtonPosition.class));
+                    final InstabugVideoRecordingButtonPosition parsedPosition = ArgsRegistry.recordButtonPositions.get(corner);
+                    if (parsedPosition == null) return;
+                    BugReporting.setVideoRecordingFloatingButtonPosition(parsedPosition);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -183,28 +181,18 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvents(ReadableArray invocationEventValues) {
-
-        try {
-            Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
-
-            for (String event : stringArray) {
-                parsedInvocationEvents.add(ArgsRegistry.getDeserializedValue(event, InstabugInvocationEvent.class));
-            }
-            MainThreadHandler.runOnMainThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+                    BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -215,14 +203,17 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setOptions(final ReadableArray optionValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
+            @SuppressLint("WrongConstant")
             @Override
             public void run() {
                 try {
-                    Object[] objectArray = ArrayUtil.toArray(optionValues);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    for (String option : stringArray) {
-                        BugReporting.setOptions((int) ArgsRegistry.getRawValue(option));
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(optionValues);
+                    final ArrayList<Integer> options = ArgsRegistry.invocationOptions.getAll(keys);
+
+                    for (int i = 0; i < options.size(); i++) {
+                        BugReporting.setOptions(options.get(i));
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -267,11 +258,10 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
+                final InstabugFloatingButtonEdge parsedEdge = ArgsRegistry.floatingButtonEdges
+                        .getOrDefault(floatingButtonEdge, InstabugFloatingButtonEdge.RIGHT);
                 BugReporting.setFloatingButtonOffset(floatingButtonOffset);
-                if (floatingButtonEdge.equals("left"))
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.LEFT);
-                else
-                    BugReporting.setFloatingButtonEdge(InstabugFloatingButtonEdge.RIGHT);
+                BugReporting.setFloatingButtonEdge(parsedEdge);
             }
         });
     }
@@ -333,20 +323,22 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @param types
      * @see BugReporting.ReportType
      */
-    @SuppressLint("WrongConstant")
     @ReactMethod
     public void setReportTypes(ReadableArray types) {
-        Object[] objectArray = ArrayUtil.toArray(types);
-        String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-        final int[] parsedReportTypes = new int[stringArray.length];
-        for (int i = 0; i < stringArray.length; i++) {
-            parsedReportTypes[i] = (int) ArgsRegistry.getRawValue(stringArray[i]);
-        }
         MainThreadHandler.runOnMainThread(new Runnable() {
+            @SuppressLint("WrongConstant")
             @Override
             public void run() {
                 try {
-                    BugReporting.setReportTypes(parsedReportTypes);
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(types);
+                    final ArrayList<Integer> types = ArgsRegistry.reportTypes.getAll(keys);
+
+                    final int[] typesInts = new int[types.size()];
+                    for (int i = 0; i < types.size(); i++) {
+                        typesInts[i] = types.get(i);
+                    }
+
+                    BugReporting.setReportTypes(typesInts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -366,10 +358,9 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                if (ArgsRegistry.getDeserializedValue(reportType, Integer.class) == null) {
-                    return;
-                }
-                BugReporting.show((int) ArgsRegistry.getRawValue(reportType));
+                final Integer parsedReportType = ArgsRegistry.reportTypes.get(reportType);
+                if (parsedReportType == null) return;
+                BugReporting.show(parsedReportType);
                 setOptions(options);
             }
         });

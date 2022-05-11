@@ -14,6 +14,7 @@ import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
@@ -37,22 +38,22 @@ public class RNInstabugFeatureRequestsModule extends ReactContextBaseJavaModule 
      * @param isEmailRequired set true to make email field required
      * @param actionTypes Bitwise-or of actions
      */
-    @SuppressLint("WrongConstant")
     @ReactMethod
     public void setEmailFieldRequiredForFeatureRequests(final boolean isEmailRequired, final ReadableArray actionTypes) {
         MainThreadHandler.runOnMainThread(new Runnable() {
+            @SuppressLint("WrongConstant")
             @Override
             public void run() {
                 try {
-                    Object[] objectArray = ArrayUtil.toArray(actionTypes);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    int[] parsedActionTypes = new int[stringArray.length];
-                    int i = 0;
-                    for (String action : stringArray) {
-                        parsedActionTypes[i++] = (int) ArgsRegistry.getRawValue(action);
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(actionTypes);
+                    final ArrayList<Integer> types = ArgsRegistry.actionTypes.getAll(keys);
+
+                    final int[] typesInts = new int[types.size()];
+                    for (int i = 0; i < types.size(); i++) {
+                        typesInts[i] = types.get(i);
                     }
 
-                    FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
+                    FeatureRequests.setEmailFieldRequired(isEmailRequired, typesInts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

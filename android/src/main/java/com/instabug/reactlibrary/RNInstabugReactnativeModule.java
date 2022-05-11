@@ -40,6 +40,7 @@ import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.Platform;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
+import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
@@ -86,162 +87,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
-    //LogLevel
-    private final String LOG_LEVEL_NONE = "logLevelNone";
-    private final String LOG_LEVEL_ERROR = "logLevelError";
-    private final String LOG_LEVEL_WARNING = "logLevelWarning";
-    private final String LOG_LEVEL_INFO = "logLevelInfo";
-    private final String LOG_LEVEL_DEBUG = "logLevelDebug";
-    private final String LOG_LEVEL_VERBOSE = "logLevelVerbose";
-
-    //InvocationEvents
-    private final String INVOCATION_EVENT_NONE = "invocationEventNone";
-    private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
-    private final String INVOCATION_EVENT_SCREENSHOT = "invocationEventScreenshot";
-    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT = "invocationEventTwoFingersSwipeLeft";
-    private final String INVOCATION_EVENT_FLOATING_BUTTON = "invocationEventFloatingButton";
-    //InvocationModes
-    private final String INVOCATION_MODE_NA = "na";
-    private final String INVOCATION_MODE_NEW_BUG = "bug";
-    private final String INVOCATION_MODE_NEW_FEEDBACK = "feedback";
-    private final String INVOCATION_MODE_NEW_CHAT = "chat";
-    private final String INVOCATION_MODE_CHATS_LIST = "chats";
-    //FloatingButtonEdge
-    private final String FLOATING_BUTTON_EDGE_RIGHT = "right";
-    private final String FLOATING_BUTTON_EDGE_LEFT = "left";
-    //locales
-    private final String LOCALE_ARABIC = "arabic";
-    private final String LOCALE_AZERBAIJANI = "azerbaijani";
-    private final String LOCALE_CHINESE_SIMPLIFIED = "chineseSimplified";
-    private final String LOCALE_CHINESE_TRADITIONAL = "chineseTraditional";
-    private final String LOCALE_CZECH = "czech";
-    private final String LOCALE_DUTCH = "dutch";
-    private final String LOCALE_ENGLISH = "english";
-    private final String LOCALE_FRENCH = "french";
-    private final String LOCALE_GERMAN = "german";
-    private final String LOCALE_KOREAN = "korean";
-    private final String LOCALE_ITALIAN = "italian";
-    private final String LOCALE_JAPANESE = "japanese";
-    private final String LOCALE_POLISH = "polish";
-    private final String LOCALE_PORTUGUESE_BRAZIL = "portugueseBrazil";
-    private final String LOCALE_RUSSIAN = "russian";
-    private final String LOCALE_SPANISH = "spanish";
-    private final String LOCALE_SWEDISH = "swedish";
-    private final String LOCALE_TURKISH = "turkish";
-
-    //Instabug Button Corner
-    private final String TOP_RIGHT = "topRight";
-    private final String TOP_LEFT = "topLeft";
-    private final String BOTTOM_RIGHT = "bottomRight";
-    private final String BOTTOM_LEFT = "bottomLeft";
-
-    //Instabug extended bug report modes
-    private final String EXTENDED_BUG_REPORT_REQUIRED_FIELDS = "enabledWithRequiredFields";
-    private final String EXTENDED_BUG_REPORT_OPTIONAL_FIELDS = "enabledWithOptionalFields";
-    private final String EXTENDED_BUG_REPORT_DISABLED = "disabled";
-
-    //Instabug repro step modes
-    private final String ENABLED_WITH_NO_SCREENSHOTS = "enabledWithNoScreenshots";
-    private final String ENABLED = "enabled";
-    private final String DISABLED = "disabled";
-
-    //Instabug welcome message modes
-    private final String WELCOME_MESSAGE_MODE_LIVE = "welcomeMessageModeLive";
-    private final String WELCOME_MESSAGE_MODE_BETA = "welcomeMessageModeBeta";
-    private final String WELCOME_MESSAGE_MODE_DISABLED = "welcomeMessageModeDisabled";
-
-    //Theme colors
-    private final String COLOR_THEME_LIGHT = "colorThemeLight";
-    private final String COLOR_THEME_DARK = "colorThemeDark";
-
-    //CustomTextPlaceHolders
-    private final String SHAKE_HINT = "shakeHint";
-    private final String SWIPE_HINT = "swipeHint";
-    private final String INVALID_EMAIL_MESSAGE = "invalidEmailMessage";
-    private final String INVALID_COMMENT_MESSAGE = "invalidCommentMessage";
-    private final String EMAIL_FIELD_HINT = "emailFieldHint";
-    private final String COMMENT_FIELD_HINT_FOR_BUG_REPORT = "commentFieldHintForBugReport";
-    private final String COMMENT_FIELD_HINT_FOR_FEEDBACK = "commentFieldHintForFeedback";
-    private final String COMMENT_FIELD_HINT_FOR_QUESTION = "commentFieldHintForQuestion";
-
-
-    private final String INVOCATION_HEADER = "invocationHeader";
-    private final String REPORT_QUESTION = "reportQuestion";
-    private final String REPORT_BUG = "reportBug";
-    private final String REPORT_FEEDBACK = "reportFeedback";
-
-    private final String ACTION_TYPE_ALL_ACTIONS = "allActions";
-    private final String ACTION_TYPE_REPORT_BUG = "reportBugAction";
-    private final String ACTION_TYPE_REQUEST_NEW_FEATURE = "requestNewFeature";
-    private final String ACTION_TYPE_ADD_COMMENT_TO_FEATURE = "addCommentToFeature";
-
-    private final String PROMPT_OPTION_BUG = "promptOptionBug";
-    private final String PROMPT_OPTION_CHAT = "promptOptionChat";
-    private final String PROMPT_OPTION_FEEDBACK = "promptOptionFeedback";
-
-    private final String BUG_REPORTING_REPORT_TYPE_BUG = "bugReportingReportTypeBug";
-    private final String BUG_REPORTING_REPORT_TYPE_FEEDBACK = "bugReportingReportTypeFeedback";
-    private final String BUG_REPORTING_REPORT_TYPE_QUESTION = "bugReportingReportTypeQuestion";
-
-    private final String DISMISS_TYPE_ADD_ATTACHMENT = "dismissTypeAddAttachment";
-    private final String DISMISS_TYPE_CANCEL = "dismissTypeCancel";
-    private final String DISMISS_TYPE_SUBMIT = "dismissTypeSubmit";
-
-    private final String EMAIL_FIELD_HIDDEN = "emailFieldHidden";
-    private final String EMAIL_FIELD_OPTIONAL = "emailFieldOptional";
-    private final String COMMENT_FIELD_REQUIRED = "commentFieldRequired";
-    private final String DISABLE_POST_SENDING_DIALOG = "disablePostSendingDialog";
-
-    private final String CONVERSATIONS_LIST_TITLE = "conversationsListTitle";
-
-    private final String ADD_VOICE_MESSAGE = "addVoiceMessage";
-    private final String ADD_IMAGE_FROM_GALLERY = "addImageFromGallery";
-    private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
-    private final String ADD_VIDEO = "addVideoMessage";
-    private final String VIDEO_PRESS_RECORD = "videoPressRecord";
-
-    private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDenied";
-
-    private final String VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD = "voiceMessagePressAndHoldToRecord";
-    private final String VOICE_MESSAGE_RELEASE_TO_ATTACH = "voiceMessageReleaseToAttach";
-
-    private final String REPORT_SUCCESSFULLY_SENT = "reportSuccessfullySent";
-    private final String THANK_YOU_ALERT_TEXT = "successDialogHeader";
-
-    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE = "betaWelcomeMessageWelcomeStepTitle";
-    private final String WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT = "betaWelcomeMessageWelcomeStepContent";
-    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE = "betaWelcomeMessageHowToReportStepTitle";
-    private final String WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT = "betaWelcomeMessageHowToReportStepContent";
-    private final String WELCOME_MESSAGE_FINISH_STEP_TITLE = "betaWelcomeMessageFinishStepTitle";
-    private final String WELCOME_MESSAGE_FINISH_STEP_CONTENT = "betaWelcomeMessageFinishStepContent";
-    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
-    private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
-
-    private final String STORE_RATING_THANKS_TITLE = "surveysStoreRatingThanksTitle";
-    private final String STORE_RATING_THANKS_SUBTITLE = "surveysStoreRatingThanksSubtitle";
-
-    private final String VIDEO_PLAYER_TITLE = "video";
-
-    private final String CONVERSATION_TEXT_FIELD_HINT = "conversationTextFieldHint";
-
-    private final String REPORT_BUG_DESCRIPTION = "reportBugDescription";
-    private final String REPORT_FEEDBACK_DESCRIPTION = "reportFeedbackDescription";
-    private final String REPORT_QUESTION_DESCRIPTION = "reportQuestionDescription";
-    private final String REQUEST_FEATURE_DESCRIPTION = "requestFeatureDescription";
-
-    private final String REPORT_DISCARD_DIALOG_TITLE = "discardAlertTitle";
-    private final String REPORT_DISCARD_DIALOG_BODY = "discardAlertMessage";
-    private final String REPORT_DISCARD_DIALOG_NEGATIVE_ACTION = "discardAlertCancel";
-    private final String REPORT_DISCARD_DIALOG_POSITIVE_ACTION = "discardAlertAction";
-    private final String REPORT_ADD_ATTACHMENT_HEADER = "addAttachmentButtonTitleStringName";
-    private final String REPORT_REPRO_STEPS_DISCLAIMER_BODY = "reportReproStepsDisclaimerBody";
-    private final String REPORT_REPRO_STEPS_DISCLAIMER_LINK = "reportReproStepsDisclaimerLink";
-    private final String REPRO_STEPS_PROGRESS_DIALOG_BODY = "reproStepsProgressDialogBody";
-    private final String REPRO_STEPS_LIST_HEADER = "reproStepsListHeader";
-    private final String REPRO_STEPS_LIST_DESCRIPTION = "reproStepsListDescription";
-    private final String REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION = "reproStepsListEmptyStateDescription";
-    private final String REPRO_STEPS_LIST_ITEM_TITLE = "reproStepsListItemTitle";
-
     private InstabugCustomTextPlaceHolder placeHolders;
     private Report currentReport;
 
@@ -274,26 +119,12 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    final InstabugInvocationEvent[] invocationEventsArray = new InstabugInvocationEvent[stringArray.length];
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
 
-                    for (int i = 0; i < stringArray.length; i++) {
-                        String key = stringArray[i];
-                        invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
-                    }
-
-                    final Application application = (Application) getReactApplicationContext().getApplicationContext();
-
-                    setCurrentPlatform();
-                    setBaseUrlForDeprecationLogs();
-
-                    new Instabug.Builder(application, token)
-                            .setInvocationEvents(invocationEventsArray)
+                    new Instabug.Builder(getCurrentActivity().getApplication(), token)
+                            .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
                             .build();
-
-                    // Temporarily disabling APM hot launches
-                    APM.setHotAppLaunchEnabled(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -363,7 +194,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    Instabug.setLocale(getLocaleByKey(instabugLocale));
+                    final InstabugLocale parsedLocale = ArgsRegistry.locales
+                            .getOrDefault(instabugLocale, InstabugLocale.ENGLISH);
+                    final Locale locale = new Locale(parsedLocale.getCode(), parsedLocale.getCountry());
+                    Instabug.setLocale(locale);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -373,7 +207,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
     /**
      * Sets whether the extended bug report mode should be disabled,
-     * enabled with required fields,  or enabled with optional fields.
+     * enabled with required fields, or enabled with optional fields.
      *
      * @param extendedBugReportMode
      */
@@ -383,19 +217,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    switch (extendedBugReportMode) {
-                        case EXTENDED_BUG_REPORT_REQUIRED_FIELDS:
-                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
-                            break;
-                        case EXTENDED_BUG_REPORT_OPTIONAL_FIELDS:
-                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
-                            break;
-                        case EXTENDED_BUG_REPORT_DISABLED:
-                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                            break;
-                        default:
-                            BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                    }
+                    final ExtendedBugReport.State state = ArgsRegistry.extendedBugReportStates
+                            .getOrDefault(extendedBugReportMode, ExtendedBugReport.State.DISABLED);
+                    BugReporting.setExtendedBugReportState(state);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -706,7 +530,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    BugReporting.setInvocationEvents(getInvocationEventById(invocationEventValue));
+                    final InstabugInvocationEvent invocationEvent = ArgsRegistry.invocationEvents
+                            .getOrDefault(invocationEventValue, InstabugInvocationEvent.SHAKE);
+                    BugReporting.setInvocationEvents(invocationEvent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -722,68 +548,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void setInvocationEvents(ReadableArray invocationEventValues) {
-
-        try {
-            Object[] objectArray = ArrayUtil.toArray(invocationEventValues);
-            String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-            final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = new ArrayList<>();
-
-            for (String action : stringArray) {
-                switch (action) {
-                    case INVOCATION_EVENT_FLOATING_BUTTON:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
-                        break;
-                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
-                        break;
-                    case INVOCATION_EVENT_SHAKE:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
-                        break;
-                    case INVOCATION_EVENT_SCREENSHOT:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.SCREENSHOT);
-                        break;
-                    case INVOCATION_EVENT_NONE:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.NONE);
-                        break;
-                    default:
-                        parsedInvocationEvents.add(InstabugInvocationEvent.SHAKE);
-                        break;
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+                    BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            MainThreadHandler.runOnMainThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private InstabugInvocationEvent getInvocationEventById(String invocationEventValue) {
-        InstabugInvocationEvent invocationEvent = InstabugInvocationEvent.SHAKE;
-        try {
-            if (invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
-                invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT)) {
-                invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_SHAKE)) {
-                invocationEvent = InstabugInvocationEvent.SHAKE;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_SCREENSHOT)) {
-                invocationEvent = InstabugInvocationEvent.SCREENSHOT;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_NONE)) {
-                invocationEvent = InstabugInvocationEvent.NONE;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return invocationEvent;
+        });
     }
 
     /**
@@ -795,33 +571,19 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setInvocationOptions(final ReadableArray invocationOptionValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
+            @SuppressLint("WrongConstant")
             @Override
             public void run() {
                 try {
-                    Object[] objectArray = ArrayUtil.toArray(invocationOptionValues);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    for (String option : stringArray) {
-                        switch (option) {
-                            case EMAIL_FIELD_HIDDEN:
-                                BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN);
-                                return;
-                            case EMAIL_FIELD_OPTIONAL:
-                                BugReporting.setOptions(Option.EMAIL_FIELD_OPTIONAL);
-                                break;
-                            case COMMENT_FIELD_REQUIRED:
-                                BugReporting.setOptions(Option.COMMENT_FIELD_REQUIRED);
-                                break;
-                            case DISABLE_POST_SENDING_DIALOG:
-                                BugReporting.setOptions(Option.DISABLE_POST_SENDING_DIALOG);
-                                break;
-                            default:
-                                BugReporting.setOptions(Option.EMAIL_FIELD_HIDDEN,
-                                        Option.EMAIL_FIELD_OPTIONAL,
-                                        Option.COMMENT_FIELD_REQUIRED,
-                                        Option.DISABLE_POST_SENDING_DIALOG);
-                                break;
-                        }
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationOptionValues);
+                    final ArrayList<Integer> options = ArgsRegistry.invocationOptions.getAll(keys);
+
+                    final int[] optionsInts = new int[options.size()];
+                    for (int i = 0; i < options.size(); i++) {
+                        optionsInts[i] = options.get(i);
                     }
+
+                    BugReporting.setOptions(optionsInts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1148,12 +910,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    if (theme.equals(COLOR_THEME_LIGHT)) {
-                        Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeLight);
-
-                    } else if (theme.equals(COLOR_THEME_DARK)) {
-                        Instabug.setColorTheme(InstabugColorTheme.InstabugColorThemeDark);
-                    }
+                    final InstabugColorTheme colorTheme = ArgsRegistry.colorThemes
+                            .getOrDefault(theme, InstabugColorTheme.InstabugColorThemeLight);
+                    Instabug.setColorTheme(colorTheme);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1174,7 +933,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    placeHolders.set(getStringToKeyConstant(key), string);
+                    final InstabugCustomTextPlaceHolder.Key parsedKey = ArgsRegistry.placeholders.get(key);
+                    placeHolders.set(parsedKey, string);
                     Instabug.setCustomTextPlaceHolders(placeHolders);
                 } catch (java.lang.Exception exception) {
                     exception.printStackTrace();
@@ -1547,7 +1307,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    Instabug.setReproStepsState( ArgsRegistry.getDeserializedValue(reproStepsMode, State.class));
+                    final State parsedState = ArgsRegistry.reproStates.get(reproStepsMode);
+                    Instabug.setReproStepsState(parsedState);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1567,19 +1328,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    switch (welcomeMessageMode) {
-                        case WELCOME_MESSAGE_MODE_LIVE:
-                            Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-                            break;
-                        case WELCOME_MESSAGE_MODE_BETA:
-                            Instabug.showWelcomeMessage(WelcomeMessage.State.BETA);
-                            break;
-                        case WELCOME_MESSAGE_MODE_DISABLED:
-                            Instabug.showWelcomeMessage(WelcomeMessage.State.DISABLED);
-                            break;
-                        default:
-                            Instabug.showWelcomeMessage(WelcomeMessage.State.LIVE);
-                    }
+                    final WelcomeMessage.State parsedState = ArgsRegistry.welcomeMessageStates
+                            .getOrDefault(welcomeMessageMode, WelcomeMessage.State.LIVE);
+                    Instabug.showWelcomeMessage(parsedState);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1599,19 +1350,9 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    switch (welcomeMessageMode) {
-                        case WELCOME_MESSAGE_MODE_LIVE:
-                            Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
-                            break;
-                        case WELCOME_MESSAGE_MODE_BETA:
-                            Instabug.setWelcomeMessageState(WelcomeMessage.State.BETA);
-                            break;
-                        case WELCOME_MESSAGE_MODE_DISABLED:
-                            Instabug.setWelcomeMessageState(WelcomeMessage.State.DISABLED);
-                            break;
-                        default:
-                            Instabug.setWelcomeMessageState(WelcomeMessage.State.LIVE);
-                    }
+                    final WelcomeMessage.State parsedState = ArgsRegistry.welcomeMessageStates
+                            .getOrDefault(welcomeMessageMode, WelcomeMessage.State.LIVE);
+                    Instabug.setWelcomeMessageState(parsedState);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1895,25 +1636,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    Object[] objectArray = ArrayUtil.toArray(actionTypes);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    int[] parsedActionTypes = new int[stringArray.length];
-                    int i = 0;
-                    for (String action : stringArray) {
-                        switch (action) {
-                            case ACTION_TYPE_REQUEST_NEW_FEATURE:
-                                parsedActionTypes[i++] = ActionType.REQUEST_NEW_FEATURE;
-                                break;
-                            case ACTION_TYPE_ADD_COMMENT_TO_FEATURE:
-                                parsedActionTypes[i++] = ActionType.ADD_COMMENT_TO_FEATURE;
-                                break;
-                            default:
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(actionTypes);
+                    final ArrayList<Integer> types = ArgsRegistry.actionTypes.getAll(keys);
 
-                                break;
-                        }
+                    final int[] typesInts = new int[types.size()];
+                    for (int i = 0; i < types.size(); i++) {
+                        typesInts[i] = types.get(i);
                     }
 
-                    FeatureRequests.setEmailFieldRequired(isEmailRequired, parsedActionTypes);
+                    FeatureRequests.setEmailFieldRequired(isEmailRequired, typesInts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2010,138 +1741,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    private InstabugCustomTextPlaceHolder.Key getStringToKeyConstant(String key) {
-        switch (key) {
-            case SHAKE_HINT:
-                return InstabugCustomTextPlaceHolder.Key.SHAKE_HINT;
-            case SWIPE_HINT:
-                return InstabugCustomTextPlaceHolder.Key.SWIPE_HINT;
-            case INVALID_EMAIL_MESSAGE:
-                return InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE;
-            case INVALID_COMMENT_MESSAGE:
-                return InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE;
-            case EMAIL_FIELD_HINT:
-                return InstabugCustomTextPlaceHolder.Key.EMAIL_FIELD_HINT;
-            case COMMENT_FIELD_HINT_FOR_BUG_REPORT:
-                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT;
-            case COMMENT_FIELD_HINT_FOR_FEEDBACK:
-                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_FEEDBACK;
-            case COMMENT_FIELD_HINT_FOR_QUESTION:
-                return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION;
-            case INVOCATION_HEADER:
-                return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
-            case REPORT_QUESTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION;
-            case REPORT_BUG:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_BUG;
-            case REPORT_FEEDBACK:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK;
-            case CONVERSATIONS_LIST_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.CONVERSATIONS_LIST_TITLE;
-            case ADD_VOICE_MESSAGE:
-                return InstabugCustomTextPlaceHolder.Key.ADD_VOICE_MESSAGE;
-            case ADD_IMAGE_FROM_GALLERY:
-                return InstabugCustomTextPlaceHolder.Key.ADD_IMAGE_FROM_GALLERY;
-            case ADD_EXTRA_SCREENSHOT:
-                return InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT;
-            case ADD_VIDEO:
-                return InstabugCustomTextPlaceHolder.Key.ADD_VIDEO;
-            case VIDEO_PRESS_RECORD:
-                return InstabugCustomTextPlaceHolder.Key.VIDEO_RECORDING_FAB_BUBBLE_HINT;
-            case AUDIO_RECORDING_PERMISSION_DENIED:
-                return InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED;
-            case VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD:
-                return InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD;
-            case VOICE_MESSAGE_RELEASE_TO_ATTACH:
-                return InstabugCustomTextPlaceHolder.Key.VOICE_MESSAGE_RELEASE_TO_ATTACH;
-            case CONVERSATION_TEXT_FIELD_HINT:
-                return InstabugCustomTextPlaceHolder.Key.CONVERSATION_TEXT_FIELD_HINT;
-            case REPORT_SUCCESSFULLY_SENT:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT;
-            case VIDEO_PLAYER_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.VIDEO_PLAYER_TITLE;
-            case THANK_YOU_ALERT_TEXT:
-                return InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER;
-            case WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE;
-            case WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT;
-            case WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE;
-            case WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT;
-            case WELCOME_MESSAGE_FINISH_STEP_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_TITLE;
-            case WELCOME_MESSAGE_FINISH_STEP_CONTENT:
-                return InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_FINISH_STEP_CONTENT;
-            case WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
-            case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
-                return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
-            case STORE_RATING_THANKS_TITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
-            case STORE_RATING_THANKS_SUBTITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_SUBTITLE;
-            case REPORT_BUG_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_BUG_DESCRIPTION;
-            case REPORT_FEEDBACK_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK_DESCRIPTION;
-            case REPORT_QUESTION_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION_DESCRIPTION;
-            case REQUEST_FEATURE_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REQUEST_FEATURE_DESCRIPTION;
-            case REPORT_DISCARD_DIALOG_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_TITLE;
-            case REPORT_DISCARD_DIALOG_BODY:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_BODY;
-            case REPORT_DISCARD_DIALOG_NEGATIVE_ACTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION;
-            case REPORT_DISCARD_DIALOG_POSITIVE_ACTION:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION;
-            case REPORT_ADD_ATTACHMENT_HEADER:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER;
-            case REPORT_REPRO_STEPS_DISCLAIMER_BODY:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY;
-            case REPORT_REPRO_STEPS_DISCLAIMER_LINK:
-                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK;
-            case REPRO_STEPS_PROGRESS_DIALOG_BODY:
-                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY;
-            case REPRO_STEPS_LIST_HEADER:
-                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER;
-            case REPRO_STEPS_LIST_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION;
-            case REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION:
-                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION;
-            case REPRO_STEPS_LIST_ITEM_TITLE:
-                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE;
-            default:
-                return null;
-        }
-    }
-
-    private InstabugVideoRecordingButtonPosition getVideoRecordingButtonCorner(String cornerValue) {
-        InstabugVideoRecordingButtonPosition corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
-        try {
-            if (cornerValue.equals(BOTTOM_RIGHT)) {
-                corner = InstabugVideoRecordingButtonPosition.BOTTOM_RIGHT;
-            } else if (cornerValue.equals(BOTTOM_LEFT)) {
-                corner = InstabugVideoRecordingButtonPosition.BOTTOM_LEFT;
-            } else if (cornerValue.equals(TOP_LEFT)) {
-                corner = InstabugVideoRecordingButtonPosition.TOP_LEFT;
-            } else if (cornerValue.equals(TOP_RIGHT)) {
-                corner = InstabugVideoRecordingButtonPosition.TOP_RIGHT;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return corner;
-    }
-
-    private Locale getLocaleByKey(String instabugLocale) {
-        return ArgsRegistry.getDeserializedValue(instabugLocale, Locale.class);
-    }
-
     private void sendEvent(ReactApplicationContext reactContext,
                            String eventName,
                            WritableMap params) {
@@ -2196,151 +1795,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
+    /**
+     * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
+     * The constant name and the arg key should match to be able to resolve the
+     * constant with its actual value from the {@link ArgsRegistry} maps.
+     *
+     * This is a workaround, because RN cannot resolve enums in the constants map.
+     */
     @Override
     public Map<String, Object> getConstants() {
+        final Map<String, Object> args = ArgsRegistry.getAll();
         final Map<String, Object> constants = new HashMap<>();
 
-        constants.put("logLevelNone", LOG_LEVEL_NONE);
-        constants.put("logLevelError", LOG_LEVEL_ERROR);
-        constants.put("logLevelWarning", LOG_LEVEL_WARNING);
-        constants.put("logLevelInfo", LOG_LEVEL_INFO);
-        constants.put("logLevelDebug", LOG_LEVEL_DEBUG);
-        constants.put("logLevelVerbose", LOG_LEVEL_VERBOSE);
-
-        constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
-        constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
-        constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
-        constants.put("invocationEventTwoFingersSwipeLeft", INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT);
-        constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
-
-        constants.put("colorThemeLight", COLOR_THEME_LIGHT);
-        constants.put("colorThemeDark", COLOR_THEME_DARK);
-
-        constants.put("invocationModeNA", INVOCATION_MODE_NA);
-        constants.put("invocationModeNewBug", INVOCATION_MODE_NEW_BUG);
-        constants.put("invocationModeNewFeedback", INVOCATION_MODE_NEW_FEEDBACK);
-        constants.put("invocationModeNewChat", INVOCATION_MODE_NEW_CHAT);
-        constants.put("invocationModeChatsList", INVOCATION_MODE_CHATS_LIST);
-
-        constants.put("floatingButtonEdgeLeft", FLOATING_BUTTON_EDGE_LEFT);
-        constants.put("floatingButtonEdgeRight", FLOATING_BUTTON_EDGE_RIGHT);
-
-        constants.put(BUG_REPORTING_REPORT_TYPE_BUG, BUG_REPORTING_REPORT_TYPE_BUG);
-        constants.put(BUG_REPORTING_REPORT_TYPE_FEEDBACK, BUG_REPORTING_REPORT_TYPE_FEEDBACK);
-        constants.put(BUG_REPORTING_REPORT_TYPE_QUESTION, BUG_REPORTING_REPORT_TYPE_QUESTION);
-
-        constants.put(DISMISS_TYPE_ADD_ATTACHMENT, DISMISS_TYPE_ADD_ATTACHMENT);
-        constants.put(DISMISS_TYPE_CANCEL, DISMISS_TYPE_CANCEL);
-        constants.put(DISMISS_TYPE_SUBMIT, DISMISS_TYPE_SUBMIT);
-
-        constants.put("localeArabic", LOCALE_ARABIC);
-        constants.put("localeAzerbaijani", LOCALE_AZERBAIJANI);
-        constants.put("localeChineseSimplified", LOCALE_CHINESE_SIMPLIFIED);
-        constants.put("localeChineseTraditional", LOCALE_CHINESE_TRADITIONAL);
-        constants.put("localeCzech", LOCALE_CZECH);
-        constants.put("localeDutch", LOCALE_DUTCH);
-        constants.put("localeEnglish", LOCALE_ENGLISH);
-        constants.put("localeFrench", LOCALE_FRENCH);
-        constants.put("localeGerman", LOCALE_GERMAN);
-        constants.put("localeKorean", LOCALE_KOREAN);
-        constants.put("localeItalian", LOCALE_ITALIAN);
-        constants.put("localeJapanese", LOCALE_JAPANESE);
-        constants.put("localePolish", LOCALE_POLISH);
-        constants.put("localePortugueseBrazil", LOCALE_PORTUGUESE_BRAZIL);
-        constants.put("localeRussian", LOCALE_RUSSIAN);
-        constants.put("localeSpanish", LOCALE_SPANISH);
-        constants.put("localeSwedish", LOCALE_SWEDISH);
-        constants.put("localeTurkish", LOCALE_TURKISH);
-
-        constants.put("topRight", TOP_RIGHT);
-        constants.put("topLeft", TOP_LEFT);
-        constants.put("bottomRight", BOTTOM_RIGHT);
-        constants.put("bottomLeft", BOTTOM_LEFT);
-
-        constants.put("rectMinXEdge", FLOATING_BUTTON_EDGE_LEFT);
-        constants.put("rectMaxXEdge", FLOATING_BUTTON_EDGE_RIGHT);
-
-        constants.put("enabledWithRequiredFields", EXTENDED_BUG_REPORT_REQUIRED_FIELDS);
-        constants.put("enabledWithOptionalFields", EXTENDED_BUG_REPORT_OPTIONAL_FIELDS);
-        constants.put("disabled", EXTENDED_BUG_REPORT_DISABLED);
-
-        constants.put("reproStepsEnabledWithNoScreenshots", ENABLED_WITH_NO_SCREENSHOTS);
-        constants.put("reproStepsEnabled", ENABLED);
-        constants.put("reproStepsDisabled", DISABLED);
-
-        constants.put("welcomeMessageModeLive", WELCOME_MESSAGE_MODE_LIVE);
-        constants.put("welcomeMessageModeBeta", WELCOME_MESSAGE_MODE_BETA);
-        constants.put("welcomeMessageModeDisabled", WELCOME_MESSAGE_MODE_DISABLED);
-
-        constants.put("allActions", ACTION_TYPE_ALL_ACTIONS);
-        constants.put("reportBugAction", ACTION_TYPE_REPORT_BUG);
-        constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
-        constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
-
-        constants.put("optionEmailFieldHidden", EMAIL_FIELD_HIDDEN);
-        constants.put("optionEmailFieldOptional", EMAIL_FIELD_OPTIONAL);
-        constants.put("optionCommentFieldRequired", COMMENT_FIELD_REQUIRED);
-        constants.put("optionDisablePostSendingDialog", DISABLE_POST_SENDING_DIALOG);
-
-        constants.put("promptOptionBug", PROMPT_OPTION_BUG);
-        constants.put("promptOptionChat", PROMPT_OPTION_CHAT);
-        constants.put("promptOptionFeedback", PROMPT_OPTION_FEEDBACK);
-
-        constants.put("shakeHint", SHAKE_HINT);
-        constants.put("swipeHint", SWIPE_HINT);
-        constants.put("invalidEmailMessage", INVALID_EMAIL_MESSAGE);
-        constants.put("invalidCommentMessage", INVALID_COMMENT_MESSAGE);
-        constants.put("emailFieldHint", EMAIL_FIELD_HINT);
-        constants.put("commentFieldHintForBugReport", COMMENT_FIELD_HINT_FOR_BUG_REPORT);
-        constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
-        constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
-        constants.put("invocationHeader", INVOCATION_HEADER);
-        constants.put("reportQuestion", REPORT_QUESTION);
-        constants.put("reportBug", REPORT_BUG);
-        constants.put("reportFeedback", REPORT_FEEDBACK);
-        constants.put("conversationsHeaderTitle", CONVERSATIONS_LIST_TITLE);
-        constants.put("addVoiceMessage", ADD_VOICE_MESSAGE);
-        constants.put("addImageFromGallery", ADD_IMAGE_FROM_GALLERY);
-        constants.put("addExtraScreenshot", ADD_EXTRA_SCREENSHOT);
-        constants.put("addVideoMessage", ADD_VIDEO);
-        constants.put("videoPressRecord", VIDEO_PRESS_RECORD);
-        constants.put("audioRecordingPermissionDeniedMessage", AUDIO_RECORDING_PERMISSION_DENIED);
-        constants.put("recordingMessageToHoldText", VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
-        constants.put("recordingMessageToReleaseText", VOICE_MESSAGE_RELEASE_TO_ATTACH);
-        constants.put("thankYouText", THANK_YOU_ALERT_TEXT);
-        constants.put("video", VIDEO_PLAYER_TITLE);
-        constants.put("conversationTextFieldHint", CONVERSATION_TEXT_FIELD_HINT);
-        constants.put("thankYouAlertText", REPORT_SUCCESSFULLY_SENT);
-
-        constants.put("welcomeMessageBetaWelcomeStepTitle", WELCOME_MESSAGE_BETA_WELCOME_STEP_TITLE);
-        constants.put("welcomeMessageBetaWelcomeStepContent", WELCOME_MESSAGE_BETA_WELCOME_STEP_CONTENT);
-        constants.put("welcomeMessageBetaHowToReportStepTitle", WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
-        constants.put("welcomeMessageBetaHowToReportStepContent", WELCOME_MESSAGE_HOW_TO_REPORT_STEP_CONTENT);
-        constants.put("welcomeMessageBetaFinishStepTitle", WELCOME_MESSAGE_FINISH_STEP_TITLE);
-        constants.put("welcomeMessageBetaFinishStepContent", WELCOME_MESSAGE_FINISH_STEP_CONTENT);
-        constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
-        constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
-
-        constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
-        constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);
-
-        constants.put(REPORT_BUG_DESCRIPTION, REPORT_BUG_DESCRIPTION);
-        constants.put(REPORT_FEEDBACK_DESCRIPTION, REPORT_FEEDBACK_DESCRIPTION);
-        constants.put(REPORT_QUESTION_DESCRIPTION, REPORT_QUESTION_DESCRIPTION);
-        constants.put(REQUEST_FEATURE_DESCRIPTION, REQUEST_FEATURE_DESCRIPTION);
-
-        constants.put(REPORT_DISCARD_DIALOG_TITLE, REPORT_DISCARD_DIALOG_TITLE);
-        constants.put(REPORT_DISCARD_DIALOG_BODY, REPORT_DISCARD_DIALOG_BODY);
-        constants.put(REPORT_DISCARD_DIALOG_NEGATIVE_ACTION, REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
-        constants.put(REPORT_DISCARD_DIALOG_POSITIVE_ACTION, REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
-        constants.put(REPORT_ADD_ATTACHMENT_HEADER, REPORT_ADD_ATTACHMENT_HEADER);
-        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_BODY, REPORT_REPRO_STEPS_DISCLAIMER_BODY);
-        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_LINK, REPORT_REPRO_STEPS_DISCLAIMER_LINK);
-        constants.put(REPRO_STEPS_PROGRESS_DIALOG_BODY, REPRO_STEPS_PROGRESS_DIALOG_BODY);
-        constants.put(REPRO_STEPS_LIST_HEADER, REPRO_STEPS_LIST_HEADER);
-        constants.put(REPRO_STEPS_LIST_DESCRIPTION, REPRO_STEPS_LIST_DESCRIPTION);
-        constants.put(REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION, REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
-        constants.put(REPRO_STEPS_LIST_ITEM_TITLE, REPRO_STEPS_LIST_ITEM_TITLE);
+        for (String key : args.keySet()) {
+            constants.put(key, key);
+        }
 
         return constants;
     }
