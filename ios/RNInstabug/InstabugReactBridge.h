@@ -15,6 +15,7 @@
 #import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
+#import "ArgsRegistry.h"
 
 @interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>
 
