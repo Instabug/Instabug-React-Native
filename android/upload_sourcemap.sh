@@ -9,6 +9,16 @@ elif [[ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]]; then
 fi
 export NODE_BINARY=node
 
+INSTABUG_JSON_SOURCEMAP_UPLOADS_ENABLED=$(grep "enableSourcemapUploads" ./instabug.json -m 1 | cut -d ":" -f 2 | grep -o "[a-z]*")
+if [ ! -z "$INSTABUG_JSON_SOURCEMAP_UPLOADS_ENABLED" ]; then
+    if [ "$INSTABUG_JSON_SOURCEMAP_UPLOADS_ENABLED" != "true" ]; then
+        echo "Instabug: sourcemap upload disabled in instabug.json"
+        exit 0
+    fi
+fi
+
+INSTABUG_APP_TOKEN=$(grep "key" ./instabug.json -m 1 | cut -d ":" -f 2 | grep -o "[0-9a-zA-Z]*" -m 1)
+
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: Looking for Token..."
     INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} --exclude='*.json' "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
