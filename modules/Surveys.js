@@ -70,18 +70,6 @@ export default {
   },
 
   /**
-   * @deprecated use {@link Surveys.setOnShowHandler}
-   * @summary Sets a block of code to be executed just before the survey's UI is presented.
-   * This block is executed on the UI thread. Could be used for performing any UI changes before
-   * the survey's UI is shown.
-   * @param {function} willShowSurveyHandler - A block of code that gets executed before
-   * presenting the survey's UI.
-   */
-  onShowCallback: function(willShowSurveyHandler) {
-    this.setOnShowHandler(willShowSurveyHandler);
-  },
-
-  /**
    * @summary Sets a block of code to be executed just before the survey's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any UI changes before
    * the survey's UI is shown.
@@ -95,18 +83,6 @@ export default {
       onShowHandler
     );
     IBGSurveys.setOnShowHandler(onShowHandler);
-  },
-
-  /**
-   * @deprecated use {@link Surveys.setOnDismissHandler}
-   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
-   * This block is executed on the UI thread. Could be used for performing any UI
-   * changes after the survey's UI is dismissed.
-   * @param {function} didDismissSurveyHandler - A block of code that gets executed after
-   * the survey's UI is dismissed.
-   */
-  onDismissCallback: function(didDismissSurveyHandler) {
-    this.setOnDismissHandler(didDismissSurveyHandler);
   },
 
   /**
