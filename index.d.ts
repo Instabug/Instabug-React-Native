@@ -296,15 +296,7 @@ export namespace Replies {
    * Manual invocation for replies.
    */
   function show(): void;
-  /**
-   * @deprecated use {@link Replies.setOnNewReplyReceivedHandler}
-   * Sets a block of code that gets executed when a new message is received.
-   * @param {function} onNewReplyReceivedCallback - A callback that gets
-   * executed when a new message is received.
-   */
-  function setOnNewReplyReceivedCallback(
-    onNewReplyReceivedCallback: () => void
-  ): void;
+
   /**
    * Sets a block of code that gets executed when a new message is received.
    * @param {function} onNewReplyReceivedHandler - A callback that gets

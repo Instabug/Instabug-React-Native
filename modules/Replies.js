@@ -32,16 +32,6 @@ export default {
   },
 
   /**
-   * @deprecated use {@link Replies.setOnNewReplyReceivedHandler}
-   * Sets a block of code that gets executed when a new message is received.
-   * @param {function} onNewReplyReceivedCallback - A callback that gets
-   * executed when a new message is received.
-   */
-  setOnNewReplyReceivedCallback(onNewReplyReceivedCallback) {
-    this.setOnNewReplyReceivedHandler(onNewReplyReceivedCallback);
-  },
-
-  /**
    * Sets a block of code that gets executed when a new message is received.
    * @param {function} onNewReplyReceivedHandler - A callback that gets
    * executed when a new message is received.
