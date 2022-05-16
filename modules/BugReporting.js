@@ -29,17 +29,6 @@ export default {
     IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
-  /* istanbul ignore next */
-  /**
-   * @deprecated
-   * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
-   * @param {invocationOptions} invocationOptions Array of invocation options
-   */
-  setInvocationOptions(invocationOptions) {
-    this.setOptions(invocationOptions);
-  },
-
   /**
    * Sets the invocation options.
    * Default is set by `Instabug.startWithToken`.
@@ -123,17 +112,6 @@ export default {
    */
   setReportTypes(types) {
     IBGBugReporting.setReportTypes(types);
-  },
-
-  /* istanbul ignore next */
-  /**
-   * @deprecated use {@link BugReporting.show}
-   * Invoke bug reporting with report type and options.
-   * @param {reportType} type 
-   * @param {option} options 
-   */
-  showWithOptions(type, options) {
-    this.show(type, options);
   },
 
   /**
@@ -251,20 +229,6 @@ export default {
     screenshot: Instabug.invocationEventScreenshot,
     twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
     floatingButton: Instabug.invocationEventFloatingButton
-  },
-
-  
-  /**
-   * @deprecated use @link { option }
-   * The options used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationOptions: {
-    emailFieldHidden: Instabug.emailFieldHidden,
-    emailFieldOptional: Instabug.emailFieldOptional,
-    commentFieldRequired: Instabug.commentFieldRequired,
-    disablePostSendingDialog: Instabug.disablePostSendingDialog
   },
 
   /**

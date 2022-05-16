@@ -137,13 +137,11 @@ class Home extends Component<{}> {
   }
 
   sendFeedback() {
-    BugReporting.showWithOptions(BugReporting.reportType.feedback, [
-      BugReporting.option.emailFieldHidden,
-    ]);
+    BugReporting.show(BugReporting.reportType.feedback, [BugReporting.option.emailFieldHidden]);
   }
 
   startNewConversation() {
-    BugReporting.showWithOptions(BugReporting.reportType.question);
+    BugReporting.show(BugReporting.reportType.question);
   }
 
   showUnreadMessagesCount() {

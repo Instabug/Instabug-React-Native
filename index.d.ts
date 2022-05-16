@@ -16,19 +16,13 @@ export namespace BugReporting {
    * feedback form.
    */
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
-  /**
-   * @deprecated
-   * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
-   * @param {invocationOptions} invocationOptions Array of invocation options
-   */
-  function setInvocationOptions(invocationOptions: invocationOptions[]): void;
+
   /**
    * Sets the invocation options.
    * Default is set by `Instabug.startWithToken`.
-   * @param {invocationOptions} options Array of invocation options
+   * @param {options} options Array of options
    */
-  function setOptions(options: invocationOptions[]): void;
+  function setOptions(options: option[]): void;
   /**
    * Sets a block of code to be executed just before the SDK's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any
@@ -119,13 +113,7 @@ export namespace BugReporting {
    * @param {array} types - Array of reportTypes
    */
   function setReportTypes(types: reportType[]): void;
-  /**
-   * @deprecated use {@link BugReporting.show}
-   * Invoke bug reporting with report type and options.
-   * @param {reportType} type 
-   * @param {option} options 
-   */
-  function showWithOptions(type: reportType, options: option[]): void;
+
   /**
    * Invoke bug reporting with report type and options.
    * @param {reportType} type 
@@ -177,18 +165,7 @@ export namespace BugReporting {
     twoFingersSwipe,
     floatingButton
   }
-  /**
-   * @deprecated use @link { option }
-   * The options used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  enum invocationOptions {
-    emailFieldHidden,
-    emailFieldOptional,
-    commentFieldRequired,
-    disablePostSendingDialog
-  }
+
   /**
    *  The extended bug report mode
    * @readonly
@@ -728,7 +705,7 @@ export function setPushNotificationsEnabled(
 ): void;
 /* istanbul ignore next */
 /**
- * @deprecated use {@link BugReporting.setInvocationOptions}
+ * @deprecated use {@link BugReporting.setOptions}
  * Sets whether users are required to enter an email address or not when
  * sending reports.
  * Defaults to YES.
@@ -1190,17 +1167,7 @@ export enum dismissType {
   cancel,
   addAttachment
 }
-/**
- *  The options used upon invocating the SDK
- * @readonly
- * @enum {number}
- */
-export enum invocationOptions {
-  invocationOptionsEmailFieldHidden,
-  invocationOptionsEmailFieldOptional,
-  invocationOptionsCommentFieldRequired,
-  invocationOptionsDisablePostSendingDialog
-}
+
 /**
  * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
  * and only affect the logs used to debug the SDK itself.

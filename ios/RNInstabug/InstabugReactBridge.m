@@ -525,12 +525,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
               @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
 
-
-              @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
-              @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
-              @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
-              @"disablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
-              
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
               

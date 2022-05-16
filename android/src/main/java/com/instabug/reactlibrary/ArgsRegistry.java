@@ -135,10 +135,10 @@ final class ArgsRegistry {
     }
 
     static void registerInvocationOptionsArgs(Map<String, Object> args) {
-        args.put("commentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
-        args.put("disablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
-        args.put("emailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
-        args.put("emailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
+        args.put("optionCommentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
+        args.put("optionDisablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
+        args.put("optionEmailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
+        args.put("optionEmailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
     }
 
     static void registerLocaleArgs(Map<String, Object> args) {

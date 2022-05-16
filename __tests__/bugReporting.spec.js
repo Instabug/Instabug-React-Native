@@ -65,12 +65,12 @@ describe('Testing BugReporting Module', () => {
 
   });
 
-  it('should call the native method setInvocationOptions with an array of invocationOptions', () => {
+  it('should call the native method setOptions with an array of options', () => {
 
-    const arrayOfInvocationOptions = [BugReporting.invocationOptions.commentFieldRequired];
-    BugReporting.setInvocationOptions(arrayOfInvocationOptions);
+    const arrayOfOptions = [BugReporting.option.commentFieldRequired];
+    BugReporting.setOptions(arrayOfOptions);
 
-    expect(setOptions.calledOnceWithExactly(arrayOfInvocationOptions)).toBe(true);
+    expect(setOptions.calledOnceWithExactly(arrayOfOptions)).toBe(true);
 
   });
 
@@ -151,7 +151,7 @@ describe('Testing BugReporting Module', () => {
   it('should call the native method show with a reportType and array of options', () => {
 
     const reportType = BugReporting.reportType.bug;
-    const arrayOfOptions = [BugReporting.invocationOptions.commentFieldRequired];
+    const arrayOfOptions = [BugReporting.option.commentFieldRequired];
     BugReporting.show(reportType, arrayOfOptions);
 
     expect(show.calledOnceWithExactly(reportType, arrayOfOptions)).toBe(true);

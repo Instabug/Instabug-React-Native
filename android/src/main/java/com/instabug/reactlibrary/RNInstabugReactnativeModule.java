@@ -2452,13 +2452,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
         constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
 
-        //deprecated
-        constants.put("emailFieldHidden", EMAIL_FIELD_HIDDEN);
-        constants.put("emailFieldOptional", EMAIL_FIELD_OPTIONAL);
-        constants.put("commentFieldRequired", COMMENT_FIELD_REQUIRED);
-        constants.put("disablePostSendingDialog", DISABLE_POST_SENDING_DIALOG);
-        //
-
         constants.put("optionEmailFieldHidden", EMAIL_FIELD_HIDDEN);
         constants.put("optionEmailFieldOptional", EMAIL_FIELD_OPTIONAL);
         constants.put("optionCommentFieldRequired", COMMENT_FIELD_REQUIRED);

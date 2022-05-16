@@ -906,18 +906,6 @@ const InstabugModule = {
   },
 
   /**
-   *  The options used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationOptions: {
-    invocationOptionsEmailFieldHidden: Instabug.emailFieldHidden,
-    invocationOptionsEmailFieldOptional: Instabug.emailFieldOptional,
-    invocationOptionsCommentFieldRequired: Instabug.commentFieldRequired,
-    invocationOptionsDisablePostSendingDialog: Instabug.disablePostSendingDialog
-  },
-
-  /**
    * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
    * and only affect the logs used to debug the SDK itself.
    * @readonly
