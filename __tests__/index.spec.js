@@ -20,13 +20,11 @@ import InstabugUtils from '../utils/InstabugUtils';
 
 describe('Instabug Module', () => {
 
-  const startWithToken = sinon.spy(NativeModules.Instabug, 'startWithToken');
+  const start = sinon.spy(NativeModules.Instabug, 'start');
   const setUserData = sinon.spy(NativeModules.Instabug, 'setUserData');
   const setTrackUserSteps = sinon.spy(NativeModules.Instabug, 'setTrackUserSteps');
   const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
   const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
-  const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
-  const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
   const setLocale = sinon.spy(NativeModules.Instabug, 'setLocale');
   const setColorTheme = sinon.spy(NativeModules.Instabug, 'setColorTheme');
   const setPrimaryColor = sinon.spy(NativeModules.Instabug, 'setPrimaryColor');
@@ -34,10 +32,9 @@ describe('Instabug Module', () => {
   const resetTags = sinon.spy(NativeModules.Instabug, 'resetTags');
   const getTags = sinon.spy(NativeModules.Instabug, 'getTags');
   const setString = sinon.spy(NativeModules.Instabug, 'setString');
-  const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
-  const identifyUserWithEmail = sinon.spy(NativeModules.Instabug, 'identifyUserWithEmail');
+  const identifyUser = sinon.spy(NativeModules.Instabug, 'identifyUser');
   const logOut = sinon.spy(NativeModules.Instabug, 'logOut');
-  const logUserEventWithName = sinon.spy(NativeModules.Instabug, 'logUserEventWithName');
+  const logUserEvent = sinon.spy(NativeModules.Instabug, 'logUserEvent');
   const log = sinon.spy(NativeModules.Instabug, 'log');
   const logVerbose = sinon.spy(NativeModules.Instabug, 'logVerbose');
   const logInfo = sinon.spy(NativeModules.Instabug, 'logInfo');
@@ -71,10 +68,9 @@ describe('Instabug Module', () => {
   const clearAllExperiments = sinon.spy(NativeModules.Instabug, 'clearAllExperiments');
 
   beforeEach(() => {
-    startWithToken.resetHistory();
+    start.resetHistory();
     setTrackUserSteps.resetHistory();
     setIBGLogPrintsToConsole.resetHistory();
-    setPushNotificationsEnabled.resetHistory();
     log.resetHistory();
     setSdkDebugLogsLevel.resetHistory();
     setDebugEnabled.resetHistory();
@@ -104,25 +100,25 @@ describe('Instabug Module', () => {
     expect(reportScreenChange.calledOnceWithExactly(screenName)).toBe(true);
   });
 
-  it('should call the native method startWithToken', () => {
+  it('should call the native method start', () => {
 
     Platform.OS = 'ios';
     const token = 'some-token';
     const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
     Instabug.start(token, invocationEvents);
 
-    expect(startWithToken.calledOnceWithExactly(token, invocationEvents)).toBe(true);
+    expect(start.calledOnceWithExactly(token, invocationEvents)).toBe(true);
 
   });
 
-  // it('should not call the native method startWithToken when platform is android', () => {
+  // it('should not call the native method start when platform is android', () => {
 
   //   Platform.OS = 'android';
   //   const token = 'some-token';
   //   const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
   //   Instabug.start(token, invocationEvents);
 
-  //   expect(startWithToken.calledOnceWithExactly(token, invocationEvents)).toBe(true);
+  //   expect(start.calledOnceWithExactly(token, invocationEvents)).toBe(true);
 
   // });
 
@@ -176,25 +172,6 @@ describe('Instabug Module', () => {
     Instabug.setSessionProfilerEnabled(true);
 
     expect(setSessionProfilerEnabled.calledOnceWithExactly(true)).toBe(true);
-
-  });
-
-  it('should call the native method setPushNotificationsEnabled', () => {
-
-    Platform.OS = 'ios';
-    Instabug.setPushNotificationsEnabled(true);
-
-    expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
-
-  });
-
-  it('should call the native method setFloatingButtonEdge', () => {
-
-    const offsetFromTop = 10;
-    const edge = Instabug.floatingButtonEdge.left;
-    Instabug.setFloatingButtonEdge(edge, offsetFromTop);
-
-    expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
 
   });
 
@@ -263,22 +240,14 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method setEnabledAttachmentTypes', () => {
-
-    Instabug.setEnabledAttachmentTypes(true, true, false, true);
-
-    expect(setEnabledAttachmentTypes.calledOnceWithExactly(true, true, false, true)).toBe(true);
-
-  });
-
-  it('should call the native method identifyUserWithEmail', () => {
+  it('should call the native method identifyUser', () => {
 
 
     const email = 'foo@instabug.com';
     const name = 'Instabug';
     Instabug.identifyUser(email, name);
 
-    expect(identifyUserWithEmail.calledOnceWithExactly(email, name)).toBe(true);
+    expect(identifyUser.calledOnceWithExactly(email, name)).toBe(true);
 
   });
 
@@ -290,12 +259,12 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method logUserEventWithName', () => {
+  it('should call the native method logUserEvent', () => {
 
     const event = 'click';
     Instabug.logUserEvent(event);
 
-    expect(logUserEventWithName.calledOnceWithExactly(event)).toBe(true);
+    expect(logUserEvent.calledOnceWithExactly(event)).toBe(true);
 
   });
 

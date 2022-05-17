@@ -11,15 +11,15 @@ export namespace BugReporting {
   function setEnabled(isEnabled: boolean): void;
   /**
    * Sets the events that invoke the feedback form.
-   * Default is set by `Instabug.startWithToken`.
-   * @param {invocationEvent} invocationEvent Array of events that invokes the
+   * Default is set by `Instabug.start`.
+   * @param {invocationEvent} invocationEvents Array of events that invokes the
    * feedback form.
    */
   function setInvocationEvents(invocationEvents: invocationEvent[]): void;
 
   /**
    * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
+   * Default is set by `Instabug.start`.
    * @param {options} options Array of options
    */
   function setOptions(options: option[]): void;
@@ -574,22 +574,7 @@ export namespace APM {
     verbose,
   }
 }
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Instabug.start}
- * Starts the SDK.
- * This is the main SDK method that does all the magic. This is the only
- * method that SHOULD be called.
- * Should be called in constructor of the app registery component
- * @param {string} token The token that identifies the app, you can find
- * it on your dashboard.
- * @param {invocationEvent} invocationEvent The event that invokes
- * the SDK's UI.
- */
-export function startWithToken(
-  token: string,
-  invocationEvent: invocationEvent[]
-): void;
+
 /**
  * Starts the SDK.
  * This is the main SDK method that does all the magic. This is the only
@@ -609,28 +594,7 @@ export function start(token: string, invocationEvent: invocationEvent[]): void;
  * maximum size of 1,000 characters.
  */
 export function setUserData(userData: string): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setAutoScreenRecordingEnabled}
- * Enable/Disable screen recording
- * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
- * screen recording on crash feature
- */
-export function setAutoScreenRecordingEnabled(
-  autoScreenRecordingEnabled: boolean
-): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setAutoScreenRecordingMaxDuration}
- * Sets auto screen recording maximum duration
- *
- * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
- *                                       in seconds
- * The maximum duration is 30 seconds
- */
-export function setAutoScreenRecordingMaxDuration(
-  autoScreenRecordingMaxDuration: number
-): void;
+
 /**
  * Sets whether the SDK is tracking user steps or not.
  * Enabling user steps would give you an insight on the scenario a user has
@@ -646,23 +610,7 @@ export function setTrackUserSteps(isEnabled: boolean): void;
  *                  Xcode's console is enabled or not.
  */
 export function setIBGLogPrintsToConsole(printsToConsole: boolean): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link CrashReporting.setEnabled}
- * Report un-caught exceptions to Instabug dashboard
- * We don't send exceptions from __DEV__, since it's way too noisy!
- */
-export function setCrashReportingEnabled(enableCrashReporter: boolean): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setDidSelectPromptOptionHandler}
- * Sets a block of code to be executed when a prompt option is selected.
- * @param {function} didSelectPromptOptionHandler - A block of code that
- *                  gets executed when a prompt option is selected.
- */
-export function setDidSelectPromptOptionHandler(
-  didSelectPromptOptionHandler: () => void
-): void;
+
 /**
  * The session profiler is enabled by default and it attaches to the bug and
  * crash reports the following information during the last 60 seconds before the report is sent.
@@ -681,58 +629,7 @@ export function setSessionProfilerEnabled(
 export function setSdkDebugLogsLevel(
   sdkDebugLogsLevel: sdkDebugLogsLevel
 ): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Replies.getUnreadRepliesCount}
- * Returns the number of unread messages the user currently has.
- * Use this method to get the number of unread messages the user
- * has, then possibly notify them about it with your own UI.
- * @param {messageCountCallback} messageCountCallback callback with argument
- * Notifications count, or -1 in case the SDK has not been initialized.
- */
-export function getUnreadMessagesCount(
-  messageCountCallback: (count: number) => void
-): void;
-/**
- * @deprecated use {@link Replies.setPushNotificationsEnabled}
- * Enables/disables the use of push notifications in the SDK.
- * Defaults to YES.
- * @param {boolean} isPushNotificationEnabled A boolean to indicate whether push
- * notifications are enabled or disabled.
- */
-export function setPushNotificationsEnabled(
-  isPushNotificationEnabled: boolean
-): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setOptions}
- * Sets whether users are required to enter an email address or not when
- * sending reports.
- * Defaults to YES.
- * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
- * field is required or not.
- * @param {actionTypes} actionTypes An enum that indicates which action
- *                                  types will have the isEmailFieldRequired
- */
-export function setEmailFieldRequiredForActions(
-  isEmailFieldRequired: boolean,
-  actionTypes: actionTypes
-): void;
-/**
- * @deprecated use {@link BugReporting.setFloatingButtonEdge}
- * Sets the default edge and offset from the top at which the floating button
- * will be shown. Different orientations are already handled.
- * Default for `floatingButtonEdge` is `rectEdge.maxX`.
- * Default for `floatingButtonOffsetFromTop` is 50
- * @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
- * or `minX` to show on the left.
- * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
- * floating button.
- */
-export function setFloatingButtonEdge(
-  floatingButtonEdge: number,
-  offsetFromTop: number
-): void;
+
 /**
  * Sets the SDK's locale.
  * Use to change the SDK's UI to different language.
@@ -769,15 +666,7 @@ export function resetTags(): void;
  * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
  */
 export function getTags(tagsCallback: () => void): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Instabug.setString}
- * Overrides any of the strings shown in the SDK with custom ones.
- * Allows you to customize any of the strings shown to users in the SDK.
- * @param {string} string String value to override the default one.
- * @param {strings} key Key of string to override.
- */
-export function setStringToKey(string: string, key: strings): void;
+
 /**
  * Overrides any of the strings shown in the SDK with custom ones.
  * Allows you to customize any of the strings shown to users in the SDK.
@@ -785,34 +674,7 @@ export function setStringToKey(string: string, key: strings): void;
  * @param {strings} key Key of string to override.
  */
 export function setString(key: strings, string: string): void;
-/**
- * @deprecated use {@link BugReporting.setEnabledAttachmentTypes}
- * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
- * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
- * @param {boolean} extraScreenshot A boolean to enable or disable extra
- * screenshot attachments.
- * @param {boolean} galleryImage A boolean to enable or disable gallery image
- * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
- * info.plist to enable gallery image attachments.
- * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
- */
-export function setEnabledAttachmentTypes(
-  screenshot: boolean,
-  extraScreenshot: boolean,
-  galleryImage: boolean,
-  screenRecording: boolean
-): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Instabug.identifyUser}
- * Sets the default value of the user's email and hides the email field from the reporting UI
- * and set the user's name to be included with all reports.
- * It also reset the chats on device to that email and removes user attributes,
- * user data and completed surveys.
- * @param {string} email Email address to be set as the user's email.
- * @param {string} name Name of the user to be set.
- */
-export function identifyUserWithEmail(email: string, name: string): void;
+
 /**
  * Sets the default value of the user's email and hides the email field from the reporting UI
  * and set the user's name to be included with all reports.
@@ -828,14 +690,7 @@ export function identifyUser(email: string, name: string): void;
  * It also reset the chats on device and removes user attributes, user data and completed surveys.
  */
 export function logOut(): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Instabug.logUserEvent}
- * Logs a user event that happens through the lifecycle of the application.
- * Logged user events are going to be sent with each report, as well as at the end of a session.
- * @param {string} name Event name.
- */
-export function logUserEventWithName(name: string): void;
+
 /**
  * Logs a user event that happens through the lifecycle of the application.
  * Logged user events are going to be sent with each report, as well as at the end of a session.
@@ -959,45 +814,7 @@ export function getAllUserAttributes(userAttributesCallback: () => void): void;
  * Clears all user attributes if exists.
  */
 export function clearAllUserAttributes(): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Replies.setInAppNotificationsEnabled}
- * Enables/disables showing in-app notifications when the user receives a
- * new message.
- * @param {boolean} isChatNotificationEnabled A boolean to set whether
- * notifications are enabled or disabled.
- */
-export function setChatNotificationEnabled(
-  isChatNotificationEnabled: boolean
-): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Replies.setOnNewReplyReceivedCallback}
- * Sets a block of code that gets executed when a new message is received.
- * @param {function} onNewMessageHandler - A callback that gets
- * executed when a new message is received.
- */
-export function setOnNewMessageHandler(onNewMessageHandler: () => void): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setViewHierarchyEnabled}
- * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
- * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
- * or disabled.
- */
-export function setViewHierarchyEnabled(viewHierarchyEnabled: boolean): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Surveys.setEnabled}
- * @summary Sets whether surveys are enabled or not.
- * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
- * those surveys are still going to be sent to the device, but are not going to be
- * shown automatically.
- * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
- * Defaults to `true`.
- * @param {boolean} surveysEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
- */
-export function setSurveysEnabled(surveysEnabled: boolean): void;
+
 /**
  * Enable/Disable debug logs from Instabug SDK
  * Default state: disabled
@@ -1015,24 +832,7 @@ export function enable(): void;
  * It works on android only
  */
 export function disable(): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Replies.setInAppNotificationSound}
- * Set whether new in app notification received will play a small sound notification
- * or not (Default is {@code false})
- *
- * @param shouldPlaySound desired state of conversation sounds
- * @since 4.1.0
- */
-export function setEnableInAppNotificationSound(shouldPlaySound: boolean): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link CrashReporting.reportJSException}
- * Send handled JS error object
- *
- * @param errorObject Error object to be sent to Instabug's servers
- */
-export function reportJSException(errorObject: object): void;
+
 /**
  * @summary Checks whether app is development/Beta testing OR live
  * Note: This API is iOS only
@@ -1041,31 +841,7 @@ export function reportJSException(errorObject: object): void;
  * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
  */
 export function isRunningLive(runningLiveCallBack: () => void): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link BugReporting.setVideoRecordingFloatingButtonPosition}
- * Sets the default position at which the Instabug screen recording button will be shown.
- * Different orientations are already handled.
- * (Default for `position` is `bottomRight`)
- *
- * @param position is of type IBGPosition `topLeft` to show on the top left of screen,
- * or `bottomRight` to show on the bottom right of scrren.
- */
-export function setVideoRecordingFloatingButtonPosition(
-  position: IBGPosition
-): void;
-/* istanbul ignore next */
-/**
- * @deprecated use {@link Surveys.setShouldShowWelcomeScreen}
- * Setting an option for all the surveys to show a welcome screen before
- * the user starts taking the survey.
- * @param shouldShowWelcomeScreen A boolean for setting whether the
- *                                welcome screen should show.
- *
- */
-export function setShouldShowSurveysWelcomeScreen(
-  shouldShowWelcomeScreen: boolean
-): void;
+
 /**
  * Shows the welcome message in a specific mode.
  * @param welcomeMessageMode An enum to set the welcome message mode to
@@ -1306,7 +1082,6 @@ export enum strings {
   audio,
   video,
   image,
-  chatsHeaderTitle,
   team,
   messagesNotification,
   messagesNotificationAndOthers,

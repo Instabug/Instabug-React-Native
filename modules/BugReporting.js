@@ -21,7 +21,7 @@ export default {
 
   /**
    * Sets the events that invoke the feedback form.
-   * Default is set by `Instabug.startWithToken`.
+   * Default is set by `Instabug.start`.
    * @param {invocationEvent} invocationEvent Array of events that invokes the
    * feedback form.
    */
@@ -31,7 +31,7 @@ export default {
 
   /**
    * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
+   * Default is set by `Instabug.start`.
    * @param {invocationOptions} options Array of invocation options
    */
   setOptions(options) {

@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE(Instabug)
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
+RCT_EXPORT_METHOD(start:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
      SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
@@ -243,7 +243,7 @@ RCT_EXPORT_METHOD(clearFileAttachments) {
     [Instabug clearFileAttachments];
 }
 
-RCT_EXPORT_METHOD(identifyUserWithEmail:(NSString *)email name:(NSString *)name) {
+RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name) {
     [Instabug identifyUserWithEmail:email name:name];
 }
 
@@ -277,11 +277,7 @@ RCT_EXPORT_METHOD(clearAllUserAttributes) {
     }
 }
 
-RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
-    Instabug.shouldCaptureViewHierarchy = viewHierarchyEnabled;
-}
-
-RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
+RCT_EXPORT_METHOD(logUserEvent:(NSString *)name) {
     [Instabug logUserEventWithName:name];
 }
 
@@ -561,7 +557,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"audioRecordingPermissionDeniedMessage": kIBGAudioRecordingPermissionDeniedMessageStringName,
               @"microphonePermissionAlertSettingsButtonTitle": kIBGMicrophonePermissionAlertSettingsButtonTitleStringName,
               @"conversationsHeaderTitle": kIBGChatsTitleStringName,
-              @"chatsHeaderTitle": kIBGChatsTitleStringName,
               @"team": kIBGTeamStringName,
               @"recordingMessageToHoldText": kIBGRecordingMessageToHoldTextStringName,
               @"recordingMessageToReleaseText": kIBGRecordingMessageToReleaseTextStringName,

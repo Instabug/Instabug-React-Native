@@ -52,15 +52,15 @@
  +------------------------------------------------------------------------+
  */
 
-- (void)testStartWithToken {
+- (void)testStart {
   id<InstabugCPTestProtocol> mock = OCMClassMock([Instabug class]);
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug startWithToken]"];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug start]"];
   
   OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
-  [self.instabugBridge startWithToken:appToken invocationEvents:invocationEvents];
+  [self.instabugBridge start:appToken invocationEvents:invocationEvents];
 
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
@@ -171,13 +171,13 @@
   OCMVerify([mock setValue:value forStringWithKey:key]);
 }
 
-- (void)testIdentifyUserWithEmail {
+- (void)testIdentifyUser {
   id mock = OCMClassMock([Instabug class]);
   NSString *email = @"em@il.com";
   NSString *name = @"this is my name";
   
   OCMStub([mock identifyUserWithEmail:email name:name]);
-  [self.instabugBridge identifyUserWithEmail:email name:name];
+  [self.instabugBridge identifyUser:email name:name];
   OCMVerify([mock identifyUserWithEmail:email name:name]);
 }
 
@@ -189,12 +189,12 @@
   OCMVerify([mock logOut]);
 }
 
-- (void)testLogUserEventWithName {
+- (void)testLogUserEvent {
   id mock = OCMClassMock([Instabug class]);
   NSString *name = @"event name";
   
   OCMStub([mock logUserEventWithName:name]);
-  [self.instabugBridge logUserEventWithName:name];
+  [self.instabugBridge logUserEvent:name];
   OCMVerify([mock logUserEventWithName:name]);
 }
 
@@ -264,12 +264,6 @@
   OCMStub([mock removeUserAttributeForKey:key]);
   [self.instabugBridge clearAllUserAttributes];
   OCMVerify([mock removeUserAttributeForKey:key]);
-}
-
-- (void)testSetViewHierarchyEnabled {
-  BOOL enabled = true;
-  [self.instabugBridge setViewHierarchyEnabled:enabled];
-  XCTAssertTrue(Instabug.shouldCaptureViewHierarchy);
 }
 
 - (void)testShowWelcomeMessageWithMode {
