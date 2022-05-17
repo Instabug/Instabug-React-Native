@@ -579,7 +579,7 @@ export namespace APM {
  * Starts the SDK.
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
- * Should be called in constructor of the app registery component
+ * Should be called in constructor of the AppRegistry component
  * @param {string} token The token that identifies the app, you can find
  * it on your dashboard.
  * @param {invocationEvent} invocationEvent The event that invokes

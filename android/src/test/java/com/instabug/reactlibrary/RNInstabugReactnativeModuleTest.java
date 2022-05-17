@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 public class RNInstabugReactnativeModuleTest {
-    private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null,null,null);
+    private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null);
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
