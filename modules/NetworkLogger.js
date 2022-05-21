@@ -21,7 +21,8 @@ export default {
     if (isEnabled) {
       xhr.enableInterception();
       xhr.setOnDoneCallback(network => {
-        if (!eval(_requestFilterExpression)) {
+        var predicate = Function('network', 'return ' + _requestFilterExpression);
+        if (!predicate(network)) {
           if (_networkDataObfuscationHandlerSet) {
             IBGEventEmitter.emit(
               InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
