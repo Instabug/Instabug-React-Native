@@ -44,7 +44,7 @@
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "modulePathIgnorePatterns": [
-      "InstabugSample"
+      "example"
     ]
   }
 }

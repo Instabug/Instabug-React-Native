@@ -17,7 +17,7 @@ android/.settings
 ios/.DS_Store
 
 build/
-InstabugSample/
+example/
 node_modules/
 coverage/
 test/
