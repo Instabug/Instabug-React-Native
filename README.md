@@ -36,13 +36,7 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
     cd ios && pod install && cd ..
     ```
 
-3.  **For React Native >= 0.60**, simply run the command:
-
-    ```bash
-    react-native add-instabug
-    ```
-    
-    **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
+3.  **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
 
     ```bash
     react-native link instabug-reactnative
@@ -55,14 +49,14 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
 ```javascript
 import Instabug from 'instabug-reactnative';
 ```
- * ### iOS
-     Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
+### iOS
+- Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
     ```javascript
     Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
     ```
- * ### Android
-1. Open `android/app/src/main/java/[...]/MainApplication.java`
+### Android
+- Open `android/app/src/main/java/[...]/MainApplication.java`
     * Make sure to import the package class:  
     `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
     * **For React Native >= 0.60**   
@@ -101,18 +95,7 @@ import Instabug from 'instabug-reactnative';
     * You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any color of your choice.
    In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
    
-    You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com/app/sdk/).
-
-2. Make sure the following snippet is added to your project level `build.gradle`. This should be added automatically upon linking. If not, you can add it manually.
-    ```dart
-    allprojects {
-    	repositories {
-    	    maven {
-    	        url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-    	    }
-    	}
-    }
-    ```
+_You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
 
 ## Microphone and Photo Library Usage Description (iOS Only)
 
@@ -201,52 +184,6 @@ You can disable Repro Steps using the following API:
 ```javascript
 Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
 ```
-
-## Update Guide
-### Updating to versions 8.0-8.4.x
-
-When updating to version 8.0 through 8.4.x, you'll need to perform the steps below.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Link Instabug
-    ```bash
-    react-native link instabug-reactnative
-    ```
-
-### Updating to version 8.5
-
-_Only for apps using React Native >= 0.60. If you're using a lower version, you don't need to perform any extra steps when updating._
-
-Version 8.5 adds support for React Native 0.60. To use Instabug 8.5 with React Native 0.60, you'll need to perform the following steps.
-
-1. Unlink Instabug
-    ```bash
-    react-native unlink instabug-reactnative
-    ```
-
-2. Install the new version of Instabug
-    ```bash
-    npm install instabug-reactnative
-    ```
-
-3. Add Instabug to your project
-    ```bash
-    react-native add-instabug
-    ```
-
-## Features that are not supported yet
-
-- Push Notification Support for In-App Messaging
-- [User Steps](https://help.instabug.com/en/articles/2515300-instabug-report-logs-user-steps).
 
 ## Documentation
 

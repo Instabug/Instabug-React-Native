@@ -9,5 +9,5 @@ export default {
     WILL_SHOW_SURVEY_HANDLER: 'IBGWillShowSurvey',
     DID_DISMISS_SURVEY_HANDLER: 'IBGDidDismissSurvey',
     DID_SELECT_PROMPT_OPTION_HANDLER: 'IBGDidSelectPromptOptionHandler',
-    GRAPHQL_HEADER: 'IBGGraphQLHeader',
+    GRAPHQL_HEADER: 'ibg-graphql-header',
 };

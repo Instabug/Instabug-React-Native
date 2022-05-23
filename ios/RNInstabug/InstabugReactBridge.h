@@ -108,4 +108,14 @@
 
 - (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
 
+/*
+ +------------------------------------------------------------------------+
+ |                              Experiments                               |
+ +------------------------------------------------------------------------+
+ */
+
+- (void)addExperiments:(NSArray *)experiments;
+- (void)removeExperiments:(NSArray *)experiments;
+- (void)clearAllExperiments;
+
 @end

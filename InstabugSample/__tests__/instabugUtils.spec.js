@@ -33,6 +33,8 @@ describe('Test global error handler', () => {
     handler({name: 'TypeError', message: 'This is a type error.'}, false);
     const expected = {
       message: 'TypeError - This is a type error.',
+      e_message: 'This is a type error.',
+      e_name: 'TypeError',
       os: 'ios',
       platform: 'react_native',
       exception: [],
@@ -48,6 +50,8 @@ describe('Test global error handler', () => {
     handler({name: 'TypeError', message: 'This is a type error.'}, false);
     const expected = {
       message: 'TypeError - This is a type error.',
+      e_message: 'This is a type error.',
+      e_name: 'TypeError',
       os: 'android',
       platform: 'react_native',
       exception: [],
