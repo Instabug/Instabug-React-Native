@@ -4,10 +4,10 @@
  */
 
 import {NativeModules, Platform} from 'react-native';
-import '../../jest/mockInstabug';
-import Instabug from 'instabug-reactnative';
-import IBGEventEmitter from 'instabug-reactnative/utils/IBGEventEmitter';
-import IBGConstants from 'instabug-reactnative/utils/InstabugConstants';
+import '../../test/jest/mockInstabug';
+import Instabug from 'instabug-reactnative/src';
+import IBGEventEmitter from 'instabug-reactnative/src/utils/IBGEventEmitter';
+import IBGConstants from 'instabug-reactnative/src/utils/InstabugConstants';
 // import console = require('console');
 
 jest.mock(

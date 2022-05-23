@@ -5,12 +5,12 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockXhrNetworkInterceotor';
+import './jest/mockXhrNetworkInterceotor';
 import sinon from 'sinon';
-import Interceptor from '../utils/XhrNetworkInterceptor';
-import NetworkLogger from '../modules/NetworkLogger';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import IBGConstants from '../utils/InstabugConstants';
+import Interceptor from '../src/utils/XhrNetworkInterceptor';
+import NetworkLogger from '../src/modules/NetworkLogger';
+import IBGEventEmitter from '../src/utils/IBGEventEmitter';
+import IBGConstants from '../src/utils/InstabugConstants';
 import waitForExpect from 'wait-for-expect';
 
 jest.mock('NativeModules', () => {

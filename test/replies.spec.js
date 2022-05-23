@@ -5,11 +5,11 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockReplies';
+import './jest/mockReplies';
 import sinon from 'sinon';
-import Replies from '../modules/Replies';
-import IBGConstants from '../utils/InstabugConstants';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
+import Replies from '../src/modules/Replies';
+import IBGConstants from '../src/utils/InstabugConstants';
+import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 
 describe('Replies Module', () => {
   

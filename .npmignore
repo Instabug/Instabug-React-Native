@@ -20,7 +20,7 @@ build/
 InstabugSample/
 node_modules/
 coverage/
-__tests__/
+test/
 
 Dangerfile
 babel.config.js
