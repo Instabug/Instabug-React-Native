@@ -11,7 +11,7 @@ import IBGConstants from 'instabug-reactnative/utils/InstabugConstants';
 // import console = require('console');
 
 jest.mock(
-  '../node_modules/instabug-reactnative/utils/XhrNetworkInterceptor',
+  '../node_modules/instabug-reactnative/src/utils/XhrNetworkInterceptor',
   () => {
     return {
       enableInterception: jest.fn(),
