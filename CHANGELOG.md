@@ -5,6 +5,7 @@
 * Fixes an issue with setRequestFilterExpression API not working with Hermes
 * Fixes an issue with swipe invocation event not working on Android
 * Breaking: Removes the deprecated APIs. For the full list, check PR #703
+* Supports starting SDK from JS only.
 
 ## 10.13.0 (2022-03-17)
 
