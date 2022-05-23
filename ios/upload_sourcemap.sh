@@ -8,8 +8,9 @@ elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 fi
 export NODE_BINARY=node
 
-if [ "${INSTABUG_AUTO_UPLOAD_ENABLE_IOS}" = "false" ]; then
-    echo "Instabug: Environment variable INSTABUG_AUTO_UPLOAD_ENABLE_IOS was set to $INSTABUG_AUTO_UPLOAD_ENABLE_IOS, skipping sourcemap upload"
+INSTABUG_SOURCEMAPS_UPLOAD_DISABLE=$(echo $INSTABUG_SOURCEMAPS_UPLOAD_DISABLE | tr 'A-Z' 'a-z')
+if [ "${INSTABUG_SOURCEMAPS_UPLOAD_DISABLE}" = "true" ]; then
+    echo "Instabug: Environment variable INSTABUG_SOURCEMAPS_UPLOAD_DISABLE was set to true, skipping sourcemap upload"
     exit 0
 fi
 
