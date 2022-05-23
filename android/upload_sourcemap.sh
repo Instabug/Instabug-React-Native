@@ -1,7 +1,7 @@
 #!/bin/sh
-cd ..
-cd ..
-cd ..
+USER_ANDROID_DIR=$1
+cd "${USER_ANDROID_DIR}/.."
+
 if [ -s "$HOME/.nvm/nvm.sh" ]; then
 . "$HOME/.nvm/nvm.sh"
 elif [[ -x "$(command -v brew)" && -s "$(brew --prefix nvm)/nvm.sh" ]]; then
