@@ -1,6 +1,6 @@
 ## master
 
-* Adds env variable ```INSTABUG_AUTO_UPLOAD_ENABLE_IOS``` to support skipping iOS source maps auto upload
+* Adds env variable `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` to support skipping iOS source maps auto upload
 
 ## 10.13.0 (2022-03-17)
 
