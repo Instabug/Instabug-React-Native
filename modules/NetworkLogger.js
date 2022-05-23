@@ -21,7 +21,7 @@ export default {
     if (isEnabled) {
       xhr.enableInterception();
       xhr.setOnDoneCallback(network => {
-        var predicate = Function('network', 'return ' + _requestFilterExpression);
+        let predicate = Function('network', 'return ' + _requestFilterExpression);
         if (!predicate(network)) {
           if (_networkDataObfuscationHandlerSet) {
             IBGEventEmitter.emit(
