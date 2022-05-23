@@ -60,13 +60,24 @@ else
             fi
         fi
     fi
+    if [ -z "${INSTABUG_ENTRY_FILE}" ]; then 
+        ENTRY_FILE='index.js'
+    else 
+        ENTRY_FILE=${INSTABUG_ENTRY_FILE}
+    fi
+    if [ ! -f $ENTRY_FILE ]; then
+        echo "Instabug: err: entry file not found. Make sure" "\"${ENTRY_FILE}\"" "exists in your projects root directory. Or add the environment variable INSTABUG_ENTRY_FILE with the name of your entry file"
+        exit 0
+    fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token:" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: VERSION: $VERSION"
+    echo "Instabug: Entry file found" "\""${ENTRY_FILE}"\""
     echo "Instabug: Generating sourcemap files..."
+
     #Generate ios sourcemap
     npx react-native bundle --platform ios \
-    --entry-file index.js \
+    --entry-file $ENTRY_FILE \
     --dev false \
     --bundle-output ./ios/main.jsbundle \
     --sourcemap-output ./ios-sourcemap.json
