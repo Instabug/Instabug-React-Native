@@ -524,7 +524,7 @@ export namespace APM {
    * Returns a promise, the promise delivers the trace reference if APM is enabled, otherwise it gets rejected
    * @param {string} name 
    */
-  function startExecutionTrace(name: string): Trace;
+  function startExecutionTrace(name: string): Promise<Trace>;
   /**
    * Starts a custom trace
    * @param {string} name 
