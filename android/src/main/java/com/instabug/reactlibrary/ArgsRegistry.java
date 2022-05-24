@@ -111,7 +111,7 @@ final class ArgsRegistry {
     }
 
     static void registerInstabugInvocationEventsArgs(Map<String, Object> args) {
-        args.put("invocationEventTwoFingersSwipe", TWO_FINGER_SWIPE_LEFT);
+        args.put("invocationEventTwoFingersSwipeLeft", TWO_FINGER_SWIPE_LEFT);
         args.put("invocationEventFloatingButton", FLOATING_BUTTON);
         args.put("invocationEventScreenshot", SCREENSHOT);
         args.put("invocationEventShake", SHAKE);
