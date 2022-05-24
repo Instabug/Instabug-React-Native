@@ -463,7 +463,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
-              @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
+              @"dismissTypeAddAttachment": @(IBGDismissTypeAddAttachment),
               
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),

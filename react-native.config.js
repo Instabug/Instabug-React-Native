@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   dependency: {
     platforms: {
@@ -5,30 +7,29 @@ module.exports = {
         scriptPhases: [
           {
             name: '[instabug-reactnative] Upload Sourcemap',
-            script: 'bash "../node_modules/instabug-reactnative/ios/upload_sourcemap.sh"',
+            script: `bash "${path.resolve(__dirname, 'ios/upload_sourcemap.sh')}"`,
             execution_position: 'after_compile',
           },
         ],
       },
-      android: {
-      },
+      android: {},
     },
     hooks: {
-      postlink: 'node node_modules/instabug-reactnative/link_bridge.js'
+      postlink: `node ${path.resolve(__dirname, 'link_bridge.js')}`,
     },
   },
   commands: [
     {
       name: 'add-instabug',
       func: () => {
-                    require('./link_gradle');
-                  },
+        require('./link_gradle');
+      },
     },
     {
       name: 'remove-instabug',
       func: () => {
-                    require('./unlink_gradle');
-                  },
+        require('./unlink_gradle');
+      },
     },
   ],
 };

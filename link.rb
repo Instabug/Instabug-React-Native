@@ -10,18 +10,19 @@ rescue LoadError
 end
 
 # Replace these with your values
+sdk_path = File.dirname(File.realpath(__FILE__))
 current_path = Dir.pwd
 project_path = Dir.glob("#{current_path}/ios/*.xcodeproj").first
 file_name = File.basename(project_path, ".xcodeproj")
 project_location = "./ios/#{file_name}.xcodeproj"
 default_target_name = file_name
-framework_root = "../node_modules/#{package["name"]}/ios"
+framework_root = "#{sdk_path}/ios"
 framework_name = 'Instabug.xcframework'
 
 INSTABUG_UPLOAD_NAME = "Upload Sourcemap"
 
 INSTABUG_UPLOAD_SCRIPT = <<-SCRIPTEND
-bash "../node_modules/#{package["name"]}/ios/upload_sourcemap.sh"
+bash "#{sdk_path}/ios/upload_sourcemap.sh"
 SCRIPTEND
 
 # Get useful variables

@@ -8,6 +8,12 @@ elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 fi
 export NODE_BINARY=node
 
+INSTABUG_SOURCEMAPS_UPLOAD_DISABLE=$(echo $INSTABUG_SOURCEMAPS_UPLOAD_DISABLE | tr 'A-Z' 'a-z')
+if [ "${INSTABUG_SOURCEMAPS_UPLOAD_DISABLE}" = "true" ]; then
+    echo "Instabug: Environment variable INSTABUG_SOURCEMAPS_UPLOAD_DISABLE was set to true, skipping sourcemap upload"
+    exit 0
+fi
+
 if [ ! "$INFOPLIST_FILE" ] || [ -z "$INFOPLIST_FILE" ]; then
     echo "Instabug: INFOPLIST_FILE not found in Xcode build settings, skipping sourcemap upload"
     exit 0
@@ -60,13 +66,24 @@ else
             fi
         fi
     fi
+    if [ -z "${INSTABUG_ENTRY_FILE}" ]; then 
+        ENTRY_FILE='index.js'
+    else 
+        ENTRY_FILE=${INSTABUG_ENTRY_FILE}
+    fi
+    if [ ! -f $ENTRY_FILE ]; then
+        echo "Instabug: err: entry file not found. Make sure" "\"${ENTRY_FILE}\"" "exists in your projects root directory. Or add the environment variable INSTABUG_ENTRY_FILE with the name of your entry file"
+        exit 0
+    fi
     VERSION='{"code":"'"$INSTABUG_APP_VERSION_CODE"'","name":"'"$INSTABUG_APP_VERSION_NAME"'"}'
     echo "Instabug: Token:" "\""${INSTABUG_APP_TOKEN}"\""
     echo "Instabug: VERSION: $VERSION"
+    echo "Instabug: Entry file found" "\""${ENTRY_FILE}"\""
     echo "Instabug: Generating sourcemap files..."
+
     #Generate ios sourcemap
     npx react-native bundle --platform ios \
-    --entry-file index.js \
+    --entry-file $ENTRY_FILE \
     --dev false \
     --bundle-output ./ios/main.jsbundle \
     --sourcemap-output ./ios-sourcemap.json
