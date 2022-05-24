@@ -2,6 +2,7 @@
 
 * Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
 * Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
+* Fixes an issue with setRequestFilterExpression API not working with Hermes
 * Fixes an issue with swipe invocation event not working on Android
 * Breaking: Removes the deprecated APIs. For the full list, check PR #703
 
