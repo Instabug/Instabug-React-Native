@@ -1,5 +1,6 @@
 ## master
 
+* Adds dynamic entry file support
 * Fixes an issue with swipe invocation event not working on Android
 
 ## 10.13.0 (2022-03-17)
