@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  android: circleci/android@2.0
 jobs:
   danger:
     docker:
@@ -70,24 +72,22 @@ jobs:
           path: InstabugSample/test-results
 
   test_android:
+    executor:
+      name: android/android-machine
+      tag: "2022.03.1"
     working_directory: ~/project/InstabugSample
-    docker:
-      - image: circleci/android@sha256:793ae9aa1777ba7fc375109978b307ed03a49be468295a8778d588eba0670e4b
-    environment:
-      JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
           path: ~/project
-      - run: yarn
       - run:
-          name: chmod permissions
-          command: cd android && chmod +x ./gradlew
+          name: Install Yarn
+          command: npm install -g yarn
       - run:
-          name: Download Dependencies
-          command: cd android && ./gradlew androidDependencies
-      - run:
-          name: Run UnitTest
-          command: cd android && ./gradlew test
+          name: Install Node Packages
+          command: yarn
+      - android/run-tests:
+          working-directory: ./android
+          test-command: ./gradlew test
 
   test_ios:
     macos:
@@ -146,62 +146,37 @@ jobs:
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
-    macos:
-      xcode: "10.2.0"
-    working_directory: ~/project/InstabugSample
+    executor:
+      name: android/android-machine
+      tag: "2022.03.1"
+    working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
           path: ~/project
-      - run:
-          name: Install Android SDK
-          command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
-      - run:
-          name: Accept Android SDK Licenses
-          command: (yes | sdkmanager --licenses) || true
-      - run:
-          name: Setup Android Environment Variables
-          command: |
-            echo 'export JAVA_HOME=`/usr/libexec/java_home -v 1.8`' >> $BASH_ENV
-            echo 'export ANDROID_HOME=/usr/local/share/android-sdk' >> $BASH_ENV
-            echo 'export ANDROID_SDK_ROOT=/usr/local/share/android-sdk' >> $BASH_ENV
-            echo 'export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools' >> $BASH_ENV
-      - run:
-          name: SDK Manager - Download Emulator Image
-          command: (yes | sdkmanager "platform-tools" "platforms;android-27" "extras;intel;Hardware_Accelerated_Execution_Manager" "build-tools;27.0.3" "system-images;android-27;google_apis;x86" "emulator" --verbose) || true
-      - run:
-          name: AVD Manager - Setup Emulator
-          command: avdmanager create avd -n Nexus_6P_API_27 -k "system-images;android-27;google_apis;x86" -g google_apis -d "Nexus 6P"
-      - run:
-          name: Run Emulator in background
-          command: /usr/local/share/android-sdk/emulator/emulator @Nexus_6P_API_27 -noaudio -no-boot-anim -no-window
-          background: true
-      - run:
-          name: Install Node Packages
-          command: sudo yarn
-      - run:
-          name: Generate Android Keystore
-          command: cd android/app && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=AA, OU=AA, O=AA, L=AA, S=AA, C=EG"
-      - run:
-          name: Make gradlew Executable
-          command: cd android && chmod +x ./gradlew
-      - run:
-          name: Download Android Dependencies
-          command: cd android && ./gradlew androidDependencies
+      - run: 
+          name: Install Yarn
+          command: npm install --global yarn
       - run:
           name: Install Detox CLI
-          command: sudo npm install -g detox-cli
+          command: npm install --global detox-cli
       - run:
-          name: Detox - Build Release App
-          command: |
-            sudo chmod -R 777 /Users/distiller/project/InstabugSample/node_modules/instabug-reactnative
-            detox build --configuration android.emu.release
+          name: Install Node Packages
+          command: yarn
+      - android/create-avd:
+          avd-name: Nexus_6P_API_27
+          install: true
+          system-image: system-images;android-27;default;x86
+      - android/start-emulator:
+          avd-name: Nexus_6P_API_27
+          no-window: true
+          post-emulator-launch-assemble-command: |
+              rm -rf ~/.gradle/caches
+              ./gradlew androidDependencies
+              cd ..
+              detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          command: |
-            sudo chmod -R 777 /Users/distiller/Library/Detox
-            detox test --configuration android.emu.release --cleanup
+          command: cd .. && detox test -c android.emu.release
 
   publish:
     macos:
@@ -216,7 +191,6 @@ jobs:
       - run: cd project && Escape react-native publish
 
 workflows:
-  version: 2
   publish:
     jobs:
       - danger:
@@ -226,15 +200,15 @@ workflows:
       - test_android
       - test_ios
       - e2e_ios
-      # - e2e_android
+      - e2e_android
       - hold:
           requires:
             - test_module
             - test_sample
-            # - test_android
+            - test_android
             - test_ios
             - e2e_ios
-            # - e2e_android
+            - e2e_android
           type: approval
           filters:
             branches:
