@@ -184,6 +184,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String BUG_REPORTING_REPORT_TYPE_FEEDBACK = "bugReportingReportTypeFeedback";
     private final String BUG_REPORTING_REPORT_TYPE_QUESTION = "bugReportingReportTypeQuestion";
 
+    private final String DISMISS_TYPE_ADD_ATTACHMENT = "dismissTypeAddAttachment";
+    private final String DISMISS_TYPE_CANCEL = "dismissTypeCancel";
+    private final String DISMISS_TYPE_SUBMIT = "dismissTypeSubmit";
+
     private final String EMAIL_FIELD_HIDDEN = "emailFieldHidden";
     private final String EMAIL_FIELD_OPTIONAL = "emailFieldOptional";
     private final String COMMENT_FIELD_REQUIRED = "commentFieldRequired";
@@ -2439,6 +2443,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(BUG_REPORTING_REPORT_TYPE_BUG, BUG_REPORTING_REPORT_TYPE_BUG);
         constants.put(BUG_REPORTING_REPORT_TYPE_FEEDBACK, BUG_REPORTING_REPORT_TYPE_FEEDBACK);
         constants.put(BUG_REPORTING_REPORT_TYPE_QUESTION, BUG_REPORTING_REPORT_TYPE_QUESTION);
+
+        constants.put(DISMISS_TYPE_ADD_ATTACHMENT, DISMISS_TYPE_ADD_ATTACHMENT);
+        constants.put(DISMISS_TYPE_CANCEL, DISMISS_TYPE_CANCEL);
+        constants.put(DISMISS_TYPE_SUBMIT, DISMISS_TYPE_SUBMIT);
 
         constants.put("localeArabic", LOCALE_ARABIC);
         constants.put("localeAzerbaijani", LOCALE_AZERBAIJANI);

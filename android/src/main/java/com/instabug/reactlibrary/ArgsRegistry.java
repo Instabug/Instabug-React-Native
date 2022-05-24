@@ -7,6 +7,8 @@ import java.util.Map;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.featuresrequest.ActionType;
+
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -63,6 +65,7 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
+        registerInstabugDismissTypesArgs(ARGS);
         registerReproStepsModeArgs(ARGS);
         registerWelcomeMessageArgs(ARGS);
         registerInstabugFeatureRequestsActionTypes(ARGS);
@@ -211,6 +214,12 @@ final class ArgsRegistry {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
         args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
+    }
+
+    static void registerInstabugDismissTypesArgs(Map<String, Object> args){
+        args.put("dismissTypeAddAttachment", OnSdkDismissCallback.DismissType.ADD_ATTACHMENT);
+        args.put("dismissTypeCancel", OnSdkDismissCallback.DismissType.CANCEL);
+        args.put("dismissTypeSubmit", OnSdkDismissCallback.DismissType.SUBMIT);
     }
 
     static void registerLogLevelArgs(Map<String, Object> args) {
