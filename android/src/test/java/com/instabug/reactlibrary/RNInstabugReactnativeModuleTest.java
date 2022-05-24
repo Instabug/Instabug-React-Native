@@ -93,27 +93,6 @@ public class RNInstabugReactnativeModuleTest {
 
     /********CrashReporting*********/
 
-//    @Test
-//    public void givenFalse$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
-//        // given
-//        PowerMockito.mockStatic(CrashReporting.class);
-//        // when
-//        rnModule.setCrashReportingEnabled(false);
-//        // then
-//        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-//        CrashReporting.setState(Feature.State.DISABLED);
-//    }
-//
-//    @Test
-//    public void givenTrue$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
-//        // given
-//        PowerMockito.mockStatic(CrashReporting.class);
-//        // when
-//        rnModule.setCrashReportingEnabled(true);
-//        // then
-//        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-//        CrashReporting.setState(Feature.State.ENABLED);
-//    }
 //
 //    @Test
 //    public void givenString$sendHandledJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() throws Exception {
@@ -236,13 +215,13 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArgs$identifyUserWithEmail_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void givenArgs$identifyUser_whenQuery_thenShouldCallNativeApiWithArgs() {
         // given
 
         String email = "sali@instabug.com";
         String userName = "salmaali";
         // when
-        rnModule.identifyUserWithEmail(email, userName);
+        rnModule.identifyUser(email, userName);
         // then
         verify(Instabug.class,times(1));
         Instabug.identifyUser(userName, email);
@@ -319,12 +298,12 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void given$logUserEventWithName_whenQuery_thenShouldCallNativeApi() {
+    public void given$logUserEvent_whenQuery_thenShouldCallNativeApi() {
         // given
 
         String eventName = "click";
         // when
-        rnModule.logUserEventWithName(eventName);
+        rnModule.logUserEvent(eventName);
         // then
         verify(Instabug.class,times(1));
         Instabug.logUserEvent(eventName);

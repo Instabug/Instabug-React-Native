@@ -30,7 +30,6 @@ import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
@@ -166,7 +165,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     private final String INVOCATION_HEADER = "invocationHeader";
-    private final String START_CHATS = "startChats";
     private final String REPORT_QUESTION = "reportQuestion";
     private final String REPORT_BUG = "reportBug";
     private final String REPORT_FEEDBACK = "reportFeedback";
@@ -272,7 +270,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
    * the SDK's UI.
    */
     @ReactMethod
-    public void startWithToken(final String token, final ReadableArray invocationEventValues) {
+    public void start(final String token, final ReadableArray invocationEventValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -314,48 +312,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             }
         });
 
-    }
-
-    /**
-     * Enable/Disable screen recording
-     *
-     * @param autoScreenRecordingEnabled boolean for enable/disable
-     *                                   screen recording on crash feature
-     */
-    @ReactMethod
-    public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets auto screen recording maximum duration
-     *
-     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
-     *                                       in milliseconds
-     *                                       The maximum duration is 30000 milliseconds
-     */
-    @ReactMethod
-    public void setAutoScreenRecordingMaxDuration(final int autoScreenRecordingMaxDuration) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int durationInMilli = autoScreenRecordingMaxDuration * 1000;
-                    Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -401,24 +357,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                             break;
                         default:
                             BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setViewHierarchyEnabled(final boolean enabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (enabled) {
-                        BugReporting.setViewHierarchyState(Feature.State.ENABLED);
-                    } else {
-                        BugReporting.setViewHierarchyState(Feature.State.DISABLED);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -602,7 +540,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param userEmail User's default email
      */
     @ReactMethod
-    public void identifyUserWithEmail(final String userEmail, final String userName) {
+    public void identifyUser(final String userEmail, final String userName) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -715,29 +653,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         }
 
         return appToken;
-    }
-
-
-    /**
-     * Get current unread count of messages for this user
-     *
-     * @return number of messages that are unread for this user
-     */
-    @ReactMethod
-    public void getUnreadMessagesCount(final Callback messageCountCallback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                int unreadMessages = 0;
-                try {
-                    unreadMessages = Replies.getUnreadRepliesCount();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                messageCountCallback.invoke(unreadMessages);
-            }
-        });
     }
 
     /**
@@ -877,26 +792,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Enabled/disable chat notification
-     *
-     * @param isChatNotificationEnable whether chat notification is reburied or not
-     */
-    @ReactMethod
-    public void setChatNotificationEnabled(final boolean isChatNotificationEnable) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Replies.setInAppNotificationEnabled(isChatNotificationEnable);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-    /**
      * Enable/Disable debug logs from Instabug SDK
      * Default state: disabled
      *
@@ -916,43 +811,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-     * Report a caught exception to Instabug dashboard
-     *
-     * @param stack           the exception to be reported
-     * @param message         the message of the exception to be reported
-     * @param errorIdentifier used to group issues manually reported
-     */
-    @ReactMethod
-    public void reportJsException(final ReadableArray stack, final String message, final String errorIdentifier) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int size = stack != null ? stack.size() : 0;
-                    StackTraceElement[] stackTraceElements = new StackTraceElement[size];
-                    for (int i = 0; i < size; i++) {
-                        ReadableMap frame = stack.getMap(i);
-                        String methodName = frame.getString("methodName");
-                        String fileName = frame.getString("file");
-                        int lineNumber = frame.getInt("lineNumber");
 
-                        stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName,
-                                lineNumber);
-                    }
-                    Throwable throwable = new Throwable(message);
-                    throwable.setStackTrace(stackTraceElements);
-                    if (errorIdentifier != null)
-                        CrashReporting.reportException(throwable);
-                    else
-                        CrashReporting.reportException(throwable, errorIdentifier);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
 
     /**
@@ -1313,7 +1172,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param name Event name.
      */
     @ReactMethod
-    public void logUserEventWithName(final String name) {
+    public void logUserEvent(final String name) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1576,25 +1435,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Show any valid survey if exist
-     *
-     * @return true if a valid survey was shown otherwise false
-     */
-    @ReactMethod
-    public void setSurveysEnabled(final boolean surveysEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setAutoShowingEnabled(surveysEnabled);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Sets the runnable that gets executed just before showing any valid survey<br/>
      * WARNING: This runs on your application's main UI thread. Please do not include
      * any blocking operations to avoid ANRs.
@@ -1763,33 +1603,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-     * @deprecated
-     * Sets a block of code that gets executed when a new message is received.
-     *
-     * @param onNewMessageHandler - A callback that gets
-     *                            executed when a new message is received.
-     */
-    @ReactMethod
-    public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Runnable onNewMessageRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
-                        }
-                    };
-                    Replies.setOnNewReplyReceivedCallback(onNewMessageRunnable);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -1879,34 +1692,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             }
         });
 
-    }
-
-    @ReactMethod
-    public void setChatsEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        Chats.setState(Feature.State.ENABLED);
-                    } else {
-                        Chats.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void showChats() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Chats.show();
-            }
-        });
     }
 
     @ReactMethod
@@ -2056,31 +1841,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Set whether new in app notification received will play a small sound notification
-     * or not (Default is {@code false})
-     *
-     * @param shouldPlaySound desired state of conversation sounds
-     * @since 4.1.0
-     */
-    @ReactMethod
-    public void setEnableInAppNotificationSound(final boolean shouldPlaySound) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    try {
-                        Replies.setInAppNotificationSound(shouldPlaySound);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Enable/disable session profiler
      *
      * @param sessionProfilerEnabled desired state of the session profiler feature
@@ -2098,26 +1858,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Set Surveys welcome screen enabled, default value is false
-     *
-     * @param shouldShow shouldShow whether should a welcome screen be shown
-     *                   before taking surveys or not
-     */
-    @ReactMethod
-    public void setShouldShowSurveysWelcomeScreen(final boolean shouldShow) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setShouldShowWelcomeScreen(shouldShow);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
                 }
             }
         });
@@ -2255,8 +1995,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION;
             case INVOCATION_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
-            case START_CHATS:
-                return InstabugCustomTextPlaceHolder.Key.START_CHATS;
             case REPORT_QUESTION:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION;
             case REPORT_BUG:
@@ -2492,13 +2230,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
         constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
 
-        //deprecated
-        constants.put("emailFieldHidden", EMAIL_FIELD_HIDDEN);
-        constants.put("emailFieldOptional", EMAIL_FIELD_OPTIONAL);
-        constants.put("commentFieldRequired", COMMENT_FIELD_REQUIRED);
-        constants.put("disablePostSendingDialog", DISABLE_POST_SENDING_DIALOG);
-        //
-
         constants.put("optionEmailFieldHidden", EMAIL_FIELD_HIDDEN);
         constants.put("optionEmailFieldOptional", EMAIL_FIELD_OPTIONAL);
         constants.put("optionCommentFieldRequired", COMMENT_FIELD_REQUIRED);
@@ -2517,7 +2248,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
         constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
         constants.put("invocationHeader", INVOCATION_HEADER);
-        constants.put("startChats", START_CHATS);
         constants.put("reportQuestion", REPORT_QUESTION);
         constants.put("reportBug", REPORT_BUG);
         constants.put("reportFeedback", REPORT_FEEDBACK);

@@ -24,7 +24,7 @@
  +------------------------------------------------------------------------+
  */
 
-- (void)startWithToken:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray;
+- (void)start:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray;
 
 - (void)setUserData:(NSString *)userData;
 
@@ -48,11 +48,11 @@
 
 - (void)setString:(NSString *)value toKey:(NSString *)key;
 
-- (void)identifyUserWithEmail:(NSString *)email name:(NSString *)name;
+- (void)identifyUser:(NSString *)email name:(NSString *)name;
 
 - (void)logOut;
 
-- (void)logUserEventWithName:(NSString *)name;
+- (void)logUserEvent:(NSString *)name;
 
 - (void)logVerbose:(NSString *)log;
 
@@ -67,8 +67,6 @@
 - (void)getAllUserAttributes:(RCTResponseSenderBlock)callback;
 
 - (void)clearAllUserAttributes;
-
-- (void)setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled;
 
 - (void)showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode;
 

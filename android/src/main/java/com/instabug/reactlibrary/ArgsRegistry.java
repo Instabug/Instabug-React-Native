@@ -138,10 +138,10 @@ final class ArgsRegistry {
     }
 
     static void registerInvocationOptionsArgs(Map<String, Object> args) {
-        args.put("commentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
-        args.put("disablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
-        args.put("emailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
-        args.put("emailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
+        args.put("optionCommentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
+        args.put("optionDisablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
+        args.put("optionEmailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
+        args.put("optionEmailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
     }
 
     static void registerLocaleArgs(Map<String, Object> args) {
@@ -176,7 +176,6 @@ final class ArgsRegistry {
         args.put("invalidEmailMessage", InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE);
         args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
         args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
-        args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
         args.put("reportQuestion", InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION);
         args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
         args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
