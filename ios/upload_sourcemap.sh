@@ -8,6 +8,12 @@ elif [ -x "$(command -v brew)" ] && [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
 fi
 export NODE_BINARY=node
 
+INSTABUG_SOURCEMAPS_UPLOAD_DISABLE=$(echo $INSTABUG_SOURCEMAPS_UPLOAD_DISABLE | tr 'A-Z' 'a-z')
+if [ "${INSTABUG_SOURCEMAPS_UPLOAD_DISABLE}" = "true" ]; then
+    echo "Instabug: Environment variable INSTABUG_SOURCEMAPS_UPLOAD_DISABLE was set to true, skipping sourcemap upload"
+    exit 0
+fi
+
 if [ ! "$INFOPLIST_FILE" ] || [ -z "$INFOPLIST_FILE" ]; then
     echo "Instabug: INFOPLIST_FILE not found in Xcode build settings, skipping sourcemap upload"
     exit 0

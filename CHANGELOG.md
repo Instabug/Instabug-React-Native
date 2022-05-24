@@ -1,6 +1,7 @@
 ## master
 
-* Adds dynamic entry file support
+* Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
+* Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
 * Fixes an issue with swipe invocation event not working on Android
 
 ## 10.13.0 (2022-03-17)
