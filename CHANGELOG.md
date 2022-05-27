@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Deprecated
+
+- Deprecate `NetworkLogger.setRequestFilterExpression` in favour of `NetworkLogger.setFilter` ([#708](https://github.com/Instabug/Instabug-React-Native/pull/708)). 
+
 ## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
 
 ### Changed

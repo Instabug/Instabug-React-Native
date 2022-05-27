@@ -158,6 +158,20 @@ describe('NetworkLogger Module', () => {
     consoleSpy.mockRestore();
   });
 
+  it('should not send log network when network data matches filter', async () => {
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(clone(network)));
+
+    NetworkLogger.setFilter(
+      (network) => network.requestHeaders['Content-type'] === 'application/json',
+    );
+    NetworkLogger.setEnabled(true);
+
+    expect(NativeInstabug.networkLog).not.toBeCalled();
+    expect(NativeAPM.networkLog).not.toBeCalled();
+  });
+
   it('should not send log network when network data matches filter expression', async () => {
     Interceptor.setOnDoneCallback = jest
       .fn()
