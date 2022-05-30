@@ -1,10 +1,11 @@
 ## master
 
+* Breaking: Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our README
+* Breaking: Removes the deprecated APIs. Check the migration guide referenced in our README
 * Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
 * Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
 * Fixes an issue with setRequestFilterExpression API not working with Hermes
 * Fixes an issue with swipe invocation event not working on Android
-* Breaking: Removes the deprecated APIs. For the full list, check PR #703
 
 ## 10.13.0 (2022-03-17)
 

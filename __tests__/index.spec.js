@@ -101,8 +101,6 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method start', () => {
-
-    Platform.OS = 'ios';
     const token = 'some-token';
     const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
     Instabug.start(token, invocationEvents);
@@ -110,17 +108,6 @@ describe('Instabug Module', () => {
     expect(start.calledOnceWithExactly(token, invocationEvents)).toBe(true);
 
   });
-
-  // it('should not call the native method start when platform is android', () => {
-
-  //   Platform.OS = 'android';
-  //   const token = 'some-token';
-  //   const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
-  //   Instabug.start(token, invocationEvents);
-
-  //   expect(start.calledOnceWithExactly(token, invocationEvents)).toBe(true);
-
-  // });
 
   it('should call the native method setUserData', () => {
 

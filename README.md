@@ -44,56 +44,26 @@ Updating to a new version? Check the [Update Guide](#update-guide) before bumpin
 
 ## Initializing Instabug
 
- To start using Instabug, import it as follows.
+To start using Instabug, import it as follows, then initialize it in the `constructor` or `componentWillMount`. This line will let the SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
 ```javascript
 import Instabug from 'instabug-reactnative';
+
+Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
 ```
-### iOS
-- Initialize it in the `constructor` or `componentWillMount`. This line will let the Instabug SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
 
-    ```javascript
-    Instabug.start('IOS_APP_TOKEN', [Instabug.invocationEvent.shake]);
-    ```
-### Android
-- Open `android/app/src/main/java/[...]/MainApplication.java`
-    * Make sure to import the package class:  
-    `import com.instabug.reactlibrary.RNInstabugReactnativePackage;`
-    * **For React Native >= 0.60**   
-   Add the integration code to the `onCreate()` method like the below snippet. 
+**For React Native < 0.60 on Android**  
+You should find the `getPackages()` method looks like the below snippet. You just need to add your Android app token. 
 
-       ```java
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            new RNInstabugReactnativePackage
-                .Builder("APP_TOKEN", MainApplication.this)
-                .setInvocationEvent("shake")
-                .setPrimaryColor("#1D82DC")
-                .setFloatingEdge("left")
-                .setFloatingButtonOffsetFromTop(250)
-                .build();
-        }
-      ```
-    * **For React Native < 0.60**  
-   You should find the `getPackages()` method looks like the below snippet. You just need to add your Android app token. 
-
-        ```javascript
-        @Override
-        protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
-                new RNInstabugReactnativePackage.Builder("YOUR_APP_TOKEN", MainApplication.this)
-                .setInvocationEvent("shake")
-                .setPrimaryColor("#1D82DC")
-                .setFloatingEdge("left")
-                .setFloatingButtonOffsetFromTop(250)
-                .build()
-            );
-        }
-        ```
-    * You can change the invocation event from here, simply by replacing the `"shake"` with any of the following `"button"`, `"none"`, `"screenshot"`, or `"swipe"`. You can change the primary color by replacing the `"#1D82DC"` with any color of your choice.
-   In the case that you are using the floating button as an invocation event, you can change the floating button edge and the floating button offset using the last two methods, by replacing `"left"` to `"right"`, and by changing the offset number. 
+```java
+@Override
+protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new RNInstabugReactnativePackage()
+    );
+}
+```
    
 _You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
 

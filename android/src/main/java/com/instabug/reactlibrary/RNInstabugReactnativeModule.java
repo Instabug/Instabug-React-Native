@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -25,6 +26,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.bug.invocation.InvocationMode;
@@ -38,6 +40,7 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
+import com.instabug.library.Platform;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
@@ -236,23 +239,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_DISCARD_DIALOG_POSITIVE_ACTION = "discardAlertAction";
     private final String REPORT_ADD_ATTACHMENT_HEADER = "addAttachmentButtonTitleStringName";
 
-    private Application androidApplication;
-    private Instabug mInstabug;
-    private InstabugInvocationEvent invocationEvent;
     private InstabugCustomTextPlaceHolder placeHolders;
     private Report currentReport;
 
     /**
-     * Instantiates a new Rn instabug reactnative module.
+     * Instantiates a new Rn Instabug ReactNative module.
      *
      * @param reactContext the react context
-     * @param mInstabug    the m instabug
      */
-    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application
-            androidApplication, Instabug mInstabug) {
+    public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.androidApplication = androidApplication;
-        this.mInstabug = mInstabug;
         //init placHolders
         placeHolders = new InstabugCustomTextPlaceHolder();
     }
@@ -283,13 +279,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         String key = stringArray[i];
                         invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
                     }
-                    new Instabug.Builder(getCurrentActivity().getApplication(), token).setInvocationEvents(invocationEventsArray).build();
+
+                    final Application application = (Application) getReactApplicationContext().getApplicationContext();
+
+                    setCurrentPlatform();
+                    setBaseUrlForDeprecationLogs();
+
+                    new Instabug.Builder(application, token)
+                            .setInvocationEvents(invocationEventsArray)
+                            .build();
+
+                    // Temporarily disabling APM hot launches
+                    APM.setHotAppLaunchEnabled(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
 
+    private void setCurrentPlatform() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
+            if (method != null) {
+                Log.i("IB-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
+                method.invoke(null, Platform.RN);
+            } else {
+                Log.e("IB-CP-Bridge", "setCurrentPlatform was not found by reflection");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBaseUrlForDeprecationLogs() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
+            if (method != null) {
+                method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -1070,7 +1105,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             public void run() {
                 WritableMap writableMap = Arguments.createMap();
                 try {
-                    HashMap<String, String> map = mInstabug.getAllUserAttributes();
+                    HashMap<String, String> map = Instabug.getAllUserAttributes();
                     for (HashMap.Entry<String, String> entry : map.entrySet()) {
                         writableMap.putString(entry.getKey(), entry.getValue());
                     }
