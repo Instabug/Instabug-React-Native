@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface IBGReport : NSObject
 
 @property (nonatomic, copy, readonly) NSArray<NSString *> *tags;
@@ -27,5 +29,8 @@
 - (void)setUserAttribute:(NSString *)userAttribute withKey:(NSString *)key;
 - (void)addFileAttachmentWithURL:(NSURL *)url;
 - (void)addFileAttachmentWithData:(NSData *)data;
+- (void)addFileAttachmentWithData:(NSData *)data andName:(NSString *)name;
 
 @end
+
+NS_ASSUME_NONNULL_END

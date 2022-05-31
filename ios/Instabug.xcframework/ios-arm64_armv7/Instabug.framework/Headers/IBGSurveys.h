@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.11.9
+ Version:    11.0.0
  */
 
 #import <Foundation/Foundation.h>
@@ -18,6 +18,14 @@ NS_SWIFT_NAME(Surveys)
 @interface IBGSurveys : NSObject
 
 @property (class, atomic, assign) BOOL enabled;
+
+/**
+ @returns `YES` if Surveys have exceeded the usage limit on your plan. Otherwise, returns `NO`.
+ 
+ @discussion If you have exceeded the usage limit on your plan, no Surveys will appear to the end users.
+ */
+@property (class, atomic, readonly) BOOL usageExceeded;
+
 /**
  @brief Sets whether auto surveys showing are enabled or not.
  
@@ -88,28 +96,6 @@ NS_SWIFT_NAME(Surveys)
  @param surveyToken A String with a survey token.
  */
 + (void)showSurveyWithToken:(NSString *)surveyToken;
-
-
-/**
- @brief Sets a threshold for numbers of sessions and another for number of days required before a survey, that has been dismissed once, would show again.
- 
- @discussion When a survey that has been shown to the user gets dismissed once, it will not reappear to the user unless a certain number of sessions have started AND a certain number of days have passed since the user first dismissed the survey. Note that if a survey is dismissed for a second time, it will not show again, in other words, it will be set to `canceled`. This applies to both surveys with and without tokens.
-
- Please note that this overrides the dashboard configuration for reshowing if called.
- 
- @param sessionCount : Number of sessions required to be initialized before a dismissed survey can be shown again.
- @param daysCount : Number of days required to pass before a dismissed survey can be shown again.
- */
-+ (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount DEPRECATED_MSG_ATTRIBUTE("Reshowing the survey can now be controlled from the dashboard for any new survey you create.");
-
-/**
- @brief Returns true if the survey with a specific token was answered before .
- 
- @discussion Will return false if the token does not exist or if the survey was not answered before.
- 
- @param surveyToken A String with a survey token.
- */
-+ (BOOL)hasRespondedToSurveyWithToken:(NSString *)surveyToken DEPRECATED_MSG_ATTRIBUTE("hasRespondedToSurveyWithToken: is deprecated. Please use hasRespondedToSurveyWithToken:completionHandler:");
 
 /**
  @brief Returns true in the completion handler if the survey with a specific token was answered before .
