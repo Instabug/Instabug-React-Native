@@ -84,10 +84,6 @@ RCT_EXPORT_METHOD(setAutoShowingEnabled:(BOOL)autoShowingSurveysEnabled) {
     IBGSurveys.autoShowingEnabled = autoShowingSurveysEnabled;
 }
 
-RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
-    [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
-}
-
 RCT_EXPORT_METHOD(setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {
     IBGSurveys.shouldShowWelcomeScreen = shouldShowWelcomeScreen;
 }

@@ -369,18 +369,7 @@ export namespace Surveys {
    * in the current session.
    */
   function showSurveyIfAvailable(): void;
-  /**
-   * Sets a threshold for numbers of sessions and another for number of days
-   * required before a survey, that has been dismissed once, would show again.
-   * @param {number} sessionCount Number of sessions required to be
-   *                initialized before a dismissed survey can be shown again.
-   * @param {number} daysCount Number of days required to pass before a
-   *                dismissed survey can be shown again.
-   */
-  function setThresholdForReshowingSurveyAfterDismiss(
-    sessionCount: number,
-    daysCount: number
-  ): void;
+
   /**
    * Returns an array containing the available surveys.
    * @param {availableSurveysCallback} availableSurveysCallback callback with

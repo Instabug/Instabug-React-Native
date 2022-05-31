@@ -69,16 +69,6 @@
   OCMVerify([mock setAutoShowingEnabled:isEnabled]);
 }
 
-- (void) testSetThresholdForReshowingSurveyAfterDismiss {
-  id mock = OCMClassMock([IBGSurveys class]);
-  NSInteger sessionCount = 1;
-  NSInteger daysCount = 2;
-  
-  OCMStub([mock setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount]);
-  [self.instabugBridge setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
-  OCMVerify([mock setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount]);
-}
-
 - (void) testSetShouldShowSurveysWelcomeScreen {
   id mock = OCMClassMock([IBGSurveys class]);
   BOOL isEnabled = YES;

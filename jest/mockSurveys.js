@@ -4,7 +4,6 @@ jest.mock("NativeModules", () => {
       setEnabled: jest.fn(),
       setAppStoreURL: jest.fn(),
       showSurveysIfAvailable: jest.fn(),
-      setThresholdForReshowingSurveyAfterDismiss: jest.fn(),
       getAvailableSurveys: jest.fn(),
       setAutoShowingEnabled: jest.fn(),
       setOnShowHandler: jest.fn(),
