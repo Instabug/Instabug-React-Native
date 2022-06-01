@@ -855,11 +855,21 @@ export function setWelcomeMessageMode(
  * @param {string} fileName
  */
 export function addFileAttachment(filePath: string, fileName: string): void;
+
 /**
+ * @deprecated Use {@link Instabug.addPrivateView} instead. 
+ * 
  * Hides component from screenshots, screen recordings and view hierarchy.
  * @param {Object} viewRef the ref of the component to hide
  */
 export function setPrivateView(viewRef: object): void;
+
+/**
+ * Hides component from screenshots, screen recordings and view hierarchy.
+ * @param {Object} viewRef the ref of the component to hide
+ */
+ export function addPrivateView(viewRef: object): void;
+
 /**
  * Shows default Instabug prompt.
  */

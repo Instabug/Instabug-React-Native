@@ -56,7 +56,7 @@ describe('Instabug Module', () => {
   const showWelcomeMessageWithMode = sinon.spy(NativeModules.Instabug, 'showWelcomeMessageWithMode');
   const setWelcomeMessageMode = sinon.spy(NativeModules.Instabug, 'setWelcomeMessageMode');
   const setFileAttachment = sinon.spy(NativeModules.Instabug, 'setFileAttachment');
-  const hideView = sinon.spy(NativeModules.Instabug, 'hideView');
+  const addPrivateView = sinon.spy(NativeModules.Instabug, 'addPrivateView');
   const show = sinon.spy(NativeModules.Instabug, 'show');
   const setPreSendingHandler = sinon.spy(NativeModules.Instabug, 'setPreSendingHandler');
   const callPrivateApi = sinon.spy(NativeModules.Instabug, 'callPrivateApi');
@@ -78,10 +78,9 @@ describe('Instabug Module', () => {
     disable.resetHistory();
     isRunningLive.resetHistory();
     setFileAttachment.resetHistory();
-    hideView.resetHistory();
+    addPrivateView.resetHistory();
     setPreSendingHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
-
   });
 
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
@@ -500,23 +499,12 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method hideView nativeTag when platform is ios', () => {
+  it('should call the native method addPrivateView nativeTag', () => {
 
-    Platform.OS = 'ios';
     <Text ref={(c) => this.textView = c} />
-    Instabug.setPrivateView(this.textView);
+    Instabug.addPrivateView(this.textView);
 
-    expect(hideView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
-
-  });
-
-  it('should call the native method hideView with [nativeTag] when platform is android', () => {
-
-    Platform.OS = 'android';
-    <Text ref={(c) => this.textView = c} />
-    Instabug.setPrivateView(this.textView);
-
-    expect(hideView.calledOnceWithExactly([findNodeHandle(this.textView)])).toBe(true);
+    expect(addPrivateView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
 
   });
 

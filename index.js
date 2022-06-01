@@ -445,17 +445,24 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated Use {@link Instabug.addPrivateView} instead. 
+   * 
    * Hides component from screenshots, screen recordings and view hierarchy.
    * @param {Object} viewRef the ref of the component to hide
    */
   setPrivateView(viewRef) {
-    const nativeTag = findNodeHandle(viewRef);
-    if (Platform.OS === 'ios') {
-      Instabug.hideView(nativeTag);
-    } else {
-      Instabug.hideView([nativeTag]);
-    }
+    this.addPrivateView(viewRef);
   },
+
+  /**
+   * Hides component from screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to hide
+   */
+  addPrivateView(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    Instabug.addPrivateView(nativeTag);
+  },
+
   /**
    * Shows default Instabug prompt.
    */

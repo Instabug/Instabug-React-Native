@@ -409,10 +409,9 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     }
 }
 
-RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;
-    
 }
 
 RCT_EXPORT_METHOD(show) {

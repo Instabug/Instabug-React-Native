@@ -38,7 +38,7 @@ jest.mock("react-native", () => {
     showWelcomeMessageWithMode: jest.fn(),
     setWelcomeMessageMode: jest.fn(),
     setFileAttachment: jest.fn(),
-    hideView: jest.fn(),
+    addPrivateView: jest.fn(),
     show: jest.fn(),
     setPreSendingHandler: jest.fn(),
     callPrivateApi: jest.fn(),
