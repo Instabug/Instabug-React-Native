@@ -29,8 +29,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.InvocationMode;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
