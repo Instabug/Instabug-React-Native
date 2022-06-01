@@ -30,7 +30,7 @@ describe('Testing BugReporting Module', () => {
   const setOnInvokeHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnInvokeHandler');
   const setOnSDKDismissedHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnSDKDismissedHandler');
   const setAutoScreenRecordingEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingEnabled');
-  const setAutoScreenRecordingMaxDuration = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingMaxDuration');
+  const setAutoScreenRecordingDuration = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingDuration');
   const setViewHierarchyEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setViewHierarchyEnabled');
   const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
   const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
@@ -211,12 +211,10 @@ describe('Testing BugReporting Module', () => {
 
   });
 
-  it('should call the native method setAutoScreenRecordingMaxDuration', () => {
-
-    BugReporting.setAutoScreenRecordingMaxDuration(30);
-
-    expect(setAutoScreenRecordingMaxDuration.calledOnceWithExactly(30)).toBe(true);
-
+  it('should call the native method setAutoScreenRecordingDuration on iOS', () => {
+    Platform.OS = 'ios';
+    BugReporting.setAutoScreenRecordingDurationIOS(30);
+    expect(setAutoScreenRecordingDuration.calledOnceWithExactly(30)).toBe(true);
   });
 
   it('should call the native method setViewHierarchyEnabled', () => {

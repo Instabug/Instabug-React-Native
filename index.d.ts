@@ -133,7 +133,7 @@ export namespace BugReporting {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  function setAutoScreenRecordingMaxDuration(
+  function setAutoScreenRecordingDurationIOS(
     autoScreenRecordingMaxDuration: number
   ): void;
   /**
