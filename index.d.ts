@@ -868,7 +868,14 @@ export function setPrivateView(viewRef: object): void;
  * Hides component from screenshots, screen recordings and view hierarchy.
  * @param {Object} viewRef the ref of the component to hide
  */
- export function addPrivateView(viewRef: object): void;
+export function addPrivateView(viewRef: object): void;
+
+/**
+ * Removes component from the set of hidden views. The component will show again in 
+ * screenshots, screen recordings and view hierarchy.
+ * @param {Object} viewRef the ref of the component to remove from hidden views
+ */
+export function removePrivateView(viewRef: object): void;
 
 /**
  * Shows default Instabug prompt.

@@ -414,6 +414,11 @@ RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     view.instabug_privateView = true;
 }
 
+RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = false;
+}
+
 RCT_EXPORT_METHOD(show) {
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }

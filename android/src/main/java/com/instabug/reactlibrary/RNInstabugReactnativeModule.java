@@ -1963,6 +1963,27 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void removePrivateView(final int reactTag) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+                uiManagerModule.prependUIBlock(new UIBlock() {
+                    @Override
+                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.removePrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     /**
      * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
      *

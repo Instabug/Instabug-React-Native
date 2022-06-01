@@ -57,6 +57,7 @@ describe('Instabug Module', () => {
   const setWelcomeMessageMode = sinon.spy(NativeModules.Instabug, 'setWelcomeMessageMode');
   const setFileAttachment = sinon.spy(NativeModules.Instabug, 'setFileAttachment');
   const addPrivateView = sinon.spy(NativeModules.Instabug, 'addPrivateView');
+  const removePrivateView = sinon.spy(NativeModules.Instabug, 'removePrivateView');
   const show = sinon.spy(NativeModules.Instabug, 'show');
   const setPreSendingHandler = sinon.spy(NativeModules.Instabug, 'setPreSendingHandler');
   const callPrivateApi = sinon.spy(NativeModules.Instabug, 'callPrivateApi');
@@ -79,6 +80,7 @@ describe('Instabug Module', () => {
     isRunningLive.resetHistory();
     setFileAttachment.resetHistory();
     addPrivateView.resetHistory();
+    removePrivateView.resetHistory();
     setPreSendingHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
   });
@@ -499,13 +501,20 @@ describe('Instabug Module', () => {
 
   });
 
-  it('should call the native method addPrivateView nativeTag', () => {
+  it('should call the native method addPrivateView', () => {
 
     <Text ref={(c) => this.textView = c} />
     Instabug.addPrivateView(this.textView);
 
     expect(addPrivateView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
+  });
 
+  it('should call the native method removePrivateView', () => {
+
+    <Text ref={(c) => this.textView = c} />
+    Instabug.removePrivateView(this.textView);
+
+    expect(removePrivateView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
   });
 
   it('should call the native method show', () => {

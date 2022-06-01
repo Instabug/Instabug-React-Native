@@ -464,6 +464,16 @@ const InstabugModule = {
   },
 
   /**
+   * Removes component from the set of hidden views. The component will show again in 
+   * screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to remove from hidden views
+   */
+  removePrivateView(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    Instabug.removePrivateView(nativeTag);
+  },
+
+  /**
    * Shows default Instabug prompt.
    */
   show() {
