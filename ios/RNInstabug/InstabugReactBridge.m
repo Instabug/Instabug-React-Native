@@ -647,7 +647,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
     
     switch(level) {
         case RCTLogLevelTrace:
-            RNIBGLog(IBGLogLevelTrace, formatString, log);
+            RNIBGLog(IBGLogLevelVerbose, formatString, log);
             break;
         case RCTLogLevelInfo:
             RNIBGLog(IBGLogLevelInfo, formatString, log);
@@ -659,7 +659,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
             RNIBGLog(IBGLogLevelError, formatString, log);
             break;
         case RCTLogLevelFatal:
-            RNIBGLog(IBGLogLevelFatal, formatString, log);
+            RNIBGLog(IBGLogLevelError, formatString, log);
             break;
     }
 };
