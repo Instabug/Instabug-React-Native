@@ -91,13 +91,13 @@
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing hasRespondedToSurveyWithToken callback"];
   RCTResponseSenderBlock callback = ^void(NSArray *response) {
     BOOL actualValue = [response[0] boolValue];
-    XCTAssertTrue(actualValue);
+    XCTAssertFalse(actualValue);
     [expectation fulfill];
   };
   
-  OCMStub([mock hasRespondedToSurveyWithToken:surveyToken]).andReturn(YES);
+  OCMStub([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg invokeBlock]]);
   [self.instabugBridge hasRespondedToSurvey:surveyToken callback:callback];
-  OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken]);
+  OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg isNotNil]]);
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 

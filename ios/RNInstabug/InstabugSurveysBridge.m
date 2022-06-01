@@ -39,7 +39,10 @@ RCT_EXPORT_METHOD(showSurvey:(NSString *)surveyToken) {
 }
 
 RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
-    callback(@[@([IBGSurveys hasRespondedToSurveyWithToken:surveyToken])]);
+    [IBGSurveys hasRespondedToSurveyWithToken:surveyToken
+                            completionHandler:^(BOOL hasResponded) {
+        callback(@[@(hasResponded)]);
+    }];
 }
 
 RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
