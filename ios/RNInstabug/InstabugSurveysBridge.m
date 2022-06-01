@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(setOnShowHandler:(RCTResponseSenderBlock)callBack) {
             [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
         };
     } else {
-        IBGSurveys.willShowSurveyHandler = nil;
+        IBGSurveys.willShowSurveyHandler = ^{};
     }
 }
 
@@ -79,7 +79,7 @@ RCT_EXPORT_METHOD(setOnDismissHandler:(RCTResponseSenderBlock)callBack) {
             [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
         };
     } else {
-        IBGSurveys.didDismissSurveyHandler = nil;
+        IBGSurveys.didDismissSurveyHandler = ^{};
     }
 }
 
