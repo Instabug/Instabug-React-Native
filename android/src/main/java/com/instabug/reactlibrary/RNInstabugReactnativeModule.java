@@ -216,9 +216,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
 
-    private final String CUSTOM_SURVEY_THANKS_TITLE = "surveysCustomThanksTitle";
-    private final String CUSTOM_SURVEY_THANKS_SUBTITLE = "surveysCustomThanksSubTitle";
-
     private final String STORE_RATING_THANKS_TITLE = "surveysStoreRatingThanksTitle";
     private final String STORE_RATING_THANKS_SUBTITLE = "surveysStoreRatingThanksSubtitle";
 
@@ -2071,10 +2068,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
             case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
-            case CUSTOM_SURVEY_THANKS_TITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_TITLE;
-            case CUSTOM_SURVEY_THANKS_SUBTITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_SUBTITLE;
             case STORE_RATING_THANKS_TITLE:
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
             case STORE_RATING_THANKS_SUBTITLE:
@@ -2302,9 +2295,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("welcomeMessageBetaFinishStepContent", WELCOME_MESSAGE_FINISH_STEP_CONTENT);
         constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
         constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
-
-        constants.put(CUSTOM_SURVEY_THANKS_TITLE, CUSTOM_SURVEY_THANKS_TITLE);
-        constants.put(CUSTOM_SURVEY_THANKS_SUBTITLE, CUSTOM_SURVEY_THANKS_SUBTITLE);
 
         constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
         constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);

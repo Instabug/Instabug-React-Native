@@ -807,8 +807,6 @@ const InstabugModule = {
       Instabug.welcomeMessageLiveWelcomeStepTitle,
     welcomeMessageLiveWelcomeStepContent:
       Instabug.welcomeMessageLiveWelcomeStepContent,
-    surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
-    surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
     surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle,
     reportBugDescription: Instabug.reportBugDescription,

@@ -587,9 +587,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
               @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
               
-              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
-              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
-              
               @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
               @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,
 

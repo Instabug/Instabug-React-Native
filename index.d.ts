@@ -1102,8 +1102,6 @@ export enum strings {
   welcomeMessageBetaFinishStepContent,
   welcomeMessageLiveWelcomeStepTitle,
   welcomeMessageLiveWelcomeStepContent,
-  surveysCustomThanksTitle,
-  surveysCustomThanksSubTitle,
   surveysStoreRatingThanksTitle,
   surveysStoreRatingThanksSubtitle,
   reportBugDescription,
