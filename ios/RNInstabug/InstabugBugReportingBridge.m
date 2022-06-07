@@ -43,7 +43,7 @@ RCT_EXPORT_METHOD(setAutoScreenRecordingEnabled:(BOOL)enabled) {
     IBGBugReporting.autoScreenRecordingEnabled = enabled;
 }
 
-RCT_EXPORT_METHOD(setAutoScreenRecordingMaxDuration:(CGFloat)duration) {
+RCT_EXPORT_METHOD(setAutoScreenRecordingDuration:(CGFloat)duration) {
     IBGBugReporting.autoScreenRecordingDuration = duration;
 }
 

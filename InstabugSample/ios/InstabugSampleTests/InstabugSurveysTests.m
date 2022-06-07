@@ -69,16 +69,6 @@
   OCMVerify([mock setAutoShowingEnabled:isEnabled]);
 }
 
-- (void) testSetThresholdForReshowingSurveyAfterDismiss {
-  id mock = OCMClassMock([IBGSurveys class]);
-  NSInteger sessionCount = 1;
-  NSInteger daysCount = 2;
-  
-  OCMStub([mock setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount]);
-  [self.instabugBridge setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
-  OCMVerify([mock setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount]);
-}
-
 - (void) testSetShouldShowSurveysWelcomeScreen {
   id mock = OCMClassMock([IBGSurveys class]);
   BOOL isEnabled = YES;
@@ -101,13 +91,13 @@
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing hasRespondedToSurveyWithToken callback"];
   RCTResponseSenderBlock callback = ^void(NSArray *response) {
     BOOL actualValue = [response[0] boolValue];
-    XCTAssertTrue(actualValue);
+    XCTAssertFalse(actualValue);
     [expectation fulfill];
   };
   
-  OCMStub([mock hasRespondedToSurveyWithToken:surveyToken]).andReturn(YES);
+  OCMStub([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg invokeBlock]]);
   [self.instabugBridge hasRespondedToSurvey:surveyToken callback:callback];
-  OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken]);
+  OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg isNotNil]]);
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 

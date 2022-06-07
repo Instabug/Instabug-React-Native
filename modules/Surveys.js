@@ -32,24 +32,6 @@ export default {
   },
 
   /**
-   * Sets a threshold for numbers of sessions and another for number of days
-   * required before a survey, that has been dismissed once, would show again.
-   * @param {number} sessionCount Number of sessions required to be
-   *                initialized before a dismissed survey can be shown again.
-   * @param {number} daysCount Number of days required to pass before a
-   *                dismissed survey can be shown again.
-   */
-  setThresholdForReshowingSurveyAfterDismiss: function(
-    sessionCount,
-    daysCount
-  ) {
-    IBGSurveys.setThresholdForReshowingSurveyAfterDismiss(
-      sessionCount,
-      daysCount
-    );
-  },
-
-  /**
    * Returns an array containing the available surveys.
    * @param {availableSurveysCallback} availableSurveysCallback callback with
    * argument available surveys

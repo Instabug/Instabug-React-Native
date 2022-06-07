@@ -409,10 +409,14 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     }
 }
 
-RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;
-    
+}
+
+RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = false;
 }
 
 RCT_EXPORT_METHOD(show) {
@@ -570,7 +574,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"screenRecording": kIBGScreenRecordingStringName,
               @"image": kIBGImageStringName,
               @"surveyEnterYourAnswer": kIBGSurveyEnterYourAnswerTextPlaceholder,
-              @"videPressRecord": kIBGVideoPressRecordTitle,
+              @"videoPressRecord": kIBGVideoPressRecordTitle,
               @"collectingDataText": kIBGCollectingDataText,
               @"thankYouAlertText": kIBGThankYouAlertMessageStringName,
               
@@ -582,9 +586,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"welcomeMessageBetaFinishStepContent": kIBGBetaWelcomeMessageFinishStepContent,
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
               @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
-              
-              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
-              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
               
               @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
               @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,
@@ -598,7 +599,14 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"discardAlertMessage": kIBGDiscardAlertMessage,
               @"discardAlertCancel": kIBGDiscardAlertCancel,
               @"discardAlertAction": kIBGDiscardAlertAction,
-              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName
+              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName,
+              @"reportReproStepsDisclaimerBody": kIBGReproStepsDisclaimerBody,
+              @"reportReproStepsDisclaimerLink": kIBGReproStepsDisclaimerLink,
+              @"reproStepsProgressDialogBody": kIBGProgressViewTitle,
+              @"reproStepsListHeader": kIBGReproStepsListTitle,
+              @"reproStepsListDescription": kIBGReproStepsListHeader,
+              @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
+              @"reproStepsListItemTitle": kIBGReproStepsListItemName
             };
 };
 
@@ -646,7 +654,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
     
     switch(level) {
         case RCTLogLevelTrace:
-            RNIBGLog(IBGLogLevelTrace, formatString, log);
+            RNIBGLog(IBGLogLevelVerbose, formatString, log);
             break;
         case RCTLogLevelInfo:
             RNIBGLog(IBGLogLevelInfo, formatString, log);
@@ -658,7 +666,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
             RNIBGLog(IBGLogLevelError, formatString, log);
             break;
         case RCTLogLevelFatal:
-            RNIBGLog(IBGLogLevelFatal, formatString, log);
+            RNIBGLog(IBGLogLevelError, formatString, log);
             break;
     }
 };

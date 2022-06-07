@@ -142,8 +142,9 @@ export default {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
-    IBGBugReporting.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+  setAutoScreenRecordingDurationIOS: function(autoScreenRecordingMaxDuration) {
+    if (Platform.OS !== 'ios') return;
+    IBGBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
   },
 
   /**

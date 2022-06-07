@@ -12,7 +12,7 @@
 # # SKIP_SIMULATOR_BUILDS=1
 # SCRIPT_SRC=$(find "$PROJECT_DIR" -name 'Instabug_dsym_upload.sh' | head -1)
 # if [ ! "${SCRIPT_SRC}" ]; then
-#   echo "Instabug: err: script not found. Make sure that you're including Instabug.bundle in your project directory"
+#   echo "Instabug: Error: script not found. Make sure that you're including Instabug.bundle in your project directory"
 #   exit 1
 # fi
 # source "${SCRIPT_SRC}"
@@ -27,6 +27,12 @@ if [ "$EFFECTIVE_PLATFORM_NAME" == "-iphonesimulator" ]; then
     exit 0
   fi
 fi
+
+# Check if another `ENDPOINT` is provided
+if [ ! "${ENDPOINT}" ]; then
+    ENDPOINT="https://api.instabug.com/api/sdk/v3/symbols_files"
+fi
+echo "Instabug: using ENDPOINT=${ENDPOINT}"
 
 # Check to make sure the app token exists
 # Objective-C
@@ -54,19 +60,23 @@ if [ ! "${APP_TOKEN}" ]; then
 fi
 
 if [ ! "${APP_TOKEN}" ] || [ -z "${APP_TOKEN}" ];then
-  echo "Instabug: err: APP_TOKEN not found. Make sure you've added the SDK initialization line [Instabug startWithToken: invocationEvent:]"
+  echo "Instabug: Error: APP_TOKEN not found. Make sure you've added the SDK initialization line [Instabug startWithToken: invocationEvent:]"
   exit 1
 fi
 echo "Instabug: found APP_TOKEN=${APP_TOKEN}"
 
 # Check internet connection
 
+echo "Instabug: Checking internet connection.."
+
 CURL_RESPONSE=$(curl 'https://api.instabug.com')
 
 if [[ $CURL_RESPONSE != *"OK"* ]]; then
-    echo "ERROR connecting to api.instabug.com."
+    echo "Instabug: Error: Failed to connect to api.instabug.com."
     echo "${CURL_RESPONSE}"
-    exit 0
+    exit 1
+else
+    echo "Instabug: Device online."
 fi
 
 # Create temp directory if not exists
@@ -83,8 +93,8 @@ fi
 # Check dSYM file
 if [ ! "${DSYM_PATH}" ]; then
   if [ ! "${DWARF_DSYM_FOLDER_PATH}" ] || [ ! "${DWARF_DSYM_FILE_NAME}" ]; then
-    echo "Instabug: err: DWARF_DSYM_FOLDER_PATH or DWARF_DSYM_FILE_NAME not defined"
-    exit 0
+    echo "Instabug: Error: DWARF_DSYM_FOLDER_PATH or DWARF_DSYM_FILE_NAME not defined"
+    exit 1
   fi
   DSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
 fi
@@ -102,7 +112,7 @@ DSYM_UUIDs_PATH="${TEMP_DIRECTORY}/UUIDs.dat"
 
 # Create temp .dat file to save the output to it
 DSYM_UUIDs_TMP_PATH="${TEMP_DIRECTORY}/UUIDs.dat.tmp"
-rm -f DSYM_UUIDs_TMP_PATH
+rm -f "${DSYM_UUIDs_TMP_PATH}"
 
 process_dsym_file() {
     file=$1
@@ -137,8 +147,8 @@ if [ ! "${FRAMEWORKS_FOLDER_PATH}" ]; then
  else
      find "${DWARF_DSYM_FOLDER_PATH}/${FRAMEWORKS_FOLDER_PATH}" -name "*.framework" | while read -r framework
      do
-         framework_name="$(basename -- $framework)"
-         framework_dsym="$(find ${DWARF_DSYM_FOLDER_PATH} -name ${framework_name}.dSYM)"
+         framework_name="$(basename -- "$framework")"
+         framework_dsym="$(find "${DWARF_DSYM_FOLDER_PATH}" -name "${framework_name}.dSYM")"
           if [ ! "${framework_dsym}" ]; then
              echo "Instabug: Cannot find ${framework_name}.dSYM"
           else
@@ -149,7 +159,7 @@ if [ ! "${FRAMEWORKS_FOLDER_PATH}" ]; then
 
 fi
 
-DSYM_UUIDs=$(cat ${DSYM_UUIDs_TMP_PATH})
+DSYM_UUIDs=$(cat "${DSYM_UUIDs_TMP_PATH}")
 if [ -z "$DSYM_UUIDs" ]; then
     rm -rf "${DSYMS_DIR}"
     echo "Instabug: No new dSYMs to upload."
@@ -159,21 +169,20 @@ fi
 # Create dSYM .zip file
 DSYM_PATH_ZIP="${TEMP_DIRECTORY}/$DWARF_DSYM_FILE_NAME.zip"
 if [ ! -d "$DSYM_PATH" ]; then
-  echo "Instabug: err: dSYM not found: ${DSYM_PATH}"
-  exit 0
+  echo "Instabug: Error: dSYM not found: ${DSYM_PATH}"
+  exit 1
 fi
 echo "Instabug: Compressing dSYM file..."
-(/usr/bin/zip --recurse-paths --quiet "${DSYM_PATH_ZIP}" "${DSYMS_DIR}") || exit 0
+(/usr/bin/zip --recurse-paths --quiet "${DSYM_PATH_ZIP}" "${DSYMS_DIR}") || exit 1
 
 # Upload dSYM
 echo "Instabug: Uploading dSYM file..."
-ENDPOINT="https://api.instabug.com/api/sdk/v3/symbols_files"
 STATUS=$(curl "${ENDPOINT}" --write-out %{http_code} --silent --output /dev/null -F os=iOS -F symbols_file=@"${DSYM_PATH_ZIP}" -F application_token="${APP_TOKEN}")
 if [ $STATUS -ne 200 ]; then
-  echo "Instabug: err: dSYM archive not succesfully uploaded."
+  echo "Instabug: Error: dSYM archive not succesfully uploaded with status code: ${STATUS}"
   echo "Instabug: deleting temporary dSYM archive..."
   rm -f "${DSYM_PATH_ZIP}"
-  exit 0
+  exit 1
 fi
 
 # Save UUIDs
@@ -188,6 +197,6 @@ rm -f "${DSYM_UUIDs_TMP_PATH}"
 # Finalize
 echo "Instabug: dSYM upload complete."
 if [ "$?" -ne 0 ]; then
-  echo "Instabug: err: an error was encountered uploading dSYM"
-  exit 0
+  echo "Instabug: Error: an error was encountered uploading dSYM"
+  exit 1
 fi

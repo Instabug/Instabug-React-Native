@@ -43,7 +43,7 @@
 
 - (void)setAutoScreenRecordingEnabled:(BOOL)enabled;
 
-- (void)setAutoScreenRecordingMaxDuration:(CGFloat)duration;
+- (void)setAutoScreenRecordingDuration:(CGFloat)duration;
 
 - (void)setViewHierarchyEnabled:(BOOL)viewHirearchyEnabled;
 

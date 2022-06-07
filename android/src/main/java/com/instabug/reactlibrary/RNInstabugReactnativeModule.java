@@ -29,8 +29,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.InvocationMode;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
@@ -200,6 +198,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ADD_IMAGE_FROM_GALLERY = "addImageFromGallery";
     private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
     private final String ADD_VIDEO = "addVideoMessage";
+    private final String VIDEO_PRESS_RECORD = "videoPressRecord";
 
     private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDenied";
 
@@ -218,9 +217,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
 
-    private final String CUSTOM_SURVEY_THANKS_TITLE = "surveysCustomThanksTitle";
-    private final String CUSTOM_SURVEY_THANKS_SUBTITLE = "surveysCustomThanksSubTitle";
-
     private final String STORE_RATING_THANKS_TITLE = "surveysStoreRatingThanksTitle";
     private final String STORE_RATING_THANKS_SUBTITLE = "surveysStoreRatingThanksSubtitle";
 
@@ -238,6 +234,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_DISCARD_DIALOG_NEGATIVE_ACTION = "discardAlertCancel";
     private final String REPORT_DISCARD_DIALOG_POSITIVE_ACTION = "discardAlertAction";
     private final String REPORT_ADD_ATTACHMENT_HEADER = "addAttachmentButtonTitleStringName";
+    private final String REPORT_REPRO_STEPS_DISCLAIMER_BODY = "reportReproStepsDisclaimerBody";
+    private final String REPORT_REPRO_STEPS_DISCLAIMER_LINK = "reportReproStepsDisclaimerLink";
+    private final String REPRO_STEPS_PROGRESS_DIALOG_BODY = "reproStepsProgressDialogBody";
+    private final String REPRO_STEPS_LIST_HEADER = "reproStepsListHeader";
+    private final String REPRO_STEPS_LIST_DESCRIPTION = "reproStepsListDescription";
+    private final String REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION = "reproStepsListEmptyStateDescription";
+    private final String REPRO_STEPS_LIST_ITEM_TITLE = "reproStepsListItemTitle";
 
     private InstabugCustomTextPlaceHolder placeHolders;
     private Report currentReport;
@@ -1659,26 +1662,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param sessionsCount number of sessions that the dismissed survey will be shown after.
-     * @param daysCount     number of days that the dismissed survey will show after
-     */
-    @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Returns an array containing the available surveys.
      * @param availableSurveysCallback - Callback with the returned value of the available surveys
      *
@@ -1963,7 +1946,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void hideView(final ReadableArray ids) {
+    public void addPrivateView(final int reactTag) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1971,16 +1954,33 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 uiManagerModule.prependUIBlock(new UIBlock() {
                     @Override
                     public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        final View[] arrayOfViews = new View[ids.size()];
-                        for (int i = 0; i < ids.size(); i++) {
-                            int viewId = (int) ids.getDouble(i);
-                            try {
-                                arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
-                            } catch(Exception e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.addPrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
                         }
-                        Instabug.setViewsAsPrivate(arrayOfViews);
+                    }
+                });
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removePrivateView(final int reactTag) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+                uiManagerModule.prependUIBlock(new UIBlock() {
+                    @Override
+                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.removePrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -2046,6 +2046,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT;
             case ADD_VIDEO:
                 return InstabugCustomTextPlaceHolder.Key.ADD_VIDEO;
+            case VIDEO_PRESS_RECORD:
+                return InstabugCustomTextPlaceHolder.Key.VIDEO_RECORDING_FAB_BUBBLE_HINT;
             case AUDIO_RECORDING_PERMISSION_DENIED:
                 return InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED;
             case VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD:
@@ -2076,10 +2078,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
             case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
-            case CUSTOM_SURVEY_THANKS_TITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_TITLE;
-            case CUSTOM_SURVEY_THANKS_SUBTITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_SUBTITLE;
             case STORE_RATING_THANKS_TITLE:
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
             case STORE_RATING_THANKS_SUBTITLE:
@@ -2102,6 +2100,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION;
             case REPORT_ADD_ATTACHMENT_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER;
+            case REPORT_REPRO_STEPS_DISCLAIMER_BODY:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY;
+            case REPORT_REPRO_STEPS_DISCLAIMER_LINK:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK;
+            case REPRO_STEPS_PROGRESS_DIALOG_BODY:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY;
+            case REPRO_STEPS_LIST_HEADER:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER;
+            case REPRO_STEPS_LIST_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION;
+            case REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION;
+            case REPRO_STEPS_LIST_ITEM_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE;
             default:
                 return null;
         }
@@ -2291,6 +2303,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("addImageFromGallery", ADD_IMAGE_FROM_GALLERY);
         constants.put("addExtraScreenshot", ADD_EXTRA_SCREENSHOT);
         constants.put("addVideoMessage", ADD_VIDEO);
+        constants.put("videoPressRecord", VIDEO_PRESS_RECORD);
         constants.put("audioRecordingPermissionDeniedMessage", AUDIO_RECORDING_PERMISSION_DENIED);
         constants.put("recordingMessageToHoldText", VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         constants.put("recordingMessageToReleaseText", VOICE_MESSAGE_RELEASE_TO_ATTACH);
@@ -2308,9 +2321,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
         constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
 
-        constants.put(CUSTOM_SURVEY_THANKS_TITLE, CUSTOM_SURVEY_THANKS_TITLE);
-        constants.put(CUSTOM_SURVEY_THANKS_SUBTITLE, CUSTOM_SURVEY_THANKS_SUBTITLE);
-
         constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
         constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);
 
@@ -2324,6 +2334,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(REPORT_DISCARD_DIALOG_NEGATIVE_ACTION, REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         constants.put(REPORT_DISCARD_DIALOG_POSITIVE_ACTION, REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         constants.put(REPORT_ADD_ATTACHMENT_HEADER, REPORT_ADD_ATTACHMENT_HEADER);
+        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_BODY, REPORT_REPRO_STEPS_DISCLAIMER_BODY);
+        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_LINK, REPORT_REPRO_STEPS_DISCLAIMER_LINK);
+        constants.put(REPRO_STEPS_PROGRESS_DIALOG_BODY, REPRO_STEPS_PROGRESS_DIALOG_BODY);
+        constants.put(REPRO_STEPS_LIST_HEADER, REPRO_STEPS_LIST_HEADER);
+        constants.put(REPRO_STEPS_LIST_DESCRIPTION, REPRO_STEPS_LIST_DESCRIPTION);
+        constants.put(REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION, REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
+        constants.put(REPRO_STEPS_LIST_ITEM_TITLE, REPRO_STEPS_LIST_ITEM_TITLE);
 
         return constants;
     }
