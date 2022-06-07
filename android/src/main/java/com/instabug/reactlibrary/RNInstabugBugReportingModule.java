@@ -176,28 +176,6 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @deprecated
-     * Sets the event used to invoke Instabug SDK
-     *
-     * @param invocationEventValue the invocation event value
-     * @see InstabugInvocationEvent
-     */
-    @ReactMethod
-    public void setInvocationEvent(final String invocationEventValue) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setInvocationEvents(
-                            ArgsRegistry.getDeserializedValue(invocationEventValue, InstabugInvocationEvent.class));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Sets the event used to invoke Instabug SDK
      *
      * @param invocationEventValues the invocation event value

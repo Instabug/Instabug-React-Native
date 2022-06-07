@@ -1,3 +1,6 @@
+.github/
+.circleci/
+
 *.iml
 .idea/
 .DS_Store
@@ -7,6 +10,9 @@ android/android.iml
 android/gradlew
 android/gradlew.bat
 android/local.properties
+android/.project
+android/.settings
+*Test.java
 
 ios/.DS_Store
 
@@ -14,3 +20,10 @@ build/
 InstabugSample/
 node_modules/
 coverage/
+__tests__/
+
+Dangerfile
+babel.config.js
+codecov.yml
+typescript_validator.js
+.prettierrc.js

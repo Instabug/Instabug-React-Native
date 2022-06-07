@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -25,12 +26,10 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.InvocationMode;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
-import com.instabug.chat.Chats;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
@@ -39,6 +38,7 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
+import com.instabug.library.Platform;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
@@ -98,7 +98,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String INVOCATION_EVENT_NONE = "invocationEventNone";
     private final String INVOCATION_EVENT_SHAKE = "invocationEventShake";
     private final String INVOCATION_EVENT_SCREENSHOT = "invocationEventScreenshot";
-    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE = "invocationEventTwoFingersSwipe";
+    private final String INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT = "invocationEventTwoFingersSwipeLeft";
     private final String INVOCATION_EVENT_FLOATING_BUTTON = "invocationEventFloatingButton";
     //InvocationModes
     private final String INVOCATION_MODE_NA = "na";
@@ -166,7 +166,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     private final String INVOCATION_HEADER = "invocationHeader";
-    private final String START_CHATS = "startChats";
     private final String REPORT_QUESTION = "reportQuestion";
     private final String REPORT_BUG = "reportBug";
     private final String REPORT_FEEDBACK = "reportFeedback";
@@ -183,6 +182,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String BUG_REPORTING_REPORT_TYPE_BUG = "bugReportingReportTypeBug";
     private final String BUG_REPORTING_REPORT_TYPE_FEEDBACK = "bugReportingReportTypeFeedback";
     private final String BUG_REPORTING_REPORT_TYPE_QUESTION = "bugReportingReportTypeQuestion";
+
+    private final String DISMISS_TYPE_ADD_ATTACHMENT = "dismissTypeAddAttachment";
+    private final String DISMISS_TYPE_CANCEL = "dismissTypeCancel";
+    private final String DISMISS_TYPE_SUBMIT = "dismissTypeSubmit";
 
     private final String EMAIL_FIELD_HIDDEN = "emailFieldHidden";
     private final String EMAIL_FIELD_OPTIONAL = "emailFieldOptional";
@@ -214,9 +217,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
 
-    private final String CUSTOM_SURVEY_THANKS_TITLE = "surveysCustomThanksTitle";
-    private final String CUSTOM_SURVEY_THANKS_SUBTITLE = "surveysCustomThanksSubTitle";
-
     private final String STORE_RATING_THANKS_TITLE = "surveysStoreRatingThanksTitle";
     private final String STORE_RATING_THANKS_SUBTITLE = "surveysStoreRatingThanksSubtitle";
 
@@ -242,23 +242,16 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION = "reproStepsListEmptyStateDescription";
     private final String REPRO_STEPS_LIST_ITEM_TITLE = "reproStepsListItemTitle";
 
-    private Application androidApplication;
-    private Instabug mInstabug;
-    private InstabugInvocationEvent invocationEvent;
     private InstabugCustomTextPlaceHolder placeHolders;
     private Report currentReport;
 
     /**
-     * Instantiates a new Rn instabug reactnative module.
+     * Instantiates a new Rn Instabug ReactNative module.
      *
      * @param reactContext the react context
-     * @param mInstabug    the m instabug
      */
-    public RNInstabugReactnativeModule(ReactApplicationContext reactContext, Application
-            androidApplication, Instabug mInstabug) {
+    public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.androidApplication = androidApplication;
-        this.mInstabug = mInstabug;
         //init placHolders
         placeHolders = new InstabugCustomTextPlaceHolder();
     }
@@ -276,7 +269,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
    * the SDK's UI.
    */
     @ReactMethod
-    public void startWithToken(final String token, final ReadableArray invocationEventValues) {
+    public void start(final String token, final ReadableArray invocationEventValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -289,13 +282,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         String key = stringArray[i];
                         invocationEventsArray[i] = ArgsRegistry.getDeserializedValue(key, InstabugInvocationEvent.class);
                     }
-                    new Instabug.Builder(getCurrentActivity().getApplication(), token).setInvocationEvents(invocationEventsArray).build();
+
+                    final Application application = (Application) getReactApplicationContext().getApplicationContext();
+
+                    setCurrentPlatform();
+                    setBaseUrlForDeprecationLogs();
+
+                    new Instabug.Builder(application, token)
+                            .setInvocationEvents(invocationEventsArray)
+                            .build();
+
+                    // Temporarily disabling APM hot launches
+                    APM.setHotAppLaunchEnabled(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
 
+    private void setCurrentPlatform() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
+            if (method != null) {
+                Log.i("IB-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
+                method.invoke(null, Platform.RN);
+            } else {
+                Log.e("IB-CP-Bridge", "setCurrentPlatform was not found by reflection");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBaseUrlForDeprecationLogs() {
+        try {
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
+            if (method != null) {
+                method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -318,48 +350,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             }
         });
 
-    }
-
-    /**
-     * Enable/Disable screen recording
-     *
-     * @param autoScreenRecordingEnabled boolean for enable/disable
-     *                                   screen recording on crash feature
-     */
-    @ReactMethod
-    public void setAutoScreenRecordingEnabled(final boolean autoScreenRecordingEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets auto screen recording maximum duration
-     *
-     * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
-     *                                       in milliseconds
-     *                                       The maximum duration is 30000 milliseconds
-     */
-    @ReactMethod
-    public void setAutoScreenRecordingMaxDuration(final int autoScreenRecordingMaxDuration) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int durationInMilli = autoScreenRecordingMaxDuration * 1000;
-                    Instabug.setAutoScreenRecordingMaxDuration(durationInMilli);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -405,24 +395,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                             break;
                         default:
                             BugReporting.setExtendedBugReportState(ExtendedBugReport.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setViewHierarchyEnabled(final boolean enabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (enabled) {
-                        BugReporting.setViewHierarchyState(Feature.State.ENABLED);
-                    } else {
-                        BugReporting.setViewHierarchyState(Feature.State.DISABLED);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -606,7 +578,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param userEmail User's default email
      */
     @ReactMethod
-    public void identifyUserWithEmail(final String userEmail, final String userName) {
+    public void identifyUser(final String userEmail, final String userName) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -721,29 +693,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         return appToken;
     }
 
-
-    /**
-     * Get current unread count of messages for this user
-     *
-     * @return number of messages that are unread for this user
-     */
-    @ReactMethod
-    public void getUnreadMessagesCount(final Callback messageCountCallback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                int unreadMessages = 0;
-                try {
-                    unreadMessages = Replies.getUnreadRepliesCount();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                messageCountCallback.invoke(unreadMessages);
-            }
-        });
-    }
-
     /**
      * @deprecated
      * Sets the event used to invoke Instabug SDK
@@ -784,7 +733,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     case INVOCATION_EVENT_FLOATING_BUTTON:
                         parsedInvocationEvents.add(InstabugInvocationEvent.FLOATING_BUTTON);
                         break;
-                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE:
+                    case INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT:
                         parsedInvocationEvents.add(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
                         break;
                     case INVOCATION_EVENT_SHAKE:
@@ -821,7 +770,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         try {
             if (invocationEventValue.equals(INVOCATION_EVENT_FLOATING_BUTTON)) {
                 invocationEvent = InstabugInvocationEvent.FLOATING_BUTTON;
-            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE)) {
+            } else if (invocationEventValue.equals(INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT)) {
                 invocationEvent = InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT;
             } else if (invocationEventValue.equals(INVOCATION_EVENT_SHAKE)) {
                 invocationEvent = InstabugInvocationEvent.SHAKE;
@@ -881,26 +830,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Enabled/disable chat notification
-     *
-     * @param isChatNotificationEnable whether chat notification is reburied or not
-     */
-    @ReactMethod
-    public void setChatNotificationEnabled(final boolean isChatNotificationEnable) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Replies.setInAppNotificationEnabled(isChatNotificationEnable);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-    /**
      * Enable/Disable debug logs from Instabug SDK
      * Default state: disabled
      *
@@ -920,43 +849,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-     * Report a caught exception to Instabug dashboard
-     *
-     * @param stack           the exception to be reported
-     * @param message         the message of the exception to be reported
-     * @param errorIdentifier used to group issues manually reported
-     */
-    @ReactMethod
-    public void reportJsException(final ReadableArray stack, final String message, final String errorIdentifier) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int size = stack != null ? stack.size() : 0;
-                    StackTraceElement[] stackTraceElements = new StackTraceElement[size];
-                    for (int i = 0; i < size; i++) {
-                        ReadableMap frame = stack.getMap(i);
-                        String methodName = frame.getString("methodName");
-                        String fileName = frame.getString("file");
-                        int lineNumber = frame.getInt("lineNumber");
 
-                        stackTraceElements[i] = new StackTraceElement(fileName, methodName, fileName,
-                                lineNumber);
-                    }
-                    Throwable throwable = new Throwable(message);
-                    throwable.setStackTrace(stackTraceElements);
-                    if (errorIdentifier != null)
-                        CrashReporting.reportException(throwable);
-                    else
-                        CrashReporting.reportException(throwable, errorIdentifier);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
 
     /**
@@ -1215,7 +1108,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             public void run() {
                 WritableMap writableMap = Arguments.createMap();
                 try {
-                    HashMap<String, String> map = mInstabug.getAllUserAttributes();
+                    HashMap<String, String> map = Instabug.getAllUserAttributes();
                     for (HashMap.Entry<String, String> entry : map.entrySet()) {
                         writableMap.putString(entry.getKey(), entry.getValue());
                     }
@@ -1317,7 +1210,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param name Event name.
      */
     @ReactMethod
-    public void logUserEventWithName(final String name) {
+    public void logUserEvent(final String name) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1580,25 +1473,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Show any valid survey if exist
-     *
-     * @return true if a valid survey was shown otherwise false
-     */
-    @ReactMethod
-    public void setSurveysEnabled(final boolean surveysEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setAutoShowingEnabled(surveysEnabled);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Sets the runnable that gets executed just before showing any valid survey<br/>
      * WARNING: This runs on your application's main UI thread. Please do not include
      * any blocking operations to avoid ANRs.
@@ -1767,33 +1641,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-     * @deprecated
-     * Sets a block of code that gets executed when a new message is received.
-     *
-     * @param onNewMessageHandler - A callback that gets
-     *                            executed when a new message is received.
-     */
-    @ReactMethod
-    public void setOnNewMessageHandler(final Callback onNewMessageHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Runnable onNewMessageRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            sendEvent(getReactApplicationContext(), "IBGonNewMessageHandler", null);
-                        }
-                    };
-                    Replies.setOnNewReplyReceivedCallback(onNewMessageRunnable);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -1809,26 +1656,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
                 } catch (java.lang.Exception exception) {
                     exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param sessionsCount number of sessions that the dismissed survey will be shown after.
-     * @param daysCount     number of days that the dismissed survey will show after
-     */
-    @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -1883,34 +1710,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
             }
         });
 
-    }
-
-    @ReactMethod
-    public void setChatsEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        Chats.setState(Feature.State.ENABLED);
-                    } else {
-                        Chats.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void showChats() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Chats.show();
-            }
-        });
     }
 
     @ReactMethod
@@ -2060,31 +1859,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Set whether new in app notification received will play a small sound notification
-     * or not (Default is {@code false})
-     *
-     * @param shouldPlaySound desired state of conversation sounds
-     * @since 4.1.0
-     */
-    @ReactMethod
-    public void setEnableInAppNotificationSound(final boolean shouldPlaySound) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    try {
-                        Replies.setInAppNotificationSound(shouldPlaySound);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Enable/disable session profiler
      *
      * @param sessionProfilerEnabled desired state of the session profiler feature
@@ -2102,26 +1876,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Set Surveys welcome screen enabled, default value is false
-     *
-     * @param shouldShow shouldShow whether should a welcome screen be shown
-     *                   before taking surveys or not
-     */
-    @ReactMethod
-    public void setShouldShowSurveysWelcomeScreen(final boolean shouldShow) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setShouldShowWelcomeScreen(shouldShow);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
                 }
             }
         });
@@ -2192,7 +1946,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void hideView(final ReadableArray ids) {
+    public void addPrivateView(final int reactTag) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -2200,16 +1954,33 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 uiManagerModule.prependUIBlock(new UIBlock() {
                     @Override
                     public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        final View[] arrayOfViews = new View[ids.size()];
-                        for (int i = 0; i < ids.size(); i++) {
-                            int viewId = (int) ids.getDouble(i);
-                            try {
-                                arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
-                            } catch(Exception e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.addPrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
                         }
-                        Instabug.setViewsAsPrivate(arrayOfViews);
+                    }
+                });
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removePrivateView(final int reactTag) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+                uiManagerModule.prependUIBlock(new UIBlock() {
+                    @Override
+                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.removePrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -2259,8 +2030,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.COMMENT_FIELD_HINT_FOR_QUESTION;
             case INVOCATION_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER;
-            case START_CHATS:
-                return InstabugCustomTextPlaceHolder.Key.START_CHATS;
             case REPORT_QUESTION:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION;
             case REPORT_BUG:
@@ -2309,10 +2078,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
             case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
-            case CUSTOM_SURVEY_THANKS_TITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_TITLE;
-            case CUSTOM_SURVEY_THANKS_SUBTITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_SUBTITLE;
             case STORE_RATING_THANKS_TITLE:
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
             case STORE_RATING_THANKS_SUBTITLE:
@@ -2385,6 +2150,52 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 .emit(eventName, params);
     }
 
+    @ReactMethod
+    public void addExperiments(final ReadableArray experiments) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(experiments);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    Instabug.addExperiments(Arrays.asList(stringArray));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removeExperiments(final ReadableArray experiments) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object[] objectArray = ArrayUtil.toArray(experiments);
+                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
+                    Instabug.removeExperiments(Arrays.asList(stringArray));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void clearAllExperiments() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.clearAllExperiments();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
@@ -2399,7 +2210,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("invocationEventNone", INVOCATION_EVENT_NONE);
         constants.put("invocationEventShake", INVOCATION_EVENT_SHAKE);
         constants.put("invocationEventScreenshot", INVOCATION_EVENT_SCREENSHOT);
-        constants.put("invocationEventTwoFingersSwipe", INVOCATION_EVENT_TWO_FINGERS_SWIPE);
+        constants.put("invocationEventTwoFingersSwipeLeft", INVOCATION_EVENT_TWO_FINGERS_SWIPE_LEFT);
         constants.put("invocationEventFloatingButton", INVOCATION_EVENT_FLOATING_BUTTON);
 
         constants.put("colorThemeLight", COLOR_THEME_LIGHT);
@@ -2417,6 +2228,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(BUG_REPORTING_REPORT_TYPE_BUG, BUG_REPORTING_REPORT_TYPE_BUG);
         constants.put(BUG_REPORTING_REPORT_TYPE_FEEDBACK, BUG_REPORTING_REPORT_TYPE_FEEDBACK);
         constants.put(BUG_REPORTING_REPORT_TYPE_QUESTION, BUG_REPORTING_REPORT_TYPE_QUESTION);
+
+        constants.put(DISMISS_TYPE_ADD_ATTACHMENT, DISMISS_TYPE_ADD_ATTACHMENT);
+        constants.put(DISMISS_TYPE_CANCEL, DISMISS_TYPE_CANCEL);
+        constants.put(DISMISS_TYPE_SUBMIT, DISMISS_TYPE_SUBMIT);
 
         constants.put("localeArabic", LOCALE_ARABIC);
         constants.put("localeAzerbaijani", LOCALE_AZERBAIJANI);
@@ -2462,13 +2277,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("requestNewFeature", ACTION_TYPE_REQUEST_NEW_FEATURE);
         constants.put("addCommentToFeature", ACTION_TYPE_ADD_COMMENT_TO_FEATURE);
 
-        //deprecated
-        constants.put("emailFieldHidden", EMAIL_FIELD_HIDDEN);
-        constants.put("emailFieldOptional", EMAIL_FIELD_OPTIONAL);
-        constants.put("commentFieldRequired", COMMENT_FIELD_REQUIRED);
-        constants.put("disablePostSendingDialog", DISABLE_POST_SENDING_DIALOG);
-        //
-
         constants.put("optionEmailFieldHidden", EMAIL_FIELD_HIDDEN);
         constants.put("optionEmailFieldOptional", EMAIL_FIELD_OPTIONAL);
         constants.put("optionCommentFieldRequired", COMMENT_FIELD_REQUIRED);
@@ -2487,7 +2295,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("commentFieldHintForFeedback", COMMENT_FIELD_HINT_FOR_FEEDBACK);
         constants.put("commentFieldHintForQuestion", COMMENT_FIELD_HINT_FOR_QUESTION);
         constants.put("invocationHeader", INVOCATION_HEADER);
-        constants.put("startChats", START_CHATS);
         constants.put("reportQuestion", REPORT_QUESTION);
         constants.put("reportBug", REPORT_BUG);
         constants.put("reportFeedback", REPORT_FEEDBACK);
@@ -2513,9 +2320,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("welcomeMessageBetaFinishStepContent", WELCOME_MESSAGE_FINISH_STEP_CONTENT);
         constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
         constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
-
-        constants.put(CUSTOM_SURVEY_THANKS_TITLE, CUSTOM_SURVEY_THANKS_TITLE);
-        constants.put(CUSTOM_SURVEY_THANKS_SUBTITLE, CUSTOM_SURVEY_THANKS_SUBTITLE);
 
         constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
         constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);

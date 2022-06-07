@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2018 by Instabug, Inc., all rights reserved.
  
- Version:    10.11.2
+ Version:    11.0.2
  */
 
 #import <UIKit/UIKit.h>
@@ -189,14 +189,9 @@ extern NSString * const kIBGStringFeatureRequestMyFeaturesText;
 extern NSString * const kIBGSurveyIntroTitleText;
 extern NSString * const kIBGSurveyIntroDescriptionText;
 extern NSString * const kIBGSurveyIntroTakeSurveyButtonText;
-extern NSString * const kIBDismissButtonTitleStringName DEPRECATED_MSG_ATTRIBUTE("kIBDismissButtonTitleStringName is deprecated. You can use kIBGDismissButtonTitleStringName instead.");
 extern NSString * const kIBGDismissButtonTitleStringName;
-extern NSString * const kIBGSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouTitleText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouTitleText for Custom surveys.");
-extern NSString * const kIBGSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("kIBGSurveyThankYouDescriptionText is deprecated. You can edit this string from the dashboard, and use kIBGCustomSurveyThankYouDescriptionText for Custom surveys.");
 extern NSString * const kIBGStoreRatingThankYouTitleText;
 extern NSString * const kIBGStoreRatingThankYouDescriptionText;
-extern NSString * const kIBGCustomSurveyThankYouTitleText DEPRECATED_MSG_ATTRIBUTE("This key kIBGCustomSurveyThankYouTitleText and <kIBGCustomSurveyThankYouDescriptionText> will be deprecated with the next release. You will be able to edit this message from the dashboard from this point on.");
-extern NSString * const kIBGCustomSurveyThankYouDescriptionText DEPRECATED_MSG_ATTRIBUTE("This key kIBGCustomSurveyThankYouDescriptionText and <kIBGCustomSurveyThankYouTitleText> will be deprecated with the next release. You will be able to edit this message from the dashboard from this point on.");
 extern NSString * const kIBGSurveysNPSLeastLikelyStringName;
 extern NSString * const kIBGSurveysNPSMostLikelyStringName;
 extern NSString * const kIBGSurveyNextButtonTitle;
@@ -338,7 +333,6 @@ typedef NS_ENUM(NSInteger, IBGLocale) {
     IBGLocaleKorean,
     IBGLocaleNorwegian,
     IBGLocalePolish,
-    IBGLocalePortugese DEPRECATED_MSG_ATTRIBUTE("Please use IBGLocalePortuguese"), // Fixing typo
     IBGLocalePortuguese,
     IBGLocalePortugueseBrazil,
     IBGLocaleRussian,
@@ -378,12 +372,9 @@ typedef NS_ENUM(NSInteger, IBGPosition) {
 typedef NS_ENUM(NSInteger, IBGLogLevel) {
     IBGLogLevelNone = 0,
     IBGLogLevelError,
-    IBGLogLevelFatal DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
     IBGLogLevelWarning,
     IBGLogLevelInfo,
-    IBGLogLevelDefault DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
     IBGLogLevelDebug,
-    IBGLogLevelTrace DEPRECATED_MSG_ATTRIBUTE("Please use other log level"),
     IBGLogLevelVerbose,
 };
 

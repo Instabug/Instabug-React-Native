@@ -20,7 +20,6 @@ import Instabug, {
   BugReporting,
   FeatureRequests,
   Surveys,
-  Chats,
   CrashReporting,
   Replies,
 } from 'instabug-reactnative';
@@ -42,7 +41,7 @@ class Home extends Component<{}> {
       colorTheme: 'Light',
     };
 
-    Instabug.start('068ba9a8c3615035e163dc5f829c73be', [
+    Instabug.start('2c63627b9923e10eee2c8abf92e6925f', [
       Instabug.invocationEvent.floatingButton,
     ]);
   }
@@ -138,13 +137,11 @@ class Home extends Component<{}> {
   }
 
   sendFeedback() {
-    BugReporting.showWithOptions(BugReporting.reportType.feedback, [
-      BugReporting.option.emailFieldHidden,
-    ]);
+    BugReporting.show(BugReporting.reportType.feedback, [BugReporting.option.emailFieldHidden]);
   }
 
   startNewConversation() {
-    BugReporting.showWithOptions(BugReporting.reportType.question);
+    BugReporting.show(BugReporting.reportType.question);
   }
 
   showUnreadMessagesCount() {

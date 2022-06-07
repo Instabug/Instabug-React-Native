@@ -1,7 +1,22 @@
 ## master
 
+* Breaking: Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our README
+* Breaking: Removes the deprecated APIs. Check the migration guide referenced in our README
+* Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
+* Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
 * Adds string keys for the Repro Steps
+* Fixes an issue with setRequestFilterExpression API not working with Hermes
+* Fixes an issue with swipe invocation event not working on Android
 
+## 10.13.0 (2022-03-17)
+
+* Adds Instabug Experiments APIs
+* Adds defensive type checking in Instabug logging APIs
+* Bumps Instabug iOS SDK to v10.11.9
+* Bumps Instabug Android SDK to v10.13.0
+* Adapts the strict requirement of newer Expo versions to use the React header with the iOS import statements
+* Fixes an issue with GraphQL requests not being grouped correctly
+* Excludes unnecessary files from the published npm package
 
 ## 10.11.0 (2021-12-23)
 

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.11.2
+ Version:    11.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -88,6 +88,12 @@ NS_SWIFT_NAME(APM)
 /// Ends the current running Custom UI Trace.
 + (void)endUITrace;
 
+
+/// Ends the current view's Screen Loading occurence. Calling this API is optional, Screen Loadings will still be captured and ended automatically by the SDK;
+/// this API just allows you to change when a Screen Loading actually ends.
+/// @param viewController The view controller whose loading you want to mark as ended. This view has to still be visible on screen.
++ (void)endScreenLoadingForViewController:(UIViewController * _Nullable)viewController;
+
 /// Ends the current session’s App Launch. Calling this API is optional, App Launches will still be captured and ended automatically by the SDK;
 /// this API just allows you to change when an App Launch actually ends.
 + (void)endAppLaunch;
@@ -114,7 +120,7 @@ NS_SWIFT_NAME(APM)
 /// Each log level will also include logs from all the levels above it. For instance,
 /// IBGLogLevelInfo will include IBGLogLevelInfo logs as well as IBGLogLevelWarning
 /// and IBGLogLevelError logs.
-@property (class, atomic, assign) IBGLogLevel logLevel;
+@property (class, atomic, assign) IBGLogLevel logLevel DEPRECATED_MSG_ATTRIBUTE("first deprecated in SDK 11.0.0. Use Instabug.sdkDebugLogsLevel instead");
 
 /// Adds a handler to provide attributes to be attached with Network Traces.
 ///

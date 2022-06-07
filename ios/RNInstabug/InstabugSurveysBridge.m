@@ -39,7 +39,10 @@ RCT_EXPORT_METHOD(showSurvey:(NSString *)surveyToken) {
 }
 
 RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
-    callback(@[@([IBGSurveys hasRespondedToSurveyWithToken:surveyToken])]);
+    [IBGSurveys hasRespondedToSurveyWithToken:surveyToken
+                            completionHandler:^(BOOL hasResponded) {
+        callback(@[@(hasResponded)]);
+    }];
 }
 
 RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
@@ -66,7 +69,7 @@ RCT_EXPORT_METHOD(setOnShowHandler:(RCTResponseSenderBlock)callBack) {
             [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
         };
     } else {
-        IBGSurveys.willShowSurveyHandler = nil;
+        IBGSurveys.willShowSurveyHandler = ^{};
     }
 }
 
@@ -76,16 +79,12 @@ RCT_EXPORT_METHOD(setOnDismissHandler:(RCTResponseSenderBlock)callBack) {
             [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
         };
     } else {
-        IBGSurveys.didDismissSurveyHandler = nil;
+        IBGSurveys.didDismissSurveyHandler = ^{};
     }
 }
 
 RCT_EXPORT_METHOD(setAutoShowingEnabled:(BOOL)autoShowingSurveysEnabled) {
     IBGSurveys.autoShowingEnabled = autoShowingSurveysEnabled;
-}
-
-RCT_EXPORT_METHOD(setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount) {
-    [IBGSurveys setThresholdForReshowingSurveyAfterDismiss:sessionCount daysCount:daysCount];
 }
 
 RCT_EXPORT_METHOD(setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen) {

@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE(Instabug)
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(startWithToken:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
+RCT_EXPORT_METHOD(start:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
      SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
@@ -243,7 +243,7 @@ RCT_EXPORT_METHOD(clearFileAttachments) {
     [Instabug clearFileAttachments];
 }
 
-RCT_EXPORT_METHOD(identifyUserWithEmail:(NSString *)email name:(NSString *)name) {
+RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name) {
     [Instabug identifyUserWithEmail:email name:name];
 }
 
@@ -277,11 +277,7 @@ RCT_EXPORT_METHOD(clearAllUserAttributes) {
     }
 }
 
-RCT_EXPORT_METHOD(setViewHierarchyEnabled:(BOOL)viewHierarchyEnabled) {
-    Instabug.shouldCaptureViewHierarchy = viewHierarchyEnabled;
-}
-
-RCT_EXPORT_METHOD(logUserEventWithName:(NSString *)name) {
+RCT_EXPORT_METHOD(logUserEvent:(NSString *)name) {
     [Instabug logUserEventWithName:name];
 }
 
@@ -413,10 +409,14 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     }
 }
 
-RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;
-    
+}
+
+RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = false;
 }
 
 RCT_EXPORT_METHOD(show) {
@@ -432,6 +432,18 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
         [inv setArgument:&(screenName) atIndex:2];
         [inv invoke];
     }
+}
+
+RCT_EXPORT_METHOD(addExperiments:(NSArray *)experiments) {
+    [Instabug addExperiments:experiments];
+}
+
+RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
+    [Instabug removeExperiments:experiments];
+}
+
+RCT_EXPORT_METHOD(clearAllExperiments) {
+    [Instabug clearAllExperiments];
 }
 
 - (NSDictionary *)constantsToExport
@@ -451,7 +463,7 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               
               @"dismissTypeSubmit": @(IBGDismissTypeSubmit),
               @"dismissTypeCancel": @(IBGDismissTypeCancel),
-              @"dismissTypeAddAtttachment": @(IBGDismissTypeAddAttachment),
+              @"dismissTypeAddAttachment": @(IBGDismissTypeAddAttachment),
               
               @"reproStepsEnabled": @(IBGUserStepsModeEnable),
               @"reproStepsDisabled": @(IBGUserStepsModeDisable),
@@ -513,12 +525,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
               @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
 
-
-              @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
-              @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
-              @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
-              @"disablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
-              
               @"colorThemeLight": @(IBGColorThemeLight),
               @"colorThemeDark": @(IBGColorThemeDark),
               
@@ -540,7 +546,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
               @"invocationHeader": kIBGInvocationTitleStringName,
               //@"talkToUs": kIBGTalkToUsStringName,
-              @"startChats": kIBGAskAQuestionStringName,
               @"reportQuestion": kIBGAskAQuestionStringName,
               @"reportBug": kIBGReportBugStringName,
               @"reportFeedback": kIBGReportFeedbackStringName,
@@ -556,7 +561,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"audioRecordingPermissionDeniedMessage": kIBGAudioRecordingPermissionDeniedMessageStringName,
               @"microphonePermissionAlertSettingsButtonTitle": kIBGMicrophonePermissionAlertSettingsButtonTitleStringName,
               @"conversationsHeaderTitle": kIBGChatsTitleStringName,
-              @"chatsHeaderTitle": kIBGChatsTitleStringName,
               @"team": kIBGTeamStringName,
               @"recordingMessageToHoldText": kIBGRecordingMessageToHoldTextStringName,
               @"recordingMessageToReleaseText": kIBGRecordingMessageToReleaseTextStringName,
@@ -582,9 +586,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
               @"welcomeMessageBetaFinishStepContent": kIBGBetaWelcomeMessageFinishStepContent,
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
               @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
-              
-              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
-              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
               
               @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
               @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,
@@ -653,7 +654,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
     
     switch(level) {
         case RCTLogLevelTrace:
-            RNIBGLog(IBGLogLevelTrace, formatString, log);
+            RNIBGLog(IBGLogLevelVerbose, formatString, log);
             break;
         case RCTLogLevelInfo:
             RNIBGLog(IBGLogLevelInfo, formatString, log);
@@ -665,7 +666,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
             RNIBGLog(IBGLogLevelError, formatString, log);
             break;
         case RCTLogLevelFatal:
-            RNIBGLog(IBGLogLevelFatal, formatString, log);
+            RNIBGLog(IBGLogLevelError, formatString, log);
             break;
     }
 };

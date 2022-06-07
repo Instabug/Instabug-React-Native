@@ -3,7 +3,7 @@ import { NativeModules, Platform } from 'react-native';
 let { Instabug } = NativeModules;
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
-import parseErrorStackLib from '../../react-native/Libraries/Core/Devtools/parseErrorStack.js';
+import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 export const parseErrorStack = (error) => {
   return parseErrorStackLib(error);
@@ -72,6 +72,8 @@ export const captureJsErrors = () => {
     //JSON object to be sent to the native SDK
     var jsonObject = {
       message: e.name + " - " + e.message,
+      e_message: e.message,
+      e_name: e.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace
@@ -100,6 +102,10 @@ export const captureJsErrors = () => {
   global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 
+export const stringifyIfNotString = input => {
+  return typeof input === 'string' ? input : JSON.stringify(input);
+};
+
 export default {
   parseErrorStack,
   captureJsErrors,
@@ -108,4 +114,5 @@ export default {
   getActiveRouteName,
   getFullRoute,
   getStackTrace,
+  stringifyIfNotString,
 };

@@ -28,8 +28,6 @@
 
 - (void)setAutoShowingEnabled:(BOOL)autoShowingSurveysEnabled;
 
-- (void)setThresholdForReshowingSurveyAfterDismiss:(NSInteger)sessionCount daysCount:(NSInteger)daysCount;
-
 - (void)setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen;
 
 - (void)hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback;

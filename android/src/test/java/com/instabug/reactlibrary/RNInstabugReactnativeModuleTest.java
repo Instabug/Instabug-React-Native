@@ -33,8 +33,10 @@ import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -49,7 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 public class RNInstabugReactnativeModuleTest {
-    private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null,null,null);
+    private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null);
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
@@ -91,27 +93,6 @@ public class RNInstabugReactnativeModuleTest {
 
     /********CrashReporting*********/
 
-//    @Test
-//    public void givenFalse$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithDisabled() {
-//        // given
-//        PowerMockito.mockStatic(CrashReporting.class);
-//        // when
-//        rnModule.setCrashReportingEnabled(false);
-//        // then
-//        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-//        CrashReporting.setState(Feature.State.DISABLED);
-//    }
-//
-//    @Test
-//    public void givenTrue$CrashReportingEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
-//        // given
-//        PowerMockito.mockStatic(CrashReporting.class);
-//        // when
-//        rnModule.setCrashReportingEnabled(true);
-//        // then
-//        PowerMockito.verifyStatic(VerificationModeFactory.times(1));
-//        CrashReporting.setState(Feature.State.ENABLED);
-//    }
 //
 //    @Test
 //    public void givenString$sendHandledJSCrash_whenQuery_thenShouldCallNativeApiWithArgs() throws Exception {
@@ -234,13 +215,13 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArgs$identifyUserWithEmail_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void givenArgs$identifyUser_whenQuery_thenShouldCallNativeApiWithArgs() {
         // given
 
         String email = "sali@instabug.com";
         String userName = "salmaali";
         // when
-        rnModule.identifyUserWithEmail(email, userName);
+        rnModule.identifyUser(email, userName);
         // then
         verify(Instabug.class,times(1));
         Instabug.identifyUser(userName, email);
@@ -317,12 +298,12 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void given$logUserEventWithName_whenQuery_thenShouldCallNativeApi() {
+    public void given$logUserEvent_whenQuery_thenShouldCallNativeApi() {
         // given
 
         String eventName = "click";
         // when
-        rnModule.logUserEventWithName(eventName);
+        rnModule.logUserEvent(eventName);
         // then
         verify(Instabug.class,times(1));
         Instabug.logUserEvent(eventName);
@@ -570,4 +551,51 @@ public class RNInstabugReactnativeModuleTest {
 
     }
 
+    @Test
+    public void givenArg$addExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
+        // given
+        JavaOnlyArray array = new JavaOnlyArray();
+        array.pushString("exp1");
+        array.pushString("exp2");
+
+        // when
+        rnModule.addExperiments(array);
+
+        // then
+        verify(Instabug.class,times(1));
+        List<String> expectedList = new ArrayList<String>();
+        expectedList.add("exp1");
+        expectedList.add("exp2");
+        Instabug.addExperiments(expectedList);
+    }
+
+    @Test
+    public void givenArg$removeExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
+        // given
+        JavaOnlyArray array = new JavaOnlyArray();
+        array.pushString("exp1");
+        array.pushString("exp2");
+
+        // when
+        rnModule.removeExperiments(array);
+
+        // then
+        verify(Instabug.class,times(1));
+        List<String> expectedList = new ArrayList<String>();
+        expectedList.add("exp1");
+        expectedList.add("exp2");
+        Instabug.removeExperiments(expectedList);
+    }
+
+    @Test
+    public void given$clearAllExperiments_whenQuery_thenShouldCallNativeApi() {
+        // given
+
+        // when
+        rnModule.clearAllExperiments();
+
+        // then
+        verify(Instabug.class,times(1));
+        Instabug.clearAllExperiments();
+    }
 }

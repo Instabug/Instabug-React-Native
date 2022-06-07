@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.11.2
+ Version:    11.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -120,4 +120,38 @@ NS_SWIFT_NAME(NetworkLogger)
  */
 + (void)setTaskWillPerformHTTPRedirectionBlock:(nullable NSURLRequest * _Nullable (^)(NSURLSession * _Nonnull session, NSURLSessionTask * _Nonnull task, NSURLResponse * _Nonnull response, NSURLRequest * _Nonnull request))redirectionHandler;
 
+/**
+
+@brief Use to add gRPC network log.
+
+@param url URL should be constructed from `host_ip`, `host_port`, `service_name` example grpc://{host_ip}:{host_port}/{service_name}
+@param requestBody request body as string.
+@param requestBodySize request body size.
+@param response response body as string.
+@param responseCode status code in case of success or server side error only.
+@param requestHeaders request metadata.
+@param responseHeaders response metadata.
+@param contentType from response content-type.
+@param startTime when the request started.
+@param errorDomain domain of the client side error.
+@param errorCode code of the error in case of client side error.
+@param duration duration of the request.
+@param gRPCMethod gRPC method.
+@param serverErrorMessage server error message in case of server side error
+ */
++ (void)addGrpcNetworkLogWithUrl:(NSString *_Nullable)url
+                     requestBody:(NSString *_Nullable)requestBody
+                 requestBodySize:(int64_t)requestBodySize
+                    responseBody:(NSString *_Nullable)response
+                responseBodySize:(int64_t)responseBodySize
+                    responseCode:(int32_t)responseCode
+                  requestHeaders:(NSDictionary *_Nullable)requestHeaders
+                 responseHeaders:(NSDictionary *_Nullable)responseHeaders
+                     contentType:(NSString *_Nullable)contentType
+                       startTime:(int64_t)startTime
+                     errorDomain:(NSString *_Nullable)errorDomain
+                       errorCode:(int32_t)errorCode
+                        duration:(int64_t)duration
+                      gRPCMethod:(NSString * _Nullable)gRPCMethod
+                     serverErrorMessage:(NSString *_Nullable)serverErrorMessage;
 @end
