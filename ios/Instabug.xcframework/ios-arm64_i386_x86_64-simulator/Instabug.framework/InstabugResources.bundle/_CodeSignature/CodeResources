@@ -26,11 +26,11 @@
 		</data>
 		<key>IBGBugVC-iPhone.nib/objects-11.0+.nib</key>
 		<data>
-		15QhAJTtBlpRbIZKzxDyAMKq9Mw=
+		h18ogmvZHngYczUIyqGxaakzKAI=
 		</data>
 		<key>IBGBugVC-iPhone.nib/runtime.nib</key>
 		<data>
-		MazBrNREGqX1ufVgV4Ai7SfjNAs=
+		QKC4PDCSN5RDhJAwtwuPC3jVjew=
 		</data>
 		<key>IBGChatCell.nib</key>
 		<data>
@@ -78,7 +78,7 @@
 		</data>
 		<key>IBGVoiceNoteRecordingViewController-iPhone.nib</key>
 		<data>
-		ccwhCTIfGr1jCBxPyg7tzbxL4J0=
+		CCN68EwggMIyD+M7alHXlRhCz5M=
 		</data>
 		<key>Inject_DSYM_Project-Archive.sh</key>
 		<data>
@@ -152,9 +152,13 @@
 		<data>
 		pmylgUxgSWFdOk4QnaurlWJg8wA=
 		</data>
-		<key>InstabugDataModel.momd/InstabugDataModel 26.omo</key>
+		<key>InstabugDataModel.momd/InstabugDataModel 27.mom</key>
 		<data>
-		wF6IhNxwH32uzXiX8y0XuspGVUQ=
+		NcYjxvocolGnKFjLV4DrLaoHfWY=
+		</data>
+		<key>InstabugDataModel.momd/InstabugDataModel 27.omo</key>
+		<data>
+		7BXcaV2o+wAtfYC2IT2hS7x0Sxw=
 		</data>
 		<key>InstabugDataModel.momd/InstabugDataModel 3.mom</key>
 		<data>
@@ -178,7 +182,7 @@
 		</data>
 		<key>InstabugDataModel.momd/VersionInfo.plist</key>
 		<data>
-		wAMrWZCn+JwU2dTNBhptNhpmIho=
+		IunL/cCVVC6eeTNbm/5pjek7z0c=
 		</data>
 		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 2.mom</key>
 		<data>
@@ -196,9 +200,13 @@
 		<data>
 		J9PKxbarGz2osiQIF2XizyvwpIM=
 		</data>
-		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 5.omo</key>
+		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 6.mom</key>
 		<data>
-		w8YDdIAYn9hKTl8Gm4tby1nyP+I=
+		0OQHpAurGI4PJ6F90mqynF6PVfM=
+		</data>
+		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 6.omo</key>
+		<data>
+		S2gTVdNICtLroChS4W2dUvsLPBc=
 		</data>
 		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel.mom</key>
 		<data>
@@ -206,7 +214,7 @@
 		</data>
 		<key>InstabugSurveysDataModel.momd/VersionInfo.plist</key>
 		<data>
-		M+PRwq/IvcMwPWqvCGEG+U8RYww=
+		opm4wTmiN7zx2FHxAr2dlFjydHI=
 		</data>
 		<key>InstabugUserStepsDataModel.momd/UserStepsDataModel 2.mom</key>
 		<data>
@@ -550,22 +558,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			15QhAJTtBlpRbIZKzxDyAMKq9Mw=
+			h18ogmvZHngYczUIyqGxaakzKAI=
 			</data>
 			<key>hash2</key>
 			<data>
-			IcE8S8bmYuLNU6g16a2S8rkPrmp9LYXerbPP6QFjFuc=
+			rQttmGBDEa/Czpw6oAWyZBS3lD6sPhU90lNMpsMyLjI=
 			</data>
 		</dict>
 		<key>IBGBugVC-iPhone.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			MazBrNREGqX1ufVgV4Ai7SfjNAs=
+			QKC4PDCSN5RDhJAwtwuPC3jVjew=
 			</data>
 			<key>hash2</key>
 			<data>
-			W2O/Go6ePCXi68E9vB5/fzXI1O7zzN3RkqWXegWezsw=
+			ibZoLvtW1HRtqFQ5rGrapo9QHyk+02Xz6tWhG5Nb/7s=
 			</data>
 		</dict>
 		<key>IBGChatCell.nib</key>
@@ -693,11 +701,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ccwhCTIfGr1jCBxPyg7tzbxL4J0=
+			CCN68EwggMIyD+M7alHXlRhCz5M=
 			</data>
 			<key>hash2</key>
 			<data>
-			KMwwiLtTRXQI9Df8/2MGi4ENlhHv3TlcDmGk3qTI7aQ=
+			04nrE8tlsJjUnCUBh9CbOirES3kEEYBtx0wQmiGV1Us=
 			</data>
 		</dict>
 		<key>Inject_DSYM_Project-Archive.sh</key>
@@ -898,15 +906,26 @@
 			NbScjxo39id+8QRQ5yWJ9ce/s4ovWsbHHs8A3e1jK3A=
 			</data>
 		</dict>
-		<key>InstabugDataModel.momd/InstabugDataModel 26.omo</key>
+		<key>InstabugDataModel.momd/InstabugDataModel 27.mom</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			wF6IhNxwH32uzXiX8y0XuspGVUQ=
+			NcYjxvocolGnKFjLV4DrLaoHfWY=
 			</data>
 			<key>hash2</key>
 			<data>
-			Nvnz5RljAeGS9i+ZBIz7LW3PgFwyZegXC0qlpeq2LTE=
+			2mtISVQvm9f8oeJ3qelHrLVvKLdg0nBKHP+2Jm5CUtk=
+			</data>
+		</dict>
+		<key>InstabugDataModel.momd/InstabugDataModel 27.omo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			7BXcaV2o+wAtfYC2IT2hS7x0Sxw=
+			</data>
+			<key>hash2</key>
+			<data>
+			tlf3HwWRGXi8JlrqWNUoLDfWU/vElxjzsVl1LIP5Ms4=
 			</data>
 		</dict>
 		<key>InstabugDataModel.momd/InstabugDataModel 3.mom</key>
@@ -968,11 +987,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			wAMrWZCn+JwU2dTNBhptNhpmIho=
+			IunL/cCVVC6eeTNbm/5pjek7z0c=
 			</data>
 			<key>hash2</key>
 			<data>
-			SmIK/3Uik8+sXWXdPh1FG9lrIobIKLgiaeD1aWHI6OU=
+			ErZ8QuaKCo+fyC8qUXEkklfRUn90ljP3v4I/fNIj3GM=
 			</data>
 		</dict>
 		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 2.mom</key>
@@ -1019,15 +1038,26 @@
 			cx1mp6WJSl4EEF5+GhFWDLtvcUq9qCmS+x6m7CiqL7o=
 			</data>
 		</dict>
-		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 5.omo</key>
+		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 6.mom</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			w8YDdIAYn9hKTl8Gm4tby1nyP+I=
+			0OQHpAurGI4PJ6F90mqynF6PVfM=
 			</data>
 			<key>hash2</key>
 			<data>
-			V0+KCnVB2vjm4gO1gsK5UddGPRScxTGS/PC6w5oIGWQ=
+			GnSplF8w5XlRvyFkaJeJELrqMA7xyhPGEiSqvBRIyKg=
+			</data>
+		</dict>
+		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel 6.omo</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			S2gTVdNICtLroChS4W2dUvsLPBc=
+			</data>
+			<key>hash2</key>
+			<data>
+			96eF7swy73qSFb8btGL3RFOiJ1NxaGz0BSkTNzqPXsM=
 			</data>
 		</dict>
 		<key>InstabugSurveysDataModel.momd/InstabugSurveysDataModel.mom</key>
@@ -1045,11 +1075,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			M+PRwq/IvcMwPWqvCGEG+U8RYww=
+			opm4wTmiN7zx2FHxAr2dlFjydHI=
 			</data>
 			<key>hash2</key>
 			<data>
-			W1RwokHavLVmfxJ6l/x8AQe8ICZsNFEYapdUGDmlJwo=
+			NcFI5aENJvmb6j4wEFCk8keE63kwo3XeeCd9HFeuDUw=
 			</data>
 		</dict>
 		<key>InstabugUserStepsDataModel.momd/UserStepsDataModel 2.mom</key>
