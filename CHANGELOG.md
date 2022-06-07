@@ -6,11 +6,11 @@
 * Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
 * Adds the string keys for Repro Steps
 * Adds the new APIs: Instabug.addPrivateView and Instabug.removePrivateView
+* Deprecates Instabug.setPrivateView in favor of the newly introduced APIs
 * Removes the deprecated APIs. Check the migration guide referenced in our docs
 * Removes Surveys.setThresholdForReshowingSurveyAfterDismiss
 * Removes the string keys: surveysCustomThanksTitle and surveysCustomThanksSubtitle
 * Renames BugReporting.setAutoScreenRecordingMaxDuration to BugReporting.setAutoScreenRecordingDurationIOS to target iOS only
-* Deprecates Instabug.setPrivateView in favor of the newly introduced APIs
 * Fixes an issue with the setRequestFilterExpression API not working with Hermes
 * Fixes an issue with the swipe invocation event not working on Android
 
