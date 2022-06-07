@@ -5,7 +5,7 @@
 
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.11.9
+ Version:    11.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -17,7 +17,6 @@
 #import "IBGCrashReporting.h"
 #import "IBGSurveys.h"
 #import "IBGFeatureRequests.h"
-#import "IBGChats.h"
 #import "IBGReplies.h"
 #import "IBGAPM.h"
 #import "IBGExecutionTrace.h"
@@ -53,18 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
  7. Orientation.
  */
 @property (class, atomic, assign) BOOL sessionProfilerEnabled;
-
-/**
- @brief Sets maximum auto screen recording video duration.
- 
- @discussion sets maximum auto screen recording video duration with max value 30 seconds and min value greater than 1 sec.
- */
-@property (class, atomic, assign) CGFloat autoScreenRecordingDuration DEPRECATED_MSG_ATTRIBUTE("'autoScreenRecordingDuration' is deprecated: first deprecated in SDK 8.2.3 - autoScreenRecordingDuration is deprecated. Use IBGBugReporting.autoScreenRecordingDuration instead.");
-
-/**
- @brief Enables/disables inspect view hierarchy when reporting a bug/feedback.
- */
-@property (class, atomic, assign) BOOL shouldCaptureViewHierarchy DEPRECATED_MSG_ATTRIBUTE("'shouldCaptureViewHierarchy' is deprecated: first deprecated in SDK 8.2.3 - shouldCaptureViewHierarchy is deprecated. Use IBGBugReporting.shouldCaptureViewHierarchy instead.");
 
 /**
  @brief Sets the primary color of the SDK's UI.
@@ -129,7 +116,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (class, atomic, strong) NSString *userData;
 
-
 /**
  @brief Starts the SDK.
  
@@ -146,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @brief Shows Instabug Prompt Options.
  
- @discussion By default, it contains Report a problem, Suggest an improvement, Ask a question, and a button that navigates to the chats list. To control which options should be enabled, see IBGBugReporting.enabled, IBGChats.enabled, and  IBGReplies.enabled.
+ @discussion By default, it contains Report a problem, Suggest an improvement, Ask a question, and a button that navigates to the chats list. To control which options should be enabled, see IBGBugReporting.enabled, IBGReplies.enabled.
  */
 + (void)show;
 
@@ -175,6 +161,18 @@ NS_ASSUME_NONNULL_BEGIN
  @param data NSData to be added as a file attachment with each report.
  */
 +(void)addFileAttachmentWithData:(NSData *)data;
+
+/**
+ @brief Add a set of data as a file attachment to be sent with each report.
+ 
+ @discussion The data will be written to a file with the specified name and will be attached with each report.
+ 
+ Each call to this method adds this set of data as a file attachment, until a maximum of 3 then it overrides the first data.
+ 
+ @param data NSData to be added as a file attachment with each report.
+ @param name NSString name of the file including the extension. Allowed format is Alphanumeric and [-_.] as special characters.
+ */
++ (void)addFileAttachmentWithData:(NSData *)data andName:(NSString *)name;
 
 /**
  @brief Clear list of files to be attached with each report.
@@ -368,6 +366,16 @@ NS_ASSUME_NONNULL_BEGIN
 @param viewName View that recieves this event.
 */
 + (void)logTouchEvent:(IBGUIEventType)event viewName:(NSString *)viewName;
+
+/**
+ @brief Async method that gets the UUID for the current user
+ 
+ @discussion As this method gets the UUID, we recommend using it only in case the user's email is not identified. Using the email is our top recommendation when communicating with Instabug's APIs. So, unless the user's email is not available, please don't depend on the UUID
+ @param userUUIDCompletionHandler Receives the value saved for the current user UUID.
+ nil will be returned in one of case of Instabug not initialized or is disabled.
+ */
++ (void)userUUID:(void (^)(NSString * _Nullable uuid))userUUIDCompletionHandler;
+
 
 #pragma mark - SDK Debugging
 

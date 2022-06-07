@@ -19,10 +19,6 @@ describe("Surveys Module", () => {
     NativeModules.IBGSurveys,
     "showSurveysIfAvailable"
   );
-  const setThresholdForReshowingSurveyAfterDismiss = sinon.spy(
-    NativeModules.IBGSurveys,
-    "setThresholdForReshowingSurveyAfterDismiss"
-  );
   const getAvailableSurveys = sinon.spy(
     NativeModules.IBGSurveys,
     "getAvailableSurveys"
@@ -71,19 +67,6 @@ describe("Surveys Module", () => {
     Surveys.showSurveyIfAvailable();
 
     expect(showSurveysIfAvailable.calledOnce).toBe(true);
-  });
-
-  it("should call the native method setThresholdForReshowingSurveyAfterDismiss", () => {
-    const sessionCount = 2;
-    const daysCount = 3;
-    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionCount, daysCount);
-
-    expect(
-      setThresholdForReshowingSurveyAfterDismiss.calledOnceWithExactly(
-        sessionCount,
-        daysCount
-      )
-    ).toBe(true);
   });
 
   it("should call the native method getAvailableSurveys", () => {

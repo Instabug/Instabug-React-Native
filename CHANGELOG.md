@@ -1,3 +1,19 @@
+## 11.0.0 (2022-06-07)
+
+* Bumps Instabug native SDKs to v11
+* Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our docs
+* Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
+* Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
+* Adds the string keys for Repro Steps
+* Adds the new APIs: Instabug.addPrivateView and Instabug.removePrivateView
+* Deprecates Instabug.setPrivateView in favor of the newly introduced APIs
+* Removes the deprecated APIs. Check the migration guide referenced in our docs
+* Removes Surveys.setThresholdForReshowingSurveyAfterDismiss
+* Removes the string keys: surveysCustomThanksTitle and surveysCustomThanksSubtitle
+* Renames BugReporting.setAutoScreenRecordingMaxDuration to BugReporting.setAutoScreenRecordingDurationIOS to target iOS only
+* Fixes an issue with the setRequestFilterExpression API not working with Hermes
+* Fixes an issue with the swipe invocation event not working on Android
+
 ## 10.13.0 (2022-03-17)
 
 * Adds Instabug Experiments APIs

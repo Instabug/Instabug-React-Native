@@ -18,7 +18,7 @@ describe('Replies Module', () => {
   const showReplies = sinon.spy(NativeModules.IBGReplies, 'show');
   const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.IBGReplies, 'setOnNewReplyReceivedHandler');
   const getUnreadMessagesCount = sinon.spy(NativeModules.IBGReplies, 'getUnreadRepliesCount');
-  const setChatNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
+  const setInAppNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
   const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
   const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
   const setPushNotificationRegistrationToken = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationRegistrationToken');
@@ -99,11 +99,11 @@ describe('Replies Module', () => {
 
   });
 
-  it('should call the native method setChatNotificationEnabled', () => {
+  it('should call the native method setInAppNotificationEnabled', () => {
 
     Replies.setInAppNotificationsEnabled(true);
 
-    expect(setChatNotificationEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(setInAppNotificationEnabled.calledOnceWithExactly(true)).toBe(true);
 
   });
 
