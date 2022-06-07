@@ -107,16 +107,6 @@ public class RNInstabugSurveysModuleTest {
     }
 
     @Test
-    public void givenIntArgs$setThresholdForReshowingSurveyAfterDismiss_whenQuery_thenShouldCallNativeApiWithIntArgs() {
-        // when
-        surveysModule.setThresholdForReshowingSurveyAfterDismiss(2,2);
-        // then
-        verify(Surveys.class,times(1));
-        Surveys.setThresholdForReshowingSurveyAfterDismiss(2,2);
-    }
-
-
-    @Test
     public void given$getAvailableSurveys_whenQuery_thenShouldCallNativeApiAndInvokeCallback() throws Exception {
         // given
         MockedStatic mockClock = mockStatic(SystemClock.class);

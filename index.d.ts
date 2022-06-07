@@ -133,7 +133,7 @@ export namespace BugReporting {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  function setAutoScreenRecordingMaxDuration(
+  function setAutoScreenRecordingDurationIOS(
     autoScreenRecordingMaxDuration: number
   ): void;
   /**
@@ -369,18 +369,7 @@ export namespace Surveys {
    * in the current session.
    */
   function showSurveyIfAvailable(): void;
-  /**
-   * Sets a threshold for numbers of sessions and another for number of days
-   * required before a survey, that has been dismissed once, would show again.
-   * @param {number} sessionCount Number of sessions required to be
-   *                initialized before a dismissed survey can be shown again.
-   * @param {number} daysCount Number of days required to pass before a
-   *                dismissed survey can be shown again.
-   */
-  function setThresholdForReshowingSurveyAfterDismiss(
-    sessionCount: number,
-    daysCount: number
-  ): void;
+
   /**
    * Returns an array containing the available surveys.
    * @param {availableSurveysCallback} availableSurveysCallback callback with
@@ -866,11 +855,28 @@ export function setWelcomeMessageMode(
  * @param {string} fileName
  */
 export function addFileAttachment(filePath: string, fileName: string): void;
+
 /**
+ * @deprecated Use {@link Instabug.addPrivateView} instead. 
+ * 
  * Hides component from screenshots, screen recordings and view hierarchy.
  * @param {Object} viewRef the ref of the component to hide
  */
 export function setPrivateView(viewRef: object): void;
+
+/**
+ * Hides component from screenshots, screen recordings and view hierarchy.
+ * @param {Object} viewRef the ref of the component to hide
+ */
+export function addPrivateView(viewRef: object): void;
+
+/**
+ * Removes component from the set of hidden views. The component will show again in 
+ * screenshots, screen recordings and view hierarchy.
+ * @param {Object} viewRef the ref of the component to remove from hidden views
+ */
+export function removePrivateView(viewRef: object): void;
+
 /**
  * Shows default Instabug prompt.
  */
@@ -1096,8 +1102,6 @@ export enum strings {
   welcomeMessageBetaFinishStepContent,
   welcomeMessageLiveWelcomeStepTitle,
   welcomeMessageLiveWelcomeStepContent,
-  surveysCustomThanksTitle,
-  surveysCustomThanksSubTitle,
   surveysStoreRatingThanksTitle,
   surveysStoreRatingThanksSubtitle,
   reportBugDescription,

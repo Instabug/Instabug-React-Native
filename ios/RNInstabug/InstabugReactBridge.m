@@ -409,10 +409,14 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     }
 }
 
-RCT_EXPORT_METHOD(hideView: (nonnull NSNumber *)reactTag) {
+RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;
-    
+}
+
+RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+    view.instabug_privateView = false;
 }
 
 RCT_EXPORT_METHOD(show) {
@@ -583,9 +587,6 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
               @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
               
-              @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
-              @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
-              
               @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
               @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,
 
@@ -646,7 +647,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
     
     switch(level) {
         case RCTLogLevelTrace:
-            RNIBGLog(IBGLogLevelTrace, formatString, log);
+            RNIBGLog(IBGLogLevelVerbose, formatString, log);
             break;
         case RCTLogLevelInfo:
             RNIBGLog(IBGLogLevelInfo, formatString, log);
@@ -658,7 +659,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
             RNIBGLog(IBGLogLevelError, formatString, log);
             break;
         case RCTLogLevelFatal:
-            RNIBGLog(IBGLogLevelFatal, formatString, log);
+            RNIBGLog(IBGLogLevelError, formatString, log);
             break;
     }
 };

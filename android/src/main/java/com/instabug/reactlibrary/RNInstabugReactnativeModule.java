@@ -29,8 +29,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.InvocationMode;
-import com.instabug.bug.invocation.InvocationOption;
 import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
 import com.instabug.crash.CrashReporting;
@@ -217,9 +215,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String WELCOME_MESSAGE_FINISH_STEP_CONTENT = "betaWelcomeMessageFinishStepContent";
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE = "liveWelcomeMessageTitle";
     private final String WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT = "liveWelcomeMessageContent";
-
-    private final String CUSTOM_SURVEY_THANKS_TITLE = "surveysCustomThanksTitle";
-    private final String CUSTOM_SURVEY_THANKS_SUBTITLE = "surveysCustomThanksSubTitle";
 
     private final String STORE_RATING_THANKS_TITLE = "surveysStoreRatingThanksTitle";
     private final String STORE_RATING_THANKS_SUBTITLE = "surveysStoreRatingThanksSubtitle";
@@ -1659,26 +1654,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param sessionsCount number of sessions that the dismissed survey will be shown after.
-     * @param daysCount     number of days that the dismissed survey will show after
-     */
-    @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Returns an array containing the available surveys.
      * @param availableSurveysCallback - Callback with the returned value of the available surveys
      *
@@ -1963,7 +1938,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void hideView(final ReadableArray ids) {
+    public void addPrivateView(final int reactTag) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1971,16 +1946,33 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 uiManagerModule.prependUIBlock(new UIBlock() {
                     @Override
                     public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        final View[] arrayOfViews = new View[ids.size()];
-                        for (int i = 0; i < ids.size(); i++) {
-                            int viewId = (int) ids.getDouble(i);
-                            try {
-                                arrayOfViews[i] = nativeViewHierarchyManager.resolveView(viewId);
-                            } catch(Exception e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.addPrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
                         }
-                        Instabug.setViewsAsPrivate(arrayOfViews);
+                    }
+                });
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removePrivateView(final int reactTag) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+                uiManagerModule.prependUIBlock(new UIBlock() {
+                    @Override
+                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
+                        try {
+                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
+                            Instabug.removePrivateViews(view);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -2076,10 +2068,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_TITLE;
             case WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT:
                 return InstabugCustomTextPlaceHolder.Key.LIVE_WELCOME_MESSAGE_CONTENT;
-            case CUSTOM_SURVEY_THANKS_TITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_TITLE;
-            case CUSTOM_SURVEY_THANKS_SUBTITLE:
-                    return InstabugCustomTextPlaceHolder.Key.SURVEYS_CUSTOM_THANKS_SUBTITLE;
             case STORE_RATING_THANKS_TITLE:
                     return InstabugCustomTextPlaceHolder.Key.SURVEYS_STORE_RATING_THANKS_TITLE;
             case STORE_RATING_THANKS_SUBTITLE:
@@ -2307,9 +2295,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("welcomeMessageBetaFinishStepContent", WELCOME_MESSAGE_FINISH_STEP_CONTENT);
         constants.put("welcomeMessageLiveWelcomeStepTitle", WELCOME_MESSAGE_LIVE_WELCOME_STEP_TITLE);
         constants.put("welcomeMessageLiveWelcomeStepContent", WELCOME_MESSAGE_LIVE_WELCOME_STEP_CONTENT);
-
-        constants.put(CUSTOM_SURVEY_THANKS_TITLE, CUSTOM_SURVEY_THANKS_TITLE);
-        constants.put(CUSTOM_SURVEY_THANKS_SUBTITLE, CUSTOM_SURVEY_THANKS_SUBTITLE);
 
         constants.put(STORE_RATING_THANKS_TITLE, STORE_RATING_THANKS_TITLE);
         constants.put(STORE_RATING_THANKS_SUBTITLE, STORE_RATING_THANKS_SUBTITLE);

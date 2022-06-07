@@ -165,9 +165,9 @@
   XCTAssertTrue(IBGBugReporting.autoScreenRecordingEnabled);
 }
 
-- (void) testgivenArgs$setAutoScreenRecordingMaxDuration_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenArgs$setAutoScreenRecordingDuration_whenQuery_thenShouldCallNativeApi {
   CGFloat duration = 12.3;
-  [self.instabugBridge setAutoScreenRecordingMaxDuration:duration];
+  [self.instabugBridge setAutoScreenRecordingDuration:duration];
   XCTAssertEqual(IBGBugReporting.autoScreenRecordingDuration, duration);
 }
 

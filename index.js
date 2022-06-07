@@ -445,17 +445,34 @@ const InstabugModule = {
   },
 
   /**
+   * @deprecated Use {@link Instabug.addPrivateView} instead. 
+   * 
    * Hides component from screenshots, screen recordings and view hierarchy.
    * @param {Object} viewRef the ref of the component to hide
    */
   setPrivateView(viewRef) {
-    const nativeTag = findNodeHandle(viewRef);
-    if (Platform.OS === 'ios') {
-      Instabug.hideView(nativeTag);
-    } else {
-      Instabug.hideView([nativeTag]);
-    }
+    this.addPrivateView(viewRef);
   },
+
+  /**
+   * Hides component from screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to hide
+   */
+  addPrivateView(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    Instabug.addPrivateView(nativeTag);
+  },
+
+  /**
+   * Removes component from the set of hidden views. The component will show again in 
+   * screenshots, screen recordings and view hierarchy.
+   * @param {Object} viewRef the ref of the component to remove from hidden views
+   */
+  removePrivateView(viewRef) {
+    const nativeTag = findNodeHandle(viewRef);
+    Instabug.removePrivateView(nativeTag);
+  },
+
   /**
    * Shows default Instabug prompt.
    */
@@ -790,8 +807,6 @@ const InstabugModule = {
       Instabug.welcomeMessageLiveWelcomeStepTitle,
     welcomeMessageLiveWelcomeStepContent:
       Instabug.welcomeMessageLiveWelcomeStepContent,
-    surveysCustomThanksTitle: Instabug.surveysCustomThanksTitle,
-    surveysCustomThanksSubTitle: Instabug.surveysCustomThanksSubTitle,
     surveysStoreRatingThanksTitle: Instabug.surveysStoreRatingThanksTitle,
     surveysStoreRatingThanksSubtitle: Instabug.surveysStoreRatingThanksSubtitle,
     reportBugDescription: Instabug.reportBugDescription,
