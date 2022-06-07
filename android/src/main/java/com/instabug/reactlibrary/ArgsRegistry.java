@@ -194,6 +194,7 @@ final class ArgsRegistry {
         args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
         args.put("successDialogHeader", InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER);
         args.put("addVideoMessage", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
+        args.put("videoPressRecord", InstabugCustomTextPlaceHolder.Key.VIDEO_RECORDING_FAB_BUBBLE_HINT);
         args.put("betaWelcomeMessageWelcomeStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE);
         args.put("betaWelcomeMessageWelcomeStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT);
         args.put("betaWelcomeMessageHowToReportStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
@@ -207,6 +208,13 @@ final class ArgsRegistry {
         args.put("discardAlertCancel", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         args.put("discardAlertAction", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         args.put("addAttachmentButtonTitleStringName", InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER);
+        args.put("reportReproStepsDisclaimerBody", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY);
+        args.put("reportReproStepsDisclaimerLink", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK);
+        args.put("reproStepsProgressDialogBody", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY);
+        args.put("reproStepsListHeader", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER);
+        args.put("reproStepsListDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION);
+        args.put("reproStepsListEmptyStateDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
+        args.put("reproStepsListItemTitle", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
     }
 
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {

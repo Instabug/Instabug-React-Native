@@ -198,6 +198,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String ADD_IMAGE_FROM_GALLERY = "addImageFromGallery";
     private final String ADD_EXTRA_SCREENSHOT = "addExtraScreenshot";
     private final String ADD_VIDEO = "addVideoMessage";
+    private final String VIDEO_PRESS_RECORD = "videoPressRecord";
 
     private final String AUDIO_RECORDING_PERMISSION_DENIED = "audioRecordingPermissionDenied";
 
@@ -233,6 +234,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private final String REPORT_DISCARD_DIALOG_NEGATIVE_ACTION = "discardAlertCancel";
     private final String REPORT_DISCARD_DIALOG_POSITIVE_ACTION = "discardAlertAction";
     private final String REPORT_ADD_ATTACHMENT_HEADER = "addAttachmentButtonTitleStringName";
+    private final String REPORT_REPRO_STEPS_DISCLAIMER_BODY = "reportReproStepsDisclaimerBody";
+    private final String REPORT_REPRO_STEPS_DISCLAIMER_LINK = "reportReproStepsDisclaimerLink";
+    private final String REPRO_STEPS_PROGRESS_DIALOG_BODY = "reproStepsProgressDialogBody";
+    private final String REPRO_STEPS_LIST_HEADER = "reproStepsListHeader";
+    private final String REPRO_STEPS_LIST_DESCRIPTION = "reproStepsListDescription";
+    private final String REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION = "reproStepsListEmptyStateDescription";
+    private final String REPRO_STEPS_LIST_ITEM_TITLE = "reproStepsListItemTitle";
 
     private InstabugCustomTextPlaceHolder placeHolders;
     private Report currentReport;
@@ -2038,6 +2046,8 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.ADD_EXTRA_SCREENSHOT;
             case ADD_VIDEO:
                 return InstabugCustomTextPlaceHolder.Key.ADD_VIDEO;
+            case VIDEO_PRESS_RECORD:
+                return InstabugCustomTextPlaceHolder.Key.VIDEO_RECORDING_FAB_BUBBLE_HINT;
             case AUDIO_RECORDING_PERMISSION_DENIED:
                 return InstabugCustomTextPlaceHolder.Key.AUDIO_RECORDING_PERMISSION_DENIED;
             case VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD:
@@ -2090,6 +2100,20 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 return InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION;
             case REPORT_ADD_ATTACHMENT_HEADER:
                 return InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER;
+            case REPORT_REPRO_STEPS_DISCLAIMER_BODY:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY;
+            case REPORT_REPRO_STEPS_DISCLAIMER_LINK:
+                return InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK;
+            case REPRO_STEPS_PROGRESS_DIALOG_BODY:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY;
+            case REPRO_STEPS_LIST_HEADER:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER;
+            case REPRO_STEPS_LIST_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION;
+            case REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION;
+            case REPRO_STEPS_LIST_ITEM_TITLE:
+                return InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE;
             default:
                 return null;
         }
@@ -2279,6 +2303,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put("addImageFromGallery", ADD_IMAGE_FROM_GALLERY);
         constants.put("addExtraScreenshot", ADD_EXTRA_SCREENSHOT);
         constants.put("addVideoMessage", ADD_VIDEO);
+        constants.put("videoPressRecord", VIDEO_PRESS_RECORD);
         constants.put("audioRecordingPermissionDeniedMessage", AUDIO_RECORDING_PERMISSION_DENIED);
         constants.put("recordingMessageToHoldText", VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         constants.put("recordingMessageToReleaseText", VOICE_MESSAGE_RELEASE_TO_ATTACH);
@@ -2309,6 +2334,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         constants.put(REPORT_DISCARD_DIALOG_NEGATIVE_ACTION, REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         constants.put(REPORT_DISCARD_DIALOG_POSITIVE_ACTION, REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         constants.put(REPORT_ADD_ATTACHMENT_HEADER, REPORT_ADD_ATTACHMENT_HEADER);
+        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_BODY, REPORT_REPRO_STEPS_DISCLAIMER_BODY);
+        constants.put(REPORT_REPRO_STEPS_DISCLAIMER_LINK, REPORT_REPRO_STEPS_DISCLAIMER_LINK);
+        constants.put(REPRO_STEPS_PROGRESS_DIALOG_BODY, REPRO_STEPS_PROGRESS_DIALOG_BODY);
+        constants.put(REPRO_STEPS_LIST_HEADER, REPRO_STEPS_LIST_HEADER);
+        constants.put(REPRO_STEPS_LIST_DESCRIPTION, REPRO_STEPS_LIST_DESCRIPTION);
+        constants.put(REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION, REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
+        constants.put(REPRO_STEPS_LIST_ITEM_TITLE, REPRO_STEPS_LIST_ITEM_TITLE);
 
         return constants;
     }

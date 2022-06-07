@@ -574,7 +574,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"screenRecording": kIBGScreenRecordingStringName,
               @"image": kIBGImageStringName,
               @"surveyEnterYourAnswer": kIBGSurveyEnterYourAnswerTextPlaceholder,
-              @"videPressRecord": kIBGVideoPressRecordTitle,
+              @"videoPressRecord": kIBGVideoPressRecordTitle,
               @"collectingDataText": kIBGCollectingDataText,
               @"thankYouAlertText": kIBGThankYouAlertMessageStringName,
               
@@ -599,7 +599,14 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
               @"discardAlertMessage": kIBGDiscardAlertMessage,
               @"discardAlertCancel": kIBGDiscardAlertCancel,
               @"discardAlertAction": kIBGDiscardAlertAction,
-              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName
+              @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName,
+              @"reportReproStepsDisclaimerBody": kIBGReproStepsDisclaimerBody,
+              @"reportReproStepsDisclaimerLink": kIBGReproStepsDisclaimerLink,
+              @"reproStepsProgressDialogBody": kIBGProgressViewTitle,
+              @"reproStepsListHeader": kIBGReproStepsListTitle,
+              @"reproStepsListDescription": kIBGReproStepsListHeader,
+              @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
+              @"reproStepsListItemTitle": kIBGReproStepsListItemName
             };
 };
 

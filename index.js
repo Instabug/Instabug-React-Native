@@ -764,6 +764,7 @@ const InstabugModule = {
     commentFieldHintForBugReport: Instabug.commentFieldHintForBugReport,
     commentFieldHintForFeedback: Instabug.commentFieldHintForFeedback,
     commentFieldHintForQuestion: Instabug.commentFieldHintForQuestion,
+    videoPressRecord: Instabug.videoPressRecord,
     addVideoMessage: Instabug.addVideoMessage,
     addVoiceMessage: Instabug.addVoiceMessage,
     addImageFromGallery: Instabug.addImageFromGallery,
@@ -817,7 +818,14 @@ const InstabugModule = {
     discardAlertMessage: Instabug.discardAlertMessage,
     discardAlertCancel: Instabug.discardAlertCancel,
     discardAlertAction: Instabug.discardAlertAction,
-    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName
+    addAttachmentButtonTitleStringName: Instabug.addAttachmentButtonTitleStringName,
+    reportReproStepsDisclaimerBody: Instabug.reportReproStepsDisclaimerBody,
+    reportReproStepsDisclaimerLink: Instabug.reportReproStepsDisclaimerLink,
+    reproStepsProgressDialogBody: Instabug.reproStepsProgressDialogBody,
+    reproStepsListHeader: Instabug.reproStepsListHeader,
+    reproStepsListDescription: Instabug.reproStepsListDescription,
+    reproStepsListEmptyStateDescription: Instabug.reproStepsListEmptyStateDescription,
+    reproStepsListItemTitle: Instabug.reproStepsListItemTitle,
   },
 
 };
