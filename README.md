@@ -67,6 +67,8 @@ protected List<ReactPackage> getPackages() {
    
 _You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
 
+> :warning:  If you're updating the SDK from versions prior to v11, please check our [migration guide](https://docs.instabug.com/docs/react-native-migration-guide).
+
 ## Microphone and Photo Library Usage Description (iOS Only)
 
 Instabug needs access to the microphone and photo library to be able to let users add audio and video attachments. Starting from iOS 10, apps that don’t provide a usage description for those 2 permissions would be rejected when submitted to the App Store.
