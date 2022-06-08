@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
 
- Version:    10.11.9
+ Version:    11.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -20,6 +20,13 @@ NS_SWIFT_NAME(BugReporting)
  @discussion It's enabled by default. When disabled, both "Report a bug" and "Suggest an improvement" will be removed from Instabug Prompt Options. In addition, when disabled +showWithReportType:options: won’t have an effect.
  */
 @property (class, atomic, assign) BOOL enabled;
+
+/**
+ @returns `YES` if Bug Reporting has exceeded the usage limit on your plan. Otherwise, returns `NO`.
+ 
+ @discussion If you have exceeded the usage limit on your plan, the Bug Reporting prompt will still appear to the end users normally. In that case, the bug won't be sent to the dashboard.
+ */
+@property (class, atomic, readonly) BOOL usageExceeded;
 
 /**
  @brief Sets a block of code to be executed just before the SDK's UI is presented.
@@ -175,6 +182,13 @@ NS_SWIFT_NAME(BugReporting)
  We will accept links starts with `http` and `https` only.
  */
 + (void)setDisclaimerText:(NSString *)text;
+
+/// @brief Sets the minimum accepted number of characters in the comment field in a report
+/// @discussion Calling this method will make the comment field required for the specified report types. In case the report's comment is less than the limit set by this API, an alert will be shown to the user and the report will not be sent
+/// @param reportTypes The report types to be affected by the limit
+/// @param limit The minimum characters allowed for the comment field. Minimum accepted value is 2.
++ (void)setCommentMinimumCharacterCountForReportTypes:(IBGBugReportingReportType)reportTypes
+                                            withLimit:(NSInteger)limit;
 
 /*
  +------------------------------------------------------------------------+

@@ -167,27 +167,6 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * @deprecated
-     * Set after how many sessions should the dismissed survey would show again.
-     *
-     * @param sessionsCount number of sessions that the dismissed survey will be shown after.
-     * @param daysCount     number of days that the dismissed survey will show after
-     */
-    @ReactMethod
-    public void setThresholdForReshowingSurveyAfterDismiss(final int sessionsCount, final int daysCount) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setThresholdForReshowingSurveyAfterDismiss(sessionsCount, daysCount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Returns an array containing the available surveys.
      * @param availableSurveysCallback - Callback with the returned value of the available surveys
      *

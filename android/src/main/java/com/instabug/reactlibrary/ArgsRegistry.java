@@ -7,6 +7,8 @@ import java.util.Map;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.featuresrequest.ActionType;
+
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -63,6 +65,7 @@ final class ArgsRegistry {
         registerInstabugExtendedBugReportModeArgs(ARGS);
         registerInstabugVideoRecordingFloatingButtonPositionArgs(ARGS);
         registerInstabugReportTypesArgs(ARGS);
+        registerInstabugDismissTypesArgs(ARGS);
         registerReproStepsModeArgs(ARGS);
         registerWelcomeMessageArgs(ARGS);
         registerInstabugFeatureRequestsActionTypes(ARGS);
@@ -111,7 +114,7 @@ final class ArgsRegistry {
     }
 
     static void registerInstabugInvocationEventsArgs(Map<String, Object> args) {
-        args.put("invocationEventTwoFingersSwipe", TWO_FINGER_SWIPE_LEFT);
+        args.put("invocationEventTwoFingersSwipeLeft", TWO_FINGER_SWIPE_LEFT);
         args.put("invocationEventFloatingButton", FLOATING_BUTTON);
         args.put("invocationEventScreenshot", SCREENSHOT);
         args.put("invocationEventShake", SHAKE);
@@ -135,10 +138,10 @@ final class ArgsRegistry {
     }
 
     static void registerInvocationOptionsArgs(Map<String, Object> args) {
-        args.put("commentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
-        args.put("disablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
-        args.put("emailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
-        args.put("emailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
+        args.put("optionCommentFieldRequired", Option.COMMENT_FIELD_REQUIRED);
+        args.put("optionDisablePostSendingDialog", Option.DISABLE_POST_SENDING_DIALOG);
+        args.put("optionEmailFieldHidden", Option.EMAIL_FIELD_HIDDEN);
+        args.put("optionEmailFieldOptional", Option.EMAIL_FIELD_OPTIONAL);
     }
 
     static void registerLocaleArgs(Map<String, Object> args) {
@@ -173,7 +176,6 @@ final class ArgsRegistry {
         args.put("invalidEmailMessage", InstabugCustomTextPlaceHolder.Key.INVALID_EMAIL_MESSAGE);
         args.put("invalidCommentMessage", InstabugCustomTextPlaceHolder.Key.INVALID_COMMENT_MESSAGE);
         args.put("invocationHeader", InstabugCustomTextPlaceHolder.Key.INVOCATION_HEADER);
-        args.put("startChats", InstabugCustomTextPlaceHolder.Key.START_CHATS);
         args.put("reportQuestion", InstabugCustomTextPlaceHolder.Key.REPORT_QUESTION);
         args.put("reportBug", InstabugCustomTextPlaceHolder.Key.REPORT_BUG);
         args.put("reportFeedback", InstabugCustomTextPlaceHolder.Key.REPORT_FEEDBACK);
@@ -192,6 +194,7 @@ final class ArgsRegistry {
         args.put("reportSuccessfullySent", InstabugCustomTextPlaceHolder.Key.REPORT_SUCCESSFULLY_SENT);
         args.put("successDialogHeader", InstabugCustomTextPlaceHolder.Key.SUCCESS_DIALOG_HEADER);
         args.put("addVideoMessage", InstabugCustomTextPlaceHolder.Key.ADD_VIDEO);
+        args.put("videoPressRecord", InstabugCustomTextPlaceHolder.Key.VIDEO_RECORDING_FAB_BUBBLE_HINT);
         args.put("betaWelcomeMessageWelcomeStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_TITLE);
         args.put("betaWelcomeMessageWelcomeStepContent", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_WELCOME_STEP_CONTENT);
         args.put("betaWelcomeMessageHowToReportStepTitle", InstabugCustomTextPlaceHolder.Key.BETA_WELCOME_MESSAGE_HOW_TO_REPORT_STEP_TITLE);
@@ -205,12 +208,25 @@ final class ArgsRegistry {
         args.put("discardAlertCancel", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         args.put("discardAlertAction", InstabugCustomTextPlaceHolder.Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         args.put("addAttachmentButtonTitleStringName", InstabugCustomTextPlaceHolder.Key.REPORT_ADD_ATTACHMENT_HEADER);
+        args.put("reportReproStepsDisclaimerBody", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY);
+        args.put("reportReproStepsDisclaimerLink", InstabugCustomTextPlaceHolder.Key.REPORT_REPRO_STEPS_DISCLAIMER_LINK);
+        args.put("reproStepsProgressDialogBody", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_PROGRESS_DIALOG_BODY);
+        args.put("reproStepsListHeader", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_HEADER);
+        args.put("reproStepsListDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_DESCRIPTION);
+        args.put("reproStepsListEmptyStateDescription", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
+        args.put("reproStepsListItemTitle", InstabugCustomTextPlaceHolder.Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
     }
 
     static void registerInstabugReportTypesArgs(Map<String, Object> args) {
         args.put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         args.put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
         args.put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
+    }
+
+    static void registerInstabugDismissTypesArgs(Map<String, Object> args){
+        args.put("dismissTypeAddAttachment", OnSdkDismissCallback.DismissType.ADD_ATTACHMENT);
+        args.put("dismissTypeCancel", OnSdkDismissCallback.DismissType.CANCEL);
+        args.put("dismissTypeSubmit", OnSdkDismissCallback.DismissType.SUBMIT);
     }
 
     static void registerLogLevelArgs(Map<String, Object> args) {

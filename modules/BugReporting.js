@@ -21,7 +21,7 @@ export default {
 
   /**
    * Sets the events that invoke the feedback form.
-   * Default is set by `Instabug.startWithToken`.
+   * Default is set by `Instabug.start`.
    * @param {invocationEvent} invocationEvent Array of events that invokes the
    * feedback form.
    */
@@ -29,20 +29,9 @@ export default {
     IBGBugReporting.setInvocationEvents(invocationEvents);
   },
 
-  /* istanbul ignore next */
-  /**
-   * @deprecated
-   * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
-   * @param {invocationOptions} invocationOptions Array of invocation options
-   */
-  setInvocationOptions(invocationOptions) {
-    this.setOptions(invocationOptions);
-  },
-
   /**
    * Sets the invocation options.
-   * Default is set by `Instabug.startWithToken`.
+   * Default is set by `Instabug.start`.
    * @param {invocationOptions} options Array of invocation options
    */
   setOptions(options) {
@@ -125,17 +114,6 @@ export default {
     IBGBugReporting.setReportTypes(types);
   },
 
-  /* istanbul ignore next */
-  /**
-   * @deprecated use {@link BugReporting.show}
-   * Invoke bug reporting with report type and options.
-   * @param {reportType} type 
-   * @param {option} options 
-   */
-  showWithOptions(type, options) {
-    this.show(type, options);
-  },
-
   /**
    * Invoke bug reporting with report type and options.
    * @param {reportType} type 
@@ -164,8 +142,9 @@ export default {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  setAutoScreenRecordingMaxDuration: function(autoScreenRecordingMaxDuration) {
-    IBGBugReporting.setAutoScreenRecordingMaxDuration(autoScreenRecordingMaxDuration);
+  setAutoScreenRecordingDurationIOS: function(autoScreenRecordingMaxDuration) {
+    if (Platform.OS !== 'ios') return;
+    IBGBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
   },
 
   /**
@@ -251,20 +230,6 @@ export default {
     screenshot: Instabug.invocationEventScreenshot,
     twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
     floatingButton: Instabug.invocationEventFloatingButton
-  },
-
-  
-  /**
-   * @deprecated use @link { option }
-   * The options used upon invocating the SDK
-   * @readonly
-   * @enum {number}
-   */
-  invocationOptions: {
-    emailFieldHidden: Instabug.emailFieldHidden,
-    emailFieldOptional: Instabug.emailFieldOptional,
-    commentFieldRequired: Instabug.commentFieldRequired,
-    disablePostSendingDialog: Instabug.disablePostSendingDialog
   },
 
   /**

@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2020 by Instabug, Inc., all rights reserved.
  
- Version:    10.11.9
+ Version:    11.0.2
  */
 
 #import <Foundation/Foundation.h>
@@ -120,7 +120,7 @@ NS_SWIFT_NAME(APM)
 /// Each log level will also include logs from all the levels above it. For instance,
 /// IBGLogLevelInfo will include IBGLogLevelInfo logs as well as IBGLogLevelWarning
 /// and IBGLogLevelError logs.
-@property (class, atomic, assign) IBGLogLevel logLevel;
+@property (class, atomic, assign) IBGLogLevel logLevel DEPRECATED_MSG_ATTRIBUTE("first deprecated in SDK 11.0.0. Use Instabug.sdkDebugLogsLevel instead");
 
 /// Adds a handler to provide attributes to be attached with Network Traces.
 ///
