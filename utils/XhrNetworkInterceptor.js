@@ -127,11 +127,8 @@ const XHRInterceptor = {
                 if (this.responseType === 'blob') {
                   var responseText = await new Response(this.response).text();
                   cloneNetwork.responseBody = responseText;
-                } else if (
-                  this.responseType === 'text' ||
-                  this.responseType === ''
-                ) {
-                  cloneNetwork.responseBody = this.response;
+                } else if (['text', '', 'json'].includes(this.responseType)) {
+                  cloneNetwork.responseBody = JSON.stringify(this.response);
                 }
               }
               

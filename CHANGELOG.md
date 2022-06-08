@@ -1,3 +1,7 @@
+## master
+
+* Fixes an issue with network responses of type JSON not getting logged
+
 ## 11.0.0 (2022-06-07)
 
 * Bumps Instabug native SDKs to v11
