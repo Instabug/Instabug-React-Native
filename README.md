@@ -14,10 +14,6 @@ For more info, visit [Instabug.com](https://www.instabug.com).
 
 ## Installation
 
-Updating to a new version? Check the [Update Guide](#update-guide) before bumping to a new major version.
-
-### Using react-native CLI
-
 1. In Terminal, navigate to your React Native directory and install the `instabug-reactnative` package:
 
     ```bash
