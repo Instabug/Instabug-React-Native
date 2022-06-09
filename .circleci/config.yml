@@ -89,6 +89,20 @@ jobs:
           working-directory: ./android
           test-command: ./gradlew test
 
+  validate_shell_files:
+    machine:
+      image: ubuntu-2004:current
+    working_directory: ~/project
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Validate Android Script
+          command: bash -n android/upload_sourcemap.sh
+      - run:
+          name: Validate iOS Script
+          command: bash -n ios/upload_sourcemap.sh
+
   test_ios:
     macos:
       xcode: "12.3.0"
@@ -198,6 +212,7 @@ workflows:
       - test_module
       - test_sample
       - test_android
+      - validate_shell_files
       - test_ios
       - e2e_ios
       - e2e_android
@@ -206,6 +221,7 @@ workflows:
             - test_module
             - test_sample
             - test_android
+            - validate_shell_files
             - test_ios
             - e2e_ios
             - e2e_android
