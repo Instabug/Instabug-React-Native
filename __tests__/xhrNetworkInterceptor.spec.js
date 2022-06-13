@@ -139,7 +139,7 @@ describe('Network Interceptor', () => {
             done();
         })
         FakeRequest.open(method, url);
-        FakeRequest.setResponseType('text')
+        FakeRequest.setResponseType('json')
         FakeRequest.send();
         FakeRequest.mockResponse(requests[0], null, JSON.stringify(responseBody));
     });
@@ -213,7 +213,7 @@ describe('Network Interceptor', () => {
       });
       FakeRequest.open(method, url);
       FakeRequest.setRequestHeaders(headers);
-      FakeRequest.setResponseType('text');
+      FakeRequest.setResponseType('json');
       FakeRequest.send();
       FakeRequest.mockResponse(requests[0], null, JSON.stringify(responseBody));
     });

@@ -11,7 +11,7 @@ jobs:
   test_module:
     working_directory: ~/project
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
     steps:
       - checkout:
           path: ~/project
@@ -89,6 +89,20 @@ jobs:
           working-directory: ./android
           test-command: ./gradlew test
 
+  validate_shell_files:
+    machine:
+      image: ubuntu-2004:current
+    working_directory: ~/project
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Validate Android Script
+          command: bash -n android/upload_sourcemap.sh
+      - run:
+          name: Validate iOS Script
+          command: bash -n ios/upload_sourcemap.sh
+
   test_ios:
     macos:
       xcode: "12.3.0"
@@ -149,6 +163,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
+      resource-class: large
     working_directory: ~/project/InstabugSample/android
     steps:
       - checkout:
@@ -169,6 +184,7 @@ jobs:
       - android/start-emulator:
           avd-name: Nexus_6P_API_27
           no-window: true
+          memory: 2048
           post-emulator-launch-assemble-command: |
               rm -rf ~/.gradle/caches
               ./gradlew androidDependencies
@@ -198,6 +214,7 @@ workflows:
       - test_module
       - test_sample
       - test_android
+      - validate_shell_files
       - test_ios
       - e2e_ios
       - e2e_android
@@ -206,6 +223,7 @@ workflows:
             - test_module
             - test_sample
             - test_android
+            - validate_shell_files
             - test_ios
             - e2e_ios
             - e2e_android

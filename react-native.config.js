@@ -7,7 +7,7 @@ module.exports = {
         scriptPhases: [
           {
             name: '[instabug-reactnative] Upload Sourcemap',
-            script: `bash "${path.resolve(__dirname, 'ios/upload_sourcemap.sh')}"`,
+            path: './ios/upload_sourcemap.sh',
             execution_position: 'after_compile',
           },
         ],

@@ -1,6 +1,8 @@
-## master
+## 11.0.1 (2022-06-13)
 
 * Fixes an issue with network responses of type JSON not getting logged
+* Fixes an issue that may cause the android build to fail
+* Fixes an issue with iOS autolinking that causes the user local path to be referenced in xcode
 
 ## 11.0.0 (2022-06-07)
 
