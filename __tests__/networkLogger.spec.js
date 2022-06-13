@@ -172,7 +172,9 @@ describe('NetworkLogger Module', () => {
     });
   
     it('should test that apollo handler called with catch error', async () => {
-      const operation = {};
+      const operation = {
+        setContext : (callback) => callback({ headers: {} }),
+      };
       const forward = jest.fn();
   
       NetworkLogger.apolloLinkRequestHandler(operation, forward);
