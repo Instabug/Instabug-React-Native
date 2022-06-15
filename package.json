@@ -37,7 +37,7 @@
     "codecov": "~3.8.3",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.51.1",
-    "react": "^16.8.6",
+    "react": "^18.2.0",
     "react-native": "^0.59.8",
     "sinon": "^7.3.2",
     "wait-for-expect": "^1.2.0",
