@@ -14,9 +14,6 @@ module.exports = {
       },
       android: {},
     },
-    hooks: {
-      postlink: `node ${path.resolve(__dirname, 'link_bridge.js')}`,
-    },
   },
   commands: [
     {
