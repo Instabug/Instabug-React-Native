@@ -1,3 +1,7 @@
+## master
+
+* Fixes a crash when the network responds with XMLHttpRequest error
+
 ## 11.0.1 (2022-06-13)
 
 * Fixes an issue with network responses of type JSON not getting logged
