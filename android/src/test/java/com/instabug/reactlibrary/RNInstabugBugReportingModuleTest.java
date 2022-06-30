@@ -1,22 +1,28 @@
 package com.instabug.reactlibrary;
 
 import android.os.Looper;
+
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.JavaOnlyMap;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.invocation.InstabugInvocationEvent;
+import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -27,23 +33,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
-
 public class RNInstabugBugReportingModuleTest {
 
-    private RNInstabugBugReportingModule bugReportingModule = new RNInstabugBugReportingModule(null);
+    private RNInstabugBugReportingModule bugReportingModule = new RNInstabugBugReportingModule(mock(ReactApplicationContext.class));
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
     private MockedStatic <MainThreadHandler> mockMainThreadHandler;
     private MockedStatic <BugReporting> mockBugReporting;
+    private MockedStatic <InstabugUtil> mockInstabugUtil;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -51,6 +57,7 @@ public class RNInstabugBugReportingModuleTest {
         mockBugReporting = mockStatic(BugReporting.class);
         mockLooper = mockStatic(Looper.class);
         mockMainThreadHandler = mockStatic(MainThreadHandler.class);
+        mockInstabugUtil = mockStatic(InstabugUtil.class);
 
         // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
@@ -73,6 +80,7 @@ public class RNInstabugBugReportingModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockBugReporting.close();
+        mockInstabugUtil.close();
     }
 
     /********BugReporting*********/
@@ -222,68 +230,52 @@ public class RNInstabugBugReportingModuleTest {
         BugReporting.setOptions(option2);
     }
 
-//    @Test
-//    public void given$setOnInvokeHandler_whenQuery_thenShouldSetNativeCallback() {
-//
-//        try {
-//            // given
-//    
-//            mockStatic(InstabugUtil.class);
-//            // when
-//            doAnswer(new Answer<Object>() {
-//                @Override
-//                public Object answer(InvocationOnMock invocation) {
-//                    ((OnInvokeCallback) invocation.getArguments()[0]).onInvoke();
-//                    return null;
-//                }
-//            }).when(BugReporting.class);
-//            BugReporting.setOnDismissCallback(anyObject());
-//            bugReportingModule.setOnInvokeHandler(null);
-//            // then
-//            verify(InstabugUtil.class,VerificationModeFactory.times(1));
-//
-//            InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_PRE_INVOCATION_HANDLER), Matchers.isNull(WritableMap.class));
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
+    @Test
+    public void given$setOnInvokeHandler_whenQuery_thenShouldSetNativeCallback() {
+        // when
+        mockBugReporting.when(() -> BugReporting.setOnInvokeCallback(any(OnInvokeCallback.class)))
+                .thenAnswer(new Answer<Object>() {
+                    @Override
+                    public Object answer(InvocationOnMock invocation) {
+                        ((OnInvokeCallback) invocation.getArguments()[0]).onInvoke();
+                        return null;
+                    }
+                });
 
-//    @Test
-//    public void given$setOnSDKDismissedHandler_whenQuery_thenShouldSetNativeCallback() {
-//        try {
-//            // given
-//            mockStatic(Arguments.class);
-//
-//            // when
-//            when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
-//            doAnswer(new Answer<Object>() {
-//                @Override
-//                public Object answer(InvocationOnMock invocation) {
-//                    mockStatic(InstabugUtil.class);
-//                    doNothing().when(InstabugUtil.class);
-//                    InstabugUtil.sendEvent(any(),any(),any());
-//                    ((OnSdkDismissCallback) invocation.getArguments()[0])
-//                            .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
-//                    return null;
-//                }
-//            }).when(BugReporting.class);
-//            BugReporting.setOnDismissCallback(anyObject());
-//            bugReportingModule.setOnSDKDismissedHandler(null);
-//            // then
-//            WritableMap params = new JavaOnlyMap();
-//            params.putString("dismissType", OnSdkDismissCallback.DismissType.CANCEL.toString());
-//            params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
-//            verify(InstabugUtil.class,VerificationModeFactory.times(1));
-//
-//            InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_POST_INVOCATION_HANDLER), eq(params));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+        bugReportingModule.setOnInvokeHandler(null);
+
+        // then
+        verify(InstabugUtil.class,VerificationModeFactory.times(1));
+        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_PRE_INVOCATION_HANDLER), Matchers.isNull(WritableMap.class));
+    }
+
+
+    @Test
+    public void given$setOnSDKDismissedHandler_whenQuery_thenShouldSetNativeCallback() {
+        // given
+        MockedStatic mockArgument = mockStatic(Arguments.class);
+        MockedStatic mockReactApplicationContext = mockStatic(ReactApplicationContext.class);
+
+        // when
+        when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+        mockBugReporting.when(() -> BugReporting.setOnDismissCallback(any(OnSdkDismissCallback.class))).thenAnswer(new Answer() {
+            public Object answer(InvocationOnMock invocation) {
+                InstabugUtil.sendEvent(any(),any(),any());
+                ((OnSdkDismissCallback) invocation.getArguments()[0])
+                        .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
+                return null;
+            }});
+        bugReportingModule.setOnSDKDismissedHandler(null);
+
+        // then
+        WritableMap params = new JavaOnlyMap();
+        params.putString("dismissType", OnSdkDismissCallback.DismissType.CANCEL.toString());
+        params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
+        verify(InstabugUtil.class,VerificationModeFactory.times(1));
+        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_POST_INVOCATION_HANDLER), eq(params));
+        mockArgument.close();
+        mockReactApplicationContext.close();
+    }
 
     @Test
     public void givenArray$setReportTypes_whenQuery_thenShouldCallNativeApiWithEnumArgs() {
