@@ -1,6 +1,6 @@
-## master
+## 11.0.2 (2022-07-20)
 
-* Fixes a crash when the network responds with XMLHttpRequest error
+* Fixes a crash that occurs when logging some failed network requests
 
 ## 11.0.1 (2022-06-13)
 
