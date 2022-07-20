@@ -134,7 +134,7 @@ const XHRInterceptor = {
               
               cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;
               
-              if(cloneNetwork.responseBodySize === 0){
+              if(cloneNetwork.responseBodySize === 0 && cloneNetwork.responseBody){
                 cloneNetwork.responseBodySize = cloneNetwork.responseBody.length;
               }
 
