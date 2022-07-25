@@ -6,11 +6,15 @@ import android.os.SystemClock;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.Survey;
 import com.instabug.survey.Surveys;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.survey.callbacks.OnDismissCallback;
+import com.instabug.survey.callbacks.OnShowCallback;
 
 
 import org.json.JSONArray;
@@ -19,6 +23,7 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -29,6 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -38,7 +44,7 @@ import static org.mockito.Mockito.verify;
 
 public class RNInstabugSurveysModuleTest {
 
-    private RNInstabugSurveysModule surveysModule = new RNInstabugSurveysModule(null);
+    private RNInstabugSurveysModule surveysModule = new RNInstabugSurveysModule(mock(ReactApplicationContext.class));
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
@@ -46,6 +52,7 @@ public class RNInstabugSurveysModuleTest {
     private MockedStatic<Looper> mockLooper;
     private MockedStatic <MainThreadHandler> mockMainThreadHandler;
     private MockedStatic <Surveys> mockSurveys;
+    private MockedStatic <InstabugUtil> mockInstabugUtil;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -53,6 +60,7 @@ public class RNInstabugSurveysModuleTest {
         mockSurveys = mockStatic(Surveys.class);
         mockLooper = mockStatic(Looper.class);
         mockMainThreadHandler = mockStatic(MainThreadHandler.class);
+        mockInstabugUtil = mockStatic(InstabugUtil.class);
 
         // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
@@ -75,6 +83,7 @@ public class RNInstabugSurveysModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockSurveys.close();
+        mockInstabugUtil.close();
     }
 
     /********Surveys*********/
@@ -111,7 +120,6 @@ public class RNInstabugSurveysModuleTest {
         // given
         MockedStatic mockClock = mockStatic(SystemClock.class);
         MockedStatic mockArgument =mockStatic(Arguments.class);
-        mockStatic(InstabugUtil.class);
 
         Callback callback = mock(Callback.class);
         JSONArray json = mock(JSONArray.class);
@@ -156,54 +164,45 @@ public class RNInstabugSurveysModuleTest {
         Surveys.setAutoShowingEnabled(true);
     }
 
-//    @Test
-//    public void given$setOnShowSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
-//
-//        try {
-//            // given
-//            mockStatic(InstabugUtil.class);
-//            // when
-//            doAnswer(new Answer<Object>() {
-//                @Override
-//                public Object answer(InvocationOnMock invocation) {
-//                    ((OnShowCallback) invocation.getArguments()[0]).onShow();
-//                    return null;
-//                }
-//            }).when(Surveys.class);
-//            Surveys.setOnShowCallback(Matchers.anyObject());
-//            surveysModule.setOnShowHandler(null);
-//            // then
-//            verify(InstabugUtil.class,times(1));
-//            InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_SHOW_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Test
+    public void given$setOnShowSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
+        // given
 
-//    @Test
-//    public void given$setOnDismissSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
-//        try {
-//            // given
-//            mockStatic(InstabugUtil.class);
-//            // when
-//            doAnswer(new Answer<Object>() {
-//                @Override
-//                public Object answer(InvocationOnMock invocation) {
-//                    ((OnDismissCallback) invocation.getArguments()[0]).onDismiss();
-//                    return null;
-//                }
-//            }).when(Surveys.class);
-//            Surveys.setOnDismissCallback(Matchers.anyObject());
-//            surveysModule.setOnDismissHandler(null);
-//            // then
-//            verify(InstabugUtil.class,times(1));
-//            InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_DISMISS_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+        // when
+        mockSurveys.when(() -> Surveys.setOnShowCallback(any(OnShowCallback.class)))
+                .thenAnswer(new Answer<Object>() {
+                    @Override
+                    public Object answer(InvocationOnMock invocation) {
+                        ((OnShowCallback) invocation.getArguments()[0]).onShow();
+                        return null;
+                    }
+                });
+        surveysModule.setOnShowHandler(null);
+
+        // then
+        verify(InstabugUtil.class,times(1));
+        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_SHOW_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
+    }
+
+    @Test
+    public void given$setOnDismissSurveyHandler_whenQuery_thenShouldSetNativeCallback() {
+        // given
+
+        // when
+        mockSurveys.when(() -> Surveys.setOnDismissCallback(any(OnDismissCallback.class)))
+                .thenAnswer(new Answer<Object>() {
+                    @Override
+                    public Object answer(InvocationOnMock invocation) {
+                        ((OnDismissCallback) invocation.getArguments()[0]).onDismiss();
+                        return null;
+                    }
+                });
+        surveysModule.setOnDismissHandler(null);
+
+        // then
+        verify(InstabugUtil.class,times(1));
+        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_DISMISS_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
+    }
 
     @Test
     public void givenString$showSurvey_whenQuery_thenShouldCallNativeApiWithString() {
