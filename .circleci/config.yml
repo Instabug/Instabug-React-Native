@@ -209,8 +209,7 @@ jobs:
 workflows:
   publish:
     jobs:
-      - danger:
-          context: cross-platform
+      - danger
       - test_module
       - test_sample
       - test_android
@@ -232,7 +231,6 @@ workflows:
             branches:
               only: master
       - publish:
-          context: cross-platform
           requires:
             - hold
           filters:
