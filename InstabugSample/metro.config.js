@@ -8,9 +8,11 @@
 const path = require('path');
 const escape = require('escape-string-regexp');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
+const pkg = require('../package.json');
 
 const root = path.resolve(__dirname, '..');
-const modules = ['react', 'react-native', '@babel/runtime'];
+const peerDependencies = Object.keys(pkg.peerDependencies);
+const modules = [...peerDependencies, '@babel/runtime'];
 
 module.exports = {
   watchFolders: [root],
