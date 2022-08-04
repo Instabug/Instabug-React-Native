@@ -10,7 +10,7 @@ const escape = require('escape-string-regexp');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 const root = path.resolve(__dirname, '..');
-const modules = ['react', 'react-native'];
+const modules = ['react', 'react-native', '@babel/runtime'];
 
 module.exports = {
   watchFolders: [root],
