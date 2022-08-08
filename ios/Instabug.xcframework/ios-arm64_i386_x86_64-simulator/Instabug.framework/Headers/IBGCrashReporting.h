@@ -5,7 +5,7 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    11.0.2
+ Version:    11.1.0
  */
 
 #import <Foundation/Foundation.h>
@@ -64,5 +64,21 @@ NS_SWIFT_NAME(CrashReporting)
  @param userAttributes user attributes to be attached with the report.
  */
 + (void)reportError:(NSError *)error withUserAttributes:(NSDictionary <NSString *, NSString *>*)userAttributes;
+
+/**
+ @brief Report an exception manually with a custom grouping string.
+ 
+ @param exception Exception to be reported.
+ @param groupingString Grouping string to be sent with the exception
+ */
++ (void)reportException:(NSException *)exception withGroupingString:(NSString *)groupingString;
+
+/**
+ @brief Report an error manually with a custom grouping string.
+ 
+ @param error error to be reported.
+ @param groupingString Grouping string to be sent with the exception
+ */
++ (void)reportError:(NSError *)error withGroupingString:(NSString *)groupingString;
 
 @end

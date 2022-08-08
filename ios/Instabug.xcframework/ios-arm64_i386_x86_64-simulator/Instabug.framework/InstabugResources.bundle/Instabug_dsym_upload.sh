@@ -177,7 +177,7 @@ echo "Instabug: Compressing dSYM file..."
 
 # Upload dSYM
 echo "Instabug: Uploading dSYM file..."
-STATUS=$(curl "${ENDPOINT}" --write-out %{http_code} --silent --output /dev/null -F os=iOS -F symbols_file=@"${DSYM_PATH_ZIP}" -F application_token="${APP_TOKEN}")
+STATUS=$(curl -X POST "${ENDPOINT}" --write-out %{http_code} --silent --output /dev/null -F os=iOS -F symbols_file=@"${DSYM_PATH_ZIP}" -F application_token="${APP_TOKEN}")
 if [ $STATUS -ne 200 ]; then
   echo "Instabug: Error: dSYM archive not succesfully uploaded with status code: ${STATUS}"
   echo "Instabug: deleting temporary dSYM archive..."
