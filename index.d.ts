@@ -1082,7 +1082,6 @@ export enum strings {
   recordingMessageToReleaseText,
   conversationsHeaderTitle,
   screenshotHeaderTitle,
-  doneButtonText,
   okButtonText,
   cancelButtonText,
   thankYouText,

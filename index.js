@@ -779,7 +779,6 @@ const InstabugModule = {
     recordingMessageToReleaseText: Instabug.recordingMessageToReleaseText,
     conversationsHeaderTitle: Instabug.conversationsHeaderTitle,
     screenshotHeaderTitle: Instabug.screenshotHeaderTitle,
-    doneButtonText: Instabug.doneButtonText,
     okButtonText: Instabug.okButtonTitle,
     cancelButtonText: Instabug.cancelButtonTitle,
     thankYouText: Instabug.thankYouText,
