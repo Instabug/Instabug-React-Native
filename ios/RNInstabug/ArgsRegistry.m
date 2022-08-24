@@ -200,8 +200,6 @@
         @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
         @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
         @"invocationHeader": kIBGInvocationTitleStringName,
-        //@"talkToUs": kIBGTalkToUsStringName,
-        @"startChats": kIBGAskAQuestionStringName,
         @"reportQuestion": kIBGAskAQuestionStringName,
         @"reportBug": kIBGReportBugStringName,
         @"reportFeedback": kIBGReportFeedbackStringName,
@@ -243,9 +241,6 @@
         @"welcomeMessageBetaFinishStepContent": kIBGBetaWelcomeMessageFinishStepContent,
         @"welcomeMessageLiveWelcomeStepTitle": kIBGLiveWelcomeMessageTitle,
         @"welcomeMessageLiveWelcomeStepContent": kIBGLiveWelcomeMessageContent,
-
-        @"surveysCustomThanksTitle": kIBGCustomSurveyThankYouTitleText,
-        @"surveysCustomThanksSubtitle": kIBGCustomSurveyThankYouDescriptionText,
 
         @"surveysStoreRatingThanksTitle": kIBGStoreRatingThankYouTitleText,
         @"surveysStoreRatingThanksSubtitle": kIBGStoreRatingThankYouDescriptionText,

@@ -199,7 +199,6 @@ final class ArgsRegistry {
         put("commentFieldHintForFeedback", Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
         put("commentFieldHintForQuestion", Key.COMMENT_FIELD_HINT_FOR_QUESTION);
         put("invocationHeader", Key.INVOCATION_HEADER);
-        put("startChats", Key.START_CHATS);
         put("reportQuestion", Key.REPORT_QUESTION);
         put("reportBug", Key.REPORT_BUG);
         put("reportFeedback", Key.REPORT_FEEDBACK);
@@ -226,8 +225,6 @@ final class ArgsRegistry {
         put("welcomeMessageLiveWelcomeStepTitle", Key.LIVE_WELCOME_MESSAGE_TITLE);
         put("welcomeMessageLiveWelcomeStepContent", Key.LIVE_WELCOME_MESSAGE_CONTENT);
 
-        put("surveysCustomThanksTitle", Key.SURVEYS_CUSTOM_THANKS_TITLE);
-        put("surveysCustomThanksSubTitle", Key.SURVEYS_CUSTOM_THANKS_SUBTITLE);
         put("surveysStoreRatingThanksTitle", Key.SURVEYS_STORE_RATING_THANKS_TITLE);
         put("surveysStoreRatingThanksSubtitle", Key.SURVEYS_STORE_RATING_THANKS_SUBTITLE);
 
