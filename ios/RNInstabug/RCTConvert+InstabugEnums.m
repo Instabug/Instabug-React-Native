@@ -33,13 +33,6 @@ RCT_ENUM_CONVERTER(
 );
 
 RCT_ENUM_CONVERTER(
-  IBGInvocationMode,
-  ArgsRegistry.invocationModes,
-  IBGInvocationModeNA,
-  integerValue
-);
-
-RCT_ENUM_CONVERTER(
   IBGBugReportingOption,
   ArgsRegistry.invocationOptions,
   IBGBugReportingOptionNone,

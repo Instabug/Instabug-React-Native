@@ -10,7 +10,6 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) sdkLogLevels;
 + (ArgsDictionary *) logLevels;
 + (ArgsDictionary *) invocationEvents;
-+ (ArgsDictionary *) invocationModes __attribute__ ((deprecated));
 + (ArgsDictionary *) invocationOptions;
 + (ArgsDictionary *) colorThemes;
 + (ArgsDictionary *) floatingButtonEdges;

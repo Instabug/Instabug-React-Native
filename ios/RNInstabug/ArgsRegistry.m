@@ -8,7 +8,6 @@
     [all addEntriesFromDictionary:ArgsRegistry.sdkLogLevels];
     [all addEntriesFromDictionary:ArgsRegistry.logLevels];
     [all addEntriesFromDictionary:ArgsRegistry.invocationEvents];
-    [all addEntriesFromDictionary:ArgsRegistry.invocationModes];
     [all addEntriesFromDictionary:ArgsRegistry.invocationOptions];
     [all addEntriesFromDictionary:ArgsRegistry.colorThemes];
     [all addEntriesFromDictionary:ArgsRegistry.floatingButtonEdges];
@@ -54,16 +53,6 @@
         @"invocationEventTwoFingersSwipeLeft": @(IBGInvocationEventTwoFingersSwipeLeft),
         @"invocationEventRightEdgePan": @(IBGInvocationEventRightEdgePan),
         @"invocationEventFloatingButton": @(IBGInvocationEventFloatingButton)
-    };
-}
-
-+ (ArgsDictionary *) invocationModes {
-    return @{
-        @"invocationModeNA": @(IBGInvocationModeNA),
-        @"invocationModeNewBug": @(IBGInvocationModeNewBug),
-        @"invocationModeNewFeedback": @(IBGInvocationModeNewFeedback),
-        @"invocationModeNewChat": @(IBGInvocationModeNewChat),
-        @"invocationModeChatsList": @(IBGInvocationModeChatsList),
     };
 }
 

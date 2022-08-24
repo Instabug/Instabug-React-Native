@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.instabug.apm.model.LogLevel;
 import com.instabug.bug.BugReporting;
-import com.instabug.bug.invocation.InvocationMode;
 import com.instabug.bug.invocation.Option;
 import com.instabug.featuresrequest.ActionType;
 
@@ -48,7 +47,6 @@ final class ArgsRegistry {
         return new HashMap<String, Object>() {{
             putAll(logLevels);
             putAll(invocationEvents);
-            putAll(invocationModes);
             putAll(invocationOptions);
             putAll(colorThemes);
             putAll(floatingButtonEdges);
@@ -80,15 +78,6 @@ final class ArgsRegistry {
         put("invocationEventFloatingButton", InstabugInvocationEvent.FLOATING_BUTTON);
         put("invocationEventScreenshot", InstabugInvocationEvent.SCREENSHOT);
         put("invocationEventTwoFingersSwipeLeft", InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT);
-    }};
-
-    @Deprecated
-    static ArgsMap<InvocationMode> invocationModes = new ArgsMap<InvocationMode>() {{
-        put("invocationModeNA", InvocationMode.PROMPT_OPTION);
-        put("invocationModeNewBug", InvocationMode.NEW_BUG);
-        put("invocationModeNewFeedback", InvocationMode.NEW_FEEDBACK);
-        put("invocationModeNewChat", InvocationMode.NEW_CHAT);
-        put("invocationModeChatsList", InvocationMode.CHATS_LIST);
     }};
 
     static final ArgsMap<Integer> invocationOptions = new ArgsMap<Integer>() {{
