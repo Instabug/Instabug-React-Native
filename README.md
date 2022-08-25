@@ -32,12 +32,6 @@ For more info, visit [Instabug.com](https://www.instabug.com).
     cd ios && pod install && cd ..
     ```
 
-3.  **For React Native < 0.60**, link the bridging files in the `instabug-reactnative` package:
-
-    ```bash
-    react-native link instabug-reactnative
-    ```
-
 ## Initializing Instabug
 
 To start using Instabug, import it as follows, then initialize it in the `constructor` or `componentWillMount`. This line will let the SDK work with the default behavior. The SDK will be invoked when the device is shaken. You can customize this behavior through the APIs.
@@ -46,19 +40,6 @@ To start using Instabug, import it as follows, then initialize it in the `constr
 import Instabug from 'instabug-reactnative';
 
 Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
-```
-
-**For React Native < 0.60 on Android**  
-You should find the `getPackages()` method looks like the below snippet. You just need to add your Android app token. 
-
-```java
-@Override
-protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        new RNInstabugReactnativePackage()
-    );
-}
 ```
    
 _You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
