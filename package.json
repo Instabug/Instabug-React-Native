@@ -22,15 +22,6 @@
     "url": "https://github.com/Instabug/instabug-reactnative/issues"
   },
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
-  "rnpm": {
-    "commands": {
-      "postlink": "node node_modules/instabug-reactnative/link_bridge.js",
-      "preunlink": "node node_modules/instabug-reactnative/unlink_bridge.js"
-    },
-    "android": {
-      "packageInstance": "new RNInstabugReactnativePackage()"
-    }
-  },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
