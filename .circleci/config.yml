@@ -103,6 +103,21 @@ jobs:
           name: Validate iOS Script
           command: bash -n ios/upload_sourcemap.sh
 
+  # Make sure that files like yarn.lock and project.pbxproj
+  # are in sync with the latest changes in package.json and 
+  # ios/upload_sourcemap.sh files respectively.
+  validate_changes:
+    macos:
+      xcode: 13.4.1
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run: yarn
+      - run: cd InstabugSample && yarn
+      - run: cd InstabugSample/ios && pod install
+      - run: git --no-pager diff
+      - run: git diff-index --exit-code HEAD
+
   test_ios:
     macos:
       xcode: "13.4.1"
@@ -214,6 +229,7 @@ workflows:
       - test_sample
       - test_android
       - validate_shell_files
+      - validate_changes
       - test_ios
       - e2e_ios
       - e2e_android
@@ -223,6 +239,7 @@ workflows:
             - test_sample
             - test_android
             - validate_shell_files
+            - validate_changes
             - test_ios
             - e2e_ios
             - e2e_android
