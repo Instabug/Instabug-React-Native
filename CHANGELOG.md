@@ -1,3 +1,7 @@
+## Unreleased
+
+* Adjusts source maps auto upload script on Android to support Bundled Hermes
+
 ## 11.0.2 (2022-07-20)
 
 * Fixes a crash that occurs when logging some failed network requests
