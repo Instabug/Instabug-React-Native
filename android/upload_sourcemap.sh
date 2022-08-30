@@ -57,14 +57,16 @@ else
             *)        echo "unknown: $OSTYPE" ;;
         esac
 
-        #Find HERMES command file name
+        #Find hermes(c) binary file path
         INSTALLED_RN_VERSION_MAJOR=$(node -p "require('./node_modules/react-native/package.json').version" | cut -d "." -f2)
-        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 63 ]
-            then
-                HERMES_COMMAND_NAME='hermesc'
-            else
-                HERMES_COMMAND_NAME='hermes'
-        
+        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 69 ]
+        then
+            HERMES_PATH=node_modules/react-native/sdks/hermesc/$HERMES_OS_BIN/hermesc
+        elif [ "$INSTALLED_RN_VERSION_MAJOR" -lt 63 ]
+        then
+            HERMES_PATH=node_modules/hermes-engine/$HERMES_OS_BIN/hermes
+        else
+            HERMES_PATH=node_modules/hermes-engine/$HERMES_OS_BIN/hermesc
         fi
         #Generate android sourcemap (HERMES)
         npx react-native bundle --platform android \
@@ -74,7 +76,7 @@ else
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
 
-        node_modules/hermes-engine/$HERMES_OS_BIN/$HERMES_COMMAND_NAME -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
+        $HERMES_PATH -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
         cp index.android.bundle.hbc.map index.android.bundle.compiler.map
 
