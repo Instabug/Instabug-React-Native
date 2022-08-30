@@ -16,6 +16,7 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
+import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -174,18 +175,18 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenStringTheme$setColorTheme_whenQuery_thenShouldCallNativeApiWithTheme() {
         // given
-
-        Map<String, Object> themesArgs = new HashMap<>();
-        ArgsRegistry.registerColorThemeArgs(themesArgs);
+        Map<String, InstabugColorTheme> themesArgs = ArgsRegistry.colorThemes;
         final String[] keysArray = themesArgs.keySet().toArray(new String[0]);
+
         // when
         for (String key: keysArray) {
             rnModule.setColorTheme(key);
         }
+
         // then
         verify(Instabug.class,times(1));
         for (String key : keysArray) {
-            InstabugColorTheme theme = (InstabugColorTheme) themesArgs.get(key);
+            InstabugColorTheme theme = themesArgs.get(key);
             Instabug.setColorTheme(theme);
         }
     }
@@ -323,34 +324,33 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenArg$setReproStepsMode_whenQuery_thenShouldCallNativeApiWithArg() throws Exception {
         // given
-
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerReproStepsModeArgs(args);
+        Map<String, State> args = ArgsRegistry.reproStates;
         final String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         for (String key : keysArray) {
             rnModule.setReproStepsMode(key);
         }
+
         // then
         for (String key : keysArray) {
-            State mode = (State) args.get(key);
-            verify(Instabug.class,times(1));
+            verify(Instabug.class, times(1));
+            State mode = args.get(key);
             Instabug.setReproStepsState(mode);
         }
-
     }
 
     @Test
     public void givenArg$showWelcomeMessageWithMode_whenQuery_thenShouldCallNativeApiWithArg() {
         // given
-
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerWelcomeMessageArgs(args);
+        Map<String, WelcomeMessage.State> args = ArgsRegistry.welcomeMessageStates;
         final String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         for (String key : keysArray) {
             rnModule.showWelcomeMessageWithMode(key);
         }
+
         // then
         verify(Instabug.class,times(1));
         for (String key : keysArray) {
@@ -362,18 +362,18 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenArg$setWelcomeMessageMode_whenQuery_thenShouldCallNativeApiWithArg() {
         // given
-
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerWelcomeMessageArgs(args);
+        Map<String, WelcomeMessage.State> args = ArgsRegistry.welcomeMessageStates;
         final String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         for (String key : keysArray) {
             rnModule.setWelcomeMessageMode(key);
         }
+
         // then
         verify(Instabug.class,times(1));
         for (String key : keysArray) {
-            WelcomeMessage.State state = (WelcomeMessage.State) args.get(key);
+            WelcomeMessage.State state = args.get(key);
             Instabug.setWelcomeMessageState(state);
         }
     }
@@ -489,18 +489,19 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenArg$setLocale_whenQuery_thenShouldCallNativeApiWithLocale() {
         // given
-
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerLocaleArgs(args);
+        Map<String, InstabugLocale> args = ArgsRegistry.locales;
         String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         for (String key : keysArray) {
             rnModule.setLocale(key);
         }
+
         // then
         verify(Instabug.class,times(1));
         for (String key : keysArray) {
-            Locale locale = (Locale) args.get(key);
+            final InstabugLocale instabugLocale = args.get(key);
+            final Locale locale = new Locale(instabugLocale.getCode(), instabugLocale.getCountry());
             Instabug.setLocale(locale);
         }
     }
@@ -509,16 +510,17 @@ public class RNInstabugReactnativeModuleTest {
     public void givenString$setString_whenQuery_thenShouldCallNativeApiWithEnum() {
         // given
         mockStatic(Log.class);
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerCustomTextPlaceHolderKeysArgs(args);
+        Map<String, InstabugCustomTextPlaceHolder.Key> args = ArgsRegistry.placeholders;
         String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         InstabugCustomTextPlaceHolder expectedPlaceHolders = new InstabugCustomTextPlaceHolder();
         for (String key : keysArray) {
-            InstabugCustomTextPlaceHolder.Key placeHolder = (InstabugCustomTextPlaceHolder.Key) args.get(key);
+            InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
             expectedPlaceHolders.set(placeHolder, key);
             rnModule.setString(key, key);
         }
+
         // then
         verify(Instabug.class ,VerificationModeFactory.atLeastOnce());
         Instabug.setCustomTextPlaceHolders(Matchers.any(InstabugCustomTextPlaceHolder.class));
@@ -530,7 +532,7 @@ public class RNInstabugReactnativeModuleTest {
             privateStringField.setAccessible(true);
             InstabugCustomTextPlaceHolder placeHolders = (InstabugCustomTextPlaceHolder) privateStringField.get(rnModule);
         for (String key : keysArray) {
-            InstabugCustomTextPlaceHolder.Key placeHolder = (InstabugCustomTextPlaceHolder.Key) args.get(key);
+            InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
             Assert.assertEquals(placeHolders.get(placeHolder), key);
         }
         } catch (NoSuchFieldException | IllegalAccessException nsfe) {

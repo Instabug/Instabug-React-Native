@@ -172,61 +172,56 @@ public class RNInstabugBugReportingModuleTest {
     @Test
     public void givenExtendedBugReportMode$setExtendedBugReportMode_whenQuery_thenShouldCallNativeApiWithArgs() {
         // given
+        Map<String, ExtendedBugReport.State> args = ArgsRegistry.extendedBugReportStates;
 
-        Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerInstabugExtendedBugReportModeArgs(args);
         // when
         for (String strExtendedBugReportMode : args.keySet()) {
             bugReportingModule.setExtendedBugReportMode(strExtendedBugReportMode);
         }
-        // then
-        for (Object extendedBugReportMode : args.values()) {
-            ExtendedBugReport.State state = (ExtendedBugReport.State) extendedBugReportMode;
-            verify(BugReporting.class,VerificationModeFactory.times(1));
 
-            BugReporting.setExtendedBugReportState(state);
+        // then
+        for (ExtendedBugReport.State extendedBugReportMode : args.values()) {
+            verify(BugReporting.class,VerificationModeFactory.times(1));
+            BugReporting.setExtendedBugReportState(extendedBugReportMode);
         }
     }
 
     @Test
     public void givenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs() {
         // given
-
-        final Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerInstabugInvocationEventsArgs(args);
+        final Map<String, InstabugInvocationEvent> args = ArgsRegistry.invocationEvents;
         final String[] keysArray = args.keySet().toArray(new String[0]);
         JavaOnlyArray actualArray = new JavaOnlyArray();
         for (String key : keysArray) {
             actualArray.pushString(key);
         }
+
         // when
         bugReportingModule.setInvocationEvents(actualArray);
+
         // then
         verify(BugReporting.class,VerificationModeFactory.times(1));
-
         BugReporting.setInvocationEvents(args.values().toArray(new InstabugInvocationEvent[0]));
     }
 
     @Test
     public void givenOptions$setOptions_whenQuery_thenShouldCallNativeApiWithArgs() {
         // given
-
-        final Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerInvocationOptionsArgs(args);
+        final Map<String, Integer> args = ArgsRegistry.invocationOptions;
         final String[] keysArray = args.keySet().toArray(new String[0]);
         JavaOnlyArray actualArray = new JavaOnlyArray();
         actualArray.pushString(keysArray[0]);
         actualArray.pushString(keysArray[1]);
+
         // when
         bugReportingModule.setOptions(actualArray);
+
         // then
         verify(BugReporting.class,VerificationModeFactory.times(1));
-
-        int option1 = (int) args.get(keysArray[0]);
-        int option2 = (int) args.get(keysArray[1]);
+        int option1 = args.get(keysArray[0]);
+        int option2 = args.get(keysArray[1]);
         BugReporting.setOptions(option1);
         verify(BugReporting.class,VerificationModeFactory.times(1));
-
         BugReporting.setOptions(option2);
     }
 
@@ -280,35 +275,34 @@ public class RNInstabugBugReportingModuleTest {
     @Test
     public void givenArray$setReportTypes_whenQuery_thenShouldCallNativeApiWithEnumArgs() {
         // given
-
-        final Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerInstabugReportTypesArgs(args);
+        final Map<String, Integer> args = ArgsRegistry.reportTypes;
         final String[] keysArray = args.keySet().toArray(new String[0]);
         JavaOnlyArray actualArray = new JavaOnlyArray();
         actualArray.pushString(keysArray[0]);
         actualArray.pushString(keysArray[1]);
+
         // when
         bugReportingModule.setReportTypes(actualArray);
+
         // then
         verify(BugReporting.class,VerificationModeFactory.times(1));
 
-        int type1 = (int) args.get(keysArray[0]);
-        int type2 = (int) args.get(keysArray[1]);
+        int type1 = args.get(keysArray[0]);
+        int type2 = args.get(keysArray[1]);
         BugReporting.setReportTypes(type1, type2);
     }
 
     @Test
     public void givenString$setVideoRecordingFloatingButtonPosition_whenQuery_thenShouldCallNativeApi() {
         // given
-
-        final Map<String, Object> args = new HashMap<>();
-        ArgsRegistry.registerInstabugVideoRecordingFloatingButtonPositionArgs(args);
+        final Map<String, InstabugVideoRecordingButtonPosition> args = ArgsRegistry.recordButtonPositions;
         final String[] keysArray = args.keySet().toArray(new String[0]);
+
         // when
         bugReportingModule.setVideoRecordingFloatingButtonPosition(keysArray[0]);
+        
         // then
         verify(BugReporting.class,VerificationModeFactory.times(1));
-
         InstabugVideoRecordingButtonPosition position = (InstabugVideoRecordingButtonPosition) args.get(keysArray[0]);
         BugReporting.setVideoRecordingFloatingButtonPosition(position);
     }
@@ -316,21 +310,20 @@ public class RNInstabugBugReportingModuleTest {
     @Test
     public void givenArgs$showBugReportingWithReportTypeAndOptions_whenQuery_thenShouldCallNativeApiWithEnums() {
         // given
-
-        final Map<String, Object> optionsArgs = new HashMap<>();
-        final Map<String, Object> reportTypeArgs = new HashMap<>();
-        ArgsRegistry.registerInvocationOptionsArgs(optionsArgs);
-        ArgsRegistry.registerInstabugReportTypesArgs(reportTypeArgs);
+        final Map<String, Integer> optionsArgs = ArgsRegistry.invocationOptions;
+        final Map<String, Integer> reportTypeArgs = ArgsRegistry.reportTypes;
         final String[] keysArray = optionsArgs.keySet().toArray(new String[0]);
         final String[] reportTypeKeys = reportTypeArgs.keySet().toArray(new String[0]);
         JavaOnlyArray actualArray = new JavaOnlyArray();
         actualArray.pushString(keysArray[0]);
         actualArray.pushString(keysArray[1]);
+
         // when
         bugReportingModule.show(reportTypeKeys[0], actualArray);
+
         // then
-        int option1 = (int) optionsArgs.get(keysArray[0]);
-        int option2 = (int) optionsArgs.get(keysArray[1]);
+        int option1 = optionsArgs.get(keysArray[0]);
+        int option2 = optionsArgs.get(keysArray[1]);
         verify(BugReporting.class,VerificationModeFactory.times(1));
 
         BugReporting.setOptions(option1);
@@ -339,7 +332,7 @@ public class RNInstabugBugReportingModuleTest {
         BugReporting.setOptions(option2);
         verify(BugReporting.class,VerificationModeFactory.times(1));
 
-        BugReporting.show((int) reportTypeArgs.get(reportTypeKeys[0]));
+        BugReporting.show(reportTypeArgs.get(reportTypeKeys[0]));
     }
 
 }

@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
+import com.instabug.apm.model.LogLevel;
 import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.bug.BugReporting;
 import com.instabug.library.Feature;
@@ -80,10 +81,9 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    if (ArgsRegistry.getDeserializedValue(logLevel, Integer.class) == null) {
-                        return;
-                    }
-                    APM.setLogLevel((int) ArgsRegistry.getRawValue(logLevel));
+                    final Integer parsedLevel = ArgsRegistry.logLevels.get(logLevel);
+                    if (parsedLevel == null) return;
+                    APM.setLogLevel(parsedLevel);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

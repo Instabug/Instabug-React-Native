@@ -11,6 +11,8 @@
   #import "RCTConvert.h"
 #endif
 
+#import "ArgsRegistry.h"
+
 @interface RCTConvert (InstabugEnums)
 
 @end
