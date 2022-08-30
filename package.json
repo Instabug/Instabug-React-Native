@@ -22,15 +22,6 @@
     "url": "https://github.com/Instabug/instabug-reactnative/issues"
   },
   "homepage": "https://github.com/Instabug/instabug-reactnative#readme",
-  "rnpm": {
-    "commands": {
-      "postlink": "node node_modules/instabug-reactnative/link_bridge.js",
-      "preunlink": "node node_modules/instabug-reactnative/unlink_bridge.js"
-    },
-    "android": {
-      "packageInstance": "new RNInstabugReactnativePackage()"
-    }
-  },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
@@ -38,15 +29,15 @@
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react": "^16.8.6",
-    "react-native": "^0.59.8",
+    "react-native": "^0.60.0",
     "sinon": "^7.3.2",
     "wait-for-expect": "^1.2.0",
     "esprima": "^4.0.1",
     "typescript": "^4.0.3"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">=16.8.6",
+    "react-native": ">=0.60.0"
   },
   "jest": {
     "preset": "react-native",

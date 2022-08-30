@@ -60,8 +60,5 @@ allprojects {
         }
         google()
         maven { url 'https://www.jitpack.io' }
-        maven {
-      	    url "https://sdks.instabug.com/nexus/repository/instabug-cp"
-       	}
     }
 }

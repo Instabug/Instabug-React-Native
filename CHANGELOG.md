@@ -1,3 +1,9 @@
+## Unreleased
+
+* React Native 0.69 support
+* Bumps the minimum supported React Native version to 0.60.0
+* Drops manual linking support
+
 ## 11.0.2 (2022-07-20)
 
 * Fixes a crash that occurs when logging some failed network requests

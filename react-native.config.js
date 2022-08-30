@@ -14,22 +14,5 @@ module.exports = {
       },
       android: {},
     },
-    hooks: {
-      postlink: `node ${path.resolve(__dirname, 'link_bridge.js')}`,
-    },
   },
-  commands: [
-    {
-      name: 'add-instabug',
-      func: () => {
-        require('./link_gradle');
-      },
-    },
-    {
-      name: 'remove-instabug',
-      func: () => {
-        require('./unlink_gradle');
-      },
-    },
-  ],
 };
