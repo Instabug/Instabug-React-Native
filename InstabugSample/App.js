@@ -124,7 +124,7 @@ class Home extends Component<{}> {
   }
 
   sendBugReport() {
-    BugReporting.showWithOptions(BugReporting.reportType.bug);
+    BugReporting.show(BugReporting.reportType.bug);
   }
 
   sendCrashReport() {
