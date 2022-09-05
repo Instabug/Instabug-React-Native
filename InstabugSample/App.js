@@ -103,10 +103,6 @@ class Home extends Component<{}> {
     );
   }
 
-  showIntroMessage() {
-    Instabug.showIntroMessage();
-  }
-
   invoke() {
     Instabug.show();
   }
