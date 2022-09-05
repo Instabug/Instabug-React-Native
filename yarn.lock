@@ -1944,9 +1944,9 @@ camelcase@^5.0.0, camelcase@^5.3.1:
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
 caniuse-lite@^1.0.30001370:
-  version "1.0.30001387"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001387.tgz#90d2b9bdfcc3ab9a5b9addee00a25ef86c9e2e1e"
-  integrity sha512-fKDH0F1KOJvR+mWSOvhj8lVRr/Q/mc5u5nabU2vi1/sgvlSqEsE8dOq0Hy/BqVbDkCYQPRRHB1WRjW6PGB/7PA==
+  version "1.0.30001390"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001390.tgz#158a43011e7068ef7fc73590e9fd91a7cece5e7f"
+  integrity sha512-sS4CaUM+/+vqQUlCvCJ2WtDlV81aWtHhqeEVkLokVJJa3ViN4zDxAGfq9R8i1m90uGHxo99cy10Od+lvn3hf0g==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -2429,9 +2429,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.202:
-  version "1.4.239"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.239.tgz#5b04acb39c16b897a508980d1be95ba5f0201771"
-  integrity sha512-XbhfzxPIFzMjJm17T7yUGZEyYh5XuUjrA/FQ7JUy2bEd4qQ7MvFTaKpZ6zXZog1cfVttESo2Lx0ctnf7eQOaAQ==
+  version "1.4.241"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.241.tgz#5aa03ab94db590d8269f4518157c24b1efad34d6"
+  integrity sha512-e7Wsh4ilaioBZ5bMm6+F4V5c11dh56/5Jwz7Hl5Tu1J7cnB+Pqx5qIF2iC7HPpfyQMqGSvvLP5bBAIDd2gAtGw==
 
 encodeurl@~1.0.1, encodeurl@~1.0.2:
   version "1.0.2"
@@ -4392,10 +4392,10 @@ metro-react-native-babel-preset@0.54.1:
     metro-babel7-plugin-react-transform "0.54.1"
     react-transform-hmr "^1.0.4"
 
-metro-react-native-babel-preset@0.72.1:
-  version "0.72.1"
-  resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.72.1.tgz#6da276375f20312306c1545c47c439e445b9c628"
-  integrity sha512-DlvMw2tFrCqD9OXBoN11fPM09kHC22FZpnkTmG4Pr4kecV+aDmEGxwakjUcjELrX1JCXz2MLPvqeJkbiP1f5CA==
+metro-react-native-babel-preset@0.72.2:
+  version "0.72.2"
+  resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.72.2.tgz#1ee2e4d9985bd9157fb00e7cdea634de4bbc7096"
+  integrity sha512-OMp77TUUZAoiuUv5uKNc08AnJNQxD28k92eQvo8tPcA8Wx6OZlEUvL7M7SFkef2mEYJ0vnrRjOamSnbBuq/+1w==
   dependencies:
     "@babel/core" "^7.14.0"
     "@babel/plugin-proposal-async-generator-functions" "^7.0.0"
@@ -6520,9 +6520,9 @@ unset-value@^1.0.0:
     isobject "^3.0.0"
 
 update-browserslist-db@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.5.tgz#be06a5eedd62f107b7c19eb5bcefb194411abf38"
-  integrity sha512-dteFFpCyvuDdr9S/ff1ISkKt/9YZxKjI9WlRR99c180GaztJtRa/fn18FdxGVKVsnPY7/a/FDN68mcvUmP4U7Q==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.7.tgz#16279639cff1d0f800b14792de43d97df2d11b7d"
+  integrity sha512-iN/XYesmZ2RmmWAiI4Z5rq0YqSiv0brj9Ce9CfhNE4xIW2h+MFxcgkxIzZ+ShkFPUkjU3gQ+3oypadD3RAMtrg==
   dependencies:
     escalade "^3.1.1"
     picocolors "^1.0.0"

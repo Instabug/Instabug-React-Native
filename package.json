@@ -27,7 +27,7 @@
     "babel-jest": "^24.8.0",
     "codecov": "~3.8.3",
     "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "0.72.1",
+    "metro-react-native-babel-preset": "0.72.2",
     "react": "^16.8.6",
     "react-native": "^0.60.0",
     "sinon": "^7.3.2",
