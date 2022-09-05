@@ -80,13 +80,19 @@ else
     echo "Instabug: VERSION: $VERSION"
     echo "Instabug: Entry file found" "\""${ENTRY_FILE}"\""
     echo "Instabug: Generating sourcemap files..."
-
+    HERMES_ENABLED=$(grep hermes-engine ./ios/Podfile.lock -m 1)
+    if [[ ! -z "$HERMES_ENABLED" ]]; then
+        EXTRA_ARGS="--minify false"
+    fi
     #Generate ios sourcemap
     npx react-native bundle --platform ios \
+    --reset-cache \
     --entry-file $ENTRY_FILE \
     --dev false \
     --bundle-output ./ios/main.jsbundle \
-    --sourcemap-output ./ios-sourcemap.json
+    --sourcemap-output ./ios-sourcemap.json \
+    $EXTRA_ARGS
+    
     echo "Instabug: Uploading files..."
     #Upload ios sourcemap
     curl -X POST 'https://api.instabug.com/api/sdk/v3/symbols_files' -F "app_version=${VERSION}" -F "symbols_file=@./ios-sourcemap.json"  -F "application_token=${INSTABUG_APP_TOKEN}"  -F "platform=react_native"  -F "os=ios" 
