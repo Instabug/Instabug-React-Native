@@ -31,7 +31,7 @@
     "react": "^16.8.6",
     "react-native": "^0.60.0",
     "sinon": "^7.3.2",
-    "wait-for-expect": "^1.2.0",
+    "wait-for-expect": "^3.0.2",
     "esprima": "^4.0.1",
     "typescript": "^4.0.3"
   },
