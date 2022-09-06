@@ -103,10 +103,6 @@ class Home extends Component<{}> {
     );
   }
 
-  showIntroMessage() {
-    Instabug.showIntroMessage();
-  }
-
   invoke() {
     Instabug.show();
   }
@@ -124,7 +120,7 @@ class Home extends Component<{}> {
   }
 
   sendBugReport() {
-    BugReporting.showWithOptions(BugReporting.reportType.bug);
+    BugReporting.show(BugReporting.reportType.bug);
   }
 
   sendCrashReport() {
