@@ -116,7 +116,7 @@ jobs:
       - run: cd InstabugSample && yarn
       - run: cd InstabugSample/ios && pod install
       - run: git --no-pager diff
-      - run: git diff-index --exit-code HEAD
+      - run: git diff-index HEAD -p -I EXCLUDED_ARCHS --exit-code
 
   test_ios:
     macos:
