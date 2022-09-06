@@ -106,7 +106,7 @@ jobs:
   # Make sure that files like yarn.lock and project.pbxproj
   # are in sync with the latest changes in package.json and 
   # ios/upload_sourcemap.sh files respectively.
-  validate_sync:
+  sync_generated_files:
     macos:
       xcode: 13.4.1
     working_directory: ~/project
@@ -116,7 +116,7 @@ jobs:
       - run: cd InstabugSample && yarn
       - run: cd InstabugSample/ios && pod install
       - run: git --no-pager diff
-      - run: git diff-index HEAD -p -I EXCLUDED_ARCHS --exit-code
+      - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
     macos:
@@ -229,7 +229,7 @@ workflows:
       - test_sample
       - test_android
       - validate_shell_files
-      - validate_sync
+      - sync_generated_files
       - test_ios
       - e2e_ios
       - e2e_android
@@ -239,7 +239,7 @@ workflows:
             - test_sample
             - test_android
             - validate_shell_files
-            - validate_sync
+            - sync_generated_files
             - test_ios
             - e2e_ios
             - e2e_android
