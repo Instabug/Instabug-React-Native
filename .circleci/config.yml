@@ -106,7 +106,7 @@ jobs:
   # Make sure that files like yarn.lock and project.pbxproj
   # are in sync with the latest changes in package.json and 
   # ios/upload_sourcemap.sh files respectively.
-  validate_changes:
+  validate_sync:
     macos:
       xcode: 13.4.1
     working_directory: ~/project
@@ -229,7 +229,7 @@ workflows:
       - test_sample
       - test_android
       - validate_shell_files
-      - validate_changes
+      - validate_sync
       - test_ios
       - e2e_ios
       - e2e_android
@@ -239,7 +239,7 @@ workflows:
             - test_sample
             - test_android
             - validate_shell_files
-            - validate_changes
+            - validate_sync
             - test_ios
             - e2e_ios
             - e2e_android
