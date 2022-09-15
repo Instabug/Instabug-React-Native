@@ -81,7 +81,8 @@ else
     echo "Instabug: Entry file found" "\""${ENTRY_FILE}"\""
     echo "Instabug: Generating sourcemap files..."
     HERMES_ENABLED=$(grep hermes-engine ./ios/Podfile.lock -m 1)
-    if [[ ! -z "$HERMES_ENABLED" ]]; then
+    INSTALLED_RN_VERSION_MAJOR=$(node -p "require('./node_modules/react-native/package.json').version" | cut -d "." -f2)
+    if [[ ! -z "$HERMES_ENABLED" && "$INSTALLED_RN_VERSION_MAJOR" -lt 70  ]]; then
         EXTRA_ARGS="--minify false"
     fi
     #Generate ios sourcemap
