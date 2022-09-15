@@ -122,9 +122,15 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
                     final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
 
+                    setCurrentPlatform();
+                    setBaseUrlForDeprecationLogs();
+
                     new Instabug.Builder(getCurrentActivity().getApplication(), token)
                             .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
                             .build();
+
+                    // Temporarily disabling APM hot launches
+                    APM.setHotAppLaunchEnabled(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

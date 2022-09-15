@@ -75,6 +75,7 @@ else
         --dev false \
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
+        --minify false
 
         $HERMES_PATH -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
