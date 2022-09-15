@@ -5,10 +5,11 @@
  
  Copyright:  (c) 2013-2019 by Instabug, Inc., all rights reserved.
  
- Version:    11.0.2
+ Version:    11.2.0
  */
 
 #import <Foundation/Foundation.h>
+#import "IBGNonFatal.h"
 
 NS_SWIFT_NAME(CrashReporting)
 @interface IBGCrashReporting : NSObject
@@ -39,14 +40,14 @@ NS_SWIFT_NAME(CrashReporting)
  
  @param exception Exception to be reported.
  */
-+ (void)reportException:(NSException *)exception;
++ (void)reportException:(NSException *)exception DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalException object instead");
 
 /**
  @brief Report an error manually.
  
  @param error error to be reported.
  */
-+ (void)reportError:(NSError *)error;
++ (void)reportError:(NSError *)error DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalError object instead");
 
 /**
  @brief Report an exception manually with user attributes will be sent with this exception only.
@@ -54,7 +55,7 @@ NS_SWIFT_NAME(CrashReporting)
  @param exception Exception to be reported.
  @param userAttributes user attributes to be attached with the report.
  */
-+ (void)reportException:(NSException *)exception withUserAttributes:(NSDictionary <NSString *, NSString *>*)userAttributes;
++ (void)reportException:(NSException *)exception withUserAttributes:(NSDictionary <NSString *, NSString *>*)userAttributes DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalException object instead");
 
 /**
  @brief Report an error manually with user attributes will be sent with this exception only.
@@ -63,6 +64,38 @@ NS_SWIFT_NAME(CrashReporting)
  @param error error to be reported.
  @param userAttributes user attributes to be attached with the report.
  */
-+ (void)reportError:(NSError *)error withUserAttributes:(NSDictionary <NSString *, NSString *>*)userAttributes;
++ (void)reportError:(NSError *)error withUserAttributes:(NSDictionary <NSString *, NSString *>*)userAttributes DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalError object instead");
+
+/**
+ @brief Report an exception manually with a custom grouping string.
+ 
+ @param exception Exception to be reported.
+ @param groupingString Grouping string to be sent with the exception
+ */
++ (void)reportException:(NSException *)exception withGroupingString:(NSString *)groupingString DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalException object instead");
+
+/**
+ @brief Report an error manually with a custom grouping string.
+ 
+ @param error error to be reported.
+ @param groupingString Grouping string to be sent with the exception
+ */
++ (void)reportError:(NSError *)error withGroupingString:(NSString *)groupingString DEPRECATED_MSG_ATTRIBUTE("Create and use NonFatalError object instead");
+
+/**
+ @brief Creates a new NonFatalException object to report a handled exception with customizable metadata.
+
+ @param exception exception to be reported
+ @returns NonFatalException object
+ */
++ (IBGNonFatalException *)exception:(NSException *)exception;
+
+/**
+ @brief Creates a new NonFatalError object to report a handled error with customizable metadata.
+
+ @param error error to be reported
+ @returns NonFatalError object
+ */
++ (IBGNonFatalError *)error:(NSError *)error;
 
 @end
