@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Bumps Instabug iOS SDK to v11.2.0
 * React Native 0.69 support
 * Bumps the minimum supported React Native version to 0.60.0
 * Drops manual linking support
