@@ -6,6 +6,7 @@
 * Drops manual linking support
 * Adjusts source maps auto upload script on Android to support the bundled Hermes in RN v0.69
 * Fixes an issue with Hermes source maps generation script causing JS crashes on Android not getting deobfuscated correctly
+* Adds support for iOS source maps auto upload when Hermes is enabled
 
 ## 11.0.2 (2022-07-20)
 
