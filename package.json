@@ -20,7 +20,7 @@
     "feedback"
   ],
   "scripts": {
-    "test": "jest && ./node_modules/.bin/codecov"
+    "test": "jest && codecov"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
