@@ -4152,10 +4152,10 @@ metro-react-native-babel-preset@0.54.1:
     metro-babel7-plugin-react-transform "0.54.1"
     react-transform-hmr "^1.0.4"
 
-metro-react-native-babel-preset@0.72.2:
-  version "0.72.2"
-  resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.72.2.tgz#1ee2e4d9985bd9157fb00e7cdea634de4bbc7096"
-  integrity sha512-OMp77TUUZAoiuUv5uKNc08AnJNQxD28k92eQvo8tPcA8Wx6OZlEUvL7M7SFkef2mEYJ0vnrRjOamSnbBuq/+1w==
+metro-react-native-babel-preset@0.72.3:
+  version "0.72.3"
+  resolved "https://registry.yarnpkg.com/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.72.3.tgz#e549199fa310fef34364fdf19bd210afd0c89432"
+  integrity sha512-uJx9y/1NIqoYTp6ZW1osJ7U5ZrXGAJbOQ/Qzl05BdGYvN1S7Qmbzid6xOirgK0EIT0pJKEEh1s8qbassYZe4cw==
   dependencies:
     "@babel/core" "^7.14.0"
     "@babel/plugin-proposal-async-generator-functions" "^7.0.0"
