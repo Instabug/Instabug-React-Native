@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.instabug.library:instabug:11.2.0'
+    implementation 'com.instabug.library:instabug:11.4.1'
 
     testImplementation "org.mockito:mockito-inline:3.4.0"
     testImplementation "org.mockito:mockito-android:3.4.0"
