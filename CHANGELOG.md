@@ -5,7 +5,7 @@
 * React Native 0.69 support
 * Bumps the minimum supported React Native version to 0.60.0
 * Drops manual linking support
-* Adjusts source maps auto upload script on Android to support the bundled Hermes in RN v0.69
+* Adjusts source maps auto upload script on Android to support the bundled Hermes in React Native v0.69
 * Fixes an issue with Hermes source maps generation script causing JS crashes on Android not getting deobfuscated correctly
 * Adds support for iOS source maps auto upload when Hermes is enabled
 
