@@ -1,5 +1,13 @@
-import React, { Component } from 'react';
-import { ScrollView, Switch, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  Switch,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from 'react-native';
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
 function buttonColor(color) {
@@ -14,115 +22,87 @@ function buttonColor(color) {
   };
 }
 
-class SettingsScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      switchValue: true,
-      colorTheme: 'Light',
-    };
-  }
+function SettingsScreen() {
+  const [isLightMode, setIsLightMode] = useState(true);
+  const colorTheme = isLightMode ? 'Light' : 'Dark';
 
-  render() {
-    return (
-      <View testID="welcome" style={styles.container}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.details}>
-            Hello {"Instabug's"} awesome user! The purpose of this application is to show you the
-            different options for customizing the SDK and how easy it is to integrate it to your
-            existing app
-          </Text>
-          {this.invocationEvent()}
-          <Text style={styles.textColor}> Set primary color </Text>
-          <View style={styles.rowView}>
-            <TouchableOpacity
-              style={buttonColor('#FF0000')}
-              onPress={() => this.setPrimaryColor('#FF0000')}
-            />
-            <TouchableOpacity
-              style={buttonColor('#00FF00')}
-              onPress={() => this.setPrimaryColor('#00FF00')}
-            />
-            <TouchableOpacity
-              style={buttonColor('#0000FF')}
-              onPress={() => this.setPrimaryColor('#0000FF')}
-            />
-            <TouchableOpacity
-              style={buttonColor('#FFFF00')}
-              onPress={() => this.setPrimaryColor('#FFFF00')}
-            />
-          </View>
-          <View style={styles.switchView}>
-            <Text style={styles.textSwitchStyle}>Color Theme: {this.state.colorTheme}</Text>
-            <Switch onValueChange={this.toggleSwitch} value={this.state.switchValue} />
-          </View>
-        </ScrollView>
-      </View>
-    );
-  }
-
-  invocationEvent() {
-    return (
-      <View>
-        <Text style={styles.textColor}> Change Invocation Event </Text>
-        <View style={styles.rowView}>
-          <TouchableOpacity
-            style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Shake')}>
-            <Text style={styles.textInvoke}> SHAKE </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Screenshot')}>
-            <Text style={styles.textInvoke}> SCREENSHOT </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('twoFingersSwipe')}>
-            <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('Button')}>
-            <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonColor}
-            onPress={() => this.changeInvocationEvent('None')}>
-            <Text style={styles.textInvoke}> NONE </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
-  toggleSwitch = value => {
-    this.setState({ switchValue: value });
-    if (value) {
-      this.setState({ colorTheme: 'Light' });
-      Instabug.setColorTheme(Instabug.colorTheme.light);
-    } else {
-      this.setState({ colorTheme: 'Dark' });
-      Instabug.setColorTheme(Instabug.colorTheme.dark);
-    }
+  const toggleColorTheme = _isLightMode => {
+    setIsLightMode(_isLightMode);
+    Instabug.setColorTheme(_isLightMode ? Instabug.colorTheme.light : Instabug.colorTheme.dark);
   };
 
-  setPrimaryColor(color) {
-    Instabug.setPrimaryColor(color);
-  }
+  const setPrimaryColor = color => Instabug.setPrimaryColor(color);
 
-  changeInvocationEvent(invocationEvent) {
-    if (invocationEvent === 'Shake')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.shake]);
-    if (invocationEvent === 'Button')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.floatingButton]);
-    if (invocationEvent === 'Screenshot')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.screenshot]);
-    if (invocationEvent === 'twoFingersSwipe')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.twoFingersSwipe]);
-    if (invocationEvent === 'None')
-      BugReporting.setInvocationEvents([BugReporting.invocationEvent.none]);
-  }
+  const changeInvocationEvent = invocationEvent =>
+    BugReporting.setInvocationEvents([invocationEvent]);
+
+  return (
+    <View testID="welcome" style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <Text style={styles.details}>
+          Hello Instabug's awesome user! The purpose of this application is to show you the
+          different options for customizing the SDK and how easy it is to integrate it to your
+          existing app
+        </Text>
+
+        <View>
+          <Text style={styles.textColor}> Change Invocation Event </Text>
+          <View style={styles.rowView}>
+            <TouchableOpacity
+              style={styles.buttonColor}
+              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
+              <Text style={styles.textInvoke}> SHAKE </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonColor}
+              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
+              <Text style={styles.textInvoke}> SCREENSHOT </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonColor}
+              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.twoFingersSwipe)}>
+              <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonColor}
+              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.floatingButton)}>
+              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonColor}
+              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
+              <Text style={styles.textInvoke}> NONE </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <Text style={styles.textColor}> Set primary color </Text>
+        <View style={styles.rowView}>
+          <TouchableOpacity
+            style={buttonColor('#FF0000')}
+            onPress={() => setPrimaryColor('#FF0000')}
+          />
+          <TouchableOpacity
+            style={buttonColor('#00FF00')}
+            onPress={() => setPrimaryColor('#00FF00')}
+          />
+          <TouchableOpacity
+            style={buttonColor('#0000FF')}
+            onPress={() => setPrimaryColor('#0000FF')}
+          />
+          <TouchableOpacity
+            style={buttonColor('#FFFF00')}
+            onPress={() => setPrimaryColor('#FFFF00')}
+          />
+        </View>
+
+        <View style={styles.switchView}>
+          <Text style={styles.textSwitchStyle}>Color Theme: {colorTheme}</Text>
+          <Switch onValueChange={toggleColorTheme} value={isLightMode} />
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
