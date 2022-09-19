@@ -1,26 +1,9 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  Switch,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-} from 'react-native';
+import { ScrollView, Switch, StyleSheet, Text, View, Platform } from 'react-native';
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
-function buttonColor(color) {
-  return {
-    marginTop: 10,
-    padding: 20,
-    paddingRight: 40,
-    alignItems: 'center',
-    borderRadius: 5,
-    marginRight: 5,
-    backgroundColor: color,
-  };
-}
+import Button from '../components/Button';
+import ColorButton from '../components/ColorButton';
 
 function SettingsScreen() {
   const [isLightMode, setIsLightMode] = useState(true);
@@ -48,52 +31,32 @@ function SettingsScreen() {
         <View>
           <Text style={styles.textColor}> Change Invocation Event </Text>
           <View style={styles.rowView}>
-            <TouchableOpacity
-              style={styles.buttonColor}
-              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
-              <Text style={styles.textInvoke}> SHAKE </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonColor}
-              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
-              <Text style={styles.textInvoke}> SCREENSHOT </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonColor}
+            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
+              Shake
+            </Button>
+            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
+              Screenshot
+            </Button>
+            <Button
               onPress={() => changeInvocationEvent(BugReporting.invocationEvent.twoFingersSwipe)}>
-              <Text style={styles.textInvoke}> TWO FINGERS SWIPE LEFT</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonColor}
+              Two Fingers Swipe Left
+            </Button>
+            <Button
               onPress={() => changeInvocationEvent(BugReporting.invocationEvent.floatingButton)}>
-              <Text style={styles.textInvoke}> FLOATING BUTTON </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonColor}
-              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
-              <Text style={styles.textInvoke}> NONE </Text>
-            </TouchableOpacity>
+              Floating Button
+            </Button>
+            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
+              None
+            </Button>
           </View>
         </View>
 
         <Text style={styles.textColor}> Set primary color </Text>
         <View style={styles.rowView}>
-          <TouchableOpacity
-            style={buttonColor('#FF0000')}
-            onPress={() => setPrimaryColor('#FF0000')}
-          />
-          <TouchableOpacity
-            style={buttonColor('#00FF00')}
-            onPress={() => setPrimaryColor('#00FF00')}
-          />
-          <TouchableOpacity
-            style={buttonColor('#0000FF')}
-            onPress={() => setPrimaryColor('#0000FF')}
-          />
-          <TouchableOpacity
-            style={buttonColor('#FFFF00')}
-            onPress={() => setPrimaryColor('#FFFF00')}
-          />
+          <ColorButton color="crimson" onPress={setPrimaryColor} />
+          <ColorButton color="olivedrab" onPress={setPrimaryColor} />
+          <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
+          <ColorButton color="gold" onPress={setPrimaryColor} />
         </View>
 
         <View style={styles.switchView}>
@@ -129,14 +92,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     color: 'black',
-  },
-  buttonColor: {
-    marginTop: 10,
-    backgroundColor: '#1D82DC',
-    padding: 10,
-    alignItems: 'center',
-    borderRadius: 5,
-    marginRight: 5,
   },
   textSwitchStyle: {
     marginTop: 10,

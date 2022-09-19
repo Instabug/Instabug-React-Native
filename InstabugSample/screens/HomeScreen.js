@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native';
 import Instabug, {
   BugReporting,
   CrashReporting,
@@ -7,6 +7,8 @@ import Instabug, {
   Replies,
   Surveys,
 } from 'instabug-reactnative';
+
+import Button from '../components/Button';
 
 function HomeScreen() {
   const invoke = () => Instabug.show();
@@ -44,33 +46,15 @@ function HomeScreen() {
           different options for customizing the SDK and how easy it is to integrate it to your
           existing app
         </Text>
-        <TouchableOpacity style={styles.button} onPress={invoke}>
-          <Text style={styles.text}> INVOKE </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={sendBugReport}>
-          <Text style={styles.text}> SEND BUG REPORT </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={sendFeedback}>
-          <Text style={styles.text}> SEND FEEDBACK </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={startNewConversation}>
-          <Text style={styles.text}> ASK A QUESTION </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={sendCrashReport}>
-          <Text style={styles.text}> THROW HANDLED EXCEPTION </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={showNpsSurvey}>
-          <Text style={styles.text}> SHOW NPS SURVEY </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={showMultipleQuestionSurvey}>
-          <Text style={styles.text}> SHOW MULTIPLE QUESTION SURVEY </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={showFeatureRequests}>
-          <Text style={styles.text}> SHOW FEATURE REQUESTS </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={showUnreadMessagesCount}>
-          <Text style={styles.text}> GET UNREAD MESSAGES COUNT </Text>
-        </TouchableOpacity>
+        <Button onPress={invoke}>Invoke</Button>
+        <Button onPress={sendBugReport}>Send Bug Report</Button>
+        <Button onPress={sendFeedback}>Send Feedback</Button>
+        <Button onPress={startNewConversation}>Ask a Question</Button>
+        <Button onPress={sendCrashReport}>Throw Handled Exception</Button>
+        <Button onPress={showNpsSurvey}>Show NPS Survey</Button>
+        <Button onPress={showMultipleQuestionSurvey}>Show Multiple Question Survey</Button>
+        <Button onPress={showFeatureRequests}>Show Feature Requests</Button>
+        <Button onPress={showUnreadMessagesCount}>Get Unread Messages Count</Button>
       </ScrollView>
     </View>
   );
@@ -87,18 +71,6 @@ const styles = StyleSheet.create({
     color: '#333333',
     margin: 20,
     marginTop: Platform.OS === 'ios' ? 40 : 20,
-  },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: '#1D82DC',
-    padding: 10,
-    alignItems: 'center',
-    borderRadius: 5,
   },
   contentContainer: {
     padding: 10,
