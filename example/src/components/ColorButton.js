@@ -10,7 +10,7 @@ function ColorButton({ color, checked = false, onPress }) {
       accessibilityLabel={`Change primary color to ${color}`}
       style={[styles.button, { backgroundColor: color }]}
       onPress={() => onPress(color)}>
-      {checked && <Icon name="checkmark-sharp" color="white" size={30} />}
+      {checked && <Icon name="checkmark-sharp" color="white" size={30} accessible={false} />}
     </TouchableOpacity>
   );
 }
