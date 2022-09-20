@@ -7,15 +7,21 @@ import ColorButton from '../components/ColorButton';
 import Screen from '../components/Screen';
 import Section from '../components/Section';
 
+const colors = ['crimson', 'olivedrab', 'cornflowerblue', 'gold'];
+
 function SettingsScreen() {
   const [isLightMode, setIsLightMode] = useState(true);
+  const [currentColor, setCurrentColor] = useState('');
 
   const toggleColorTheme = _isLightMode => {
     setIsLightMode(_isLightMode);
     Instabug.setColorTheme(_isLightMode ? Instabug.colorTheme.light : Instabug.colorTheme.dark);
   };
 
-  const setPrimaryColor = color => Instabug.setPrimaryColor(color);
+  const setPrimaryColor = color => {
+    Instabug.setPrimaryColor(color);
+    setCurrentColor(color);
+  };
 
   const changeInvocationEvent = invocationEvent =>
     BugReporting.setInvocationEvents([invocationEvent]);
@@ -46,10 +52,14 @@ function SettingsScreen() {
 
       <Section title="Primary Color">
         <View style={styles.row}>
-          <ColorButton color="crimson" onPress={setPrimaryColor} />
-          <ColorButton color="olivedrab" onPress={setPrimaryColor} />
-          <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
-          <ColorButton color="gold" onPress={setPrimaryColor} />
+          {colors.map(color => (
+            <ColorButton
+              key={color}
+              color={color}
+              checked={currentColor === color}
+              onPress={setPrimaryColor}
+            />
+          ))}
         </View>
       </Section>
 
