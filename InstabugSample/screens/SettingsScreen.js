@@ -4,6 +4,7 @@ import Instabug, { BugReporting } from 'instabug-reactnative';
 
 import Button from '../components/Button';
 import ColorButton from '../components/ColorButton';
+import Screen from '../components/Screen';
 
 function SettingsScreen() {
   const [isLightMode, setIsLightMode] = useState(true);
@@ -20,66 +21,47 @@ function SettingsScreen() {
     BugReporting.setInvocationEvents([invocationEvent]);
 
   return (
-    <View testID="welcome" style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.details}>
-          Hello Instabug's awesome user! The purpose of this application is to show you the
-          different options for customizing the SDK and how easy it is to integrate it to your
-          existing app
-        </Text>
-
-        <View>
-          <Text style={styles.textColor}> Change Invocation Event </Text>
-          <View style={styles.rowView}>
-            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
-              Shake
-            </Button>
-            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
-              Screenshot
-            </Button>
-            <Button
-              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.twoFingersSwipe)}>
-              Two Fingers Swipe Left
-            </Button>
-            <Button
-              onPress={() => changeInvocationEvent(BugReporting.invocationEvent.floatingButton)}>
-              Floating Button
-            </Button>
-            <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
-              None
-            </Button>
-          </View>
-        </View>
-
-        <Text style={styles.textColor}> Set primary color </Text>
+    <Screen>
+      <View>
+        <Text style={styles.textColor}> Change Invocation Event </Text>
         <View style={styles.rowView}>
-          <ColorButton color="crimson" onPress={setPrimaryColor} />
-          <ColorButton color="olivedrab" onPress={setPrimaryColor} />
-          <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
-          <ColorButton color="gold" onPress={setPrimaryColor} />
+          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
+            Shake
+          </Button>
+          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
+            Screenshot
+          </Button>
+          <Button
+            onPress={() => changeInvocationEvent(BugReporting.invocationEvent.twoFingersSwipe)}>
+            Two Fingers Swipe Left
+          </Button>
+          <Button
+            onPress={() => changeInvocationEvent(BugReporting.invocationEvent.floatingButton)}>
+            Floating Button
+          </Button>
+          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
+            None
+          </Button>
         </View>
+      </View>
 
-        <View style={styles.switchView}>
-          <Text style={styles.textSwitchStyle}>Color Theme: {colorTheme}</Text>
-          <Switch onValueChange={toggleColorTheme} value={isLightMode} />
-        </View>
-      </ScrollView>
-    </View>
+      <Text style={styles.textColor}> Set primary color </Text>
+      <View style={styles.rowView}>
+        <ColorButton color="crimson" onPress={setPrimaryColor} />
+        <ColorButton color="olivedrab" onPress={setPrimaryColor} />
+        <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
+        <ColorButton color="gold" onPress={setPrimaryColor} />
+      </View>
+
+      <View style={styles.switchView}>
+        <Text style={styles.textSwitchStyle}>Color Theme: {colorTheme}</Text>
+        <Switch onValueChange={toggleColorTheme} value={isLightMode} />
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  details: {
-    textAlign: 'center',
-    color: '#333333',
-    margin: 20,
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
-  },
   rowView: {
     flexDirection: 'row',
     marginTop: 10,
@@ -102,14 +84,6 @@ const styles = StyleSheet.create({
   switchView: {
     flexDirection: 'row',
     marginTop: 20,
-  },
-  textInvoke: {
-    color: '#FFFFFF',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  contentContainer: {
-    padding: 10,
   },
 });
 

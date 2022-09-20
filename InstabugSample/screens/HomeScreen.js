@@ -1,5 +1,4 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native';
 import Instabug, {
   BugReporting,
   CrashReporting,
@@ -9,6 +8,7 @@ import Instabug, {
 } from 'instabug-reactnative';
 
 import Button from '../components/Button';
+import Screen from '../components/Screen';
 
 function HomeScreen() {
   const invoke = () => Instabug.show();
@@ -39,42 +39,18 @@ function HomeScreen() {
     Replies.getUnreadRepliesCount(count => alert('Messages: ' + count));
 
   return (
-    <View testID="welcome" style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.details}>
-          Hello Instabug's awesome user! The purpose of this application is to show you the
-          different options for customizing the SDK and how easy it is to integrate it to your
-          existing app
-        </Text>
-        <Button onPress={invoke}>Invoke</Button>
-        <Button onPress={sendBugReport}>Send Bug Report</Button>
-        <Button onPress={sendFeedback}>Send Feedback</Button>
-        <Button onPress={startNewConversation}>Ask a Question</Button>
-        <Button onPress={sendCrashReport}>Throw Handled Exception</Button>
-        <Button onPress={showNpsSurvey}>Show NPS Survey</Button>
-        <Button onPress={showMultipleQuestionSurvey}>Show Multiple Question Survey</Button>
-        <Button onPress={showFeatureRequests}>Show Feature Requests</Button>
-        <Button onPress={showUnreadMessagesCount}>Get Unread Messages Count</Button>
-      </ScrollView>
-    </View>
+    <Screen>
+      <Button onPress={invoke}>Invoke</Button>
+      <Button onPress={sendBugReport}>Send Bug Report</Button>
+      <Button onPress={sendFeedback}>Send Feedback</Button>
+      <Button onPress={startNewConversation}>Ask a Question</Button>
+      <Button onPress={sendCrashReport}>Throw Handled Exception</Button>
+      <Button onPress={showNpsSurvey}>Show NPS Survey</Button>
+      <Button onPress={showMultipleQuestionSurvey}>Show Multiple Question Survey</Button>
+      <Button onPress={showFeatureRequests}>Show Feature Requests</Button>
+      <Button onPress={showUnreadMessagesCount}>Get Unread Messages Count</Button>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  details: {
-    textAlign: 'center',
-    color: '#333333',
-    margin: 20,
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
-  },
-  contentContainer: {
-    padding: 10,
-  },
-});
 
 export default HomeScreen;
