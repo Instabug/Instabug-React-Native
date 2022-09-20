@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { ScrollView, Switch, StyleSheet, Text, View, Platform } from 'react-native';
+import { Switch, StyleSheet, Text, View } from 'react-native';
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
 import Button from '../components/Button';
 import ColorButton from '../components/ColorButton';
 import Screen from '../components/Screen';
+import Section from '../components/Section';
 
 function SettingsScreen() {
   const [isLightMode, setIsLightMode] = useState(true);
-  const colorTheme = isLightMode ? 'Light' : 'Dark';
 
   const toggleColorTheme = _isLightMode => {
     setIsLightMode(_isLightMode);
@@ -22,9 +22,8 @@ function SettingsScreen() {
 
   return (
     <Screen>
-      <View>
-        <Text style={styles.textColor}> Change Invocation Event </Text>
-        <View style={styles.rowView}>
+      <Section title="Invocation Event">
+        <View style={[styles.row, { marginTop: -10 }]}>
           <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
             Shake
           </Button>
@@ -43,47 +42,50 @@ function SettingsScreen() {
             None
           </Button>
         </View>
-      </View>
+      </Section>
 
-      <Text style={styles.textColor}> Set primary color </Text>
-      <View style={styles.rowView}>
-        <ColorButton color="crimson" onPress={setPrimaryColor} />
-        <ColorButton color="olivedrab" onPress={setPrimaryColor} />
-        <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
-        <ColorButton color="gold" onPress={setPrimaryColor} />
-      </View>
+      <Section title="Primary Color">
+        <View style={styles.row}>
+          <ColorButton color="crimson" onPress={setPrimaryColor} />
+          <ColorButton color="olivedrab" onPress={setPrimaryColor} />
+          <ColorButton color="cornflowerblue" onPress={setPrimaryColor} />
+          <ColorButton color="gold" onPress={setPrimaryColor} />
+        </View>
+      </Section>
 
-      <View style={styles.switchView}>
-        <Text style={styles.textSwitchStyle}>Color Theme: {colorTheme}</Text>
-        <Switch onValueChange={toggleColorTheme} value={isLightMode} />
-      </View>
+      <Section title="Color Theme">
+        <View style={styles.colorThemeContainer}>
+          <Text style={styles.colorThemeText}>Dark</Text>
+          <Switch
+            onValueChange={toggleColorTheme}
+            value={isLightMode}
+            style={styles.colorThemeSwitch}
+          />
+          <Text style={styles.colorThemeText}>Light</Text>
+        </View>
+      </Section>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  rowView: {
+  row: {
     flexDirection: 'row',
-    marginTop: 10,
     maxWidth: '100%',
     flexGrow: 1,
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
-  textColor: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: 'black',
-  },
-  textSwitchStyle: {
-    marginTop: 10,
-    marginRight: 5,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  switchView: {
+  colorThemeContainer: {
     flexDirection: 'row',
-    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  colorThemeText: {
+    fontSize: 18,
+  },
+  colorThemeSwitch: {
+    marginHorizontal: 15,
   },
 });
 
