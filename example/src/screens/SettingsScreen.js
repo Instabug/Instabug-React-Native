@@ -67,6 +67,7 @@ function SettingsScreen() {
         <View style={styles.colorThemeContainer}>
           <Text style={styles.colorThemeText}>Dark</Text>
           <Switch
+            accessibilityLabel="Light color theme"
             onValueChange={toggleColorTheme}
             value={isLightMode}
             style={styles.colorThemeSwitch}
