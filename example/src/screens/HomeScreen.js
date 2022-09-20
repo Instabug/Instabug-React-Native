@@ -13,9 +13,9 @@ import Screen from '../components/Screen';
 function HomeScreen() {
   const invoke = () => Instabug.show();
 
-  const showMultipleQuestionSurvey = () => Surveys.showSurvey('ZAKSlVz98QdPyOx1wIt8BA');
+  const showMultipleQuestionSurvey = () => Surveys.showSurvey('95s5cjU1i74m23h0M9t_Sg');
 
-  const showNpsSurvey = () => Surveys.showSurvey('pcV_mE2ttqHxT1iqvBxL0w');
+  const showNpsSurvey = () => Surveys.showSurvey('CHUJHGRx8s1qPcCSs85kFA');
 
   const showFeatureRequests = () => FeatureRequests.show();
 
