@@ -7,11 +7,11 @@ import ColorButton from '../components/ColorButton';
 import Screen from '../components/Screen';
 import Section from '../components/Section';
 
-const colors = ['crimson', 'olivedrab', 'cornflowerblue', 'gold'];
+const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
 function SettingsScreen() {
   const [isLightMode, setIsLightMode] = useState(true);
-  const [currentColor, setCurrentColor] = useState('');
+  const [currentColor, setCurrentColor] = useState(colors[0]);
 
   const toggleColorTheme = _isLightMode => {
     setIsLightMode(_isLightMode);
