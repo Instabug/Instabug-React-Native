@@ -10,12 +10,15 @@ import Section from '../components/Section';
 const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
 function SettingsScreen() {
-  const [isLightMode, setIsLightMode] = useState(true);
+  const [colorTheme, setColorTheme] = useState(Instabug.colorTheme.light);
   const [currentColor, setCurrentColor] = useState(colors[0]);
 
-  const toggleColorTheme = _isLightMode => {
-    setIsLightMode(_isLightMode);
-    Instabug.setColorTheme(_isLightMode ? Instabug.colorTheme.light : Instabug.colorTheme.dark);
+  const isLightTheme = colorTheme === Instabug.colorTheme.light;
+
+  const toggleColorTheme = isLight => {
+    const theme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
+    Instabug.setColorTheme(theme);
+    setColorTheme(theme);
   };
 
   const setPrimaryColor = color => {
@@ -69,7 +72,7 @@ function SettingsScreen() {
           <Switch
             accessibilityLabel="Light color theme"
             onValueChange={toggleColorTheme}
-            value={isLightMode}
+            value={isLightTheme}
             style={styles.colorThemeSwitch}
           />
           <Text style={styles.colorThemeText}>Light</Text>
