@@ -7,6 +7,14 @@ import ColorButton from '../components/ColorButton';
 import Screen from '../components/Screen';
 import Section from '../components/Section';
 
+const invocationEvents = [
+  { label: 'Shake', value: Instabug.invocationEvent.shake },
+  { label: 'Screenshot', value: Instabug.invocationEvent.screenshot },
+  { label: 'Two fingers swipe left', value: Instabug.invocationEvent.twoFingersSwipe },
+  { label: 'Floating button', value: Instabug.invocationEvent.floatingButton },
+  { label: 'None', value: Instabug.invocationEvent.none },
+];
+
 const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
 function SettingsScreen() {
@@ -33,23 +41,11 @@ function SettingsScreen() {
     <Screen>
       <Section title="Invocation Event">
         <View style={[styles.row, { marginTop: -10 }]}>
-          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.shake)}>
-            Shake
-          </Button>
-          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.screenshot)}>
-            Screenshot
-          </Button>
-          <Button
-            onPress={() => changeInvocationEvent(BugReporting.invocationEvent.twoFingersSwipe)}>
-            Two Fingers Swipe Left
-          </Button>
-          <Button
-            onPress={() => changeInvocationEvent(BugReporting.invocationEvent.floatingButton)}>
-            Floating Button
-          </Button>
-          <Button onPress={() => changeInvocationEvent(BugReporting.invocationEvent.none)}>
-            None
-          </Button>
+          {invocationEvents.map(event => (
+            <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
+              {event.label}
+            </Button>
+          ))}
         </View>
       </Section>
 
