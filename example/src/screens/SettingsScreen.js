@@ -18,20 +18,20 @@ const invocationEvents = [
 const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
 function SettingsScreen() {
-  const [colorTheme, setColorTheme] = useState(Instabug.colorTheme.light);
-  const [currentColor, setCurrentColor] = useState(colors[0]);
+  const [theme, setTheme] = useState(Instabug.colorTheme.light);
+  const [color, setColor] = useState(colors[0]);
 
-  const isLightTheme = colorTheme === Instabug.colorTheme.light;
+  const isLightTheme = theme === Instabug.colorTheme.light;
 
   const toggleColorTheme = isLight => {
     const theme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
     Instabug.setColorTheme(theme);
-    setColorTheme(theme);
+    setTheme(theme);
   };
 
   const setPrimaryColor = color => {
     Instabug.setPrimaryColor(color);
-    setCurrentColor(color);
+    setColor(color);
   };
 
   const changeInvocationEvent = invocationEvent =>
@@ -51,11 +51,11 @@ function SettingsScreen() {
 
       <Section title="Primary Color">
         <View style={styles.row}>
-          {colors.map(color => (
+          {colors.map(_color => (
             <ColorButton
-              key={color}
-              color={color}
-              checked={currentColor === color}
+              key={_color}
+              color={_color}
+              checked={_color === color}
               onPress={setPrimaryColor}
             />
           ))}

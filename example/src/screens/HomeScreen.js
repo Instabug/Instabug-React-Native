@@ -25,8 +25,8 @@ function HomeScreen() {
   const sendCrashReport = () => {
     try {
       throw new Error('Handled Exception From Instabug Test App');
-    } catch (Exception) {
-      CrashReporting.reportJSException(Exception);
+    } catch (err) {
+      CrashReporting.reportJSException(err);
       alert('Crash report Sent!');
     }
   };
