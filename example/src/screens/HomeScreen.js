@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Alert, StyleSheet, Text } from 'react-native';
 import Instabug, {
   BugReporting,
   CrashReporting,
@@ -27,7 +27,7 @@ function HomeScreen() {
       throw new Error('Handled Exception From Instabug Test App');
     } catch (err) {
       CrashReporting.reportJSException(err);
-      alert('Crash report Sent!');
+      Alert.alert('Crash report Sent!');
     }
   };
 
@@ -37,7 +37,7 @@ function HomeScreen() {
   const startNewConversation = () => BugReporting.show(BugReporting.reportType.question);
 
   const showUnreadMessagesCount = () =>
-    Replies.getUnreadRepliesCount(count => alert('Messages: ' + count));
+    Replies.getUnreadRepliesCount(count => Alert.alert('Messages: ' + count));
 
   return (
     <Screen>
