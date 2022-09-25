@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, Text } from 'react-native';
 import Instabug, {
   BugReporting,
   CrashReporting,
@@ -40,6 +41,12 @@ function HomeScreen() {
 
   return (
     <Screen>
+      <Text style={styles.heading}>Welcome to Instabug!</Text>
+      <Text style={styles.details}>
+        Hello Instabug's awesome user! The purpose of this application is to show you the different
+        options for customizing the SDK and how easy it is to integrate it to your existing app
+      </Text>
+
       <Button onPress={invoke}>Invoke</Button>
       <Button onPress={sendBugReport}>Send Bug Report</Button>
       <Button onPress={sendFeedback}>Send Feedback</Button>
@@ -52,5 +59,19 @@ function HomeScreen() {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  heading: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  details: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 25,
+  },
+});
 
 export default HomeScreen;
