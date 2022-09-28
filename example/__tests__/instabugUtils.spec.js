@@ -23,7 +23,7 @@ jest.mock(
 describe('Test global error handler', () => {
   const sendJSCrash = jest.spyOn(NativeModules.Instabug, 'sendJSCrash');
   beforeEach(() => {
-    // var InstabugUtils = require('../utils/InstabugUtils');
+    Instabug.start("", [Instabug.invocationEvent.none]);
   });
 
   it('should call sendJSCrash when platform is ios', () => {
