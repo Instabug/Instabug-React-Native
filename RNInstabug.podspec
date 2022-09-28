@@ -9,11 +9,10 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.homepage     = package["homepage"]
   s.source       = { :git => "https://github.com/Instabug/Instabug-React-Native.git", :tag => 'v' + package["version"] }
-  s.source_files = 'ios/RNInstabug/*'
-  s.platform     = :ios, "9.0"
 
-  s.static_framework        = true
-  s.ios.vendored_frameworks = 'ios/Instabug.xcframework'
+  s.platform     = :ios, "9.0"
+  s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency 'React'
+  s.dependency 'Instabug', '11.2.0'
 end
