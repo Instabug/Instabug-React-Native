@@ -10,7 +10,6 @@ import './jest/mockInstabugUtils';
 import sinon from 'sinon';
 import CrashReporting from '../src/modules/CrashReporting';
 import InstabugUtils from '../src/utils/InstabugUtils';
-import Instabug from '../src';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import IBGConstants from '../src/utils/InstabugConstants';
 

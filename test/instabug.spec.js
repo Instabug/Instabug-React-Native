@@ -9,7 +9,7 @@ import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'rea
 import './jest/mockInstabug';
 import './jest/mockInstabugUtils';
 import './jest/mockXhrNetworkInterceotor';
-import Instabug from '../src/';
+import Instabug from '../src/modules/Instabug';
 import Report from '../src/models/Report';
 import sinon from 'sinon';
 
