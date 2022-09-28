@@ -7,28 +7,16 @@ import 'react-native';
 import { NativeModules, Platform } from 'react-native';
 import './jest/mockXhrNetworkInterceotor';
 import './jest/mockInstabugUtils';
-import sinon from 'sinon';
+import './jest/mockInstabug';
 import CrashReporting from '../src/modules/CrashReporting';
 import InstabugUtils from '../src/utils/InstabugUtils';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import IBGConstants from '../src/utils/InstabugConstants';
 
-jest.mock('NativeModules', () => {
-    return {
-        Instabug: {
-            setCrashReportingEnabled: jest.fn(),
-            sendHandledJSCrash: jest.fn()
-        },
-    };
-});
+const { Instabug: NativeInstabug } = NativeModules;
 
 describe('CrashReporting Module', () => {
-
-    const setCrashReportingEnabled = sinon.spy(NativeModules.Instabug, 'setCrashReportingEnabled');
-    const sendHandledJSCrash = sinon.spy(NativeModules.Instabug, 'sendHandledJSCrash');
-
     beforeEach(() => {
-        sendHandledJSCrash.resetHistory();
         IBGEventEmitter.removeAllListeners();
     });
 
@@ -36,7 +24,8 @@ describe('CrashReporting Module', () => {
 
         CrashReporting.setEnabled(true);
 
-        expect(setCrashReportingEnabled.calledOnceWithExactly(true)).toBe(true);
+        expect(NativeInstabug.setCrashReportingEnabled).toBeCalledTimes(1);
+        expect(NativeInstabug.setCrashReportingEnabled).toBeCalledWith(true);
 
     });
 
@@ -55,7 +44,8 @@ describe('CrashReporting Module', () => {
             exception: 'javascriptStackTrace'
         }
 
-        expect(sendHandledJSCrash.calledOnceWithExactly(expectedObject)).toBe(true);
+        expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
+        expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(expectedObject);
 
     });
 
@@ -74,12 +64,13 @@ describe('CrashReporting Module', () => {
             exception: 'javascriptStackTrace'
         }
 
-        expect(sendHandledJSCrash.calledOnceWithExactly(JSON.stringify(expectedObject))).toBe(true);
+        expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
+        expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(JSON.stringify(expectedObject));
 
     });
 
     //TODO: finish this
-    it('should emit event IBGSendHandledJSCrash with the error object when platform is android', (done) => {
+    it('should emit event IBGSendHandledJSCrash with the error object when platform is android', () => {
 
         Platform.OS = 'android';
         InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
@@ -93,14 +84,13 @@ describe('CrashReporting Module', () => {
             platform: 'react_native',
             exception: 'javascriptStackTrace'
         }
-        
-        IBGEventEmitter.addListener(NativeModules.Instabug, IBGConstants.SEND_HANDLED_CRASH, (actualObject) => {
-            expect(actualObject).toEqual(expectedObject);
-            done();
-        });
+
+        const crashHandler = jest.fn();
+        IBGEventEmitter.addListener(NativeModules.Instabug, IBGConstants.SEND_HANDLED_CRASH, crashHandler);
 
         CrashReporting.reportJSException(errorObject);
-
+        expect(crashHandler).toBeCalledTimes(1);
+        expect(crashHandler).toBeCalledWith(expectedObject);
     });
 
 

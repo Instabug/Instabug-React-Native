@@ -45,6 +45,7 @@ jest.mock("react-native", () => {
     callPrivateApi: jest.fn(),
     addListener: jest.fn(),
     getReport: jest.fn(),
+    setCrashReportingEnabled: jest.fn(),
     sendHandledJSCrash: jest.fn(),
     sendJSCrash: jest.fn(),
     reportScreenChange: jest.fn(),
