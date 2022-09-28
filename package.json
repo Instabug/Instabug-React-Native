@@ -41,6 +41,7 @@
   },
   "jest": {
     "preset": "react-native",
+    "resetMocks": true,
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "modulePathIgnorePatterns": [
