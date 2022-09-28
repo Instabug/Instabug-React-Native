@@ -35,3 +35,5 @@ coverage/
 *node_modules/
 *Pods/
 *Podfile.lock
+
+dist/

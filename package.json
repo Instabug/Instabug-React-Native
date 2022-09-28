@@ -7,8 +7,8 @@
   "homepage": "https://www.instabug.com/platforms/react-native",
   "bugs": "https://github.com/Instabug/Instabug-React-Native/issues",
   "license": "MIT",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "react-native",
     "instabug",
@@ -20,13 +20,15 @@
     "feedback"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
     "react-native": ">=0.60.0"
   },
   "devDependencies": {
+    "@types/node": "^18.7.23",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "esprima": "^4.0.1",
@@ -35,7 +37,7 @@
     "nock": "^13.2.9",
     "react": "^16.8.6",
     "react-native": "^0.60.0",
-    "typescript": "4.0.3",
+    "typescript": "^4.8.4",
     "wait-for-expect": "^1.2.0",
     "xhr2": "^0.2.1"
   },
