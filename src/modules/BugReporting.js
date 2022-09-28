@@ -2,7 +2,8 @@ import {
   NativeModules,
   Platform
 } from 'react-native';
-let { Instabug, IBGBugReporting } = NativeModules;
+import ArgsRegistry from '../utils/ArgsRegistry';
+let { IBGBugReporting } = NativeModules;
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
@@ -224,57 +225,33 @@ export default {
    * @readonly
    * @enum {number}
    */
-  invocationEvent: {
-    none: Instabug.invocationEventNone,
-    shake: Instabug.invocationEventShake,
-    screenshot: Instabug.invocationEventScreenshot,
-    twoFingersSwipe: Instabug.invocationEventTwoFingersSwipeLeft,
-    floatingButton: Instabug.invocationEventFloatingButton
-  },
+  invocationEvent: ArgsRegistry.invocationEvent,
 
   /**
    *  The extended bug report mode
    * @readonly
    * @enum {number}
    */
-  extendedBugReportMode: {
-    enabledWithRequiredFields: Instabug.enabledWithRequiredFields,
-    enabledWithOptionalFields: Instabug.enabledWithOptionalFields,
-    disabled: Instabug.disabled
-  },
+  extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
 
   /**
    * Type of the report either feedback or bug.
    * @readonly
    * @enum {number}
    */
-  reportType: {
-    bug: Instabug.bugReportingReportTypeBug,
-    feedback: Instabug.bugReportingReportTypeFeedback,
-    question: Instabug.bugReportingReportTypeQuestion
-  },
+  reportType: ArgsRegistry.reportType,
 
   /**
    * Options added while invoking bug reporting.
    * @readonly
    * @enum {number}
    */
-  option: {
-    emailFieldHidden: Instabug.optionEmailFieldHidden,
-    emailFieldOptional: Instabug.optionEmailFieldOptional,
-    commentFieldRequired: Instabug.optionCommentFieldRequired,
-    disablePostSendingDialog: Instabug.optionDisablePostSendingDialog
-  },
+  option: ArgsRegistry.option,
 
   /**
-   * Instabug floating buttons positions.
+   * Instabug record buttons positions.
    * @readonly
    * @enum {number}
    */
-   position: {
-    bottomRight: Instabug.bottomRight,
-    topRight: Instabug.topRight,
-    bottomLeft: Instabug.bottomLeft,
-    topLeft: Instabug.topLeft
-  },
+   position: ArgsRegistry.position,
 };

@@ -3,6 +3,7 @@ import {
     Platform,
 } from 'react-native';
 import Trace from '../models/Trace';
+import ArgsRegistry from '../utils/ArgsRegistry';
 let { Instabug, IBGAPM } = NativeModules;
 
 
@@ -128,12 +129,5 @@ export default {
    * @readonly
    * @enum {number}
    */
-  logLevel: {
-    none: Instabug.logLevelNone,
-    error: Instabug.logLevelError,
-    warning: Instabug.logLevelWarning,
-    info: Instabug.logLevelInfo,
-    debug: Instabug.logLevelDebug,
-    verbose: Instabug.logLevelVerbose,
-  },
+  logLevel: ArgsRegistry.logLevel,
 };

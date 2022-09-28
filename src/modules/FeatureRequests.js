@@ -1,5 +1,6 @@
 import { NativeModules } from "react-native";
-let { Instabug, IBGFeatureRequests} = NativeModules;
+import ArgsRegistry from "../utils/ArgsRegistry";
+let { IBGFeatureRequests} = NativeModules;
 
 /**
  * FeatureRequests
@@ -41,8 +42,5 @@ export default {
      * @readonly
      * @enum {number}
      */
-    actionTypes: {
-        requestNewFeature: Instabug.requestNewFeature,
-        addCommentToFeature: Instabug.addCommentToFeature
-    }
+    actionTypes: ArgsRegistry.actionTypes,
 }
