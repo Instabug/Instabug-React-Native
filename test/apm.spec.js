@@ -5,11 +5,11 @@
 
 import "react-native";
 import { NativeModules, Platform } from "react-native";
-import "../jest/mockAPM";
-import APM from "../modules/APM";
+import "./jest/mockAPM";
+import APM from "../src/modules/APM";
 import sinon from "sinon";
 
-import IBGEventEmitter from "../utils/IBGEventEmitter";
+import IBGEventEmitter from "../src/utils/IBGEventEmitter";
 
 describe("APM Module", () => {
   const setEnabled = sinon.spy(NativeModules.IBGAPM, "setEnabled");

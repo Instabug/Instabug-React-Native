@@ -1,4 +1,4 @@
-jest.mock('../utils/XhrNetworkInterceptor', () => {
+jest.mock('../../src/utils/XhrNetworkInterceptor', () => {
     return {
         setOnDoneCallback: jest.fn(),
         setOnProgressCallback: jest.fn(),

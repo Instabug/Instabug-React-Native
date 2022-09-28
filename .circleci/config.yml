@@ -49,12 +49,12 @@ jobs:
       - checkout:
           path: ~/project
       - run: yarn
-      - run: cd InstabugSample && yarn install
+      - run: cd example && yarn install
 
       - run:
           name: jest tests
           command: |
-            cd InstabugSample
+            cd example
             mkdir -p test-results/jest
             yarn test
           environment:
@@ -63,19 +63,19 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - InstabugSample/node_modules
+            - example/node_modules
 
       - store_test_results:
-          path: InstabugSample/test-results
+          path: example/test-results
 
       - store_artifacts:
-          path: InstabugSample/test-results
+          path: example/test-results
 
   test_android:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-    working_directory: ~/project/InstabugSample
+    working_directory: ~/project/example
     steps:
       - checkout:
           path: ~/project
@@ -113,15 +113,15 @@ jobs:
     steps:
       - checkout
       - run: yarn
-      - run: cd InstabugSample && yarn
-      - run: cd InstabugSample/ios && pod install
+      - run: cd example && yarn
+      - run: cd example/ios && pod install
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
     macos:
-      xcode: "13.4.1"
-    working_directory: ~/project/InstabugSample
+      xcode: 13.4.1
+    working_directory: ~/project/example
     environment:
       FL_OUTPUT_DIR: output
     steps:
@@ -142,8 +142,8 @@ jobs:
           no_output_timeout: 30m
   e2e_ios:
     macos:
-      xcode: "13.4.1"
-    working_directory: ~/project/InstabugSample
+      xcode: 13.4.1
+    working_directory: ~/project/example
     environment:
       FL_OUTPUT_DIR: output
     steps:
@@ -179,7 +179,7 @@ jobs:
       name: android/android-machine
       tag: "2022.03.1"
       resource-class: large
-    working_directory: ~/project/InstabugSample/android
+    working_directory: ~/project/example/android
     steps:
       - checkout:
           path: ~/project

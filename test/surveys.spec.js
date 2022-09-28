@@ -5,12 +5,12 @@
 
 import "react-native";
 import { NativeModules } from "react-native";
-import "../jest/mockSurveys";
-import Surveys from "../modules/Surveys";
+import "./jest/mockSurveys";
+import Surveys from "../src/modules/Surveys";
 import sinon from "sinon";
 
-import IBGConstants from "../utils/InstabugConstants";
-import IBGEventEmitter from "../utils/IBGEventEmitter";
+import IBGConstants from "../src/utils/InstabugConstants";
+import IBGEventEmitter from "../src/utils/IBGEventEmitter";
 
 describe("Surveys Module", () => {
   const setSurveysEnabled = sinon.spy(NativeModules.IBGSurveys, "setEnabled");

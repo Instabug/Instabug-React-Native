@@ -17,10 +17,10 @@ android/.settings
 ios/.DS_Store
 
 build/
-InstabugSample/
+example/
 node_modules/
 coverage/
-__tests__/
+test/
 
 Dangerfile
 babel.config.js

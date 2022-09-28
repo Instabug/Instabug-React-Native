@@ -5,8 +5,8 @@
 
 import 'react-native';
 import { NativeModules } from 'react-native';
-import '../jest/mockFeatureRequests';
-import FeatureRequests from '../modules/FeatureRequests'
+import './jest/mockFeatureRequests';
+import FeatureRequests from '../src/modules/FeatureRequests'
 import sinon from 'sinon';
 
 describe('Feature Requests Module', () => {

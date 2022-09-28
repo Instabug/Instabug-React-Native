@@ -6,17 +6,17 @@
 import 'react-native';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
-import '../jest/mockInstabug';
-import '../jest/mockInstabugUtils';
-import '../jest/mockXhrNetworkInterceotor';
-import Instabug from '../';
-import Report from '../models/Report';
+import './jest/mockInstabug';
+import './jest/mockInstabugUtils';
+import './jest/mockXhrNetworkInterceotor';
+import Instabug from '../src/';
+import Report from '../src/models/Report';
 import sinon from 'sinon';
 
-import IBGConstants from '../utils/InstabugConstants';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
+import IBGConstants from '../src/utils/InstabugConstants';
+import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import { green } from 'ansi-colors';
-import InstabugUtils from '../utils/InstabugUtils';
+import InstabugUtils from '../src/utils/InstabugUtils';
 
 describe('Instabug Module', () => {
 

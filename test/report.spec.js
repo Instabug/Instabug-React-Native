@@ -5,8 +5,8 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockReport';
-import Report from '../models/Report'
+import './jest/mockReport';
+import Report from '../src/models/Report'
 import sinon from 'sinon';
 
 describe('Report Model', () => {

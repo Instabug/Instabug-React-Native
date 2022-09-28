@@ -6,9 +6,9 @@ const ts = require('typescript');
 const LOG_LEVEL_SUCCESS = 0;
 const LOG_LEVEL_FAIL = 1;
 
-const INDEX_FILE = 'index.js';
-const TS_DEF_FILE_PATH = 'index.d.ts';
-const MODULE_DIR = 'modules/';
+const INDEX_FILE = 'src/index.js';
+const TS_DEF_FILE_PATH = 'src/index.d.ts';
+const MODULE_DIR = 'src/modules/';
 
 const JS_FILES = 'Javascript Files';
 const TS_DEF_FILE = 'Typescript Definition File';
@@ -112,7 +112,7 @@ function parseDefinition() {
             }
         }
     });
-    allDef.push({ moduleName: "index", data: { functions: indexFunctions, enums: indexEnums } });
+    allDef.push({ moduleName: INDEX_FILE.replace(/\.[jt]s/, ""), data: { functions: indexFunctions, enums: indexEnums } });
     return allDef;
 }
 
@@ -176,7 +176,7 @@ function compareModuleDefinition(module, definition, baseFile) {
 }
 
 function logModuleDiscrepency(module, fileName) {
-    console.error(" Module: " + module + " was not found in" + fileName);
+    console.error(" Module: " + module + " was not found in " + fileName);
 }
 
 function logFunctionDiscrepency(module, func, fileName) {

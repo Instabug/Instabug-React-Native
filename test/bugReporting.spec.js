@@ -5,13 +5,13 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockXhrNetworkInterceotor';
-import '../jest/mockBugReporting';
-import '../jest/mockInstabugUtils';
-import BugReporting from '../modules/BugReporting'
-import Instabug from '../';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import IBGConstants from '../utils/InstabugConstants';
+import './jest/mockXhrNetworkInterceotor';
+import './jest/mockBugReporting';
+import './jest/mockInstabugUtils';
+import BugReporting from '../src/modules/BugReporting'
+import Instabug from '../src/';
+import IBGEventEmitter from '../src/utils/IBGEventEmitter';
+import IBGConstants from '../src/utils/InstabugConstants';
 import sinon from 'sinon';
 
 

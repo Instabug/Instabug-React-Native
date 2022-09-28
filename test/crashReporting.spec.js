@@ -5,14 +5,14 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockXhrNetworkInterceotor';
-import '../jest/mockInstabugUtils';
+import './jest/mockXhrNetworkInterceotor';
+import './jest/mockInstabugUtils';
 import sinon from 'sinon';
-import CrashReporting from '../modules/CrashReporting';
-import InstabugUtils from '../utils/InstabugUtils';
-import Instabug from '../';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import IBGConstants from '../utils/InstabugConstants';
+import CrashReporting from '../src/modules/CrashReporting';
+import InstabugUtils from '../src/utils/InstabugUtils';
+import Instabug from '../src';
+import IBGEventEmitter from '../src/utils/IBGEventEmitter';
+import IBGConstants from '../src/utils/InstabugConstants';
 
 jest.mock('NativeModules', () => {
     return {

@@ -1,4 +1,4 @@
-jest.mock('../utils/InstabugUtils', () => {
+jest.mock('../../src/utils/InstabugUtils', () => {
     return {
         parseErrorStack: jest.fn(),
         captureJsErrors: jest.fn(),

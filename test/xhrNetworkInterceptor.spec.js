@@ -1,7 +1,7 @@
 import 'react-native';
 import sinon from 'sinon';
-import FakeRequest from '../jest/fakeNetworkRequest';
-import InstabugConstants from '../utils/InstabugConstants';
+import FakeRequest from './jest/fakeNetworkRequest';
+import InstabugConstants from '../src/utils/InstabugConstants';
 
 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
 
@@ -15,7 +15,7 @@ describe('Network Interceptor', () => {
     let requests;
 
     beforeEach(function () {
-        Interceptor = require('../utils/XhrNetworkInterceptor');
+        Interceptor = require('../src/utils/XhrNetworkInterceptor');
         server = sinon.useFakeXMLHttpRequest();
         requests = [];
 
