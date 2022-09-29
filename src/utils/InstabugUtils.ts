@@ -1,23 +1,25 @@
-'use strict';
-import { NativeModules, Platform } from 'react-native';
-import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+import { ErrorHandlerCallback, Platform } from 'react-native';
+import parseErrorStackLib, {
+  ExtendedError,
+  StackFrame,
+} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+import { Instabug } from 'src/native';
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
-let { Instabug } = NativeModules;
 
-export const parseErrorStack = error => {
+export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
 };
 
-// @ts-ignore
-const originalHandler = global.ErrorUtils.getGlobalHandler();
 var _isOnReportHandlerSet = false;
+
+export const isOnReportHandlerSet = (): boolean => _isOnReportHandlerSet;
 
 export const setOnReportHandler = (flag: boolean) => {
   _isOnReportHandlerSet = flag;
 };
 
-export const getActiveRouteName = (navigationState: any) => {
+export const getActiveRouteName = (navigationState: any): string | null => {
   if (!navigationState) {
     return null;
   }
@@ -40,12 +42,13 @@ function getFullRoute(state: any): string {
   }
 }
 
-export const getStackTrace = e => {
+export const getStackTrace = (e: ExtendedError): StackFrame[] => {
   let jsStackTrace;
   if (Platform.hasOwnProperty('constants')) {
     // RN version >= 0.63
     if (Platform.constants.reactNativeVersion.minor >= 64)
       // RN version >= 0.64 -> Stacktrace as string
+      // @ts-ignore
       jsStackTrace = parseErrorStackLib(e.stack);
     // RN version == 0.63 -> Stacktrace as string
     else jsStackTrace = parseErrorStackLib(e);
@@ -55,9 +58,7 @@ export const getStackTrace = e => {
   return jsStackTrace;
 };
 
-export const isOnReportHandlerSet = () => {
-  return _isOnReportHandlerSet;
-};
+const originalHandler = ErrorUtils.getGlobalHandler();
 
 export const captureJsErrors = () => {
   if (!process.env.JEST_WORKER_ID) {
@@ -66,11 +67,11 @@ export const captureJsErrors = () => {
     }
   }
 
-  function errorHandler(e, isFatal) {
-    let jsStackTrace = getStackTrace(e);
+  const errorHandler: ErrorHandlerCallback = (e: any, isFatal?: boolean) => {
+    const jsStackTrace = getStackTrace(e);
 
-    //JSON object to be sent to the native SDK
-    var jsonObject = {
+    // JSON object to be sent to the native SDK
+    const jsonObject = {
       message: e.name + ' - ' + e.message,
       e_message: e.message,
       e_name: e.name,
@@ -98,12 +99,12 @@ export const captureJsErrors = () => {
         }, 500);
       }
     }
-  }
-  // @ts-ignore
-  global.ErrorUtils.setGlobalHandler(errorHandler);
+  };
+
+  ErrorUtils.setGlobalHandler(errorHandler);
 };
 
-export const stringifyIfNotString = input => {
+export const stringifyIfNotString = (input: any) => {
   return typeof input === 'string' ? input : JSON.stringify(input);
 };
 
