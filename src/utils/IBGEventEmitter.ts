@@ -1,7 +1,12 @@
-import { DeviceEventEmitter, NativeAppEventEmitter, Platform } from 'react-native';
+import { NativeAppEventEmitter, DeviceEventEmitter, Platform } from 'react-native';
+import type { IbgNativeModule } from 'src/native';
 
-const IBGEventEmitter = {
-  addListener: (nativeModule, eventName, callback) => {
+export default {
+  addListener: (
+    nativeModule: IbgNativeModule,
+    eventName: string,
+    callback: (data: any) => void,
+  ) => {
     if (Platform.OS === 'ios') {
       nativeModule.addListener(eventName);
       NativeAppEventEmitter.addListener(eventName, callback);
@@ -9,11 +14,11 @@ const IBGEventEmitter = {
       DeviceEventEmitter.addListener(eventName, callback);
     }
   },
-  emit: (eventName, eventParams) => {
+  emit: (eventName: string, ...eventParams: any[]) => {
     if (Platform.OS === 'ios') {
-      NativeAppEventEmitter.emit(eventName, eventParams);
+      NativeAppEventEmitter.emit(eventName, ...eventParams);
     } else {
-      DeviceEventEmitter.emit(eventName, eventParams);
+      DeviceEventEmitter.emit(eventName, ...eventParams);
     }
   },
   removeAllListeners: () => {
@@ -33,5 +38,3 @@ const IBGEventEmitter = {
     }
   },
 };
-
-export default IBGEventEmitter;
