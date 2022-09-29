@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { IBGBugReporting } from 'src/native';
-import ArgsRegistry from '../utils/ArgsRegistry';
+import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 

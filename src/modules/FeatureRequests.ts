@@ -1,5 +1,5 @@
 import { IBGFeatureRequests } from 'src/native';
-import ArgsRegistry from '../utils/ArgsRegistry';
+import { ArgsRegistry } from '../utils/ArgsRegistry';
 
 /**
  * FeatureRequests

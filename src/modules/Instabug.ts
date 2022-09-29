@@ -1,7 +1,7 @@
 import { findNodeHandle, Platform, processColor } from 'react-native';
 import { Instabug } from 'src/native';
 import Report from '../models/Report';
-import ArgsRegistry from '../utils/ArgsRegistry';
+import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
