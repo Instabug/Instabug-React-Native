@@ -12,8 +12,8 @@ import Report from '../models/Report';
 import NetworkLogger from './NetworkLogger';
 import ArgsRegistry from '../utils/ArgsRegistry';
 
-var _currentScreen = null;
-var _lastScreen = null;
+var _currentScreen: string | null = null;
+var _lastScreen: string | null = null;
 var _isFirstScreen = false;
 const firstScreen = "Initial Screen";
 /**
@@ -523,7 +523,7 @@ const InstabugModule = {
     Instabug.callPrivateApi(apiName, param);
   },
 
-  onNavigationStateChange(prevState, currentState, action) {
+  onNavigationStateChange(prevState: any, currentState: any, action?: any) {
     const currentScreen = InstabugUtils.getActiveRouteName(currentState);
     const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
@@ -542,7 +542,7 @@ const InstabugModule = {
     }
   },
 
-  onStateChange(state) {
+  onStateChange(state: any) {
     const currentScreen = InstabugUtils.getFullRoute(state);
     if (_currentScreen != null && _currentScreen != firstScreen) {
       Instabug.reportScreenChange(_currentScreen);

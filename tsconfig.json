@@ -5,7 +5,7 @@
       "instabug-reactnative": ["./src/index"]
     },
     "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "allowUnusedLabels": true, // Temporarily disabled
     "esModuleInterop": true,
     "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
@@ -18,10 +18,11 @@
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false, // Temporarily disabled
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": false, // Temporarily disabled
     "target": "esnext",
     "outDir": "dist",
   },

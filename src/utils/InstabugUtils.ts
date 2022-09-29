@@ -5,19 +5,19 @@ import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
-export const parseErrorStack = (error) => {
+export const parseErrorStack = error => {
   return parseErrorStackLib(error);
 };
 
+// @ts-ignore
 const originalHandler = global.ErrorUtils.getGlobalHandler();
 var _isOnReportHandlerSet = false;
 
-
-export const setOnReportHandler = (flag) => {
+export const setOnReportHandler = (flag: boolean) => {
   _isOnReportHandlerSet = flag;
 };
 
-export const getActiveRouteName = (navigationState) => {
+export const getActiveRouteName = (navigationState: any) => {
   if (!navigationState) {
     return null;
   }
@@ -27,22 +27,22 @@ export const getActiveRouteName = (navigationState) => {
     return getActiveRouteName(route);
   }
   return route.routeName;
-}
+};
 
-function getFullRoute(state) {
+function getFullRoute(state: any): string {
   try {
     if (!state.routes[state.index].state) {
       return state.routes[state.index].name;
     }
     return getFullRoute(state.routes[state.index].state);
   } catch (e) {
-    return "";
+    return '';
   }
 }
 
-export const getStackTrace = (e) => {
+export const getStackTrace = e => {
   let jsStackTrace;
-  if (Platform.hasOwnProperty("constants")) {
+  if (Platform.hasOwnProperty('constants')) {
     // RN version >= 0.63
     if (Platform.constants.reactNativeVersion.minor >= 64)
       // RN version >= 0.64 -> Stacktrace as string
@@ -71,13 +71,13 @@ export const captureJsErrors = () => {
 
     //JSON object to be sent to the native SDK
     var jsonObject = {
-      message: e.name + " - " + e.message,
+      message: e.name + ' - ' + e.message,
       e_message: e.message,
       e_name: e.name,
       os: Platform.OS,
       platform: 'react_native',
-      exception: jsStackTrace
-    }
+      exception: jsStackTrace,
+    };
 
     if (Platform.OS === 'android') {
       if (_isOnReportHandlerSet) {
@@ -99,6 +99,7 @@ export const captureJsErrors = () => {
       }
     }
   }
+  // @ts-ignore
   global.ErrorUtils.setGlobalHandler(errorHandler);
 };
 

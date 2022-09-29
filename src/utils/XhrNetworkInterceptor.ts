@@ -1,16 +1,37 @@
-'use strict';
-
 import InstabugConstants from './InstabugConstants';
+
+type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
+type NetworkDataCallback = (data: NetworkData) => void;
+
+interface NetworkData {
+  url: string;
+  method: string;
+  requestBody: string;
+  requestBodySize: number;
+  responseBody: string | null;
+  responseBodySize: number;
+  responseCode: number;
+  requestHeaders: { [header: string]: string };
+  responseHeaders: { [header: string]: string };
+  contentType: string;
+  errorDomain: string;
+  errorCode: number;
+  startTime: number;
+  duration: number;
+  gqlQueryName?: string;
+  serverErrorMessage: string;
+  requestContentType: string;
+}
 
 const XMLHttpRequest = global.XMLHttpRequest;
 const originalXHROpen = XMLHttpRequest.prototype.open;
 const originalXHRSend = XMLHttpRequest.prototype.send;
 const originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
 
-var onProgressCallback;
-var onDoneCallback;
+var onProgressCallback: ProgressCallback | null;
+var onDoneCallback: NetworkDataCallback | null;
 var isInterceptorEnabled = false;
-var network;
+var network: NetworkData;
 
 const _reset = () => {
   network = {
@@ -34,11 +55,11 @@ const _reset = () => {
   };
 };
 
-const XHRInterceptor = {
-  setOnDoneCallback(callback) {
+export default {
+  setOnDoneCallback(callback: NetworkDataCallback) {
     onDoneCallback = callback;
   },
-  setOnProgressCallback(callback) {
+  setOnProgressCallback(callback: ProgressCallback) {
     onProgressCallback = callback;
   },
   enableInterception() {
@@ -46,15 +67,17 @@ const XHRInterceptor = {
       _reset();
       network.url = url;
       network.method = method;
+      // @ts-ignore
       originalXHROpen.apply(this, arguments);
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+      // @ts-ignore
       if (network.requestHeaders === '') {
         network.requestHeaders = {};
       }
-      network.requestHeaders[header] =
-        typeof value === 'string' ? value : JSON.stringify(value);
+      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
+      // @ts-ignore
       originalXHRSetRequestHeader.apply(this, arguments);
     };
 
@@ -78,8 +101,7 @@ const XHRInterceptor = {
               if (contentTypeString) {
                 cloneNetwork.contentType = contentTypeString.split(';')[0];
               }
-              const responseBodySizeString =
-                this.getResponseHeader('Content-Length');
+              const responseBodySizeString = this.getResponseHeader('Content-Length');
               if (responseBodySizeString) {
                 const responseBodySizeNumber = Number(responseBodySizeString);
 
@@ -88,19 +110,20 @@ const XHRInterceptor = {
               }
 
               if (this.getAllResponseHeaders()) {
-                const responseHeaders =
-                  this.getAllResponseHeaders().split('\r\n');
+                const responseHeaders = this.getAllResponseHeaders().split('\r\n');
                 const responseHeadersDictionary = {};
-                responseHeaders.forEach((element) => {
+                responseHeaders.forEach(element => {
                   const key = element.split(/:(.+)/)[0];
                   const value = element.split(/:(.+)/)[1];
+                  // @ts-ignore
                   responseHeadersDictionary[key] = value;
                 });
                 cloneNetwork.responseHeaders = responseHeadersDictionary;
               }
 
-              if(cloneNetwork.requestHeaders['content-type']){
-                cloneNetwork.requestContentType = cloneNetwork.requestHeaders['content-type'].split(';')[0];
+              if (cloneNetwork.requestHeaders['content-type']) {
+                cloneNetwork.requestContentType =
+                  cloneNetwork.requestHeaders['content-type'].split(';')[0];
               }
             }
 
@@ -112,14 +135,16 @@ const XHRInterceptor = {
                 cloneNetwork.responseCode = this.status;
               }
 
+              // @ts-ignore
+
               if (this._hasError) {
                 cloneNetwork.errorCode = 0;
                 cloneNetwork.errorDomain = 'ClientError';
 
+                // @ts-ignore
+                const _response = this._response;
                 cloneNetwork.requestBody =
-                  typeof this._response === 'string'
-                    ? this._response
-                    : JSON.stringify(this._response);
+                  typeof _response === 'string' ? _response : JSON.stringify(_response);
                 cloneNetwork.responseBody = null;
               }
 
@@ -131,21 +156,17 @@ const XHRInterceptor = {
                   cloneNetwork.responseBody = JSON.stringify(this.response);
                 }
               }
-              
+
               cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;
-              
-              if(cloneNetwork.responseBodySize === 0 && cloneNetwork.responseBody){
+
+              if (cloneNetwork.responseBodySize === 0 && cloneNetwork.responseBody) {
                 cloneNetwork.responseBodySize = cloneNetwork.responseBody.length;
               }
 
-              if (
-                cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER]
-              ) {
+              if (cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER]) {
                 cloneNetwork.gqlQueryName =
                   cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER];
-                delete cloneNetwork.requestHeaders[
-                  InstabugConstants.GRAPHQL_HEADER
-                ];
+                delete cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER];
                 if (cloneNetwork.gqlQueryName === 'null') {
                   cloneNetwork.gqlQueryName = '';
                 }
@@ -158,9 +179,7 @@ const XHRInterceptor = {
                     cloneNetwork.serverErrorMessage = '';
                   }
                 }
-              }
-              else
-              {
+              } else {
                 delete cloneNetwork.gqlQueryName;
               }
 
@@ -169,10 +188,11 @@ const XHRInterceptor = {
               }
             }
           },
-          false
+          // @ts-ignore
+          false,
         );
 
-        const downloadUploadProgressCallback = (event) => {
+        const downloadUploadProgressCallback = event => {
           if (!isInterceptorEnabled) {
             return;
           }
@@ -184,13 +204,11 @@ const XHRInterceptor = {
           }
         };
         this.addEventListener('progress', downloadUploadProgressCallback);
-        this.upload.addEventListener(
-          'progress',
-          downloadUploadProgressCallback
-        );
+        this.upload.addEventListener('progress', downloadUploadProgressCallback);
       }
 
       cloneNetwork.startTime = Date.now();
+      // @ts-ignore
       originalXHRSend.apply(this, arguments);
     };
     isInterceptorEnabled = true;
@@ -205,5 +223,3 @@ const XHRInterceptor = {
     onProgressCallback = null;
   },
 };
-
-module.exports = XHRInterceptor;
