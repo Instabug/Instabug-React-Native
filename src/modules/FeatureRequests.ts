@@ -1,44 +1,37 @@
 import { IBGFeatureRequests } from 'src/native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 
-/**
- * FeatureRequests
- * @exports FeatureRequests
- */
-export default {
+export namespace FeatureRequests {
+  export import actionTypes = ArgsRegistry.actionTypes;
+
   /**
    * Enables and disables everything related to feature requests.
-   * @param {boolean} isEnabled
+   *
+   * @param isEnabled
    */
-  setEnabled: function (isEnabled) {
+  export const setEnabled = (isEnabled: boolean) => {
     IBGFeatureRequests.setEnabled(isEnabled);
-  },
+  };
+
   /**
    * Sets whether users are required to enter an email address or not when
    * sending reports.
    * Defaults to YES.
-   * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
-   * field is required or not.
-   * @param {actionTypes} actionTypes An enum that indicates which action
-   *                                  types will have the isEmailFieldRequired
+   *
+   * @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
+   * @param actionTypes An enum that indicates which action types will have the isEmailFieldRequired
    */
-
-  setEmailFieldRequired: function (isEmailFieldRequired, actionTypes) {
+  export const setEmailFieldRequired = (
+    isEmailFieldRequired: boolean,
+    actionTypes: FeatureRequests.actionTypes,
+  ) => {
     IBGFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
-  },
+  };
 
   /**
    * Shows the UI for feature requests list
-   *
    */
-  show: function () {
+  export const show = () => {
     IBGFeatureRequests.show();
-  },
-
-  /**
-   * Instabug action types.
-   * @readonly
-   * @enum {number}
-   */
-  actionTypes: ArgsRegistry.actionTypes,
-};
+  };
+}

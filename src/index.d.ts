@@ -169,32 +169,7 @@ export namespace CrashReporting {
    */
   function reportJSException(errorObject: object): void;
 }
-export namespace FeatureRequests {
-  /**
-    * Sets whether users are required to enter an email address or not when
-    * sending reports.
-    * Defaults to YES.
-    * @param {boolean} isEmailFieldRequired A boolean to indicate whether email
-    * field is required or not.
-    * @param {actionTypes} actionTypes An enum that indicates which action
-    *                                  types will have the isEmailFieldRequired
-    */
-  function setEmailFieldRequired(
-    isEmailFieldRequired: boolean,
-    actionTypes: actionTypes[]
-  ): void;
-  /**
-   * Enables and disables everything related to feature requests.
-   * @param {boolean} isEnabled 
-   */
-  function setEnabled(isEnabled: boolean): void;
-  /**
-    * Shows the UI for feature requests list
-    *
-    */
-  function show(): void;
 
-}
 export namespace Replies {
   /**
    * Enables and disables everything related to receiving replies.
