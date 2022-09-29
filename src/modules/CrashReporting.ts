@@ -1,8 +1,8 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import InstabugUtils from '../utils/InstabugUtils';
 import InstabugConstants from '../utils/InstabugConstants';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
-let { Instabug } = NativeModules;
+import { Instabug } from 'src/native';
 
 /**
  * CrashReporting

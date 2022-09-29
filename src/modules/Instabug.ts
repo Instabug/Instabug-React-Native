@@ -1,21 +1,19 @@
-import {
-  NativeModules,
-  Platform,
-  findNodeHandle,
-  processColor
-} from 'react-native';
-let { Instabug } = NativeModules;
+import { findNodeHandle, Platform, processColor } from 'react-native';
+import Report from '../models/Report';
+import NetworkLogger from './NetworkLogger';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import InstabugConstants from '../utils/InstabugConstants';
 import Report from '../models/Report';
 import NetworkLogger from './NetworkLogger';
 import ArgsRegistry from '../utils/ArgsRegistry';
+import { Instabug } from 'src/native';
 
 var _currentScreen: string | null = null;
 var _lastScreen: string | null = null;
 var _isFirstScreen = false;
 const firstScreen = "Initial Screen";
+
 /**
  * Instabug
  * @exports Instabug

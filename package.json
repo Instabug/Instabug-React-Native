@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "@types/react-native": "^0.66.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "esprima": "^4.0.1",

@@ -1,11 +1,7 @@
-import {
-    NativeModules,
-    Platform,
-} from 'react-native';
+import { Platform } from 'react-native';
 import Trace from '../models/Trace';
 import ArgsRegistry from '../utils/ArgsRegistry';
-let { Instabug, IBGAPM } = NativeModules;
-
+import { Instabug, IBGAPM } from 'src/native';
 
 /**
  * APM

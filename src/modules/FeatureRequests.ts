@@ -1,6 +1,5 @@
-import { NativeModules } from "react-native";
 import ArgsRegistry from "../utils/ArgsRegistry";
-let { IBGFeatureRequests} = NativeModules;
+import { IBGFeatureRequests } from 'src/native';
 
 /**
  * FeatureRequests

@@ -1,5 +1,4 @@
-import { NativeModules } from 'react-native';
-let { IBGAPM } = NativeModules;
+import { IBGAPM } from 'src/native';
 
 interface TraceAttributesMap {
   [key: string]: string;

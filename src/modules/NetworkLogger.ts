@@ -1,8 +1,8 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import xhr from '../utils/XhrNetworkInterceptor';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-let { Instabug, IBGAPM } = NativeModules;
+import { Instabug, IBGAPM } from 'src/native';
 
 var _networkDataObfuscationHandlerSet = false;
 var _requestFilterExpression = false;

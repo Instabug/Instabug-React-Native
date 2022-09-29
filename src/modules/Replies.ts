@@ -1,7 +1,7 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { IBGReplies } from 'src/native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-let { IBGReplies } = NativeModules;
 
 /**
  * Replies

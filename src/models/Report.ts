@@ -1,5 +1,5 @@
-import { NativeModules, Platform } from 'react-native';
-let { Instabug } = NativeModules;
+import { Platform } from 'react-native';
+import { Instabug } from 'src/native';
 
 interface UserAttributesMap {
   [key: string]: string;

@@ -1,11 +1,8 @@
-import {
-  NativeModules,
-  Platform
-} from 'react-native';
+import { Platform } from 'react-native';
 import ArgsRegistry from '../utils/ArgsRegistry';
-let { IBGBugReporting } = NativeModules;
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
+import { IBGBugReporting } from 'src/native';
 
 /**
  * BugReporting
