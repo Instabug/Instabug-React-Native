@@ -5,7 +5,7 @@
 
 import 'react-native';
 import { NativeModules } from 'react-native';
-import '../jest/mockFeatureRequests';
+import '../mocks/mockFeatureRequests';
 import FeatureRequests from '../../src/modules/FeatureRequests';
 
 const { IBGFeatureRequests: NativeIBGFeatureRequests } = NativeModules;

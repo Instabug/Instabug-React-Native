@@ -5,9 +5,9 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockXhrNetworkInterceotor';
-import '../jest/mockBugReporting';
-import '../jest/mockInstabugUtils';
+import '../mocks/mockXhrNetworkInterceptor';
+import '../mocks/mockBugReporting';
+import '../mocks/mockInstabugUtils';
 import BugReporting from '../../src/modules/BugReporting';
 import Instabug from '../../src/';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';

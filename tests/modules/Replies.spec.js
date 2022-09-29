@@ -5,7 +5,7 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../jest/mockReplies';
+import '../mocks/mockReplies';
 import Replies from '../../src/modules/Replies';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';

@@ -1,6 +1,6 @@
 import 'react-native';
 import sinon from 'sinon';
-import FakeRequest from '../jest/fakeNetworkRequest';
+import FakeRequest from '../mocks/fakeNetworkRequest';
 import InstabugConstants from '../../src/utils/InstabugConstants';
 
 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();

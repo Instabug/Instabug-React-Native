@@ -7,9 +7,9 @@ import 'react-native';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
 import waitForExpect from 'wait-for-expect';
-import '../jest/mockInstabug';
-import '../jest/mockInstabugUtils';
-import '../jest/mockXhrNetworkInterceotor';
+import '../mocks/mockInstabug';
+import '../mocks/mockInstabugUtils';
+import '../mocks/mockXhrNetworkInterceptor';
 import Instabug from '../../src/modules/Instabug';
 import Report from '../../src/models/Report';
 
