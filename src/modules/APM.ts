@@ -1,14 +1,14 @@
 import { Platform } from 'react-native';
+import { IBGAPM, Instabug } from 'src/native';
 import Trace from '../models/Trace';
 import ArgsRegistry from '../utils/ArgsRegistry';
-import { Instabug, IBGAPM } from 'src/native';
 
 /**
  * APM
  * @exports APM
  */
 export default {
-    /**
+  /**
      * Sets the printed logs priority. Filter to one of the following levels:
      *
      * - logLevelNone disables all APM SDK console logs.
@@ -32,93 +32,93 @@ export default {
 
      * @param {logLevel} logLevel the printed logs priority.
      */
-    setLogLevel(logLevel) {
-        IBGAPM.setLogLevel(logLevel);
-    },
-    
-    /**
-     * Enables or disables APM
-     * @param {boolean} isEnabled 
-     */
-    setEnabled(isEnabled) {
-        IBGAPM.setEnabled(isEnabled);
-    },
+  setLogLevel(logLevel) {
+    IBGAPM.setLogLevel(logLevel);
+  },
 
-    /**
-     * Enables or disables APM App Launch
-     * @param {boolean} isEnabled 
-     */
-    setAppLaunchEnabled(isEnabled) {
-        IBGAPM.setAppLaunchEnabled(isEnabled);
-    },
+  /**
+   * Enables or disables APM
+   * @param {boolean} isEnabled
+   */
+  setEnabled(isEnabled) {
+    IBGAPM.setEnabled(isEnabled);
+  },
 
-    /**
-     * Ends app launch
-     */
-    endAppLaunch() {
-        IBGAPM.endAppLaunch();
-    },
+  /**
+   * Enables or disables APM App Launch
+   * @param {boolean} isEnabled
+   */
+  setAppLaunchEnabled(isEnabled) {
+    IBGAPM.setAppLaunchEnabled(isEnabled);
+  },
 
-    /**
-     * Enables or disables APM Network Metric
-     * @param {boolean} isEnabled 
-     */
-    setNetworkEnabledIOS(isEnabled) {
-        if (Platform.OS === 'ios') {
-            Instabug.setNetworkLoggingEnabled(isEnabled);
+  /**
+   * Ends app launch
+   */
+  endAppLaunch() {
+    IBGAPM.endAppLaunch();
+  },
+
+  /**
+   * Enables or disables APM Network Metric
+   * @param {boolean} isEnabled
+   */
+  setNetworkEnabledIOS(isEnabled) {
+    if (Platform.OS === 'ios') {
+      Instabug.setNetworkLoggingEnabled(isEnabled);
+    }
+  },
+
+  /**
+   * Enables or disables APM UI Responsivenes tracking feature
+   * @param {boolean} isEnabled
+   */
+  setAutoUITraceEnabled(isEnabled) {
+    IBGAPM.setAutoUITraceEnabled(isEnabled);
+  },
+
+  /**
+   * Starts a custom trace
+   * Returns a promise, the promise delivers the trace reference if APM is enabled, otherwise it gets rejected
+   * @param {string} name
+   */
+  startExecutionTrace(name) {
+    const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;
+    const timestamp = Date.now() + '';
+
+    return new Promise((resolve, reject) => {
+      IBGAPM.startExecutionTrace(name, timestamp, id => {
+        if (id) {
+          resolve(new Trace(id, name));
+        } else {
+          reject(new Error(TRACE_NOT_STARTED_APM_NOT_ENABLED));
         }
-    },
+      });
+    });
+  },
 
-    /**
-     * Enables or disables APM UI Responsivenes tracking feature
-     * @param {boolean} isEnabled 
-     */
-    setAutoUITraceEnabled(isEnabled) {
-        IBGAPM.setAutoUITraceEnabled(isEnabled);
-    },
+  /**
+   * Starts a custom trace
+   * @param {string} name
+   */
+  startUITrace(name) {
+    IBGAPM.startUITrace(name);
+  },
 
-    /**
-     * Starts a custom trace
-     * Returns a promise, the promise delivers the trace reference if APM is enabled, otherwise it gets rejected
-     * @param {string} name 
-     */
-    startExecutionTrace(name) {
-        const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;
-        const timestamp = Date.now() + '';
+  /**
+   * Starts a custom trace
+   * @param {string} name
+   */
+  endUITrace() {
+    IBGAPM.endUITrace();
+  },
 
-        return new Promise((resolve, reject) => {
-            IBGAPM.startExecutionTrace(name, timestamp, (id) => {
-                if (id) {
-                    resolve(new Trace(id, name));
-                } else {
-                    reject(new Error(TRACE_NOT_STARTED_APM_NOT_ENABLED));
-                }
-            });
-        });
-    },
-
-    /**
-     * Starts a custom trace
-     * @param {string} name 
-     */
-    startUITrace(name) {
-        IBGAPM.startUITrace(name);
-    },
-
-    /**
-     * Starts a custom trace
-     * @param {string} name 
-     */
-    endUITrace() {
-        IBGAPM.endUITrace();
-    },
-
-    /**
-     * Used for internal testing.
-     */
-    _ibgSleep() {
-        IBGAPM.ibgSleep();
-    },
+  /**
+   * Used for internal testing.
+   */
+  _ibgSleep() {
+    IBGAPM.ibgSleep();
+  },
 
   /**
    * APM Log Level.

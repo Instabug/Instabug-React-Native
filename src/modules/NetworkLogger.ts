@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
-import xhr from '../utils/XhrNetworkInterceptor';
+import { IBGAPM, Instabug } from 'src/native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-import { Instabug, IBGAPM } from 'src/native';
+import xhr from '../utils/XhrNetworkInterceptor';
 
 var _networkDataObfuscationHandlerSet = false;
 var _requestFilterExpression = false;
@@ -24,10 +24,7 @@ export default {
         let predicate = Function('network', 'return ' + _requestFilterExpression);
         if (!predicate(network)) {
           if (_networkDataObfuscationHandlerSet) {
-            IBGEventEmitter.emit(
-              InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
-              network
-            );
+            IBGEventEmitter.emit(InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT, network);
           } else {
             try {
               if (Platform.OS === 'android') {
@@ -73,7 +70,7 @@ export default {
         } catch (e) {
           console.error(e);
         }
-      }
+      },
     );
   },
 
@@ -97,7 +94,7 @@ export default {
     try {
       operation.setContext(({ headers = {} }) => {
         headers[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
-        return {headers:headers};
+        return { headers: headers };
       });
     } catch (e) {
       console.error(e);

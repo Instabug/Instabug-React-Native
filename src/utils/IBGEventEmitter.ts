@@ -1,4 +1,4 @@
-import { NativeAppEventEmitter, DeviceEventEmitter, Platform } from 'react-native';
+import { DeviceEventEmitter, NativeAppEventEmitter, Platform } from 'react-native';
 
 const IBGEventEmitter = {
   addListener: (nativeModule, eventName, callback) => {

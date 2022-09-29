@@ -13,6 +13,5 @@ interface IbgNativeModules {
   IBGSurveys: IbgNativeModule;
 }
 
-export const { 
-    Instabug, IBGAPM, IBGBugReporting, IBGFeatureRequests, IBGReplies, IBGSurveys } =
+export const { Instabug, IBGAPM, IBGBugReporting, IBGFeatureRequests, IBGReplies, IBGSurveys } =
   NativeModules as IbgNativeModules;

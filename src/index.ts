@@ -1,11 +1,11 @@
-import Instabug from './modules/Instabug';
-import BugReporting from './modules/BugReporting';
 import APM from './modules/APM';
-import Surveys from './modules/Surveys';
-import FeatureRequests from './modules/FeatureRequests';
-import Replies from './modules/Replies';
+import BugReporting from './modules/BugReporting';
 import CrashReporting from './modules/CrashReporting';
+import FeatureRequests from './modules/FeatureRequests';
+import Instabug from './modules/Instabug';
 import NetworkLogger from './modules/NetworkLogger';
+import Replies from './modules/Replies';
+import Surveys from './modules/Surveys';
 
 export { APM, BugReporting, CrashReporting, FeatureRequests, NetworkLogger, Replies, Surveys };
 

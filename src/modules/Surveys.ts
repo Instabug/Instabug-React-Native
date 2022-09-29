@@ -17,7 +17,7 @@ export default {
    * Defaults to `true`.
    * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
-  setEnabled: function(isEnabled) {
+  setEnabled: function (isEnabled) {
     IBGSurveys.setEnabled(isEnabled);
   },
 
@@ -27,7 +27,7 @@ export default {
    * Does nothing if there are no available surveys or if a survey has already been shown
    * in the current session.
    */
-  showSurveyIfAvailable: function() {
+  showSurveyIfAvailable: function () {
     IBGSurveys.showSurveysIfAvailable();
   },
 
@@ -37,7 +37,7 @@ export default {
    * argument available surveys
    *
    */
-  getAvailableSurveys: function(availableSurveysCallback) {
+  getAvailableSurveys: function (availableSurveysCallback) {
     IBGSurveys.getAvailableSurveys(availableSurveysCallback);
   },
 
@@ -47,7 +47,7 @@ export default {
    *                                surveys auto showing are enabled or not.
    *
    */
-  setAutoShowingEnabled: function(autoShowingSurveysEnabled) {
+  setAutoShowingEnabled: function (autoShowingSurveysEnabled) {
     IBGSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
   },
 
@@ -58,11 +58,11 @@ export default {
    * @param {function} onShowHandler - A block of code that gets executed before
    * presenting the survey's UI.
    */
-  setOnShowHandler: function(onShowHandler) {
+  setOnShowHandler: function (onShowHandler) {
     IBGEventEmitter.addListener(
       IBGSurveys,
       InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
-      onShowHandler
+      onShowHandler,
     );
     IBGSurveys.setOnShowHandler(onShowHandler);
   },
@@ -74,11 +74,11 @@ export default {
    * @param {function} onDismissHandler - A block of code that gets executed after
    * the survey's UI is dismissed.
    */
-  setOnDismissHandler: function(onDismissHandler) {
+  setOnDismissHandler: function (onDismissHandler) {
     IBGEventEmitter.addListener(
       IBGSurveys,
       InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
-      onDismissHandler
+      onDismissHandler,
     );
     IBGSurveys.setOnDismissHandler(onDismissHandler);
   },
@@ -90,7 +90,7 @@ export default {
    * @param {string} surveyToken - A String with a survey token.
    *
    */
-  showSurvey: function(surveyToken) {
+  showSurvey: function (surveyToken) {
     IBGSurveys.showSurvey(surveyToken);
   },
 
@@ -102,7 +102,7 @@ export default {
    * the survey has been responded to or not.
    *
    */
-  hasRespondedToSurvey: function(surveyToken, surveyTokenCallback) {
+  hasRespondedToSurvey: function (surveyToken, surveyTokenCallback) {
     IBGSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
   },
 
@@ -113,7 +113,7 @@ export default {
    *                                welcome screen should show.
    *
    */
-  setShouldShowWelcomeScreen: function(shouldShowWelcomeScreen) {
+  setShouldShowWelcomeScreen: function (shouldShowWelcomeScreen) {
     IBGSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
   },
 
@@ -124,9 +124,9 @@ export default {
    * @param {String} appStoreURL A String url for the published iOS app on AppStore
    */
 
-  setAppStoreURL: function(appStoreURL) {
-    if (Platform.OS === "ios") {
+  setAppStoreURL: function (appStoreURL) {
+    if (Platform.OS === 'ios') {
       IBGSurveys.setAppStoreURL(appStoreURL);
     }
-  }
+  },
 };

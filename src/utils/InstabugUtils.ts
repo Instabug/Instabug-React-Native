@@ -1,9 +1,9 @@
 'use strict';
 import { NativeModules, Platform } from 'react-native';
-let { Instabug } = NativeModules;
+import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
-import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+let { Instabug } = NativeModules;
 
 export const parseErrorStack = error => {
   return parseErrorStackLib(error);

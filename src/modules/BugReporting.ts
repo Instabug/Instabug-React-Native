@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
+import { IBGBugReporting } from 'src/native';
 import ArgsRegistry from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-import { IBGBugReporting } from 'src/native';
 
 /**
  * BugReporting
@@ -55,9 +55,13 @@ export default {
    * dismissing the SDK.
    */
   onSDKDismissedHandler(handler) {
-    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_SDK_DISMISSED_HANDLER, (payload) => {
-      handler(payload.dismissType, payload.reportType);
-    });
+    IBGEventEmitter.addListener(
+      IBGBugReporting,
+      InstabugConstants.ON_SDK_DISMISSED_HANDLER,
+      payload => {
+        handler(payload.dismissType, payload.reportType);
+      },
+    );
     IBGBugReporting.setOnSDKDismissedHandler(handler);
   },
 
@@ -67,8 +71,7 @@ export default {
    * @param {number} iPhoneShakingThreshold Threshold for iPhone.
    */
   setShakingThresholdForiPhone(iPhoneShakingThreshold) {
-    if (Platform.OS === 'ios')
-      IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
+    if (Platform.OS === 'ios') IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
   },
 
   /**
@@ -77,8 +80,7 @@ export default {
    * @param {number} iPadShakingThreshold Threshold for iPad.
    */
   setShakingThresholdForiPad(iPadShakingThreshold) {
-    if (Platform.OS === 'ios')
-      IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
+    if (Platform.OS === 'ios') IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
   },
 
   /**
@@ -89,8 +91,7 @@ export default {
    * @param {number} androidThreshold Threshold for android devices.
    */
   setShakingThresholdForAndroid(androidThreshold) {
-    if (Platform.OS === 'android')
-      IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
+    if (Platform.OS === 'android') IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
   },
 
   /**
@@ -114,8 +115,8 @@ export default {
 
   /**
    * Invoke bug reporting with report type and options.
-   * @param {reportType} type 
-   * @param {option} options 
+   * @param {reportType} type
+   * @param {option} options
    */
   show(type, options) {
     if (!options) {
@@ -129,7 +130,7 @@ export default {
    * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
    * screen recording on crash feature
    */
-  setAutoScreenRecordingEnabled: function(autoScreenRecordingEnabled) {
+  setAutoScreenRecordingEnabled: function (autoScreenRecordingEnabled) {
     IBGBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
   },
 
@@ -140,7 +141,7 @@ export default {
    *                                       in seconds
    * The maximum duration is 30 seconds
    */
-  setAutoScreenRecordingDurationIOS: function(autoScreenRecordingMaxDuration) {
+  setAutoScreenRecordingDurationIOS: function (autoScreenRecordingMaxDuration) {
     if (Platform.OS !== 'ios') return;
     IBGBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
   },
@@ -162,7 +163,7 @@ export default {
    * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
    * or disabled.
    */
-  setViewHierarchyEnabled: function(viewHierarchyEnabled) {
+  setViewHierarchyEnabled: function (viewHierarchyEnabled) {
     IBGBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
   },
 
@@ -171,11 +172,15 @@ export default {
    * @param {function} didSelectPromptOptionHandler - A block of code that
    *                  gets executed when a prompt option is selected.
    */
-  setDidSelectPromptOptionHandler: function(didSelectPromptOptionHandler) {
+  setDidSelectPromptOptionHandler: function (didSelectPromptOptionHandler) {
     if (Platform.OS === 'android') return;
-    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
-      didSelectPromptOptionHandler(payload.promptOption);
-    });
+    IBGEventEmitter.addListener(
+      IBGBugReporting,
+      InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER,
+      payload => {
+        didSelectPromptOptionHandler(payload.promptOption);
+      },
+    );
     IBGBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
@@ -190,10 +195,10 @@ export default {
    * floating button.
    */
   setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
-    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop); 
-},
+    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
+  },
 
- /**
+  /**
    * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
    * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
    * @param {boolean} extraScreenshot A boolean to enable or disable extra
@@ -203,17 +208,12 @@ export default {
    * info.plist to enable gallery image attachments.
    * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
    */
-  setEnabledAttachmentTypes(
-    screenshot,
-    extraScreenshot,
-    galleryImage,
-    screenRecording
-  ) {
+  setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording) {
     IBGBugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,
-      screenRecording
+      screenRecording,
     );
   },
 
@@ -250,5 +250,5 @@ export default {
    * @readonly
    * @enum {number}
    */
-   position: ArgsRegistry.position,
+  position: ArgsRegistry.position,
 };

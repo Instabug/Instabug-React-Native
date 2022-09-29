@@ -40,7 +40,7 @@ export default {
     IBGEventEmitter.addListener(
       IBGReplies,
       InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
-      onNewReplyReceivedHandler
+      onNewReplyReceivedHandler,
     );
     IBGReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
   },
@@ -52,7 +52,7 @@ export default {
    * @param {messageCountCallback} messageCountCallback callback with argument
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
-  getUnreadRepliesCount: function(messageCountCallback) {
+  getUnreadRepliesCount: function (messageCountCallback) {
     IBGReplies.getUnreadRepliesCount(messageCountCallback);
   },
 
@@ -62,7 +62,7 @@ export default {
    * @param {boolean} inAppNotificationsEnabled A boolean to set whether
    * notifications are enabled or disabled.
    */
-  setInAppNotificationsEnabled: function(inAppNotificationsEnabled) {
+  setInAppNotificationsEnabled: function (inAppNotificationsEnabled) {
     IBGReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
   },
 
@@ -73,7 +73,7 @@ export default {
    *
    * @param shouldPlaySound desired state of conversation sounds
    */
-  setInAppNotificationSound: function(shouldPlaySound) {
+  setInAppNotificationSound: function (shouldPlaySound) {
     if (Platform.OS === 'android') {
       IBGReplies.setInAppNotificationSound(shouldPlaySound);
     }
@@ -105,7 +105,7 @@ export default {
    *
    * @param data the data bundle related to Instabug
    */
-   showNotificationAndroid(data) {
+  showNotificationAndroid(data) {
     if (Platform.OS === 'android') {
       IBGReplies.showNotification(data);
     }
@@ -144,5 +144,5 @@ export default {
     if (Platform.OS === 'android') {
       IBGReplies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
     }
-  }
+  },
 };

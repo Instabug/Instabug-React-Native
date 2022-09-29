@@ -1,13 +1,11 @@
 import { findNodeHandle, Platform, processColor } from 'react-native';
-import Report from '../models/Report';
-import NetworkLogger from './NetworkLogger';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import InstabugConstants from '../utils/InstabugConstants';
-import Report from '../models/Report';
-import NetworkLogger from './NetworkLogger';
-import ArgsRegistry from '../utils/ArgsRegistry';
 import { Instabug } from 'src/native';
+import Report from '../models/Report';
+import ArgsRegistry from '../utils/ArgsRegistry';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
+import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import NetworkLogger from './NetworkLogger';
 
 var _currentScreen: string | null = null;
 var _lastScreen: string | null = null;
