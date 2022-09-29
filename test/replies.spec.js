@@ -6,44 +6,23 @@
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
 import './jest/mockReplies';
-import sinon from 'sinon';
 import Replies from '../src/modules/Replies';
 import IBGConstants from '../src/utils/InstabugConstants';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 
-describe('Replies Module', () => {
-  
-  const setRepliesEnabled = sinon.spy(NativeModules.IBGReplies, 'setEnabled');
-  const hasChats = sinon.spy(NativeModules.IBGReplies, 'hasChats');
-  const showReplies = sinon.spy(NativeModules.IBGReplies, 'show');
-  const setOnNewReplyReceivedCallback = sinon.spy(NativeModules.IBGReplies, 'setOnNewReplyReceivedHandler');
-  const getUnreadMessagesCount = sinon.spy(NativeModules.IBGReplies, 'getUnreadRepliesCount');
-  const setInAppNotificationEnabled = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationEnabled');
-  const setEnableInAppNotificationSound = sinon.spy(NativeModules.IBGReplies, 'setInAppNotificationSound');
-  const setPushNotificationsEnabled = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationsEnabled');
-  const setPushNotificationRegistrationToken = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationRegistrationToken');
-  const showNotification = sinon.spy(NativeModules.IBGReplies, 'showNotification');
-  const setNotificationIcon = sinon.spy(NativeModules.IBGReplies, 'setNotificationIcon');
-  const setPushNotificationChannelId = sinon.spy(NativeModules.IBGReplies, 'setPushNotificationChannelId');
-  const setSystemReplyNotificationSoundEnabled = sinon.spy(NativeModules.IBGReplies, 'setSystemReplyNotificationSoundEnabled');
+const { IBGReplies: NativeIBGReplies } = NativeModules;
 
+describe('Replies Module', () => {
   beforeEach(() => {
-    setOnNewReplyReceivedCallback.resetHistory();
-    setEnableInAppNotificationSound.resetHistory();
     IBGEventEmitter.removeAllListeners();
-    setPushNotificationsEnabled.resetHistory();
-    setPushNotificationRegistrationToken.resetHistory();
-    showNotification.resetHistory();
-    setNotificationIcon.resetHistory();
-    setPushNotificationChannelId.resetHistory();
-    setSystemReplyNotificationSoundEnabled.resetHistory();
   });
 
   it('should call the native method setRepliesEnabled', () => {
 
     Replies.setEnabled(true);
 
-    expect(setRepliesEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGReplies.setEnabled).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setEnabled).toBeCalledWith(true);
 
   });
 
@@ -51,19 +30,18 @@ describe('Replies Module', () => {
 
     Replies.show();
 
-    expect(showReplies.calledOnce).toBe(true);
+    expect(NativeIBGReplies.show).toBeCalledTimes(1);
 
   });
 
-  it('should call the native method hasChats', (done) => {
+  it('should call the native method hasChats', () => {
 
-    const callback = (hasChats) => {
-        expect(hasChats).toBe(true);
-        done();
-    }
+    const callback = jest.fn();
     Replies.hasChats(callback);
 
-    expect(hasChats.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeIBGReplies.hasChats).toBeCalledTimes(1);
+    expect(NativeIBGReplies.hasChats).toBeCalledWith(callback);
+    expect(callback).toBeCalledWith(true);
 
   });
 
@@ -72,7 +50,8 @@ describe('Replies Module', () => {
     const callback = jest.fn()
     Replies.setOnNewReplyReceivedHandler(callback);
 
-    expect(setOnNewReplyReceivedCallback.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeIBGReplies.setOnNewReplyReceivedHandler).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setOnNewReplyReceivedHandler).toBeCalledWith(callback);
 
   });
 
@@ -87,15 +66,14 @@ describe('Replies Module', () => {
 
   });
 
-  it('should call the native method getUnreadMessagesCount', (done) => {
+  it('should call the native method getUnreadRepliesCount', () => {
 
-    const callback = (messagesCount) => {
-        expect(messagesCount).toBe(2);
-        done();
-    }
+    const callback = jest.fn();
     Replies.getUnreadRepliesCount(callback);
-
-    expect(getUnreadMessagesCount.calledOnceWithExactly(callback)).toBe(true);
+    
+    expect(NativeIBGReplies.getUnreadRepliesCount).toBeCalledTimes(1);
+    expect(NativeIBGReplies.getUnreadRepliesCount).toBeCalledWith(callback);
+    expect(callback).toBeCalledWith(2);
 
   });
 
@@ -103,16 +81,18 @@ describe('Replies Module', () => {
 
     Replies.setInAppNotificationsEnabled(true);
 
-    expect(setInAppNotificationEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGReplies.setInAppNotificationEnabled).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setInAppNotificationEnabled).toBeCalledWith(true);
 
   });
 
-  it('should call the native method setEnableInAppNotificationSound', () => {
+  it('should call the native method setInAppNotificationSound', () => {
 
     Platform.OS = 'android';
     Replies.setInAppNotificationSound(true);
 
-    expect(setEnableInAppNotificationSound.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGReplies.setInAppNotificationSound).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setInAppNotificationSound).toBeCalledWith(true);
 
   });
 
@@ -121,7 +101,7 @@ describe('Replies Module', () => {
     Platform.OS = 'ios';
     Replies.setInAppNotificationSound(true);
 
-    expect(setEnableInAppNotificationSound.notCalled).toBe(true);
+    expect(NativeIBGReplies.setInAppNotificationSound).not.toBeCalled();
 
   });
 
@@ -130,7 +110,8 @@ describe('Replies Module', () => {
 
     Replies.setPushNotificationsEnabled(true);
 
-    expect(setPushNotificationsEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGReplies.setPushNotificationsEnabled).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setPushNotificationsEnabled).toBeCalledWith(true);
 
   });
 
@@ -139,7 +120,8 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.setPushNotificationRegistrationTokenAndroid('123');
 
-    expect(setPushNotificationRegistrationToken.calledOnceWithExactly('123')).toBe(true);
+    expect(NativeIBGReplies.setPushNotificationRegistrationToken).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setPushNotificationRegistrationToken).toBeCalledWith('123');
   });
 
 
@@ -147,7 +129,8 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.showNotificationAndroid('test');
 
-    expect(showNotification.calledOnceWithExactly('test')).toBe(true);
+    expect(NativeIBGReplies.showNotification).toBeCalledTimes(1);
+    expect(NativeIBGReplies.showNotification).toBeCalledWith('test');
   });
 
 
@@ -155,7 +138,7 @@ describe('Replies Module', () => {
     Platform.OS = 'ios';
     Replies.setPushNotificationRegistrationTokenAndroid(true);
 
-    expect(setPushNotificationRegistrationToken.notCalled).toBe(true);
+    expect(NativeIBGReplies.setPushNotificationRegistrationToken).not.toBeCalled();
   });
 
 
@@ -163,14 +146,15 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.setNotificationIconAndroid(123);
 
-    expect(setNotificationIcon.calledOnceWithExactly(123)).toBe(true);
+    expect(NativeIBGReplies.setNotificationIcon).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setNotificationIcon).toBeCalledWith(123);
   });
 
   it('should not call the native method setNotificationIcon on iOS', () => {
     Platform.OS = 'ios';
     Replies.setNotificationIconAndroid(123);
 
-    expect(setNotificationIcon.notCalled).toBe(true);
+    expect(NativeIBGReplies.setNotificationIcon).not.toBeCalled();
   });
 
 
@@ -178,14 +162,15 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.setPushNotificationChannelIdAndroid('123');
 
-    expect(setPushNotificationChannelId.calledOnceWithExactly('123')).toBe(true);
+    expect(NativeIBGReplies.setPushNotificationChannelId).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setPushNotificationChannelId).toBeCalledWith('123');
   });
 
   it('should not call the native method setPushNotificationChannelId on iOS', () => {
     Platform.OS = 'ios';
     Replies.setPushNotificationChannelIdAndroid('123');
 
-    expect(setPushNotificationChannelId.notCalled).toBe(true);
+    expect(NativeIBGReplies.setPushNotificationChannelId).not.toBeCalled();
   });
 
 
@@ -193,14 +178,15 @@ describe('Replies Module', () => {
     Platform.OS = 'android';
     Replies.setSystemReplyNotificationSoundEnabledAndroid(true);
 
-    expect(setSystemReplyNotificationSoundEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGReplies.setSystemReplyNotificationSoundEnabled).toBeCalledTimes(1);
+    expect(NativeIBGReplies.setSystemReplyNotificationSoundEnabled).toBeCalledWith(true);
   });
 
   it('should not call the native method setSystemReplyNotificationSoundEnabled on iOS', () => {
     Platform.OS = 'ios';
     Replies.setSystemReplyNotificationSoundEnabledAndroid(true);
 
-    expect(setSystemReplyNotificationSoundEnabled.notCalled).toBe(true);
+    expect(NativeIBGReplies.setSystemReplyNotificationSoundEnabled).not.toBeCalled();
   });
 
 });
