@@ -5,10 +5,9 @@
 
 import "react-native";
 import { NativeModules, Platform } from "react-native";
-import "./jest/mockAPM";
-import APM from "../src/modules/APM";
-
-import IBGEventEmitter from "../src/utils/IBGEventEmitter";
+import "../jest/mockAPM";
+import APM from "../../src/modules/APM";
+import IBGEventEmitter from "../../src/utils/IBGEventEmitter";
 
 const { Instabug: NativeInstabug, IBGAPM: NativeIBGAPM } = NativeModules;
 

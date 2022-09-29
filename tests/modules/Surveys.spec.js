@@ -5,11 +5,11 @@
 
 import "react-native";
 import { NativeModules } from "react-native";
-import "./jest/mockSurveys";
-import Surveys from "../src/modules/Surveys";
+import "../jest/mockSurveys";
+import Surveys from "../../src/modules/Surveys";
 
-import IBGConstants from "../src/utils/InstabugConstants";
-import IBGEventEmitter from "../src/utils/IBGEventEmitter";
+import IBGConstants from "../../src/utils/InstabugConstants";
+import IBGEventEmitter from "../../src/utils/IBGEventEmitter";
 
 const { IBGSurveys: NativeIBGSurveys } = NativeModules;
 

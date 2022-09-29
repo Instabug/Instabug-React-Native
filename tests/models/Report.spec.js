@@ -5,8 +5,8 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import './jest/mockReport';
-import Report from '../src/models/Report'
+import '../jest/mockReport';
+import Report from '../../src/models/Report'
 
 const { Instabug: NativeInstabug } = NativeModules;
 

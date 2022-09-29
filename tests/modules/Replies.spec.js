@@ -5,10 +5,10 @@
 
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import './jest/mockReplies';
-import Replies from '../src/modules/Replies';
-import IBGConstants from '../src/utils/InstabugConstants';
-import IBGEventEmitter from '../src/utils/IBGEventEmitter';
+import '../jest/mockReplies';
+import Replies from '../../src/modules/Replies';
+import IBGConstants from '../../src/utils/InstabugConstants';
+import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 
 const { IBGReplies: NativeIBGReplies } = NativeModules;
 
@@ -18,103 +18,81 @@ describe('Replies Module', () => {
   });
 
   it('should call the native method setRepliesEnabled', () => {
-
     Replies.setEnabled(true);
 
     expect(NativeIBGReplies.setEnabled).toBeCalledTimes(1);
     expect(NativeIBGReplies.setEnabled).toBeCalledWith(true);
-
   });
 
   it('should call the native method showReplies', () => {
-
     Replies.show();
 
     expect(NativeIBGReplies.show).toBeCalledTimes(1);
-
   });
 
   it('should call the native method hasChats', () => {
-
     const callback = jest.fn();
     Replies.hasChats(callback);
 
     expect(NativeIBGReplies.hasChats).toBeCalledTimes(1);
     expect(NativeIBGReplies.hasChats).toBeCalledWith(callback);
     expect(callback).toBeCalledWith(true);
-
   });
 
   it('should call the native method setOnNewReplyReceivedCallback with a function', () => {
-
-    const callback = jest.fn()
+    const callback = jest.fn();
     Replies.setOnNewReplyReceivedHandler(callback);
 
     expect(NativeIBGReplies.setOnNewReplyReceivedHandler).toBeCalledTimes(1);
     expect(NativeIBGReplies.setOnNewReplyReceivedHandler).toBeCalledWith(callback);
-
   });
 
   it('should invoke callback on emitting the event IBGOnNewReplyReceivedCallback', () => {
-
-    const callback = jest.fn()
+    const callback = jest.fn();
     Replies.setOnNewReplyReceivedHandler(callback);
     IBGEventEmitter.emit(IBGConstants.ON_REPLY_RECEIVED_HANDLER);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.ON_REPLY_RECEIVED_HANDLER).length).toEqual(1);
     expect(callback).toHaveBeenCalled();
-
   });
 
   it('should call the native method getUnreadRepliesCount', () => {
-
     const callback = jest.fn();
     Replies.getUnreadRepliesCount(callback);
-    
+
     expect(NativeIBGReplies.getUnreadRepliesCount).toBeCalledTimes(1);
     expect(NativeIBGReplies.getUnreadRepliesCount).toBeCalledWith(callback);
     expect(callback).toBeCalledWith(2);
-
   });
 
   it('should call the native method setInAppNotificationEnabled', () => {
-
     Replies.setInAppNotificationsEnabled(true);
 
     expect(NativeIBGReplies.setInAppNotificationEnabled).toBeCalledTimes(1);
     expect(NativeIBGReplies.setInAppNotificationEnabled).toBeCalledWith(true);
-
   });
 
   it('should call the native method setInAppNotificationSound', () => {
-
     Platform.OS = 'android';
     Replies.setInAppNotificationSound(true);
 
     expect(NativeIBGReplies.setInAppNotificationSound).toBeCalledTimes(1);
     expect(NativeIBGReplies.setInAppNotificationSound).toBeCalledWith(true);
-
   });
 
   it('should not call the native method setEnableInAppNotificationSound when Platform.OS is ios', () => {
-
     Platform.OS = 'ios';
     Replies.setInAppNotificationSound(true);
 
     expect(NativeIBGReplies.setInAppNotificationSound).not.toBeCalled();
-
   });
 
-
   it('should call the native method setPushNotificationsEnabled', () => {
-
     Replies.setPushNotificationsEnabled(true);
 
     expect(NativeIBGReplies.setPushNotificationsEnabled).toBeCalledTimes(1);
     expect(NativeIBGReplies.setPushNotificationsEnabled).toBeCalledWith(true);
-
   });
-
 
   it('should call the native method setPushNotificationRegistrationToken on Android', () => {
     Platform.OS = 'android';
@@ -124,7 +102,6 @@ describe('Replies Module', () => {
     expect(NativeIBGReplies.setPushNotificationRegistrationToken).toBeCalledWith('123');
   });
 
-
   it('should call the native method showNotification on Android', () => {
     Platform.OS = 'android';
     Replies.showNotificationAndroid('test');
@@ -133,14 +110,12 @@ describe('Replies Module', () => {
     expect(NativeIBGReplies.showNotification).toBeCalledWith('test');
   });
 
-
   it('should not call the native method setPushNotificationRegistrationToken on iOS', () => {
     Platform.OS = 'ios';
     Replies.setPushNotificationRegistrationTokenAndroid(true);
 
     expect(NativeIBGReplies.setPushNotificationRegistrationToken).not.toBeCalled();
   });
-
 
   it('should call the native method setNotificationIcon on Android', () => {
     Platform.OS = 'android';
@@ -157,7 +132,6 @@ describe('Replies Module', () => {
     expect(NativeIBGReplies.setNotificationIcon).not.toBeCalled();
   });
 
-
   it('should call the native method setPushNotificationChannelId on Android', () => {
     Platform.OS = 'android';
     Replies.setPushNotificationChannelIdAndroid('123');
@@ -173,7 +147,6 @@ describe('Replies Module', () => {
     expect(NativeIBGReplies.setPushNotificationChannelId).not.toBeCalled();
   });
 
-
   it('should call the native method setSystemReplyNotificationSoundEnabled on Android', () => {
     Platform.OS = 'android';
     Replies.setSystemReplyNotificationSoundEnabledAndroid(true);
@@ -188,5 +161,4 @@ describe('Replies Module', () => {
 
     expect(NativeIBGReplies.setSystemReplyNotificationSoundEnabled).not.toBeCalled();
   });
-
 });
