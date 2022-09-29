@@ -6,39 +6,21 @@
 import 'react-native';
 import { NativeModules, Platform } from 'react-native';
 import './jest/mockXhrNetworkInterceotor';
-import sinon from 'sinon';
+import './jest/mockAPM';
+import './jest/mockInstabug';
 import Interceptor from '../src/utils/XhrNetworkInterceptor';
 import NetworkLogger from '../src/modules/NetworkLogger';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import IBGConstants from '../src/utils/InstabugConstants';
 import waitForExpect from 'wait-for-expect';
 
-jest.mock('NativeModules', () => {
-    return {
-        Instabug: {
-            networkLog: jest.fn(),
-            addListener: jest.fn()
-        },
-        IBGAPM: {
-            networkLog: jest.fn(),
-        },
-    };
-});
+const { Instabug: NativeInstabug, IBGAPM: NativeIBGAPM } = NativeModules;
 
 const clone = (obj) => {
     return JSON.parse(JSON.stringify(obj));
 }
 
 describe('NetworkLogger Module', () => {
-
-    const setOnDoneCallback = sinon.spy(Interceptor, 'setOnDoneCallback');
-    const setOnProgressCallback = sinon.spy(Interceptor, 'setOnProgressCallback');
-    const enableInterception = sinon.spy(Interceptor, 'enableInterception');
-    const disableInterception = sinon.spy(Interceptor, 'disableInterception');
-    const networkLog = sinon.spy(NativeModules.Instabug, 'networkLog');
-    const apmNetworkLog = sinon.spy(NativeModules.IBGAPM, 'networkLog');
-    const apolloLinkRequestHandler = sinon.spy(NetworkLogger, 'apolloLinkRequestHandler')
-
     const network = {
         url: 'https://api.instabug.com',
         requestBody: '',
@@ -52,14 +34,8 @@ describe('NetworkLogger Module', () => {
       };
 
     beforeEach(() => {
-        setOnDoneCallback.resetHistory();
-        disableInterception.resetHistory();
-        enableInterception.resetHistory();
-        networkLog.resetHistory();
         IBGEventEmitter.removeAllListeners();
         NetworkLogger.setNetworkDataObfuscationHandler(null);
-        apmNetworkLog.resetHistory();
-        apolloLinkRequestHandler.resetHistory();
     });
 
     it('should set onProgressCallback with callback', () => {
@@ -67,7 +43,8 @@ describe('NetworkLogger Module', () => {
         const callback = jest.fn();
         NetworkLogger.setProgressHandlerForRequest(callback);
 
-        expect(setOnProgressCallback.calledOnceWithExactly(callback)).toBe(true);
+        expect(Interceptor.setOnProgressCallback).toBeCalledTimes(1);
+        expect(Interceptor.setOnProgressCallback).toBeCalledWith(callback);
 
     });
 
@@ -75,8 +52,8 @@ describe('NetworkLogger Module', () => {
 
         NetworkLogger.setEnabled(true);
 
-        expect(enableInterception.calledOnce).toBe(true);
-        expect(setOnDoneCallback.calledOnce).toBe(true);
+        expect(Interceptor.enableInterception).toBeCalledTimes(1);
+        expect(Interceptor.setOnDoneCallback).toBeCalledTimes(1);
 
     });
 
@@ -84,7 +61,7 @@ describe('NetworkLogger Module', () => {
 
         NetworkLogger.setEnabled(false);
 
-        expect(disableInterception.calledOnce).toBe(true);
+        expect(Interceptor.disableInterception).toBeCalledTimes(1);
 
     });
 
@@ -94,7 +71,8 @@ describe('NetworkLogger Module', () => {
         Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
         NetworkLogger.setEnabled(true);
 
-        expect(networkLog.calledOnceWithExactly(network)).toBe(true);
+        expect(NativeInstabug.networkLog).toBeCalledTimes(1);
+        expect(NativeInstabug.networkLog).toBeCalledWith(network);
 
     });
 
@@ -104,8 +82,8 @@ describe('NetworkLogger Module', () => {
         Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
         NetworkLogger.setEnabled(true);
 
-        expect(networkLog.calledOnceWithExactly(JSON.stringify(network))).toBe(true);
-        expect(apmNetworkLog.calledOnceWithExactly(JSON.stringify(network))).toBe(true);
+        expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(network));
+        expect(NativeIBGAPM.networkLog).toBeCalledWith(JSON.stringify(network));
     });
 
     it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
@@ -123,7 +101,7 @@ describe('NetworkLogger Module', () => {
         await waitForExpect(() => {
             const newData = clone(network);
             newData.requestHeaders['token'] = randomString;
-            expect(networkLog.calledOnceWithExactly(newData)).toBe(true);
+            expect(NativeInstabug.networkLog).toBeCalledWith(newData);
         });
 
     });
@@ -143,8 +121,8 @@ describe('NetworkLogger Module', () => {
         await waitForExpect(() => {
             const newData = clone(network);
             newData.requestHeaders['token'] = randomString;
-            expect(networkLog.calledOnceWithExactly(JSON.stringify(newData))).toBe(true);
-            expect(apmNetworkLog.calledOnceWithExactly(JSON.stringify(newData))).toBe(true);
+            expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
+            expect(NativeIBGAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
         });
 
     });
@@ -155,20 +133,19 @@ describe('NetworkLogger Module', () => {
         NetworkLogger.setRequestFilterExpression('network.requestHeaders[\'Content-type\'] === \'application/json\'');
         NetworkLogger.setEnabled(true);
 
-        expect(networkLog.notCalled).toBe(true);
-        expect(apmNetworkLog.notCalled).toBe(true);
+        expect(NativeInstabug.networkLog).not.toBeCalled();
+        expect(NativeIBGAPM.networkLog).not.toBeCalled();
     });
 
     it('should test that operationSetContext at apollo handler called', async () => {
       const operation = {
-        setContext : (callback) => callback({ headers : {} }),
+        setContext : jest.fn(),
         operationName : "operationName"
       };
       const forward = jest.fn();
-      const operationSetContextMock = sinon.spy(operation, 'setContext')
       
       NetworkLogger.apolloLinkRequestHandler(operation, forward);
-      expect(operationSetContextMock.calledOnce).toBe(true);
+      expect(operation.setContext).toBeCalledTimes(1);
     });
   
     it('should test that apollo handler called with catch error', async () => {
@@ -176,9 +153,14 @@ describe('NetworkLogger Module', () => {
         setContext : (callback) => callback({ headers: {} }),
       };
       const forward = jest.fn();
-  
+
+      // This is a temporary solution as the test is failing because this method isn't mocked
+      const apolloLinkRequestHandlerMock = jest.spyOn(NetworkLogger, 'apolloLinkRequestHandler');
+
       NetworkLogger.apolloLinkRequestHandler(operation, forward);
-      expect(apolloLinkRequestHandler.calledOnce).toBe(true);
+      expect(NetworkLogger.apolloLinkRequestHandler).toBeCalledTimes(1);
+
+      apolloLinkRequestHandlerMock.mockRestore();
     });
 
 });
