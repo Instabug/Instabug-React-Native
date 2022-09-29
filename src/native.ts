@@ -1,17 +1,26 @@
-import { NativeModule, NativeModules } from 'react-native';
+import {
+  NativeModule as ReactNativeModule,
+  NativeModules as ReactNativeModules,
+} from 'react-native';
 
-export interface IbgNativeModule extends NativeModule {
+export interface NativeModule extends ReactNativeModule {
   [key: string]: any;
 }
 
-interface IbgNativeModules {
-  Instabug: IbgNativeModule;
-  IBGAPM: IbgNativeModule;
-  IBGBugReporting: IbgNativeModule;
-  IBGFeatureRequests: IbgNativeModule;
-  IBGReplies: IbgNativeModule;
-  IBGSurveys: IbgNativeModule;
+interface InstabugNativeModules {
+  IBGAPM: NativeModule;
+  IBGBugReporting: NativeModule;
+  IBGFeatureRequests: NativeModule;
+  Instabug: NativeModule;
+  IBGReplies: NativeModule;
+  IBGSurveys: NativeModule;
 }
 
-export const { Instabug, IBGAPM, IBGBugReporting, IBGFeatureRequests, IBGReplies, IBGSurveys } =
-  NativeModules as IbgNativeModules;
+export const NativeModules = ReactNativeModules as InstabugNativeModules;
+
+export const NativeAPM = NativeModules.IBGAPM;
+export const NativeBugReporting = NativeModules.IBGBugReporting;
+export const NativeFeatureRequests = NativeModules.IBGFeatureRequests;
+export const NativeInstabug = NativeModules.Instabug;
+export const NativeReplies = NativeModules.IBGReplies;
+export const NativeSurveys = NativeModules.IBGSurveys;

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { IBGReplies } from 'src/native';
+import { NativeReplies } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
@@ -13,7 +13,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    IBGReplies.setEnabled(isEnabled);
+    NativeReplies.setEnabled(isEnabled);
   },
 
   /**
@@ -21,14 +21,14 @@ export default {
    * @param {function} callback - callback that is invoked if chats exist
    */
   hasChats(callback) {
-    IBGReplies.hasChats(callback);
+    NativeReplies.hasChats(callback);
   },
 
   /**
    * Manual invocation for replies.
    */
   show() {
-    IBGReplies.show();
+    NativeReplies.show();
   },
 
   /**
@@ -38,11 +38,11 @@ export default {
    */
   setOnNewReplyReceivedHandler(onNewReplyReceivedHandler) {
     IBGEventEmitter.addListener(
-      IBGReplies,
+      NativeReplies,
       InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
       onNewReplyReceivedHandler,
     );
-    IBGReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
+    NativeReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
   },
 
   /**
@@ -53,7 +53,7 @@ export default {
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
   getUnreadRepliesCount: function (messageCountCallback) {
-    IBGReplies.getUnreadRepliesCount(messageCountCallback);
+    NativeReplies.getUnreadRepliesCount(messageCountCallback);
   },
 
   /**
@@ -63,7 +63,7 @@ export default {
    * notifications are enabled or disabled.
    */
   setInAppNotificationsEnabled: function (inAppNotificationsEnabled) {
-    IBGReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
+    NativeReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
   },
 
   /**
@@ -75,7 +75,7 @@ export default {
    */
   setInAppNotificationSound: function (shouldPlaySound) {
     if (Platform.OS === 'android') {
-      IBGReplies.setInAppNotificationSound(shouldPlaySound);
+      NativeReplies.setInAppNotificationSound(shouldPlaySound);
     }
   },
 
@@ -86,7 +86,7 @@ export default {
    * notifications are enabled or disabled.
    */
   setPushNotificationsEnabled(isPushNotificationEnabled) {
-    IBGReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
+    NativeReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
   },
 
   /**
@@ -96,7 +96,7 @@ export default {
    */
   setPushNotificationRegistrationTokenAndroid(token) {
     if (Platform.OS === 'android') {
-      IBGReplies.setPushNotificationRegistrationToken(token);
+      NativeReplies.setPushNotificationRegistrationToken(token);
     }
   },
 
@@ -107,7 +107,7 @@ export default {
    */
   showNotificationAndroid(data) {
     if (Platform.OS === 'android') {
-      IBGReplies.showNotification(data);
+      NativeReplies.showNotification(data);
     }
   },
 
@@ -118,7 +118,7 @@ export default {
    */
   setNotificationIconAndroid(notificationIcon) {
     if (Platform.OS === 'android') {
-      IBGReplies.setNotificationIcon(notificationIcon);
+      NativeReplies.setNotificationIcon(notificationIcon);
     }
   },
 
@@ -130,7 +130,7 @@ export default {
    */
   setPushNotificationChannelIdAndroid(pushNotificationChannelId) {
     if (Platform.OS === 'android') {
-      IBGReplies.setPushNotificationChannelId(pushNotificationChannelId);
+      NativeReplies.setPushNotificationChannelId(pushNotificationChannelId);
     }
   },
 
@@ -142,7 +142,7 @@ export default {
    */
   setSystemReplyNotificationSoundEnabledAndroid(shouldPlaySound) {
     if (Platform.OS === 'android') {
-      IBGReplies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
+      NativeReplies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
     }
   },
 };

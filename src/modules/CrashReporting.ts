@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { Instabug } from 'src/native';
+import { NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils from '../utils/InstabugUtils';
@@ -15,7 +15,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    Instabug.setCrashReportingEnabled(isEnabled);
+    NativeInstabug.setCrashReportingEnabled(isEnabled);
   },
 
   /**
@@ -39,9 +39,9 @@ export default {
       IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
     } else {
       if (Platform.OS === 'android') {
-        Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+        NativeInstabug.sendHandledJSCrash(JSON.stringify(jsonObject));
       } else {
-        Instabug.sendHandledJSCrash(jsonObject);
+        NativeInstabug.sendHandledJSCrash(jsonObject);
       }
     }
   },

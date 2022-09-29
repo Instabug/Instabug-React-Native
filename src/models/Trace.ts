@@ -1,4 +1,4 @@
-import { IBGAPM } from 'src/native';
+import { NativeAPM } from '../native';
 
 interface TraceAttributesMap {
   [key: string]: string;
@@ -21,7 +21,7 @@ export default class Trace {
    * @param {string} value
    */
   setAttribute(key, value) {
-    IBGAPM.setExecutionTraceAttribute(this.id, key, value);
+    NativeAPM.setExecutionTraceAttribute(this.id, key, value);
     this.attributes[key] = value;
   }
 
@@ -29,6 +29,6 @@ export default class Trace {
    * End Execution Trace
    */
   end() {
-    IBGAPM.endExecutionTrace(this.id);
+    NativeAPM.endExecutionTrace(this.id);
   }
 }

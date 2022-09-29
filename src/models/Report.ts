@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { Instabug } from 'src/native';
+import { NativeInstabug } from '../native';
 
 interface UserAttributesMap {
   [key: string]: string;
@@ -41,7 +41,7 @@ export default class Report {
    * @param {string} tag
    */
   appendTag(tag: string) {
-    Instabug.appendTagToReport(tag);
+    NativeInstabug.appendTagToReport(tag);
     this.tags = [...this.tags, tag];
   }
 
@@ -50,7 +50,7 @@ export default class Report {
    * @param {string} consoleLog
    */
   appendConsoleLog(consoleLog: string) {
-    Instabug.appendConsoleLogToReport(consoleLog);
+    NativeInstabug.appendConsoleLogToReport(consoleLog);
     this.consoleLogs = [...this.consoleLogs, consoleLog];
   }
 
@@ -60,7 +60,7 @@ export default class Report {
    * @param {string} value
    */
   setUserAttribute(key: string, value: string) {
-    Instabug.setUserAttributeToReport(key, value);
+    NativeInstabug.setUserAttributeToReport(key, value);
     this.userAttributes[key] = value;
   }
 
@@ -69,7 +69,7 @@ export default class Report {
    * @param {string} log
    */
   logDebug(log: string) {
-    Instabug.logDebugToReport(log);
+    NativeInstabug.logDebugToReport(log);
     this.instabugLogs = [...this.instabugLogs, { log: log, type: 'debug' }];
   }
 
@@ -78,7 +78,7 @@ export default class Report {
    * @param {string} log
    */
   logVerbose(log: string) {
-    Instabug.logVerboseToReport(log);
+    NativeInstabug.logVerboseToReport(log);
     this.instabugLogs = [...this.instabugLogs, { log: log, type: 'verbose' }];
   }
 
@@ -87,7 +87,7 @@ export default class Report {
    * @param {string} log
    */
   logWarn(log: string) {
-    Instabug.logWarnToReport(log);
+    NativeInstabug.logWarnToReport(log);
     this.instabugLogs = [...this.instabugLogs, { log: log, type: 'warn' }];
   }
 
@@ -96,7 +96,7 @@ export default class Report {
    * @param {string} log
    */
   logError(log: string) {
-    Instabug.logErrorToReport(log);
+    NativeInstabug.logErrorToReport(log);
     this.instabugLogs = [...this.instabugLogs, { log: log, type: 'error' }];
   }
 
@@ -105,7 +105,7 @@ export default class Report {
    * @param {string} log
    */
   logInfo(log: string) {
-    Instabug.logInfoToReport(log);
+    NativeInstabug.logInfoToReport(log);
     this.instabugLogs = [...this.instabugLogs, { log: log, type: 'info' }];
   }
 
@@ -116,9 +116,9 @@ export default class Report {
    */
   addFileAttachmentWithUrl(url: string, fileName: string) {
     if (Platform.OS === 'ios') {
-      Instabug.addFileAttachmentWithURLToReport(url);
+      NativeInstabug.addFileAttachmentWithURLToReport(url);
     } else {
-      Instabug.addFileAttachmentWithURLToReport(url, fileName);
+      NativeInstabug.addFileAttachmentWithURLToReport(url, fileName);
     }
     this.fileAttachments = [...this.fileAttachments, { file: url, type: 'url' }];
   }
@@ -130,9 +130,9 @@ export default class Report {
    */
   addFileAttachmentWithData(data: string, fileName: string) {
     if (Platform.OS === 'ios') {
-      Instabug.addFileAttachmentWithDataToReport(data);
+      NativeInstabug.addFileAttachmentWithDataToReport(data);
     } else {
-      Instabug.addFileAttachmentWithDataToReport(data, fileName);
+      NativeInstabug.addFileAttachmentWithDataToReport(data, fileName);
     }
     this.fileAttachments = [...this.fileAttachments, { file: data, type: 'data' }];
   }

@@ -1,6 +1,6 @@
 import { findNodeHandle, Platform, processColor } from 'react-native';
-import { Instabug } from 'src/native';
 import Report from '../models/Report';
+import { NativeInstabug } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
@@ -32,13 +32,13 @@ const InstabugModule = {
     InstabugUtils.captureJsErrors();
     NetworkLogger.setEnabled(true);
 
-    Instabug.start(token, invocationEvent);
+    NativeInstabug.start(token, invocationEvent);
 
     _isFirstScreen = true;
     _currentScreen = firstScreen;
     setTimeout(function () {
       if (_currentScreen == firstScreen) {
-        Instabug.reportScreenChange(firstScreen);
+        NativeInstabug.reportScreenChange(firstScreen);
         _currentScreen = null;
       }
     }, 1000);
@@ -52,7 +52,7 @@ const InstabugModule = {
    * maximum size of 1,000 characters.
    */
   setUserData(userData) {
-    Instabug.setUserData(userData);
+    NativeInstabug.setUserData(userData);
   },
 
   /**
@@ -64,7 +64,7 @@ const InstabugModule = {
    * to being enabled or disabled.
    */
   setTrackUserSteps(isEnabled) {
-    if (Platform.OS === 'ios') Instabug.setTrackUserSteps(isEnabled);
+    if (Platform.OS === 'ios') NativeInstabug.setTrackUserSteps(isEnabled);
   },
 
   /**
@@ -73,8 +73,7 @@ const InstabugModule = {
    *                  Xcode's console is enabled or not.
    */
   setIBGLogPrintsToConsole(printsToConsole) {
-    if (Platform.OS === 'ios')
-      Instabug.setIBGLogPrintsToConsole(printsToConsole);
+    if (Platform.OS === 'ios') NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
   },
 
   /**
@@ -84,7 +83,7 @@ const InstabugModule = {
    *
    */
   setSessionProfilerEnabled(sessionProfilerEnabled) {
-    Instabug.setSessionProfilerEnabled(sessionProfilerEnabled);
+    NativeInstabug.setSessionProfilerEnabled(sessionProfilerEnabled);
   },
 
   /**
@@ -95,7 +94,7 @@ const InstabugModule = {
    */
   setSdkDebugLogsLevel(sdkDebugLogsLevel) {
     if (Platform.OS === 'ios') {
-      Instabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
+      NativeInstabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
     }
   },
 
@@ -106,7 +105,7 @@ const InstabugModule = {
    * @param {locale} locale A locale to set the SDK to.
    */
   setLocale(locale) {
-    Instabug.setLocale(locale);
+    NativeInstabug.setLocale(locale);
   },
 
   /**
@@ -115,7 +114,7 @@ const InstabugModule = {
    * @param colorTheme
    */
   setColorTheme(colorTheme) {
-    Instabug.setColorTheme(colorTheme);
+    NativeInstabug.setColorTheme(colorTheme);
   },
 
   /**
@@ -126,7 +125,7 @@ const InstabugModule = {
    * @param {color} color A color to set the UI elements of the SDK to.
    */
   setPrimaryColor(color) {
-    Instabug.setPrimaryColor(processColor(color));
+    NativeInstabug.setPrimaryColor(processColor(color));
   },
 
   /**
@@ -135,14 +134,14 @@ const InstabugModule = {
    * @param {string[]} tags An array of tags to append to current tags.
    */
   appendTags(tags) {
-    Instabug.appendTags(tags);
+    NativeInstabug.appendTags(tags);
   },
 
   /**
    * Manually removes all tags of reported feedback, bug or crash.
    */
   resetTags() {
-    Instabug.resetTags();
+    NativeInstabug.resetTags();
   },
 
   /**
@@ -150,7 +149,7 @@ const InstabugModule = {
    * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
    */
   getTags(tagsCallback) {
-    Instabug.getTags(tagsCallback);
+    NativeInstabug.getTags(tagsCallback);
   },
 
   /**
@@ -160,7 +159,7 @@ const InstabugModule = {
    * @param {strings} key Key of string to override.
    */
   setString(key, string) {
-    Instabug.setString(string, key);
+    NativeInstabug.setString(string, key);
   },
 
   /**
@@ -172,7 +171,7 @@ const InstabugModule = {
    * @param {string} name Name of the user to be set.
    */
   identifyUser(email, name) {
-    Instabug.identifyUser(email, name);
+    NativeInstabug.identifyUser(email, name);
   },
 
   /**
@@ -181,7 +180,7 @@ const InstabugModule = {
    * It also reset the chats on device and removes user attributes, user data and completed surveys.
    */
   logOut() {
-    Instabug.logOut();
+    NativeInstabug.logOut();
   },
 
 
@@ -191,7 +190,7 @@ const InstabugModule = {
    * @param {string} name Event name.
    */
   logUserEvent(name) {
-    Instabug.logUserEvent(name);
+    NativeInstabug.logUserEvent(name);
   },
 
   /**
@@ -209,8 +208,8 @@ const InstabugModule = {
    */
   logVerbose(message) {
     if (!message) return;
-    message = stringifyIfNotString(message)
-    Instabug.logVerbose(message);
+    message = stringifyIfNotString(message);
+    NativeInstabug.logVerbose(message);
   },
 
   /**
@@ -228,8 +227,8 @@ const InstabugModule = {
    */
   logInfo(message) {
     if (!message) return;
-    message = stringifyIfNotString(message)
-    Instabug.logInfo(message);
+    message = stringifyIfNotString(message);
+    NativeInstabug.logInfo(message);
   },
 
   /**
@@ -247,8 +246,8 @@ const InstabugModule = {
    */
   logDebug(message) {
     if (!message) return;
-    message = stringifyIfNotString(message)
-    Instabug.logDebug(message);
+    message = stringifyIfNotString(message);
+    NativeInstabug.logDebug(message);
   },
 
   /**
@@ -266,8 +265,8 @@ const InstabugModule = {
    */
   logError(message) {
     if (!message) return;
-    message = stringifyIfNotString(message)
-    Instabug.logError(message);
+    message = stringifyIfNotString(message);
+    NativeInstabug.logError(message);
   },
 
   /**
@@ -285,15 +284,15 @@ const InstabugModule = {
    */
   logWarn(message) {
     if (!message) return;
-    message = stringifyIfNotString(message)
-    Instabug.logWarn(message);
+    message = stringifyIfNotString(message);
+    NativeInstabug.logWarn(message);
   },
 
   /**
    * Clear all Instabug logs, console logs, network logs and user steps.
    */
   clearLogs() {
-    Instabug.clearLogs();
+    NativeInstabug.clearLogs();
   },
 
   /**
@@ -305,7 +304,7 @@ const InstabugModule = {
    * to be enabled, non visual or disabled.
    */
   setReproStepsMode(reproStepsMode) {
-    Instabug.setReproStepsMode(reproStepsMode);
+    NativeInstabug.setReproStepsMode(reproStepsMode);
   },
 
   /**
@@ -317,7 +316,7 @@ const InstabugModule = {
   setUserAttribute(key, value) {
     if (!key || typeof key !== 'string' || typeof value !== 'string')
       throw new TypeError('Invalid param, Expected String');
-    Instabug.setUserAttribute(key, value);
+    NativeInstabug.setUserAttribute(key, value);
   },
 
   /**
@@ -327,7 +326,7 @@ const InstabugModule = {
      * @param {function} userAttributeCallback callback with argument as the desired user attribute value
      */
   getUserAttribute(key, userAttributeCallback) {
-    Instabug.getUserAttribute(key, userAttributeCallback);
+    NativeInstabug.getUserAttribute(key, userAttributeCallback);
   },
 
   /**
@@ -337,9 +336,8 @@ const InstabugModule = {
    * @see #setUserAttribute(String, String)
    */
   removeUserAttribute(key) {
-    if (!key || typeof key !== 'string')
-      throw new TypeError('Invalid param, Expected String');
-    Instabug.removeUserAttribute(key);
+    if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
+    NativeInstabug.removeUserAttribute(key);
   },
 
   /**
@@ -348,14 +346,14 @@ const InstabugModule = {
    * all the currently set user attributes, or an empty dictionary if no user attributes have been set.
    */
   getAllUserAttributes(userAttributesCallback) {
-    Instabug.getAllUserAttributes(userAttributesCallback);
+    NativeInstabug.getAllUserAttributes(userAttributesCallback);
   },
 
   /**
    * Clears all user attributes if exists.
    */
   clearAllUserAttributes() {
-    Instabug.clearAllUserAttributes();
+    NativeInstabug.clearAllUserAttributes();
   },
 
   /**
@@ -366,7 +364,7 @@ const InstabugModule = {
    */
   setDebugEnabled(isDebugEnabled) {
     if (Platform.OS === 'android') {
-      Instabug.setDebugEnabled(isDebugEnabled);
+      NativeInstabug.setDebugEnabled(isDebugEnabled);
     }
   },
 
@@ -376,7 +374,7 @@ const InstabugModule = {
    */
   enable() {
     if (Platform.OS === 'android') {
-      Instabug.enable();
+      NativeInstabug.enable();
     }
   },
 
@@ -386,7 +384,7 @@ const InstabugModule = {
    */
   disable() {
     if (Platform.OS === 'android') {
-      Instabug.disable();
+      NativeInstabug.disable();
     }
   },
 
@@ -399,7 +397,7 @@ const InstabugModule = {
    */
   isRunningLive(runningLiveCallBack) {
     if (Platform.OS === 'ios') {
-      Instabug.isRunningLive(runningLiveCallBack);
+      NativeInstabug.isRunningLive(runningLiveCallBack);
     }
   },
 
@@ -410,7 +408,7 @@ const InstabugModule = {
    *
    */
   showWelcomeMessage(welcomeMessageMode) {
-    Instabug.showWelcomeMessageWithMode(welcomeMessageMode);
+    NativeInstabug.showWelcomeMessageWithMode(welcomeMessageMode);
   },
 
   /**
@@ -420,7 +418,7 @@ const InstabugModule = {
    *
    */
   setWelcomeMessageMode(welcomeMessageMode) {
-    Instabug.setWelcomeMessageMode(welcomeMessageMode);
+    NativeInstabug.setWelcomeMessageMode(welcomeMessageMode);
   },
 
   /**
@@ -430,9 +428,9 @@ const InstabugModule = {
    */
   addFileAttachment(filePath, fileName) {
     if (Platform.OS === 'android') {
-      Instabug.setFileAttachment(filePath, fileName);
+      NativeInstabug.setFileAttachment(filePath, fileName);
     } else {
-      Instabug.setFileAttachment(filePath);
+      NativeInstabug.setFileAttachment(filePath);
     }
   },
 
@@ -452,7 +450,7 @@ const InstabugModule = {
    */
   addPrivateView(viewRef) {
     const nativeTag = findNodeHandle(viewRef);
-    Instabug.addPrivateView(nativeTag);
+    NativeInstabug.addPrivateView(nativeTag);
   },
 
   /**
@@ -462,14 +460,14 @@ const InstabugModule = {
    */
   removePrivateView(viewRef) {
     const nativeTag = findNodeHandle(viewRef);
-    Instabug.removePrivateView(nativeTag);
+    NativeInstabug.removePrivateView(nativeTag);
   },
 
   /**
    * Shows default Instabug prompt.
    */
   show() {
-    Instabug.show();
+    NativeInstabug.show();
   },
 
   onReportSubmitHandler(preSendingHandler) {
@@ -479,7 +477,7 @@ const InstabugModule = {
       InstabugUtils.setOnReportHandler(false);
     }
     // send bug report
-    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
+    IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, report => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
       const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
       preSendingHandler(reportObj);
@@ -488,35 +486,48 @@ const InstabugModule = {
 
     // handled js crash
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
-        try {
-          let report = await Instabug.getReport();
-          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-          preSendingHandler(reportObj);
-          Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-        } catch (e) {
-          console.error(e);
-        }
-      });
+      IBGEventEmitter.addListener(
+        NativeInstabug,
+        InstabugConstants.SEND_HANDLED_CRASH,
+        async jsonObject => {
+          try {
+            let report = await NativeInstabug.getReport();
+            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+            const reportObj = new Report(
+              tags,
+              consoleLogs,
+              instabugLogs,
+              userAttributes,
+              fileAttachments,
+            );
+            preSendingHandler(reportObj);
+            NativeInstabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+          } catch (e) {
+            console.error(e);
+          }
+        },
+      );
     }
 
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
-
-        let report = await Instabug.getReport();
-        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
-        preSendingHandler(reportObj);
-        Instabug.sendJSCrash(JSON.stringify(jsonObject));
-      });
+      IBGEventEmitter.addListener(
+        NativeInstabug,
+        InstabugConstants.SEND_UNHANDLED_CRASH,
+        async jsonObject => {
+          let report = await NativeInstabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+          preSendingHandler(reportObj);
+          NativeInstabug.sendJSCrash(JSON.stringify(jsonObject));
+        },
+      );
     }
 
-    Instabug.setPreSendingHandler(preSendingHandler);
+    NativeInstabug.setPreSendingHandler(preSendingHandler);
   },
 
   callPrivateApi(apiName, param) {
-    Instabug.callPrivateApi(apiName, param);
+    NativeInstabug.callPrivateApi(apiName, param);
   },
 
   onNavigationStateChange(prevState: any, currentState: any, action?: any) {
@@ -525,13 +536,13 @@ const InstabugModule = {
 
     if (prevScreen !== currentScreen) {
       if (_currentScreen != null && _currentScreen != firstScreen) {
-        Instabug.reportScreenChange(_currentScreen);
+        NativeInstabug.reportScreenChange(_currentScreen);
         _currentScreen = null;
       }
       _currentScreen = currentScreen;
       setTimeout(function () {
         if (_currentScreen == currentScreen) {
-          Instabug.reportScreenChange(currentScreen);
+          NativeInstabug.reportScreenChange(currentScreen);
           _currentScreen = null;
         }
       }, 1000);
@@ -541,20 +552,20 @@ const InstabugModule = {
   onStateChange(state: any) {
     const currentScreen = InstabugUtils.getFullRoute(state);
     if (_currentScreen != null && _currentScreen != firstScreen) {
-      Instabug.reportScreenChange(_currentScreen);
+      NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
     }
     _currentScreen = currentScreen;
     setTimeout(function () {
       if (_currentScreen == currentScreen) {
-        Instabug.reportScreenChange(currentScreen);
+        NativeInstabug.reportScreenChange(currentScreen);
         _currentScreen = null;
       }
     }, 1000);
   },
 
   reportScreenChange(screenName) {
-    Instabug.reportScreenChange(screenName);
+    NativeInstabug.reportScreenChange(screenName);
   },
 
   /**
@@ -562,7 +573,7 @@ const InstabugModule = {
    * @param {string[]} experiments An array of experiments to add to the next report.
    */
   addExperiments(experiments) {
-    Instabug.addExperiments(experiments);
+    NativeInstabug.addExperiments(experiments);
   },
 
   /**
@@ -570,15 +581,15 @@ const InstabugModule = {
    * @param {string[]} experiments An array of experiments to remove from the next report.
    */
   removeExperiments(experiments) {
-    Instabug.removeExperiments(experiments);
+    NativeInstabug.removeExperiments(experiments);
   },
 
   /**
    * Clear all experiments
    */
   clearAllExperiments() {
-    Instabug.clearAllExperiments();
-  },  
+    NativeInstabug.clearAllExperiments();
+  },
 
   componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
@@ -587,7 +598,7 @@ const InstabugModule = {
       return;
     }
     if (_lastScreen != componentName) {
-      Instabug.reportScreenChange(componentName);
+      NativeInstabug.reportScreenChange(componentName);
       _lastScreen = componentName;
     }
   },

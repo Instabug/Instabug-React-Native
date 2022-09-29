@@ -1,4 +1,4 @@
-import { IBGFeatureRequests } from 'src/native';
+import { NativeFeatureRequests } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 
 export namespace FeatureRequests {
@@ -10,7 +10,7 @@ export namespace FeatureRequests {
    * @param isEnabled
    */
   export const setEnabled = (isEnabled: boolean) => {
-    IBGFeatureRequests.setEnabled(isEnabled);
+    NativeFeatureRequests.setEnabled(isEnabled);
   };
 
   /**
@@ -25,13 +25,16 @@ export namespace FeatureRequests {
     isEmailFieldRequired: boolean,
     actionTypes: FeatureRequests.actionTypes,
   ) => {
-    IBGFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
+    NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(
+      isEmailFieldRequired,
+      actionTypes,
+    );
   };
 
   /**
    * Shows the UI for feature requests list
    */
   export const show = () => {
-    IBGFeatureRequests.show();
+    NativeFeatureRequests.show();
   };
 }

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { IBGBugReporting } from 'src/native';
+import { NativeBugReporting } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
@@ -14,7 +14,7 @@ export default {
    * @param {boolean} isEnabled
    */
   setEnabled(isEnabled) {
-    IBGBugReporting.setEnabled(isEnabled);
+    NativeBugReporting.setEnabled(isEnabled);
   },
 
   /**
@@ -24,7 +24,7 @@ export default {
    * feedback form.
    */
   setInvocationEvents(invocationEvents) {
-    IBGBugReporting.setInvocationEvents(invocationEvents);
+    NativeBugReporting.setInvocationEvents(invocationEvents);
   },
 
   /**
@@ -33,7 +33,7 @@ export default {
    * @param {invocationOptions} options Array of invocation options
    */
   setOptions(options) {
-    IBGBugReporting.setOptions(options);
+    NativeBugReporting.setOptions(options);
   },
 
   /**
@@ -43,8 +43,8 @@ export default {
    * @param {function} handler - A callback that gets executed before invoking the SDK
    */
   onInvokeHandler(handler) {
-    IBGEventEmitter.addListener(IBGBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
-    IBGBugReporting.setOnInvokeHandler(handler);
+    IBGEventEmitter.addListener(NativeBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
+    NativeBugReporting.setOnInvokeHandler(handler);
   },
 
   /**
@@ -56,13 +56,13 @@ export default {
    */
   onSDKDismissedHandler(handler) {
     IBGEventEmitter.addListener(
-      IBGBugReporting,
+      NativeBugReporting,
       InstabugConstants.ON_SDK_DISMISSED_HANDLER,
       payload => {
         handler(payload.dismissType, payload.reportType);
       },
     );
-    IBGBugReporting.setOnSDKDismissedHandler(handler);
+    NativeBugReporting.setOnSDKDismissedHandler(handler);
   },
 
   /**
@@ -71,7 +71,8 @@ export default {
    * @param {number} iPhoneShakingThreshold Threshold for iPhone.
    */
   setShakingThresholdForiPhone(iPhoneShakingThreshold) {
-    if (Platform.OS === 'ios') IBGBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
+    if (Platform.OS === 'ios')
+      NativeBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
   },
 
   /**
@@ -80,7 +81,7 @@ export default {
    * @param {number} iPadShakingThreshold Threshold for iPad.
    */
   setShakingThresholdForiPad(iPadShakingThreshold) {
-    if (Platform.OS === 'ios') IBGBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
+    if (Platform.OS === 'ios') NativeBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
   },
 
   /**
@@ -91,7 +92,8 @@ export default {
    * @param {number} androidThreshold Threshold for android devices.
    */
   setShakingThresholdForAndroid(androidThreshold) {
-    if (Platform.OS === 'android') IBGBugReporting.setShakingThresholdForAndroid(androidThreshold);
+    if (Platform.OS === 'android')
+      NativeBugReporting.setShakingThresholdForAndroid(androidThreshold);
   },
 
   /**
@@ -102,7 +104,7 @@ export default {
    *                                with required or with optional fields.
    */
   setExtendedBugReportMode(extendedBugReportMode) {
-    IBGBugReporting.setExtendedBugReportMode(extendedBugReportMode);
+    NativeBugReporting.setExtendedBugReportMode(extendedBugReportMode);
   },
 
   /**
@@ -110,7 +112,7 @@ export default {
    * @param {array} types - Array of reportTypes
    */
   setReportTypes(types) {
-    IBGBugReporting.setReportTypes(types);
+    NativeBugReporting.setReportTypes(types);
   },
 
   /**
@@ -122,7 +124,7 @@ export default {
     if (!options) {
       options = [];
     }
-    IBGBugReporting.show(type, options);
+    NativeBugReporting.show(type, options);
   },
 
   /**
@@ -131,7 +133,7 @@ export default {
    * screen recording on crash feature
    */
   setAutoScreenRecordingEnabled: function (autoScreenRecordingEnabled) {
-    IBGBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
+    NativeBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
   },
 
   /**
@@ -143,7 +145,7 @@ export default {
    */
   setAutoScreenRecordingDurationIOS: function (autoScreenRecordingMaxDuration) {
     if (Platform.OS !== 'ios') return;
-    IBGBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
+    NativeBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
   },
 
   /**
@@ -155,7 +157,7 @@ export default {
    * or `bottomRight` to show on the bottom right of scrren.
    */
   setVideoRecordingFloatingButtonPosition(position) {
-    IBGBugReporting.setVideoRecordingFloatingButtonPosition(position);
+    NativeBugReporting.setVideoRecordingFloatingButtonPosition(position);
   },
 
   /**
@@ -164,7 +166,7 @@ export default {
    * or disabled.
    */
   setViewHierarchyEnabled: function (viewHierarchyEnabled) {
-    IBGBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
+    NativeBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
   },
 
   /**
@@ -175,13 +177,13 @@ export default {
   setDidSelectPromptOptionHandler: function (didSelectPromptOptionHandler) {
     if (Platform.OS === 'android') return;
     IBGEventEmitter.addListener(
-      IBGBugReporting,
+      NativeBugReporting,
       InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER,
       payload => {
         didSelectPromptOptionHandler(payload.promptOption);
       },
     );
-    IBGBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
+    NativeBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
   },
 
   /**
@@ -195,7 +197,7 @@ export default {
    * floating button.
    */
   setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
-    IBGBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
+    NativeBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
   },
 
   /**
@@ -209,7 +211,7 @@ export default {
    * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
    */
   setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording) {
-    IBGBugReporting.setEnabledAttachmentTypes(
+    NativeBugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,

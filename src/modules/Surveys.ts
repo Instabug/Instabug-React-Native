@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { IBGSurveys } from 'src/native';
+import { NativeSurveys } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
@@ -18,7 +18,7 @@ export default {
    * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
   setEnabled: function (isEnabled) {
-    IBGSurveys.setEnabled(isEnabled);
+    NativeSurveys.setEnabled(isEnabled);
   },
 
   /**
@@ -28,7 +28,7 @@ export default {
    * in the current session.
    */
   showSurveyIfAvailable: function () {
-    IBGSurveys.showSurveysIfAvailable();
+    NativeSurveys.showSurveysIfAvailable();
   },
 
   /**
@@ -38,7 +38,7 @@ export default {
    *
    */
   getAvailableSurveys: function (availableSurveysCallback) {
-    IBGSurveys.getAvailableSurveys(availableSurveysCallback);
+    NativeSurveys.getAvailableSurveys(availableSurveysCallback);
   },
 
   /**
@@ -48,7 +48,7 @@ export default {
    *
    */
   setAutoShowingEnabled: function (autoShowingSurveysEnabled) {
-    IBGSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
+    NativeSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
   },
 
   /**
@@ -60,11 +60,11 @@ export default {
    */
   setOnShowHandler: function (onShowHandler) {
     IBGEventEmitter.addListener(
-      IBGSurveys,
+      NativeSurveys,
       InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
       onShowHandler,
     );
-    IBGSurveys.setOnShowHandler(onShowHandler);
+    NativeSurveys.setOnShowHandler(onShowHandler);
   },
 
   /**
@@ -76,11 +76,11 @@ export default {
    */
   setOnDismissHandler: function (onDismissHandler) {
     IBGEventEmitter.addListener(
-      IBGSurveys,
+      NativeSurveys,
       InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
       onDismissHandler,
     );
-    IBGSurveys.setOnDismissHandler(onDismissHandler);
+    NativeSurveys.setOnDismissHandler(onDismissHandler);
   },
 
   /**
@@ -91,7 +91,7 @@ export default {
    *
    */
   showSurvey: function (surveyToken) {
-    IBGSurveys.showSurvey(surveyToken);
+    NativeSurveys.showSurvey(surveyToken);
   },
 
   /**
@@ -103,7 +103,7 @@ export default {
    *
    */
   hasRespondedToSurvey: function (surveyToken, surveyTokenCallback) {
-    IBGSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
+    NativeSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
   },
 
   /**
@@ -114,7 +114,7 @@ export default {
    *
    */
   setShouldShowWelcomeScreen: function (shouldShowWelcomeScreen) {
-    IBGSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
+    NativeSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
   },
 
   /**
@@ -126,7 +126,7 @@ export default {
 
   setAppStoreURL: function (appStoreURL) {
     if (Platform.OS === 'ios') {
-      IBGSurveys.setAppStoreURL(appStoreURL);
+      NativeSurveys.setAppStoreURL(appStoreURL);
     }
   },
 };

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { IBGAPM, Instabug } from 'src/native';
+import { NativeAPM, NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr from '../utils/XhrNetworkInterceptor';
@@ -28,10 +28,10 @@ export default {
           } else {
             try {
               if (Platform.OS === 'android') {
-                Instabug.networkLog(JSON.stringify(network));
-                IBGAPM.networkLog(JSON.stringify(network));
+                NativeInstabug.networkLog(JSON.stringify(network));
+                NativeAPM.networkLog(JSON.stringify(network));
               } else {
-                Instabug.networkLog(network);
+                NativeInstabug.networkLog(network);
               }
             } catch (e) {
               console.error(e);
@@ -56,16 +56,16 @@ export default {
     _networkDataObfuscationHandlerSet = true;
 
     IBGEventEmitter.addListener(
-      Instabug,
+      NativeInstabug,
       InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
       async data => {
         try {
           const newData = await handler(data);
           if (Platform.OS === 'android') {
-            Instabug.networkLog(JSON.stringify(newData));
-            IBGAPM.networkLog(JSON.stringify(newData));
+            NativeInstabug.networkLog(JSON.stringify(newData));
+            NativeAPM.networkLog(JSON.stringify(newData));
           } else {
-            Instabug.networkLog(newData);
+            NativeInstabug.networkLog(newData);
           }
         } catch (e) {
           console.error(e);

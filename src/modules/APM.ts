@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { IBGAPM, Instabug } from 'src/native';
+import { NativeAPM, NativeInstabug } from '../native';
 import Trace from '../models/Trace';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 
@@ -26,7 +26,7 @@ export namespace APM {
    * @param logLevel the printed logs priority.
    */
   export const setLogLevel = (logLevel: ArgsRegistry.logLevel) => {
-    IBGAPM.setLogLevel(logLevel);
+    NativeAPM.setLogLevel(logLevel);
   };
 
   /**
@@ -34,7 +34,7 @@ export namespace APM {
    * @param isEnabled
    */
   export const setEnabled = (isEnabled: boolean) => {
-    IBGAPM.setEnabled(isEnabled);
+    NativeAPM.setEnabled(isEnabled);
   };
 
   /**
@@ -42,14 +42,14 @@ export namespace APM {
    * @param isEnabled
    */
   export const setAppLaunchEnabled = (isEnabled: boolean) => {
-    IBGAPM.setAppLaunchEnabled(isEnabled);
+    NativeAPM.setAppLaunchEnabled(isEnabled);
   };
 
   /**
    * Ends app launch
    */
   export const endAppLaunch = () => {
-    IBGAPM.endAppLaunch();
+    NativeAPM.endAppLaunch();
   };
 
   /**
@@ -58,7 +58,7 @@ export namespace APM {
    */
   export const setNetworkEnabledIOS = (isEnabled: boolean) => {
     if (Platform.OS === 'ios') {
-      Instabug.setNetworkLoggingEnabled(isEnabled);
+      NativeInstabug.setNetworkLoggingEnabled(isEnabled);
     }
   };
 
@@ -67,7 +67,7 @@ export namespace APM {
    * @param isEnabled
    */
   export const setAutoUITraceEnabled = (isEnabled: boolean) => {
-    IBGAPM.setAutoUITraceEnabled(isEnabled);
+    NativeAPM.setAutoUITraceEnabled(isEnabled);
   };
 
   /**
@@ -80,7 +80,7 @@ export namespace APM {
     const timestamp = Date.now() + '';
 
     return new Promise((resolve, reject) => {
-      IBGAPM.startExecutionTrace(name, timestamp, (id: string | null) => {
+      NativeAPM.startExecutionTrace(name, timestamp, (id: string | null) => {
         if (id) {
           resolve(new Trace(id, name));
         } else {
@@ -95,20 +95,20 @@ export namespace APM {
    * @param name
    */
   export const startUITrace = (name: string) => {
-    IBGAPM.startUITrace(name);
+    NativeAPM.startUITrace(name);
   };
 
   /**
    * Ends a custom trace
    */
   export const endUITrace = () => {
-    IBGAPM.endUITrace();
+    NativeAPM.endUITrace();
   };
 
   /**
    * Used for internal testing.
    */
   export const _ibgSleep = () => {
-    IBGAPM.ibgSleep();
+    NativeAPM.ibgSleep();
   };
 }
