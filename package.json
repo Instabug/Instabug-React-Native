@@ -46,6 +46,9 @@
     "collectCoverageFrom": [
       "./src/**/*.(js|ts)"
     ],
+    "setupFilesAfterEnv": [
+      "./tests/setup-tests.js"
+    ],
     "modulePathIgnorePatterns": [
       "example"
     ]

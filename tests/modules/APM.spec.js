@@ -1,21 +1,10 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../mocks/mockAPM';
 import APM from '../../src/modules/APM';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 
 const { Instabug: NativeInstabug, IBGAPM: NativeIBGAPM } = NativeModules;
 
 describe('APM Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('should call the native method setEnabled', () => {
     APM.setEnabled(true);
 

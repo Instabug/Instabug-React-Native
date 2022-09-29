@@ -1,13 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../mocks/mockXhrNetworkInterceptor';
-import '../mocks/mockInstabugUtils';
-import '../mocks/mockInstabug';
 import CrashReporting from '../../src/modules/CrashReporting';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
@@ -16,10 +7,6 @@ import IBGConstants from '../../src/utils/InstabugConstants';
 const { Instabug: NativeInstabug } = NativeModules;
 
 describe('CrashReporting Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('should call the native method setCrashReportingEnabled', () => {
     CrashReporting.setEnabled(true);
 

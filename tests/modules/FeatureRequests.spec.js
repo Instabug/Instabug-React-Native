@@ -1,11 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules } from 'react-native';
-import '../mocks/mockFeatureRequests';
 import FeatureRequests from '../../src/modules/FeatureRequests';
 
 const { IBGFeatureRequests: NativeIBGFeatureRequests } = NativeModules;

@@ -1,13 +1,5 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
-import { NativeModules, Platform } from 'react-native';
 import '../mocks/mockXhrNetworkInterceptor';
-import '../mocks/mockAPM';
-import '../mocks/mockInstabug';
+import { NativeModules, Platform } from 'react-native';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 import NetworkLogger from '../../src/modules/NetworkLogger';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
@@ -34,7 +26,6 @@ describe('NetworkLogger Module', () => {
   };
 
   beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
     NetworkLogger.setNetworkDataObfuscationHandler(null);
   });
 

@@ -1,11 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../mocks/mockReport';
 import Report from '../../src/models/Report';
 
 const { Instabug: NativeInstabug } = NativeModules;

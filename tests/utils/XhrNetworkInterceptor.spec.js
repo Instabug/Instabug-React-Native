@@ -1,20 +1,16 @@
-import 'react-native';
 import sinon from 'sinon';
 import FakeRequest from '../mocks/fakeNetworkRequest';
 import InstabugConstants from '../../src/utils/InstabugConstants';
-
-global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
+import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 
 const url = 'http://api.instabug.com';
 const method = 'GET';
 
 describe('Network Interceptor', () => {
-  let Interceptor;
   let server;
   let requests;
 
   beforeEach(function () {
-    Interceptor = require('../../src/utils/XhrNetworkInterceptor');
     server = sinon.useFakeXMLHttpRequest();
     requests = [];
 

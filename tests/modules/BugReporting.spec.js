@@ -1,13 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../mocks/mockXhrNetworkInterceptor';
-import '../mocks/mockBugReporting';
-import '../mocks/mockInstabugUtils';
 import BugReporting from '../../src/modules/BugReporting';
 import Instabug from '../../src/';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
@@ -16,10 +7,6 @@ import IBGConstants from '../../src/utils/InstabugConstants';
 const { IBGBugReporting: NativeIBGBugReporting } = NativeModules;
 
 describe('Testing BugReporting Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('should call the native method setBugReportingEnabled', () => {
     BugReporting.setEnabled(true);
 

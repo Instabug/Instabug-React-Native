@@ -1,11 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules } from 'react-native';
-import '../mocks/mockSurveys';
 import Surveys from '../../src/modules/Surveys';
 
 import IBGConstants from '../../src/utils/InstabugConstants';
@@ -14,10 +7,6 @@ import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 const { IBGSurveys: NativeIBGSurveys } = NativeModules;
 
 describe('Surveys Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('should call the native method setSurveysEnabled', () => {
     Surveys.setEnabled(true);
 

@@ -1,11 +1,4 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
 import { NativeModules, Platform } from 'react-native';
-import '../mocks/mockReplies';
 import Replies from '../../src/modules/Replies';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
@@ -13,10 +6,6 @@ import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 const { IBGReplies: NativeIBGReplies } = NativeModules;
 
 describe('Replies Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('should call the native method setRepliesEnabled', () => {
     Replies.setEnabled(true);
 
