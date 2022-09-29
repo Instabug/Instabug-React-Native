@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import xhr from '../utils/XhrNetworkInterceptor';
-import IBGEventEmitter from '../utils/IBGEventEmitter.js';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 let { Instabug, IBGAPM } = NativeModules;
 

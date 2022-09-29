@@ -24,6 +24,6 @@
     "strict": true,
     "noImplicitAny": false, // Temporarily disabled
     "target": "esnext",
-    "outDir": "dist",
+    "declaration": true
   },
 }
