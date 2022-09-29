@@ -37,7 +37,7 @@ function parseModule(block) {
                         }
                     });
                     functions.push({ name: prop.key.name, params: params });
-                } else {
+                } else if (prop.value.properties) {
                     var values = [];
                     prop.value.properties.forEach((value) => {
                         values.push(value.key.name)
@@ -47,7 +47,8 @@ function parseModule(block) {
             });
         }
     });
-    return { functions: functions, enums: enums };
+    // Disable Enum Check
+    return { functions: functions, enums: [] };
 }
 
 function parseDefinition() {
@@ -85,7 +86,8 @@ function parseDefinition() {
                     enums.push({ name: moduleStatement.name.escapedText, values: enumValues });
                 }
             });
-            allDef.push({ moduleName: statement.name.escapedText, data: { functions: functions, enums: enums } });
+            // Disable enums check    
+            allDef.push({ moduleName: statement.name.escapedText, data: { functions: functions, enums: [] } });
         } else {
             var params = [];
             var enumValues = [];
@@ -111,7 +113,8 @@ function parseDefinition() {
             }
         }
     });
-    allDef.push({ moduleName: "Instabug", data: { functions: indexFunctions, enums: indexEnums } });
+    // Disable enums check
+    allDef.push({ moduleName: "Instabug", data: { functions: indexFunctions, enums: [] } });
     return allDef;
 }
 
