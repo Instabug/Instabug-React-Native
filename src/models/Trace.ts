@@ -5,15 +5,11 @@ interface TraceAttributesMap {
 }
 
 export default class Trace {
-  id: string;
-  name: string;
-  attributes: TraceAttributesMap;
-
-  constructor(id: string, name?: string, attributes?: TraceAttributesMap) {
-    this.id = id;
-    this.name = name ? name : '';
-    this.attributes = attributes ? attributes : {};
-  }
+  constructor(
+    public readonly id: string,
+    public readonly name: string = '',
+    public readonly attributes: TraceAttributesMap = {},
+  ) {}
 
   /**
    * Add an attribute with key and value to the Trace to be sent.

@@ -16,25 +16,13 @@ interface FileAttachmentInfo {
 }
 
 export default class Report {
-  tags: string[];
-  consoleLogs: string[];
-  instabugLogs: LogInfo[];
-  userAttributes: UserAttributesMap;
-  fileAttachments: FileAttachmentInfo[];
-
   constructor(
-    tags?: string[],
-    consoleLogs?: string[],
-    instabugLogs?: LogInfo[],
-    userAttributes?: UserAttributesMap,
-    fileAttachments?: FileAttachmentInfo[],
-  ) {
-    this.tags = tags ? tags : [];
-    this.consoleLogs = consoleLogs ? consoleLogs : [];
-    this.instabugLogs = instabugLogs ? instabugLogs : [];
-    this.userAttributes = userAttributes ? userAttributes : {};
-    this.fileAttachments = fileAttachments ? fileAttachments : [];
-  }
+    public tags: string[] = [],
+    public consoleLogs: string[] = [],
+    public instabugLogs: LogInfo[] = [],
+    public userAttributes: UserAttributesMap = {},
+    public fileAttachments: FileAttachmentInfo[] = [],
+  ) {}
 
   /**
    * Append a tag to the report to be sent.
