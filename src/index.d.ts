@@ -2,20 +2,6 @@
 // Project: https://github.com/Instabug/instabug-reactnative#readme
 // Definitions by: Aly Ezz <https://github.com/alyezz>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-export namespace CrashReporting {
-  /**
-   * Enables and disables everything related to crash reporting including intercepting
-   * errors in the global error handler. It is enabled by default.
-   * @param {boolean} isEnabled
-   */
-  function setEnabled(isEnabled: boolean): void;
-  /**
-   * Send handled JS error object
-   *
-   * @param errorObject Error object to be sent to Instabug's servers
-   */
-  function reportJSException(errorObject: object): void;
-}
 
 export namespace Replies {
   /**

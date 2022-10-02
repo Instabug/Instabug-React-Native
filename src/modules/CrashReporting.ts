@@ -1,32 +1,28 @@
 import { Platform } from 'react-native';
+import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 import { NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils from '../utils/InstabugUtils';
 
-/**
- * CrashReporting
- * @exports CrashReporting
- */
-export default {
+export namespace CrashReporting {
   /**
    * Enables and disables everything related to crash reporting including intercepting
    * errors in the global error handler. It is enabled by default.
-   * @param {boolean} isEnabled
+   * @param isEnabled
    */
-  setEnabled(isEnabled) {
+  export const setEnabled = (isEnabled: boolean) => {
     NativeInstabug.setCrashReportingEnabled(isEnabled);
-  },
+  };
 
   /**
    * Send handled JS error object
-   *
    * @param errorObject Error object to be sent to Instabug's servers
    */
-  reportJSException: function (errorObject) {
-    let jsStackTrace = InstabugUtils.getStackTrace(errorObject);
+  export const reportJSException = (errorObject: ExtendedError) => {
+    const jsStackTrace = InstabugUtils.getStackTrace(errorObject);
 
-    var jsonObject = {
+    const jsonObject = {
       message: errorObject.name + ' - ' + errorObject.message,
       e_message: errorObject.message,
       e_name: errorObject.name,
@@ -44,5 +40,5 @@ export default {
         NativeInstabug.sendHandledJSCrash(jsonObject);
       }
     }
-  },
-};
+  };
+}
