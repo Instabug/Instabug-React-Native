@@ -2,21 +2,21 @@ import { NativeModules, Platform } from 'react-native';
 import APM from '../../src/modules/APM';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 
-const { Instabug: NativeInstabug, IBGAPM: NativeIBGAPM } = NativeModules;
+const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
 
 describe('APM Module', () => {
   it('should call the native method setEnabled', () => {
     APM.setEnabled(true);
 
-    expect(NativeIBGAPM.setEnabled).toBeCalledTimes(1);
-    expect(NativeIBGAPM.setEnabled).toBeCalledWith(true);
+    expect(NativeAPM.setEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.setEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setAppLaunchEnabled', () => {
     APM.setAppLaunchEnabled(true);
 
-    expect(NativeIBGAPM.setAppLaunchEnabled).toBeCalledTimes(1);
-    expect(NativeIBGAPM.setAppLaunchEnabled).toBeCalledWith(true);
+    expect(NativeAPM.setAppLaunchEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.setAppLaunchEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setNetworkEnabledIOS', () => {
@@ -30,29 +30,29 @@ describe('APM Module', () => {
   it('should call the native method endAppLaunch', () => {
     APM.endAppLaunch();
 
-    expect(NativeIBGAPM.endAppLaunch).toBeCalledTimes(1);
-    expect(NativeIBGAPM.endAppLaunch).toBeCalledWith();
+    expect(NativeAPM.endAppLaunch).toBeCalledTimes(1);
+    expect(NativeAPM.endAppLaunch).toBeCalledWith();
   });
 
   it('should call the native method setAutoUITraceEnabled', () => {
     APM.setAutoUITraceEnabled(true);
 
-    expect(NativeIBGAPM.setAutoUITraceEnabled).toBeCalledTimes(1);
-    expect(NativeIBGAPM.setAutoUITraceEnabled).toBeCalledWith(true);
+    expect(NativeAPM.setAutoUITraceEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.setAutoUITraceEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setLogLevel', () => {
     APM.setLogLevel(APM.logLevel.verbose);
 
-    expect(NativeIBGAPM.setLogLevel).toBeCalledTimes(1);
-    expect(NativeIBGAPM.setLogLevel).toBeCalledWith(APM.logLevel.verbose);
+    expect(NativeAPM.setLogLevel).toBeCalledTimes(1);
+    expect(NativeAPM.setLogLevel).toBeCalledWith(APM.logLevel.verbose);
   });
 
   it('should call the native method startExecutionTrace', () => {
     APM.startExecutionTrace('trace');
 
-    expect(NativeIBGAPM.startExecutionTrace).toBeCalledTimes(1);
-    expect(NativeIBGAPM.startExecutionTrace).toBeCalledWith(
+    expect(NativeAPM.startExecutionTrace).toBeCalledTimes(1);
+    expect(NativeAPM.startExecutionTrace).toBeCalledWith(
       'trace',
       expect.any(String),
       expect.any(Function),
@@ -63,8 +63,8 @@ describe('APM Module', () => {
     const trace = APM.startExecutionTrace('trace').then(() => {
       trace.setAttribute('key', 'value');
 
-      expect(NativeIBGAPM.setExecutionTraceAttribute).toBeCalledTimes(1);
-      expect(NativeIBGAPM.setExecutionTraceAttribute).toBeCalledWith(
+      expect(NativeAPM.setExecutionTraceAttribute).toBeCalledTimes(1);
+      expect(NativeAPM.setExecutionTraceAttribute).toBeCalledWith(
         expect.any(String),
         'key',
         'value',
@@ -76,29 +76,29 @@ describe('APM Module', () => {
     const trace = APM.startExecutionTrace('trace').then(() => {
       trace.end();
 
-      expect(NativeIBGAPM.endExecutionTrace).toBeCalledTimes(1);
-      expect(NativeIBGAPM.endExecutionTrace).toBeCalledWith(expect.any(String));
+      expect(NativeAPM.endExecutionTrace).toBeCalledTimes(1);
+      expect(NativeAPM.endExecutionTrace).toBeCalledWith(expect.any(String));
     });
   });
 
   it('should call the native method startUITrace', () => {
     APM.startUITrace('uiTrace');
 
-    expect(NativeIBGAPM.startUITrace).toBeCalledTimes(1);
-    expect(NativeIBGAPM.startUITrace).toBeCalledWith('uiTrace');
+    expect(NativeAPM.startUITrace).toBeCalledTimes(1);
+    expect(NativeAPM.startUITrace).toBeCalledWith('uiTrace');
   });
 
   it('should call the native method endUITrace', () => {
     APM.endUITrace();
 
-    expect(NativeIBGAPM.endUITrace).toBeCalledTimes(1);
-    expect(NativeIBGAPM.endUITrace).toBeCalledWith();
+    expect(NativeAPM.endUITrace).toBeCalledTimes(1);
+    expect(NativeAPM.endUITrace).toBeCalledWith();
   });
 
   it('should call the native method _ibgSleep', () => {
     APM._ibgSleep();
 
-    expect(NativeIBGAPM.ibgSleep).toBeCalledTimes(1);
-    expect(NativeIBGAPM.ibgSleep).toBeCalledWith();
+    expect(NativeAPM.ibgSleep).toBeCalledTimes(1);
+    expect(NativeAPM.ibgSleep).toBeCalledWith();
   });
 });

@@ -1,15 +1,15 @@
 import { NativeModules } from 'react-native';
 import FeatureRequests from '../../src/modules/FeatureRequests';
 
-const { IBGFeatureRequests: NativeIBGFeatureRequests } = NativeModules;
+const { IBGFeatureRequests: NativeFeatureRequests } = NativeModules;
 
 describe('Feature Requests Module', () => {
   it('should call the native method setEmailFieldRequiredForFeatureRequests', () => {
     const actionTypes = [FeatureRequests.actionTypes.reportBug];
     FeatureRequests.setEmailFieldRequired(true, actionTypes);
 
-    expect(NativeIBGFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledTimes(1);
-    expect(NativeIBGFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledWith(
+    expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledTimes(1);
+    expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledWith(
       true,
       actionTypes,
     );
@@ -18,13 +18,13 @@ describe('Feature Requests Module', () => {
   it('should call the native method showFeatureRequests', () => {
     FeatureRequests.show();
 
-    expect(NativeIBGFeatureRequests.show).toBeCalledTimes(1);
+    expect(NativeFeatureRequests.show).toBeCalledTimes(1);
   });
 
   it('should call the native method setEnabled', () => {
     FeatureRequests.setEnabled(true);
 
-    expect(NativeIBGFeatureRequests.setEnabled).toBeCalledTimes(1);
-    expect(NativeIBGFeatureRequests.setEnabled).toBeCalledWith(true);
+    expect(NativeFeatureRequests.setEnabled).toBeCalledTimes(1);
+    expect(NativeFeatureRequests.setEnabled).toBeCalledWith(true);
   });
 });

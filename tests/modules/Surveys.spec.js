@@ -4,50 +4,50 @@ import Surveys from '../../src/modules/Surveys';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 
-const { IBGSurveys: NativeIBGSurveys } = NativeModules;
+const { IBGSurveys: NativeSurveys } = NativeModules;
 
 describe('Surveys Module', () => {
   it('should call the native method setSurveysEnabled', () => {
     Surveys.setEnabled(true);
 
-    expect(NativeIBGSurveys.setEnabled).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setEnabled).toBeCalledWith(true);
+    expect(NativeSurveys.setEnabled).toBeCalledTimes(1);
+    expect(NativeSurveys.setEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setAppStoreURL', () => {
     Surveys.setAppStoreURL('URL');
 
-    expect(NativeIBGSurveys.setAppStoreURL).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setAppStoreURL).toBeCalledWith('URL');
+    expect(NativeSurveys.setAppStoreURL).toBeCalledTimes(1);
+    expect(NativeSurveys.setAppStoreURL).toBeCalledWith('URL');
   });
 
   it('should call the native method showSurveysIfAvailable', () => {
     Surveys.showSurveyIfAvailable();
 
-    expect(NativeIBGSurveys.showSurveysIfAvailable).toBeCalledTimes(1);
+    expect(NativeSurveys.showSurveysIfAvailable).toBeCalledTimes(1);
   });
 
   it('should call the native method getAvailableSurveys', () => {
     const callback = jest.fn();
     Surveys.getAvailableSurveys(callback);
 
-    expect(NativeIBGSurveys.getAvailableSurveys).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.getAvailableSurveys).toBeCalledWith(callback);
+    expect(NativeSurveys.getAvailableSurveys).toBeCalledTimes(1);
+    expect(NativeSurveys.getAvailableSurveys).toBeCalledWith(callback);
   });
 
   it('should call the native method setAutoShowingSurveysEnabled', () => {
     Surveys.setAutoShowingEnabled(true);
 
-    expect(NativeIBGSurveys.setAutoShowingEnabled).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setAutoShowingEnabled).toBeCalledWith(true);
+    expect(NativeSurveys.setAutoShowingEnabled).toBeCalledTimes(1);
+    expect(NativeSurveys.setAutoShowingEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setWillShowSurveyHandler with a function', () => {
     const callback = jest.fn();
     Surveys.setOnShowHandler(callback);
 
-    expect(NativeIBGSurveys.setOnShowHandler).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setOnShowHandler).toBeCalledWith(callback);
+    expect(NativeSurveys.setOnShowHandler).toBeCalledTimes(1);
+    expect(NativeSurveys.setOnShowHandler).toBeCalledWith(callback);
   });
 
   it('should invoke callback on emitting the event IBGWillShowSurvey', () => {
@@ -63,8 +63,8 @@ describe('Surveys Module', () => {
     const callback = jest.fn();
     Surveys.setOnDismissHandler(callback);
 
-    expect(NativeIBGSurveys.setOnDismissHandler).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setOnDismissHandler).toBeCalledWith(callback);
+    expect(NativeSurveys.setOnDismissHandler).toBeCalledTimes(1);
+    expect(NativeSurveys.setOnDismissHandler).toBeCalledWith(callback);
   });
 
   it('should invoke callback on emitting the event IBGDidDismissSurvey', () => {
@@ -80,8 +80,8 @@ describe('Surveys Module', () => {
     const surveyToken = 'HEU128JD';
     Surveys.showSurvey(surveyToken);
 
-    expect(NativeIBGSurveys.showSurvey).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.showSurvey).toBeCalledWith(surveyToken);
+    expect(NativeSurveys.showSurvey).toBeCalledTimes(1);
+    expect(NativeSurveys.showSurvey).toBeCalledWith(surveyToken);
   });
 
   it('should call the native method hasRespondedToSurveyWithToken', () => {
@@ -89,15 +89,15 @@ describe('Surveys Module', () => {
     const surveyToken = 'HEU128JD';
     Surveys.hasRespondedToSurvey(surveyToken, callback);
 
-    expect(NativeIBGSurveys.hasRespondedToSurvey).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.hasRespondedToSurvey).toBeCalledWith(surveyToken, callback);
+    expect(NativeSurveys.hasRespondedToSurvey).toBeCalledTimes(1);
+    expect(NativeSurveys.hasRespondedToSurvey).toBeCalledWith(surveyToken, callback);
     expect(callback).toBeCalledWith(true);
   });
 
   it('should call the native method setShouldShowSurveysWelcomeScreen', () => {
     Surveys.setShouldShowWelcomeScreen(true);
 
-    expect(NativeIBGSurveys.setShouldShowWelcomeScreen).toBeCalledTimes(1);
-    expect(NativeIBGSurveys.setShouldShowWelcomeScreen).toBeCalledWith(true);
+    expect(NativeSurveys.setShouldShowWelcomeScreen).toBeCalledTimes(1);
+    expect(NativeSurveys.setShouldShowWelcomeScreen).toBeCalledWith(true);
   });
 });

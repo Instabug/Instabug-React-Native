@@ -6,7 +6,7 @@ import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import waitForExpect from 'wait-for-expect';
 
-const { Instabug: NativeInstabug, IBGAPM: NativeIBGAPM } = NativeModules;
+const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
 
 const clone = obj => {
   return JSON.parse(JSON.stringify(obj));
@@ -65,7 +65,7 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(network));
-    expect(NativeIBGAPM.networkLog).toBeCalledWith(JSON.stringify(network));
+    expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(network));
   });
 
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
@@ -105,7 +105,7 @@ describe('NetworkLogger Module', () => {
       const newData = clone(network);
       newData.requestHeaders['token'] = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
-      expect(NativeIBGAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
+      expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
     });
   });
 
@@ -117,7 +117,7 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).not.toBeCalled();
-    expect(NativeIBGAPM.networkLog).not.toBeCalled();
+    expect(NativeAPM.networkLog).not.toBeCalled();
   });
 
   it('should test that operationSetContext at apollo handler called', async () => {
