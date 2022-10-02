@@ -1,197 +1,203 @@
 import { findNodeHandle, Platform, processColor } from 'react-native';
-import Report from '../models/Report';
 import { NativeInstabug } from '../native';
+import Report, { UserAttributesMap } from '../models/Report';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import NetworkLogger from './NetworkLogger';
+import type React from 'react';
 
-var _currentScreen: string | null = null;
-var _lastScreen: string | null = null;
-var _isFirstScreen = false;
-const firstScreen = "Initial Screen";
+export namespace Instabug {
+  var _currentScreen: string | null = null;
+  var _lastScreen: string | null = null;
+  var _isFirstScreen = false;
+  const firstScreen = 'Initial Screen';
 
-/**
- * Instabug
- * @exports Instabug
- */
-const InstabugModule = {
+  export import invocationEvent = ArgsRegistry.invocationEvent;
+  export import reproStepsMode = ArgsRegistry.reproStepsMode;
+  export import dismissType = ArgsRegistry.dismissType;
+  export import sdkDebugLogsLevel = ArgsRegistry.sdkDebugLogsLevel;
+  export import extendedBugReportMode = ArgsRegistry.extendedBugReportMode;
+  export import locale = ArgsRegistry.locale;
+  export import colorTheme = ArgsRegistry.colorTheme;
+  export import floatingButtonEdge = ArgsRegistry.floatingButtonEdge;
+  export import IBGPosition = ArgsRegistry.position;
+  export import welcomeMessageMode = ArgsRegistry.welcomeMessageMode;
+  export import actionTypes = ArgsRegistry.actionTypes;
+  export import strings = ArgsRegistry.strings;
 
   /**
    * Starts the SDK.
    * This is the main SDK method that does all the magic. This is the only
    * method that SHOULD be called.
    * Should be called in constructor of the AppRegistry component
-   * @param {string} token The token that identifies the app, you can find
-   * it on your dashboard.
-   * @param {invocationEvent} invocationEvent The event that invokes
-   * the SDK's UI.
+   * @param token The token that identifies the app, you can find it on your dashboard.
+   * @param invocationEvent The event that invokes the SDK's UI.
    */
-  start: function (token, invocationEvent) {
+  export const start = (token: string, invocationEvents: Instabug.invocationEvent[]) => {
     InstabugUtils.captureJsErrors();
     NetworkLogger.setEnabled(true);
 
-    NativeInstabug.start(token, invocationEvent);
+    NativeInstabug.start(token, invocationEvents);
 
     _isFirstScreen = true;
     _currentScreen = firstScreen;
-    setTimeout(function () {
+
+    setTimeout(() => {
       if (_currentScreen == firstScreen) {
         NativeInstabug.reportScreenChange(firstScreen);
         _currentScreen = null;
       }
     }, 1000);
-  },
+  };
 
   /**
    * Attaches user data to each report being sent.
    * Each call to this method overrides the user data to be attached.
    * Maximum size of the string is 1,000 characters.
-   * @param {string} userData A string to be attached to each report, with a
+   * @param userData A string to be attached to each report, with a
    * maximum size of 1,000 characters.
    */
-  setUserData(userData) {
+  export const setUserData = (userData: string) => {
     NativeInstabug.setUserData(userData);
-  },
+  };
 
   /**
    * Sets whether the SDK is tracking user steps or not.
    * Enabling user steps would give you an insight on the scenario a user has
    * performed before encountering a bug or a crash. User steps are attached
    * with each report being sent.
-   * @param {boolean} isUserStepsEnabled A boolean to set user steps tracking
+   * @param isUserStepsEnabled A boolean to set user steps tracking
    * to being enabled or disabled.
    */
-  setTrackUserSteps(isEnabled) {
+  export const setTrackUserSteps = (isEnabled: boolean) => {
     if (Platform.OS === 'ios') NativeInstabug.setTrackUserSteps(isEnabled);
-  },
+  };
 
   /**
    * Sets whether IBGLog should also print to Xcode's console log or not.
-   * @param {boolean} printsToConsole A boolean to set whether printing to
+   * @param printsToConsole A boolean to set whether printing to
    *                  Xcode's console is enabled or not.
    */
-  setIBGLogPrintsToConsole(printsToConsole) {
+  export const setIBGLogPrintsToConsole = (printsToConsole: boolean) => {
     if (Platform.OS === 'ios') NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
-  },
+  };
 
   /**
    * The session profiler is enabled by default and it attaches to the bug and
    * crash reports the following information during the last 60 seconds before the report is sent.
-   * @param {boolean} sessionProfilerEnabled - A boolean parameter to enable or disable the feature.
-   *
+   * @param sessionProfilerEnabled A boolean parameter to enable or disable the feature.
    */
-  setSessionProfilerEnabled(sessionProfilerEnabled) {
+  export const setSessionProfilerEnabled = (sessionProfilerEnabled: boolean) => {
     NativeInstabug.setSessionProfilerEnabled(sessionProfilerEnabled);
-  },
+  };
 
   /**
-   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug 
+   * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
    * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
-   * @param {sdkDebugLogsLevel} sdkDebugLogsLevel - The verbosity level of logs.
-   *
+   * @param sdkDebugLogsLevel - The verbosity level of logs.
    */
-  setSdkDebugLogsLevel(sdkDebugLogsLevel) {
+  export const setSdkDebugLogsLevel = (sdkDebugLogsLevel: Instabug.sdkDebugLogsLevel) => {
     if (Platform.OS === 'ios') {
       NativeInstabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
     }
-  },
+  };
 
   /**
    * Sets the SDK's locale.
    * Use to change the SDK's UI to different language.
    * Defaults to the device's current locale.
-   * @param {locale} locale A locale to set the SDK to.
+   * @param locale A locale to set the SDK to.
    */
-  setLocale(locale) {
+  export const setLocale = (locale: Instabug.locale) => {
     NativeInstabug.setLocale(locale);
-  },
+  };
 
   /**
    * Sets the color theme of the SDK's whole UI.
    * the SDK's UI to.
    * @param colorTheme
    */
-  setColorTheme(colorTheme) {
+  export const setColorTheme = (colorTheme: Instabug.colorTheme) => {
     NativeInstabug.setColorTheme(colorTheme);
-  },
+  };
 
   /**
    * Sets the primary color of the SDK's UI.
    * Sets the color of UI elements indicating interactivity or call to action.
    * To use, import processColor and pass to it with argument the color hex
    * as argument.
-   * @param {color} color A color to set the UI elements of the SDK to.
+   * @param color A color to set the UI elements of the SDK to.
    */
-  setPrimaryColor(color) {
+  export const setPrimaryColor = (color: string) => {
     NativeInstabug.setPrimaryColor(processColor(color));
-  },
+  };
 
   /**
    * Appends a set of tags to previously added tags of reported feedback,
    * bug or crash.
-   * @param {string[]} tags An array of tags to append to current tags.
+   * @param tags An array of tags to append to current tags.
    */
-  appendTags(tags) {
+  export const appendTags = (tags: string[]) => {
     NativeInstabug.appendTags(tags);
-  },
+  };
 
   /**
    * Manually removes all tags of reported feedback, bug or crash.
    */
-  resetTags() {
+  export const resetTags = () => {
     NativeInstabug.resetTags();
-  },
+  };
 
   /**
    * Gets all tags of reported feedback, bug or crash.
-   * @param {tagsCallback} tagsCallback callback with argument tags of reported feedback, bug or crash.
+   * @param callback callback with argument tags of reported feedback, bug or crash.
    */
-  getTags(tagsCallback) {
-    NativeInstabug.getTags(tagsCallback);
-  },
+  export const getTags = (callback: (tags: string[]) => void) => {
+    NativeInstabug.getTags(callback);
+  };
 
   /**
    * Overrides any of the strings shown in the SDK with custom ones.
    * Allows you to customize any of the strings shown to users in the SDK.
-   * @param {string} string String value to override the default one.
-   * @param {strings} key Key of string to override.
+   * @param string String value to override the default one.
+   * @param key Key of string to override.
    */
-  setString(key, string) {
+  export const setString = (key: Instabug.strings, string: string) => {
     NativeInstabug.setString(string, key);
-  },
+  };
 
   /**
    * Sets the default value of the user's email and hides the email field from the reporting UI
    * and set the user's name to be included with all reports.
    * It also reset the chats on device to that email and removes user attributes,
    * user data and completed surveys.
-   * @param {string} email Email address to be set as the user's email.
-   * @param {string} name Name of the user to be set.
+   * @param email Email address to be set as the user's email.
+   * @param name Name of the user to be set.
    */
-  identifyUser(email, name) {
+  export const identifyUser = (email: string, name: string) => {
     NativeInstabug.identifyUser(email, name);
-  },
+  };
 
   /**
    * Sets the default value of the user's email to nil and show email field and remove user name
    * from all reports
    * It also reset the chats on device and removes user attributes, user data and completed surveys.
    */
-  logOut() {
+  export const logOut = () => {
     NativeInstabug.logOut();
-  },
+  };
 
 
   /**
    * Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
-   * @param {string} name Event name.
+   * @param name Event name.
    */
-  logUserEvent(name) {
+  export const logUserEvent = (name: string) => {
     NativeInstabug.logUserEvent(name);
-  },
+  };
 
   /**
    * Appends a log message to Instabug internal log
@@ -204,13 +210,13 @@ const InstabugModule = {
    * </p>
    * Note: logs passed to this method are <b>NOT</b> printed to Logcat
    *
-   * @param message    the message
+   * @param message the message
    */
-  logVerbose(message) {
+  export const logVerbose = (message: string) => {
     if (!message) return;
     message = stringifyIfNotString(message);
     NativeInstabug.logVerbose(message);
-  },
+  };
 
   /**
    * Appends a log message to Instabug internal log
@@ -222,14 +228,13 @@ const InstabugModule = {
    * use {@link #clearLogs()} ()}
    * </p>
    * Note: logs passed to this method are <b>NOT</b> printed to Logcat
-   *
-   * @param message    the message
+   * @param message the message
    */
-  logInfo(message) {
+  export const logInfo = (message: string) => {
     if (!message) return;
     message = stringifyIfNotString(message);
     NativeInstabug.logInfo(message);
-  },
+  };
 
   /**
    * Appends a log message to Instabug internal log
@@ -242,13 +247,13 @@ const InstabugModule = {
    * </p>
    * Note: logs passed to this method are <b>NOT</b> printed to Logcat
    *
-   * @param message    the message
+   * @param message the message
    */
-  logDebug(message) {
+  export const logDebug = (message: string) => {
     if (!message) return;
     message = stringifyIfNotString(message);
     NativeInstabug.logDebug(message);
-  },
+  };
 
   /**
    * Appends a log message to Instabug internal log
@@ -261,13 +266,13 @@ const InstabugModule = {
    * </p>
    * Note: logs passed to this method are <b>NOT</b> printed to Logcat
    *
-   * @param message    the message
+   * @param message the message
    */
-  logError(message) {
+  export const logError = (message: string) => {
     if (!message) return;
     message = stringifyIfNotString(message);
     NativeInstabug.logError(message);
-  },
+  };
 
   /**
    * Appends a log message to Instabug internal log
@@ -280,32 +285,32 @@ const InstabugModule = {
    * </p>
    * Note: logs passed to this method are <b>NOT</b> printed to Logcat
    *
-   * @param message    the message
+   * @param message the message
    */
-  logWarn(message) {
+  export const logWarn = (message: string) => {
     if (!message) return;
     message = stringifyIfNotString(message);
     NativeInstabug.logWarn(message);
-  },
+  };
 
   /**
    * Clear all Instabug logs, console logs, network logs and user steps.
    */
-  clearLogs() {
+  export const clearLogs = () => {
     NativeInstabug.clearLogs();
-  },
+  };
 
   /**
    * Sets whether user steps tracking is visual, non visual or disabled.
    * User Steps tracking is enabled by default if it's available
    * in your current plan.
    *
-   * @param {reproStepsMode} reproStepsMode An enum to set user steps tracking
+   * @param reproStepsMode An enum to set user steps tracking
    * to be enabled, non visual or disabled.
    */
-  setReproStepsMode(reproStepsMode) {
+  export const setReproStepsMode = (reproStepsMode: Instabug.reproStepsMode) => {
     NativeInstabug.setReproStepsMode(reproStepsMode);
-  },
+  };
 
   /**
    * Sets user attribute to overwrite it's value or create a new one if it doesn't exist.
@@ -313,21 +318,23 @@ const InstabugModule = {
    * @param key   the attribute
    * @param value the value
    */
-  setUserAttribute(key, value) {
+  export const setUserAttribute = (key: string, value: string) => {
     if (!key || typeof key !== 'string' || typeof value !== 'string')
       throw new TypeError('Invalid param, Expected String');
     NativeInstabug.setUserAttribute(key, value);
-  },
+  };
 
   /**
-     * Returns the user attribute associated with a given key.
-     aKey
-     * @param {string} key The attribute key as string
-     * @param {function} userAttributeCallback callback with argument as the desired user attribute value
-     */
-  getUserAttribute(key, userAttributeCallback) {
+   * Returns the user attribute associated with a given key.
+   * @param key The attribute key as string
+   * @param userAttributeCallback callback with argument as the desired user attribute value
+   */
+  export const getUserAttribute = (
+    key: string,
+    userAttributeCallback: (attribute: string) => void,
+  ) => {
     NativeInstabug.getUserAttribute(key, userAttributeCallback);
-  },
+  };
 
   /**
    * Removes user attribute if exists.
@@ -335,26 +342,28 @@ const InstabugModule = {
    * @param key the attribute key as string
    * @see #setUserAttribute(String, String)
    */
-  removeUserAttribute(key) {
+  export const removeUserAttribute = (key: string) => {
     if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
     NativeInstabug.removeUserAttribute(key);
-  },
+  };
 
   /**
    * @summary Returns all user attributes.
-   * @param {function} userAttributesCallback callback with argument A new dictionary containing
+   * @param userAttributesCallback callback with argument A new dictionary containing
    * all the currently set user attributes, or an empty dictionary if no user attributes have been set.
    */
-  getAllUserAttributes(userAttributesCallback) {
+  export const getAllUserAttributes = (
+    userAttributesCallback: (attributes: UserAttributesMap) => void,
+  ) => {
     NativeInstabug.getAllUserAttributes(userAttributesCallback);
-  },
+  };
 
   /**
    * Clears all user attributes if exists.
    */
-  clearAllUserAttributes() {
+  export const clearAllUserAttributes = () => {
     NativeInstabug.clearAllUserAttributes();
-  },
+  };
 
   /**
    * Enable/Disable debug logs from Instabug SDK
@@ -362,120 +371,113 @@ const InstabugModule = {
    *
    * @param isDebugEnabled whether debug logs should be printed or not into LogCat
    */
-  setDebugEnabled(isDebugEnabled) {
+  export const setDebugEnabled = (isDebugEnabled: boolean) => {
     if (Platform.OS === 'android') {
       NativeInstabug.setDebugEnabled(isDebugEnabled);
     }
-  },
+  };
 
   /**
    * Enables all Instabug functionality
    * It works on android only
    */
-  enable() {
+  export const enable = () => {
     if (Platform.OS === 'android') {
       NativeInstabug.enable();
     }
-  },
+  };
 
   /**
    * Disables all Instabug functionality
    * It works on android only
    */
-  disable() {
+  export const disable = () => {
     if (Platform.OS === 'android') {
       NativeInstabug.disable();
     }
-  },
+  };
 
   /**
    * @summary Checks whether app is development/Beta testing OR live
    * Note: This API is iOS only
    * It returns in the callback false if in development or beta testing on Test Flight, and
    * true if app is live on the app store.
-   * @param {function} runningLiveCallBack callback with argument as return value 'isLive'
+   * @param runningLiveCallBack callback with argument as return value 'isLive'
    */
-  isRunningLive(runningLiveCallBack) {
+  export const isRunningLive = (runningLiveCallBack: (isLive: boolean) => void) => {
     if (Platform.OS === 'ios') {
       NativeInstabug.isRunningLive(runningLiveCallBack);
     }
-  },
+  };
 
   /**
    * Shows the welcome message in a specific mode.
-   * @param welcomeMessageMode An enum to set the welcome message mode to
-   *                           live, or beta.
-   *
+   * @param welcomeMessageMode An enum to set the welcome message mode to live, or beta.
    */
-  showWelcomeMessage(welcomeMessageMode) {
+  export const showWelcomeMessage = (welcomeMessageMode: Instabug.welcomeMessageMode) => {
     NativeInstabug.showWelcomeMessageWithMode(welcomeMessageMode);
-  },
+  };
 
   /**
    * Sets the welcome message mode to live, beta or disabled.
-   * @param welcomeMessageMode An enum to set the welcome message mode to
-   *                           live, beta or disabled.
-   *
+   * @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
    */
-  setWelcomeMessageMode(welcomeMessageMode) {
+  export const setWelcomeMessageMode = (welcomeMessageMode: Instabug.welcomeMessageMode) => {
     NativeInstabug.setWelcomeMessageMode(welcomeMessageMode);
-  },
+  };
 
   /**
    * Add file to be attached to the bug report.
-   * @param {string} filePath
-   * @param {string} fileName
+   * @param filePath
+   * @param fileName
    */
-  addFileAttachment(filePath, fileName) {
+  export const addFileAttachment = (filePath: string, fileName: string) => {
     if (Platform.OS === 'android') {
       NativeInstabug.setFileAttachment(filePath, fileName);
     } else {
       NativeInstabug.setFileAttachment(filePath);
     }
-  },
+  };
 
   /**
    * @deprecated Use {@link Instabug.addPrivateView} instead. 
    * 
    * Hides component from screenshots, screen recordings and view hierarchy.
-   * @param {Object} viewRef the ref of the component to hide
+   * @param viewRef the ref of the component to hide
    */
-  setPrivateView(viewRef) {
-    this.addPrivateView(viewRef);
-  },
+  export const setPrivateView = (viewRef: number | React.Component | React.ComponentClass) => {
+    addPrivateView(viewRef);
+  };
 
   /**
    * Hides component from screenshots, screen recordings and view hierarchy.
-   * @param {Object} viewRef the ref of the component to hide
+   * @param viewRef the ref of the component to hide
    */
-  addPrivateView(viewRef) {
+  export const addPrivateView = (viewRef: number | React.Component | React.ComponentClass) => {
     const nativeTag = findNodeHandle(viewRef);
     NativeInstabug.addPrivateView(nativeTag);
-  },
+  };
 
   /**
    * Removes component from the set of hidden views. The component will show again in 
    * screenshots, screen recordings and view hierarchy.
-   * @param {Object} viewRef the ref of the component to remove from hidden views
+   * @param viewRef the ref of the component to remove from hidden views
    */
-  removePrivateView(viewRef) {
+  export const removePrivateView = (viewRef: number | React.Component | React.ComponentClass) => {
     const nativeTag = findNodeHandle(viewRef);
     NativeInstabug.removePrivateView(nativeTag);
-  },
+  };
 
   /**
    * Shows default Instabug prompt.
    */
-  show() {
+  export const show = () => {
     NativeInstabug.show();
-  },
+  };
 
-  onReportSubmitHandler(preSendingHandler) {
-    if (preSendingHandler) {
-      InstabugUtils.setOnReportHandler(true);
-    } else {
-      InstabugUtils.setOnReportHandler(false);
-    }
+  export const onReportSubmitHandler = (preSendingHandler: (report: Report) => void) => {
+    InstabugUtils.setOnReportHandler(true);
+
     // send bug report
     IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, report => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -524,13 +526,13 @@ const InstabugModule = {
     }
 
     NativeInstabug.setPreSendingHandler(preSendingHandler);
-  },
+  };
 
-  callPrivateApi(apiName, param) {
+  export const callPrivateApi = (apiName: string, param: any[]) => {
     NativeInstabug.callPrivateApi(apiName, param);
-  },
+  };
 
-  onNavigationStateChange(prevState: any, currentState: any, action?: any) {
+  export const onNavigationStateChange = (prevState: any, currentState: any, action?: any) => {
     const currentScreen = InstabugUtils.getActiveRouteName(currentState);
     const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
@@ -540,58 +542,58 @@ const InstabugModule = {
         _currentScreen = null;
       }
       _currentScreen = currentScreen;
-      setTimeout(function () {
+      setTimeout(() => {
         if (_currentScreen == currentScreen) {
           NativeInstabug.reportScreenChange(currentScreen);
           _currentScreen = null;
         }
       }, 1000);
     }
-  },
+  };
 
-  onStateChange(state: any) {
+  export const onStateChange = (state: any) => {
     const currentScreen = InstabugUtils.getFullRoute(state);
     if (_currentScreen != null && _currentScreen != firstScreen) {
       NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
     }
     _currentScreen = currentScreen;
-    setTimeout(function () {
+    setTimeout(() => {
       if (_currentScreen == currentScreen) {
         NativeInstabug.reportScreenChange(currentScreen);
         _currentScreen = null;
       }
     }, 1000);
-  },
+  };
 
-  reportScreenChange(screenName) {
+  export const reportScreenChange = (screenName: string) => {
     NativeInstabug.reportScreenChange(screenName);
-  },
+  };
 
   /**
    * Add experiments to next report.
-   * @param {string[]} experiments An array of experiments to add to the next report.
+   * @param experiments An array of experiments to add to the next report.
    */
-  addExperiments(experiments) {
+  export const addExperiments = (experiments: string[]) => {
     NativeInstabug.addExperiments(experiments);
-  },
+  };
 
   /**
    * Remove experiments from next report.
-   * @param {string[]} experiments An array of experiments to remove from the next report.
+   * @param experiments An array of experiments to remove from the next report.
    */
-  removeExperiments(experiments) {
+  export const removeExperiments = (experiments: string[]) => {
     NativeInstabug.removeExperiments(experiments);
-  },
+  };
 
   /**
    * Clear all experiments
    */
-  clearAllExperiments() {
+  export const clearAllExperiments = () => {
     NativeInstabug.clearAllExperiments();
-  },
+  };
 
-  componentDidAppearListener({ componentId, componentName, passProps }) {
+  export const componentDidAppearListener = ({ componentId, componentName, passProps }) => {
     if (_isFirstScreen) {
       _lastScreen = componentName;
       _isFirstScreen = false;
@@ -601,92 +603,5 @@ const InstabugModule = {
       NativeInstabug.reportScreenChange(componentName);
       _lastScreen = componentName;
     }
-  },
-
-  /**
-   * The event used to invoke the feedback form
-   * @readonly
-   * @enum {number}
-   */
-   invocationEvent: ArgsRegistry.invocationEvent,
-
-   /**
-    * The user steps option.
-    * @readonly
-    * @enum {number}
-    */
-   reproStepsMode: ArgsRegistry.reproStepsMode,
- 
-   /**
-    * Type of SDK dismiss
-    * @readonly
-    * @enum {number}
-    */
-   dismissType: ArgsRegistry.dismissType,
- 
-   /**
-    * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
-    * and only affect the logs used to debug the SDK itself.
-    * @readonly
-    * @enum {number}
-    */
-   sdkDebugLogsLevel: ArgsRegistry.sdkDebugLogsLevel,
- 
-   /**
-    *  The extended bug report mode
-    * @readonly
-    * @enum {number}
-    */
-   extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
- 
-   /**
-    * The supported locales
-    * @readonly
-    * @enum {number}
-    */
-   locale: ArgsRegistry.locale,
- 
-   /**
-    * The color theme of the different UI elements
-    * @readonly
-    * @enum {number}
-    */
-   colorTheme: ArgsRegistry.colorTheme,
- 
-   /**
-    * Rectangle edges
-    * @readonly
-    * @enum {number}
-    */
-   floatingButtonEdge: ArgsRegistry.floatingButtonEdge,
- 
-   /**
-    * Instabug floating buttons positions.
-    * @readonly
-    * @enum {number}
-    */
-   IBGPosition: ArgsRegistry.position,
- 
-   /**
-    * The welcome message mode.
-    * @readonly
-    * @enum {number}
-    */
-   welcomeMessageMode: ArgsRegistry.welcomeMessageMode,
- 
-   /**
-    * Instabug action types.
-    * @readonly
-    * @enum {number}
-    */
-  actionTypes: ArgsRegistry.actionTypes,
- 
-   /**
-    * Instabug strings
-    * @readonly
-    * @enum {number}
-    */
-   strings: ArgsRegistry.strings,
-};
-
-export default InstabugModule;
+  };
+}

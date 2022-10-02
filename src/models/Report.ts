@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import { NativeInstabug } from '../native';
 
-interface UserAttributesMap {
+export interface UserAttributesMap {
   [key: string]: string;
 }
 

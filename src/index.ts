@@ -1,4 +1,3 @@
-import Instabug from './modules/Instabug';
 import NetworkLogger from './modules/NetworkLogger';
 import Replies from './modules/Replies';
 import Surveys from './modules/Surveys';
@@ -10,4 +9,4 @@ export { FeatureRequests } from './modules/FeatureRequests';
 
 export { NetworkLogger, Replies, Surveys };
 
-export default Instabug;
+export { Instabug as default } from './modules/Instabug';
