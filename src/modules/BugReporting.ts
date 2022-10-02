@@ -4,57 +4,59 @@ import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
-/**
- * BugReporting
- * @exports BugReporting
- */
-export default {
+export namespace BugReporting {
+  export import invocationEvent = ArgsRegistry.invocationEvent;
+  export import extendedBugReportMode = ArgsRegistry.extendedBugReportMode;
+  export import reportType = ArgsRegistry.reportType;
+  export import option = ArgsRegistry.option;
+  export import position = ArgsRegistry.position;
+
   /**
    * Enables and disables manual invocation and prompt options for bug and feedback.
-   * @param {boolean} isEnabled
+   * @param isEnabled
    */
-  setEnabled(isEnabled) {
+  export const setEnabled = (isEnabled: boolean) => {
     NativeBugReporting.setEnabled(isEnabled);
-  },
+  };
 
   /**
    * Sets the events that invoke the feedback form.
    * Default is set by `Instabug.start`.
-   * @param {invocationEvent} invocationEvent Array of events that invokes the
-   * feedback form.
+   * @param invocationEvents Array of events that invokes the feedback form.
    */
-  setInvocationEvents(invocationEvents) {
+  export const setInvocationEvents = (invocationEvents: BugReporting.invocationEvent[]) => {
     NativeBugReporting.setInvocationEvents(invocationEvents);
-  },
+  };
 
   /**
    * Sets the invocation options.
    * Default is set by `Instabug.start`.
-   * @param {invocationOptions} options Array of invocation options
+   * @param options Array of invocation options
    */
-  setOptions(options) {
+  export const setOptions = (options: BugReporting.option[]) => {
     NativeBugReporting.setOptions(options);
-  },
+  };
 
   /**
    * Sets a block of code to be executed just before the SDK's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes before the SDK's UI is shown.
-   * @param {function} handler - A callback that gets executed before invoking the SDK
+   * @param handler A callback that gets executed before invoking the SDK
    */
-  onInvokeHandler(handler) {
+  export const onInvokeHandler = (handler: () => void) => {
     IBGEventEmitter.addListener(NativeBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
     NativeBugReporting.setOnInvokeHandler(handler);
-  },
+  };
 
   /**
    * Sets a block of code to be executed right after the SDK's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any
    * UI changes after the SDK's UI is dismissed.
-   * @param {function} handler - A callback to get executed after
-   * dismissing the SDK.
+   * @param handler A callback to get executed after dismissing the SDK.
    */
-  onSDKDismissedHandler(handler) {
+  export const onSDKDismissedHandler = (
+    handler: (dismissType: ArgsRegistry.dismissType, reportType: ArgsRegistry.dismissType) => void,
+  ) => {
     IBGEventEmitter.addListener(
       NativeBugReporting,
       InstabugConstants.ON_SDK_DISMISSED_HANDLER,
@@ -63,90 +65,86 @@ export default {
       },
     );
     NativeBugReporting.setOnSDKDismissedHandler(handler);
-  },
+  };
 
   /**
    * Sets the threshold value of the shake gesture for iPhone/iPod Touch
    * Default for iPhone is 2.5.
-   * @param {number} iPhoneShakingThreshold Threshold for iPhone.
+   * @param iPhoneShakingThreshold Threshold for iPhone.
    */
-  setShakingThresholdForiPhone(iPhoneShakingThreshold) {
+  export const setShakingThresholdForiPhone = (iPhoneShakingThreshold: number) => {
     if (Platform.OS === 'ios')
       NativeBugReporting.setShakingThresholdForiPhone(iPhoneShakingThreshold);
-  },
+  };
 
   /**
    * Sets the threshold value of the shake gesture for iPad.
    * Default for iPad is 0.6.
-   * @param {number} iPadShakingThreshold Threshold for iPad.
+   * @param iPadShakingThreshold Threshold for iPad.
    */
-  setShakingThresholdForiPad(iPadShakingThreshold) {
+  export const setShakingThresholdForiPad = (iPadShakingThreshold: number) => {
     if (Platform.OS === 'ios') NativeBugReporting.setShakingThresholdForiPad(iPadShakingThreshold);
-  },
+  };
 
   /**
    * Sets the threshold value of the shake gesture for android devices.
    * Default for android is an integer value equals 350.
    * you could increase the shaking difficulty level by
    * increasing the `350` value and vice versa
-   * @param {number} androidThreshold Threshold for android devices.
+   * @param androidThreshold Threshold for android devices.
    */
-  setShakingThresholdForAndroid(androidThreshold) {
+  export const setShakingThresholdForAndroid = (androidThreshold: number) => {
     if (Platform.OS === 'android')
       NativeBugReporting.setShakingThresholdForAndroid(androidThreshold);
-  },
+  };
 
   /**
    * Sets whether the extended bug report mode should be disabled, enabled with
    * required fields or enabled with optional fields.
-   * @param {extendedBugReportMode} extendedBugReportMode An enum to disable
-   *                                the extended bug report mode, enable it
-   *                                with required or with optional fields.
+   * @param extendedBugReportMode An enum to disable the extended bug report mode,
+   * enable it with required or with optional fields.
    */
-  setExtendedBugReportMode(extendedBugReportMode) {
+  export const setExtendedBugReportMode = (
+    extendedBugReportMode: BugReporting.extendedBugReportMode,
+  ) => {
     NativeBugReporting.setExtendedBugReportMode(extendedBugReportMode);
-  },
+  };
 
   /**
    * Sets what type of reports, bug or feedback, should be invoked.
-   * @param {array} types - Array of reportTypes
+   * @param types Array of reportTypes
    */
-  setReportTypes(types) {
+  export const setReportTypes = (types: BugReporting.reportType[]) => {
     NativeBugReporting.setReportTypes(types);
-  },
+  };
 
   /**
    * Invoke bug reporting with report type and options.
-   * @param {reportType} type
-   * @param {option} options
+   * @param type
+   * @param options
    */
-  show(type, options) {
-    if (!options) {
-      options = [];
-    }
-    NativeBugReporting.show(type, options);
-  },
+  export const show = (type: BugReporting.reportType, options: BugReporting.option[]) => {
+    NativeBugReporting.show(type, options ?? []);
+  };
 
   /**
    * Enable/Disable screen recording
-   * @param {boolean} autoScreenRecordingEnabled boolean for enable/disable
-   * screen recording on crash feature
+   * @param autoScreenRecordingEnabled enable/disable screen recording on crash feature
    */
-  setAutoScreenRecordingEnabled: function (autoScreenRecordingEnabled) {
+  export const setAutoScreenRecordingEnabled = (autoScreenRecordingEnabled: boolean) => {
     NativeBugReporting.setAutoScreenRecordingEnabled(autoScreenRecordingEnabled);
-  },
+  };
 
   /**
    * Sets auto screen recording maximum duration
    *
-   * @param autoScreenRecordingMaxDuration maximum duration of the screen recording video
-   *                                       in seconds
+   * @param maxDuration maximum duration of the screen recording video in seconds.
    * The maximum duration is 30 seconds
    */
-  setAutoScreenRecordingDurationIOS: function (autoScreenRecordingMaxDuration) {
+  export const setAutoScreenRecordingDurationIOS = (maxDuration: number) => {
     if (Platform.OS !== 'ios') return;
-    NativeBugReporting.setAutoScreenRecordingDuration(autoScreenRecordingMaxDuration);
-  },
+    NativeBugReporting.setAutoScreenRecordingDuration(maxDuration);
+  };
 
   /**
    * Sets the default position at which the Instabug screen recording button will be shown.
@@ -156,25 +154,25 @@ export default {
    * @param position is of type position `topLeft` to show on the top left of screen,
    * or `bottomRight` to show on the bottom right of scrren.
    */
-  setVideoRecordingFloatingButtonPosition(position) {
+  export const setVideoRecordingFloatingButtonPosition = (position: BugReporting.position) => {
     NativeBugReporting.setVideoRecordingFloatingButtonPosition(position);
-  },
+  };
 
   /**
    * @summary Enables/disables inspect view hierarchy when reporting a bug/feedback.
-   * @param {boolean} viewHierarchyEnabled A boolean to set whether view hierarchy are enabled
-   * or disabled.
+   * @param viewHierarchyEnabled A boolean to set whether view hierarchy are enabled or disabled.
    */
-  setViewHierarchyEnabled: function (viewHierarchyEnabled) {
+  export const setViewHierarchyEnabled = (viewHierarchyEnabled: boolean) => {
     NativeBugReporting.setViewHierarchyEnabled(viewHierarchyEnabled);
-  },
+  };
 
   /**
    * Sets a block of code to be executed when a prompt option is selected.
-   * @param {function} didSelectPromptOptionHandler - A block of code that
-   *                  gets executed when a prompt option is selected.
+   * @param didSelectPromptOptionHandler - A callback that gets executed when a prompt option is selected.
    */
-  setDidSelectPromptOptionHandler: function (didSelectPromptOptionHandler) {
+  export const setDidSelectPromptOptionHandler = (
+    didSelectPromptOptionHandler: (promptOption: string) => void,
+  ) => {
     if (Platform.OS === 'android') return;
     IBGEventEmitter.addListener(
       NativeBugReporting,
@@ -184,73 +182,42 @@ export default {
       },
     );
     NativeBugReporting.setDidSelectPromptOptionHandler(didSelectPromptOptionHandler);
-  },
+  };
 
   /**
    * Sets the default edge and offset from the top at which the floating button
    * will be shown. Different orientations are already handled.
-   * Default for `floatingButtonEdge` is `rectEdge.maxX`.
-   * Default for `floatingButtonOffsetFromTop` is 50
-   * @param {rectEdge} floatingButtonEdge `maxX` to show on the right,
-   * or `minX` to show on the left.
-   * @param {number} offsetFromTop floatingButtonOffsetFromTop Top offset for
-   * floating button.
+   * Default for `floatingButtonEdge` is `floatingButtonEdge.right`.
+   * Default for `offsetFromTop` is 50
+   * @param floatingButtonEdge `maxX` to show on the right, or `minX` to show on the left.
+   * @param offsetFromTop Top offset for floating button.
    */
-  setFloatingButtonEdge(floatingButtonEdge, offsetFromTop) {
+  export const setFloatingButtonEdge = (
+    floatingButtonEdge: ArgsRegistry.floatingButtonEdge,
+    offsetFromTop: number,
+  ) => {
     NativeBugReporting.setFloatingButtonEdge(floatingButtonEdge, offsetFromTop);
-  },
+  };
 
   /**
    * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
-   * @param {boolean} screenshot A boolean to enable or disable screenshot attachments.
-   * @param {boolean} extraScreenshot A boolean to enable or disable extra
-   * screenshot attachments.
-   * @param {boolean} galleryImage A boolean to enable or disable gallery image
-   * attachments. In iOS 10+,NSPhotoLibraryUsageDescription should be set in
-   * info.plist to enable gallery image attachments.
-   * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+   * @param screenshot A boolean to enable or disable screenshot attachments.
+   * @param  extraScreenshot A boolean to enable or disable extra screenshot attachments.
+   * @param  galleryImage A boolean to enable or disable gallery image attachments. In iOS 10+,
+   * NSPhotoLibraryUsageDescription should be set in info.plist to enable gallery image attachments.
+   * @param screenRecording A boolean to enable or disable screen recording attachments.
    */
-  setEnabledAttachmentTypes(screenshot, extraScreenshot, galleryImage, screenRecording) {
+  export const setEnabledAttachmentTypes = (
+    screenshot: boolean,
+    extraScreenshot: boolean,
+    galleryImage: boolean,
+    screenRecording: boolean,
+  ) => {
     NativeBugReporting.setEnabledAttachmentTypes(
       screenshot,
       extraScreenshot,
       galleryImage,
       screenRecording,
     );
-  },
-
-  /**
-   * The event used to invoke the feedback form
-   * @readonly
-   * @enum {number}
-   */
-  invocationEvent: ArgsRegistry.invocationEvent,
-
-  /**
-   *  The extended bug report mode
-   * @readonly
-   * @enum {number}
-   */
-  extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
-
-  /**
-   * Type of the report either feedback or bug.
-   * @readonly
-   * @enum {number}
-   */
-  reportType: ArgsRegistry.reportType,
-
-  /**
-   * Options added while invoking bug reporting.
-   * @readonly
-   * @enum {number}
-   */
-  option: ArgsRegistry.option,
-
-  /**
-   * Instabug record buttons positions.
-   * @readonly
-   * @enum {number}
-   */
-  position: ArgsRegistry.position,
-};
+  };
+}
