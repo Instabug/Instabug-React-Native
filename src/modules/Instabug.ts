@@ -1,6 +1,8 @@
+import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
+import type { NavigationState as NavigationStateV4, NavigationAction } from 'react-navigation';
 import type React from 'react';
-import { findNodeHandle, Platform, processColor } from 'react-native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
+import { findNodeHandle, Platform, processColor } from 'react-native';
 import Report, { UserAttributesMap } from '../models/Report';
 import { NativeInstabug } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
@@ -533,7 +535,11 @@ export namespace Instabug {
     NativeInstabug.callPrivateApi(apiName, param);
   };
 
-  export const onNavigationStateChange = (prevState: any, currentState: any, action?: any) => {
+  export const onNavigationStateChange = (
+    prevState: NavigationStateV4,
+    currentState: NavigationStateV4,
+    action: NavigationAction,
+  ) => {
     const currentScreen = InstabugUtils.getActiveRouteName(currentState);
     const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
@@ -552,12 +558,15 @@ export namespace Instabug {
     }
   };
 
-  export const onStateChange = (state: any) => {
+  export const onStateChange = (state?: NavigationStateV5) => {
+    if (!state) return;
+
     const currentScreen = InstabugUtils.getFullRoute(state);
     if (_currentScreen != null && _currentScreen != firstScreen) {
       NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
     }
+
     _currentScreen = currentScreen;
     setTimeout(() => {
       if (_currentScreen == currentScreen) {

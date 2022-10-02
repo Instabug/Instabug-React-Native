@@ -1,3 +1,5 @@
+import type { NavigationState as NavigationStateV5, PartialState } from '@react-navigation/native';
+import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 import { ErrorHandlerCallback, Platform } from 'react-native';
 import parseErrorStackLib, {
   ExtendedError,
@@ -19,7 +21,7 @@ export const setOnReportHandler = (flag: boolean) => {
   _isOnReportHandlerSet = flag;
 };
 
-export const getActiveRouteName = (navigationState: any): string | null => {
+export const getActiveRouteName = (navigationState: NavigationStateV4): string | null => {
   if (!navigationState) {
     return null;
   }
@@ -31,12 +33,12 @@ export const getActiveRouteName = (navigationState: any): string | null => {
   return route.routeName;
 };
 
-function getFullRoute(state: any): string {
+function getFullRoute(state: NavigationStateV5 | PartialState<NavigationStateV5>): string {
   try {
-    if (!state.routes[state.index].state) {
-      return state.routes[state.index].name;
+    if (!state.routes[state.index!].state) {
+      return state.routes[state.index!].name;
     }
-    return getFullRoute(state.routes[state.index].state);
+    return getFullRoute(state.routes[state.index!].state!);
   } catch (e) {
     return '';
   }
