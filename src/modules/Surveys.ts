@@ -3,11 +3,11 @@ import { NativeSurveys } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
-/**
- * Surveys
- * @exports Surveys
- */
-export default {
+export interface Survey {
+  title: string;
+}
+
+export namespace Surveys {
   /**
    * @summary Sets whether surveys are enabled or not.
    * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
@@ -15,11 +15,11 @@ export default {
    * shown automatically.
    * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
    * Defaults to `true`.
-   * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
+   * @param isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
    */
-  setEnabled: function (isEnabled) {
+  export const setEnabled = (isEnabled: boolean) => {
     NativeSurveys.setEnabled(isEnabled);
-  },
+  };
 
   /**
    * @summary Shows one of the surveys that were not shown before, that also have conditions
@@ -27,106 +27,105 @@ export default {
    * Does nothing if there are no available surveys or if a survey has already been shown
    * in the current session.
    */
-  showSurveyIfAvailable: function () {
+  export const showSurveyIfAvailable = () => {
     NativeSurveys.showSurveysIfAvailable();
-  },
+  };
 
   /**
    * Returns an array containing the available surveys.
-   * @param {availableSurveysCallback} availableSurveysCallback callback with
-   * argument available surveys
-   *
+   * @param availableSurveysCallback callback with argument available surveys
    */
-  getAvailableSurveys: function (availableSurveysCallback) {
+  export const getAvailableSurveys = (availableSurveysCallback: (surveys: Survey[]) => void) => {
     NativeSurveys.getAvailableSurveys(availableSurveysCallback);
-  },
+  };
 
   /**
    * Sets whether auto surveys showing are enabled or not.
    * @param autoShowingSurveysEnabled A boolean to indicate whether the
    *                                surveys auto showing are enabled or not.
-   *
    */
-  setAutoShowingEnabled: function (autoShowingSurveysEnabled) {
+  export const setAutoShowingEnabled = (autoShowingSurveysEnabled: boolean) => {
     NativeSurveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
-  },
+  };
 
   /**
    * @summary Sets a block of code to be executed just before the survey's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any UI changes before
    * the survey's UI is shown.
-   * @param {function} onShowHandler - A block of code that gets executed before
+   * @param onShowHandler - A block of code that gets executed before
    * presenting the survey's UI.
    */
-  setOnShowHandler: function (onShowHandler) {
+  export const setOnShowHandler = (onShowHandler: () => void) => {
     IBGEventEmitter.addListener(
       NativeSurveys,
       InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
       onShowHandler,
     );
     NativeSurveys.setOnShowHandler(onShowHandler);
-  },
+  };
 
   /**
    * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any UI
    * changes after the survey's UI is dismissed.
-   * @param {function} onDismissHandler - A block of code that gets executed after
+   * @param onDismissHandler - A block of code that gets executed after
    * the survey's UI is dismissed.
    */
-  setOnDismissHandler: function (onDismissHandler) {
+  export const setOnDismissHandler = (onDismissHandler: () => void) => {
     IBGEventEmitter.addListener(
       NativeSurveys,
       InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
       onDismissHandler,
     );
     NativeSurveys.setOnDismissHandler(onDismissHandler);
-  },
+  };
 
   /**
    * Shows survey with a specific token.
    * Does nothing if there are no available surveys with that specific token.
    * Answered and cancelled surveys won't show up again.
-   * @param {string} surveyToken - A String with a survey token.
+   * @param surveyToken - A String with a survey token.
    *
    */
-  showSurvey: function (surveyToken) {
+  export const showSurvey = (surveyToken: string) => {
     NativeSurveys.showSurvey(surveyToken);
-  },
+  };
 
   /**
    * Returns true if the survey with a specific token was answered before.
    * Will return false if the token does not exist or if the survey was not answered before.
-   * @param {string} surveyToken - A String with a survey token.
-   * @param {function} surveyTokenCallback callback with argument as the desired value of the whether
+   * @param surveyToken - A String with a survey token.
+   * @param surveyTokenCallback callback with argument as the desired value of the whether
    * the survey has been responded to or not.
    *
    */
-  hasRespondedToSurvey: function (surveyToken, surveyTokenCallback) {
+  export const hasRespondedToSurvey = (
+    surveyToken: string,
+    surveyTokenCallback: (hasResponded: boolean) => void,
+  ) => {
     NativeSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
-  },
+  };
 
   /**
    * Setting an option for all the surveys to show a welcome screen before
    * the user starts taking the survey.
    * @param shouldShowWelcomeScreen A boolean for setting whether the
    *                                welcome screen should show.
-   *
    */
-  setShouldShowWelcomeScreen: function (shouldShowWelcomeScreen) {
+  export const setShouldShowWelcomeScreen = (shouldShowWelcomeScreen: boolean) => {
     NativeSurveys.setShouldShowWelcomeScreen(shouldShowWelcomeScreen);
-  },
+  };
 
   /**
    * iOS Only
    * @summary Sets url for the published iOS app on AppStore, You can redirect
    * NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
-   * @param {String} appStoreURL A String url for the published iOS app on AppStore
+   * @param appStoreURL A String url for the published iOS app on AppStore
    */
 
-  setAppStoreURL: function (appStoreURL) {
+  export const setAppStoreURL = (appStoreURL: string) => {
     if (Platform.OS === 'ios') {
       NativeSurveys.setAppStoreURL(appStoreURL);
     }
-  },
-};
+  };
+}

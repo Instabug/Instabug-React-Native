@@ -3,96 +3,6 @@
 // Definitions by: Aly Ezz <https://github.com/alyezz>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-export namespace Surveys {
-  /**
-   * @summary Sets whether surveys are enabled or not.
-   * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
-   * those surveys are still going to be sent to the device, but are not going to be
-   * shown automatically.
-   * To manually display any available surveys, call `Instabug.showSurveyIfAvailable()`.
-   * Defaults to `true`.
-   * @param {boolean} isEnabled A boolean to set whether Instabug Surveys is enabled or disabled.
-   */
-  function setEnabled(isEnabled: boolean): void;
-  /**
-   * @summary Shows one of the surveys that were not shown before, that also have conditions
-   * that match the current device/user.
-   * Does nothing if there are no available surveys or if a survey has already been shown
-   * in the current session.
-   */
-  function showSurveyIfAvailable(): void;
-
-  /**
-   * Returns an array containing the available surveys.
-   * @param {availableSurveysCallback} availableSurveysCallback callback with
-   * argument available surveys
-   *
-   */
-  function getAvailableSurveys(
-    availableSurveysCallback: (surveys: Survey[]) => void
-  ): void;
-  /**
-   * Sets whether auto surveys showing are enabled or not.
-   * @param autoShowingSurveysEnabled A boolean to indicate whether the
-   *                                surveys auto showing are enabled or not.
-   *
-   */
-  function setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
-
-  /**
-   * @summary Sets a block of code to be executed just before the survey's UI is presented.
-   * This block is executed on the UI thread. Could be used for performing any UI changes before
-   * the survey's UI is shown.
-   * @param {function} onShowHandler - A block of code that gets executed before
-   * presenting the survey's UI.
-   */
-  function setOnShowHandler(onShowHandler: () => void): void;
-
-  /**
-   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
-   * This block is executed on the UI thread. Could be used for performing any UI
-   * changes after the survey's UI is dismissed.
-   * @param {function} onDismissHandler - A block of code that gets executed after
-   * the survey's UI is dismissed.
-   */
-  function setOnDismissHandler(onDismissHandler: () => void): void;
-  /**
-   * Shows survey with a specific token.
-   * Does nothing if there are no available surveys with that specific token.
-   * Answered and cancelled surveys won't show up again.
-   * @param {string} surveyToken - A String with a survey token.
-   *
-   */
-  function showSurvey(surveyToken: string): void;
-  /**
-   * Returns true if the survey with a specific token was answered before.
-   * Will return false if the token does not exist or if the survey was not answered before.
-   * @param {string} surveyToken - A String with a survey token.
-   * @param {function} surveyTokenCallback callback with argument as the desired value of the whether
-   * the survey has been responded to or not.
-   *
-   */
-  function hasRespondedToSurvey(
-    surveyToken: string,
-    surveyTokenCallback: (hasResponded: boolean) => void
-  ): void;
-  /**
-   * Setting an option for all the surveys to show a welcome screen before
-   * the user starts taking the survey.
-   * @param shouldShowWelcomeScreen A boolean for setting whether the
-   *                                welcome screen should show.
-   *
-   */
-  function setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
-  /**
-   * iOS Only
-   * @summary Sets url for the published iOS app on AppStore, You can redirect
-   * NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
-   * @param {String} appStoreURL A String url for the published iOS app on AppStore
-   */
-  function setAppStoreURL(appStoreURL: string): void;
-}
-
 export class Trace {
   constructor(id: string, name?: string, attributes?: object);
   /**
@@ -161,8 +71,4 @@ interface Report {
    * @param {string} fileName 
    */
   addFileAttachmentWithData(data: string, filename: string): void;
-}
-
-interface Survey {
-  title: string;
 }
