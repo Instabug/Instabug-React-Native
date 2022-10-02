@@ -1,12 +1,13 @@
+import type React from 'react';
 import { findNodeHandle, Platform, processColor } from 'react-native';
-import { NativeInstabug } from '../native';
+import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import Report, { UserAttributesMap } from '../models/Report';
+import { NativeInstabug } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import { NetworkLogger } from './NetworkLogger';
-import type React from 'react';
 
 export namespace Instabug {
   var _currentScreen: string | null = null;
@@ -593,15 +594,15 @@ export namespace Instabug {
     NativeInstabug.clearAllExperiments();
   };
 
-  export const componentDidAppearListener = ({ componentId, componentName, passProps }) => {
+  export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     if (_isFirstScreen) {
-      _lastScreen = componentName;
+      _lastScreen = event.componentName;
       _isFirstScreen = false;
       return;
     }
-    if (_lastScreen != componentName) {
-      NativeInstabug.reportScreenChange(componentName);
-      _lastScreen = componentName;
+    if (_lastScreen != event.componentName) {
+      NativeInstabug.reportScreenChange(event.componentName);
+      _lastScreen = event.componentName;
     }
   };
 }
