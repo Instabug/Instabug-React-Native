@@ -24,7 +24,7 @@ export namespace BugReporting {
    * Default is set by `Instabug.start`.
    * @param invocationEvents Array of events that invokes the feedback form.
    */
-  export const setInvocationEvents = (invocationEvents: BugReporting.invocationEvent[]) => {
+  export const setInvocationEvents = (invocationEvents: ArgsRegistry.invocationEvent[]) => {
     NativeBugReporting.setInvocationEvents(invocationEvents);
   };
 
@@ -33,7 +33,7 @@ export namespace BugReporting {
    * Default is set by `Instabug.start`.
    * @param options Array of invocation options
    */
-  export const setOptions = (options: BugReporting.option[]) => {
+  export const setOptions = (options: ArgsRegistry.option[]) => {
     NativeBugReporting.setOptions(options);
   };
 
@@ -105,7 +105,7 @@ export namespace BugReporting {
    * enable it with required or with optional fields.
    */
   export const setExtendedBugReportMode = (
-    extendedBugReportMode: BugReporting.extendedBugReportMode,
+    extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
   ) => {
     NativeBugReporting.setExtendedBugReportMode(extendedBugReportMode);
   };
@@ -114,7 +114,7 @@ export namespace BugReporting {
    * Sets what type of reports, bug or feedback, should be invoked.
    * @param types Array of reportTypes
    */
-  export const setReportTypes = (types: BugReporting.reportType[]) => {
+  export const setReportTypes = (types: ArgsRegistry.reportType[]) => {
     NativeBugReporting.setReportTypes(types);
   };
 
@@ -123,7 +123,7 @@ export namespace BugReporting {
    * @param type
    * @param options
    */
-  export const show = (type: BugReporting.reportType, options: BugReporting.option[]) => {
+  export const show = (type: ArgsRegistry.reportType, options: ArgsRegistry.option[]) => {
     NativeBugReporting.show(type, options ?? []);
   };
 
@@ -154,7 +154,7 @@ export namespace BugReporting {
    * @param position is of type position `topLeft` to show on the top left of screen,
    * or `bottomRight` to show on the bottom right of scrren.
    */
-  export const setVideoRecordingFloatingButtonPosition = (position: BugReporting.position) => {
+  export const setVideoRecordingFloatingButtonPosition = (position: ArgsRegistry.position) => {
     NativeBugReporting.setVideoRecordingFloatingButtonPosition(position);
   };
 

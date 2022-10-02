@@ -23,7 +23,7 @@ export namespace FeatureRequests {
    */
   export const setEmailFieldRequired = (
     isEmailFieldRequired: boolean,
-    actionTypes: FeatureRequests.actionTypes,
+    actionTypes: ArgsRegistry.actionTypes,
   ) => {
     NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(
       isEmailFieldRequired,

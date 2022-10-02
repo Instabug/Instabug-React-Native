@@ -38,7 +38,7 @@ export namespace Instabug {
    * @param token The token that identifies the app, you can find it on your dashboard.
    * @param invocationEvent The event that invokes the SDK's UI.
    */
-  export const start = (token: string, invocationEvents: Instabug.invocationEvent[]) => {
+  export const start = (token: string, invocationEvents: ArgsRegistry.invocationEvent[]) => {
     InstabugUtils.captureJsErrors();
     NetworkLogger.setEnabled(true);
 
@@ -101,7 +101,7 @@ export namespace Instabug {
    * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
    * @param sdkDebugLogsLevel - The verbosity level of logs.
    */
-  export const setSdkDebugLogsLevel = (sdkDebugLogsLevel: Instabug.sdkDebugLogsLevel) => {
+  export const setSdkDebugLogsLevel = (sdkDebugLogsLevel: ArgsRegistry.sdkDebugLogsLevel) => {
     if (Platform.OS === 'ios') {
       NativeInstabug.setSdkDebugLogsLevel(sdkDebugLogsLevel);
     }
@@ -113,7 +113,7 @@ export namespace Instabug {
    * Defaults to the device's current locale.
    * @param locale A locale to set the SDK to.
    */
-  export const setLocale = (locale: Instabug.locale) => {
+  export const setLocale = (locale: ArgsRegistry.locale) => {
     NativeInstabug.setLocale(locale);
   };
 
@@ -122,7 +122,7 @@ export namespace Instabug {
    * the SDK's UI to.
    * @param colorTheme
    */
-  export const setColorTheme = (colorTheme: Instabug.colorTheme) => {
+  export const setColorTheme = (colorTheme: ArgsRegistry.colorTheme) => {
     NativeInstabug.setColorTheme(colorTheme);
   };
 
@@ -167,7 +167,7 @@ export namespace Instabug {
    * @param string String value to override the default one.
    * @param key Key of string to override.
    */
-  export const setString = (key: Instabug.strings, string: string) => {
+  export const setString = (key: ArgsRegistry.strings, string: string) => {
     NativeInstabug.setString(string, key);
   };
 
@@ -311,7 +311,7 @@ export namespace Instabug {
    * @param reproStepsMode An enum to set user steps tracking
    * to be enabled, non visual or disabled.
    */
-  export const setReproStepsMode = (reproStepsMode: Instabug.reproStepsMode) => {
+  export const setReproStepsMode = (reproStepsMode: ArgsRegistry.reproStepsMode) => {
     NativeInstabug.setReproStepsMode(reproStepsMode);
   };
 
@@ -417,7 +417,7 @@ export namespace Instabug {
    * Shows the welcome message in a specific mode.
    * @param welcomeMessageMode An enum to set the welcome message mode to live, or beta.
    */
-  export const showWelcomeMessage = (welcomeMessageMode: Instabug.welcomeMessageMode) => {
+  export const showWelcomeMessage = (welcomeMessageMode: ArgsRegistry.welcomeMessageMode) => {
     NativeInstabug.showWelcomeMessageWithMode(welcomeMessageMode);
   };
 
@@ -425,7 +425,7 @@ export namespace Instabug {
    * Sets the welcome message mode to live, beta or disabled.
    * @param welcomeMessageMode An enum to set the welcome message mode to live, beta or disabled.
    */
-  export const setWelcomeMessageMode = (welcomeMessageMode: Instabug.welcomeMessageMode) => {
+  export const setWelcomeMessageMode = (welcomeMessageMode: ArgsRegistry.welcomeMessageMode) => {
     NativeInstabug.setWelcomeMessageMode(welcomeMessageMode);
   };
 
