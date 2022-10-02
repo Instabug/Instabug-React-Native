@@ -1,9 +1,9 @@
 import InstabugConstants from './InstabugConstants';
 
-type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
-type NetworkDataCallback = (data: NetworkData) => void;
+export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
+export type NetworkDataCallback = (data: NetworkData) => void;
 
-interface NetworkData {
+export interface NetworkData {
   url: string;
   method: string;
   requestBody: string;

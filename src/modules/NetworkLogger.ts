@@ -2,26 +2,22 @@ import { Platform } from 'react-native';
 import { NativeAPM, NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
-import xhr from '../utils/XhrNetworkInterceptor';
+import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 
-var _networkDataObfuscationHandlerSet = false;
-var _requestFilterExpression = false;
+export namespace NetworkLogger {
+  var _networkDataObfuscationHandlerSet = false;
+  var _requestFilterExpression = 'false';
 
-/**
- * NetworkLogger
- * @exports NetworkLogger
- */
-export default {
   /**
    * Sets whether network logs should be sent with bug reports.
    * It is enabled by default.
-   * @param {boolean} isEnabled
+   * @param isEnabled
    */
-  setEnabled(isEnabled) {
+  export const setEnabled = (isEnabled: boolean) => {
     if (isEnabled) {
       xhr.enableInterception();
       xhr.setOnDoneCallback(network => {
-        let predicate = Function('network', 'return ' + _requestFilterExpression);
+        const predicate = Function('network', 'return ' + _requestFilterExpression);
         if (!predicate(network)) {
           if (_networkDataObfuscationHandlerSet) {
             IBGEventEmitter.emit(InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT, network);
@@ -42,13 +38,13 @@ export default {
     } else {
       xhr.disableInterception();
     }
-  },
+  };
 
   /**
    * Obfuscates any response data.
-   * @param {function} handler
+   * @param handler
    */
-  setNetworkDataObfuscationHandler(handler) {
+  export const setNetworkDataObfuscationHandler = (handler: (data: NetworkData) => NetworkData) => {
     if (handler === null) {
       _networkDataObfuscationHandlerSet = false;
       return;
@@ -58,9 +54,10 @@ export default {
     IBGEventEmitter.addListener(
       NativeInstabug,
       InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
-      async data => {
+      (data: NetworkData) => {
         try {
-          const newData = await handler(data);
+          const newData = handler(data);
+
           if (Platform.OS === 'android') {
             NativeInstabug.networkLog(JSON.stringify(newData));
             NativeAPM.networkLog(JSON.stringify(newData));
@@ -72,25 +69,25 @@ export default {
         }
       },
     );
-  },
+  };
 
   /**
    * Omit requests from being logged based on either their request or response details
    * @param {string} expression
    */
-  setRequestFilterExpression(expression) {
+  export const setRequestFilterExpression = (expression: string) => {
     _requestFilterExpression = expression;
-  },
+  };
 
   /**
    * Returns progress in terms of totalBytesSent and totalBytesExpectedToSend a network request.
    * @param {function} handler
    */
-  setProgressHandlerForRequest(handler) {
+  export const setProgressHandlerForRequest = (handler: ProgressCallback) => {
     xhr.setOnProgressCallback(handler);
-  },
+  };
 
-  apolloLinkRequestHandler(operation, forward) {
+  export const apolloLinkRequestHandler = (operation: any, forward: any) => {
     try {
       operation.setContext(({ headers = {} }) => {
         headers[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
@@ -101,5 +98,5 @@ export default {
     }
 
     return forward(operation);
-  },
-};
+  };
+}

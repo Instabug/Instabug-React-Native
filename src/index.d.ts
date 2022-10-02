@@ -185,35 +185,7 @@ export namespace Surveys {
    */
   function setAppStoreURL(appStoreURL: string): void;
 }
-export namespace NetworkLogger {
-  /**
-   * Sets whether network logs should be sent with bug reports.
-   * It is enabled by default.
-   * @param {boolean} isEnabled
-   */
-  function setEnabled(isEnabled: boolean): void;
-  /**
-   * Obfuscates any response data.
-   * @param {function} handler
-   */
-  function setNetworkDataObfuscationHandler(handler: (networkData: any) => any): void;
-  /**
-   * Omit requests from being logged based on either their request or response details
-   * @param {string} expression
-   */
-  function setRequestFilterExpression(expression: string): void;
-  /**
-   * Returns progress in terms of totalBytesSent and totalBytesExpectedToSend a network request.
-   * @param {function} handler
-   */
-  function setProgressHandlerForRequest(handler: () => void): void;
-  /**
-   * Apollo Link Request Handler to track network log for graphQL using apollo
-   * @param {any} operation 
-   * @param {any} forward 
-   */
-  function apolloLinkRequestHandler(operation: any, forward: any):any;
-}
+
 export class Trace {
   constructor(id: string, name?: string, attributes?: object);
   /**

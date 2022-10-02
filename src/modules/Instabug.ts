@@ -5,7 +5,7 @@ import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import NetworkLogger from './NetworkLogger';
+import { NetworkLogger } from './NetworkLogger';
 import type React from 'react';
 
 export namespace Instabug {
