@@ -5,7 +5,9 @@ import sinon from 'sinon';
 
 // For some reason `Platform.constants` might be undefined,
 // if so, we initialize it to an empty object.
-Platform.constants ??= {};
+if (!Platform.constants) {
+  Platform.constants = {};
+}
 
 global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
 
