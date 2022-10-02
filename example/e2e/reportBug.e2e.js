@@ -1,5 +1,5 @@
 import { getElement } from './utils/elements';
-import mockData from './utils/mock-data';
+import mockData from './utils/mockData';
 
 beforeEach(async () => {
   await device.launchApp();
