@@ -6,7 +6,6 @@
     "android": "npx react-native run-android",
     "ios": "npx react-native run-ios",
     "start": "react-native start",
-    "test": "jest __tests__",
     "lint": "eslint ."
   },
   "dependencies": {

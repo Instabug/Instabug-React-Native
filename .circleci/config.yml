@@ -44,36 +44,6 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  test_sample:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:lts
-    steps:
-      - checkout:
-          path: ~/project
-      - run: yarn
-      - run: cd example && yarn install
-
-      - run:
-          name: jest tests
-          command: |
-            cd example
-            mkdir -p test-results/jest
-            yarn test
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - example/node_modules
-
-      - store_test_results:
-          path: example/test-results
-
-      - store_artifacts:
-          path: example/test-results
-
   test_android:
     executor:
       name: android/android-machine
@@ -229,7 +199,6 @@ workflows:
     jobs:
       - danger
       - test_module
-      - test_sample
       - test_android
       - validate_shell_files
       - sync_generated_files
@@ -239,7 +208,6 @@ workflows:
       - hold:
           requires:
             - test_module
-            - test_sample
             - test_android
             - validate_shell_files
             - sync_generated_files
