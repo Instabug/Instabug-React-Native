@@ -1,24 +1,10 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
+import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
-import '../../test/mocks/mockInstabug';
-import Instabug from 'instabug-reactnative/src';
-import IBGEventEmitter from 'instabug-reactnative/src/utils/IBGEventEmitter';
-import IBGConstants from 'instabug-reactnative/src/utils/InstabugConstants';
-// import console = require('console');
+import Instabug from '../../src';
 
-jest.mock('../node_modules/instabug-reactnative/src/utils/XhrNetworkInterceptor', () => {
-  return {
-    enableInterception: jest.fn(),
-    setOnDoneCallback: jest.fn(),
-  };
-});
+const { Instabug: NativeInstabug } = NativeModules;
 
 describe('Test global error handler', () => {
-  const sendJSCrash = jest.spyOn(NativeModules.Instabug, 'sendJSCrash');
   beforeEach(() => {
     Instabug.start('', [Instabug.invocationEvent.none]);
   });
@@ -37,27 +23,10 @@ describe('Test global error handler', () => {
       exception: [],
     };
 
-    expect(sendJSCrash).toHaveBeenCalledWith(expected);
-  });
-
-  it('should call sendJSCrash when platform is android', () => {
-    Platform.OS = 'android';
-    Platform.constants['reactNativeVersion'] = { minor: 64 };
-    const handler = global.ErrorUtils.getGlobalHandler();
-    handler({ name: 'TypeError', message: 'This is a type error.' }, false);
-    const expected = {
-      message: 'TypeError - This is a type error.',
-      e_message: 'This is a type error.',
-      e_name: 'TypeError',
-      os: 'android',
-      platform: 'react_native',
-      exception: [],
-    };
-    expect(sendJSCrash).toHaveBeenCalledWith(JSON.stringify(expected));
+    expect(NativeInstabug.sendJSCrash).toHaveBeenCalledWith(expected);
   });
 
   // it('should emit event IBGSendUnhandledJSCrash when platform is android and onReportSubmitHandler is set', (done) => {
-
   //     Platform.OS = 'android';
   //     Instabug._isOnReportHandlerSet = jest.fn(() => true);
   //     const handler = global.ErrorUtils.getGlobalHandler();
@@ -72,6 +41,5 @@ describe('Test global error handler', () => {
   //         done();
   //     });
   //     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
-
   // });
 });

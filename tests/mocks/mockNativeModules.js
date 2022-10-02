@@ -1,4 +1,3 @@
-import './mockInstabugUtils';
 import mockAPM from './mockAPM';
 import mockBugReporting from './mockBugReporting';
 import mockFeatureRequests from './mockFeatureRequests';

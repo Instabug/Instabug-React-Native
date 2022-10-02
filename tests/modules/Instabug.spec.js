@@ -1,3 +1,4 @@
+import '../mocks/mockInstabugUtils';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
 import waitForExpect from 'wait-for-expect';

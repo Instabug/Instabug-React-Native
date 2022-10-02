@@ -1,3 +1,4 @@
+import '../mocks/mockInstabugUtils';
 import { NativeModules, Platform } from 'react-native';
 import CrashReporting from '../../src/modules/CrashReporting';
 import InstabugUtils from '../../src/utils/InstabugUtils';
