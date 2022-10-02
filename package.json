@@ -28,6 +28,7 @@
     "react-native": ">=0.60.0"
   },
   "devDependencies": {
+    "@apollo/client": "^3.7.0",
     "@types/node": "^18.7.23",
     "@types/react-native": "^0.66.0",
     "babel-core": "7.0.0-bridge.0",
