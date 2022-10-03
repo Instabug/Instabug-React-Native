@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import Trace from '../../src/models/Trace';
-import APM from '../../src/modules/APM';
+import { APM } from '../../src/modules/APM';
 
 const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
 
