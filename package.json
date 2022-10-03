@@ -20,7 +20,7 @@
     "feedback"
   ],
   "scripts": {
-    "test": "jest && codecov"
+    "test": "jest"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
@@ -29,7 +29,6 @@
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
-    "codecov": "~3.8.3",
     "esprima": "^4.0.1",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.72.2",

@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   android: circleci/android@2.0
+  codecov: codecov/codecov@3.2.3
 jobs:
   danger:
     docker:
@@ -29,6 +30,8 @@ jobs:
             yarn run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+      
+      - codecov/upload
 
       - persist_to_workspace:
           root: ~/project
