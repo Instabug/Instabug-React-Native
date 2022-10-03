@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Bumps Instabug iOS SDK to v11.3.0
 * Uses Cocoapods for Instabug iOS SDK
 * Fixes a compilation error on projects with Java version prior to 8.
 
