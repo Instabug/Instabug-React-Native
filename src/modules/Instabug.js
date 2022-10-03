@@ -28,7 +28,7 @@ const firstScreen = "Initial Screen";
  * Instabug
  * @exports Instabug
  */
-const InstabugModule = {
+export default {
 
   /**
    * Starts the SDK.
@@ -838,5 +838,3 @@ export {
   NetworkLogger,
   APM,
 };
-
-export default InstabugModule;
