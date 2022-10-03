@@ -43,6 +43,9 @@
     "preset": "react-native",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**/*.(js|ts)"
+    ],
     "modulePathIgnorePatterns": [
       "example"
     ]
