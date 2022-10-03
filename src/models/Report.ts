@@ -26,7 +26,7 @@ export default class Report {
 
   /**
    * Append a tag to the report to be sent.
-   * @param {string} tag
+   * @param tag
    */
   appendTag(tag: string) {
     NativeInstabug.appendTagToReport(tag);
@@ -35,7 +35,7 @@ export default class Report {
 
   /**
    * Append a console log to the report to be sent.
-   * @param {string} consoleLog
+   * @param consoleLog
    */
   appendConsoleLog(consoleLog: string) {
     NativeInstabug.appendConsoleLogToReport(consoleLog);
@@ -44,8 +44,8 @@ export default class Report {
 
   /**
    * Add a user attribute with key and value to the report to be sent.
-   * @param {string} key
-   * @param {string} value
+   * @param key
+   * @param value
    */
   setUserAttribute(key: string, value: string) {
     NativeInstabug.setUserAttributeToReport(key, value);
@@ -54,7 +54,7 @@ export default class Report {
 
   /**
    * Attach debug log to the report to be sent.
-   * @param {string} log
+   * @param log
    */
   logDebug(log: string) {
     NativeInstabug.logDebugToReport(log);
@@ -63,7 +63,7 @@ export default class Report {
 
   /**
    * Attach verbose log to the report to be sent.
-   * @param {string} log
+   * @param log
    */
   logVerbose(log: string) {
     NativeInstabug.logVerboseToReport(log);
@@ -72,7 +72,7 @@ export default class Report {
 
   /**
    * Attach warn log to the report to be sent.
-   * @param {string} log
+   * @param log
    */
   logWarn(log: string) {
     NativeInstabug.logWarnToReport(log);
@@ -81,7 +81,7 @@ export default class Report {
 
   /**
    * Attach error log to the report to be sent.
-   * @param {string} log
+   * @param log
    */
   logError(log: string) {
     NativeInstabug.logErrorToReport(log);
@@ -90,7 +90,7 @@ export default class Report {
 
   /**
    * Attach info log to the report to be sent.
-   * @param {string} log
+   * @param log
    */
   logInfo(log: string) {
     NativeInstabug.logInfoToReport(log);
@@ -99,8 +99,8 @@ export default class Report {
 
   /**
    * Attach a file to the report to be sent.
-   * @param {string} url
-   * @param {string} fileName
+   * @param url
+   * @param fileName
    */
   addFileAttachmentWithUrl(url: string, fileName: string) {
     if (Platform.OS === 'ios') {
@@ -113,8 +113,8 @@ export default class Report {
 
   /**
    * Attach a file to the report to be sent.
-   * @param {string} data
-   * @param {string} fileName
+   * @param data
+   * @param fileName
    */
   addFileAttachmentWithData(data: string, fileName: string) {
     if (Platform.OS === 'ios') {

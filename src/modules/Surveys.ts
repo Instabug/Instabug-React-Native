@@ -9,7 +9,7 @@ export interface Survey {
 
 export namespace Surveys {
   /**
-   * @summary Sets whether surveys are enabled or not.
+   * Sets whether surveys are enabled or not.
    * If you disable surveys on the SDK but still have active surveys on your Instabug dashboard,
    * those surveys are still going to be sent to the device, but are not going to be
    * shown automatically.
@@ -22,7 +22,7 @@ export namespace Surveys {
   };
 
   /**
-   * @summary Shows one of the surveys that were not shown before, that also have conditions
+   * Shows one of the surveys that were not shown before, that also have conditions
    * that match the current device/user.
    * Does nothing if there are no available surveys or if a survey has already been shown
    * in the current session.
@@ -49,7 +49,7 @@ export namespace Surveys {
   };
 
   /**
-   * @summary Sets a block of code to be executed just before the survey's UI is presented.
+   * Sets a block of code to be executed just before the survey's UI is presented.
    * This block is executed on the UI thread. Could be used for performing any UI changes before
    * the survey's UI is shown.
    * @param onShowHandler - A block of code that gets executed before
@@ -65,7 +65,7 @@ export namespace Surveys {
   };
 
   /**
-   * @summary Sets a block of code to be executed right after the survey's UI is dismissed.
+   * Sets a block of code to be executed right after the survey's UI is dismissed.
    * This block is executed on the UI thread. Could be used for performing any UI
    * changes after the survey's UI is dismissed.
    * @param onDismissHandler - A block of code that gets executed after
@@ -118,7 +118,7 @@ export namespace Surveys {
 
   /**
    * iOS Only
-   * @summary Sets url for the published iOS app on AppStore, You can redirect
+   * Sets url for the published iOS app on AppStore, You can redirect
    * NPS Surveys or AppRating Surveys to AppStore to let users rate your app on AppStore itself.
    * @param appStoreURL A String url for the published iOS app on AppStore
    */

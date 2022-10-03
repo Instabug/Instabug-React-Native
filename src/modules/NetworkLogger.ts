@@ -74,7 +74,7 @@ export namespace NetworkLogger {
 
   /**
    * Omit requests from being logged based on either their request or response details
-   * @param {string} expression
+   * @param expression
    */
   export const setRequestFilterExpression = (expression: string) => {
     _requestFilterExpression = expression;
@@ -82,7 +82,7 @@ export namespace NetworkLogger {
 
   /**
    * Returns progress in terms of totalBytesSent and totalBytesExpectedToSend a network request.
-   * @param {function} handler
+   * @param handler
    */
   export const setProgressHandlerForRequest = (handler: ProgressCallback) => {
     xhr.setOnProgressCallback(handler);

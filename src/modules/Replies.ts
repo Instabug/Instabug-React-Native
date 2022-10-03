@@ -29,36 +29,36 @@ export namespace Replies {
 
   /**
    * Sets a block of code that gets executed when a new message is received.
-   * @param onNewReplyReceivedHandler A callback that gets executed when a new message is received.
+   * @param handler A callback that gets executed when a new message is received.
    */
-  export const setOnNewReplyReceivedHandler = (onNewReplyReceivedHandler: () => void) => {
+  export const setOnNewReplyReceivedHandler = (handler: () => void) => {
     IBGEventEmitter.addListener(
       NativeReplies,
       InstabugConstants.ON_REPLY_RECEIVED_HANDLER,
-      onNewReplyReceivedHandler,
+      handler,
     );
-    NativeReplies.setOnNewReplyReceivedHandler(onNewReplyReceivedHandler);
+    NativeReplies.setOnNewReplyReceivedHandler(handler);
   };
 
   /**
    * Returns the number of unread messages the user currently has.
    * Use this method to get the number of unread messages the user
    * has, then possibly notify them about it with your own UI.
-   * @param messageCountCallback callback with argument
+   * @param callback callback with argument
    * Notifications count, or -1 in case the SDK has not been initialized.
    */
-  export const getUnreadRepliesCount = (messageCountCallback: (count: number) => void) => {
-    NativeReplies.getUnreadRepliesCount(messageCountCallback);
+  export const getUnreadRepliesCount = (callback: (count: number) => void) => {
+    NativeReplies.getUnreadRepliesCount(callback);
   };
 
   /**
    * Enables/disables showing in-app notifications when the user receives a
    * new message.
-   * @param inAppNotificationsEnabled A boolean to set whether
+   * @param isEnabled A boolean to set whether
    * notifications are enabled or disabled.
    */
-  export const setInAppNotificationsEnabled = (inAppNotificationsEnabled: boolean) => {
-    NativeReplies.setInAppNotificationEnabled(inAppNotificationsEnabled);
+  export const setInAppNotificationsEnabled = (isEnabled: boolean) => {
+    NativeReplies.setInAppNotificationEnabled(isEnabled);
   };
 
   /**
@@ -66,22 +66,21 @@ export namespace Replies {
    * or not (Default is {@code false})
    * @android
    *
-   * @param shouldPlaySound desired state of conversation sounds
+   * @param isEnabled desired state of conversation sounds
    */
-  export const setInAppNotificationSound = (shouldPlaySound: boolean) => {
+  export const setInAppNotificationSound = (isEnabled: boolean) => {
     if (Platform.OS === 'android') {
-      NativeReplies.setInAppNotificationSound(shouldPlaySound);
+      NativeReplies.setInAppNotificationSound(isEnabled);
     }
   };
 
   /**
    * Enables/disables the use of push notifications in the SDK.
    * Defaults to YES.
-   * @param isPushNotificationEnabled A boolean to indicate whether push
-   * notifications are enabled or disabled.
+   * @param isEnabled A boolean to indicate whether push notifications are enabled or disabled.
    */
-  export const setPushNotificationsEnabled = (isPushNotificationEnabled: boolean) => {
-    NativeReplies.setPushNotificationsEnabled(isPushNotificationEnabled);
+  export const setPushNotificationsEnabled = (isEnabled: boolean) => {
+    NativeReplies.setPushNotificationsEnabled(isEnabled);
   };
 
   /**
@@ -109,11 +108,11 @@ export namespace Replies {
   /**
    * Set the push notification's icon that will be shown with Instabug notifications
    *
-   * @param notificationIcon the notification icon resource ID
+   * @param resourceId the notification icon resource ID
    */
-  export const setNotificationIconAndroid = (notificationIcon: number) => {
+  export const setNotificationIconAndroid = (resourceId: number) => {
     if (Platform.OS === 'android') {
-      NativeReplies.setNotificationIcon(notificationIcon);
+      NativeReplies.setNotificationIcon(resourceId);
     }
   };
 
@@ -133,11 +132,11 @@ export namespace Replies {
    * Set whether new system notification received will play the default sound from
    * RingtoneManager or not (Default is {@code false})
    *
-   * @param shouldPlaySound desired state of conversation sounds
+   * @param isEnabled desired state of conversation sounds
    */
-  export const setSystemReplyNotificationSoundEnabledAndroid = (shouldPlaySound: boolean) => {
+  export const setSystemReplyNotificationSoundEnabledAndroid = (isEnabled: boolean) => {
     if (Platform.OS === 'android') {
-      NativeReplies.setSystemReplyNotificationSoundEnabled(shouldPlaySound);
+      NativeReplies.setSystemReplyNotificationSoundEnabled(isEnabled);
     }
   };
 }

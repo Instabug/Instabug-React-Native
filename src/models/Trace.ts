@@ -13,10 +13,10 @@ export default class Trace {
 
   /**
    * Add an attribute with key and value to the Trace to be sent.
-   * @param {string} key
-   * @param {string} value
+   * @param key
+   * @param value
    */
-  setAttribute(key, value) {
+  setAttribute(key: string, value: string) {
     NativeAPM.setExecutionTraceAttribute(this.id, key, value);
     this.attributes[key] = value;
   }

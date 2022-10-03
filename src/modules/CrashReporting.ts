@@ -17,15 +17,15 @@ export namespace CrashReporting {
 
   /**
    * Send handled JS error object
-   * @param errorObject Error object to be sent to Instabug's servers
+   * @param error Error object to be sent to Instabug's servers
    */
-  export const reportJSException = (errorObject: ExtendedError) => {
-    const jsStackTrace = InstabugUtils.getStackTrace(errorObject);
+  export const reportJSException = (error: ExtendedError) => {
+    const jsStackTrace = InstabugUtils.getStackTrace(error);
 
     const jsonObject = {
-      message: errorObject.name + ' - ' + errorObject.message,
-      e_message: errorObject.message,
-      e_name: errorObject.name,
+      message: error.name + ' - ' + error.message,
+      e_message: error.message,
+      e_name: error.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace,
