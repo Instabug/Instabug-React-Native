@@ -93,9 +93,10 @@ export namespace NetworkLogger {
     forward: NextLink,
   ) => {
     try {
-      operation.setContext(({ headers = {} }) => {
-        headers[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
-        return { headers: headers };
+      operation.setContext((context: Record<string, any>) => {
+        const newHeaders = context.headers as Record<string, any>;
+        newHeaders[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
+        return { headers: newHeaders };
       });
     } catch (e) {
       console.error(e);

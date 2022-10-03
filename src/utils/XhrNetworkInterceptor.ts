@@ -192,7 +192,7 @@ export default {
           false,
         );
 
-        const downloadUploadProgressCallback = event => {
+        const downloadUploadProgressCallback = (event: ProgressEvent) => {
           if (!isInterceptorEnabled) {
             return;
           }
