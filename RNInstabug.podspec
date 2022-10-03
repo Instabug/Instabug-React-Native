@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
   s.source_files = "ios/**/*.{h,m,mm}"
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'Instabug', '11.2.0'
 end
