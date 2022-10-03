@@ -180,7 +180,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @see InstabugInvocationEvent
      */
     @ReactMethod
-    public void setInvocationEvents(ReadableArray invocationEventValues) {
+    public void setInvocationEvents(final ReadableArray invocationEventValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -324,7 +324,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * @see BugReporting.ReportType
      */
     @ReactMethod
-    public void setReportTypes(ReadableArray types) {
+    public void setReportTypes(final ReadableArray types) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @SuppressLint("WrongConstant")
             @Override

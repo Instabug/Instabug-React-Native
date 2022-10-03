@@ -553,7 +553,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @see InstabugInvocationEvent
      */
     @ReactMethod
-    public void setInvocationEvents(ReadableArray invocationEventValues) {
+    public void setInvocationEvents(final ReadableArray invocationEventValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
