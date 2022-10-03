@@ -12,39 +12,11 @@ import BugReporting from '../src/modules/BugReporting'
 import Instabug from '../src/';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import IBGConstants from '../src/utils/InstabugConstants';
-import sinon from 'sinon';
 
-
+const { IBGBugReporting: NativeIBGBugReporting } = NativeModules;
 
 describe('Testing BugReporting Module', () => {
-  
-  const setEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setEnabled');
-  const setInvocationEvents = sinon.spy(NativeModules.IBGBugReporting, 'setInvocationEvents');
-  const setOptions = sinon.spy(NativeModules.IBGBugReporting, 'setOptions');
-  const setShakingThresholdForiPhone = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForiPhone');
-  const setShakingThresholdForiPad = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForiPad');
-  const setShakingThresholdForAndroid = sinon.spy(NativeModules.IBGBugReporting, 'setShakingThresholdForAndroid');
-  const setExtendedBugReportMode = sinon.spy(NativeModules.IBGBugReporting, 'setExtendedBugReportMode');
-  const setReportTypes = sinon.spy(NativeModules.IBGBugReporting, 'setReportTypes');
-  const show = sinon.spy(NativeModules.IBGBugReporting, 'show');
-  const setOnInvokeHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnInvokeHandler');
-  const setOnSDKDismissedHandler = sinon.spy(NativeModules.IBGBugReporting, 'setOnSDKDismissedHandler');
-  const setAutoScreenRecordingEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingEnabled');
-  const setAutoScreenRecordingDuration = sinon.spy(NativeModules.IBGBugReporting, 'setAutoScreenRecordingDuration');
-  const setViewHierarchyEnabled = sinon.spy(NativeModules.IBGBugReporting, 'setViewHierarchyEnabled');
-  const didSelectPromptOptionHandler = sinon.spy(NativeModules.IBGBugReporting, 'setDidSelectPromptOptionHandler');
-  const setFloatingButtonEdge = sinon.spy(NativeModules.IBGBugReporting, 'setFloatingButtonEdge');
-  const setEnabledAttachmentTypes = sinon.spy(NativeModules.IBGBugReporting, 'setEnabledAttachmentTypes');
-  const setVideoRecordingFloatingButtonPosition = sinon.spy(NativeModules.IBGBugReporting, 'setVideoRecordingFloatingButtonPosition');
-
-
   beforeEach(() => {
-    setShakingThresholdForiPhone.resetHistory();
-    setShakingThresholdForiPad.resetHistory();
-    setShakingThresholdForAndroid.resetHistory();
-    setOnInvokeHandler.resetHistory();
-    setOnSDKDismissedHandler.resetHistory();
-    didSelectPromptOptionHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
   });
 
@@ -52,7 +24,8 @@ describe('Testing BugReporting Module', () => {
 
     BugReporting.setEnabled(true);
 
-    expect(setEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGBugReporting.setEnabled).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setEnabled).toBeCalledWith(true);
 
   });
 
@@ -61,7 +34,8 @@ describe('Testing BugReporting Module', () => {
     const arrayOfInvocationEvents = [BugReporting.invocationEvent.floatingButton, BugReporting.invocationEvent.shake];
     BugReporting.setInvocationEvents(arrayOfInvocationEvents);
 
-    expect(setInvocationEvents.calledOnceWithExactly(arrayOfInvocationEvents)).toBe(true);
+    expect(NativeIBGBugReporting.setInvocationEvents).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setInvocationEvents).toBeCalledWith(arrayOfInvocationEvents);
 
   });
 
@@ -70,7 +44,8 @@ describe('Testing BugReporting Module', () => {
     const arrayOfOptions = [BugReporting.option.commentFieldRequired];
     BugReporting.setOptions(arrayOfOptions);
 
-    expect(setOptions.calledOnceWithExactly(arrayOfOptions)).toBe(true);
+    expect(NativeIBGBugReporting.setOptions).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setOptions).toBeCalledWith(arrayOfOptions);
 
   });
 
@@ -80,7 +55,8 @@ describe('Testing BugReporting Module', () => {
     const value = 2.5;
     BugReporting.setShakingThresholdForiPhone(value);
 
-    expect(setShakingThresholdForiPhone.calledOnceWithExactly(value)).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPhone).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPhone).toBeCalledWith(value);
 
   });
 
@@ -89,7 +65,7 @@ describe('Testing BugReporting Module', () => {
     Platform.OS = 'android';
     BugReporting.setShakingThresholdForiPhone(2.5);
 
-    expect(setShakingThresholdForiPhone.notCalled).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPhone).not.toBeCalled();
 
   });
 
@@ -99,7 +75,8 @@ describe('Testing BugReporting Module', () => {
     const value = 0.6;
     BugReporting.setShakingThresholdForiPad(value);
 
-    expect(setShakingThresholdForiPad.calledOnceWithExactly(value)).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPad).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPad).toBeCalledWith(value);
 
   });
 
@@ -108,7 +85,7 @@ describe('Testing BugReporting Module', () => {
     Platform.OS = 'android';
     BugReporting.setShakingThresholdForiPad(0.6);
 
-    expect(setShakingThresholdForiPad.notCalled).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForiPad).not.toBeCalled();
 
   });
 
@@ -118,7 +95,8 @@ describe('Testing BugReporting Module', () => {
     const value = 350;
     BugReporting.setShakingThresholdForAndroid(value);
 
-    expect(setShakingThresholdForAndroid.calledOnceWithExactly(value)).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForAndroid).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setShakingThresholdForAndroid).toBeCalledWith(value);
 
   });
 
@@ -127,7 +105,7 @@ describe('Testing BugReporting Module', () => {
     Platform.OS = 'ios';
     BugReporting.setShakingThresholdForAndroid(350);
 
-    expect(setShakingThresholdForAndroid.notCalled).toBe(true);
+    expect(NativeIBGBugReporting.setShakingThresholdForAndroid).not.toBeCalled();
 
   });
   
@@ -135,7 +113,8 @@ describe('Testing BugReporting Module', () => {
 
     BugReporting.setExtendedBugReportMode(true);
 
-    expect(setExtendedBugReportMode.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGBugReporting.setExtendedBugReportMode).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setExtendedBugReportMode).toBeCalledWith(true);
 
   });
 
@@ -144,7 +123,8 @@ describe('Testing BugReporting Module', () => {
     const arrayOfReportTypes = [BugReporting.reportType.bug];
     BugReporting.setReportTypes(arrayOfReportTypes);
 
-    expect(setReportTypes.calledOnceWithExactly(arrayOfReportTypes)).toBe(true);
+    expect(NativeIBGBugReporting.setReportTypes).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setReportTypes).toBeCalledWith(arrayOfReportTypes);
 
   });
 
@@ -154,7 +134,8 @@ describe('Testing BugReporting Module', () => {
     const arrayOfOptions = [BugReporting.option.commentFieldRequired];
     BugReporting.show(reportType, arrayOfOptions);
 
-    expect(show.calledOnceWithExactly(reportType, arrayOfOptions)).toBe(true);
+    expect(NativeIBGBugReporting.show).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.show).toBeCalledWith(reportType, arrayOfOptions);
 
   });
 
@@ -163,7 +144,8 @@ describe('Testing BugReporting Module', () => {
     const callback = jest.fn()
     BugReporting.onInvokeHandler(callback);
 
-    expect(setOnInvokeHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeIBGBugReporting.setOnInvokeHandler).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setOnInvokeHandler).toBeCalledWith(callback);
 
   });
 
@@ -183,45 +165,47 @@ describe('Testing BugReporting Module', () => {
     const callback = jest.fn()
     BugReporting.onSDKDismissedHandler(callback);
 
-    expect(setOnSDKDismissedHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeIBGBugReporting.setOnSDKDismissedHandler).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setOnSDKDismissedHandler).toBeCalledWith(callback);
 
   });
 
-  it('should invoke callback on emitting the event IBGpostInvocationHandler', (done) => {
+  it('should invoke callback on emitting the event IBGpostInvocationHandler', () => {
 
     const dismissType = 'cancel';
     const reportType = 'bug';
-    const callback = (dismiss, report) => {
-      expect(dismiss).toBe(dismissType);
-      expect(report).toBe(reportType);
-      done();
-    }
+    const callback = jest.fn();
+
     BugReporting.onSDKDismissedHandler(callback);
     IBGEventEmitter.emit(IBGConstants.ON_SDK_DISMISSED_HANDLER, {dismissType: dismissType, reportType: reportType});
 
     expect(IBGEventEmitter.getListeners(IBGConstants.ON_SDK_DISMISSED_HANDLER).length).toEqual(1);
-
+    expect(callback).toBeCalledTimes(1);
+    expect(callback).toBeCalledWith(dismissType, reportType);
   });
 
   it('should call the native method setAutoScreenRecordingEnabled', () => {
 
     BugReporting.setAutoScreenRecordingEnabled(true);
 
-    expect(setAutoScreenRecordingEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGBugReporting.setAutoScreenRecordingEnabled).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setAutoScreenRecordingEnabled).toBeCalledWith(true);
 
   });
 
   it('should call the native method setAutoScreenRecordingDuration on iOS', () => {
     Platform.OS = 'ios';
     BugReporting.setAutoScreenRecordingDurationIOS(30);
-    expect(setAutoScreenRecordingDuration.calledOnceWithExactly(30)).toBe(true);
+    expect(NativeIBGBugReporting.setAutoScreenRecordingDuration).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setAutoScreenRecordingDuration).toBeCalledWith(30);
   });
 
   it('should call the native method setViewHierarchyEnabled', () => {
 
     BugReporting.setViewHierarchyEnabled(true);
 
-    expect(setViewHierarchyEnabled.calledOnceWithExactly(true)).toBe(true);
+    expect(NativeIBGBugReporting.setViewHierarchyEnabled).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setViewHierarchyEnabled).toBeCalledWith(true);
 
   });
 
@@ -232,17 +216,18 @@ describe('Testing BugReporting Module', () => {
     BugReporting.setDidSelectPromptOptionHandler(jest.fn());
     IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
 
-    expect(didSelectPromptOptionHandler.notCalled).toBe(true);
+    expect(NativeIBGBugReporting.setDidSelectPromptOptionHandler).not.toBeCalled();
     expect(IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length).toEqual(0);
   });
 
-  it('should call the native method didSelectPromptOptionHandler with a function', () => {
+  it('should call the native method setDidSelectPromptOptionHandler with a function', () => {
 
     Platform.OS = 'ios';
     const callback = jest.fn()
     BugReporting.setDidSelectPromptOptionHandler(callback);
 
-    expect(didSelectPromptOptionHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeIBGBugReporting.setDidSelectPromptOptionHandler).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setDidSelectPromptOptionHandler).toBeCalledWith(callback);
 
   });
 
@@ -252,7 +237,8 @@ describe('Testing BugReporting Module', () => {
     const edge = Instabug.floatingButtonEdge.left;
     BugReporting.setFloatingButtonEdge(edge, offsetFromTop);
 
-    expect(setFloatingButtonEdge.calledOnceWithExactly(edge, offsetFromTop)).toBe(true);
+    expect(NativeIBGBugReporting.setFloatingButtonEdge).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setFloatingButtonEdge).toBeCalledWith(edge, offsetFromTop);
 
   });
 
@@ -260,7 +246,8 @@ describe('Testing BugReporting Module', () => {
 
     BugReporting.setEnabledAttachmentTypes(true, true, false, true);
 
-    expect(setEnabledAttachmentTypes.calledOnceWithExactly(true, true, false, true)).toBe(true);
+    expect(NativeIBGBugReporting.setEnabledAttachmentTypes).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setEnabledAttachmentTypes).toBeCalledWith(true, true, false, true);
 
   });
 
@@ -269,7 +256,8 @@ describe('Testing BugReporting Module', () => {
     const position = 30;
     BugReporting.setVideoRecordingFloatingButtonPosition(position);
 
-    expect(setVideoRecordingFloatingButtonPosition.calledOnceWithExactly(position)).toBe(true);
+    expect(NativeIBGBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledTimes(1);
+    expect(NativeIBGBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledWith(position);
 
   });
 });

@@ -7,25 +7,13 @@ import 'react-native';
 import { NativeModules, Platform } from 'react-native';
 import './jest/mockReport';
 import Report from '../src/models/Report'
-import sinon from 'sinon';
+
+const { Instabug: NativeInstabug } = NativeModules;
 
 describe('Report Model', () => {
-  
-  const appendTagToReport = sinon.spy(NativeModules.Instabug, 'appendTagToReport');
-  const appendConsoleLogToReport = sinon.spy(NativeModules.Instabug, 'appendConsoleLogToReport');
-  const setUserAttributeToReport = sinon.spy(NativeModules.Instabug, 'setUserAttributeToReport');
-  const logDebugToReport = sinon.spy(NativeModules.Instabug, 'logDebugToReport');
-  const logVerboseToReport = sinon.spy(NativeModules.Instabug, 'logVerboseToReport');
-  const logWarnToReport = sinon.spy(NativeModules.Instabug, 'logWarnToReport');
-  const logErrorToReport = sinon.spy(NativeModules.Instabug, 'logErrorToReport');
-  const logInfoToReport = sinon.spy(NativeModules.Instabug, 'logInfoToReport');
-  const addFileAttachmentWithURLToReport = sinon.spy(NativeModules.Instabug, 'addFileAttachmentWithURLToReport');
-  const addFileAttachmentWithDataToReport = sinon.spy(NativeModules.Instabug, 'addFileAttachmentWithDataToReport');
   var report;
   
   beforeEach(() => {
-      addFileAttachmentWithDataToReport.resetHistory();
-      addFileAttachmentWithURLToReport.resetHistory();
     const reportData = {
         tags: ['tag1', 'tag2'],
         consoleLogs: ['consoleLog'],
@@ -44,7 +32,8 @@ describe('Report Model', () => {
     report.appendTag(tag);
 
     expect(report.tags).toEqual([...tagsBefore, tag]);
-    expect(appendTagToReport.calledOnceWithExactly(tag)).toBe(true);
+    expect(NativeInstabug.appendTagToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.appendTagToReport).toBeCalledWith(tag);
 
   });
 
@@ -55,7 +44,8 @@ describe('Report Model', () => {
     report.appendConsoleLog(log);
 
     expect(report.consoleLogs).toEqual([...logsBefore, log]);
-    expect(appendConsoleLogToReport.calledOnceWithExactly(log)).toBe(true);
+    expect(NativeInstabug.appendConsoleLogToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.appendConsoleLogToReport).toBeCalledWith(log);
 
   });
 
@@ -67,7 +57,8 @@ describe('Report Model', () => {
 
     expect(report.userAttributes).toHaveProperty(key);
     expect(report.userAttributes[key]).toEqual(value);
-    expect(setUserAttributeToReport.calledOnceWithExactly(key, value)).toBe(true);
+    expect(NativeInstabug.setUserAttributeToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.setUserAttributeToReport).toBeCalledWith(key, value);
 
   });
 
@@ -78,7 +69,8 @@ describe('Report Model', () => {
     report.logDebug(message);
 
     expect(report.instabugLogs).toEqual([...logsBefore, { log: message, type: 'debug' }]);
-    expect(logDebugToReport.calledOnceWithExactly(message)).toBe(true);
+    expect(NativeInstabug.logDebugToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.logDebugToReport).toBeCalledWith(message);
 
   });
 
@@ -89,7 +81,8 @@ describe('Report Model', () => {
     report.logVerbose(message);
 
     expect(report.instabugLogs).toEqual([...logsBefore, { log: message, type: 'verbose' }]);
-    expect(logVerboseToReport.calledOnceWithExactly(message)).toBe(true);
+    expect(NativeInstabug.logVerboseToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.logVerboseToReport).toBeCalledWith(message);
 
   });
 
@@ -100,7 +93,8 @@ describe('Report Model', () => {
     report.logWarn(message);
 
     expect(report.instabugLogs).toEqual([...logsBefore, { log: message, type: 'warn' }]);
-    expect(logWarnToReport.calledOnceWithExactly(message)).toBe(true);
+    expect(NativeInstabug.logWarnToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.logWarnToReport).toBeCalledWith(message);
 
   });
 
@@ -111,7 +105,8 @@ describe('Report Model', () => {
     report.logError(message);
 
     expect(report.instabugLogs).toEqual([...logsBefore, { log: message, type: 'error' }]);
-    expect(logErrorToReport.calledOnceWithExactly(message)).toBe(true);
+    expect(NativeInstabug.logErrorToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.logErrorToReport).toBeCalledWith(message);
 
   });
 
@@ -122,7 +117,8 @@ describe('Report Model', () => {
     report.logInfo(message);
 
     expect(report.instabugLogs).toEqual([...logsBefore, { log: message, type: 'info' }]);
-    expect(logInfoToReport.calledOnceWithExactly(message)).toBe(true);
+    expect(NativeInstabug.logInfoToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.logInfoToReport).toBeCalledWith(message);
 
   });
 
@@ -134,7 +130,8 @@ describe('Report Model', () => {
     report.addFileAttachmentWithUrl(file);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'url' }]);
-    expect(addFileAttachmentWithURLToReport.calledOnceWithExactly(file)).toBe(true);
+    expect(NativeInstabug.addFileAttachmentWithURLToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.addFileAttachmentWithURLToReport).toBeCalledWith(file);
 
   });
 
@@ -147,7 +144,8 @@ describe('Report Model', () => {
     report.addFileAttachmentWithUrl(file, fileName);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'url' }]);
-    expect(addFileAttachmentWithURLToReport.calledOnceWithExactly(file, fileName)).toBe(true);
+    expect(NativeInstabug.addFileAttachmentWithURLToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.addFileAttachmentWithURLToReport).toBeCalledWith(file, fileName);
 
   });
 
@@ -159,7 +157,8 @@ describe('Report Model', () => {
     report.addFileAttachmentWithData(file);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'data' }]);
-    expect(addFileAttachmentWithDataToReport.calledOnceWithExactly(file)).toBe(true);
+    expect(NativeInstabug.addFileAttachmentWithDataToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.addFileAttachmentWithDataToReport).toBeCalledWith(file);
 
   });
 
@@ -172,7 +171,8 @@ describe('Report Model', () => {
     report.addFileAttachmentWithData(file, fileName);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'data' }]);
-    expect(addFileAttachmentWithDataToReport.calledOnceWithExactly(file, fileName)).toBe(true);
+    expect(NativeInstabug.addFileAttachmentWithDataToReport).toBeCalledTimes(1);
+    expect(NativeInstabug.addFileAttachmentWithDataToReport).toBeCalledWith(file, fileName);
 
   });
 

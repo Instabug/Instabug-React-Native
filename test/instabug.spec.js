@@ -6,144 +6,84 @@
 import 'react-native';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
+import waitForExpect from 'wait-for-expect';
 import './jest/mockInstabug';
 import './jest/mockInstabugUtils';
 import './jest/mockXhrNetworkInterceotor';
 import Instabug from '../src/modules/Instabug';
 import Report from '../src/models/Report';
-import sinon from 'sinon';
 
 import IBGConstants from '../src/utils/InstabugConstants';
 import IBGEventEmitter from '../src/utils/IBGEventEmitter';
 import { green } from 'ansi-colors';
 import InstabugUtils from '../src/utils/InstabugUtils';
 
+const { Instabug: NativeInstabug } = NativeModules;
+
 describe('Instabug Module', () => {
-
-  const start = sinon.spy(NativeModules.Instabug, 'start');
-  const setUserData = sinon.spy(NativeModules.Instabug, 'setUserData');
-  const setTrackUserSteps = sinon.spy(NativeModules.Instabug, 'setTrackUserSteps');
-  const setIBGLogPrintsToConsole = sinon.spy(NativeModules.Instabug, 'setIBGLogPrintsToConsole');
-  const setSessionProfilerEnabled = sinon.spy(NativeModules.Instabug, 'setSessionProfilerEnabled');
-  const setLocale = sinon.spy(NativeModules.Instabug, 'setLocale');
-  const setColorTheme = sinon.spy(NativeModules.Instabug, 'setColorTheme');
-  const setPrimaryColor = sinon.spy(NativeModules.Instabug, 'setPrimaryColor');
-  const appendTags = sinon.spy(NativeModules.Instabug, 'appendTags');
-  const resetTags = sinon.spy(NativeModules.Instabug, 'resetTags');
-  const getTags = sinon.spy(NativeModules.Instabug, 'getTags');
-  const setString = sinon.spy(NativeModules.Instabug, 'setString');
-  const identifyUser = sinon.spy(NativeModules.Instabug, 'identifyUser');
-  const logOut = sinon.spy(NativeModules.Instabug, 'logOut');
-  const logUserEvent = sinon.spy(NativeModules.Instabug, 'logUserEvent');
-  const log = sinon.spy(NativeModules.Instabug, 'log');
-  const logVerbose = sinon.spy(NativeModules.Instabug, 'logVerbose');
-  const logInfo = sinon.spy(NativeModules.Instabug, 'logInfo');
-  const logWarn = sinon.spy(NativeModules.Instabug, 'logWarn');
-  const logError = sinon.spy(NativeModules.Instabug, 'logError');
-  const logDebug = sinon.spy(NativeModules.Instabug, 'logDebug');
-  const clearLogs = sinon.spy(NativeModules.Instabug, 'clearLogs');
-  const setReproStepsMode = sinon.spy(NativeModules.Instabug, 'setReproStepsMode');
-  const setSdkDebugLogsLevel = sinon.spy(NativeModules.Instabug, 'setSdkDebugLogsLevel');
-  const setUserAttribute = sinon.spy(NativeModules.Instabug, 'setUserAttribute');
-  const getUserAttribute = sinon.spy(NativeModules.Instabug, 'getUserAttribute');
-  const removeUserAttribute = sinon.spy(NativeModules.Instabug, 'removeUserAttribute');
-  const getAllUserAttributes = sinon.spy(NativeModules.Instabug, 'getAllUserAttributes');
-  const clearAllUserAttributes = sinon.spy(NativeModules.Instabug, 'clearAllUserAttributes');
-  const setDebugEnabled = sinon.spy(NativeModules.Instabug, 'setDebugEnabled');
-  const enable = sinon.spy(NativeModules.Instabug, 'enable');
-  const disable = sinon.spy(NativeModules.Instabug, 'disable');
-  const isRunningLive = sinon.spy(NativeModules.Instabug, 'isRunningLive');
-  const showWelcomeMessageWithMode = sinon.spy(NativeModules.Instabug, 'showWelcomeMessageWithMode');
-  const setWelcomeMessageMode = sinon.spy(NativeModules.Instabug, 'setWelcomeMessageMode');
-  const setFileAttachment = sinon.spy(NativeModules.Instabug, 'setFileAttachment');
-  const addPrivateView = sinon.spy(NativeModules.Instabug, 'addPrivateView');
-  const removePrivateView = sinon.spy(NativeModules.Instabug, 'removePrivateView');
-  const show = sinon.spy(NativeModules.Instabug, 'show');
-  const setPreSendingHandler = sinon.spy(NativeModules.Instabug, 'setPreSendingHandler');
-  const callPrivateApi = sinon.spy(NativeModules.Instabug, 'callPrivateApi');
-  const sendHandledJSCrash = sinon.spy(NativeModules.Instabug, 'sendHandledJSCrash');
-  const sendJSCrash = sinon.spy(NativeModules.Instabug, 'sendJSCrash');
-  const reportScreenChange = sinon.spy(NativeModules.Instabug, 'reportScreenChange');
-  const addExperiments = sinon.spy(NativeModules.Instabug, 'addExperiments');
-  const removeExperiments = sinon.spy(NativeModules.Instabug, 'removeExperiments');
-  const clearAllExperiments = sinon.spy(NativeModules.Instabug, 'clearAllExperiments');
-
   beforeEach(() => {
-    start.resetHistory();
-    setTrackUserSteps.resetHistory();
-    setIBGLogPrintsToConsole.resetHistory();
-    log.resetHistory();
-    setSdkDebugLogsLevel.resetHistory();
-    setDebugEnabled.resetHistory();
-    enable.resetHistory();
-    disable.resetHistory();
-    isRunningLive.resetHistory();
-    setFileAttachment.resetHistory();
-    addPrivateView.resetHistory();
-    removePrivateView.resetHistory();
-    setPreSendingHandler.resetHistory();
     IBGEventEmitter.removeAllListeners();
   });
 
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
-    const screenName = "some-screen";
-    var obj = {componentId: "1",
-              componentName: screenName,
-              "passProps": "screenName"};
+    const screenName = 'some-screen';
+    var obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
     Instabug.componentDidAppearListener(obj);
-    expect(reportScreenChange.calledOnceWithExactly(screenName)).toBe(true);
+    expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
+    expect(NativeInstabug.reportScreenChange).toBeCalledWith(screenName);
   });
 
-  it('onNavigationStateChange should call the native method reportScreenChange', () => {
-    const screenName = "some-screen";
-    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
-    Instabug.onNavigationStateChange(screenName, screenName, screenName);
-    expect(reportScreenChange.calledOnceWithExactly(screenName)).toBe(true);
+  it('onNavigationStateChange should call the native method reportScreenChange', async () => {
+    InstabugUtils.getActiveRouteName.mockImplementation(screenName => screenName);
+    Instabug.onNavigationStateChange('home', 'settings');
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
+      expect(NativeInstabug.reportScreenChange).toBeCalledWith('settings');
+    });
   });
 
   it('should call the native method start', () => {
     const token = 'some-token';
-    const invocationEvents = [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake];
+    const invocationEvents = [
+      Instabug.invocationEvent.floatingButton,
+      Instabug.invocationEvent.shake,
+    ];
     Instabug.start(token, invocationEvents);
 
-    expect(start.calledOnceWithExactly(token, invocationEvents)).toBe(true);
-
+    expect(NativeInstabug.start).toBeCalledTimes(1);
+    expect(NativeInstabug.start).toBeCalledWith(token, invocationEvents);
   });
 
   it('should call the native method setUserData', () => {
-
-    const userData = "userData";
+    const userData = 'userData';
     Instabug.setUserData(userData);
 
-    expect(setUserData.calledOnceWithExactly(userData)).toBe(true);
-
+    expect(NativeInstabug.setUserData).toBeCalledTimes(1);
+    expect(NativeInstabug.setUserData).toBeCalledWith(userData);
   });
 
   it('should call the native method setTrackUserSteps', () => {
-
     Platform.OS = 'ios';
     Instabug.setTrackUserSteps(true);
 
-    expect(setTrackUserSteps.calledOnceWithExactly(true)).toBe(true);
-
+    expect(NativeInstabug.setTrackUserSteps).toBeCalledTimes(1);
+    expect(NativeInstabug.setTrackUserSteps).toBeCalledWith(true);
   });
 
   it('should not call the native method setTrackUserSteps when platform is android', () => {
-
     Platform.OS = 'android';
     Instabug.setTrackUserSteps(true);
 
-    expect(setTrackUserSteps.notCalled).toBe(true);
-
+    expect(NativeInstabug.setTrackUserSteps).not.toBeCalled();
   });
 
   it('should call the native method setIBGLogPrintsToConsole', () => {
-
     Platform.OS = 'ios';
     Instabug.setIBGLogPrintsToConsole(true);
 
-    expect(setIBGLogPrintsToConsole.calledOnceWithExactly(true)).toBe(true);
-
+    expect(NativeInstabug.setIBGLogPrintsToConsole).toBeCalledTimes(1);
+    expect(NativeInstabug.setIBGLogPrintsToConsole).toBeCalledWith(true);
   });
 
   it('should not call the native method setIBGLogPrintsToConsole when platform is android', () => {
@@ -151,409 +91,352 @@ describe('Instabug Module', () => {
     Platform.OS = 'android';
     Instabug.setIBGLogPrintsToConsole(true);
 
-    expect(setIBGLogPrintsToConsole.notCalled).toBe(true);
-
+    expect(NativeInstabug.setIBGLogPrintsToConsole).not.toBeCalled();
   });
 
   it('should call the native method setSessionProfilerEnabled', () => {
-
     Instabug.setSessionProfilerEnabled(true);
 
-    expect(setSessionProfilerEnabled.calledOnceWithExactly(true)).toBe(true);
-
+    expect(NativeInstabug.setSessionProfilerEnabled).toBeCalledTimes(1);
+    expect(NativeInstabug.setSessionProfilerEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method setLocale', () => {
-
     const locale = Instabug.locale.english;
     Instabug.setLocale(locale);
 
-    expect(setLocale.calledOnceWithExactly(locale)).toBe(true);
-
+    expect(NativeInstabug.setLocale).toBeCalledTimes(1);
+    expect(NativeInstabug.setLocale).toBeCalledWith(locale);
   });
 
   it('should call the native method setColorTheme', () => {
-
     const theme = Instabug.colorTheme.dark;
-    Instabug.setColorTheme(theme)
+    Instabug.setColorTheme(theme);
 
-    expect(setColorTheme.calledOnceWithExactly(theme)).toBe(true);
-
+    expect(NativeInstabug.setColorTheme).toBeCalledTimes(1);
+    expect(NativeInstabug.setColorTheme).toBeCalledWith(theme);
   });
 
   it('should call the native method setPrimaryColor', () => {
-
     const color = green;
-    Instabug.setPrimaryColor(color)
+    Instabug.setPrimaryColor(color);
 
-    expect(setPrimaryColor.calledOnceWithExactly(processColor(color))).toBe(true);
-
+    expect(NativeInstabug.setPrimaryColor).toBeCalledTimes(1);
+    expect(NativeInstabug.setPrimaryColor).toBeCalledWith(processColor(color));
   });
 
   it('should call the native method appendTags', () => {
-
     const tags = ['tag1', 'tag2'];
     Instabug.appendTags(tags);
 
-    expect(appendTags.calledOnceWithExactly(tags)).toBe(true);
-
+    expect(NativeInstabug.appendTags).toBeCalledTimes(1);
+    expect(NativeInstabug.appendTags).toBeCalledWith(tags);
   });
 
   it('should call the native method resetTags', () => {
-
     Instabug.resetTags();
 
-    expect(resetTags.calledOnce).toBe(true);
-
+    expect(NativeInstabug.resetTags).toBeCalledTimes(1);
   });
 
-  it('should call native method getTags', (done) => {
-
-    const callback = (tags) => {
+  it('should call native method getTags', done => {
+    const callback = tags => {
       expect(tags).toBeDefined();
       done();
-    }
+    };
     Instabug.getTags(callback);
-    expect(getTags.calledOnceWithExactly(callback)).toBe(true);
-
+    expect(NativeInstabug.getTags).toBeCalledTimes(1);
+    expect(NativeInstabug.getTags).toBeCalledWith(callback);
   });
 
   it('should call the native method setString', () => {
-
     const string = 'report an issue';
     const key = Instabug.strings.reportBug;
     Instabug.setString(key, string);
 
-    expect(setString.calledOnceWithExactly(string, key)).toBe(true);
-
+    expect(NativeInstabug.setString).toBeCalledTimes(1);
+    expect(NativeInstabug.setString).toBeCalledWith(string, key);
   });
 
   it('should call the native method identifyUser', () => {
-
-
     const email = 'foo@instabug.com';
     const name = 'Instabug';
     Instabug.identifyUser(email, name);
 
-    expect(identifyUser.calledOnceWithExactly(email, name)).toBe(true);
-
+    expect(NativeInstabug.identifyUser).toBeCalledTimes(1);
+    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name);
   });
 
   it('should call the native method logOut', () => {
-
     Instabug.logOut();
 
-    expect(logOut.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logOut).toBeCalledTimes(1);
   });
 
   it('should call the native method logUserEvent', () => {
-
     const event = 'click';
     Instabug.logUserEvent(event);
 
-    expect(logUserEvent.calledOnceWithExactly(event)).toBe(true);
-
+    expect(NativeInstabug.logUserEvent).toBeCalledTimes(1);
+    expect(NativeInstabug.logUserEvent).toBeCalledWith(event);
   });
 
   it('should call the native method logVerbose', () => {
-
     const message = 'log';
     Instabug.logVerbose(message);
 
-    expect(logVerbose.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logVerbose).toBeCalledTimes(1);
   });
 
   it('should call the native method logDebug', () => {
-
     const message = 'log';
     Instabug.logDebug(message);
 
-    expect(logDebug.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logDebug).toBeCalledTimes(1);
   });
 
   it('should call the native method logInfo', () => {
-
     const message = 'log';
     Instabug.logInfo(message);
 
-    expect(logInfo.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logInfo).toBeCalledTimes(1);
   });
 
   it('should call the native method logWarn', () => {
-
     const message = 'log';
     Instabug.logWarn(message);
 
-    expect(logWarn.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logWarn).toBeCalledTimes(1);
   });
 
   it('should call the native method logError', () => {
-
     const message = 'log';
     Instabug.logError(message);
 
-    expect(logError.calledOnce).toBe(true);
-
+    expect(NativeInstabug.logError).toBeCalledTimes(1);
   });
 
   it('should call the native method clearLogs', () => {
-
     Instabug.clearLogs();
 
-    expect(clearLogs.calledOnce).toBe(true);
-
+    expect(NativeInstabug.clearLogs).toBeCalledTimes(1);
   });
 
   it('should call the native method setReproStepsMode', () => {
-
     const mode = Instabug.reproStepsMode.enabled;
     Instabug.setReproStepsMode(mode);
 
-    expect(setReproStepsMode.calledOnceWithExactly(mode)).toBe(true);
-
+    expect(NativeInstabug.setReproStepsMode).toBeCalledTimes(1);
+    expect(NativeInstabug.setReproStepsMode).toBeCalledWith(mode);
   });
 
   it('should call the native method setSdkDebugLogsLevel on iOS', () => {
     const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
-    
+
     Platform.OS = 'ios';
     Instabug.setSdkDebugLogsLevel(debugLevel);
 
-    expect(setSdkDebugLogsLevel.calledOnceWithExactly(debugLevel)).toBe(true);
+    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledTimes(1);
+    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledWith(debugLevel);
   });
 
   it('should not call the native method setSdkDebugLogsLevel on Android', () => {
     const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
-    
+
     Platform.OS = 'android';
     Instabug.setSdkDebugLogsLevel(debugLevel);
 
-    expect(setSdkDebugLogsLevel.notCalled).toBe(true);
+    expect(NativeInstabug.setSdkDebugLogsLevel).not.toBeCalled();
   });
 
   it('should call the native method setUserAttribute', () => {
-
     const key = 'age';
     const value = '24';
     Instabug.setUserAttribute(key, value);
 
-    expect(setUserAttribute.calledOnceWithExactly(key, value)).toBe(true);
-
+    expect(NativeInstabug.setUserAttribute).toBeCalledTimes(1);
+    expect(NativeInstabug.setUserAttribute).toBeCalledWith(key, value);
   });
 
-  it('should call native method getUserAttribute', (done) => {
-
-    const callback = (value) => {
+  it('should call native method getUserAttribute', done => {
+    const callback = value => {
       expect(value).toBeDefined();
       done();
-    }
+    };
     const key = 'age';
     Instabug.getUserAttribute(key, callback);
-    expect(getUserAttribute.calledOnceWithExactly(key, callback)).toBe(true);
-
+    expect(NativeInstabug.getUserAttribute).toBeCalledTimes(1);
+    expect(NativeInstabug.getUserAttribute).toBeCalledWith(key, callback);
   });
 
   it('should call the native method removeUserAttribute', () => {
-
     const key = 'age';
     Instabug.removeUserAttribute(key);
 
-    expect(removeUserAttribute.calledOnceWithExactly(key)).toBe(true);
-
+    expect(NativeInstabug.removeUserAttribute).toBeCalledTimes(1);
+    expect(NativeInstabug.removeUserAttribute).toBeCalledWith(key);
   });
 
-  it('should call native method getAllUserAttributes', (done) => {
-
-    const callback = (value) => {
+  it('should call native method getAllUserAttributes', done => {
+    const callback = value => {
       expect(value).toBeDefined();
       done();
-    }
+    };
     Instabug.getAllUserAttributes(callback);
-    expect(getAllUserAttributes.calledOnceWithExactly(callback)).toBe(true);
-
+    expect(NativeInstabug.getAllUserAttributes).toBeCalledTimes(1);
+    expect(NativeInstabug.getAllUserAttributes).toBeCalledWith(callback);
   });
 
   it('should call the native method clearAllUserAttributes', () => {
-
     Instabug.clearAllUserAttributes();
 
-    expect(clearAllUserAttributes.calledOnce).toBe(true);
-
+    expect(NativeInstabug.clearAllUserAttributes).toBeCalledTimes(1);
   });
 
   it('should call the native method setDebugEnabled', () => {
-
     Platform.OS = 'android';
     Instabug.setDebugEnabled(true);
 
-    expect(setDebugEnabled.calledOnceWithExactly(true)).toBe(true);
-
+    expect(NativeInstabug.setDebugEnabled).toBeCalledTimes(1);
+    expect(NativeInstabug.setDebugEnabled).toBeCalledWith(true);
   });
 
   it('should not call the native method setDebugEnabled when platform is ios', () => {
-
     Platform.OS = 'ios';
     Instabug.setDebugEnabled(true);
 
-    expect(setDebugEnabled.notCalled).toBe(true);
-
+    expect(NativeInstabug.setDebugEnabled).not.toBeCalled();
   });
 
   it('should call the native method enable', () => {
-
     Platform.OS = 'android';
     Instabug.enable();
 
-    expect(enable.calledOnce).toBe(true);
-
+    expect(NativeInstabug.enable).toBeCalledTimes(1);
   });
 
   it('should not call the native method enable when platform is ios', () => {
-
     Platform.OS = 'ios';
     Instabug.enable();
 
-    expect(enable.notCalled).toBe(true);
-
+    expect(NativeInstabug.enable).not.toBeCalled();
   });
 
   it('should call the native method disable', () => {
-
     Platform.OS = 'android';
     Instabug.disable();
 
-    expect(disable.calledOnce).toBe(true);
-
+    expect(NativeInstabug.disable).toBeCalledTimes(1);
   });
 
   it('should not call the native method disable when platform is ios', () => {
-
     Platform.OS = 'ios';
     Instabug.disable();
 
-    expect(disable.notCalled).toBe(true);
-
+    expect(NativeInstabug.disable).not.toBeCalled();
   });
 
-  it('should call the native method isRunningLive', (done) => {
-
+  it('should call the native method isRunningLive', done => {
     Platform.OS = 'ios';
-    const callback = (isRunningLive) => {
+    const callback = isRunningLive => {
       expect(isRunningLive).toBeDefined();
       done();
-    }
+    };
     Instabug.isRunningLive(callback);
 
-    expect(isRunningLive.calledOnceWithExactly(callback)).toBe(true);
-
+    expect(NativeInstabug.isRunningLive).toBeCalledTimes(1);
+    expect(NativeInstabug.isRunningLive).toBeCalledWith(callback);
   });
 
   it('should not call the native method isRunningLive when platform is android', () => {
-
     Platform.OS = 'android';
     Instabug.isRunningLive(jest.fn());
 
-    expect(isRunningLive.notCalled).toBe(true);
-
+    expect(NativeInstabug.isRunningLive).not.toBeCalled();
   });
 
   it('should call the native method showWelcomeMessageWithMode', () => {
-
     const mode = Instabug.welcomeMessageMode.beta;
     Instabug.showWelcomeMessage(mode);
 
-    expect(showWelcomeMessageWithMode.calledOnceWithExactly(mode)).toBe(true);
-
+    expect(NativeInstabug.showWelcomeMessageWithMode).toBeCalledTimes(1);
+    expect(NativeInstabug.showWelcomeMessageWithMode).toBeCalledWith(mode);
   });
 
   it('should call the native method setWelcomeMessageMode', () => {
-
     const mode = Instabug.welcomeMessageMode.beta;
     Instabug.setWelcomeMessageMode(mode);
 
-    expect(setWelcomeMessageMode.calledOnceWithExactly(mode)).toBe(true);
-
+    expect(NativeInstabug.setWelcomeMessageMode).toBeCalledTimes(1);
+    expect(NativeInstabug.setWelcomeMessageMode).toBeCalledWith(mode);
   });
 
   it('should call the native method setFileAttachment with filePath when platform is ios', () => {
-
     Platform.OS = 'ios';
     const path = '~/path';
     Instabug.addFileAttachment(path);
 
-    expect(setFileAttachment.calledOnceWithExactly(path)).toBe(true);
-
+    expect(NativeInstabug.setFileAttachment).toBeCalledTimes(1);
+    expect(NativeInstabug.setFileAttachment).toBeCalledWith(path);
   });
 
   it('should call the native method setFileAttachment with filePath and fileName when platform is android', () => {
-
     Platform.OS = 'android';
     const path = '~/path';
     const name = 'file';
     Instabug.addFileAttachment(path, name);
 
-    expect(setFileAttachment.calledOnceWithExactly(path, name)).toBe(true);
-
+    expect(NativeInstabug.setFileAttachment).toBeCalledTimes(1);
+    expect(NativeInstabug.setFileAttachment).toBeCalledWith(path, name);
   });
 
   it('should call the native method addPrivateView', () => {
-
-    <Text ref={(c) => this.textView = c} />
+    <Text ref={c => (this.textView = c)} />;
     Instabug.addPrivateView(this.textView);
 
-    expect(addPrivateView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
+    expect(NativeInstabug.addPrivateView).toBeCalledTimes(1);
+    expect(NativeInstabug.addPrivateView).toBeCalledWith(findNodeHandle(this.textView));
   });
 
   it('should call the native method removePrivateView', () => {
-
-    <Text ref={(c) => this.textView = c} />
+    <Text ref={c => (this.textView = c)} />;
     Instabug.removePrivateView(this.textView);
 
-    expect(removePrivateView.calledOnceWithExactly(findNodeHandle(this.textView))).toBe(true);
+    expect(NativeInstabug.removePrivateView).toBeCalledTimes(1);
+    expect(NativeInstabug.removePrivateView).toBeCalledWith(findNodeHandle(this.textView));
   });
 
   it('should call the native method show', () => {
-
     Instabug.show();
 
-    expect(show.calledOnce).toBe(true);
-
+    expect(NativeInstabug.show).toBeCalledTimes(1);
   });
 
   it('should set _isOnReportHandlerSet to true on calling onReportSubmitHandler', () => {
-
     Instabug.onReportSubmitHandler(jest.fn());
     InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
     const isReportHandlerSet = InstabugUtils.isOnReportHandlerSet();
 
     expect(isReportHandlerSet).toBe(true);
-
   });
 
   it('should call the native method setPreSendingHandler with a function', () => {
-
-    const callback = jest.fn()
+    const callback = jest.fn();
     Instabug.onReportSubmitHandler(callback);
 
-    expect(setPreSendingHandler.calledOnceWithExactly(callback)).toBe(true);
+    expect(NativeInstabug.setPreSendingHandler).toBeCalledTimes(1);
+    expect(NativeInstabug.setPreSendingHandler).toBeCalledWith(callback);
   });
 
-
-  it('should invoke callback on emitting the event IBGpreSendingHandler', (done) => {
-
+  it('should invoke callback on emitting the event IBGpreSendingHandler', done => {
     const report = {
       tags: ['tag1', 'tag2'],
       consoleLogs: ['consoleLog'],
       instabugLogs: ['instabugLog'],
       userAttributes: [{ age: '24' }],
-      fileAttachments: ['path']
+      fileAttachments: ['path'],
     };
-    const callback = (rep) => {
+    const callback = rep => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -561,27 +444,25 @@ describe('Instabug Module', () => {
       expect(rep.userAttributes).toBe(report.userAttributes);
       expect(rep.fileAttachments).toBe(report.fileAttachments);
       done();
-    }
+    };
     Instabug.onReportSubmitHandler(callback);
     IBGEventEmitter.emit(IBGConstants.PRESENDING_HANDLER, report);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.PRESENDING_HANDLER).length).toEqual(1);
-
   });
 
-  it('should invoke callback on emitting the event IBGSendHandledJSCrash', async (done) => {
-
+  it('should invoke callback on emitting the event IBGSendHandledJSCrash', async done => {
     Platform.OS = 'android';
     const report = {
       tags: ['tag1', 'tag2'],
       consoleLogs: ['consoleLog'],
       instabugLogs: ['instabugLog'],
       userAttributes: [{ age: '24' }],
-      fileAttachments: ['path']
+      fileAttachments: ['path'],
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = (rep) => {
+    const callback = rep => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -589,37 +470,34 @@ describe('Instabug Module', () => {
       expect(rep.userAttributes).toBe(report.userAttributes);
       expect(rep.fileAttachments).toBe(report.fileAttachments);
       done();
-    }
+    };
     Instabug.onReportSubmitHandler(callback);
     IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(1);
-    await expect(sendHandledJSCrash.calledOnceWithExactly(jsonObject)).toBe(true);
-
+    await expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
+    await expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(jsonObject);
   });
 
   it('should not invoke callback on emitting the event IBGSendHandledJSCrash when Platform is iOS', () => {
-
     Platform.OS = 'ios';
     Instabug.onReportSubmitHandler(jest.fn());
     IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, {});
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(0);
-
   });
 
-  it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async (done) => {
-
+  it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async done => {
     Platform.OS = 'android';
     const report = {
       tags: ['tag1', 'tag2'],
       consoleLogs: ['consoleLog'],
       instabugLogs: ['instabugLog'],
       userAttributes: [{ age: '24' }],
-      fileAttachments: ['path']
+      fileAttachments: ['path'],
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = (rep) => {
+    const callback = rep => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -627,48 +505,47 @@ describe('Instabug Module', () => {
       expect(rep.userAttributes).toBe(report.userAttributes);
       expect(rep.fileAttachments).toBe(report.fileAttachments);
       done();
-    }
+    };
     Instabug.onReportSubmitHandler(callback);
     IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(1);
-    await expect(sendJSCrash.calledOnceWithExactly(jsonObject)).toBe(true);
-
+    await expect(NativeInstabug.sendJSCrash).toBeCalledTimes(1);
+    await expect(NativeInstabug.sendJSCrash).toBeCalledWith(jsonObject);
   });
 
   it('should not invoke callback on emitting the event IBGSendUnhandledJSCrash when Platform is iOS', () => {
-
     Platform.OS = 'ios';
     Instabug.onReportSubmitHandler(jest.fn());
     IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, {});
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(0);
-
   });
 
   it('should invoke the native method callPrivateApi', () => {
-
     const apiName = 'name';
     const param = 'param';
     Instabug.callPrivateApi(apiName, param);
 
-    expect(callPrivateApi.calledOnceWithExactly(apiName, param)).toBe(true);
-
+    expect(NativeInstabug.callPrivateApi).toBeCalledTimes(1);
+    expect(NativeInstabug.callPrivateApi).toBeCalledWith(apiName, param);
   });
 
   it('should call native addExperiments method', () => {
     const experiments = ['exp1', 'exp2'];
     Instabug.addExperiments(experiments);
-    expect(addExperiments.calledOnceWithExactly(experiments)).toBeTruthy();
+    expect(NativeInstabug.addExperiments).toBeCalledTimes(1);
+    expect(NativeInstabug.addExperiments).toBeCalledWith(experiments);
   });
 
   it('should call native removeExperiments method', () => {
     const experiments = ['exp1', 'exp2'];
     Instabug.removeExperiments(experiments);
-    expect(removeExperiments.calledOnceWithExactly(experiments)).toBeTruthy();
+    expect(NativeInstabug.removeExperiments).toBeCalledTimes(1);
+    expect(NativeInstabug.removeExperiments).toBeCalledWith(experiments);
   });
 
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
-    expect(clearAllExperiments.calledOnce).toBeTruthy();
+    expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
   });
 });
