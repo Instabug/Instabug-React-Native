@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
+import Trace from '../../src/models/Trace';
 import APM from '../../src/modules/APM';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 
 const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
 
@@ -57,6 +57,23 @@ describe('APM Module', () => {
       expect.any(String),
       expect.any(Function),
     );
+  });
+
+  it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
+    NativeAPM.startExecutionTrace.mockImplementationOnce((_, __, callback) => callback());
+
+    const promise = APM.startExecutionTrace('trace');
+
+    await expect(promise).rejects.toThrowError(/trace "trace" wasn't created/i);
+  });
+
+  it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
+    NativeAPM.startExecutionTrace.mockImplementationOnce((_, __, callback) => callback('trace-id'));
+
+    const promise = APM.startExecutionTrace('trace');
+
+    await expect(promise).resolves.toBeInstanceOf(Trace);
+    await expect(promise).resolves.toHaveProperty('name', 'trace');
   });
 
   it('should call the native method setExecutionTraceAttribute', () => {
