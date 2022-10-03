@@ -1,6 +1,7 @@
 ## Unreleased
 
 * Uses Cocoapods for Instabug iOS SDK
+* Fixes a compile error on projects with Java version prior to 8.
 
 ## 11.2.0 (2022-09-19)
 
