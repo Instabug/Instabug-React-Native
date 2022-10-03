@@ -1,30 +1,18 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import 'react-native';
+import '../mocks/mockInstabugUtils';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
 import waitForExpect from 'wait-for-expect';
-import './jest/mockInstabug';
-import './jest/mockInstabugUtils';
-import './jest/mockXhrNetworkInterceotor';
-import Instabug from '../src/modules/Instabug';
-import Report from '../src/models/Report';
+import Instabug from '../../src/modules/Instabug';
+import Report from '../../src/models/Report';
 
-import IBGConstants from '../src/utils/InstabugConstants';
-import IBGEventEmitter from '../src/utils/IBGEventEmitter';
+import IBGConstants from '../../src/utils/InstabugConstants';
+import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import { green } from 'ansi-colors';
-import InstabugUtils from '../src/utils/InstabugUtils';
+import InstabugUtils from '../../src/utils/InstabugUtils';
 
 const { Instabug: NativeInstabug } = NativeModules;
 
 describe('Instabug Module', () => {
-  beforeEach(() => {
-    IBGEventEmitter.removeAllListeners();
-  });
-
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
     const screenName = 'some-screen';
     var obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
@@ -87,7 +75,6 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method setIBGLogPrintsToConsole when platform is android', () => {
-
     Platform.OS = 'android';
     Instabug.setIBGLogPrintsToConsole(true);
 
