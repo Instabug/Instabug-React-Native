@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Bumps Instabug Android SDK to v11.5.1
 * Uses Cocoapods for Instabug iOS SDK
 
 ## 11.2.0 (2022-09-19)
