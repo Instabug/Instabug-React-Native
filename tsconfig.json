@@ -1,29 +1,30 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "instabug-reactnative": ["./src/index"]
-    },
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": true, // Temporarily disabled
-    "esModuleInterop": true,
-    "importsNotUsedAsValues": "error",
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "lib": ["esnext"],
     "module": "esnext",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "jsx": "react-native",
     "moduleResolution": "node",
+    "skipLibCheck": true,
+
+    // Interop
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+  
+    // Emit
+    "declaration": true,
+    "importsNotUsedAsValues": "error",
+
+    // Code Style
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": false, // Temporarily disabled
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
     "strict": true,
-    "noImplicitAny": false, // Temporarily disabled
-    "target": "esnext",
-    "declaration": true
   },
 }
