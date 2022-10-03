@@ -17,7 +17,13 @@ jobs:
       - checkout:
           path: ~/project
 
-      - run: yarn
+      - run:
+          name: Install Node Packages
+          command: yarn
+
+      - run:
+          name: Build Project
+          command: yarn build
 
       - run:
           name: jest tests
@@ -189,6 +195,7 @@ jobs:
       - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
       - run: cd Escape && swift build -c release
       - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
+      - run: cd project && yarn && yarn build
       - run: cd project && Escape react-native publish
 
 workflows:
