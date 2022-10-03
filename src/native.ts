@@ -3,9 +3,7 @@ import {
   NativeModules as ReactNativeModules,
 } from 'react-native';
 
-export interface NativeModule extends ReactNativeModule {
-  [key: string]: any;
-}
+export interface NativeModule extends ReactNativeModule, Record<string, any> {}
 
 interface InstabugNativeModules {
   IBGAPM: NativeModule;

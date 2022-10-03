@@ -1,10 +1,6 @@
 import { Platform } from 'react-native';
 import { NativeInstabug } from '../native';
 
-export interface UserAttributesMap {
-  [key: string]: string;
-}
-
 interface LogInfo {
   log: string;
   type: 'verbose' | 'debug' | 'warn' | 'info' | 'error';
@@ -20,7 +16,7 @@ export default class Report {
     public tags: string[] = [],
     public consoleLogs: string[] = [],
     public instabugLogs: LogInfo[] = [],
-    public userAttributes: UserAttributesMap = {},
+    public userAttributes: Record<string, string> = {},
     public fileAttachments: FileAttachmentInfo[] = [],
   ) {}
 

@@ -11,8 +11,8 @@ export interface NetworkData {
   responseBody: string | null;
   responseBodySize: number;
   responseCode: number;
-  requestHeaders: { [header: string]: string };
-  responseHeaders: { [header: string]: string };
+  requestHeaders: Record<string, string>;
+  responseHeaders: Record<string, string>;
   contentType: string;
   errorDomain: string;
   errorCode: number;

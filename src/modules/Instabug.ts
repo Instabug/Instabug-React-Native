@@ -3,7 +3,7 @@ import type { NavigationState as NavigationStateV4, NavigationAction } from 'rea
 import type React from 'react';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import { findNodeHandle, Platform, processColor } from 'react-native';
-import Report, { UserAttributesMap } from '../models/Report';
+import Report from '../models/Report';
 import { NativeInstabug } from '../native';
 import { ArgsRegistry } from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
@@ -334,7 +334,7 @@ export namespace Instabug {
    * @param callback callback with argument A new dictionary containing all the currently
    * set user attributes, or an empty dictionary if no user attributes have been set.
    */
-  export const getAllUserAttributes = (callback: (attributes: UserAttributesMap) => void) => {
+  export const getAllUserAttributes = (callback: (attributes: Record<string, string>) => void) => {
     NativeInstabug.getAllUserAttributes(callback);
   };
 

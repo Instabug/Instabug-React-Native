@@ -1,14 +1,10 @@
 import { NativeAPM } from '../native';
 
-interface TraceAttributesMap {
-  [key: string]: string;
-}
-
 export default class Trace {
   constructor(
     public readonly id: string,
     public readonly name: string = '',
-    public readonly attributes: TraceAttributesMap = {},
+    public readonly attributes: Record<string, string> = {},
   ) {}
 
   /**

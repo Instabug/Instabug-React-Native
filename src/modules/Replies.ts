@@ -99,7 +99,7 @@ export namespace Replies {
    *
    * @param data the data bundle related to Instabug
    */
-  export const showNotificationAndroid = (data: { [key: string]: string }) => {
+  export const showNotificationAndroid = (data: Record<string, string>) => {
     if (Platform.OS === 'android') {
       NativeReplies.showNotification(data);
     }
