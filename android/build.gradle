@@ -20,6 +20,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        consumerProguardFiles 'proguard-rules.txt'
     }
     lintOptions {
        warning 'InvalidPackage'
