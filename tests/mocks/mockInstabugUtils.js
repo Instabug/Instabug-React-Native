@@ -7,5 +7,6 @@ jest.mock('../../src/utils/InstabugUtils', () => {
     getActiveRouteName: jest.fn(),
     stringifyIfNotString: jest.fn(),
     getStackTrace: jest.fn().mockReturnValue('javascriptStackTrace'),
+    getFullRoute: jest.fn().mockImplementation(() => 'ScreenName'),
   };
 });
