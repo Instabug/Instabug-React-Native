@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency 'React-Core'
-  s.dependency 'Instabug', '11.2.0'
+  s.dependency 'Instabug', '11.3.0'
 end
