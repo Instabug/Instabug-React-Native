@@ -105,6 +105,15 @@ describe('Testing BugReporting Module', () => {
     expect(NativeBugReporting.show).toBeCalledWith(reportType, arrayOfOptions);
   });
 
+  it('should call the native method show with a reportType and default options to an empty array', () => {
+    const reportType = BugReporting.reportType.bug;
+    BugReporting.show(reportType);
+
+    expect(NativeBugReporting.show).toBeCalledTimes(1);
+
+    expect(NativeBugReporting.show).toBeCalledWith(reportType, []);
+  });
+
   it('should call the native method setOnInvokeHandler with a function', () => {
     const callback = jest.fn();
     BugReporting.onInvokeHandler(callback);
@@ -160,6 +169,12 @@ describe('Testing BugReporting Module', () => {
     expect(NativeBugReporting.setAutoScreenRecordingDuration).toBeCalledWith(30);
   });
 
+  it('should not call the native method setAutoScreenRecordingDuration on Android', () => {
+    Platform.OS = 'android';
+    BugReporting.setAutoScreenRecordingDurationIOS(30);
+    expect(NativeBugReporting.setAutoScreenRecordingDuration).not.toBeCalled();
+  });
+
   it('should call the native method setViewHierarchyEnabled', () => {
     BugReporting.setViewHierarchyEnabled(true);
 
@@ -177,6 +192,20 @@ describe('Testing BugReporting Module', () => {
     expect(
       IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length,
     ).toEqual(0);
+  });
+
+  it('should call setDidSelectPromptOptionHandler event listener when platform is iOS', () => {
+    Platform.OS = 'ios';
+    const callback = jest.fn();
+    const payload = { promptOption: 'bug' };
+
+    BugReporting.setDidSelectPromptOptionHandler(callback);
+    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
+
+    const listeners = IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER);
+    expect(listeners.length).toBe(1);
+    expect(callback).toBeCalledTimes(1);
+    expect(callback).toBeCalledWith(payload.promptOption);
   });
 
   it('should call the native method setDidSelectPromptOptionHandler with a function', () => {
