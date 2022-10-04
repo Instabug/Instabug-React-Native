@@ -3,7 +3,7 @@ module.exports = {
   extends: '@react-native-community',
   overrides: [
     {
-      files: ['__e2e__/**.js'],
+      files: ['e2e/**.js'],
       env: { jest: true },
       globals: {
         device: false,

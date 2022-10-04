@@ -1,6 +1,5 @@
-jest.mock("react-native", () => {
-  const RN = jest.requireActual("react-native"); // use original implementation, which comes with mocks out of the box
-  RN.NativeModules.Instabug = {
+export default {
+  Instabug: {
     start: jest.fn(),
     setUserData: jest.fn(),
     setTrackUserSteps: jest.fn(),
@@ -12,7 +11,7 @@ jest.mock("react-native", () => {
     setPrimaryColor: jest.fn(),
     appendTags: jest.fn(),
     resetTags: jest.fn(),
-    getTags: jest.fn((cb) => cb(["tags1", "tags2"])),
+    getTags: jest.fn(cb => cb(['tags1', 'tags2'])),
     setString: jest.fn(),
     identifyUser: jest.fn(),
     logOut: jest.fn(),
@@ -27,14 +26,14 @@ jest.mock("react-native", () => {
     setReproStepsMode: jest.fn(),
     setSdkDebugLogsLevel: jest.fn(),
     setUserAttribute: jest.fn(),
-    getUserAttribute: jest.fn((_, cb) => cb("24")),
+    getUserAttribute: jest.fn((_, cb) => cb('24')),
     removeUserAttribute: jest.fn(),
-    getAllUserAttributes: jest.fn((cb) => cb([{ age: "24" }])),
+    getAllUserAttributes: jest.fn(cb => cb([{ age: '24' }])),
     clearAllUserAttributes: jest.fn(),
     setDebugEnabled: jest.fn(),
     enable: jest.fn(),
     disable: jest.fn(),
-    isRunningLive: jest.fn((cb) => cb(true)),
+    isRunningLive: jest.fn(cb => cb(true)),
     showWelcomeMessageWithMode: jest.fn(),
     setWelcomeMessageMode: jest.fn(),
     setFileAttachment: jest.fn(),
@@ -53,14 +52,16 @@ jest.mock("react-native", () => {
     removeExperiments: jest.fn(),
     clearAllExperiments: jest.fn(),
     networkLog: jest.fn(),
-  };
-  RN.NativeModules.IBGBugReporting = {
-    setFloatingButtonEdge: jest.fn(),
-    setEnabledAttachmentTypes: jest.fn(),
-  };
-  RN.NativeModules.IBGReplies = {
-    setPushNotificationsEnabled: jest.fn(),
-  };
-
-  return RN;
-});
+    appendTagToReport: jest.fn(),
+    appendConsoleLogToReport: jest.fn(),
+    setUserAttributeToReport: jest.fn(),
+    logDebugToReport: jest.fn(),
+    logVerboseToReport: jest.fn(),
+    logWarnToReport: jest.fn(),
+    logErrorToReport: jest.fn(),
+    logInfoToReport: jest.fn(),
+    addFileAttachmentWithURLToReport: jest.fn(),
+    addFileAttachmentWithDataToReport: jest.fn(),
+    setNetworkLoggingEnabled: jest.fn(),
+  },
+};
