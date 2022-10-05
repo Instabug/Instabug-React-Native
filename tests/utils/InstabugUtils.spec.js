@@ -1,6 +1,9 @@
 import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
 import Instabug from '../../src';
+import InstabugUtils from '../../src/utils/InstabugUtils';
+import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
+import IBGConstants from '../../src/utils/InstabugConstants';
 
 const { Instabug: NativeInstabug } = NativeModules;
 
@@ -26,20 +29,21 @@ describe('Test global error handler', () => {
     expect(NativeInstabug.sendJSCrash).toHaveBeenCalledWith(expected);
   });
 
-  // it('should emit event IBGSendUnhandledJSCrash when platform is android and onReportSubmitHandler is set', (done) => {
-  //     Platform.OS = 'android';
-  //     Instabug._isOnReportHandlerSet = jest.fn(() => true);
-  //     const handler = global.ErrorUtils.getGlobalHandler();
-  //     IBGEventEmitter.addListener(Instabug, IBGConstants.SEND_UNHANDLED_CRASH, (actual) => {
-  //         const expected = {
-  //             message: 'TypeError - This is a type error.',
-  //             os: 'android',
-  //             platform: 'react_native',
-  //             exception: []
-  //         };
-  //         expect(actual).toEqual(expected);
-  //         done();
-  //     });
-  //     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
-  // });
+  it('should emit event IBGSendUnhandledJSCrash when platform is android and onReportSubmitHandler is set', () => {
+    Platform.OS = 'android';
+    InstabugUtils.setOnReportHandler(true);
+    const handler = global.ErrorUtils.getGlobalHandler();
+    const callback = jest.fn();
+    IBGEventEmitter.addListener(Instabug, IBGConstants.SEND_UNHANDLED_CRASH, callback);
+    handler({ name: 'TypeError', message: 'This is a type error.' }, false);
+
+    expect(callback).toHaveBeenCalledWith({
+      message: 'TypeError - This is a type error.',
+      e_message: 'This is a type error.',
+      e_name: 'TypeError',
+      os: 'android',
+      platform: 'react_native',
+      exception: [],
+    });
+  });
 });
