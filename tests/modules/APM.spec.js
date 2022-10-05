@@ -27,6 +27,13 @@ describe('APM Module', () => {
     expect(NativeInstabug.setNetworkLoggingEnabled).toBeCalledWith(true);
   });
 
+  it('should not call the native method setNetworkEnabledIOS if platform is android', () => {
+    Platform.OS = 'android';
+    APM.setNetworkEnabledIOS(true);
+
+    expect(NativeInstabug.setNetworkLoggingEnabled).not.toBeCalled();
+  });
+
   it('should call the native method endAppLaunch', () => {
     APM.endAppLaunch();
 
