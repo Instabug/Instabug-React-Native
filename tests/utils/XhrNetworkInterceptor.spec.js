@@ -1,4 +1,5 @@
 import nock from 'nock';
+import waitForExpect from 'wait-for-expect';
 import FakeRequest from '../mocks/fakeNetworkRequest';
 import InstabugConstants from '../../src/utils/InstabugConstants';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
@@ -37,6 +38,26 @@ describe('Network Interceptor', () => {
     FakeRequest.mockResponse(request);
     FakeRequest.setRequestHeaders(requestHeaders);
     FakeRequest.send();
+  });
+
+  it('should stringify header value if not string on calling setRequestHeader', async () => {
+    const requestHeaders = { id: 10 };
+    const callback = jest.fn();
+
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback(callback);
+    FakeRequest.open(method, url);
+    FakeRequest.mockResponse(request);
+    FakeRequest.setRequestHeaders(requestHeaders);
+    FakeRequest.send();
+
+    await waitForExpect(() => {
+      expect(callback).toBeCalledWith(
+        expect.objectContaining({
+          requestHeaders: { id: '10' },
+        }),
+      );
+    });
   });
 
   it('should set requestBody in network object', done => {
