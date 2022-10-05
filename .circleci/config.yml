@@ -22,10 +22,6 @@ jobs:
           command: yarn
 
       - run:
-          name: Build Project
-          command: yarn build
-
-      - run:
           name: jest tests
           command: |
             mkdir -p test-results/jest

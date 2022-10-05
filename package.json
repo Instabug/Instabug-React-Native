@@ -30,6 +30,7 @@
   "devDependencies": {
     "@apollo/client": "^3.7.0",
     "@react-navigation/native": "^5.9.8",
+    "@types/jest": "^24.0.0",
     "@types/node": "^18.7.23",
     "@types/react-native": "^0.66.0",
     "babel-core": "7.0.0-bridge.0",
@@ -42,23 +43,9 @@
     "react-native": "^0.60.0",
     "react-native-navigation": "7.29.0",
     "react-navigation": "^4.4.4",
+    "ts-jest": "^24.0.0",
     "typescript": "^4.8.4",
     "wait-for-expect": "^1.2.0",
     "xhr2": "^0.2.1"
-  },
-  "jest": {
-    "preset": "react-native",
-    "clearMocks": true,
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.(js|ts)"
-    ],
-    "setupFilesAfterEnv": [
-      "./tests/setup.js"
-    ],
-    "modulePathIgnorePatterns": [
-      "example"
-    ]
   }
 }
