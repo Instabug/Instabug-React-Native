@@ -28,7 +28,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.reportScreenChange).toBeCalledWith(screenName);
   });
 
-  it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", () => {
+  it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
     Instabug.start('some-token');
 
     Instabug.componentDidAppearListener({
@@ -36,7 +36,36 @@ describe('Instabug Module', () => {
       componentName: 'screen',
       passProps: 'screenName',
     });
-    expect(NativeInstabug.reportScreenChange).not.toBeCalled();
+
+    await waitForExpect(() => {
+      // Only first screen should be reported
+      expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
+      expect(NativeInstabug.reportScreenChange).toBeCalledWith('Initial Screen');
+    });
+  });
+
+  it("componentDidAppearListener shouldn't call the native method reportScreenChange twice if same screen", done => {
+    for (let _ of Array(5)) {
+      Instabug.componentDidAppearListener({
+        componentId: '1',
+        componentName: 'screen',
+        passProps: 'screenName',
+      });
+    }
+
+    setTimeout(() => {
+      // It won't report any screen change, here's why:
+      // 1. First call:
+      //    It's the first screen so:
+      //      1. It doesn't report a screen change
+      //      2. It sets _isFirstScreen to false
+      //      3. It sets _lastScreen to "screen"
+      // 2. Second+ calls:
+      //    The screen name is the same as _lastScreen (stored in 1st call)
+      //    so it doesn't report a screen change
+      expect(NativeInstabug.reportScreenChange).not.toBeCalled();
+      done();
+    }, 1500);
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange', async () => {
@@ -47,6 +76,17 @@ describe('Instabug Module', () => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
       expect(NativeInstabug.reportScreenChange).toBeCalledWith('settings');
     });
+  });
+
+  it('onNavigationStateChange should not call the native method reportScreenChange if screen is the same', done => {
+    InstabugUtils.getActiveRouteName.mockImplementation(screenName => screenName);
+    Instabug.onNavigationStateChange('home', 'home');
+
+    // Wait for 1.5s as reportScreenChange is delayed by 1s
+    setTimeout(() => {
+      expect(NativeInstabug.reportScreenChange).not.toBeCalled();
+      done();
+    }, 1500);
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange immediatly if _currentScreen is set', async () => {
