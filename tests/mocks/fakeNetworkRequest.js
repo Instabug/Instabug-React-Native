@@ -19,8 +19,7 @@ export default {
     mockStatus(request, status) {
         request.setStatus(status);
     },
-    mockResponse(request, headers, body) {
-        request.setResponseHeaders(headers ? headers : '');
-        request.setResponseBody(body ? body : '');
+    mockResponse(request, status = 200, body = 'ok', headers) {
+        request.once().reply(status, body, headers);
     }
 }
