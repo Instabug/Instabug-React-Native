@@ -82,4 +82,45 @@ describe('Instabug Utils', () => {
     const output = InstabugUtils.getActiveRouteName(null);
     expect(output).toBeNull();
   });
+
+  it('getFullRoute should get route name from navigation state', () => {
+    const navigationState = {
+      index: 1,
+      routes: [{ name: 'Home' }, { name: 'Settings' }],
+    };
+
+    const currentScreen = InstabugUtils.getFullRoute(navigationState);
+
+    expect(currentScreen).toBe('Settings');
+  });
+
+  it('getFullRoute should get route name from nested navigation state', () => {
+    const navigationState = {
+      index: 0,
+      routes: [
+        {
+          name: 'Home',
+          state: { index: 1, routes: [{ name: 'MoviesList' }, { name: 'MovieDetails' }] },
+        },
+        { name: 'Settings' },
+      ],
+    };
+
+    const currentScreen = InstabugUtils.getFullRoute(navigationState);
+
+    expect(currentScreen).toBe('MovieDetails');
+  });
+
+  it('getFullRoute should return an empty string if navigation state is invalid', () => {
+    const output = InstabugUtils.getFullRoute({});
+    expect(output).toBe('');
+  });
+
+  it.each([true, false])('setOnReportHandler should set _isOnReportHandlerSet flag', flag => {
+    InstabugUtils.setOnReportHandler(flag);
+
+    const isOnReportHandlerSet = InstabugUtils.isOnReportHandlerSet();
+
+    expect(isOnReportHandlerSet).toBe(flag);
+  });
 });
