@@ -47,3 +47,39 @@ describe('Test global error handler', () => {
     });
   });
 });
+
+describe('Instabug Utils', () => {
+  it('getActiveRouteName should get route name from navigation state', () => {
+    const navigationState = {
+      index: 1,
+      routes: [{ routeName: 'Home' }, { routeName: 'Settings' }],
+    };
+
+    const currentScreen = InstabugUtils.getActiveRouteName(navigationState);
+
+    expect(currentScreen).toBe('Settings');
+  });
+
+  it('getActiveRouteName should get route name from nested navigation state', () => {
+    const navigationState = {
+      index: 0,
+      routes: [
+        {
+          routeName: 'Home',
+          index: 1,
+          routes: [{ routeName: 'MoviesList' }, { routeName: 'MovieDetails' }],
+        },
+        { routeName: 'Settings' },
+      ],
+    };
+
+    const currentScreen = InstabugUtils.getActiveRouteName(navigationState);
+
+    expect(currentScreen).toBe('MovieDetails');
+  });
+
+  it('getActiveRouteName should return null if no navigation state', () => {
+    const output = InstabugUtils.getActiveRouteName(null);
+    expect(output).toBeNull();
+  });
+});
