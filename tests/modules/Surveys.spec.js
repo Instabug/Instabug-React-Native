@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import Surveys from '../../src/modules/Surveys';
 
 import IBGConstants from '../../src/utils/InstabugConstants';
@@ -15,10 +15,18 @@ describe('Surveys Module', () => {
   });
 
   it('should call the native method setAppStoreURL', () => {
+    Platform.OS = 'ios';
     Surveys.setAppStoreURL('URL');
 
     expect(NativeSurveys.setAppStoreURL).toBeCalledTimes(1);
     expect(NativeSurveys.setAppStoreURL).toBeCalledWith('URL');
+  });
+
+  it('should not call the native method setAppStoreURL if platform is android', () => {
+    Platform.OS = 'android';
+    Surveys.setAppStoreURL('URL');
+
+    expect(NativeSurveys.setAppStoreURL).not.toBeCalled();
   });
 
   it('should call the native method showSurveysIfAvailable', () => {
