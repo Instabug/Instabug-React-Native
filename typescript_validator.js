@@ -6,6 +6,7 @@ const ts = require('typescript');
 const LOG_LEVEL_SUCCESS = 0;
 const LOG_LEVEL_FAIL = 1;
 
+const INDEX_FILE = 'src/index.js';
 const TS_DEF_FILE_PATH = 'src/index.d.ts';
 const MODULE_DIR = 'src/modules/';
 
@@ -114,7 +115,7 @@ function parseDefinition() {
         }
     });
     // Disable enums check
-    allDef.push({ moduleName: "Instabug", data: { functions: indexFunctions, enums: [] } });
+    allDef.push({ moduleName: INDEX_FILE.replace(/\.[jt]s/, ""), data: { functions: indexFunctions, enums: [] } });
     return allDef;
 }
 
@@ -216,6 +217,7 @@ var modules = fs.readdirSync(MODULE_DIR);
 for (var i = 0; i < modules.length; i++) {
     modules[i] = MODULE_DIR + modules[i];
 }
+modules.push(INDEX_FILE);
 modules.forEach((module) => {
     var data = fs.readFileSync(module);
     all.push({ moduleName: module.replace('.js', '').replace(MODULE_DIR, ''), data: parseModule(data.toString()) });
