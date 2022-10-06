@@ -1,6 +1,6 @@
 import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
-import Instabug from '../../src';
+import Instabug from '../../src/modules/Instabug';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
