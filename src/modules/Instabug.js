@@ -5,18 +5,18 @@ import {
   processColor
 } from 'react-native';
 let { Instabug } = NativeModules;
-import IBGEventEmitter from './utils/IBGEventEmitter';
-import InstabugUtils, { stringifyIfNotString } from './utils/InstabugUtils';
-import InstabugConstants from './utils/InstabugConstants';
-import Report from './models/Report';
-import BugReporting from './modules/BugReporting';
-import APM from './modules/APM';
-import Surveys from './modules/Surveys';
-import FeatureRequests from './modules/FeatureRequests';
-import Replies from './modules/Replies';
-import CrashReporting from './modules/CrashReporting';
-import NetworkLogger from './modules/NetworkLogger';
-import ArgsRegistry from './utils/ArgsRegistry';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import InstabugConstants from '../utils/InstabugConstants';
+import Report from '../models/Report';
+import BugReporting from './BugReporting';
+import APM from './APM';
+import Surveys from './Surveys';
+import FeatureRequests from './FeatureRequests';
+import Replies from './Replies';
+import CrashReporting from './CrashReporting';
+import NetworkLogger from './NetworkLogger';
+import ArgsRegistry from '../utils/ArgsRegistry';
 
 InstabugUtils.captureJsErrors();
 NetworkLogger.setEnabled(true);

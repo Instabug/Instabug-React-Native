@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import BugReporting from '../../src/modules/BugReporting';
-import Instabug from '../../src/';
+import Instabug from '../../src/modules/Instabug';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 
