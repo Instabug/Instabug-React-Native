@@ -9,17 +9,8 @@ import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import InstabugConstants from '../utils/InstabugConstants';
 import Report from '../models/Report';
-import BugReporting from './BugReporting';
-import APM from './APM';
-import Surveys from './Surveys';
-import FeatureRequests from './FeatureRequests';
-import Replies from './Replies';
-import CrashReporting from './CrashReporting';
 import NetworkLogger from './NetworkLogger';
 import ArgsRegistry from '../utils/ArgsRegistry';
-
-InstabugUtils.captureJsErrors();
-NetworkLogger.setEnabled(true);
 
 var _currentScreen = null;
 var _lastScreen = null;
@@ -42,7 +33,11 @@ const InstabugModule = {
    * the SDK's UI.
    */
   start: function (token, invocationEvent) {
+    InstabugUtils.captureJsErrors();
+    NetworkLogger.setEnabled(true);
+
     Instabug.start(token, invocationEvent);
+
     _isFirstScreen = true;
     _currentScreen = firstScreen;
     setTimeout(function () {
@@ -685,16 +680,6 @@ const InstabugModule = {
     * @enum {number}
     */
    strings: ArgsRegistry.strings,
-};
-
-export {
-  BugReporting,
-  Surveys,
-  FeatureRequests,
-  Replies,
-  CrashReporting,
-  NetworkLogger,
-  APM,
 };
 
 export default InstabugModule;
