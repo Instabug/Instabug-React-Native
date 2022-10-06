@@ -8,6 +8,7 @@ const url = 'http://api.instabug.com';
 const method = 'GET';
 
 const request = nock(url).get('/');
+const postRequest = nock(url).post('/');
 
 describe('Network Interceptor', () => {
   beforeEach(() => {
@@ -61,14 +62,14 @@ describe('Network Interceptor', () => {
   });
 
   it('should set requestBody in network object', done => {
-    const requestBody = { data: [{ item: 'first' }, { item: 'second' }] };
+    const requestBody = JSON.stringify({ data: [{ item: 'first' }, { item: 'second' }] });
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback(network => {
-      expect(network.requestBody).toEqual(JSON.stringify(requestBody));
+      expect(network.requestBody).toEqual(requestBody);
       done();
     });
-    FakeRequest.mockResponse(request);
-    FakeRequest.open(method, url);
+    FakeRequest.mockResponse(postRequest);
+    FakeRequest.open('POST', url);
     FakeRequest.send(requestBody);
   });
 
