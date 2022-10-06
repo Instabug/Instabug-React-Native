@@ -65,7 +65,19 @@ describe('Network Interceptor', () => {
     const requestBody = JSON.stringify({ data: [{ item: 'first' }, { item: 'second' }] });
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback(network => {
-      expect(network.requestBody).toEqual(requestBody);
+      expect(network.requestBody).toBe(requestBody);
+      done();
+    });
+    FakeRequest.mockResponse(postRequest);
+    FakeRequest.open('POST', url);
+    FakeRequest.send(requestBody);
+  });
+
+  it('should stringify requestBody in network object', done => {
+    const requestBody = Buffer.from('Instabug');
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback(network => {
+      expect(network.requestBody).toBe(JSON.stringify(requestBody));
       done();
     });
     FakeRequest.mockResponse(postRequest);
@@ -114,6 +126,21 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
+  it("should set network object's responseCode to 0 if status is null on receiving response", async () => {
+    const callback = jest.fn();
+
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback(callback);
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, 'https://non-existing-website.com');
+    FakeRequest.mockXHRStatus(null);
+    FakeRequest.send();
+
+    await waitForExpect(() => {
+      expect(callback).toBeCalledWith(expect.objectContaining({ responseCode: 0 }));
+    });
+  });
+
   it('should set responseBody in network object on receiving response', done => {
     const responseBody = { data: [{ item: 'first' }, { item: 'second' }] };
     Interceptor.enableInterception();
@@ -125,6 +152,22 @@ describe('Network Interceptor', () => {
     FakeRequest.mockResponse(request, 200, JSON.stringify(responseBody));
     FakeRequest.setResponseType('json');
     FakeRequest.send();
+  });
+
+  it('should set blob responseBody in network object on receiving response', async () => {
+    const callback = jest.fn();
+    const responseBody = new Buffer.from('blob-content');
+
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback(callback);
+    FakeRequest.open(method, url);
+    FakeRequest.mockResponse(request, 200, responseBody);
+    FakeRequest.setResponseType('blob');
+    FakeRequest.send();
+
+    await waitForExpect(() => {
+      expect(callback).toBeCalledWith(expect.objectContaining({ responseBody: 'blob-content' }));
+    });
   });
 
   it('should call onProgressCallback in network object on receiving response', done => {
@@ -149,6 +192,28 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
     expect(callback).not.toHaveBeenCalled();
   });
+
+  it('should set error details in network object on client error', async () => {
+    const callback = jest.fn();
+
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback(callback);
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.mockHasError();
+    FakeRequest.send();
+
+    await waitForExpect(() => {
+      expect(callback).toBeCalledWith(
+        expect.objectContaining({
+          errorDomain: 'ClientError',
+          errorCode: 0,
+          responseBody: null,
+        }),
+      );
+    });
+  });
+
   it('should set gqlQueryName in network object on receiving response', done => {
     const headers = {};
     headers[InstabugConstants.GRAPHQL_HEADER] = InstabugConstants.GRAPHQL_HEADER;
