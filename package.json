@@ -21,6 +21,10 @@
     "feedback"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check '**/*.{js, ts}' --ignore-path .gitignore",
+    "format:fix": "prettier --write '**/*.{js, ts}'",
     "test": "jest",
     "build": "tsc"
   },
@@ -31,15 +35,19 @@
   "devDependencies": {
     "@apollo/client": "^3.7.0",
     "@react-navigation/native": "^5.9.8",
+    "@react-native-community/eslint-config": "^3.1.0",
     "@types/jest": "^24.0.0",
     "@types/node": "^18.7.23",
     "@types/react-native": "^0.66.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
+    "eslint": "^8.24.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "esprima": "^4.0.1",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "0.72.2",
     "nock": "^13.2.9",
+    "prettier": "^2.7.1",
     "react": "^16.8.6",
     "react-native": "^0.60.0",
     "react-native-navigation": "7.29.0",
