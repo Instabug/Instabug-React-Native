@@ -216,6 +216,7 @@ var modules = fs.readdirSync(MODULE_DIR);
 for (var i = 0; i < modules.length; i++) {
     modules[i] = MODULE_DIR + modules[i];
 }
+
 modules.forEach((module) => {
     var data = fs.readFileSync(module);
     all.push({ moduleName: module.replace('.js', '').replace(MODULE_DIR, ''), data: parseModule(data.toString()) });

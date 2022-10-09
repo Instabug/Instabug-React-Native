@@ -4,7 +4,6 @@ import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'rea
 import waitForExpect from 'wait-for-expect';
 import Instabug from '../../src/modules/Instabug';
 import Report from '../../src/models/Report';
-
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import { green } from 'ansi-colors';

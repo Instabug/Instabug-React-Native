@@ -1,22 +1,27 @@
-import { findNodeHandle, NativeModules, Platform, processColor } from 'react-native';
+import {
+  NativeModules,
+  Platform,
+  findNodeHandle,
+  processColor
+} from 'react-native';
+let { Instabug } = NativeModules;
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import InstabugConstants from '../utils/InstabugConstants';
 import Report from '../models/Report';
 import NetworkLogger from './NetworkLogger';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
-import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import ArgsRegistry from '../utils/ArgsRegistry';
-let { Instabug } = NativeModules;
 
 var _currentScreen = null;
 var _lastScreen = null;
 var _isFirstScreen = false;
-const firstScreen = 'Initial Screen';
-
+const firstScreen = "Initial Screen";
 /**
  * Instabug
  * @exports Instabug
  */
-export default {
+const InstabugModule = {
+
   /**
    * Starts the SDK.
    * This is the main SDK method that does all the magic. This is the only
@@ -72,7 +77,8 @@ export default {
    *                  Xcode's console is enabled or not.
    */
   setIBGLogPrintsToConsole(printsToConsole) {
-    if (Platform.OS === 'ios') Instabug.setIBGLogPrintsToConsole(printsToConsole);
+    if (Platform.OS === 'ios')
+      Instabug.setIBGLogPrintsToConsole(printsToConsole);
   },
 
   /**
@@ -86,7 +92,7 @@ export default {
   },
 
   /**
-   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug
+   * This API sets the verbosity level of logs used to debug The SDK. The defualt value in debug 
    * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
    * @param {sdkDebugLogsLevel} sdkDebugLogsLevel - The verbosity level of logs.
    *
@@ -182,6 +188,7 @@ export default {
     Instabug.logOut();
   },
 
+
   /**
    * Logs a user event that happens through the lifecycle of the application.
    * Logged user events are going to be sent with each report, as well as at the end of a session.
@@ -206,7 +213,7 @@ export default {
    */
   logVerbose(message) {
     if (!message) return;
-    message = stringifyIfNotString(message);
+    message = stringifyIfNotString(message)
     Instabug.logVerbose(message);
   },
 
@@ -225,7 +232,7 @@ export default {
    */
   logInfo(message) {
     if (!message) return;
-    message = stringifyIfNotString(message);
+    message = stringifyIfNotString(message)
     Instabug.logInfo(message);
   },
 
@@ -244,7 +251,7 @@ export default {
    */
   logDebug(message) {
     if (!message) return;
-    message = stringifyIfNotString(message);
+    message = stringifyIfNotString(message)
     Instabug.logDebug(message);
   },
 
@@ -263,7 +270,7 @@ export default {
    */
   logError(message) {
     if (!message) return;
-    message = stringifyIfNotString(message);
+    message = stringifyIfNotString(message)
     Instabug.logError(message);
   },
 
@@ -282,7 +289,7 @@ export default {
    */
   logWarn(message) {
     if (!message) return;
-    message = stringifyIfNotString(message);
+    message = stringifyIfNotString(message)
     Instabug.logWarn(message);
   },
 
@@ -318,11 +325,11 @@ export default {
   },
 
   /**
-       * Returns the user attribute associated with a given key.
-       aKey
-       * @param {string} key The attribute key as string
-       * @param {function} userAttributeCallback callback with argument as the desired user attribute value
-       */
+     * Returns the user attribute associated with a given key.
+     aKey
+     * @param {string} key The attribute key as string
+     * @param {function} userAttributeCallback callback with argument as the desired user attribute value
+     */
   getUserAttribute(key, userAttributeCallback) {
     Instabug.getUserAttribute(key, userAttributeCallback);
   },
@@ -334,7 +341,8 @@ export default {
    * @see #setUserAttribute(String, String)
    */
   removeUserAttribute(key) {
-    if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
+    if (!key || typeof key !== 'string')
+      throw new TypeError('Invalid param, Expected String');
     Instabug.removeUserAttribute(key);
   },
 
@@ -433,8 +441,8 @@ export default {
   },
 
   /**
-   * @deprecated Use {@link Instabug.addPrivateView} instead.
-   *
+   * @deprecated Use {@link Instabug.addPrivateView} instead. 
+   * 
    * Hides component from screenshots, screen recordings and view hierarchy.
    * @param {Object} viewRef the ref of the component to hide
    */
@@ -452,7 +460,7 @@ export default {
   },
 
   /**
-   * Removes component from the set of hidden views. The component will show again in
+   * Removes component from the set of hidden views. The component will show again in 
    * screenshots, screen recordings and view hierarchy.
    * @param {Object} viewRef the ref of the component to remove from hidden views
    */
@@ -475,61 +483,37 @@ export default {
       InstabugUtils.setOnReportHandler(false);
     }
     // send bug report
-    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, report => {
+    IBGEventEmitter.addListener(Instabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
       const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-      const reportObj = new Report(
-        tags,
-        consoleLogs,
-        instabugLogs,
-        userAttributes,
-        fileAttachments,
-      );
+      const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
       preSendingHandler(reportObj);
+
     });
 
     // handled js crash
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(
-        Instabug,
-        InstabugConstants.SEND_HANDLED_CRASH,
-        async jsonObject => {
-          try {
-            let report = await Instabug.getReport();
-            const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-            const reportObj = new Report(
-              tags,
-              consoleLogs,
-              instabugLogs,
-              userAttributes,
-              fileAttachments,
-            );
-            preSendingHandler(reportObj);
-            Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
-          } catch (e) {
-            console.error(e);
-          }
-        },
-      );
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_HANDLED_CRASH, async jsonObject => {
+        try {
+          let report = await Instabug.getReport();
+          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+          const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+          preSendingHandler(reportObj);
+          Instabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+        } catch (e) {
+          console.error(e);
+        }
+      });
     }
 
     if (Platform.OS === 'android') {
-      IBGEventEmitter.addListener(
-        Instabug,
-        InstabugConstants.SEND_UNHANDLED_CRASH,
-        async jsonObject => {
-          let report = await Instabug.getReport();
-          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-          const reportObj = new Report(
-            tags,
-            consoleLogs,
-            instabugLogs,
-            userAttributes,
-            fileAttachments,
-          );
-          preSendingHandler(reportObj);
-          Instabug.sendJSCrash(JSON.stringify(jsonObject));
-        },
-      );
+      IBGEventEmitter.addListener(Instabug, InstabugConstants.SEND_UNHANDLED_CRASH, async (jsonObject) => {
+
+        let report = await Instabug.getReport();
+        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
+        const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
+        preSendingHandler(reportObj);
+        Instabug.sendJSCrash(JSON.stringify(jsonObject));
+      });
     }
 
     Instabug.setPreSendingHandler(preSendingHandler);
@@ -598,7 +582,7 @@ export default {
    */
   clearAllExperiments() {
     Instabug.clearAllExperiments();
-  },
+  },  
 
   componentDidAppearListener({ componentId, componentName, passProps }) {
     if (_isFirstScreen) {
@@ -617,83 +601,85 @@ export default {
    * @readonly
    * @enum {number}
    */
-  invocationEvent: ArgsRegistry.invocationEvent,
+   invocationEvent: ArgsRegistry.invocationEvent,
 
-  /**
-   * The user steps option.
-   * @readonly
-   * @enum {number}
-   */
-  reproStepsMode: ArgsRegistry.reproStepsMode,
-
-  /**
-   * Type of SDK dismiss
-   * @readonly
-   * @enum {number}
-   */
-  dismissType: ArgsRegistry.dismissType,
-
-  /**
-   * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
-   * and only affect the logs used to debug the SDK itself.
-   * @readonly
-   * @enum {number}
-   */
-  sdkDebugLogsLevel: ArgsRegistry.sdkDebugLogsLevel,
-
-  /**
-   *  The extended bug report mode
-   * @readonly
-   * @enum {number}
-   */
-  extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
-
-  /**
-   * The supported locales
-   * @readonly
-   * @enum {number}
-   */
-  locale: ArgsRegistry.locale,
-
-  /**
-   * The color theme of the different UI elements
-   * @readonly
-   * @enum {number}
-   */
-  colorTheme: ArgsRegistry.colorTheme,
-
-  /**
-   * Rectangle edges
-   * @readonly
-   * @enum {number}
-   */
-  floatingButtonEdge: ArgsRegistry.floatingButtonEdge,
-
-  /**
-   * Instabug floating buttons positions.
-   * @readonly
-   * @enum {number}
-   */
-  IBGPosition: ArgsRegistry.position,
-
-  /**
-   * The welcome message mode.
-   * @readonly
-   * @enum {number}
-   */
-  welcomeMessageMode: ArgsRegistry.welcomeMessageMode,
-
-  /**
-   * Instabug action types.
-   * @readonly
-   * @enum {number}
-   */
+   /**
+    * The user steps option.
+    * @readonly
+    * @enum {number}
+    */
+   reproStepsMode: ArgsRegistry.reproStepsMode,
+ 
+   /**
+    * Type of SDK dismiss
+    * @readonly
+    * @enum {number}
+    */
+   dismissType: ArgsRegistry.dismissType,
+ 
+   /**
+    * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
+    * and only affect the logs used to debug the SDK itself.
+    * @readonly
+    * @enum {number}
+    */
+   sdkDebugLogsLevel: ArgsRegistry.sdkDebugLogsLevel,
+ 
+   /**
+    *  The extended bug report mode
+    * @readonly
+    * @enum {number}
+    */
+   extendedBugReportMode: ArgsRegistry.extendedBugReportMode,
+ 
+   /**
+    * The supported locales
+    * @readonly
+    * @enum {number}
+    */
+   locale: ArgsRegistry.locale,
+ 
+   /**
+    * The color theme of the different UI elements
+    * @readonly
+    * @enum {number}
+    */
+   colorTheme: ArgsRegistry.colorTheme,
+ 
+   /**
+    * Rectangle edges
+    * @readonly
+    * @enum {number}
+    */
+   floatingButtonEdge: ArgsRegistry.floatingButtonEdge,
+ 
+   /**
+    * Instabug floating buttons positions.
+    * @readonly
+    * @enum {number}
+    */
+   IBGPosition: ArgsRegistry.position,
+ 
+   /**
+    * The welcome message mode.
+    * @readonly
+    * @enum {number}
+    */
+   welcomeMessageMode: ArgsRegistry.welcomeMessageMode,
+ 
+   /**
+    * Instabug action types.
+    * @readonly
+    * @enum {number}
+    */
   actionTypes: ArgsRegistry.actionTypes,
-
-  /**
-   * Instabug strings
-   * @readonly
-   * @enum {number}
-   */
-  strings: ArgsRegistry.strings,
+ 
+   /**
+    * Instabug strings
+    * @readonly
+    * @enum {number}
+    */
+   strings: ArgsRegistry.strings,
 };
+
+export default InstabugModule;
