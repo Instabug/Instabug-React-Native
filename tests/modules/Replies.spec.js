@@ -99,6 +99,13 @@ describe('Replies Module', () => {
     expect(NativeReplies.showNotification).toBeCalledWith('test');
   });
 
+  it('should not call the native method showNotification if platform is ios', () => {
+    Platform.OS = 'ios';
+    Replies.showNotificationAndroid('test');
+
+    expect(NativeReplies.showNotification).not.toBeCalled();
+  });
+
   it('should not call the native method setPushNotificationRegistrationToken on iOS', () => {
     Platform.OS = 'ios';
     Replies.setPushNotificationRegistrationTokenAndroid(true);

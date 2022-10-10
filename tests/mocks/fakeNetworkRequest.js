@@ -16,8 +16,11 @@ export default {
     setResponseType(type) {
         xhr.responseType = type;
     },
-    mockStatus(request, status) {
-        request.setStatus(status);
+    mockHasError() {
+        xhr._hasError = true;
+    },
+    mockXHRStatus(status) {
+        xhr.status = status;
     },
     mockResponse(request, status = 200, body = 'ok', headers) {
         request.once().reply(status, body, headers);

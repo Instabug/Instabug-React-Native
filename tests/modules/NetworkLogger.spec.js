@@ -68,6 +68,26 @@ describe('NetworkLogger Module', () => {
     expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(network));
   });
 
+  it('should not break if it fails to stringify to JSON on network log if platform is android', () => {
+    Platform.OS = 'android';
+
+    // Avoid the console.error to clutter the test log
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Make a circular object, this should make JSON.strignify fail
+    const networkResult = clone(network);
+    networkResult.responseBody = {};
+    networkResult.responseBody.result = { body: networkResult.responseBody };
+
+    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(networkResult));
+
+    expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
+    expect(NativeInstabug.networkLog).not.toBeCalled();
+    expect(NativeAPM.networkLog).not.toBeCalled();
+
+    console.error.mockRestore();
+  });
+
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
     Platform.OS = 'ios';
     const randomString = '28930q938jqhd';
@@ -109,6 +129,27 @@ describe('NetworkLogger Module', () => {
     });
   });
 
+  it('should not break if network data obfuscation fails when platform is android', async () => {
+    Platform.OS = 'android';
+
+    // Avoid the console.error to clutter the test log
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Make a circular object, this should make JSON.strignify fail
+    const handler = jest.fn(() => {
+      throw new Error('Data obfuscation failed');
+    });
+
+    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
+    NetworkLogger.setNetworkDataObfuscationHandler(handler);
+
+    expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
+    expect(NativeInstabug.networkLog).not.toBeCalled();
+    expect(NativeAPM.networkLog).not.toBeCalled();
+
+    console.error.mockRestore();
+  });
+
   it('should not send log network when network data matches filter expression', async () => {
     Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
     NetworkLogger.setRequestFilterExpression(
@@ -122,7 +163,7 @@ describe('NetworkLogger Module', () => {
 
   it('should test that operationSetContext at apollo handler called', async () => {
     const operation = {
-      setContext: jest.fn(),
+      setContext: jest.fn(callback => callback({})),
       operationName: 'operationName',
     };
     const forward = jest.fn();
@@ -131,18 +172,19 @@ describe('NetworkLogger Module', () => {
     expect(operation.setContext).toBeCalledTimes(1);
   });
 
-  it('should test that apollo handler called with catch error', async () => {
+  it('should not break if apollo handler throws an error', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
     const operation = {
-      setContext: callback => callback({ headers: {} }),
+      setContext: jest.fn(() => {
+        throw new Error('Failed to set context');
+      }),
     };
     const forward = jest.fn();
 
-    // This is a temporary solution as the test is failing because this method isn't mocked
-    const apolloLinkRequestHandlerMock = jest.spyOn(NetworkLogger, 'apolloLinkRequestHandler');
+    expect(() => NetworkLogger.apolloLinkRequestHandler(operation, forward)).not.toThrow();
+    expect(operation.setContext).toBeCalled();
 
-    NetworkLogger.apolloLinkRequestHandler(operation, forward);
-    expect(NetworkLogger.apolloLinkRequestHandler).toBeCalledTimes(1);
-
-    apolloLinkRequestHandlerMock.mockRestore();
+    console.error.mockRestore();
   });
 });

@@ -10,7 +10,7 @@ coverage:
   status:
     patch:
       default:
-        target: 75%
+        target: 90%
     project:
       default:
-        target: 75%
+        target: 90%
