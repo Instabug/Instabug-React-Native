@@ -1,7 +1,7 @@
 import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
-import { NetworkLogger } from '../../src/modules/NetworkLogger';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import waitForExpect from 'wait-for-expect';

@@ -1,13 +1,29 @@
 // Models
-export { default as Report } from './models/Report';
-export { default as Trace } from './models/Trace';
+import Report from './models/Report';
+import Trace from './models/Trace';
+import type { Survey } from './modules/Surveys';
 
 // Modules
-export { APM } from './modules/APM';
-export { BugReporting } from './modules/BugReporting';
-export { CrashReporting } from './modules/CrashReporting';
-export { FeatureRequests } from './modules/FeatureRequests';
-export { Instabug as default } from './modules/Instabug';
-export { NetworkLogger } from './modules/NetworkLogger';
-export { Replies } from './modules/Replies';
-export { Surveys, Survey } from './modules/Surveys';
+import * as APM from './modules/APM';
+import * as BugReporting from './modules/BugReporting';
+import * as CrashReporting from './modules/CrashReporting';
+import * as FeatureRequests from './modules/FeatureRequests';
+import * as Instabug from './modules/Instabug';
+import * as NetworkLogger from './modules/NetworkLogger';
+import * as Replies from './modules/Replies';
+import * as Surveys from './modules/Surveys';
+
+export {
+  Report,
+  Trace,
+  Survey,
+  APM,
+  BugReporting,
+  CrashReporting,
+  FeatureRequests,
+  NetworkLogger,
+  Replies,
+  Surveys,
+};
+
+export default Instabug;

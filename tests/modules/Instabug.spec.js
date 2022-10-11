@@ -2,7 +2,7 @@ import '../mocks/mockInstabugUtils';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
 import waitForExpect from 'wait-for-expect';
-import { Instabug } from '../../src/modules/Instabug';
+import * as Instabug from '../../src/modules/Instabug';
 import Report from '../../src/models/Report';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
