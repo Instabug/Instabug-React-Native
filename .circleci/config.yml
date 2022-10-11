@@ -31,7 +31,8 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
       
-      - codecov/upload
+      - codecov/upload:
+          flags: javascript
 
       - persist_to_workspace:
           root: ~/project
@@ -61,6 +62,8 @@ jobs:
       - android/run-tests:
           working-directory: ./android
           test-command: ./gradlew test
+      - codecov/upload:
+          flags: android
 
   validate_shell_files:
     machine:
