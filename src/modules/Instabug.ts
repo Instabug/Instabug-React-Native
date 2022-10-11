@@ -455,8 +455,12 @@ export namespace Instabug {
     NativeInstabug.show();
   };
 
-  export const onReportSubmitHandler = (handler: (report: Report) => void) => {
-    InstabugUtils.setOnReportHandler(true);
+  export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
+    if (handler) {
+      InstabugUtils.setOnReportHandler(true);
+    } else {
+      InstabugUtils.setOnReportHandler(false);
+    }
 
     // send bug report
     IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, report => {
@@ -468,7 +472,7 @@ export namespace Instabug {
         userAttributes,
         fileAttachments,
       );
-      handler(reportObj);
+      handler && handler(reportObj);
     });
 
     // handled js crash
@@ -487,7 +491,7 @@ export namespace Instabug {
               userAttributes,
               fileAttachments,
             );
-            handler(reportObj);
+            handler && handler(reportObj);
             NativeInstabug.sendHandledJSCrash(JSON.stringify(jsonObject));
           } catch (e) {
             console.error(e);
@@ -510,7 +514,7 @@ export namespace Instabug {
             userAttributes,
             fileAttachments,
           );
-          handler(reportObj);
+          handler && handler(reportObj);
           NativeInstabug.sendJSCrash(JSON.stringify(jsonObject));
         },
       );

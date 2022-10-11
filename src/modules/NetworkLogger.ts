@@ -94,7 +94,7 @@ export namespace NetworkLogger {
   ) => {
     try {
       operation.setContext((context: Record<string, any>) => {
-        const newHeaders = context.headers as Record<string, any>;
+        const newHeaders = context.headers ?? {} as Record<string, any>;
         newHeaders[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
         return { headers: newHeaders };
       });
