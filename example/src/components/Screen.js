@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-function Screen({ children }) {
+export function Screen({ children }) {
   return (
     <View testID="welcome" style={styles.container}>
       <ScrollView contentContainerStyle={styles.contentContainer}>{children}</ScrollView>
@@ -19,5 +19,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-export default Screen;

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-function ColorButton({ color, checked = false, onPress }) {
+export function ColorButton({ color, checked = false, onPress }) {
   return (
     <TouchableOpacity
       accessibilityRole="checkbox"
@@ -25,5 +25,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default ColorButton;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-function Section({ title, children }) {
+export function Section({ title, children }) {
   return (
     <View style={styles.section}>
       <Text style={styles.title}>{title}</Text>
@@ -22,5 +22,3 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
 });
-
-export default Section;

@@ -8,10 +8,10 @@ import Instabug, {
   Surveys,
 } from 'instabug-reactnative';
 
-import Button from '../components/Button';
-import Screen from '../components/Screen';
+import { Button } from '../components/Button';
+import { Screen } from '../components/Screen';
 
-function HomeScreen() {
+export function HomeScreen() {
   const invoke = () => Instabug.show();
 
   const showMultipleQuestionSurvey = () => Surveys.showSurvey('95s5cjU1i74m23h0M9t_Sg');
@@ -73,5 +73,3 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
 });
-
-export default HomeScreen;

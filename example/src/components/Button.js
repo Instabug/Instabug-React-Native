@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-function Button({ children, onPress }) {
+export function Button({ children, onPress }) {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.text}>{children}</Text>
@@ -25,5 +25,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
 });
-
-export default Button;

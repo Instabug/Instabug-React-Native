@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Switch, StyleSheet, Text, View } from 'react-native';
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
-import Button from '../components/Button';
-import ColorButton from '../components/ColorButton';
-import Screen from '../components/Screen';
-import Section from '../components/Section';
+import { Button } from '../components/Button';
+import { ColorButton } from '../components/ColorButton';
+import { Screen } from '../components/Screen';
+import { Section } from '../components/Section';
 
 const invocationEvents = [
   { label: 'Shake', value: Instabug.invocationEvent.shake },
@@ -17,7 +17,7 @@ const invocationEvents = [
 
 const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
-function SettingsScreen() {
+export function SettingsScreen() {
   const [theme, setTheme] = useState(Instabug.colorTheme.light);
   const [color, setColor] = useState(colors[0]);
 
@@ -98,5 +98,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
 });
-
-export default SettingsScreen;

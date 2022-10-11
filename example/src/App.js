@@ -4,12 +4,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Instabug from 'instabug-reactnative';
 
-import SettingsScreen from './screens/SettingsScreen';
-import HomeScreen from './screens/HomeScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
+import { HomeScreen } from './screens/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
-function App() {
+export function App() {
   useEffect(() => {
     Instabug.start('2c63627b9923e10eee2c8abf92e6925f', [Instabug.invocationEvent.floatingButton]);
   }, []);
@@ -30,5 +30,3 @@ function App() {
     </NavigationContainer>
   );
 }
-
-export default App;
