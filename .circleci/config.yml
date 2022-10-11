@@ -49,7 +49,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-    working_directory: ~/project/example
+    working_directory: ~/project
     steps:
       - checkout:
           path: ~/project
@@ -58,17 +58,18 @@ jobs:
           command: npm install -g yarn
       - run:
           name: Install Node Packages
+          working_directory: example
           command: yarn
       - android/run-tests:
-          working-directory: ./android
+          working-directory: ./example/android
           test-command: ./gradlew test
       - run:
           name: Generate Coverage Report
-          working_directory: android
+          working_directory: example/android
           command: ./gradlew jacocoTestReport
       - codecov/upload:
           flags: android
-          file: ~/project/android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          file: android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
   validate_shell_files:
     machine:
