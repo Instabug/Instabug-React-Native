@@ -10,14 +10,14 @@ coverage:
   status:
     project:
       default:
-        target: 90%
+        target: 50%
     patch:
       javascript:
         target: 90%
         flags:
           - javascript
       android:
-        target: 10%
+        target: 35%
         flags:
           - android
 
