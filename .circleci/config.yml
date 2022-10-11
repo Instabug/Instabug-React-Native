@@ -116,6 +116,7 @@ jobs:
   e2e_ios:
     macos:
       xcode: 13.4.1
+    resource_class: large  
     working_directory: ~/project/example
     environment:
       FL_OUTPUT_DIR: output
