@@ -63,11 +63,11 @@ export default {
     onProgressCallback = callback;
   },
   enableInterception() {
-    XMLHttpRequest.prototype.open = function (method, url) {
+    XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
       network.url = url;
       network.method = method;
-      originalXHROpen.apply(this, [method, url]);
+      originalXHROpen.apply(this, [method, url, ...args]);
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
