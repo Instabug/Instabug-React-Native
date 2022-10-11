@@ -13,7 +13,7 @@ export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
 };
 
-var _isOnReportHandlerSet = false;
+let _isOnReportHandlerSet = false;
 
 export const isOnReportHandlerSet = (): boolean => _isOnReportHandlerSet;
 

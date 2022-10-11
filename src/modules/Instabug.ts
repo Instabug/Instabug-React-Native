@@ -11,9 +11,9 @@ import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 
-var _currentScreen: string | null = null;
-var _lastScreen: string | null = null;
-var _isFirstScreen = false;
+let _currentScreen: string | null = null;
+let _lastScreen: string | null = null;
+let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
 
 export import invocationEvent = ArgsRegistry.invocationEvent;

@@ -16,7 +16,7 @@ describe('Test global error handler', () => {
   it('should call sendJSCrash when platform is ios', () => {
     Platform.OS = 'ios';
     Platform.constants.reactNativeVersion = { minor: 64 };
-    var handler = global.ErrorUtils.getGlobalHandler();
+    const handler = global.ErrorUtils.getGlobalHandler();
     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
     const expected = {
       message: 'TypeError - This is a type error.',

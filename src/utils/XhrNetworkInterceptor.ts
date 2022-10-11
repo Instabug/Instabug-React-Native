@@ -28,10 +28,10 @@ const originalXHROpen = XMLHttpRequest.prototype.open;
 const originalXHRSend = XMLHttpRequest.prototype.send;
 const originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
 
-var onProgressCallback: ProgressCallback | null;
-var onDoneCallback: NetworkDataCallback | null;
-var isInterceptorEnabled = false;
-var network: NetworkData;
+let onProgressCallback: ProgressCallback | null;
+let onDoneCallback: NetworkDataCallback | null;
+let isInterceptorEnabled = false;
+let network: NetworkData;
 
 const _reset = () => {
   network = {
@@ -82,7 +82,7 @@ export default {
     };
 
     XMLHttpRequest.prototype.send = function (data) {
-      var cloneNetwork = JSON.parse(JSON.stringify(network));
+      const cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
 
       if (typeof cloneNetwork.requestBody !== 'string') {
@@ -150,7 +150,7 @@ export default {
 
               if (this.response) {
                 if (this.responseType === 'blob') {
-                  var responseText = await new Response(this.response).text();
+                  const responseText = await new Response(this.response).text();
                   cloneNetwork.responseBody = responseText;
                 } else if (['text', '', 'json'].includes(this.responseType)) {
                   cloneNetwork.responseBody = JSON.stringify(this.response);

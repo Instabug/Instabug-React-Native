@@ -5,8 +5,8 @@ import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import type { RequestHandler, Operation, NextLink } from '@apollo/client';
 
-var _networkDataObfuscationHandlerSet = false;
-var _requestFilterExpression = 'false';
+let _networkDataObfuscationHandlerSet = false;
+let _requestFilterExpression = 'false';
 
 /**
  * Sets whether network logs should be sent with bug reports.

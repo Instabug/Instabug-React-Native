@@ -21,7 +21,7 @@ describe('Instabug Module', () => {
 
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
     const screenName = 'some-screen';
-    var obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
+    const obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
     Instabug.componentDidAppearListener(obj);
     expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
     expect(NativeInstabug.reportScreenChange).toBeCalledWith(screenName);
