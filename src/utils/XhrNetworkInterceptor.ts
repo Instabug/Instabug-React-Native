@@ -71,10 +71,6 @@ export default {
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
-      // @ts-ignore
-      if (network.requestHeaders === '') {
-        network.requestHeaders = {};
-      }
       network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
       originalXHRSetRequestHeader.apply(this, [header, value]);
     };
