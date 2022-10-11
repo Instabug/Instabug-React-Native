@@ -64,6 +64,7 @@ jobs:
           test-command: ./gradlew test
       - codecov/upload:
           flags: android
+          file: ~/project/android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
   validate_shell_files:
     machine:
