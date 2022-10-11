@@ -38,5 +38,4 @@ coverage/
 *Podfile.lock
 
 # Typescript build
-src/**/*.js
-src/**/*.d.ts
+dist/

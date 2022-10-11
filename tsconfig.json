@@ -6,6 +6,7 @@
     "jsx": "react-native",
     "moduleResolution": "node",
     "skipLibCheck": true,
+    "outDir": "dist",
 
     // Interop
     "esModuleInterop": true,

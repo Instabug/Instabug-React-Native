@@ -7,8 +7,9 @@
   "homepage": "https://www.instabug.com/platforms/react-native",
   "bugs": "https://github.com/Instabug/Instabug-React-Native/issues",
   "license": "MIT",
-  "main": "src/index",
-  "types": "src/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
+  "react-native": "src/index.ts",
   "keywords": [
     "react-native",
     "instabug",
