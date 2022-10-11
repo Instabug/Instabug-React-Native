@@ -69,7 +69,7 @@ export const captureJsErrors = () => {
     }
   }
 
-  const errorHandler: ErrorHandlerCallback = (e: any, isFatal?: boolean) => {
+  const errorHandler: ErrorHandlerCallback = (e, isFatal) => {
     const jsStackTrace = getStackTrace(e);
 
     // JSON object to be sent to the native SDK
@@ -106,7 +106,7 @@ export const captureJsErrors = () => {
   ErrorUtils.setGlobalHandler(errorHandler);
 };
 
-export const stringifyIfNotString = (input: any) => {
+export const stringifyIfNotString = (input: unknown) => {
   return typeof input === 'string' ? input : JSON.stringify(input);
 };
 

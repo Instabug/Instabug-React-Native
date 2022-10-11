@@ -3,7 +3,7 @@ import { NativeAPM, NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import type { RequestHandler, Operation, NextLink } from '@apollo/client';
+import type { RequestHandler } from '@apollo/client';
 
 let _networkDataObfuscationHandlerSet = false;
 let _requestFilterExpression = 'false';
@@ -88,12 +88,12 @@ export const setProgressHandlerForRequest = (handler: ProgressCallback) => {
 };
 
 export const apolloLinkRequestHandler: RequestHandler = (
-  operation: Operation,
-  forward: NextLink,
+  operation,
+  forward,
 ) => {
   try {
     operation.setContext((context: Record<string, any>) => {
-      const newHeaders = context.headers ?? ({} as Record<string, any>);
+      const newHeaders: Record<string, any> = context.headers ?? {};
       newHeaders[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
       return { headers: newHeaders };
     });
