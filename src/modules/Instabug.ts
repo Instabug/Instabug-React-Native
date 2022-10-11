@@ -6,28 +6,43 @@ import { findNodeHandle, Platform, processColor } from 'react-native';
 import Report from '../models/Report';
 import { NativeInstabug } from '../native';
 import * as NetworkLogger from './NetworkLogger';
-import * as ArgsRegistry from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import {
+  invocationEvent,
+  reproStepsMode,
+  dismissType,
+  sdkDebugLogsLevel,
+  extendedBugReportMode,
+  locale,
+  colorTheme,
+  floatingButtonEdge,
+  IBGPosition,
+  welcomeMessageMode,
+  actionTypes,
+  strings,
+} from '../utils/ArgsRegistry';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
 let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
 
-export import invocationEvent = ArgsRegistry.invocationEvent;
-export import reproStepsMode = ArgsRegistry.reproStepsMode;
-export import dismissType = ArgsRegistry.dismissType;
-export import sdkDebugLogsLevel = ArgsRegistry.sdkDebugLogsLevel;
-export import extendedBugReportMode = ArgsRegistry.extendedBugReportMode;
-export import locale = ArgsRegistry.locale;
-export import colorTheme = ArgsRegistry.colorTheme;
-export import floatingButtonEdge = ArgsRegistry.floatingButtonEdge;
-export import IBGPosition = ArgsRegistry.position;
-export import welcomeMessageMode = ArgsRegistry.welcomeMessageMode;
-export import actionTypes = ArgsRegistry.actionTypes;
-export import strings = ArgsRegistry.strings;
+export {
+  invocationEvent,
+  reproStepsMode,
+  dismissType,
+  sdkDebugLogsLevel,
+  extendedBugReportMode,
+  locale,
+  colorTheme,
+  floatingButtonEdge,
+  IBGPosition,
+  welcomeMessageMode,
+  actionTypes,
+  strings,
+};
 
 /**
  * Starts the SDK.
@@ -37,7 +52,7 @@ export import strings = ArgsRegistry.strings;
  * @param token The token that identifies the app, you can find it on your dashboard.
  * @param invocationEvents The events that invokes the SDK's UI.
  */
-export const start = (token: string, invocationEvents: ArgsRegistry.invocationEvent[]) => {
+export const start = (token: string, invocationEvents: invocationEvent[]) => {
   InstabugUtils.captureJsErrors();
   NetworkLogger.setEnabled(true);
 
@@ -98,7 +113,7 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
  * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
  * @param level The verbosity level of logs.
  */
-export const setSdkDebugLogsLevel = (level: ArgsRegistry.sdkDebugLogsLevel) => {
+export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
   if (Platform.OS === 'ios') {
     NativeInstabug.setSdkDebugLogsLevel(level);
   }
@@ -110,7 +125,7 @@ export const setSdkDebugLogsLevel = (level: ArgsRegistry.sdkDebugLogsLevel) => {
  * Defaults to the device's current locale.
  * @param locale A locale to set the SDK to.
  */
-export const setLocale = (locale: ArgsRegistry.locale) => {
+export const setLocale = (locale: locale) => {
   NativeInstabug.setLocale(locale);
 };
 
@@ -118,7 +133,7 @@ export const setLocale = (locale: ArgsRegistry.locale) => {
  * Sets the color theme of the SDK's whole UI.
  * @param colorTheme
  */
-export const setColorTheme = (colorTheme: ArgsRegistry.colorTheme) => {
+export const setColorTheme = (colorTheme: colorTheme) => {
   NativeInstabug.setColorTheme(colorTheme);
 };
 
@@ -163,7 +178,7 @@ export const getTags = (callback: (tags: string[]) => void) => {
  * @param key Key of string to override.
  * @param string String value to override the default one.
  */
-export const setString = (key: ArgsRegistry.strings, string: string) => {
+export const setString = (key: strings, string: string) => {
   NativeInstabug.setString(string, key);
 };
 
@@ -291,7 +306,7 @@ export const clearLogs = () => {
  *
  * @param mode An enum to set user steps tracking to be enabled, non visual or disabled.
  */
-export const setReproStepsMode = (mode: ArgsRegistry.reproStepsMode) => {
+export const setReproStepsMode = (mode: reproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
 };
 
@@ -392,7 +407,7 @@ export const isRunningLive = (callback: (isLive: boolean) => void) => {
  * Shows the welcome message in a specific mode.
  * @param mode An enum to set the welcome message mode to live, or beta.
  */
-export const showWelcomeMessage = (mode: ArgsRegistry.welcomeMessageMode) => {
+export const showWelcomeMessage = (mode: welcomeMessageMode) => {
   NativeInstabug.showWelcomeMessageWithMode(mode);
 };
 
@@ -400,7 +415,7 @@ export const showWelcomeMessage = (mode: ArgsRegistry.welcomeMessageMode) => {
  * Sets the welcome message mode to live, beta or disabled.
  * @param mode An enum to set the welcome message mode to live, beta or disabled.
  */
-export const setWelcomeMessageMode = (mode: ArgsRegistry.welcomeMessageMode) => {
+export const setWelcomeMessageMode = (mode: welcomeMessageMode) => {
   NativeInstabug.setWelcomeMessageMode(mode);
 };
 

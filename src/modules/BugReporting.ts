@@ -1,14 +1,18 @@
 import { Platform } from 'react-native';
 import { NativeBugReporting } from '../native';
-import * as ArgsRegistry from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
+import {
+  invocationEvent,
+  extendedBugReportMode,
+  dismissType,
+  reportType,
+  option,
+  position,
+  floatingButtonEdge,
+} from '../utils/ArgsRegistry';
 
-export import invocationEvent = ArgsRegistry.invocationEvent;
-export import extendedBugReportMode = ArgsRegistry.extendedBugReportMode;
-export import reportType = ArgsRegistry.reportType;
-export import option = ArgsRegistry.option;
-export import position = ArgsRegistry.position;
+export { invocationEvent, extendedBugReportMode, reportType, option, position };
 
 /**
  * Enables and disables manual invocation and prompt options for bug and feedback.
@@ -23,7 +27,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * Default is set by `Instabug.start`.
  * @param events Array of events that invokes the feedback form.
  */
-export const setInvocationEvents = (events: ArgsRegistry.invocationEvent[]) => {
+export const setInvocationEvents = (events: invocationEvent[]) => {
   NativeBugReporting.setInvocationEvents(events);
 };
 
@@ -32,7 +36,7 @@ export const setInvocationEvents = (events: ArgsRegistry.invocationEvent[]) => {
  * Default is set by `Instabug.start`.
  * @param options Array of invocation options
  */
-export const setOptions = (options: ArgsRegistry.option[]) => {
+export const setOptions = (options: option[]) => {
   NativeBugReporting.setOptions(options);
 };
 
@@ -54,7 +58,7 @@ export const onInvokeHandler = (handler: () => void) => {
  * @param handler A callback to get executed after dismissing the SDK.
  */
 export const onSDKDismissedHandler = (
-  handler: (dismissType: ArgsRegistry.dismissType, reportType: ArgsRegistry.dismissType) => void,
+  handler: (dismissType: dismissType, reportType: reportType) => void,
 ) => {
   IBGEventEmitter.addListener(
     NativeBugReporting,
@@ -101,7 +105,7 @@ export const setShakingThresholdForAndroid = (threshold: number) => {
  * @param mode An enum to disable the extended bug report mode,
  * enable it with required or with optional fields.
  */
-export const setExtendedBugReportMode = (mode: ArgsRegistry.extendedBugReportMode) => {
+export const setExtendedBugReportMode = (mode: extendedBugReportMode) => {
   NativeBugReporting.setExtendedBugReportMode(mode);
 };
 
@@ -109,7 +113,7 @@ export const setExtendedBugReportMode = (mode: ArgsRegistry.extendedBugReportMod
  * Sets what type of reports, bug or feedback, should be invoked.
  * @param types Array of reportTypes
  */
-export const setReportTypes = (types: ArgsRegistry.reportType[]) => {
+export const setReportTypes = (types: reportType[]) => {
   NativeBugReporting.setReportTypes(types);
 };
 
@@ -118,7 +122,7 @@ export const setReportTypes = (types: ArgsRegistry.reportType[]) => {
  * @param type
  * @param options
  */
-export const show = (type: ArgsRegistry.reportType, options: ArgsRegistry.option[]) => {
+export const show = (type: reportType, options: option[]) => {
   NativeBugReporting.show(type, options ?? []);
 };
 
@@ -149,7 +153,7 @@ export const setAutoScreenRecordingDurationIOS = (maxDuration: number) => {
  * @param position is of type position `topLeft` to show on the top left of screen,
  * or `bottomRight` to show on the bottom right of screen.
  */
-export const setVideoRecordingFloatingButtonPosition = (position: ArgsRegistry.position) => {
+export const setVideoRecordingFloatingButtonPosition = (position: position) => {
   NativeBugReporting.setVideoRecordingFloatingButtonPosition(position);
 };
 
@@ -183,7 +187,7 @@ export const setDidSelectPromptOptionHandler = (handler: (promptOption: string) 
  * @param edge The screen edge to show the floating button onto. Default is `floatingButtonEdge.right`.
  * @param offset The offset of the floating button from the top of the screen. Default is 50.
  */
-export const setFloatingButtonEdge = (edge: ArgsRegistry.floatingButtonEdge, offset: number) => {
+export const setFloatingButtonEdge = (edge: floatingButtonEdge, offset: number) => {
   NativeBugReporting.setFloatingButtonEdge(edge, offset);
 };
 

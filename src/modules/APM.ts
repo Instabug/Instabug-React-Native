@@ -1,9 +1,9 @@
 import { Platform } from 'react-native';
 import Trace from '../models/Trace';
 import { NativeAPM, NativeInstabug } from '../native';
-import * as ArgsRegistry from '../utils/ArgsRegistry';
+import { logLevel } from '../utils/ArgsRegistry';
 
-export import logLevel = ArgsRegistry.logLevel;
+export { logLevel };
 
 /**
  * Sets the printed logs priority. Filter to one of the following levels:
@@ -23,7 +23,7 @@ export import logLevel = ArgsRegistry.logLevel;
  *
  * @param level the printed logs priority.
  */
-export const setLogLevel = (level: ArgsRegistry.logLevel) => {
+export const setLogLevel = (level: logLevel) => {
   NativeAPM.setLogLevel(level);
 };
 

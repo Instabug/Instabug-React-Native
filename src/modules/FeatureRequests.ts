@@ -1,7 +1,7 @@
 import { NativeFeatureRequests } from '../native';
-import * as ArgsRegistry from '../utils/ArgsRegistry';
+import { actionTypes } from '../utils/ArgsRegistry';
 
-export import actionTypes = ArgsRegistry.actionTypes;
+export { actionTypes };
 
 /**
  * Enables and disables everything related to feature requests.
@@ -20,10 +20,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
  * @param actionTypes An enum that indicates which action types will have the isEmailFieldRequired
  */
-export const setEmailFieldRequired = (
-  isEmailFieldRequired: boolean,
-  actionTypes: ArgsRegistry.actionTypes,
-) => {
+export const setEmailFieldRequired = (isEmailFieldRequired: boolean, actionTypes: actionTypes) => {
   NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
 };
 
