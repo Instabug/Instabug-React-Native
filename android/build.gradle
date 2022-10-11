@@ -15,7 +15,7 @@ android {
         minSdkVersion getExtOrDefault('minSdkVersion').toInteger()
         targetSdkVersion getExtOrDefault('targetSdkVersion').toInteger()
         versionCode 1
-        versionName "11.2.0"
+        versionName "11.3.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
