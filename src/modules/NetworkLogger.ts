@@ -44,7 +44,9 @@ export const setEnabled = (isEnabled: boolean) => {
  * Obfuscates any response data.
  * @param handler
  */
-export const setNetworkDataObfuscationHandler = (handler: (data: NetworkData) => NetworkData) => {
+export const setNetworkDataObfuscationHandler = (
+  handler: (data: NetworkData) => Promise<NetworkData>,
+) => {
   if (handler === null) {
     _networkDataObfuscationHandlerSet = false;
     return;
@@ -54,9 +56,9 @@ export const setNetworkDataObfuscationHandler = (handler: (data: NetworkData) =>
   IBGEventEmitter.addListener(
     NativeInstabug,
     InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
-    (data: NetworkData) => {
+    async (data: NetworkData) => {
       try {
-        const newData = handler(data);
+        const newData = await handler(data);
 
         if (Platform.OS === 'android') {
           NativeInstabug.networkLog(JSON.stringify(newData));
@@ -87,10 +89,7 @@ export const setProgressHandlerForRequest = (handler: ProgressCallback) => {
   xhr.setOnProgressCallback(handler);
 };
 
-export const apolloLinkRequestHandler: RequestHandler = (
-  operation,
-  forward,
-) => {
+export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => {
   try {
     operation.setContext((context: Record<string, any>) => {
       const newHeaders: Record<string, any> = context.headers ?? {};
