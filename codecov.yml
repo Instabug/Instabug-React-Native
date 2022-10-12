@@ -20,6 +20,10 @@ coverage:
         target: 35%
         flags:
           - android
+      ios:
+        target: 35%
+        flags:
+          - ios
 
 flags:
   javascript:
@@ -30,3 +34,7 @@ flags:
     carryforward: true
     paths:
       - android
+  ios:
+    carryforward: true
+    paths:
+      - ios
