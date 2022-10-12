@@ -158,11 +158,11 @@ export const setAutoScreenRecordingDurationIOS = (maxDuration: number) => {
  * Different orientations are already handled.
  * (Default for `position` is `bottomRight`)
  *
- * @param position is of type position `topLeft` to show on the top left of screen,
- * or `bottomRight` to show on the bottom right of screen.
+ * @param buttonPosition is of type position `topLeft` to show on the top left
+ * of screen, or `bottomRight` to show on the bottom right of screen.
  */
-export const setVideoRecordingFloatingButtonPosition = (position: position) => {
-  NativeBugReporting.setVideoRecordingFloatingButtonPosition(position);
+export const setVideoRecordingFloatingButtonPosition = (buttonPosition: position) => {
+  NativeBugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
 };
 
 /**

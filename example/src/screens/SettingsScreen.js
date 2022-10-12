@@ -24,14 +24,14 @@ export function SettingsScreen() {
   const isLightTheme = theme === Instabug.colorTheme.light;
 
   const toggleColorTheme = (isLight) => {
-    const theme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
-    Instabug.setColorTheme(theme);
-    setTheme(theme);
+    const newTheme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
+    Instabug.setColorTheme(newTheme);
+    setTheme(newTheme);
   };
 
-  const setPrimaryColor = (color) => {
-    Instabug.setPrimaryColor(color);
-    setColor(color);
+  const setPrimaryColor = (newColor) => {
+    Instabug.setPrimaryColor(newColor);
+    setColor(newColor);
   };
 
   const changeInvocationEvent = (invocationEvent) =>

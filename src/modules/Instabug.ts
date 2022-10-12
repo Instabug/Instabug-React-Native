@@ -127,18 +127,18 @@ export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
  * Sets the SDK's locale.
  * Use to change the SDK's UI to different language.
  * Defaults to the device's current locale.
- * @param locale A locale to set the SDK to.
+ * @param sdkLocale A locale to set the SDK to.
  */
-export const setLocale = (locale: locale) => {
-  NativeInstabug.setLocale(locale);
+export const setLocale = (sdkLocale: locale) => {
+  NativeInstabug.setLocale(sdkLocale);
 };
 
 /**
  * Sets the color theme of the SDK's whole UI.
- * @param colorTheme
+ * @param sdkTheme
  */
-export const setColorTheme = (colorTheme: colorTheme) => {
-  NativeInstabug.setColorTheme(colorTheme);
+export const setColorTheme = (sdkTheme: colorTheme) => {
+  NativeInstabug.setColorTheme(sdkTheme);
 };
 
 /**
