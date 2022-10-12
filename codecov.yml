@@ -8,9 +8,25 @@ coverage:
   range: "70...100"
 
   status:
-    patch:
-      default:
-        target: 90%
     project:
       default:
+        target: 50%
+    patch:
+      javascript:
         target: 90%
+        flags:
+          - javascript
+      android:
+        target: 35%
+        flags:
+          - android
+
+flags:
+  javascript:
+    carryforward: true
+    paths:
+      - src
+  android:
+    carryforward: true
+    paths:
+      - android

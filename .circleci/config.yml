@@ -29,7 +29,8 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
       
-      - codecov/upload
+      - codecov/upload:
+          flags: javascript
 
       - persist_to_workspace:
           root: ~/project
@@ -46,7 +47,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: "2022.03.1"
-    working_directory: ~/project/example
+    working_directory: ~/project
     steps:
       - checkout:
           path: ~/project
@@ -55,10 +56,14 @@ jobs:
           command: npm install -g yarn
       - run:
           name: Install Node Packages
+          working_directory: example
           command: yarn
       - android/run-tests:
-          working-directory: ./android
+          working-directory: ./example/android
           test-command: ./gradlew test
+      - codecov/upload:
+          flags: android
+          file: android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
   validate_shell_files:
     machine:

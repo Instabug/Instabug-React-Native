@@ -1,0 +1,52 @@
+apply plugin: 'jacoco'
+
+jacoco {
+  toolVersion '0.8.8'
+}
+
+task jacocoTestReport(type: JacocoReport) {
+  group = 'Reporting'
+  description = 'Generate Jacoco coverage reports for the debug build.'
+
+  dependsOn 'testDebugUnitTest'
+
+  reports {
+    html.enabled true
+    xml.enabled true
+  }
+
+  def excludes = [
+      '**/R.class',
+      '**/R$*.class',
+      '**/BuildConfig.*',
+      '**/Manifest*.*',
+      '**/*Test*.*',
+      'android/**/*.*',
+      'androidx/**/*.*',
+      '**/*$ViewInjector*.*',
+      '**/*Dagger*.*',
+      '**/*MembersInjector*.*',
+      '**/*_Factory.*',
+      '**/*_Provide*Factory*.*',
+      '**/*_ViewBinding*.*',
+      '**/AutoValue_*.*',
+      '**/R2.class',
+      '**/R2$*.class',
+      '**/*Directions$*',
+      '**/*Directions.*',
+      '**/*Binding.*'
+  ]
+
+  def jClasses = "${project.buildDir}/intermediates/javac/debug/classes"
+  def javaClasses = fileTree(dir: jClasses, excludes: excludes)
+  def sourceDirs = ["${project.projectDir}/src/main/java"]
+  classDirectories.from = files(javaClasses)
+  sourceDirectories.from = files(sourceDirs)
+  executionData.from = files(["${project.buildDir}/jacoco/testDebugUnitTest.exec"])
+}
+
+tasks.whenTaskAdded { task ->
+  if (task.name == 'testDebugUnitTest') {
+    task.finalizedBy jacocoTestReport
+  }
+}

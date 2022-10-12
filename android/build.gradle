@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+apply from: './jacoco.gradle'
+
 String getExtOrDefault(String name) {
     if (rootProject.ext.has(name)) {
         return rootProject.ext.get(name)
