@@ -93,7 +93,7 @@ describe('NetworkLogger Module', () => {
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
-      networkData.requestHeaders['token'] = randomString;
+      networkData.requestHeaders.token = randomString;
       return networkData;
     });
     NetworkLogger.setEnabled(true);
@@ -103,7 +103,7 @@ describe('NetworkLogger Module', () => {
     ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
-      newData.requestHeaders['token'] = randomString;
+      newData.requestHeaders.token = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(newData);
     });
   });
@@ -113,7 +113,7 @@ describe('NetworkLogger Module', () => {
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
-      networkData.requestHeaders['token'] = randomString;
+      networkData.requestHeaders.token = randomString;
       return networkData;
     });
     NetworkLogger.setEnabled(true);
@@ -123,7 +123,7 @@ describe('NetworkLogger Module', () => {
     ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
-      newData.requestHeaders['token'] = randomString;
+      newData.requestHeaders.token = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
       expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
     });

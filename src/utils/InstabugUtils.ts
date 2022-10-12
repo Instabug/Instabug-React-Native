@@ -48,15 +48,20 @@ export const getStackTrace = (e: ExtendedError): StackFrame[] => {
   let jsStackTrace;
   if (Platform.hasOwnProperty('constants')) {
     // RN version >= 0.63
-    if (Platform.constants.reactNativeVersion.minor >= 64)
+    if (Platform.constants.reactNativeVersion.minor >= 64) {
       // RN version >= 0.64 -> Stacktrace as string
       // @ts-ignore
       jsStackTrace = parseErrorStackLib(e.stack);
+    }
     // RN version == 0.63 -> Stacktrace as string
-    else jsStackTrace = parseErrorStackLib(e);
+    else {
+      jsStackTrace = parseErrorStackLib(e);
+    }
   }
   // RN version < 0.63 -> Stacktrace as string
-  else jsStackTrace = parseErrorStackLib(e);
+  else {
+    jsStackTrace = parseErrorStackLib(e);
+  }
   return jsStackTrace;
 };
 

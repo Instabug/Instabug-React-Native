@@ -87,7 +87,9 @@ export const setUserData = (data: string) => {
  * @param isEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 export const setTrackUserSteps = (isEnabled: boolean) => {
-  if (Platform.OS === 'ios') NativeInstabug.setTrackUserSteps(isEnabled);
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setTrackUserSteps(isEnabled);
+  }
 };
 
 /**
@@ -96,7 +98,9 @@ export const setTrackUserSteps = (isEnabled: boolean) => {
  * Xcode's console is enabled or not.
  */
 export const setIBGLogPrintsToConsole = (printsToConsole: boolean) => {
-  if (Platform.OS === 'ios') NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
+  }
 };
 
 /**
@@ -223,7 +227,9 @@ export const logUserEvent = (name: string) => {
  * @param message the message
  */
 export const logVerbose = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logVerbose(message);
 };
@@ -239,7 +245,9 @@ export const logVerbose = (message: string) => {
  * @param message the message
  */
 export const logInfo = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logInfo(message);
 };
@@ -255,7 +263,9 @@ export const logInfo = (message: string) => {
  * @param message the message
  */
 export const logDebug = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logDebug(message);
 };
@@ -271,7 +281,9 @@ export const logDebug = (message: string) => {
  * @param message the message
  */
 export const logError = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logError(message);
 };
@@ -287,7 +299,9 @@ export const logError = (message: string) => {
  * @param message the message
  */
 export const logWarn = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logWarn(message);
 };
@@ -317,8 +331,9 @@ export const setReproStepsMode = (mode: reproStepsMode) => {
  * @param value the value
  */
 export const setUserAttribute = (key: string, value: string) => {
-  if (!key || typeof key !== 'string' || typeof value !== 'string')
+  if (!key || typeof key !== 'string' || typeof value !== 'string') {
     throw new TypeError('Invalid param, Expected String');
+  }
   NativeInstabug.setUserAttribute(key, value);
 };
 
@@ -338,7 +353,9 @@ export const getUserAttribute = (key: string, callback: (attribute: string) => v
  * @see {@link setUserAttribute}
  */
 export const removeUserAttribute = (key: string) => {
-  if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
+  if (!key || typeof key !== 'string') {
+    throw new TypeError('Invalid param, Expected String');
+  }
   NativeInstabug.removeUserAttribute(key);
 };
 
@@ -476,7 +493,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   }
 
   // send bug report
-  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, report => {
+  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
     const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
     handler && handler(reportObj);
@@ -487,7 +504,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
     IBGEventEmitter.addListener(
       NativeInstabug,
       InstabugConstants.SEND_HANDLED_CRASH,
-      async jsonObject => {
+      async (jsonObject) => {
         try {
           let report = await NativeInstabug.getReport();
           const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
@@ -511,7 +528,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
     IBGEventEmitter.addListener(
       NativeInstabug,
       InstabugConstants.SEND_UNHANDLED_CRASH,
-      async jsonObject => {
+      async (jsonObject) => {
         let report = await NativeInstabug.getReport();
         const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
         const reportObj = new Report(
@@ -558,7 +575,9 @@ export const onNavigationStateChange = (
 };
 
 export const onStateChange = (state?: NavigationStateV5) => {
-  if (!state) return;
+  if (!state) {
+    return;
+  }
 
   const currentScreen = InstabugUtils.getFullRoute(state);
   if (_currentScreen != null && _currentScreen != firstScreen) {

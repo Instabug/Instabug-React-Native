@@ -97,14 +97,15 @@ export default {
             if (responseBodySizeString) {
               const responseBodySizeNumber = Number(responseBodySizeString);
 
-              if (!isNaN(responseBodySizeNumber))
+              if (!isNaN(responseBodySizeNumber)) {
                 cloneNetwork.responseBodySize = responseBodySizeNumber;
+              }
             }
 
             if (this.getAllResponseHeaders()) {
               const responseHeaders = this.getAllResponseHeaders().split('\r\n');
               const responseHeadersDictionary: Record<string, string> = {};
-              responseHeaders.forEach(element => {
+              responseHeaders.forEach((element) => {
                 const key = element.split(/:(.+)/)[0];
                 const value = element.split(/:(.+)/)[1];
                 responseHeadersDictionary[key] = value;

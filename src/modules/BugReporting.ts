@@ -63,7 +63,7 @@ export const onSDKDismissedHandler = (
   IBGEventEmitter.addListener(
     NativeBugReporting,
     InstabugConstants.ON_SDK_DISMISSED_HANDLER,
-    payload => {
+    (payload) => {
       handler(payload.dismissType, payload.reportType);
     },
   );
@@ -76,7 +76,9 @@ export const onSDKDismissedHandler = (
  * @param threshold Threshold for iPhone.
  */
 export const setShakingThresholdForiPhone = (threshold: number) => {
-  if (Platform.OS === 'ios') NativeBugReporting.setShakingThresholdForiPhone(threshold);
+  if (Platform.OS === 'ios') {
+    NativeBugReporting.setShakingThresholdForiPhone(threshold);
+  }
 };
 
 /**
@@ -85,7 +87,9 @@ export const setShakingThresholdForiPhone = (threshold: number) => {
  * @param threshold Threshold for iPad.
  */
 export const setShakingThresholdForiPad = (threshold: number) => {
-  if (Platform.OS === 'ios') NativeBugReporting.setShakingThresholdForiPad(threshold);
+  if (Platform.OS === 'ios') {
+    NativeBugReporting.setShakingThresholdForiPad(threshold);
+  }
 };
 
 /**
@@ -96,7 +100,9 @@ export const setShakingThresholdForiPad = (threshold: number) => {
  * @param threshold Threshold for android devices.
  */
 export const setShakingThresholdForAndroid = (threshold: number) => {
-  if (Platform.OS === 'android') NativeBugReporting.setShakingThresholdForAndroid(threshold);
+  if (Platform.OS === 'android') {
+    NativeBugReporting.setShakingThresholdForAndroid(threshold);
+  }
 };
 
 /**
@@ -141,7 +147,9 @@ export const setAutoScreenRecordingEnabled = (isEnabled: boolean) => {
  * The maximum duration is 30 seconds
  */
 export const setAutoScreenRecordingDurationIOS = (maxDuration: number) => {
-  if (Platform.OS !== 'ios') return;
+  if (Platform.OS !== 'ios') {
+    return;
+  }
   NativeBugReporting.setAutoScreenRecordingDuration(maxDuration);
 };
 
@@ -170,11 +178,13 @@ export const setViewHierarchyEnabled = (isEnabled: boolean) => {
  * @param handler - A callback that gets executed when a prompt option is selected.
  */
 export const setDidSelectPromptOptionHandler = (handler: (promptOption: string) => void) => {
-  if (Platform.OS === 'android') return;
+  if (Platform.OS === 'android') {
+    return;
+  }
   IBGEventEmitter.addListener(
     NativeBugReporting,
     InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER,
-    payload => {
+    (payload) => {
       handler(payload.promptOption);
     },
   );

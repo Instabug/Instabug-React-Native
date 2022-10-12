@@ -106,7 +106,7 @@ describe('Network Interceptor', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       expect(network.responseHeaders['content-type'].trim()).toEqual(headers['Content-type']);
-      expect(network.responseHeaders.accept.trim()).toEqual(headers['Accept']);
+      expect(network.responseHeaders.accept.trim()).toEqual(headers.Accept);
       done();
     });
     FakeRequest.mockResponse(request, 200, 'ok', headers);

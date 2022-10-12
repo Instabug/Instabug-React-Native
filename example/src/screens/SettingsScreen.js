@@ -23,25 +23,25 @@ export function SettingsScreen() {
 
   const isLightTheme = theme === Instabug.colorTheme.light;
 
-  const toggleColorTheme = isLight => {
+  const toggleColorTheme = (isLight) => {
     const theme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
     Instabug.setColorTheme(theme);
     setTheme(theme);
   };
 
-  const setPrimaryColor = color => {
+  const setPrimaryColor = (color) => {
     Instabug.setPrimaryColor(color);
     setColor(color);
   };
 
-  const changeInvocationEvent = invocationEvent =>
+  const changeInvocationEvent = (invocationEvent) =>
     BugReporting.setInvocationEvents([invocationEvent]);
 
   return (
     <Screen>
       <Section title="Invocation Event">
         <View style={[styles.row, { marginTop: -10 }]}>
-          {invocationEvents.map(event => (
+          {invocationEvents.map((event) => (
             <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
               {event.label}
             </Button>
@@ -51,7 +51,7 @@ export function SettingsScreen() {
 
       <Section title="Primary Color">
         <View style={styles.row}>
-          {colors.map(_color => (
+          {colors.map((_color) => (
             <ColorButton
               key={_color}
               color={_color}

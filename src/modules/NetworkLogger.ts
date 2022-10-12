@@ -16,7 +16,7 @@ let _requestFilterExpression = 'false';
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
     xhr.enableInterception();
-    xhr.setOnDoneCallback(network => {
+    xhr.setOnDoneCallback((network) => {
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       if (!predicate(network)) {
         if (_networkDataObfuscationHandlerSet) {

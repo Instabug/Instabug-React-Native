@@ -2,11 +2,7 @@ import { NativeAppEventEmitter, DeviceEventEmitter, Platform } from 'react-nativ
 import type { NativeModule } from '../native';
 
 export default {
-  addListener: (
-    nativeModule: NativeModule,
-    eventName: string,
-    callback: (data: any) => void,
-  ) => {
+  addListener: (nativeModule: NativeModule, eventName: string, callback: (data: any) => void) => {
     if (Platform.OS === 'ios') {
       nativeModule.addListener(eventName);
       NativeAppEventEmitter.addListener(eventName, callback);

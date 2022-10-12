@@ -18,9 +18,11 @@ export function App() {
     <NavigationContainer onStateChange={Instabug.onStateChange}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarIcon: props => {
+          tabBarIcon: (props) => {
             let name = route.name.toLowerCase();
-            if (!props.focused) name += '-outline';
+            if (!props.focused) {
+              name += '-outline';
+            }
             return <Icon {...props} name={name} />;
           },
         })}>
