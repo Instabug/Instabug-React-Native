@@ -63,10 +63,6 @@ jobs:
       - android/run-tests:
           working-directory: ./example/android
           test-command: ./gradlew test
-      - run:
-          name: Generate Coverage Report
-          working_directory: example/android
-          command: ./gradlew jacocoTestReport
       - codecov/upload:
           flags: android
           file: android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
