@@ -19,7 +19,7 @@ const mockModules = [
 jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
 
-  mockModules.forEach(mockModule => {
+  mockModules.forEach((mockModule) => {
     Object.assign(RN.NativeModules, mockModule);
   });
 

@@ -43,7 +43,7 @@ describe('Instabug Module', () => {
     });
   });
 
-  it("componentDidAppearListener shouldn't call the native method reportScreenChange twice if same screen", done => {
+  it("componentDidAppearListener shouldn't call the native method reportScreenChange twice if same screen", (done) => {
     for (let _ of Array(5)) {
       Instabug.componentDidAppearListener({
         componentId: '1',
@@ -68,7 +68,7 @@ describe('Instabug Module', () => {
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange', async () => {
-    InstabugUtils.getActiveRouteName.mockImplementation(screenName => screenName);
+    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
     Instabug.onNavigationStateChange('home', 'settings');
 
     await waitForExpect(() => {
@@ -77,8 +77,8 @@ describe('Instabug Module', () => {
     });
   });
 
-  it('onNavigationStateChange should not call the native method reportScreenChange if screen is the same', done => {
-    InstabugUtils.getActiveRouteName.mockImplementation(screenName => screenName);
+  it('onNavigationStateChange should not call the native method reportScreenChange if screen is the same', (done) => {
+    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
     Instabug.onNavigationStateChange('home', 'home');
 
     // Wait for 1.5s as reportScreenChange is delayed by 1s
@@ -89,7 +89,7 @@ describe('Instabug Module', () => {
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange immediatly if _currentScreen is set', async () => {
-    InstabugUtils.getActiveRouteName.mockImplementation(screenName => screenName);
+    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
     // sets _currentScreen and waits for 1s as _currentScreen is null
     Instabug.onNavigationStateChange('home', 'settings');
 
@@ -230,8 +230,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.resetTags).toBeCalledTimes(1);
   });
 
-  it('should call native method getTags', done => {
-    const callback = tags => {
+  it('should call native method getTags', (done) => {
+    const callback = (tags) => {
       expect(tags).toBeDefined();
       done();
     };
@@ -391,8 +391,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setUserAttribute).toBeCalledWith(key, value);
   });
 
-  it('should call native method getUserAttribute', done => {
-    const callback = value => {
+  it('should call native method getUserAttribute', (done) => {
+    const callback = (value) => {
       expect(value).toBeDefined();
       done();
     };
@@ -412,14 +412,14 @@ describe('Instabug Module', () => {
 
   it.each([null, 1, {}])(
     "should fail if key isn't a string when calling removeUserAttribute",
-    key => {
+    (key) => {
       expect(() => Instabug.removeUserAttribute(key)).toThrow(TypeError);
       expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
     },
   );
 
-  it('should call native method getAllUserAttributes', done => {
-    const callback = value => {
+  it('should call native method getAllUserAttributes', (done) => {
+    const callback = (value) => {
       expect(value).toBeDefined();
       done();
     };
@@ -477,9 +477,9 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.disable).not.toBeCalled();
   });
 
-  it('should call the native method isRunningLive', done => {
+  it('should call the native method isRunningLive', (done) => {
     Platform.OS = 'ios';
-    const callback = isRunningLive => {
+    const callback = (isRunningLive) => {
       expect(isRunningLive).toBeDefined();
       done();
     };
@@ -532,7 +532,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method addPrivateView', () => {
-    <Text ref={c => (this.textView = c)} />;
+    <Text ref={(c) => (this.textView = c)} />;
     Instabug.addPrivateView(this.textView);
 
     expect(NativeInstabug.addPrivateView).toBeCalledTimes(1);
@@ -542,7 +542,7 @@ describe('Instabug Module', () => {
   it('should map deprecated setPrivateView to addPrivateView', () => {
     const addPrivateView = jest.spyOn(Instabug, 'addPrivateView');
 
-    <Text ref={c => (this.textView = c)} />;
+    <Text ref={(c) => (this.textView = c)} />;
     Instabug.setPrivateView(this.textView);
 
     expect(addPrivateView).toBeCalledTimes(1);
@@ -552,7 +552,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method removePrivateView', () => {
-    <Text ref={c => (this.textView = c)} />;
+    <Text ref={(c) => (this.textView = c)} />;
     Instabug.removePrivateView(this.textView);
 
     expect(NativeInstabug.removePrivateView).toBeCalledTimes(1);
@@ -583,7 +583,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setPreSendingHandler).toBeCalledWith(callback);
   });
 
-  it('should invoke callback on emitting the event IBGpreSendingHandler', done => {
+  it('should invoke callback on emitting the event IBGpreSendingHandler', (done) => {
     const report = {
       tags: ['tag1', 'tag2'],
       consoleLogs: ['consoleLog'],
@@ -591,7 +591,7 @@ describe('Instabug Module', () => {
       userAttributes: [{ age: '24' }],
       fileAttachments: ['path'],
     };
-    const callback = rep => {
+    const callback = (rep) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -606,7 +606,7 @@ describe('Instabug Module', () => {
     expect(IBGEventEmitter.getListeners(IBGConstants.PRESENDING_HANDLER).length).toEqual(1);
   });
 
-  it('should invoke callback on emitting the event IBGSendHandledJSCrash', async done => {
+  it('should invoke callback on emitting the event IBGSendHandledJSCrash', async (done) => {
     Platform.OS = 'android';
     const report = {
       tags: ['tag1', 'tag2'],
@@ -617,7 +617,7 @@ describe('Instabug Module', () => {
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = rep => {
+    const callback = (rep) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -660,7 +660,7 @@ describe('Instabug Module', () => {
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(0);
   });
 
-  it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async done => {
+  it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async (done) => {
     Platform.OS = 'android';
     const report = {
       tags: ['tag1', 'tag2'],
@@ -671,7 +671,7 @@ describe('Instabug Module', () => {
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = rep => {
+    const callback = (rep) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);

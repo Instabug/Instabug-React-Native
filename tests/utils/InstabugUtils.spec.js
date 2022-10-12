@@ -143,7 +143,7 @@ describe('Instabug Utils', () => {
     expect(output).toBe('');
   });
 
-  it.each([true, false])('setOnReportHandler should set _isOnReportHandlerSet flag', flag => {
+  it.each([true, false])('setOnReportHandler should set _isOnReportHandlerSet flag', (flag) => {
     InstabugUtils.setOnReportHandler(flag);
 
     const isOnReportHandlerSet = InstabugUtils.isOnReportHandlerSet();
