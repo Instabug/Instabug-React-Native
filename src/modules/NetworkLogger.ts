@@ -17,6 +17,7 @@ export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
     xhr.enableInterception();
     xhr.setOnDoneCallback((network) => {
+      // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       if (!predicate(network)) {
         if (_networkDataObfuscationHandlerSet) {
