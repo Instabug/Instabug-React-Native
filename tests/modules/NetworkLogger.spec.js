@@ -1,7 +1,7 @@
 import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
-import NetworkLogger from '../../src/modules/NetworkLogger';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import waitForExpect from 'wait-for-expect';
@@ -92,7 +92,7 @@ describe('NetworkLogger Module', () => {
     Platform.OS = 'ios';
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
-    NetworkLogger.setNetworkDataObfuscationHandler(async networkData => {
+    NetworkLogger.setNetworkDataObfuscationHandler(networkData => {
       networkData.requestHeaders['token'] = randomString;
       return networkData;
     });
@@ -112,7 +112,7 @@ describe('NetworkLogger Module', () => {
     Platform.OS = 'android';
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
-    NetworkLogger.setNetworkDataObfuscationHandler(async networkData => {
+    NetworkLogger.setNetworkDataObfuscationHandler(networkData => {
       networkData.requestHeaders['token'] = randomString;
       return networkData;
     });

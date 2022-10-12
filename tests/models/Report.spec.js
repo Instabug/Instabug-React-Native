@@ -4,7 +4,7 @@ import Report from '../../src/models/Report';
 const { Instabug: NativeInstabug } = NativeModules;
 
 describe('Report Model', () => {
-  var report;
+  let report;
 
   beforeEach(() => {
     const reportData = {

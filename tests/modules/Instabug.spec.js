@@ -2,7 +2,7 @@ import '../mocks/mockInstabugUtils';
 import React from 'react';
 import { NativeModules, Platform, processColor, findNodeHandle, Text } from 'react-native';
 import waitForExpect from 'wait-for-expect';
-import Instabug from '../../src/modules/Instabug';
+import * as Instabug from '../../src/modules/Instabug';
 import Report from '../../src/models/Report';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
@@ -21,7 +21,7 @@ describe('Instabug Module', () => {
 
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
     const screenName = 'some-screen';
-    var obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
+    const obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
     Instabug.componentDidAppearListener(obj);
     expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
     expect(NativeInstabug.reportScreenChange).toBeCalledWith(screenName);

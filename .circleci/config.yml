@@ -17,11 +17,9 @@ jobs:
       - checkout:
           path: ~/project
 
-      - run: yarn
-
       - run:
-          name: Typescript Definitions Validation
-          command: node typescript_validator.js
+          name: Install Node Packages
+          command: yarn
 
       - run:
           name: jest tests
@@ -113,16 +111,16 @@ jobs:
           name: Build and run tests
           command: cd ios && xcodebuild  -allowProvisioningUpdates   -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5'    test | xcpretty
           no_output_timeout: 30m
+
   e2e_ios:
     macos:
       xcode: 13.4.1
     resource_class: large  
-    working_directory: ~/project/example
+    working_directory: ~/project
     environment:
       FL_OUTPUT_DIR: output
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       - run:
           name: Install CocoaPods
           command: sudo gem install cocoapods
@@ -139,13 +137,23 @@ jobs:
           name: Install Node Packages
           command: yarn
       - run:
+          name: Build Project
+          command: yarn build
+      - run:
+          name: Install Example's Node Packages
+          working_directory: example
+          command: yarn
+      - run:
           name: Install Pods
-          command: cd ios && pod install
+          working_directory: example/ios
+          command: pod install
       - run:
           name: Detox - Build Release App
+          working_directory: example
           command: detox build --configuration ios.sim.release --cleanup
       - run:
           name: Detox - Run E2E Tests
+          working_directory: example
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
@@ -153,10 +161,9 @@ jobs:
       name: android/android-machine
       tag: "2022.03.1"
       resource-class: large
-    working_directory: ~/project/example/android
+    working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       - run: 
           name: Install Yarn
           command: npm install --global yarn
@@ -165,6 +172,13 @@ jobs:
           command: npm install --global detox-cli
       - run:
           name: Install Node Packages
+          command: yarn
+      - run:
+          name: Build Project
+          command: yarn build
+      - run:
+          name: Install Example's Node Packages
+          working_directory: example
           command: yarn
       - android/create-avd:
           avd-name: Nexus_6P_API_27
@@ -176,12 +190,12 @@ jobs:
           memory: 2048
           post-emulator-launch-assemble-command: |
               rm -rf ~/.gradle/caches
-              ./gradlew androidDependencies
-              cd ..
-              detox build -c android.emu.release
+              cd ~/project/example/android && ./gradlew androidDependencies
+              cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          command: cd .. && detox test -c android.emu.release
+          working_directory: example
+          command: detox test -c android.emu.release
 
   publish:
     macos:
@@ -193,6 +207,7 @@ jobs:
       - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
       - run: cd Escape && swift build -c release
       - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
+      - run: cd project && yarn && yarn build
       - run: cd project && Escape react-native publish
 
 workflows:

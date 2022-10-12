@@ -1,4 +1,4 @@
-var xhr;
+let xhr;
 export default {
     open(method, url) {
         xhr = new global.XMLHttpRequest();

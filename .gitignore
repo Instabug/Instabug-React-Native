@@ -32,6 +32,10 @@ xcuserdata/
 
 
 coverage/
+.jest/cache/
 *node_modules/
 *Pods/
 *Podfile.lock
+
+# Typescript build
+dist/

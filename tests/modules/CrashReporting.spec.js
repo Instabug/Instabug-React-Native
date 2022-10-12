@@ -1,6 +1,6 @@
 import '../mocks/mockInstabugUtils';
 import { NativeModules, Platform } from 'react-native';
-import CrashReporting from '../../src/modules/CrashReporting';
+import * as CrashReporting from '../../src/modules/CrashReporting';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';

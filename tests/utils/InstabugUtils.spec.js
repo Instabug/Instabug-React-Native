@@ -1,7 +1,7 @@
 import '../mocks/mockXhrNetworkInterceptor';
 import { NativeModules, Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
-import Instabug from '../../src/modules/Instabug';
+import * as Instabug from '../../src/modules/Instabug';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
@@ -16,7 +16,7 @@ describe('Test global error handler', () => {
   it('should call sendJSCrash when platform is ios', () => {
     Platform.OS = 'ios';
     Platform.constants.reactNativeVersion = { minor: 64 };
-    var handler = global.ErrorUtils.getGlobalHandler();
+    const handler = global.ErrorUtils.getGlobalHandler();
     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
     const expected = {
       message: 'TypeError - This is a type error.',

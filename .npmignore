@@ -25,5 +25,4 @@ test/
 Dangerfile
 babel.config.js
 codecov.yml
-typescript_validator.js
 .prettierrc.js
