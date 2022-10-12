@@ -23,6 +23,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:ci": "eslint . --max-warnings=0",
     "format": "prettier --check '**/*.{js, ts}' --ignore-path .gitignore",
     "format:fix": "prettier --write '**/*.{js, ts}'",
     "test": "jest",

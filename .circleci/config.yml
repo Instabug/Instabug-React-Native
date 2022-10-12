@@ -9,6 +9,20 @@ jobs:
     steps:
       - checkout
       - run: danger
+
+  lint:
+    working_directory: ~/project
+    docker:
+      - image: cimg/node:16.17.1
+    steps:
+      - checkout
+      - run:
+          name: Install Node Packages
+          command: yarn
+      - run:
+          name: Check Lint Issues
+          command: yarn lint:ci
+
   test_module:
     working_directory: ~/project
     docker:
@@ -219,6 +233,7 @@ workflows:
   publish:
     jobs:
       - danger
+      - lint
       - test_module
       - test_android
       - validate_shell_files
@@ -228,6 +243,8 @@ workflows:
       - e2e_android
       - hold:
           requires:
+            - danger
+            - lint
             - test_module
             - test_android
             - validate_shell_files
