@@ -5,14 +5,14 @@ import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 
-const { Instabug: NativeInstabug } = NativeModules;
+const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('CrashReporting Module', () => {
-  it('should call the native method setCrashReportingEnabled', () => {
+  it('should call the native method setEnabled', () => {
     CrashReporting.setEnabled(true);
 
-    expect(NativeInstabug.setCrashReportingEnabled).toBeCalledTimes(1);
-    expect(NativeInstabug.setCrashReportingEnabled).toBeCalledWith(true);
+    expect(NativeCrashReporting.setEnabled).toBeCalledTimes(1);
+    expect(NativeCrashReporting.setEnabled).toBeCalledWith(true);
   });
 
   it('should call the native method sendHandledJSCrash when platform is ios', () => {
@@ -29,8 +29,8 @@ describe('CrashReporting Module', () => {
       exception: 'javascriptStackTrace',
     };
 
-    expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
-    expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(expectedObject);
+    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
+    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(expectedObject);
   });
 
   it('should call the native method sendHandledJSCrash when platform is android', () => {
@@ -47,8 +47,8 @@ describe('CrashReporting Module', () => {
       exception: 'javascriptStackTrace',
     };
 
-    expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
-    expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(JSON.stringify(expectedObject));
+    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
+    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(JSON.stringify(expectedObject));
   });
 
   //TODO: finish this

@@ -9,7 +9,7 @@ import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import { green } from 'ansi-colors';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 
-const { Instabug: NativeInstabug } = NativeModules;
+const { Instabug: NativeInstabug, IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Instabug Module', () => {
   it('reportScreenChange should call the native method reportScreenChange', () => {
@@ -630,8 +630,8 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(1);
-    await expect(NativeInstabug.sendHandledJSCrash).toBeCalledTimes(1);
-    await expect(NativeInstabug.sendHandledJSCrash).toBeCalledWith(jsonObject);
+    await expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
+    await expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(jsonObject);
   });
 
   it('should not break if pre-sending callback fails on emitting the event IBGSendHandledJSCrash', async () => {
@@ -648,7 +648,7 @@ describe('Instabug Module', () => {
 
     // We don't care if console.error is called but we use it as a sign that the function finished running
     await waitForExpect(() => expect(callback).toBeCalled());
-    expect(NativeInstabug.sendHandledJSCrash).not.toBeCalled();
+    expect(NativeCrashReporting.sendHandledJSCrash).not.toBeCalled();
 
     console.error.mockRestore();
   });
@@ -684,8 +684,8 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(1);
-    await expect(NativeInstabug.sendJSCrash).toBeCalledTimes(1);
-    await expect(NativeInstabug.sendJSCrash).toBeCalledWith(jsonObject);
+    await expect(NativeCrashReporting.sendJSCrash).toBeCalledTimes(1);
+    await expect(NativeCrashReporting.sendJSCrash).toBeCalledWith(jsonObject);
   });
 
   it('should not invoke callback on emitting the event IBGSendUnhandledJSCrash when Platform is iOS', () => {

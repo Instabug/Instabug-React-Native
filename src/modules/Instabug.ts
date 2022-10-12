@@ -4,7 +4,7 @@ import type React from 'react';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import { findNodeHandle, Platform, processColor } from 'react-native';
 import Report from '../models/Report';
-import { NativeInstabug } from '../native';
+import { NativeCrashReporting, NativeInstabug } from '../native';
 import * as NetworkLogger from './NetworkLogger';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
@@ -499,7 +499,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
             fileAttachments,
           );
           handler && handler(reportObj);
-          NativeInstabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+          NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
         } catch (e) {
           console.error(e);
         }
@@ -522,7 +522,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
           fileAttachments,
         );
         handler && handler(reportObj);
-        NativeInstabug.sendJSCrash(JSON.stringify(jsonObject));
+        NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
       },
     );
   }

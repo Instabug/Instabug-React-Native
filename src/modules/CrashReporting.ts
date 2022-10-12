@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
-import { NativeInstabug } from '../native';
+import { NativeCrashReporting } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils from '../utils/InstabugUtils';
@@ -11,7 +11,7 @@ import InstabugUtils from '../utils/InstabugUtils';
  * @param isEnabled
  */
 export const setEnabled = (isEnabled: boolean) => {
-  NativeInstabug.setCrashReportingEnabled(isEnabled);
+  NativeCrashReporting.setEnabled(isEnabled);
 };
 
 /**
@@ -34,9 +34,9 @@ export const reportJSException = (error: ExtendedError) => {
     IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
   } else {
     if (Platform.OS === 'android') {
-      NativeInstabug.sendHandledJSCrash(JSON.stringify(jsonObject));
+      NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
     } else {
-      NativeInstabug.sendHandledJSCrash(jsonObject);
+      NativeCrashReporting.sendHandledJSCrash(jsonObject);
     }
   }
 };
