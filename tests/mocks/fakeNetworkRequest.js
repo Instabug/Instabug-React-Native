@@ -9,7 +9,7 @@ export default {
   },
   setRequestHeaders(headers) {
     for (let i = 0; i < Object.keys(headers).length; i++) {
-      let key = Object.keys(headers)[i];
+      const key = Object.keys(headers)[i];
       xhr.setRequestHeader(key, headers[key]);
     }
   },

@@ -163,7 +163,7 @@ export default {
                 cloneNetwork.gqlQueryName = '';
               }
               if (cloneNetwork.responseBody) {
-                let responseObj = JSON.parse(cloneNetwork.responseBody);
+                const responseObj = JSON.parse(cloneNetwork.responseBody);
 
                 if (responseObj.errors) {
                   cloneNetwork.serverErrorMessage = 'GraphQLError';
@@ -187,8 +187,8 @@ export default {
           }
           // check if will be able to compute progress
           if (event.lengthComputable && onProgressCallback) {
-            let totalBytesSent = event.loaded;
-            let totalBytesExpectedToSend = event.total - event.loaded;
+            const totalBytesSent = event.loaded;
+            const totalBytesExpectedToSend = event.total - event.loaded;
             onProgressCallback(totalBytesSent, totalBytesExpectedToSend);
           }
         };

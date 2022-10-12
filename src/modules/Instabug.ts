@@ -506,7 +506,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
       InstabugConstants.SEND_HANDLED_CRASH,
       async (jsonObject) => {
         try {
-          let report = await NativeInstabug.getReport();
+          const report = await NativeInstabug.getReport();
           const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
           const reportObj = new Report(
             tags,
@@ -529,7 +529,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
       NativeInstabug,
       InstabugConstants.SEND_UNHANDLED_CRASH,
       async (jsonObject) => {
-        let report = await NativeInstabug.getReport();
+        const report = await NativeInstabug.getReport();
         const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
         const reportObj = new Report(
           tags,

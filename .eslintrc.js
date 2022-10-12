@@ -21,5 +21,6 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
+    'prefer-const': 'error',
   },
 };

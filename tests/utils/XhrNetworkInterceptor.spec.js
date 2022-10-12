@@ -28,7 +28,7 @@ describe('Network Interceptor', () => {
   });
 
   it('should set network object on calling setRequestHeader', (done) => {
-    let requestHeaders = { 'content-type': 'application/json', token: '9u4hiudhi3bf' };
+    const requestHeaders = { 'content-type': 'application/json', token: '9u4hiudhi3bf' };
 
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
