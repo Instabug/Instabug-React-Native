@@ -88,7 +88,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
     private InstabugCustomTextPlaceHolder placeHolders;
-    protected static Report currentReport;
+    private static Report currentReport;
 
     /**
      * Instantiates a new Rn Instabug ReactNative module.
@@ -970,7 +970,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 });
             }
         });
+    }
 
+    protected static void clearCurrentReport() {
+        currentReport = null;
     }
 
     @ReactMethod

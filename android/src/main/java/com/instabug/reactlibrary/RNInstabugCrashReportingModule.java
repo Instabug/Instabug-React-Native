@@ -89,7 +89,7 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
                      Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
                      if (method != null) {
                          method.invoke(null, exceptionObject, isHandled);
-                         RNInstabugReactnativeModule.currentReport = null;
+                         RNInstabugReactnativeModule.clearCurrentReport();
                      }
                  } catch (ClassNotFoundException e) {
                      e.printStackTrace();
