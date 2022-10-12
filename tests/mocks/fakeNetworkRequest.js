@@ -8,7 +8,7 @@ export default {
     xhr.send(data);
   },
   setRequestHeaders(headers) {
-    for (i = 0; i < Object.keys(headers).length; i++) {
+    for (let i = 0; i < Object.keys(headers).length; i++) {
       let key = Object.keys(headers)[i];
       xhr.setRequestHeader(key, headers[key]);
     }
