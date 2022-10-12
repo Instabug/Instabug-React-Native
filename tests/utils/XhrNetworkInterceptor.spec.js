@@ -183,7 +183,7 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set responseBody in network object on receiving response', () => {
+  it('should call onDoneCallback in network object on receiving response', () => {
     Interceptor.disableInterception();
     const callback = jest.fn();
     Interceptor.setOnDoneCallback(callback);
