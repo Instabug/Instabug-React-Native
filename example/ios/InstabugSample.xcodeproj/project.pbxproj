@@ -56,6 +56,7 @@
 		63D4BF6D2715AA740039BE63 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = InstabugSample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A06BD00E5ABB3BFA096B0FBE /* Pods-InstabugSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugSample.release.xcconfig"; path = "Target Support Files/Pods-InstabugSample/Pods-InstabugSample.release.xcconfig"; sourceTree = "<group>"; };
+		CCDF973528D9A019000B8E85 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -147,6 +148,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CCDF973428D99FF1000B8E85 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* InstabugSample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* InstabugSampleTests */,
@@ -166,6 +168,14 @@
 				00E356EE1AD99517003FC87E /* InstabugSampleTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CCDF973428D99FF1000B8E85 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CCDF973528D9A019000B8E85 /* Ionicons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
