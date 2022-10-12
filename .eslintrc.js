@@ -4,11 +4,18 @@ module.exports = {
   plugins: ['prettier', 'jest'],
   overrides: [
     {
-      // Test Overrides (jest/detox)
-      files: ['tests/**', 'example/e2e/**.js'],
+      // Jest Overrides
+      files: ['tests/**'],
       env: {
         node: true,
         browser: true,
+        'jest/globals': true,
+      },
+    },
+    {
+      // Detox Overrides
+      files: ['example/e2e/**.js'],
+      env: {
         'jest/globals': true,
       },
       globals: {
