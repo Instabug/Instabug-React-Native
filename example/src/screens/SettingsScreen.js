@@ -40,7 +40,7 @@ export function SettingsScreen() {
   return (
     <Screen>
       <Section title="Invocation Event">
-        <View style={[styles.row, { marginTop: -10 }]}>
+        <View style={styles.row}>
           {invocationEvents.map((event) => (
             <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
               {event.label}
