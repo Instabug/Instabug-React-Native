@@ -6,9 +6,9 @@ jacoco {
 
 task jacocoTestReport(type: JacocoReport) {
   group = 'Reporting'
-  description = 'Generate Jacoco coverage reports for the release build.'
+  description = 'Generate Jacoco coverage reports for the debug build.'
 
-  dependsOn 'testReleaseUnitTest'
+  dependsOn 'testDebugUnitTest'
 
   reports {
     html.enabled true
@@ -37,16 +37,16 @@ task jacocoTestReport(type: JacocoReport) {
       '**/*Binding.*'
   ]
 
-  def jClasses = "${project.buildDir}/intermediates/javac/release/classes"
+  def jClasses = "${project.buildDir}/intermediates/javac/debug/classes"
   def javaClasses = fileTree(dir: jClasses, excludes: excludes)
   def sourceDirs = ["${project.projectDir}/src/main/java"]
   classDirectories.from = files(javaClasses)
   sourceDirectories.from = files(sourceDirs)
-  executionData.from = files(["${project.buildDir}/jacoco/testReleaseUnitTest.exec"])
+  executionData.from = files(["${project.buildDir}/jacoco/testDebugUnitTest.exec"])
 }
 
 tasks.whenTaskAdded { task ->
-  if (task.name == 'testReleaseUnitTest') {
+  if (task.name == 'testDebugUnitTest') {
     task.finalizedBy jacocoTestReport
   }
 }
