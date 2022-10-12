@@ -313,22 +313,6 @@
 
 /*
  +------------------------------------------------------------------------+
- |                        Crash Reporting Module                          |
- +------------------------------------------------------------------------+
- */
-
-- (void)testSetCrashReportingEnabled {
-  id mock = OCMClassMock([Instabug class]);
-
-  [self.instabugBridge setCrashReportingEnabled:YES];
-  XCTAssertTrue(IBGCrashReporting.enabled);
-
-  [self.instabugBridge setCrashReportingEnabled:NO];
-  XCTAssertFalse(IBGCrashReporting.enabled);
-}
-
-/*
- +------------------------------------------------------------------------+
  |                              Log Module                                |
  +------------------------------------------------------------------------+
  */
