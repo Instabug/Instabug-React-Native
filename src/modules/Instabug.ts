@@ -62,7 +62,7 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
   _currentScreen = firstScreen;
 
   setTimeout(() => {
-    if (_currentScreen == firstScreen) {
+    if (_currentScreen === firstScreen) {
       NativeInstabug.reportScreenChange(firstScreen);
       _currentScreen = null;
     }
@@ -560,13 +560,13 @@ export const onNavigationStateChange = (
   const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
   if (prevScreen !== currentScreen) {
-    if (_currentScreen != null && _currentScreen != firstScreen) {
+    if (_currentScreen != null && _currentScreen !== firstScreen) {
       NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
     }
     _currentScreen = currentScreen;
     setTimeout(() => {
-      if (_currentScreen == currentScreen) {
+      if (_currentScreen === currentScreen) {
         NativeInstabug.reportScreenChange(currentScreen);
         _currentScreen = null;
       }
@@ -580,14 +580,14 @@ export const onStateChange = (state?: NavigationStateV5) => {
   }
 
   const currentScreen = InstabugUtils.getFullRoute(state);
-  if (_currentScreen != null && _currentScreen != firstScreen) {
+  if (_currentScreen !== null && _currentScreen !== firstScreen) {
     NativeInstabug.reportScreenChange(_currentScreen);
     _currentScreen = null;
   }
 
   _currentScreen = currentScreen;
   setTimeout(() => {
-    if (_currentScreen == currentScreen) {
+    if (_currentScreen === currentScreen) {
       NativeInstabug.reportScreenChange(currentScreen);
       _currentScreen = null;
     }
@@ -627,7 +627,7 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     _isFirstScreen = false;
     return;
   }
-  if (_lastScreen != event.componentName) {
+  if (_lastScreen !== event.componentName) {
     NativeInstabug.reportScreenChange(event.componentName);
     _lastScreen = event.componentName;
   }
