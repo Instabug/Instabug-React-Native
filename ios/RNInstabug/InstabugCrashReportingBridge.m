@@ -1,8 +1,8 @@
-#import "InstabugCrashReporting.h"
+#import "InstabugCrashReportingBridge.h"
 #import <Instabug/IBGCrashReporting.h>
 #import <Instabug/Instabug.h>
 
-@implementation InstabugCrashReporting
+@implementation InstabugCrashReportingBridge
 
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();

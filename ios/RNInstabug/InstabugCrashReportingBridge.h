@@ -2,7 +2,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface InstabugCrashReporting : RCTEventEmitter <RCTBridgeModule>
+@interface InstabugCrashReportingBridge : RCTEventEmitter <RCTBridgeModule>
 
 - (void)setEnabled:(BOOL) isEnabled;
 - (void)sendJSCrash:(NSDictionary *)stackTrace;

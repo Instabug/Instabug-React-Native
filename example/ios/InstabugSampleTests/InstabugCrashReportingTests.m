@@ -1,19 +1,19 @@
 #import <XCTest/XCTest.h>
 #import "Instabug/Instabug.h"
-#import "InstabugCrashReporting.h"
+#import "InstabugCrashReportingBridge.h"
 
 @interface InstabugCrashReportingTests : XCTestCase
-@property (nonatomic, retain) InstabugCrashReporting *bridge;
+@property (nonatomic, retain) InstabugCrashReportingBridge *bridge;
 @end
 
 @implementation InstabugCrashReportingTests
 
 - (void)setUp {
-  self.bridge = [[InstabugCrashReporting alloc] init];
+  self.bridge = [[InstabugCrashReportingBridge alloc] init];
 }
 
 - (void)testSetEnabled {
-  [self.bridge setEnabled:<#(BOOL)#>:YES];
+  [self.bridge setEnabled:YES];
   XCTAssertTrue(IBGCrashReporting.enabled);
 
   [self.bridge setEnabled:NO];
