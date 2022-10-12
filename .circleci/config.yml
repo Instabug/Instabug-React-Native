@@ -111,13 +111,20 @@ jobs:
           command: yarn
       - run:
           name: Install Pods
-          command: cd ios && pod install
+          working_directory: ios
+          command: pod install
       - run:
           name: Build and run tests
-          command: cd ios && xcodebuild -allowProvisioningUpdates -workspace InstabugSample.xcworkspace -scheme InstabugSample -sdk iphonesimulator -derivedDataPath Build -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' test | xcpretty
+          working_directory: ios
+          command: xcodebuild -allowProvisioningUpdates -workspace InstabugSample.xcworkspace -scheme InstabugSample -resultBundlePath coverage/result.xcresult -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' test | xcpretty
           no_output_timeout: 30m
+      - run:
+          name: Generate coverage report
+          working_directory: ios/coverage
+          command: xcrun xccov view --report --json result.xcresult > report.json
       - codecov/upload:
           flags: ios
+          file: ios/coverage/report.json
 
   e2e_ios:
     macos:
