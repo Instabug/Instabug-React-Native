@@ -24,6 +24,7 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new RNInstabugReactnativeModule(reactContext));
         modules.add(new RNInstabugBugReportingModule(reactContext));
+        modules.add(new RNInstabugCrashReportingModule(reactContext));
         modules.add(new RNInstabugSurveysModule(reactContext));
         modules.add(new RNInstabugFeatureRequestsModule(reactContext));
         modules.add(new RNInstabugRepliesModule(reactContext));

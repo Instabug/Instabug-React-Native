@@ -5,7 +5,7 @@ import parseErrorStackLib, {
   ExtendedError,
   StackFrame,
 } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
-import { NativeInstabug } from '../native';
+import { NativeCrashReporting } from '../native';
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
 
@@ -86,10 +86,10 @@ export const captureJsErrors = () => {
       if (_isOnReportHandlerSet) {
         IBGEventEmitter.emit(InstabugConstants.SEND_UNHANDLED_CRASH, jsonObject);
       } else {
-        NativeInstabug.sendJSCrash(JSON.stringify(jsonObject));
+        NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
       }
     } else {
-      NativeInstabug.sendJSCrash(jsonObject);
+      NativeCrashReporting.sendJSCrash(jsonObject);
     }
 
     if (originalHandler && !process.env.JEST_WORKER_ID) {

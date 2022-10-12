@@ -6,7 +6,7 @@ import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 
-const { Instabug: NativeInstabug } = NativeModules;
+const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('Test global error handler', () => {
       exception: [],
     };
 
-    expect(NativeInstabug.sendJSCrash).toHaveBeenCalledWith(expected);
+    expect(NativeCrashReporting.sendJSCrash).toHaveBeenCalledWith(expected);
   });
 
   it('should call sendJSCrash when platform is android and onReportSubmitHandler is not set', () => {
@@ -46,7 +46,7 @@ describe('Test global error handler', () => {
       exception: [],
     });
 
-    expect(NativeInstabug.sendJSCrash).toHaveBeenCalledWith(expected);
+    expect(NativeCrashReporting.sendJSCrash).toHaveBeenCalledWith(expected);
   });
 
   it('should emit event IBGSendUnhandledJSCrash when platform is android and onReportSubmitHandler is set', () => {

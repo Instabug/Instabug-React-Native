@@ -88,7 +88,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
     private InstabugCustomTextPlaceHolder placeHolders;
-    private Report currentReport;
+    private static Report currentReport;
 
     /**
      * Instantiates a new Rn Instabug ReactNative module.
@@ -255,81 +255,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-
-    }
-
-    /**
-     * Send unhandled JS error object
-     *
-     * @param exceptionObject Exception object to be sent to Instabug's servers
-     */
-    @ReactMethod
-    public void sendJSCrash(final String exceptionObject) {
-        try {
-            JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Send handled JS error object
-     *
-     * @param exceptionObject Exception object to be sent to Instabug's servers
-     */
-    @ReactMethod
-    public void sendHandledJSCrash(final String exceptionObject) {
-        try {
-            JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets whether crash reporting feature is Enabled or Disabled
-     *
-     * @param isEnabled Exception object to be sent to Instabug's servers
-     */
-    @ReactMethod
-    public void setCrashReportingEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        CrashReporting.setState(Feature.State.ENABLED);
-                    } else {
-                        CrashReporting.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
- private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled) {
-     MainThreadHandler.runOnMainThread(new Runnable() {
-         @Override
-         public void run() {
-             try {
-                 Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
-                 if (method != null) {
-                     method.invoke(null, exceptionObject, isHandled);
-                     currentReport = null;
-                 }
-             } catch (ClassNotFoundException e) {
-                 e.printStackTrace();
-             } catch (IllegalAccessException e) {
-                 e.printStackTrace();
-             } catch (InvocationTargetException e) {
-                 e.printStackTrace();
-             }
-         }
-     });
 
     }
 
@@ -1045,7 +970,10 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 });
             }
         });
+    }
 
+    protected static void clearCurrentReport() {
+        currentReport = null;
     }
 
     @ReactMethod

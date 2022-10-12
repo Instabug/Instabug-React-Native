@@ -26,8 +26,6 @@
 - (NSArray<NSString *> *)supportedEvents {
     return @[
              @"IBGpreSendingHandler",
-             @"IBGSendHandledJSCrash",
-             @"IBGSendUnhandledJSCrash",
              @"IBGSetNetworkDataObfuscationHandler",
              ];
 }
@@ -85,40 +83,12 @@ RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     [Instabug addFileAttachmentWithURL:url];
 }
 
-RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
-    dispatch_async(queue, ^{
-        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(NO)];
-        }
-    });
-}
-
-RCT_EXPORT_METHOD(sendHandledJSCrash:(NSDictionary *)stackTrace) {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
-    dispatch_async(queue, ^{
-        SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
-        if ([[Instabug class] respondsToSelector:reportCrashWithStackTraceSEL]) {
-            [[Instabug class] performSelector:reportCrashWithStackTraceSEL withObject:stackTrace withObject:@(YES)];
-        }
-    });
-}
-
 RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
     [Instabug setUserData:userData];
 }
 
 RCT_EXPORT_METHOD(setTrackUserSteps:(BOOL)isEnabled) {
     [Instabug setTrackUserSteps:isEnabled];
-}
-
-RCT_EXPORT_METHOD(setCrashReportingEnabled:(BOOL)enabledCrashReporter) {
-    if(enabledCrashReporter) {
-        IBGCrashReporting.enabled = YES;
-    } else {
-        IBGCrashReporting.enabled = NO;
-    }
 }
 
 IBGReport *currentReport = nil;
