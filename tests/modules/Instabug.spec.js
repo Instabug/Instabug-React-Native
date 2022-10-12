@@ -44,13 +44,13 @@ describe('Instabug Module', () => {
   });
 
   it("componentDidAppearListener shouldn't call the native method reportScreenChange twice if same screen", (done) => {
-    for (let _ of Array(5)) {
+    Array(5).forEach(() => {
       Instabug.componentDidAppearListener({
         componentId: '1',
         componentName: 'screen',
         passProps: 'screenName',
       });
-    }
+    });
 
     setTimeout(() => {
       // It won't report any screen change, here's why:
