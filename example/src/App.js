@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { NavigationContainer } from '@react-navigation/native';
 import Instabug from 'instabug-reactnative';
-
-import { SettingsScreen } from './screens/SettingsScreen';
+import { createTabBarIcon } from './components/TabBarIcon';
 import { HomeScreen } from './screens/HomeScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,14 +17,7 @@ export function App() {
     <NavigationContainer onStateChange={Instabug.onStateChange}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          // eslint-disable-next-line react/no-unstable-nested-components
-          tabBarIcon: (props) => {
-            let name = route.name.toLowerCase();
-            if (!props.focused) {
-              name += '-outline';
-            }
-            return <Icon {...props} name={name} />;
-          },
+          tabBarIcon: createTabBarIcon(route),
         })}>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
