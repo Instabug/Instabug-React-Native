@@ -1,9 +1,11 @@
 import { Platform } from 'react-native';
+
+import type { RequestHandler } from '@apollo/client';
+
 import { NativeAPM, NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import type { RequestHandler } from '@apollo/client';
 
 let _networkDataObfuscationHandlerSet = false;
 let _requestFilterExpression = 'false';

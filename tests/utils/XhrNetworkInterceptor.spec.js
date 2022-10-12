@@ -1,6 +1,8 @@
+import FakeRequest from '../mocks/fakeNetworkRequest';
+
 import nock from 'nock';
 import waitForExpect from 'wait-for-expect';
-import FakeRequest from '../mocks/fakeNetworkRequest';
+
 import InstabugConstants from '../../src/utils/InstabugConstants';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 

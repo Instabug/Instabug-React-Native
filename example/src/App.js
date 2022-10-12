@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Instabug from 'instabug-reactnative';
+
 import { createTabBarIcon } from './components/TabBarIcon';
 import { HomeScreen } from './screens/HomeScreen';
 import { SettingsScreen } from './screens/SettingsScreen';

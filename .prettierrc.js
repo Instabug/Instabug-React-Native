@@ -8,4 +8,7 @@ module.exports = {
   trailingComma: 'all',
   endOfLine: 'auto',
   printWidth: 100,
+  importOrder: ['mocks', '^react(-native)?(/.*)?$', '<THIRD_PARTY_MODULES>', '^[./]'],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
 };

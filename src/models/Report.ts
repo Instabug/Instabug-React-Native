@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+
 import { NativeInstabug } from '../native';
 
 interface LogInfo {

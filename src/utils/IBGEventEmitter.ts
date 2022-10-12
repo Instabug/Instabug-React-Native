@@ -1,4 +1,5 @@
-import { NativeAppEventEmitter, DeviceEventEmitter, Platform } from 'react-native';
+import { DeviceEventEmitter, NativeAppEventEmitter, Platform } from 'react-native';
+
 import type { NativeModule } from '../native';
 
 export default {

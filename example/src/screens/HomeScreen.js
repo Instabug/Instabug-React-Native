@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, StyleSheet, Text } from 'react-native';
+
 import Instabug, {
   BugReporting,
   CrashReporting,

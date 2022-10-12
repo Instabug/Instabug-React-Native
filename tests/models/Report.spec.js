@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+
 import Report from '../../src/models/Report';
 
 const { Instabug: NativeInstabug } = NativeModules;

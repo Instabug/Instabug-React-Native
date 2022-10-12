@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+
 import { NativeReplies } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';

@@ -1,28 +1,30 @@
-import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
-import type { NavigationState as NavigationStateV4, NavigationAction } from 'react-navigation';
 import type React from 'react';
+import { Platform, findNodeHandle, processColor } from 'react-native';
+
+import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
-import { findNodeHandle, Platform, processColor } from 'react-native';
+import type { NavigationAction, NavigationState as NavigationStateV4 } from 'react-navigation';
+
 import Report from '../models/Report';
 import { NativeCrashReporting, NativeInstabug } from '../native';
-import * as NetworkLogger from './NetworkLogger';
+import {
+  IBGPosition,
+  actionTypes,
+  colorTheme,
+  dismissType,
+  extendedBugReportMode,
+  floatingButtonEdge,
+  invocationEvent,
+  locale,
+  reproStepsMode,
+  sdkDebugLogsLevel,
+  strings,
+  welcomeMessageMode,
+} from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import {
-  invocationEvent,
-  reproStepsMode,
-  dismissType,
-  sdkDebugLogsLevel,
-  extendedBugReportMode,
-  locale,
-  colorTheme,
-  floatingButtonEdge,
-  IBGPosition,
-  welcomeMessageMode,
-  actionTypes,
-  strings,
-} from '../utils/ArgsRegistry';
+import * as NetworkLogger from './NetworkLogger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;

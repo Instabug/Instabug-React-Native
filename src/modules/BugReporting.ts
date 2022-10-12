@@ -1,16 +1,17 @@
 import { Platform } from 'react-native';
+
 import { NativeBugReporting } from '../native';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 import {
-  invocationEvent,
-  extendedBugReportMode,
   dismissType,
-  reportType,
+  extendedBugReportMode,
+  floatingButtonEdge,
+  invocationEvent,
   option,
   position,
-  floatingButtonEdge,
+  reportType,
 } from '../utils/ArgsRegistry';
+import IBGEventEmitter from '../utils/IBGEventEmitter';
+import InstabugConstants from '../utils/InstabugConstants';
 
 export { invocationEvent, extendedBugReportMode, reportType, option, position };
 

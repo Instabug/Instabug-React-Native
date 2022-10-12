@@ -1,4 +1,4 @@
-import { device, element, by } from 'detox';
+import { by, device, element } from 'detox';
 
 const elements = {
   floatingButton: {

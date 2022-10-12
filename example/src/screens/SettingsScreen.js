@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Switch, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
+
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
 import { Button } from '../components/Button';

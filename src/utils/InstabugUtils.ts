@@ -1,10 +1,12 @@
-import type { NavigationState as NavigationStateV5, PartialState } from '@react-navigation/native';
-import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 import { ErrorHandlerCallback, Platform } from 'react-native';
 import parseErrorStackLib, {
   ExtendedError,
   StackFrame,
 } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+
+import type { NavigationState as NavigationStateV5, PartialState } from '@react-navigation/native';
+import type { NavigationState as NavigationStateV4 } from 'react-navigation';
+
 import { NativeCrashReporting } from '../native';
 import IBGEventEmitter from './IBGEventEmitter';
 import InstabugConstants from './InstabugConstants';
