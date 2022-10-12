@@ -18,6 +18,7 @@ export function App() {
     <NavigationContainer onStateChange={Instabug.onStateChange}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: (props) => {
             let name = route.name.toLowerCase();
             if (!props.focused) {
