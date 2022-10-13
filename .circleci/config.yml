@@ -120,7 +120,7 @@ jobs:
                    xcodebuild -allowProvisioningUpdates \
                        -workspace InstabugSample.xcworkspace \
                        -scheme InstabugSample \
-                       -resultBundlePath coverage/result.xcresult
+                       -resultBundlePath coverage/result.xcresult \
                        -sdk iphonesimulator \
                        -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
                        test | xcpretty
