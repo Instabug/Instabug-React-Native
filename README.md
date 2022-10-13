@@ -100,17 +100,16 @@ We support the two most popular React Native navigation libraries:
   - **v5**
     set the `onStateChange` to `Instabug.onStateChange` in your NavigationContainer as follows:
 
-        ```javascript
-        <NavigationContainer
-        onStateChange={  Instabug.onStateChange  }  />
-        ```
+    ```javascript
+    <NavigationContainer onStateChange={Instabug.onStateChange} />
+    ```
 
   - **<=v4**
     set the `onNavigationStateChange` to `Instabug.onNavigationStateChange` in your App wrapper as follows:
 
-  ```javascript
-  export default () => <App onNavigationStateChange={Instabug.onNavigationStateChange} />;
-  ```
+    ```javascript
+    export default () => <App onNavigationStateChange={Instabug.onNavigationStateChange} />;
+    ```
 
 - **[react-native-navigation](https://github.com/wix/react-native-navigation)**
 

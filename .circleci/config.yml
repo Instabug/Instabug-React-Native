@@ -181,7 +181,7 @@ jobs:
   e2e_android:
     executor:
       name: android/android-machine
-      tag: '2022.03.1'
+      tag: 2022.03.1
       resource-class: large
     working_directory: ~/project
     steps:
@@ -221,8 +221,8 @@ jobs:
 
   publish:
     macos:
-      xcode: '13.4.1'
-    working_directory: '~'
+      xcode: 13.4.1
+    working_directory: ~
     steps:
       - checkout:
           path: ~/project
