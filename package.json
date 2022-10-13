@@ -21,11 +21,11 @@
     "feedback"
   ],
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:ci": "eslint . --max-warnings=0",
-    "format": "prettier --check '**/*.{js, ts}' --ignore-path .gitignore",
-    "format:fix": "prettier --write '**/*.{js, ts}'",
+    "lint": "eslint . --ignore-path .gitignore",
+    "lint:fix": "yarn lint --fix",
+    "lint:ci": "yarn lint --max-warnings=0",
+    "format": "prettier --check '**/*.{js,ts}' --ignore-path .gitignore",
+    "format:fix": "prettier --write '**/*.{js,ts}' --ignore-path .gitignore",
     "test": "jest",
     "build": "tsc"
   },
