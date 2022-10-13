@@ -20,7 +20,10 @@ jobs:
           name: Install Node Packages
           command: yarn
       - run:
-          name: Check Lint Issues
+          name: Check Format
+          command: yarn format
+      - run:
+          name: Check Lint
           command: yarn lint:ci
 
   test_module:
@@ -42,7 +45,7 @@ jobs:
             yarn run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-      
+
       - codecov/upload:
           flags: javascript
 
@@ -60,7 +63,7 @@ jobs:
   test_android:
     executor:
       name: android/android-machine
-      tag: "2022.03.1"
+      tag: '2022.03.1'
     working_directory: ~/project
     steps:
       - checkout:
@@ -94,7 +97,7 @@ jobs:
           command: bash -n ios/upload_sourcemap.sh
 
   # Make sure that files like yarn.lock and project.pbxproj
-  # are in sync with the latest changes in package.json and 
+  # are in sync with the latest changes in package.json and
   # ios/upload_sourcemap.sh files respectively.
   sync_generated_files:
     macos:
@@ -134,7 +137,7 @@ jobs:
   e2e_ios:
     macos:
       xcode: 13.4.1
-    resource_class: large  
+    resource_class: large
     working_directory: ~/project
     environment:
       FL_OUTPUT_DIR: output
@@ -178,12 +181,12 @@ jobs:
   e2e_android:
     executor:
       name: android/android-machine
-      tag: "2022.03.1"
+      tag: '2022.03.1'
       resource-class: large
     working_directory: ~/project
     steps:
       - checkout
-      - run: 
+      - run:
           name: Install Yarn
           command: npm install --global yarn
       - run:
@@ -208,9 +211,9 @@ jobs:
           no-window: true
           memory: 2048
           post-emulator-launch-assemble-command: |
-              rm -rf ~/.gradle/caches
-              cd ~/project/example/android && ./gradlew androidDependencies
-              cd .. && detox build -c android.emu.release
+            rm -rf ~/.gradle/caches
+            cd ~/project/example/android && ./gradlew androidDependencies
+            cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
           working_directory: example
@@ -218,8 +221,8 @@ jobs:
 
   publish:
     macos:
-      xcode: "13.4.1"
-    working_directory: "~"
+      xcode: '13.4.1'
+    working_directory: '~'
     steps:
       - checkout:
           path: ~/project
