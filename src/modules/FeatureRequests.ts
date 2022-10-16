@@ -18,10 +18,10 @@ export const setEnabled = (isEnabled: boolean) => {
  * Defaults to YES.
  *
  * @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
- * @param actionTypes An enum that indicates which action types will have the isEmailFieldRequired
+ * @param types An enum that indicates which action types will have the isEmailFieldRequired
  */
-export const setEmailFieldRequired = (isEmailFieldRequired: boolean, actionTypes: actionTypes) => {
-  NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, actionTypes);
+export const setEmailFieldRequired = (isEmailFieldRequired: boolean, types: actionTypes) => {
+  NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, types);
 };
 
 /**

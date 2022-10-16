@@ -1,28 +1,30 @@
-import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
-import type { NavigationState as NavigationStateV4, NavigationAction } from 'react-navigation';
 import type React from 'react';
+import { Platform, findNodeHandle, processColor } from 'react-native';
+
+import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
-import { findNodeHandle, Platform, processColor } from 'react-native';
+import type { NavigationAction, NavigationState as NavigationStateV4 } from 'react-navigation';
+
 import Report from '../models/Report';
 import { NativeCrashReporting, NativeInstabug } from '../native';
-import * as NetworkLogger from './NetworkLogger';
+import {
+  IBGPosition,
+  actionTypes,
+  colorTheme,
+  dismissType,
+  extendedBugReportMode,
+  floatingButtonEdge,
+  invocationEvent,
+  locale,
+  reproStepsMode,
+  sdkDebugLogsLevel,
+  strings,
+  welcomeMessageMode,
+} from '../utils/ArgsRegistry';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import {
-  invocationEvent,
-  reproStepsMode,
-  dismissType,
-  sdkDebugLogsLevel,
-  extendedBugReportMode,
-  locale,
-  colorTheme,
-  floatingButtonEdge,
-  IBGPosition,
-  welcomeMessageMode,
-  actionTypes,
-  strings,
-} from '../utils/ArgsRegistry';
+import * as NetworkLogger from './NetworkLogger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -62,7 +64,7 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
   _currentScreen = firstScreen;
 
   setTimeout(() => {
-    if (_currentScreen == firstScreen) {
+    if (_currentScreen === firstScreen) {
       NativeInstabug.reportScreenChange(firstScreen);
       _currentScreen = null;
     }
@@ -87,7 +89,9 @@ export const setUserData = (data: string) => {
  * @param isEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 export const setTrackUserSteps = (isEnabled: boolean) => {
-  if (Platform.OS === 'ios') NativeInstabug.setTrackUserSteps(isEnabled);
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setTrackUserSteps(isEnabled);
+  }
 };
 
 /**
@@ -96,7 +100,9 @@ export const setTrackUserSteps = (isEnabled: boolean) => {
  * Xcode's console is enabled or not.
  */
 export const setIBGLogPrintsToConsole = (printsToConsole: boolean) => {
-  if (Platform.OS === 'ios') NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setIBGLogPrintsToConsole(printsToConsole);
+  }
 };
 
 /**
@@ -123,18 +129,18 @@ export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
  * Sets the SDK's locale.
  * Use to change the SDK's UI to different language.
  * Defaults to the device's current locale.
- * @param locale A locale to set the SDK to.
+ * @param sdkLocale A locale to set the SDK to.
  */
-export const setLocale = (locale: locale) => {
-  NativeInstabug.setLocale(locale);
+export const setLocale = (sdkLocale: locale) => {
+  NativeInstabug.setLocale(sdkLocale);
 };
 
 /**
  * Sets the color theme of the SDK's whole UI.
- * @param colorTheme
+ * @param sdkTheme
  */
-export const setColorTheme = (colorTheme: colorTheme) => {
-  NativeInstabug.setColorTheme(colorTheme);
+export const setColorTheme = (sdkTheme: colorTheme) => {
+  NativeInstabug.setColorTheme(sdkTheme);
 };
 
 /**
@@ -223,7 +229,9 @@ export const logUserEvent = (name: string) => {
  * @param message the message
  */
 export const logVerbose = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logVerbose(message);
 };
@@ -239,7 +247,9 @@ export const logVerbose = (message: string) => {
  * @param message the message
  */
 export const logInfo = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logInfo(message);
 };
@@ -255,7 +265,9 @@ export const logInfo = (message: string) => {
  * @param message the message
  */
 export const logDebug = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logDebug(message);
 };
@@ -271,7 +283,9 @@ export const logDebug = (message: string) => {
  * @param message the message
  */
 export const logError = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logError(message);
 };
@@ -287,7 +301,9 @@ export const logError = (message: string) => {
  * @param message the message
  */
 export const logWarn = (message: string) => {
-  if (!message) return;
+  if (!message) {
+    return;
+  }
   message = stringifyIfNotString(message);
   NativeInstabug.logWarn(message);
 };
@@ -317,8 +333,9 @@ export const setReproStepsMode = (mode: reproStepsMode) => {
  * @param value the value
  */
 export const setUserAttribute = (key: string, value: string) => {
-  if (!key || typeof key !== 'string' || typeof value !== 'string')
+  if (!key || typeof key !== 'string' || typeof value !== 'string') {
     throw new TypeError('Invalid param, Expected String');
+  }
   NativeInstabug.setUserAttribute(key, value);
 };
 
@@ -338,7 +355,9 @@ export const getUserAttribute = (key: string, callback: (attribute: string) => v
  * @see {@link setUserAttribute}
  */
 export const removeUserAttribute = (key: string) => {
-  if (!key || typeof key !== 'string') throw new TypeError('Invalid param, Expected String');
+  if (!key || typeof key !== 'string') {
+    throw new TypeError('Invalid param, Expected String');
+  }
   NativeInstabug.removeUserAttribute(key);
 };
 
@@ -476,7 +495,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   }
 
   // send bug report
-  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, report => {
+  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
     const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
     handler && handler(reportObj);
@@ -487,9 +506,9 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
     IBGEventEmitter.addListener(
       NativeInstabug,
       InstabugConstants.SEND_HANDLED_CRASH,
-      async jsonObject => {
+      async (jsonObject) => {
         try {
-          let report = await NativeInstabug.getReport();
+          const report = await NativeInstabug.getReport();
           const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
           const reportObj = new Report(
             tags,
@@ -511,8 +530,8 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
     IBGEventEmitter.addListener(
       NativeInstabug,
       InstabugConstants.SEND_UNHANDLED_CRASH,
-      async jsonObject => {
-        let report = await NativeInstabug.getReport();
+      async (jsonObject) => {
+        const report = await NativeInstabug.getReport();
         const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
         const reportObj = new Report(
           tags,
@@ -543,13 +562,13 @@ export const onNavigationStateChange = (
   const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
   if (prevScreen !== currentScreen) {
-    if (_currentScreen != null && _currentScreen != firstScreen) {
+    if (_currentScreen != null && _currentScreen !== firstScreen) {
       NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
     }
     _currentScreen = currentScreen;
     setTimeout(() => {
-      if (_currentScreen == currentScreen) {
+      if (_currentScreen === currentScreen) {
         NativeInstabug.reportScreenChange(currentScreen);
         _currentScreen = null;
       }
@@ -558,17 +577,19 @@ export const onNavigationStateChange = (
 };
 
 export const onStateChange = (state?: NavigationStateV5) => {
-  if (!state) return;
+  if (!state) {
+    return;
+  }
 
   const currentScreen = InstabugUtils.getFullRoute(state);
-  if (_currentScreen != null && _currentScreen != firstScreen) {
+  if (_currentScreen !== null && _currentScreen !== firstScreen) {
     NativeInstabug.reportScreenChange(_currentScreen);
     _currentScreen = null;
   }
 
   _currentScreen = currentScreen;
   setTimeout(() => {
-    if (_currentScreen == currentScreen) {
+    if (_currentScreen === currentScreen) {
       NativeInstabug.reportScreenChange(currentScreen);
       _currentScreen = null;
     }
@@ -608,7 +629,7 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     _isFirstScreen = false;
     return;
   }
-  if (_lastScreen != event.componentName) {
+  if (_lastScreen !== event.componentName) {
     NativeInstabug.reportScreenChange(event.componentName);
     _lastScreen = event.componentName;
   }

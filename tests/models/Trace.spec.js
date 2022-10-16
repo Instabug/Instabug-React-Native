@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+
 import Trace from '../../src/models/Trace';
 
 const { IBGAPM: NativeAPM } = NativeModules;

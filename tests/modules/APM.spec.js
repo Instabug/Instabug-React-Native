@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+
 import Trace from '../../src/models/Trace';
 import * as APM from '../../src/modules/APM';
 

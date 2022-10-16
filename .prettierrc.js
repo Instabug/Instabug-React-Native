@@ -1,8 +1,14 @@
+/** @type {import('prettier').Config} */
 module.exports = {
-  arrowParens : 'avoid',
-  bracketSameLine : true,
-  printWidth : 100,
-  singleQuote : true,
-  trailingComma : 'all',
+  semi: true,
+  singleQuote: true,
+  bracketSameLine: true,
+  useTabs: false,
+  tabWidth: 2,
+  trailingComma: 'all',
+  endOfLine: 'auto',
+  printWidth: 100,
+  importOrder: ['mocks', '^react(-native)?(/.*)?$', '<THIRD_PARTY_MODULES>', '^[./]'],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
 };
-

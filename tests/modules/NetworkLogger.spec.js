@@ -1,14 +1,17 @@
 import '../mocks/mockXhrNetworkInterceptor';
+
 import { NativeModules, Platform } from 'react-native';
-import Interceptor from '../../src/utils/XhrNetworkInterceptor';
+
+import waitForExpect from 'wait-for-expect';
+
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
-import waitForExpect from 'wait-for-expect';
+import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 
 const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
 
-const clone = obj => {
+const clone = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
@@ -52,7 +55,7 @@ describe('NetworkLogger Module', () => {
 
   it('should send log network when Platform is ios', () => {
     Platform.OS = 'ios';
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).toBeCalledTimes(1);
@@ -61,7 +64,7 @@ describe('NetworkLogger Module', () => {
 
   it('should send log network when Platform is android', () => {
     Platform.OS = 'android';
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(network));
@@ -79,7 +82,7 @@ describe('NetworkLogger Module', () => {
     networkResult.responseBody = {};
     networkResult.responseBody.result = { body: networkResult.responseBody };
 
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(networkResult));
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(networkResult));
 
     expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
     expect(NativeInstabug.networkLog).not.toBeCalled();
@@ -91,9 +94,9 @@ describe('NetworkLogger Module', () => {
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
     Platform.OS = 'ios';
     const randomString = '28930q938jqhd';
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
-    NetworkLogger.setNetworkDataObfuscationHandler(networkData => {
-      networkData.requestHeaders['token'] = randomString;
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
+    NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
+      networkData.requestHeaders.token = randomString;
       return networkData;
     });
     NetworkLogger.setEnabled(true);
@@ -103,7 +106,7 @@ describe('NetworkLogger Module', () => {
     ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
-      newData.requestHeaders['token'] = randomString;
+      newData.requestHeaders.token = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(newData);
     });
   });
@@ -111,9 +114,9 @@ describe('NetworkLogger Module', () => {
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is android', async () => {
     Platform.OS = 'android';
     const randomString = '28930q938jqhd';
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
-    NetworkLogger.setNetworkDataObfuscationHandler(networkData => {
-      networkData.requestHeaders['token'] = randomString;
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
+    NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
+      networkData.requestHeaders.token = randomString;
       return networkData;
     });
     NetworkLogger.setEnabled(true);
@@ -123,7 +126,7 @@ describe('NetworkLogger Module', () => {
     ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
-      newData.requestHeaders['token'] = randomString;
+      newData.requestHeaders.token = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
       expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
     });
@@ -140,7 +143,7 @@ describe('NetworkLogger Module', () => {
       throw new Error('Data obfuscation failed');
     });
 
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setNetworkDataObfuscationHandler(handler);
 
     expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
@@ -151,7 +154,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should not send log network when network data matches filter expression', async () => {
-    Interceptor.setOnDoneCallback.mockImplementation(callback => callback(clone(network)));
+    Interceptor.setOnDoneCallback.mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setRequestFilterExpression(
       "network.requestHeaders['Content-type'] === 'application/json'",
     );
@@ -163,7 +166,7 @@ describe('NetworkLogger Module', () => {
 
   it('should test that operationSetContext at apollo handler called', async () => {
     const operation = {
-      setContext: jest.fn(callback => callback({})),
+      setContext: jest.fn((callback) => callback({})),
       operationName: 'operationName',
     };
     const forward = jest.fn();

@@ -1,10 +1,12 @@
 import '../mocks/mockXhrNetworkInterceptor';
+
 import { NativeModules, Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
+
 import * as Instabug from '../../src/modules/Instabug';
-import InstabugUtils from '../../src/utils/InstabugUtils';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
+import InstabugUtils from '../../src/utils/InstabugUtils';
 
 const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
@@ -143,7 +145,7 @@ describe('Instabug Utils', () => {
     expect(output).toBe('');
   });
 
-  it.each([true, false])('setOnReportHandler should set _isOnReportHandlerSet flag', flag => {
+  it.each([true, false])('setOnReportHandler should set _isOnReportHandlerSet flag', (flag) => {
     InstabugUtils.setOnReportHandler(flag);
 
     const isOnReportHandlerSet = InstabugUtils.isOnReportHandlerSet();

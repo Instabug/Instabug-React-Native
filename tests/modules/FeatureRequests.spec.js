@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+
 import * as FeatureRequests from '../../src/modules/FeatureRequests';
 
 const { IBGFeatureRequests: NativeFeatureRequests } = NativeModules;

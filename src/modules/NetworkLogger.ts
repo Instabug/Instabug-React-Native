@@ -1,9 +1,11 @@
 import { Platform } from 'react-native';
+
+import type { RequestHandler } from '@apollo/client';
+
 import { NativeAPM, NativeInstabug } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import type { RequestHandler } from '@apollo/client';
 
 let _networkDataObfuscationHandlerSet = false;
 let _requestFilterExpression = 'false';
@@ -16,7 +18,8 @@ let _requestFilterExpression = 'false';
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
     xhr.enableInterception();
-    xhr.setOnDoneCallback(network => {
+    xhr.setOnDoneCallback((network) => {
+      // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       if (!predicate(network)) {
         if (_networkDataObfuscationHandlerSet) {

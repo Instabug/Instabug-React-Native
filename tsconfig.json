@@ -11,7 +11,7 @@
     // Interop
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-  
+
     // Emit
     "declaration": true,
     "importsNotUsedAsValues": "error",
@@ -26,6 +26,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitAny": true,
-    "strict": true,
-  },
+    "strict": true
+  }
 }

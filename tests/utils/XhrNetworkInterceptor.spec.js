@@ -1,6 +1,8 @@
+import FakeRequest from '../mocks/fakeNetworkRequest';
+
 import nock from 'nock';
 import waitForExpect from 'wait-for-expect';
-import FakeRequest from '../mocks/fakeNetworkRequest';
+
 import InstabugConstants from '../../src/utils/InstabugConstants';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 
@@ -15,9 +17,9 @@ describe('Network Interceptor', () => {
     nock.cleanAll();
   });
 
-  it('should set network object on entering XMLHttpRequest.prototype.open', done => {
+  it('should set network object on entering XMLHttpRequest.prototype.open', (done) => {
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.url).toEqual(url);
       expect(network.method).toEqual(method);
       done();
@@ -27,11 +29,11 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set network object on calling setRequestHeader', done => {
-    let requestHeaders = { 'content-type': 'application/json', token: '9u4hiudhi3bf' };
+  it('should set network object on calling setRequestHeader', (done) => {
+    const requestHeaders = { 'content-type': 'application/json', token: '9u4hiudhi3bf' };
 
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.requestHeaders).toEqual(requestHeaders);
       done();
     });
@@ -61,10 +63,10 @@ describe('Network Interceptor', () => {
     });
   });
 
-  it('should set requestBody in network object', done => {
+  it('should set requestBody in network object', (done) => {
     const requestBody = JSON.stringify({ data: [{ item: 'first' }, { item: 'second' }] });
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.requestBody).toBe(requestBody);
       done();
     });
@@ -73,10 +75,10 @@ describe('Network Interceptor', () => {
     FakeRequest.send(requestBody);
   });
 
-  it('should stringify requestBody in network object', done => {
+  it('should stringify requestBody in network object', (done) => {
     const requestBody = Buffer.from('Instabug');
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.requestBody).toBe(JSON.stringify(requestBody));
       done();
     });
@@ -85,10 +87,10 @@ describe('Network Interceptor', () => {
     FakeRequest.send(requestBody);
   });
 
-  it('should set contentType in network object on receiving response', done => {
+  it('should set contentType in network object on receiving response', (done) => {
     const headers = { 'Content-type': 'application/json' };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.contentType).toEqual(headers['Content-type']);
       done();
     });
@@ -97,16 +99,16 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set responseHeaders in network object on receiving response', done => {
+  it('should set responseHeaders in network object on receiving response', (done) => {
     const headers = {
       'Content-type': 'application/json',
       Accept: 'text/html',
       'Content-Length': 144,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.responseHeaders['content-type'].trim()).toEqual(headers['Content-type']);
-      expect(network.responseHeaders.accept.trim()).toEqual(headers['Accept']);
+      expect(network.responseHeaders.accept.trim()).toEqual(headers.Accept);
       done();
     });
     FakeRequest.mockResponse(request, 200, 'ok', headers);
@@ -114,10 +116,10 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set responseCode in network object on receiving response', done => {
+  it('should set responseCode in network object on receiving response', (done) => {
     const status = 200;
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.responseCode).toEqual(status);
       done();
     });
@@ -141,10 +143,10 @@ describe('Network Interceptor', () => {
     });
   });
 
-  it('should set responseBody in network object on receiving response', done => {
+  it('should set responseBody in network object on receiving response', (done) => {
     const responseBody = { data: [{ item: 'first' }, { item: 'second' }] };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.responseBody).toEqual(JSON.stringify(responseBody));
       done();
     });
@@ -170,7 +172,7 @@ describe('Network Interceptor', () => {
     });
   });
 
-  it('should call onProgressCallback in network object on receiving response', done => {
+  it('should call onProgressCallback in network object on receiving response', (done) => {
     Interceptor.enableInterception();
     Interceptor.setOnProgressCallback((total, expectedToSend) => {
       expect(total).not.toBeNaN();
@@ -183,7 +185,7 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set responseBody in network object on receiving response', () => {
+  it('should call onDoneCallback in network object on receiving response', () => {
     Interceptor.disableInterception();
     const callback = jest.fn();
     Interceptor.setOnDoneCallback(callback);
@@ -214,12 +216,12 @@ describe('Network Interceptor', () => {
     });
   });
 
-  it('should set gqlQueryName in network object on receiving response', done => {
+  it('should set gqlQueryName in network object on receiving response', (done) => {
     const headers = {};
     headers[InstabugConstants.GRAPHQL_HEADER] = InstabugConstants.GRAPHQL_HEADER;
     const responseBody = { data: [{ item: 'first' }, { item: 'second' }] };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.gqlQueryName).toEqual(headers[InstabugConstants.GRAPHQL_HEADER]);
       done();
     });
@@ -229,11 +231,11 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set gqlQueryName in network object on receiving response with empty string', done => {
+  it('should set gqlQueryName in network object on receiving response with empty string', (done) => {
     const headers = {};
     headers[InstabugConstants.GRAPHQL_HEADER] = 'null';
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.gqlQueryName).toEqual('');
       done();
     });
@@ -243,12 +245,12 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should set serverErrorMessage in network object on receiving response', done => {
+  it('should set serverErrorMessage in network object on receiving response', (done) => {
     const headers = {};
     headers[InstabugConstants.GRAPHQL_HEADER] = InstabugConstants.GRAPHQL_HEADER;
     const responseBody = { errors: [{ item: 'first' }, { item: 'second' }] };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback(network => {
+    Interceptor.setOnDoneCallback((network) => {
       expect(network.serverErrorMessage).toEqual('GraphQLError');
       done();
     });

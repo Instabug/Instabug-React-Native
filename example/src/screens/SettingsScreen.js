@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Switch, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
+
 import Instabug, { BugReporting } from 'instabug-reactnative';
 
 import { Button } from '../components/Button';
@@ -23,25 +24,25 @@ export function SettingsScreen() {
 
   const isLightTheme = theme === Instabug.colorTheme.light;
 
-  const toggleColorTheme = isLight => {
-    const theme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
-    Instabug.setColorTheme(theme);
-    setTheme(theme);
+  const toggleColorTheme = (isLight) => {
+    const newTheme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
+    Instabug.setColorTheme(newTheme);
+    setTheme(newTheme);
   };
 
-  const setPrimaryColor = color => {
-    Instabug.setPrimaryColor(color);
-    setColor(color);
+  const setPrimaryColor = (newColor) => {
+    Instabug.setPrimaryColor(newColor);
+    setColor(newColor);
   };
 
-  const changeInvocationEvent = invocationEvent =>
+  const changeInvocationEvent = (invocationEvent) =>
     BugReporting.setInvocationEvents([invocationEvent]);
 
   return (
     <Screen>
       <Section title="Invocation Event">
-        <View style={[styles.row, { marginTop: -10 }]}>
-          {invocationEvents.map(event => (
+        <View style={styles.row}>
+          {invocationEvents.map((event) => (
             <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
               {event.label}
             </Button>
@@ -51,7 +52,7 @@ export function SettingsScreen() {
 
       <Section title="Primary Color">
         <View style={styles.row}>
-          {colors.map(_color => (
+          {colors.map((_color) => (
             <ColorButton
               key={_color}
               color={_color}

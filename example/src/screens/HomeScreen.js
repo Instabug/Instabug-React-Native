@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, StyleSheet, Text } from 'react-native';
+
 import Instabug, {
   BugReporting,
   CrashReporting,
@@ -37,7 +38,7 @@ export function HomeScreen() {
   const startNewConversation = () => BugReporting.show(BugReporting.reportType.question);
 
   const showUnreadMessagesCount = () =>
-    Replies.getUnreadRepliesCount(count => Alert.alert('Messages: ' + count));
+    Replies.getUnreadRepliesCount((count) => Alert.alert('Messages: ' + count));
 
   return (
     <Screen>

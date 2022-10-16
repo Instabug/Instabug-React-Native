@@ -97,14 +97,15 @@ export default {
             if (responseBodySizeString) {
               const responseBodySizeNumber = Number(responseBodySizeString);
 
-              if (!isNaN(responseBodySizeNumber))
+              if (!isNaN(responseBodySizeNumber)) {
                 cloneNetwork.responseBodySize = responseBodySizeNumber;
+              }
             }
 
             if (this.getAllResponseHeaders()) {
               const responseHeaders = this.getAllResponseHeaders().split('\r\n');
               const responseHeadersDictionary: Record<string, string> = {};
-              responseHeaders.forEach(element => {
+              responseHeaders.forEach((element) => {
                 const key = element.split(/:(.+)/)[0];
                 const value = element.split(/:(.+)/)[1];
                 responseHeadersDictionary[key] = value;
@@ -162,7 +163,7 @@ export default {
                 cloneNetwork.gqlQueryName = '';
               }
               if (cloneNetwork.responseBody) {
-                let responseObj = JSON.parse(cloneNetwork.responseBody);
+                const responseObj = JSON.parse(cloneNetwork.responseBody);
 
                 if (responseObj.errors) {
                   cloneNetwork.serverErrorMessage = 'GraphQLError';
@@ -186,8 +187,8 @@ export default {
           }
           // check if will be able to compute progress
           if (event.lengthComputable && onProgressCallback) {
-            let totalBytesSent = event.loaded;
-            let totalBytesExpectedToSend = event.total - event.loaded;
+            const totalBytesSent = event.loaded;
+            const totalBytesExpectedToSend = event.total - event.loaded;
             onProgressCallback(totalBytesSent, totalBytesExpectedToSend);
           }
         };

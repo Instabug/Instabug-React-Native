@@ -3,7 +3,7 @@ jest.mock('react-native/Libraries/Core/Devtools/parseErrorStack', () => {
 
   // This mock's goal is to provide a parseErrorStack function that adapts to the mock React Native version
   // This mock should work as long as the tests run with React Native version < 0.64
-  return jest.fn(error => {
+  return jest.fn((error) => {
     const originalParseErrorStack = jest.requireActual(
       'react-native/Libraries/Core/Devtools/parseErrorStack',
     );
