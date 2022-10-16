@@ -128,11 +128,34 @@ jobs:
           command: yarn
       - run:
           name: Install Pods
-          command: cd ios && pod install
+          working_directory: ios
+          command: pod install
       - run:
           name: Build and run tests
-          command: cd ios && xcodebuild  -allowProvisioningUpdates   -workspace InstabugSample.xcworkspace    -scheme InstabugSample    -sdk iphonesimulator    -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5'    test | xcpretty
+          working_directory: ios
+          command: |
+                   xcodebuild -allowProvisioningUpdates \
+                       -workspace InstabugSample.xcworkspace \
+                       -scheme InstabugSample \
+                       -resultBundlePath coverage/result.xcresult \
+                       -sdk iphonesimulator \
+                       -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                       test | xcpretty
           no_output_timeout: 30m
+      - run:
+          name: Convert xcresult into JSON report
+          working_directory: ios/coverage
+          command: xcrun xccov view --report --json result.xcresult > report.json
+      - run:
+          name: Clone xccov2lcov
+          command: git clone git@github.com:trax-retail/xccov2lcov.git
+      - run:
+          name: Convert xccov into lcov report
+          working_directory: xccov2lcov
+          command: swift run xccov2lcov ../ios/coverage/report.json > ../ios/coverage/coverage.txt
+      - codecov/upload:
+          flags: ios
+          file: ios/coverage/coverage.txt
 
   e2e_ios:
     macos:

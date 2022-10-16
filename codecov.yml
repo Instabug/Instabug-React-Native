@@ -10,7 +10,7 @@ coverage:
   status:
     project:
       default:
-        target: 50%
+        target: 55%
     patch:
       javascript:
         target: 90%
@@ -20,6 +20,10 @@ coverage:
         target: 35%
         flags:
           - android
+      ios:
+        target: 50%
+        flags:
+          - ios
 
 flags:
   javascript:
@@ -30,3 +34,7 @@ flags:
     carryforward: true
     paths:
       - android
+  ios:
+    carryforward: true
+    paths:
+      - ios
