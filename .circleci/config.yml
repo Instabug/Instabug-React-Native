@@ -134,13 +134,13 @@ jobs:
           name: Build and run tests
           working_directory: ios
           command: |
-                   xcodebuild -allowProvisioningUpdates \
-                       -workspace InstabugSample.xcworkspace \
-                       -scheme InstabugSample \
-                       -resultBundlePath coverage/result.xcresult \
-                       -sdk iphonesimulator \
-                       -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
-                       test | xcpretty
+            xcodebuild -allowProvisioningUpdates \
+                -workspace InstabugSample.xcworkspace \
+                -scheme InstabugSample \
+                -resultBundlePath coverage/result.xcresult \
+                -sdk iphonesimulator \
+                -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                test | xcpretty
           no_output_timeout: 30m
       - run:
           name: Convert xcresult into JSON report
