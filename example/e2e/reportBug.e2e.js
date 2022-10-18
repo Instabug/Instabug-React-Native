@@ -8,7 +8,10 @@ beforeEach(async () => {
 });
 
 it('reports a bug', async () => {
-  await getElement('floatingButton').tap();
+  const floatingButton = getElement('floatingButton');
+  await waitFor(floatingButton).toBeVisible().withTimeout(30000);
+  await floatingButton.tap();
+
   await getElement('reportBugMenuItem').tap();
 
   await getElement('emailField').typeText(mockData.email);
