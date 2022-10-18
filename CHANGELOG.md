@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Adds first-class TypeScript support.
+- Fixes a compilation error on Android projects without buildToolsVersion property set.
 
 ## 11.3.0 (2022-10-11)
 
