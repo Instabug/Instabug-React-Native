@@ -3,10 +3,8 @@ import mockData from './utils/mockData';
 
 beforeEach(async () => {
   await device.launchApp();
-});
-
-beforeEach(async () => {
   await device.reloadReactNative();
+  await device.setURLBlacklist(['https://api.instabug.com']);
 });
 
 it('reports a bug', async () => {
