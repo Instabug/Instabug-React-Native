@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, "9.0"
   s.source_files = "ios/**/*.{h,m,mm}"
+  s.pod_target_xcconfig   = { 'OTHER_LDFLAGS' => '-framework "Instabug"' }
 
   s.dependency 'React-Core'
   s.dependency 'Instabug', '11.3.0'
