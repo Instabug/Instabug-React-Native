@@ -20,5 +20,6 @@ export default {
     setDidSelectPromptOptionHandler: jest.fn(),
     setVideoRecordingFloatingButtonPosition: jest.fn(),
     setDisclaimerText: jest.fn(),
+    setCommentMinimumCharacterCount: jest.fn(),
   },
 };
