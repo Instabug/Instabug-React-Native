@@ -47,4 +47,6 @@
 
 - (void)setViewHierarchyEnabled:(BOOL)viewHirearchyEnabled;
 
+- (void)setDisclaimerText:(NSString *)text;
+
 @end

@@ -201,6 +201,10 @@ RCT_EXPORT_METHOD(setShakingThresholdForiPad:(double)iPadShakingThreshold) {
     IBGBugReporting.shakingThresholdForiPad = iPadShakingThreshold;
 }
 
+RCT_EXPORT_METHOD(setDisclaimerText:(NSString*)text) {
+   [IBGBugReporting setDisclaimerText:text];
+}
+
 
 @synthesize description;
 

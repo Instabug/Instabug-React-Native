@@ -366,5 +366,18 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
         });
     }
 
+    /**
+    * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+    * @param text String text.
+    */
+    @ReactMethod
+    public void setDisclaimerText(final String text){
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                BugReporting.setDisclaimerText(text);
+            }
+        });
+    }
 
 }

@@ -223,3 +223,11 @@ export const setEnabledAttachmentTypes = (
     screenRecording,
   );
 };
+
+/**
+ * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+ * @param text String text.
+ */
+export const setDisclaimerText = (text: string) => {
+  NativeBugReporting.setDisclaimerText(text);
+};
