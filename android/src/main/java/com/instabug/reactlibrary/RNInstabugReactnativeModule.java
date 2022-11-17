@@ -105,6 +105,27 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "Instabug";
     }
+    
+    /** 
+     * Enables or disables Instabug functionality.
+     * @param isEnabled A boolean to enable/disable Instabug.
+     */
+    @ReactMethod
+    public void setEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(isEnabled)
+                        Instabug.enable();
+                    else
+                        Instabug.disable();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    } 
 
   /**
    * Starts the SDK.

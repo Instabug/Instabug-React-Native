@@ -36,6 +36,11 @@ RCT_EXPORT_MODULE(Instabug)
     return dispatch_get_main_queue();
 }
 
+
+RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
+    Instabug.enabled = isEnabled;
+}
+
 RCT_EXPORT_METHOD(start:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
      SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
