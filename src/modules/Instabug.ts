@@ -398,6 +398,8 @@ export const setDebugEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
+ *
  * Enables all Instabug functionality
  * It works on android only
  */
@@ -408,6 +410,8 @@ export const enable = () => {
 };
 
 /**
+ * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
+ *
  * Disables all Instabug functionality
  * It works on android only
  */
