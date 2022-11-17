@@ -241,4 +241,12 @@ describe('Testing BugReporting Module', () => {
     expect(NativeBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledTimes(1);
     expect(NativeBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledWith(position);
   });
+
+  it('should call the native method setDisclaimerText', () => {
+    const text = 'This is a disclaimer text!';
+    BugReporting.setDisclaimerText(text);
+
+    expect(NativeBugReporting.setDisclaimerText).toBeCalledTimes(1);
+    expect(NativeBugReporting.setDisclaimerText).toBeCalledWith(text);
+  });
 });
