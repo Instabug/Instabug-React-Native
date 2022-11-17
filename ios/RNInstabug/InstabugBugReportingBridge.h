@@ -49,4 +49,6 @@
 
 - (void)setDisclaimerText:(NSString *)text;
 
+- (void)setCommentMinimumCharacterCount:(NSNumber *)limit reportTypes:(NSArray *)reportTypes;
+
 @end

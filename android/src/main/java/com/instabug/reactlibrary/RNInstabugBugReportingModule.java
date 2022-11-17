@@ -380,4 +380,31 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
         });
     }
 
+    /**
+    * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+    * @param limit int number of characters.
+    * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
+    */
+    @ReactMethod
+    public void setCommentMinimumCharacterCount(final int limit, final ReadableArray reportTypes){
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void run() {
+                try {
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(reportTypes);
+                    final ArrayList<Integer> types = ArgsRegistry.reportTypes.getAll(keys);
+
+                    final int[] typesInts = new int[types.size()];
+                    for (int i = 0; i < types.size(); i++) {
+                        typesInts[i] = types.get(i);
+                    }
+
+                    BugReporting.setCommentMinimumCharacterCount(limit, typesInts);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
