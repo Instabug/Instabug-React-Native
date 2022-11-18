@@ -349,4 +349,22 @@ public class RNInstabugBugReportingModuleTest {
         BugReporting.setDisclaimerText(text);
     }
 
+    @Test
+    public void givenArgs$setCommentMinimumCharacterCount_whenQuery_thenShouldCallNativeApiWithArgs() {
+        // given
+        final int count = 20;
+        final Map<String, Integer> args = ArgsRegistry.reportTypes;
+        final String[] keysArray = args.keySet().toArray(new String[0]);
+        JavaOnlyArray actualArray = new JavaOnlyArray();
+        actualArray.pushString(keysArray[0]);
+
+        // when
+        bugReportingModule.setCommentMinimumCharacterCount(count, actualArray);
+
+        // then
+        verify(BugReporting.class, VerificationModeFactory.times(1));
+        int type1 = args.get(keysArray[0]);
+        
+        BugReporting.setCommentMinimumCharacterCount(count, type1);
+    }
 }
