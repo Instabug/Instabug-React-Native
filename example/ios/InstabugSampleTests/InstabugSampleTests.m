@@ -52,6 +52,15 @@
  +------------------------------------------------------------------------+
  */
 
+- (void)testSetEnabled {
+  id mock = OCMClassMock([Instabug class]);
+  BOOL isEnabled = true;
+  
+  OCMStub([mock setEnabled:isEnabled]);
+  [self.instabugBridge setEnabled:isEnabled];
+  OCMVerify([mock setEnabled:isEnabled]);
+}
+
 - (void)testStart {
   id<InstabugCPTestProtocol> mock = OCMClassMock([Instabug class]);
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;

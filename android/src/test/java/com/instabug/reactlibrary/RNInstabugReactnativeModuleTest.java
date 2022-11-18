@@ -93,6 +93,29 @@ public class RNInstabugReactnativeModuleTest {
 
     /********Instabug*********/
 
+
+    @Test
+    public void givenTrue$setEnabled_whenQuery_thenShouldCallNativeApi() {
+        // given
+
+        // when
+        rnModule.setEnabled(true);
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.enable();
+    }
+
+    @Test
+    public void givenFalse$setEnabled_whenQuery_thenShouldCallNativeApi() {
+        // given
+
+        // when
+        rnModule.setEnabled(false);
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.disable();
+    }
+
     @Test
     public void givenBoolean$setDebugEnabled_whenQuery_thenShouldCallNativeApi() {
         // when
