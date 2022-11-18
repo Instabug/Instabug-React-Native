@@ -177,5 +177,14 @@
   XCTAssertTrue(IBGBugReporting.shouldCaptureViewHierarchy);
 }
 
+- (void) testSetDisclaimerText {
+  id mock = OCMClassMock([IBGBugReporting class]);
+  NSString *text = @"This is a disclaimer text!";
+
+  OCMStub([mock setDisclaimerText:text]);
+  [self.instabugBridge setDisclaimerText:text];
+  OCMVerify([mock setDisclaimerText:text]);
+}
+
 @end
 

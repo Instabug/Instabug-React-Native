@@ -335,4 +335,18 @@ public class RNInstabugBugReportingModuleTest {
         BugReporting.show(reportTypeArgs.get(reportTypeKeys[0]));
     }
 
+    @Test
+    public void givenArgs$setDisclaimerText_whenQuery_shouldCallNativeApiWithArgs() {
+        // given
+        String text = "This is a disclaimer text!";
+
+        // when
+        bugReportingModule.setDisclaimerText(text);
+
+        // then
+        verify(BugReporting.class, VerificationModeFactory.times(1));
+
+        BugReporting.setDisclaimerText(text);
+    }
+
 }
