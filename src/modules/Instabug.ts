@@ -47,6 +47,14 @@ export {
 };
 
 /**
+ * Enables or disables Instabug functionality.
+ * @param isEnabled A boolean to enable/disable Instabug.
+ */
+export const setEnabled = (isEnabled: boolean) => {
+  NativeInstabug.setEnabled(isEnabled);
+};
+
+/**
  * Starts the SDK.
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
@@ -390,6 +398,8 @@ export const setDebugEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
+ *
  * Enables all Instabug functionality
  * It works on android only
  */
@@ -400,6 +410,8 @@ export const enable = () => {
 };
 
 /**
+ * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
+ *
  * Disables all Instabug functionality
  * It works on android only
  */

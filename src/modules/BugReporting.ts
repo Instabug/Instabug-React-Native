@@ -223,3 +223,20 @@ export const setEnabledAttachmentTypes = (
     screenRecording,
   );
 };
+
+/**
+ * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+ * @param text String text.
+ */
+export const setDisclaimerText = (text: string) => {
+  NativeBugReporting.setDisclaimerText(text);
+};
+
+/**
+ * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+ * @param limit int number of characters.
+ * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
+ */
+export const setCommentMinimumCharacterCount = (limit: number, reportTypes?: reportType[]) => {
+  NativeBugReporting.setCommentMinimumCharacterCount(limit, reportTypes ?? []);
+};

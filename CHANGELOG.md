@@ -1,6 +1,9 @@
 ## Unreleased
 
 - Adds first-class TypeScript support.
+- Adds BugReporting.setDisclaimerText API
+- Adds BugReporting.setCommentMinimumCharacterCount API
+- Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
 - Fixes a compilation error on Android projects without buildToolsVersion property set.
 
 ## 11.3.0 (2022-10-11)

@@ -201,6 +201,24 @@ RCT_EXPORT_METHOD(setShakingThresholdForiPad:(double)iPadShakingThreshold) {
     IBGBugReporting.shakingThresholdForiPad = iPadShakingThreshold;
 }
 
+RCT_EXPORT_METHOD(setDisclaimerText:(NSString*)text) {
+   [IBGBugReporting setDisclaimerText:text];
+}
+
+RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit reportTypes:(NSArray *)reportTypes) {
+    IBGBugReportingReportType parsedReportTypes = 0;
+
+    if (![reportTypes count]) {
+        parsedReportTypes = @(IBGBugReportingReportTypeBug).integerValue | @(IBGBugReportingReportTypeFeedback).integerValue | @(IBGBugReportingReportTypeQuestion).integerValue;
+    }
+    else {
+        for (NSNumber *reportType in reportTypes) {
+            parsedReportTypes |= [reportType intValue];
+        }
+    }
+
+   [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
+}
 
 @synthesize description;
 

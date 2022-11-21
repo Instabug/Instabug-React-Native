@@ -15,6 +15,13 @@ import InstabugUtils from '../../src/utils/InstabugUtils';
 const { Instabug: NativeInstabug, IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Instabug Module', () => {
+  it('should call the native method setEnabled', () => {
+    Instabug.setEnabled(true);
+
+    expect(NativeInstabug.setEnabled).toBeCalledTimes(1);
+    expect(NativeInstabug.setEnabled).toBeCalledWith(true);
+  });
+
   it('reportScreenChange should call the native method reportScreenChange', () => {
     const screenName = 'some-screen';
     Instabug.reportScreenChange(screenName);

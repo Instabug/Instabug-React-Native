@@ -19,5 +19,7 @@ export default {
     setEnabledAttachmentTypes: jest.fn(),
     setDidSelectPromptOptionHandler: jest.fn(),
     setVideoRecordingFloatingButtonPosition: jest.fn(),
+    setDisclaimerText: jest.fn(),
+    setCommentMinimumCharacterCount: jest.fn(),
   },
 };

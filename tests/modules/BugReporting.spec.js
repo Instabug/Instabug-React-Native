@@ -241,4 +241,22 @@ describe('Testing BugReporting Module', () => {
     expect(NativeBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledTimes(1);
     expect(NativeBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledWith(position);
   });
+
+  it('should call the native method setDisclaimerText', () => {
+    const text = 'This is a disclaimer text!';
+    BugReporting.setDisclaimerText(text);
+
+    expect(NativeBugReporting.setDisclaimerText).toBeCalledTimes(1);
+    expect(NativeBugReporting.setDisclaimerText).toBeCalledWith(text);
+  });
+
+  it('should call the native method setCommentMinimumCharacterCount', () => {
+    const count = 20;
+    const reportTypes = [BugReporting.reportType.bug];
+
+    BugReporting.setCommentMinimumCharacterCount(count, reportTypes);
+
+    expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledTimes(1);
+    expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledWith(count, reportTypes);
+  });
 });

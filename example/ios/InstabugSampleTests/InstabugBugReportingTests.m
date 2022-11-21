@@ -177,5 +177,27 @@
   XCTAssertTrue(IBGBugReporting.shouldCaptureViewHierarchy);
 }
 
+- (void) testSetDisclaimerText {
+  id mock = OCMClassMock([IBGBugReporting class]);
+  NSString *text = @"This is a disclaimer text!";
+
+  OCMStub([mock setDisclaimerText:text]);
+  [self.instabugBridge setDisclaimerText:text];
+  OCMVerify([mock setDisclaimerText:text]);
+}
+
+- (void) testSetCommentMinimumCharacterCount {
+  id mock = OCMClassMock([IBGBugReporting class]);
+  NSNumber *limit = [NSNumber numberWithInt:20];
+  NSArray *reportTypesArr = [NSArray arrayWithObjects: @(IBGReportTypeBug), nil];
+  IBGBugReportingReportType reportTypes = 0;
+  for (NSNumber *reportType in reportTypesArr) {
+    reportTypes |= [reportType intValue];
+  }
+  OCMStub([mock setCommentMinimumCharacterCountForReportTypes:reportTypes withLimit:limit.intValue]);
+  [self.instabugBridge setCommentMinimumCharacterCount:limit reportTypes:reportTypesArr];
+  OCMVerify([mock setCommentMinimumCharacterCountForReportTypes:reportTypes withLimit:limit.intValue]);
+}
+
 @end
 
