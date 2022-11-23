@@ -1,10 +1,12 @@
 ## Unreleased
 
+- Bumps Instabug Android SDK to v11.6.0
 - Adds first-class TypeScript support.
 - Adds BugReporting.setDisclaimerText API
 - Adds BugReporting.setCommentMinimumCharacterCount API
 - Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
 - Fixes a compilation error on Android projects without buildToolsVersion property set.
+- Fixes APM network logging on Android
 
 ## 11.3.0 (2022-10-11)
 
