@@ -8,6 +8,7 @@
 - Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
 - Fixes a compilation error on Android projects without buildToolsVersion property set.
 - Fixes APM network logging on Android
+- Fixes an issue with Hermes source maps generation script on React Native versions prior to 0.65.0
 
 ## 11.3.0 (2022-10-11)
 

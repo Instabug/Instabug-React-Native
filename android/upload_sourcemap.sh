@@ -68,6 +68,10 @@ else
         else
             HERMES_PATH=node_modules/hermes-engine/$HERMES_OS_BIN/hermesc
         fi
+        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 65 ]
+        then
+            EXTRA_ARGS="--minify false"
+        fi
         #Generate android sourcemap (HERMES)
         npx react-native bundle --platform android \
         --reset-cache \
@@ -75,7 +79,7 @@ else
         --dev false \
         --bundle-output index.android.bundle \
         --sourcemap-output index.android.bundle.packager.map \
-        --minify false
+        $EXTRA_ARGS
 
         $HERMES_PATH -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
