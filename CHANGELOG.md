@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Bumps Instabug Android SDK to v11.6.0
+- Bumps Instabug iOS SDK to v11.5.0
 - Adds first-class TypeScript support.
 - Adds BugReporting.setDisclaimerText API
 - Adds BugReporting.setCommentMinimumCharacterCount API
