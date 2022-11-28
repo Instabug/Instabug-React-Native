@@ -1,14 +1,13 @@
-## Unreleased
+## 11.5.0 (2022-11-28)
 
 - Bumps Instabug Android SDK to v11.6.0
 - Bumps Instabug iOS SDK to v11.5.0
-- Adds first-class TypeScript support.
+- Adds first-class TypeScript support
 - Adds Romanian locale support
 - Adds BugReporting.setDisclaimerText API
 - Adds BugReporting.setCommentMinimumCharacterCount API
 - Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
-- Fixes a compilation error on Android projects without buildToolsVersion property set.
-- Fixes APM network logging on Android
+- Fixes a compilation error on Android projects without buildToolsVersion property set
 - Fixes an issue with Hermes source maps generation script on React Native versions prior to 0.65.0
 
 ## 11.3.0 (2022-10-11)
