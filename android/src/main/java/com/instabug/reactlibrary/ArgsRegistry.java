@@ -171,6 +171,7 @@ final class ArgsRegistry {
         put("localePolish", InstabugLocale.POLISH);
         put("localePortugueseBrazil", InstabugLocale.PORTUGUESE_BRAZIL);
         put("localePortuguesePortugal", InstabugLocale.PORTUGUESE_PORTUGAL);
+        put("localeRomanian", InstabugLocale.ROMANIAN);
         put("localeRussian", InstabugLocale.RUSSIAN);
         put("localeSpanish", InstabugLocale.SPANISH);
         put("localeSlovak", InstabugLocale.SLOVAK);

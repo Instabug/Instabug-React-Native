@@ -171,6 +171,7 @@
         @"localeKorean": @(IBGLocaleKorean),
         @"localePolish": @(IBGLocalePolish),
         @"localePortugueseBrazil": @(IBGLocalePortugueseBrazil),
+        @"localeRomanian": @(IBGLocaleRomanian),
         @"localeRussian": @(IBGLocaleRussian),
         @"localeSpanish": @(IBGLocaleSpanish),
         @"localeSwedish": @(IBGLocaleSwedish),

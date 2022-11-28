@@ -3,6 +3,7 @@
 - Bumps Instabug Android SDK to v11.6.0
 - Bumps Instabug iOS SDK to v11.5.0
 - Adds first-class TypeScript support.
+- Adds Romanian locale support
 - Adds BugReporting.setDisclaimerText API
 - Adds BugReporting.setCommentMinimumCharacterCount API
 - Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
