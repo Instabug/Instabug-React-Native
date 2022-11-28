@@ -151,13 +151,14 @@ export enum locale {
   german = NativeInstabug.localeGerman,
   italian = NativeInstabug.localeItalian,
   japanese = NativeInstabug.localeJapanese,
+  korean = NativeInstabug.localeKorean,
   polish = NativeInstabug.localePolish,
   portugueseBrazil = NativeInstabug.localePortugueseBrazil,
+  romanian = NativeInstabug.localeRomanian,
   russian = NativeInstabug.localeRussian,
   spanish = NativeInstabug.localeSpanish,
   swedish = NativeInstabug.localeSwedish,
   turkish = NativeInstabug.localeTurkish,
-  korean = NativeInstabug.localeKorean,
 }
 
 /**
