@@ -245,7 +245,7 @@ jobs:
   publish:
     macos:
       xcode: 13.4.1
-    working_directory: ~
+    working_directory: '~'
     steps:
       - checkout:
           path: ~/project
