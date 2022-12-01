@@ -544,26 +544,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-     * Enable/Disable debug logs from Instabug SDK
-     * Default state: disabled
-     *
-     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
-     */
-    @ReactMethod
-    public void setDebugEnabled(final boolean isDebugEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.setDebugEnabled(isDebugEnabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setSdkDebugLogsLevel(final String logLevel) {
         MainThreadHandler.runOnMainThread(new Runnable() {
