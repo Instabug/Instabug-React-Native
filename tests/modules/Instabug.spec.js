@@ -434,19 +434,20 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.clearAllUserAttributes).toBeCalledTimes(1);
   });
 
-  it('should call the native method setDebugEnabled', () => {
+  it('should call the native method setSdkDebugLogsLevel when setDebugEnabled is called on Android', () => {
     Platform.OS = 'android';
     Instabug.setDebugEnabled(true);
+    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
 
-    expect(NativeInstabug.setDebugEnabled).toBeCalledTimes(1);
-    expect(NativeInstabug.setDebugEnabled).toBeCalledWith(true);
+    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledTimes(1);
+    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledWith(debugLevel);
   });
 
-  it('should not call the native method setDebugEnabled when platform is ios', () => {
+  it('should not call the native method setSdkDebugLogsLevel when when setDebugEnabled is called on ios', () => {
     Platform.OS = 'ios';
     Instabug.setDebugEnabled(true);
 
-    expect(NativeInstabug.setDebugEnabled).not.toBeCalled();
+    expect(NativeInstabug.setSdkDebugLogsLevel).not.toBeCalled();
   });
 
   it('should call the native method enable', () => {

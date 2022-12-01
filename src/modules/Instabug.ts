@@ -383,6 +383,8 @@ export const clearAllUserAttributes = () => {
 };
 
 /**
+ * @deprecated Use {@link setSdkDebugLogsLevel} instead. This will work on both Android and iOS.
+ *
  * Enable/Disable debug logs from Instabug SDK
  * Default state: disabled
  *
@@ -390,7 +392,11 @@ export const clearAllUserAttributes = () => {
  */
 export const setDebugEnabled = (isEnabled: boolean) => {
   if (Platform.OS === 'android') {
-    NativeInstabug.setDebugEnabled(isEnabled);
+    if (isEnabled) {
+      setSdkDebugLogsLevel(sdkDebugLogsLevel.sdkDebugLogsLevelVerbose);
+    } else {
+      setSdkDebugLogsLevel(sdkDebugLogsLevel.sdkDebugLogsLevelNone);
+    }
   }
 };
 
