@@ -1,3 +1,7 @@
+## Unreleased
+
+- Deprecates Instabug.setDebugEnabled and APM.setLogLevel APIs in favour of Instabug.setSdkDebugLogsLevel, which controls the verbosity of SDK logs on both platforms
+
 ## 11.5.0 (2022-11-28)
 
 - Bumps Instabug Android SDK to v11.6.0
