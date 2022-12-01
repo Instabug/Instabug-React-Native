@@ -126,6 +126,25 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
+    public void givenArg$setSdkDebugLogsLevel_whenQuery_thenShouldCallNativeApi() {
+        // given
+        Map<String, Integer> sdkLogLevelArg = ArgsRegistry.sdkLogLevels;
+        final String[] keysArray = sdkLogLevelArg.keySet().toArray(new String[0]);
+
+        // when
+        for (String key: keysArray) {
+            rnModule.setSdkDebugLogsLevel(key);
+        }
+
+        // then
+        verify(Instabug.class,times(1));
+        for (String key : keysArray) {
+            int sdkLogLevel = sdkLogLevelArg.get(key);
+            Instabug.setSdkDebugLogsLevel(sdkLogLevel);
+        }
+    }
+
+    @Test
     public void givenArgs$setUserAttribute_whenQuery_thenShouldCallNativeApi() {
         // given
 
