@@ -123,14 +123,11 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
 };
 
 /**
- * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
- * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
+ * This API sets the verbosity level of logs used to debug The SDK. The default value is sdkDebugLogsLevelError.
  * @param level The verbosity level of logs.
  */
 export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.setSdkDebugLogsLevel(level);
-  }
+  NativeInstabug.setSdkDebugLogsLevel(level);
 };
 
 /**

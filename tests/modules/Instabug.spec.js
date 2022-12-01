@@ -361,23 +361,13 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setReproStepsMode).toBeCalledWith(mode);
   });
 
-  it('should call the native method setSdkDebugLogsLevel on iOS', () => {
+  it('should call the native method setSdkDebugLogsLevel', () => {
     const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
 
-    Platform.OS = 'ios';
     Instabug.setSdkDebugLogsLevel(debugLevel);
 
     expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledTimes(1);
     expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledWith(debugLevel);
-  });
-
-  it('should not call the native method setSdkDebugLogsLevel on Android', () => {
-    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
-
-    Platform.OS = 'android';
-    Instabug.setSdkDebugLogsLevel(debugLevel);
-
-    expect(NativeInstabug.setSdkDebugLogsLevel).not.toBeCalled();
   });
 
   it.each([
