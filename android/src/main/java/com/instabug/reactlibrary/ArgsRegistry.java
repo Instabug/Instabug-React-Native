@@ -201,7 +201,6 @@ final class ArgsRegistry {
         put("recordingMessageToHoldText", Key.VOICE_MESSAGE_PRESS_AND_HOLD_TO_RECORD);
         put("recordingMessageToReleaseText", Key.VOICE_MESSAGE_RELEASE_TO_ATTACH);
         put("thankYouText", Key.SUCCESS_DIALOG_HEADER);
-        put("video", Key.VIDEO_PLAYER_TITLE);
         put("videoPressRecord", Key.VIDEO_RECORDING_FAB_BUBBLE_HINT);
         put("conversationTextFieldHint", Key.CONVERSATION_TEXT_FIELD_HINT);
         put("thankYouAlertText", Key.REPORT_SUCCESSFULLY_SENT);
