@@ -39,6 +39,7 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.Platform;
+import com.instabug.library.LogLevel;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -563,8 +564,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
-
-
+    @ReactMethod
+    public void setSdkDebugLogsLevel(final String logLevel) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final int sdkLogLevel = ArgsRegistry.sdkLogLevels
+                            .getOrDefault(logLevel, LogLevel.ERROR);
+                    Instabug.setSdkDebugLogsLevel(sdkLogLevel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     /**
      * Appends a log message to Instabug internal log
