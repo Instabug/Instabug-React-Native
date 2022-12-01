@@ -7,6 +7,8 @@ import { logLevel } from '../utils/ArgsRegistry';
 export { logLevel };
 
 /**
+ * @deprecated Use {@link setSdkDebugLogsLevel} instead.
+ *
  * Sets the printed logs priority. Filter to one of the following levels:
  *
  * - `logLevelNone` disables all APM SDK console logs.
