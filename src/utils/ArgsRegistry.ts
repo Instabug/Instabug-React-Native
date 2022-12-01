@@ -231,4 +231,7 @@ export enum strings {
   reproStepsListDescription = NativeInstabug.reproStepsListDescription,
   reproStepsListEmptyStateDescription = NativeInstabug.reproStepsListEmptyStateDescription,
   reproStepsListItemTitle = NativeInstabug.reproStepsListItemTitle,
+  screenRecording = NativeInstabug.screenRecording,
+  insufficientContentMessage = NativeInstabug.insufficientContentMessage,
+  insufficientContentTitle = NativeInstabug.insufficientContentTitle,
 }

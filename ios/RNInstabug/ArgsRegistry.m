@@ -252,7 +252,10 @@
         @"reproStepsListHeader": kIBGReproStepsListTitle,
         @"reproStepsListDescription": kIBGReproStepsListHeader,
         @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
-        @"reproStepsListItemTitle": kIBGReproStepsListItemName
+        @"reproStepsListItemTitle": kIBGReproStepsListItemName,
+        @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
+        @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,
+        @"insufficientContentMessage" : kIBGInsufficientContentMessageStringName,
     };
 }
 
