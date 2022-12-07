@@ -24,5 +24,4 @@ test/
 
 Dangerfile
 babel.config.js
-codecov.yml
 .prettierrc.js
