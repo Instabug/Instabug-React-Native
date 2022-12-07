@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   android: circleci/android@2.0
-  codecov: codecov/codecov@3.2.3
 jobs:
   danger:
     docker:
@@ -46,9 +45,6 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
-      - codecov/upload:
-          flags: javascript
-
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -78,9 +74,6 @@ jobs:
       - android/run-tests:
           working-directory: ./example/android
           test-command: ./gradlew test
-      - codecov/upload:
-          flags: android
-          file: android/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
 
   validate_shell_files:
     machine:
@@ -153,9 +146,6 @@ jobs:
           name: Convert xccov into lcov report
           working_directory: xccov2lcov
           command: swift run xccov2lcov ../ios/coverage/report.json > ../ios/coverage/coverage.txt
-      - codecov/upload:
-          flags: ios
-          file: ios/coverage/coverage.txt
 
   e2e_ios:
     macos:
