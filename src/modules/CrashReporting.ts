@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import { NativeCrashReporting } from '../native';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
@@ -15,30 +16,39 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link reportError} instead.
  * Send handled JS error object
  * @param error Error object to be sent to Instabug's servers
  */
 export const reportJSException = (error: any) => {
   if (error instanceof Error) {
-    const jsStackTrace = InstabugUtils.getStackTrace(error);
+    reportError(error);
+  }
+};
 
-    const jsonObject = {
-      message: error.name + ' - ' + error.message,
-      e_message: error.message,
-      e_name: error.name,
-      os: Platform.OS,
-      platform: 'react_native',
-      exception: jsStackTrace,
-    };
+/**
+ * Send handled JS error object
+ * @param error Error object to be sent to Instabug's servers
+ */
+export const reportError = (error: ExtendedError) => {
+  const jsStackTrace = InstabugUtils.getStackTrace(error);
 
-    if (InstabugUtils.isOnReportHandlerSet() && Platform.OS === 'android') {
-      IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
+  const jsonObject = {
+    message: error.name + ' - ' + error.message,
+    e_message: error.message,
+    e_name: error.name,
+    os: Platform.OS,
+    platform: 'react_native',
+    exception: jsStackTrace,
+  };
+
+  if (InstabugUtils.isOnReportHandlerSet() && Platform.OS === 'android') {
+    IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
+  } else {
+    if (Platform.OS === 'android') {
+      NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
     } else {
-      if (Platform.OS === 'android') {
-        NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
-      } else {
-        NativeCrashReporting.sendHandledJSCrash(jsonObject);
-      }
+      NativeCrashReporting.sendHandledJSCrash(jsonObject);
     }
   }
 };
