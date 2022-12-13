@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fixes Survey interface export causing a build error with certain babel versions
+
 ## 11.5.0 (2022-11-28)
 
 - Bumps Instabug Android SDK to v11.6.0
