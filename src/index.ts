@@ -15,7 +15,6 @@ import * as Surveys from './modules/Surveys';
 export {
   Report,
   Trace,
-  Survey,
   APM,
   BugReporting,
   CrashReporting,
@@ -24,5 +23,7 @@ export {
   Replies,
   Surveys,
 };
+
+export type { Survey };
 
 export default Instabug;
