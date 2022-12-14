@@ -27,8 +27,10 @@ export function HomeScreen() {
     try {
       throw new Error('Handled Exception From Instabug Test App');
     } catch (err) {
-      CrashReporting.reportJSException(err);
-      Alert.alert('Crash report Sent!');
+      if (err instanceof Error) {
+        CrashReporting.reportError(err);
+        Alert.alert('Crash report Sent!');
+      }
     }
   };
 
