@@ -16,10 +16,21 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link reportError} instead.
  * Send handled JS error object
  * @param error Error object to be sent to Instabug's servers
  */
-export const reportJSException = (error: ExtendedError) => {
+export const reportJSException = (error: any) => {
+  if (error instanceof Error) {
+    reportError(error);
+  }
+};
+
+/**
+ * Send handled JS error object
+ * @param error Error object to be sent to Instabug's servers
+ */
+export const reportError = (error: ExtendedError) => {
   const jsStackTrace = InstabugUtils.getStackTrace(error);
 
   const jsonObject = {
