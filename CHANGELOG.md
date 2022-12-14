@@ -1,4 +1,4 @@
-## Unreleased
+## 11.5.1 (2022-12-14)
 
 - Deprecates CrashReporting.reportJSException in favour of a new strongly typed API: CrashReporting.reportError
 - Fixes Survey interface export causing a build error with certain babel versions
