@@ -77,8 +77,8 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
  * Should be called in constructor of the AppRegistry component
- * @param token The token that identifies the app, you can find it on your dashboard.
- * @param invocationEvents The events that invokes the SDK's UI.
+ * @param token The token that identifies the app. You can find it on your dashboard.
+ * @param invocationEvents The events that invoke the SDK's UI.
  */
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
