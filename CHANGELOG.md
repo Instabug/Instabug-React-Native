@@ -1,3 +1,7 @@
+## Unreleased
+
+- Bumps Instabug Android SDK to v11.7.0
+
 ## 11.5.1 (2022-12-14)
 
 - Deprecates CrashReporting.reportJSException in favour of a new strongly typed API: CrashReporting.reportError
