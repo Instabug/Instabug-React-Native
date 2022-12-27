@@ -60,6 +60,7 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link init} instead.
  * Starts the SDK.
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
@@ -68,20 +69,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param invocationEvents The events that invokes the SDK's UI.
  */
 export const start = (token: string, invocationEvents: invocationEvent[]) => {
-  InstabugUtils.captureJsErrors();
-  NetworkLogger.setEnabled(true);
-
-  NativeInstabug.start(token, invocationEvents);
-
-  _isFirstScreen = true;
-  _currentScreen = firstScreen;
-
-  setTimeout(() => {
-    if (_currentScreen === firstScreen) {
-      NativeInstabug.reportScreenChange(firstScreen);
-      _currentScreen = null;
-    }
-  }, 1000);
+  init({ token: token, invocationEvents: invocationEvents });
 };
 
 /**
