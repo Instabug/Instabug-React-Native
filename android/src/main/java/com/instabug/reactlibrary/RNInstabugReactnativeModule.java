@@ -159,6 +159,36 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     }
 
+    /**
+     * Initializes the SDK.
+     * @param token The token that identifies the app. You can find it on your dashboard.
+     * @param invocationEventValues The events that invoke the SDK's UI.
+     */
+    @ReactMethod
+    public void init(final String token, final ReadableArray invocationEventValues) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+
+                    setCurrentPlatform();
+                    setBaseUrlForDeprecationLogs();
+
+                    new Instabug.Builder(getCurrentActivity().getApplication(), token)
+                            .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
+                            .build();
+
+                    // Temporarily disabling APM hot launches
+                    APM.setHotAppLaunchEnabled(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void setCurrentPlatform() {
         try {
             Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);

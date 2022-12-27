@@ -46,6 +46,11 @@ export {
   strings,
 };
 
+interface InstabugConfig {
+  token: string;
+  invocationEvents: invocationEvent[];
+}
+
 /**
  * Enables or disables Instabug functionality.
  * @param isEnabled A boolean to enable/disable Instabug.
@@ -67,6 +72,31 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
   NetworkLogger.setEnabled(true);
 
   NativeInstabug.start(token, invocationEvents);
+
+  _isFirstScreen = true;
+  _currentScreen = firstScreen;
+
+  setTimeout(() => {
+    if (_currentScreen === firstScreen) {
+      NativeInstabug.reportScreenChange(firstScreen);
+      _currentScreen = null;
+    }
+  }, 1000);
+};
+
+/**
+ * Initializes the SDK.
+ * This is the main SDK method that does all the magic. This is the only
+ * method that SHOULD be called.
+ * Should be called in constructor of the AppRegistry component
+ * @param token The token that identifies the app, you can find it on your dashboard.
+ * @param invocationEvents The events that invokes the SDK's UI.
+ */
+export const init = (config: InstabugConfig) => {
+  InstabugUtils.captureJsErrors();
+  NetworkLogger.setEnabled(true);
+
+  NativeInstabug.init(config.token, config.invocationEvents);
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
