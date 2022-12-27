@@ -41,32 +41,6 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     Instabug.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(start:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
-     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
-    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        NSInteger *platform = IBGPlatformReactNative;
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
-        [inv setSelector:setPrivateApiSEL];
-        [inv setTarget:[Instabug class]];
-        [inv setArgument:&(platform) atIndex:2];
-        [inv invoke];
-    }
-    IBGInvocationEvent invocationEvents = 0;
-    NSLog(@"invocation events: %ld",(long)invocationEvents);
-    for (NSNumber *boxedValue in invocationEventsArray) {
-        invocationEvents |= [boxedValue intValue];
-    }
-    [Instabug startWithToken:token invocationEvents:invocationEvents];
-    
-    RCTAddLogFunction(InstabugReactLogFunction);
-    RCTSetLogThreshold(RCTLogLevelInfo);
-    
-    IBGNetworkLogger.enabled = YES;
-
-    // Temporarily disabling APM hot launches
-    IBGAPM.hotAppLaunchEnabled = NO;
-}
-
 RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {

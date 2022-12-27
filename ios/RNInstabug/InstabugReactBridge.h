@@ -27,8 +27,6 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 
-- (void)start:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray;
-
 - (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray;
 
 - (void)setUserData:(NSString *)userData;
