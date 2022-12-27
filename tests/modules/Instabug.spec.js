@@ -136,16 +136,18 @@ describe('Instabug Module', () => {
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
   });
 
-  it('should call the native method start', () => {
-    const token = 'some-token';
-    const invocationEvents = [
-      Instabug.invocationEvent.floatingButton,
-      Instabug.invocationEvent.shake,
-    ];
-    Instabug.start(token, invocationEvents);
+  it('should call the native method init', () => {
+    const instabugConfig = {
+      token: 'some-token',
+      invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
+    };
+    Instabug.init(instabugConfig);
 
-    expect(NativeInstabug.start).toBeCalledTimes(1);
-    expect(NativeInstabug.start).toBeCalledWith(token, invocationEvents);
+    expect(NativeInstabug.init).toBeCalledTimes(1);
+    expect(NativeInstabug.init).toBeCalledWith(
+      instabugConfig.token,
+      instabugConfig.invocationEvents,
+    );
   });
 
   it('should report the first screen on SDK start', async () => {
