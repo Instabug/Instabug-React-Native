@@ -76,6 +76,7 @@ interface NativeReportType {
   bugReportingReportTypeBug: any;
   bugReportingReportTypeFeedback: any;
   bugReportingReportTypeQuestion: any;
+  bugReportingReportTypeOther: any;
 }
 
 interface NativeDismissType {

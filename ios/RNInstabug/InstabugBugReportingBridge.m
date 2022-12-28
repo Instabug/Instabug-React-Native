@@ -60,28 +60,14 @@ RCT_EXPORT_METHOD(setOnInvokeHandler:(RCTResponseSenderBlock)callBack) {
 RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
-            
-            //parse dismiss type enum
-            NSString* dismissTypeString;
-            if (dismissType == IBGDismissTypeCancel) {
-                dismissTypeString = @"CANCEL";
-            } else if (dismissType == IBGDismissTypeSubmit) {
-                dismissTypeString = @"SUBMIT";
-            } else if (dismissType == IBGDismissTypeAddAttachment) {
-                dismissTypeString = @"ADD_ATTACHMENT";
-            }
-            
-            //parse report type enum
-            NSString* reportTypeString;
-            if (reportType == IBGReportTypeBug) {
-                reportTypeString = @"bug";
-            } else if (reportType == IBGReportTypeFeedback) {
-                reportTypeString = @"feedback";
-            } else {
-                reportTypeString = @"other";
-            }
-            NSDictionary *result = @{ @"dismissType": dismissTypeString,
-                                      @"reportType": reportTypeString};
+            // Unlinke Android, we do NOT need to map the iOS Enums to their JS constant names.
+            // This is because the JS Enums are mapped to the actual values of the
+            // iOS Enums (NSInteger), not strings as it's implemented on Android.
+            NSDictionary *result = @{
+                @"dismissType": @(dismissType),
+                @"reportType": @(reportType)
+            };
+
             [self sendEventWithName:@"IBGpostInvocationHandler" body: result];
         };
     } else {

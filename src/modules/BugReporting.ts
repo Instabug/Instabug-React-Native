@@ -60,6 +60,9 @@ export const onInvokeHandler = (handler: () => void) => {
 };
 
 /**
+ * @deprecated Use {@link onDismissHandler} instead as it has correct types
+ * for the `handler` parameters.
+ *
  * Sets a block of code to be executed right after the SDK's UI is dismissed.
  * This block is executed on the UI thread. Could be used for performing any
  * UI changes after the SDK's UI is dismissed.
@@ -68,9 +71,41 @@ export const onInvokeHandler = (handler: () => void) => {
 export const onSDKDismissedHandler = (
   handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
 ) => {
-  emitter.addListener(NativeEvents.ON_DISMISS_HANDLER, (payload) => {
-    handler(payload.dismissType, payload.reportType);
+  // Remapped to new API, while keeping the old incorrect behavior.
+  onDismissHandler((dismiss: dismissType, report: reportType) => {
+    const dismissTypes: Record<dismissType, string> = {
+      [dismissType.addAttachment]: 'ADD_ATTACHMENT',
+      [dismissType.submit]: 'SUBMIT',
+      [dismissType.cancel]: 'CANCEL',
+    };
+
+    const reportTypes: Record<reportType, string> = {
+      [reportType.bug]: 'bug',
+      [reportType.feedback]: 'feedback',
+      [reportType.question]: 'question',
+      [reportType.other]: 'other',
+    };
+
+    handler(dismissTypes[dismiss] as any, reportTypes[report] as any);
   });
+};
+
+/**
+ * Sets a block of code to be executed right after the SDK's UI is dismissed.
+ * This block is executed on the UI thread. Could be used for performing any
+ * UI changes after the SDK's UI is dismissed.
+ * @param handler A callback to get executed after dismissing the SDK.
+ */
+export const onDismissHandler = (
+  handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
+) => {
+  emitter.addListener(
+    NativeEvents.ON_DISMISS_HANDLER,
+    (payload: { dismissType: any; reportType: any }) => {
+      handler(payload.dismissType, payload.reportType);
+    },
+  );
+
   NativeBugReporting.setOnSDKDismissedHandler(handler);
 };
 
