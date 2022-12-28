@@ -57,7 +57,7 @@ RCT_EXPORT_METHOD(setOnInvokeHandler:(RCTResponseSenderBlock)callBack) {
     }
 }
 
-RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
+RCT_EXPORT_METHOD(setOnDismissHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
             // Unlinke Android, we do NOT need to map the iOS Enums to their JS constant names.

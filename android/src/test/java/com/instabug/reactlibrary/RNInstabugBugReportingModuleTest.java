@@ -246,7 +246,7 @@ public class RNInstabugBugReportingModuleTest {
 
 
     @Test
-    public void given$setOnSDKDismissedHandler_whenQuery_thenShouldSetNativeCallback() {
+    public void given$setOnDismissHandler_whenQuery_thenShouldSetNativeCallback() {
         // given
         MockedStatic mockArgument = mockStatic(Arguments.class);
         MockedStatic mockReactApplicationContext = mockStatic(ReactApplicationContext.class);
@@ -259,7 +259,7 @@ public class RNInstabugBugReportingModuleTest {
                         .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
                 return null;
             }});
-        bugReportingModule.setOnSDKDismissedHandler(null);
+        bugReportingModule.setOnDismissHandler(null);
 
         // then
         WritableMap params = new JavaOnlyMap();

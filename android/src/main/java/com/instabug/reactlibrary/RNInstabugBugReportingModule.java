@@ -283,7 +283,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
      *                              dismissing the SDK.
      */
     @ReactMethod
-    public void setOnSDKDismissedHandler(final Callback handler) {
+    public void setOnDismissHandler(final Callback handler) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

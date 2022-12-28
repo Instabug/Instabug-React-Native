@@ -142,12 +142,12 @@ describe('Testing BugReporting Module', () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it('should call the native method setOnSDKDismissedHandler with a function', () => {
+  it('should call the native method setOnDismissHandler with a function', () => {
     const callback = jest.fn();
     BugReporting.onSDKDismissedHandler(callback);
 
-    expect(NativeBugReporting.setOnSDKDismissedHandler).toBeCalledTimes(1);
-    expect(NativeBugReporting.setOnSDKDismissedHandler).toBeCalledWith(callback);
+    expect(NativeBugReporting.setOnDismissHandler).toBeCalledTimes(1);
+    expect(NativeBugReporting.setOnDismissHandler).toBeCalledWith(callback);
   });
 
   it('should invoke callback on emitting the event IBGpostInvocationHandler', () => {

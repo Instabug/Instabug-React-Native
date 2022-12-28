@@ -106,7 +106,7 @@ export const onDismissHandler = (
     },
   );
 
-  NativeBugReporting.setOnSDKDismissedHandler(handler);
+  NativeBugReporting.setOnDismissHandler(handler);
 };
 
 /**

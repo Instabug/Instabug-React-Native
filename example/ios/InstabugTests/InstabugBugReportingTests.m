@@ -70,10 +70,10 @@
 }
 
 
-- (void) testgivenHandlerCANCEL$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerCANCEL$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
   NSDictionary *result = @{ @"dismissType": @"CANCEL",
                             @"reportType": @"bug"};
@@ -82,10 +82,10 @@
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 
-- (void) testgivenHandlerSUBMIT$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerSUBMIT$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
   
   NSDictionary *result = @{ @"dismissType": @"SUBMIT",
@@ -95,10 +95,10 @@
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 
-- (void) testgivenHandlerADD_ATTACHMENT$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerADD_ATTACHMENT$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
   NSDictionary *result = @{ @"dismissType": @"ADD_ATTACHMENT",
                             @"reportType": @"feedback"};

@@ -54,7 +54,7 @@ export interface BugReportingNativeModule extends NativeModule {
   // Callbacks //
   setOnInvokeHandler(handler: () => void): void;
   setDidSelectPromptOptionHandler(handler: (promptOption: string) => void): void;
-  setOnSDKDismissedHandler(
+  setOnDismissHandler(
     handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
   ): void;
 }
