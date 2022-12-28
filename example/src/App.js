@@ -12,7 +12,10 @@ const Tab = createBottomTabNavigator();
 
 export function App() {
   useEffect(() => {
-    Instabug.start('2c63627b9923e10eee2c8abf92e6925f', [Instabug.invocationEvent.floatingButton]);
+    Instabug.init({
+      token: '2c63627b9923e10eee2c8abf92e6925f',
+      invocationEvents: [Instabug.invocationEvent.floatingButton],
+    });
   }, []);
 
   return (
