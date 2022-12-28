@@ -1,3 +1,7 @@
+## Unreleased
+
+- Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
+
 ## 11.5.1 (2022-12-14)
 
 - Deprecates CrashReporting.reportJSException in favour of a new strongly typed API: CrashReporting.reportError
