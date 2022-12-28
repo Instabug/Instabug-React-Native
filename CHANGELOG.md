@@ -5,6 +5,7 @@
 - Adds new string keys: insufficientContentMessage and insufficientContentTitle
 - Adds missing mapping for some existing keys if relevant to the other platform
 - Removes the string key: video
+- Deprecates the legacy API `callPrivateApi`
 
 ## 11.5.1 (2022-12-14)
 
