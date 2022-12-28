@@ -197,7 +197,6 @@ export enum strings {
   cancelButtonText = NativeInstabug.cancelButtonTitle,
   thankYouText = NativeInstabug.thankYouText,
   audio = NativeInstabug.audio,
-  video = NativeInstabug.video,
   image = NativeInstabug.image,
   team = NativeInstabug.team,
   messagesNotification = NativeInstabug.messagesNotification,
@@ -231,4 +230,7 @@ export enum strings {
   reproStepsListDescription = NativeInstabug.reproStepsListDescription,
   reproStepsListEmptyStateDescription = NativeInstabug.reproStepsListEmptyStateDescription,
   reproStepsListItemTitle = NativeInstabug.reproStepsListItemTitle,
+  screenRecording = NativeInstabug.screenRecording,
+  insufficientContentMessage = NativeInstabug.insufficientContentMessage,
+  insufficientContentTitle = NativeInstabug.insufficientContentTitle,
 }
