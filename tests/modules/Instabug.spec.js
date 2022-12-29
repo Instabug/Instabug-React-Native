@@ -38,7 +38,7 @@ describe('Instabug Module', () => {
   });
 
   it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
-    Instabug.init('some-token');
+    Instabug.init({ token: 'some-token' });
 
     Instabug.componentDidAppearListener({
       componentId: '1',
@@ -151,7 +151,7 @@ describe('Instabug Module', () => {
   });
 
   it('should report the first screen on SDK initialization', async () => {
-    Instabug.init('some-token');
+    Instabug.init({ token: 'some-token' });
 
     await waitForExpect(() => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
