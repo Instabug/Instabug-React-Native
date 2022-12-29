@@ -5,6 +5,7 @@ import type { NavigationState as NavigationStateV5 } from '@react-navigation/nat
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import type { NavigationAction, NavigationState as NavigationStateV4 } from 'react-navigation';
 
+import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { NativeCrashReporting, NativeInstabug } from '../native';
 import {
@@ -45,11 +46,6 @@ export {
   actionTypes,
   strings,
 };
-
-interface InstabugConfig {
-  token: string;
-  invocationEvents: invocationEvent[];
-}
 
 /**
  * Enables or disables Instabug functionality.
