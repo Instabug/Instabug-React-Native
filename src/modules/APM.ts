@@ -7,6 +7,8 @@ import { logLevel } from '../utils/ArgsRegistry';
 export { logLevel };
 
 /**
+ * @deprecated Pass a LogLevel to debugLogsLevel in Instabug.init instead.
+ *
  * Sets the printed logs priority. Filter to one of the following levels:
  *
  * - `logLevelNone` disables all APM SDK console logs.

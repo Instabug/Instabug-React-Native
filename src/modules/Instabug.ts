@@ -144,6 +144,8 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
+ *
  * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
  * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
  * @param level The verbosity level of logs.
@@ -407,6 +409,8 @@ export const clearAllUserAttributes = () => {
 };
 
 /**
+ * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
+ *
  * Enable/Disable debug logs from Instabug SDK
  * Default state: disabled
  *
