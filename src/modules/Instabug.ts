@@ -22,6 +22,7 @@ import {
   strings,
   welcomeMessageMode,
 } from '../utils/ArgsRegistry';
+import { LogLevel } from '../utils/Enums';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
@@ -73,14 +74,20 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
  * Should be called in constructor of the AppRegistry component
- * @param token The token that identifies the app. You can find it on your dashboard.
- * @param invocationEvents The events that invoke the SDK's UI.
+ * @param config InstabugConfig object that includes:
+ * token: The token that identifies the app. You can find it on your dashboard.
+ * invocationEvents: The events that invoke the SDK's UI.
+ * debugLogsLevel: (Optional) A LogLevel to indicate the verbosity of SDK logs. Default is Error.
  */
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   NetworkLogger.setEnabled(true);
 
-  NativeInstabug.init(config.token, config.invocationEvents);
+  NativeInstabug.init(
+    config.token,
+    config.invocationEvents,
+    config.debugLogsLevel ?? LogLevel.Error,
+  );
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;

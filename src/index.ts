@@ -24,6 +24,7 @@ export {
   Replies,
   Surveys,
 };
+export * from './utils/Enums';
 
 export type { InstabugConfig };
 export type { Survey };
