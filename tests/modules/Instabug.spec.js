@@ -8,6 +8,7 @@ import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
+import { LogLevel } from '../../src/utils/Enums';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
@@ -140,6 +141,7 @@ describe('Instabug Module', () => {
     const instabugConfig = {
       token: 'some-token',
       invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
+      debugLogsLevel: LogLevel.Debug,
     };
     Instabug.init(instabugConfig);
 
@@ -147,6 +149,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.init).toBeCalledWith(
       instabugConfig.token,
       instabugConfig.invocationEvents,
+      instabugConfig.debugLogsLevel,
     );
   });
 
