@@ -38,7 +38,7 @@ describe('Instabug Module', () => {
   });
 
   it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
-    Instabug.start('some-token');
+    Instabug.init({ token: 'some-token' });
 
     Instabug.componentDidAppearListener({
       componentId: '1',
@@ -136,20 +136,22 @@ describe('Instabug Module', () => {
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
   });
 
-  it('should call the native method start', () => {
-    const token = 'some-token';
-    const invocationEvents = [
-      Instabug.invocationEvent.floatingButton,
-      Instabug.invocationEvent.shake,
-    ];
-    Instabug.start(token, invocationEvents);
+  it('should call the native method init', () => {
+    const instabugConfig = {
+      token: 'some-token',
+      invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
+    };
+    Instabug.init(instabugConfig);
 
-    expect(NativeInstabug.start).toBeCalledTimes(1);
-    expect(NativeInstabug.start).toBeCalledWith(token, invocationEvents);
+    expect(NativeInstabug.init).toBeCalledTimes(1);
+    expect(NativeInstabug.init).toBeCalledWith(
+      instabugConfig.token,
+      instabugConfig.invocationEvents,
+    );
   });
 
-  it('should report the first screen on SDK start', async () => {
-    Instabug.start('some-token');
+  it('should report the first screen on SDK initialization', async () => {
+    Instabug.init({ token: 'some-token' });
 
     await waitForExpect(() => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);

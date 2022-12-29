@@ -25,7 +25,7 @@ export const setEnabled = (isEnabled: boolean) => {
 
 /**
  * Sets the events that invoke the feedback form.
- * Default is set by `Instabug.start`.
+ * Default is set by `Instabug.init`.
  * @param events Array of events that invokes the feedback form.
  */
 export const setInvocationEvents = (events: invocationEvent[]) => {
@@ -34,7 +34,7 @@ export const setInvocationEvents = (events: invocationEvent[]) => {
 
 /**
  * Sets the invocation options.
- * Default is set by `Instabug.start`.
+ * Default is set by `Instabug.init`.
  * @param options Array of invocation options
  */
 export const setOptions = (options: option[]) => {

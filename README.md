@@ -39,7 +39,10 @@ To start using Instabug, import it as follows, then initialize it in the `constr
 ```javascript
 import Instabug from 'instabug-reactnative';
 
-Instabug.start('APP_TOKEN', [Instabug.invocationEvent.shake]);
+Instabug.init({
+  token: 'APP_TOKEN',
+  invocationEvents: [Instabug.invocationEvent.shake],
+});
 ```
 
 _You can find your app token by selecting the SDK tab from your [**Instabug dashboard**](https://dashboard.instabug.com)._
@@ -64,7 +67,7 @@ If your app doesn’t already access the microphone or photo library, we recomme
 
 ## Uploading Source Map Files for Crash Reports
 
-For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.start('YOUR_APP_TOKEN')` in JavaScript.
+For your app crashes to show up with a fully symbolicated stack trace, we will automatically generate the source map files and upload them to your dashboard on release build. To do so, we rely on your app token being explicitly added to `Instabug.init({token: 'YOUR_APP_TOKEN'})` in JavaScript.
 
 If your app token is defined as a constant, you can set an environment variable `INSTABUG_APP_TOKEN` to be used instead.
 We also automatically read your `versionName` and `versionCode` to upload your sourcemap file. alternatively, can also set the environment variables `INSTABUG_APP_VERSION_NAME` and `INSTABUG_APP_VERSION_CODE` to be used instead.

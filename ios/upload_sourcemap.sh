@@ -29,11 +29,14 @@ echo "Instabug: PLIST_ABS_PATH: $PLIST_ABS_PATH"
 
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
     echo "Instabug: Looking for Token..."
-    INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
+    INSTABUG_APP_TOKEN=$(grep -r -A 6  --exclude-dir={node_modules,ios,android} --exclude='*.json' "Instabug.init({" ./ -m1 | grep "token:[[:space:]]*[\"\'][0-9a-zA-Z]*[\"\']" | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
+    if [ -z "${INSTABUG_APP_TOKEN}" ]; then
+    INSTABUG_APP_TOKEN=$(grep -r --exclude-dir={node_modules,ios,android} --exclude='*.json' "Instabug.start[WithToken]*([\"\'][0-9a-zA-Z]*[\"\']" ./ -m 1 | grep -o "[\"\'][0-9a-zA-Z]*[\"\']" | cut -d "\"" -f 2 | cut -d "'" -f 2)
+    fi
 fi
 
 if [ ! "${INSTABUG_APP_TOKEN}" ] || [ -z "${INSTABUG_APP_TOKEN}" ]; then
-    echo "Instabug: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.start Or added the environment variable INSTABUG_APP_TOKEN"
+    echo "Instabug: INSTABUG_APP_TOKEN not found. Make sure you've added the SDK initialization line Instabug.init Or added the environment variable INSTABUG_APP_TOKEN"
     exit 0
 else
     if [ ! "${INSTABUG_APP_VERSION_CODE}" ] || [ -z "${INSTABUG_APP_VERSION_CODE}" ]; then
