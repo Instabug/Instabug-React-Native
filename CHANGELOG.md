@@ -2,6 +2,15 @@
 
 - Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
 
+## 11.6.0 (2022-12-29)
+
+- Bumps Instabug Android SDK to v11.7.0
+- Bumps Instabug iOS SDK to v11.6.0
+- Adds new string keys: insufficientContentMessage and insufficientContentTitle
+- Adds missing mapping for some existing keys if relevant to the other platform
+- Removes the string key: video
+- Deprecates the legacy API callPrivateApi
+
 ## 11.5.1 (2022-12-14)
 
 - Deprecates CrashReporting.reportJSException in favour of a new strongly typed API: CrashReporting.reportError

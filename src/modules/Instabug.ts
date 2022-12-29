@@ -575,6 +575,9 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   NativeInstabug.setPreSendingHandler(handler);
 };
 
+/**
+ * @deprecated Legacy API that will be removed in future releases.
+ */
 export const callPrivateApi = (apiName: string, param: any[]) => {
   NativeInstabug.callPrivateApi(apiName, param);
 };
