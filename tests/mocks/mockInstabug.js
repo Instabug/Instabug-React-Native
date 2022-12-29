@@ -1,7 +1,7 @@
 export default {
   Instabug: {
     setEnabled: jest.fn(),
-    start: jest.fn(),
+    init: jest.fn(),
     setUserData: jest.fn(),
     setTrackUserSteps: jest.fn(),
     setIBGLogPrintsToConsole: jest.fn(),

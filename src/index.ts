@@ -1,4 +1,5 @@
 // Models
+import type { InstabugConfig } from './models/InstabugConfig';
 import Report from './models/Report';
 import Trace from './models/Trace';
 // Modules
@@ -24,6 +25,7 @@ export {
   Surveys,
 };
 
+export type { InstabugConfig };
 export type { Survey };
 
 export default Instabug;

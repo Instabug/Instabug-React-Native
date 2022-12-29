@@ -127,15 +127,13 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
         });
     } 
 
-  /**
-   * Starts the SDK.
-   * @param token string The token that identifies the app, you can find
-   * it on your dashboard.
-   * @param invocationEventValues ReadableArray The events that invokes
-   * the SDK's UI.
-   */
+    /**
+     * Initializes the SDK.
+     * @param token The token that identifies the app. You can find it on your dashboard.
+     * @param invocationEventValues The events that invoke the SDK's UI.
+     */
     @ReactMethod
-    public void start(final String token, final ReadableArray invocationEventValues) {
+    public void init(final String token, final ReadableArray invocationEventValues) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

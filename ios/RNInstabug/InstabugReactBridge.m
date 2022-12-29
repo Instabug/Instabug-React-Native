@@ -41,8 +41,8 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     Instabug.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(start:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
-     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
+RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray) {
+    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];

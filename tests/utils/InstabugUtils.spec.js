@@ -12,7 +12,7 @@ const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Test global error handler', () => {
   beforeEach(() => {
-    Instabug.start('', [Instabug.invocationEvent.none]);
+    Instabug.init({ token: '', invocationEvents: [Instabug.invocationEvent.none] });
   });
 
   it('should call sendJSCrash when platform is ios', () => {

@@ -5,6 +5,7 @@ import type { NavigationState as NavigationStateV5 } from '@react-navigation/nat
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import type { NavigationAction, NavigationState as NavigationStateV4 } from 'react-navigation';
 
+import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { NativeCrashReporting, NativeInstabug } from '../native';
 import {
@@ -55,6 +56,7 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Use {@link init} instead.
  * Starts the SDK.
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
@@ -63,10 +65,22 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param invocationEvents The events that invokes the SDK's UI.
  */
 export const start = (token: string, invocationEvents: invocationEvent[]) => {
+  init({ token: token, invocationEvents: invocationEvents });
+};
+
+/**
+ * Initializes the SDK.
+ * This is the main SDK method that does all the magic. This is the only
+ * method that SHOULD be called.
+ * Should be called in constructor of the AppRegistry component
+ * @param token The token that identifies the app. You can find it on your dashboard.
+ * @param invocationEvents The events that invoke the SDK's UI.
+ */
+export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   NetworkLogger.setEnabled(true);
 
-  NativeInstabug.start(token, invocationEvents);
+  NativeInstabug.init(config.token, config.invocationEvents);
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
