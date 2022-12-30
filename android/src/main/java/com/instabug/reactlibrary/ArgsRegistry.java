@@ -57,6 +57,7 @@ final class ArgsRegistry {
             putAll(actionTypes);
             putAll(extendedBugReportStates);
             putAll(reproStates);
+            putAll(sdkLogLevels);
             putAll(promptOptions);
             putAll(locales);
             putAll(placeholders);
@@ -143,6 +144,13 @@ final class ArgsRegistry {
         put("reproStepsEnabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
         put("reproStepsEnabled", State.ENABLED);
         put("reproStepsDisabled", State.DISABLED);
+    }};
+
+    static final ArgsMap<Integer> sdkLogLevels = new ArgsMap<Integer>() {{
+        put("sdkDebugLogsLevelNone", com.instabug.library.LogLevel.NONE);
+        put("sdkDebugLogsLevelError", com.instabug.library.LogLevel.ERROR);
+        put("sdkDebugLogsLevelDebug", com.instabug.library.LogLevel.DEBUG);
+        put("sdkDebugLogsLevelVerbose", com.instabug.library.LogLevel.VERBOSE);
     }};
 
     @Deprecated

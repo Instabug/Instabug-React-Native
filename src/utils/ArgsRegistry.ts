@@ -1,6 +1,8 @@
 import { NativeInstabug } from '../native';
 
 /**
+ * @deprecated Pass a `LogLevel` to `debugLogsLevel` in `Instabug.init` instead.
+ *
  * Verbosity level of the SDK debug logs. This has nothing to do with IBGLog,
  * and only affect the logs used to debug the SDK itself.
  */
@@ -12,6 +14,8 @@ export enum sdkDebugLogsLevel {
 }
 
 /**
+ * @deprecated Pass a `LogLevel` to `debugLogsLevel` in `Instabug.init` instead.
+ *
  * APM Log Level.
  */
 export enum logLevel {
