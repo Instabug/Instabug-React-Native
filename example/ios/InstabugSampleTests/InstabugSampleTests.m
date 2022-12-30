@@ -66,10 +66,12 @@
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
+  IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
+  
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug init]"];
   
   OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
 
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);

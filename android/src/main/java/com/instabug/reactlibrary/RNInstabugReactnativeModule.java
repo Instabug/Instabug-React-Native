@@ -39,6 +39,7 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.Platform;
+import com.instabug.library.LogLevel;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -133,19 +134,21 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * @param invocationEventValues The events that invoke the SDK's UI.
      */
     @ReactMethod
-    public void init(final String token, final ReadableArray invocationEventValues) {
+    public void init(final String token, final ReadableArray invocationEventValues, final String logLevel) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
                     final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+                    final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
 
                     setCurrentPlatform();
                     setBaseUrlForDeprecationLogs();
 
                     new Instabug.Builder(getCurrentActivity().getApplication(), token)
                             .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
+                            .setSdkDebugLogsLevel(parsedLogLevel)
                             .build();
 
                     // Temporarily disabling APM hot launches

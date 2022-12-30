@@ -22,6 +22,7 @@ import {
   strings,
   welcomeMessageMode,
 } from '../utils/ArgsRegistry';
+import { LogLevel } from '../utils/Enums';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
@@ -73,14 +74,17 @@ export const start = (token: string, invocationEvents: invocationEvent[]) => {
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
  * Should be called in constructor of the AppRegistry component
- * @param token The token that identifies the app. You can find it on your dashboard.
- * @param invocationEvents The events that invoke the SDK's UI.
+ * @param config SDK configurations. See {@link InstabugConfig} for more info.
  */
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   NetworkLogger.setEnabled(true);
 
-  NativeInstabug.init(config.token, config.invocationEvents);
+  NativeInstabug.init(
+    config.token,
+    config.invocationEvents,
+    config.debugLogsLevel ?? LogLevel.Error,
+  );
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
@@ -137,6 +141,8 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
+ *
  * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
  * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
  * @param level The verbosity level of logs.
@@ -400,6 +406,8 @@ export const clearAllUserAttributes = () => {
 };
 
 /**
+ * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
+ *
  * Enable/Disable debug logs from Instabug SDK
  * Default state: disabled
  *
