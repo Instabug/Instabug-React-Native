@@ -1,27 +1,76 @@
+## Extra ignores
+
+# Misc
 .github/
 .circleci/
+example/
 
-*.iml
-.idea/
+.eslintrc.js
+.prettierrc.js
+Dangerfile
+
+# Tests
+android/src/test/
+tests/
+jest.config.js
+
+## Same as .gitignore
+
+# TypeScript
+# dist/ Include JS files in published package
+
+# NodeJS
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+coverage/
+.jest/cache/
+
+# OSX
 .DS_Store
 
-android/.DS_Store
-android/android.iml
-android/gradlew
-android/gradlew.bat
-android/local.properties
-android/.project
-android/.settings
-*Test.java
+# VSCode
+.vscode/
+jsconfig.json
 
-ios/.DS_Store
-
+# Xcode
 build/
-example/
-node_modules/
-coverage/
-test/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
 
-Dangerfile
-babel.config.js
-.prettierrc.js
+# Cocoapods
+example/ios/Pods
+
+# Android/IJ
+.classpath
+.cxx
+.gradle
+.idea
+.project
+.settings
+local.properties
+android.iml
+
+# BUCK
+buck-out/
+\.buckd/
+android/app/libs
+android/keystores/debug.keystore
+
+# Expo
+.expo/*
