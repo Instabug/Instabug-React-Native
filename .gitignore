@@ -1,25 +1,24 @@
-*.iml
-.idea/
+# Distribution
+dist/
+bin/
 
+# NodeJS
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+coverage/
+.jest/cache/
+
+# OSX
 .DS_Store
-android/.DS_Store
-ios/.DS_Store
 
-build/
-.gradle
-local.properties
-.idea
-/android/src/main/java/com/instabug/reactlibrary/wrappedAPIs
-
+# VSCode
 .vscode/
+jsconfig.json
 
 # Xcode
-
-## Build generated
 build/
-DerivedData/
-
-## Various settings
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -28,15 +27,33 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata/
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
 
+# Cocoapods
+example/ios/Pods
 
-coverage/
-.jest/cache/
-*node_modules/
-*Pods/
-*Podfile.lock
+# Android/IJ
+.classpath
+.cxx
+.gradle
+.idea
+.project
+.settings
+local.properties
+android.iml
 
-# Typescript build
-dist/
-bin/
+# BUCK
+buck-out/
+\.buckd/
+android/app/libs
+android/keystores/debug.keystore
+
+# Expo
+.expo/*
