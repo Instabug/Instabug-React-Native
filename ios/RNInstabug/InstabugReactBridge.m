@@ -38,7 +38,7 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     Instabug.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
+RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray codePushLabel:(NSString *)codePushLabel debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
@@ -53,6 +53,8 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
+
+    [Instabug setCodePushVersion:codePushLabel];
     [Instabug startWithToken:token invocationEvents:invocationEvents];
     [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
 
