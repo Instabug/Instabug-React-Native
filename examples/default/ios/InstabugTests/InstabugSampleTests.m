@@ -62,18 +62,20 @@
 }
 
 - (void)testInit {
-  id<InstabugCPTestProtocol> mock = OCMClassMock([Instabug class]);
+  id mock = OCMClassMock([Instabug class]);
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
+  NSString *codePushLabel = @"v123";
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
   
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug init]"];
   
   OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents codePushLabel:codePushLabel debugLogsLevel:sdkDebugLogsLevel];
 
   [[NSRunLoop mainRunLoop] performBlock:^{
+    OCMVerify([mock setCodePushVersion:codePushLabel]);
     OCMVerify([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
     [expectation fulfill];
   }];
