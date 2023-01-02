@@ -4,6 +4,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '11.0'
 
 target 'InstabugExample' do
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/fearure-crashes-add-code-push-version-release-custom-build/Instabug.podspec'
   config = use_native_modules!
 
   use_react_native!(

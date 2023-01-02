@@ -72,7 +72,7 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - Instabug (11.9.0)
+  - Instabug (11.6.0)
   - libevent (2.1.12)
   - OCMock (3.9.1)
   - OpenSSL-Universal (1.1.180)
@@ -342,7 +342,7 @@ PODS:
     - React-logger (= 0.66.0)
     - React-perflogger (= 0.66.0)
   - RNInstabug (11.9.1):
-    - Instabug (= 11.9.0)
+    - Instabug
     - React-Core
   - RNScreens (3.20.0):
     - React-Core
@@ -382,6 +382,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.99.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.99.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/fearure-crashes-add-code-push-version-release-custom-build/Instabug.podspec`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -429,7 +430,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - Instabug
     - libevent
     - OCMock
     - OpenSSL-Universal
@@ -446,6 +446,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Instabug:
+    :podspec: https://ios-releases.instabug.com/custom/fearure-crashes-add-code-push-version-release-custom-build/Instabug.podspec
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -524,7 +526,7 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  Instabug: 1d21096fdadbc1f26cd2fc2322ff8e060a611237
+  Instabug: e8dc34342c93b00a471f0026544225353571ee80
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
@@ -553,13 +555,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: 53b92d54b923283638cb0186da7a5c2d2b70a49b
   React-runtimeexecutor: 4bb657a97aa74568d9ed634c8bd478299bb8a3a6
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
-  RNInstabug: c24a8e0b0c4d411e0e8b088028ea1b2dd8fac823
+  RNInstabug: 256714839a66705e07c369ebdd26f8fae2d13b34
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 476a97b315e53c07a2d8fa2ea0455471001f56f5
+PODFILE CHECKSUM: 6a7da5ba043ce62cea5a7ed4fcdb8cfb22a9451e
 
 COCOAPODS: 1.11.3
