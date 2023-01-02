@@ -11,6 +11,12 @@ export interface InstabugConfig {
    */
   invocationEvents: invocationEvent[] | InvocationEvent[];
   /**
+   * An optional CodePush version label. Default is an empty string.
+   * The version name and code are read from the native files
+   * build.gradle and Info.plist for Android and iOS respectively.
+   */
+  codePushLabel?: string;
+  /**
    * An optional LogLevel to indicate the verbosity of SDK logs. Default is Error.
    */
   debugLogsLevel?: LogLevel;
