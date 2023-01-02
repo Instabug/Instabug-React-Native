@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...dev)
+
+### Added
+
+- Add CodePush Support ([#877](https://github.com/Instabug/Instabug-React-Native/pull/877)).
+
 ## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
 
 ### Changed
@@ -31,6 +37,9 @@
 - Fixes external global error handlers not being called after initializing Instabug.
 - Fixes `BugReporting.setDidSelectPromptOptionHandler` on iOS.
 - Exports native Android SDK using `api` instead of `implementation`.
+- Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
+- Deprecates Instabug.setDebugEnabled, Instabug.setSdkDebugLogsLevel, and APM.setLogLevel in favour of debugLogsLevel property, which can be passed to InstabugConfig while initializing the SDK using Instabug.init.
+- Deprecates the enums: sdkDebugLogsLevel and logLevel in favour of a new enum LogLevel.
 
 ## 11.6.0 (2022-12-29)
 
