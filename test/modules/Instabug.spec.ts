@@ -166,7 +166,7 @@ describe('Instabug Module', () => {
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
   });
 
-  it('should call the native method init', () => {
+  it('should call the native method init with optional parameters set', () => {
     const instabugConfig = {
       token: 'some-token',
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
@@ -181,6 +181,22 @@ describe('Instabug Module', () => {
       instabugConfig.invocationEvents,
       instabugConfig.codePushLabel,
       instabugConfig.debugLogsLevel,
+    );
+  });
+
+  it('should call the native method init with default optional parameters', () => {
+    const instabugConfig = {
+      token: 'some-token',
+      invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
+    };
+    Instabug.init(instabugConfig);
+
+    expect(NativeInstabug.init).toBeCalledTimes(1);
+    expect(NativeInstabug.init).toBeCalledWith(
+      instabugConfig.token,
+      instabugConfig.invocationEvents,
+      '',
+      LogLevel.Error,
     );
   });
 
