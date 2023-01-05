@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["cli/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "outDir": "bin",
+    "module": "commonjs"
+  }
+}
