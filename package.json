@@ -27,7 +27,9 @@
     "format": "prettier --check . --ignore-path .gitignore",
     "format:fix": "prettier --write . --ignore-path .gitignore",
     "test": "jest",
-    "build": "tsc"
+    "build": "yarn build:lib && yarn build:cli",
+    "build:lib": "tsc",
+    "build:cli": "tsc --p tsconfig.cli.json"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
