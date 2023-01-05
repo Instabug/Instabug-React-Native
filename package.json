@@ -10,6 +10,9 @@
   "main": "dist/index",
   "types": "dist/index.d.ts",
   "react-native": "src/index.ts",
+  "bin": {
+    "instabug": "bin/index.js"
+  },
   "keywords": [
     "react-native",
     "instabug",
