@@ -1,17 +1,10 @@
-#!/usr/bin/env node
 import { Command, Option } from 'commander';
-import figlet from 'figlet';
 import fs from 'fs';
 
-const program: Command = new Command();
+export const uploadSourcemapsCommand: Command = new Command();
 
-console.log(figlet.textSync('Instabug React Native CLI'));
-
-program
+uploadSourcemapsCommand
   .name('upload-sourcemaps')
-  .usage('[options]')
-  .version('1.0.0-beta1')
-  .description('A CLI for uploading source maps to Instabug dashboard.')
   .addOption(
     new Option('-p, --platform <value>', 'Platform')
       .choices(['ios', 'android'])
@@ -39,8 +32,12 @@ program
       .makeOptionMandatory(),
   )
   .addOption(new Option('-l, --label <value>', "The CodePush label if it's a CodePush release"))
-  .showHelpAfterError()
-  .parse(process.argv);
+  .action(function (this: Command) {
+    const options = this.opts<UploadSourcemapsOptions>();
+    console.log(options);
+    listDirContents(options.dir);
+  })
+  .showHelpAfterError();
 
 interface UploadSourcemapsOptions {
   platform: 'android' | 'ios';
@@ -51,15 +48,6 @@ interface UploadSourcemapsOptions {
   label: string;
 }
 
-const options = program.opts<UploadSourcemapsOptions>();
-
-const platform = options.platform;
-const directory = options.dir;
-const token = options.token;
-const versionName = options.name;
-const versionCode = options.code;
-const codePushLabel = options.label;
-
 async function listDirContents(filepath: string) {
   try {
     const files: string[] = await fs.promises.readdir(filepath);
@@ -68,11 +56,3 @@ async function listDirContents(filepath: string) {
     console.error('Error occurred while reading the directory!', error);
   }
 }
-
-console.log(options);
-console.log(platform);
-listDirContents(directory);
-console.log(token);
-console.log(versionName);
-console.log(versionCode);
-console.log(codePushLabel);
