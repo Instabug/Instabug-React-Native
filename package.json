@@ -47,7 +47,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "esprima": "^4.0.1",
     "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "0.73.3",
+    "metro-react-native-babel-preset": "0.73.7",
     "nock": "^13.2.9",
     "prettier": "^2.7.1",
     "react": "^16.8.6",
