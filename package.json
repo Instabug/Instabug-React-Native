@@ -32,7 +32,7 @@
     "test": "jest",
     "build": "yarn build:lib && yarn build:cli",
     "build:lib": "tsc",
-    "build:cli": "tsc --p tsconfig.cli.json"
+    "build:cli": "npx rollup -c rollup.config.js --bundleConfigAsCjs"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
