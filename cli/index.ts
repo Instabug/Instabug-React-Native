@@ -4,7 +4,7 @@ import figlet from 'figlet';
 
 import { uploadSourcemapsCommand } from './UploadSourcemaps';
 
-const program: Command = new Command();
+const program = new Command();
 
 console.log(figlet.textSync('Instabug CLI'));
 
