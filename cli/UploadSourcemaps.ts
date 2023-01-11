@@ -1,5 +1,8 @@
+import axios from 'axios';
 import { Command, Option } from 'commander';
+import FormData from 'form-data';
 import fs from 'fs';
+import path from 'path';
 
 export const uploadSourcemapsCommand: Command = new Command();
 
@@ -34,8 +37,7 @@ uploadSourcemapsCommand
   .addOption(new Option('-l, --label <value>', "The CodePush label if it's a CodePush release"))
   .action(function (this: Command) {
     const options = this.opts<UploadSourcemapsOptions>();
-    console.log(options);
-    listDirContents(options.dir);
+    uploadFile(options);
   })
   .showHelpAfterError();
 
@@ -45,14 +47,42 @@ interface UploadSourcemapsOptions {
   token: string;
   name: string;
   code: string;
-  label: string;
+  label?: string;
 }
 
-async function listDirContents(filepath: string) {
+const uploadFile = async (options: UploadSourcemapsOptions) => {
+  const os = options.platform;
+  const dir = options.dir;
+  const token = options.token;
+  const name = options.name;
+  const code = options.code;
+  const label = options.label;
+  const version = {
+    code: code,
+    name: name,
+    codePush: label,
+  };
+  const form = new FormData();
+  form.append('app_version', JSON.stringify(version));
+  form.append(
+    'symbols_file',
+    fs.readFileSync(path.join(dir, `${os}-sourcemap.json`)),
+    `${os}-sourcemap.json`,
+  );
+  form.append('application_token', token);
+  form.append('platform', 'react_native');
+  form.append('os', os);
+  console.log('Uploading Sourcemap file...');
   try {
-    const files: string[] = await fs.promises.readdir(filepath);
-    console.log(files);
+    const response = await axios.post('https://api.instabug.com/api/sdk/v3/symbols_files', form, {
+      headers: {
+        ...form.getHeaders(),
+      },
+    });
+    console.log('Success:', response.data);
   } catch (error) {
-    console.error('Error occurred while reading the directory!', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Error:', error.response?.data);
+    }
   }
-}
+};
