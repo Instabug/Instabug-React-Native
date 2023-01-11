@@ -5,6 +5,6 @@
   "compilerOptions": {
     "lib": ["dom"],
     "outDir": "bin",
-    "module": "commonjs"
+    "module": "esnext"
   }
 }
