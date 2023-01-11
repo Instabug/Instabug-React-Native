@@ -38,5 +38,5 @@ coverage/
 *Podfile.lock
 
 # Typescript build
-dist/
-bin/
+# dist/
+# bin/
