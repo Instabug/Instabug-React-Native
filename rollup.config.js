@@ -9,5 +9,5 @@ export default {
     dir: 'bin',
     format: 'cjs',
   },
-  plugins: [shebang(), nodeResolve(), commonjs(), json()],
+  plugins: [shebang(), nodeResolve({ preferBuiltins: true }), commonjs(), json()],
 };
