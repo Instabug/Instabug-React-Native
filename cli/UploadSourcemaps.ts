@@ -34,7 +34,7 @@ uploadSourcemapsCommand
       .makeOptionMandatory(),
   )
   .addOption(
-    new Option('-v, --name <value>', 'The app version name')
+    new Option('-n, --name <value>', 'The app version name')
       .env('INSTABUG_APP_VERSION_NAME')
       .makeOptionMandatory(),
   )
