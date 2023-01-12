@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["cli/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "lib": ["dom"],
+    "outDir": "bin",
+    "module": "esnext"
+  }
+}

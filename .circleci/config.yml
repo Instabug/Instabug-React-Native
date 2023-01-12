@@ -173,7 +173,7 @@ jobs:
           command: yarn
       - run:
           name: Build Project
-          command: yarn build
+          command: yarn build:lib
       - run:
           name: Install Example's Node Packages
           working_directory: example
@@ -210,7 +210,7 @@ jobs:
           command: yarn
       - run:
           name: Build Project
-          command: yarn build
+          command: yarn build:lib
       - run:
           name: Install Example's Node Packages
           working_directory: example
