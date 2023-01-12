@@ -39,3 +39,4 @@ coverage/
 
 # Typescript build
 dist/
+bin/
