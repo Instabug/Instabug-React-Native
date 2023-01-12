@@ -250,21 +250,24 @@ public class RNInstabugBugReportingModuleTest {
         // given
         MockedStatic mockArgument = mockStatic(Arguments.class);
         MockedStatic mockReactApplicationContext = mockStatic(ReactApplicationContext.class);
+        final OnSdkDismissCallback.DismissType dismissType = OnSdkDismissCallback.DismissType.CANCEL;
+        final OnSdkDismissCallback.ReportType reportType = OnSdkDismissCallback.ReportType.BUG;
 
         // when
         when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
         mockBugReporting.when(() -> BugReporting.setOnDismissCallback(any(OnSdkDismissCallback.class))).thenAnswer(new Answer() {
             public Object answer(InvocationOnMock invocation) {
                 ((OnSdkDismissCallback) invocation.getArguments()[0])
-                        .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
+                        .call(dismissType, reportType);
                 return null;
             }});
         bugReportingModule.setOnDismissHandler(null);
 
         // then
         WritableMap params = new JavaOnlyMap();
-        params.putString("dismissType", OnSdkDismissCallback.DismissType.CANCEL.toString());
-        params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
+        params.putString("dismissType", ArgsRegistry.dismissTypes.getKey(dismissType));
+        params.putString("reportType", ArgsRegistry.sdkDismissReportTypes.getKey(reportType));
+
         verify(bugReportingModule).sendEvent(Constants.IBG_POST_INVOCATION_HANDLER, params);
         mockArgument.close();
         mockReactApplicationContext.close();
