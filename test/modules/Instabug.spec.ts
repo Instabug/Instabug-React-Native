@@ -503,32 +503,46 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setDebugEnabled).not.toBeCalled();
   });
 
-  it('should call the native method enable', () => {
+  it('should map deprecated enable to setEnabled on android', () => {
+    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
     Platform.OS = 'android';
     Instabug.enable();
 
-    expect(NativeInstabug.enable).toBeCalledTimes(1);
+    expect(setEnabled).toBeCalledTimes(1);
+    expect(setEnabled).toBeCalledWith(true);
+
+    setEnabled.mockRestore();
   });
 
-  it('should not call the native method enable when platform is ios', () => {
+  it('should not map deprecated enable to setEnabled on ios', () => {
+    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
     Platform.OS = 'ios';
     Instabug.enable();
 
-    expect(NativeInstabug.enable).not.toBeCalled();
+    expect(setEnabled).not.toBeCalled();
+
+    setEnabled.mockRestore();
   });
 
-  it('should call the native method disable', () => {
+  it('should map deprecated disable to setEnabled on android', () => {
+    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
     Platform.OS = 'android';
     Instabug.disable();
 
-    expect(NativeInstabug.disable).toBeCalledTimes(1);
+    expect(setEnabled).toBeCalledTimes(1);
+    expect(setEnabled).toBeCalledWith(false);
+
+    setEnabled.mockRestore();
   });
 
-  it('should not call the native method disable when platform is ios', () => {
+  it('should not map deprecated disable to setEnabled on ios', () => {
+    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
     Platform.OS = 'ios';
     Instabug.disable();
 
-    expect(NativeInstabug.disable).not.toBeCalled();
+    expect(setEnabled).not.toBeCalled();
+
+    setEnabled.mockRestore();
   });
 
   it('should call the native method isRunningLive', (done) => {

@@ -1,57 +1,44 @@
 package com.instabug.reactlibrary;
 
-import android.annotation.SuppressLint;
+import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.bridge.Callback;
-
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
-import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.chat.Replies;
-import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
-import com.instabug.library.OnSdkDismissCallback;
-import com.instabug.library.Platform;
+import com.instabug.library.InstabugColorTheme;
+import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.LogLevel;
-import com.instabug.library.extendedbugreport.ExtendedBugReport;
+import com.instabug.library.Platform;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
-import com.instabug.library.InstabugColorTheme;
-import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.logging.InstabugLog;
-import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.InstabugCustomTextPlaceHolder;
-import com.instabug.library.model.Report;
 import com.instabug.library.model.NetworkLog;
+import com.instabug.library.model.Report;
+import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
-
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-import com.instabug.reactlibrary.utils.ReportUtil;
-import com.instabug.survey.callbacks.*;
-import com.instabug.survey.Survey;
-import com.instabug.survey.Surveys;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -62,12 +49,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 
 /**
@@ -234,28 +218,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * Sets whether the extended bug report mode should be disabled,
-     * enabled with required fields, or enabled with optional fields.
-     *
-     * @param extendedBugReportMode
-     */
-    @ReactMethod
-    public void setExtendedBugReportMode(final String extendedBugReportMode) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final ExtendedBugReport.State state = ArgsRegistry.extendedBugReportStates
-                            .getOrDefault(extendedBugReportMode, ExtendedBugReport.State.DISABLED);
-                    BugReporting.setExtendedBugReportState(state);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * The file at filePath will be uploaded along upcoming reports with the name
      * fileNameWithExtension
      *
@@ -386,165 +348,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * Is enabled boolean.
-     *
-     * @return {@code true} if Instabug is enabled, {@code false} if it's disabled
-     * @see #enable()
-     * @see #disable()
-     */
-    @ReactMethod
-    public boolean isEnabled() {
-        boolean isEnabled = false;
-        try {
-            isEnabled = Instabug.isEnabled();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return isEnabled;
-    }
-
-
-    /**
-     * Enables all Instabug functionality
-     */
-    @ReactMethod
-    public void enable() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.enable();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Disables all Instabug functionality
-     */
-    @ReactMethod
-    public void disable() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.disable();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Shows the UI for feature requests list
-     */
-    @ReactMethod
-    public void showFeatureRequests() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FeatureRequests.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * @return application token
-     */
-    @ReactMethod
-    public String getAppToken() {
-        String appToken = "";
-        try {
-            appToken = Instabug.getAppToken();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return appToken;
-    }
-
-    /**
-     * @deprecated
-     * Sets the event used to invoke Instabug SDK
-     *
-     * @param invocationEventValue the invocation event value
-     * @see InstabugInvocationEvent
-     */
-    @ReactMethod
-    public void setInvocationEvent(final String invocationEventValue) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final InstabugInvocationEvent invocationEvent = ArgsRegistry.invocationEvents
-                            .getOrDefault(invocationEventValue, InstabugInvocationEvent.SHAKE);
-                    BugReporting.setInvocationEvents(invocationEvent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets the event used to invoke Instabug SDK
-     *
-     * @param invocationEventValues the invocation event value
-     * @see InstabugInvocationEvent
-     */
-    @ReactMethod
-    public void setInvocationEvents(final ReadableArray invocationEventValues) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
-                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
-                    BugReporting.setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets the event used to invoke Instabug SDK
-     *
-     * @param invocationOptionValues the invocation event value
-     * @see InstabugInvocationEvent
-     */
-    @ReactMethod
-    public void setInvocationOptions(final ReadableArray invocationOptionValues) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @SuppressLint("WrongConstant")
-            @Override
-            public void run() {
-                try {
-                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationOptionValues);
-                    final ArrayList<Integer> options = ArgsRegistry.invocationOptions.getAll(keys);
-
-                    final int[] optionsInts = new int[options.size()];
-                    for (int i = 0; i < options.size(); i++) {
-                        optionsInts[i] = options.get(i);
-                    }
-
-                    BugReporting.setOptions(optionsInts);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Enable/Disable debug logs from Instabug SDK
      * Default state: disabled
      *
@@ -562,58 +365,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 }
             }
         });
-    }
-
-
-
-
-    /**
-     * Appends a log message to Instabug internal log
-     * <p>
-     * These logs are then sent along the next uploaded report.
-     * All log messages are timestamped <br/>
-     * Logs aren't cleared per single application run. If you wish to reset the logs,
-     * use {@link #clearLogs()} ()}
-     * </p>
-     * Note: logs passed to this method are <b>NOT</b> printed to Logcat
-     *
-     * @param level   the level
-     * @param message the message
-     */
-    @ReactMethod
-    public void log(final String level, final String message) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    switch (level) {
-                        case "v":
-                            InstabugLog.v(message);
-                            break;
-                        case "i":
-                            InstabugLog.i(message);
-                            break;
-                        case "d":
-                            InstabugLog.d(message);
-                            break;
-                        case "e":
-                            InstabugLog.e(message);
-                            break;
-                        case "w":
-                            InstabugLog.w(message);
-                            break;
-                        case "wtf":
-                            InstabugLog.wtf(message);
-                            break;
-                        default:
-                            InstabugLog.d(message);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
     }
 
     @ReactMethod
@@ -696,52 +447,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     InstabugLog.clearLogs();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Returns true if the survey with a specific token was answered before.
-     * Will return false if the token does not exist or if the survey was not answered before.
-     *
-     * @param surveyToken          the attribute key as string
-     * @param hasRespondedCallback A callback that gets invoked with the returned value of whether
-     *                             the user has responded to the survey or not.
-     * @return the desired value of whether the user has responded to the survey or not.
-     */
-    @ReactMethod
-    public void hasRespondedToSurveyWithToken(final String surveyToken, final Callback hasRespondedCallback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                boolean hasResponded;
-                try {
-                    hasResponded = Surveys.hasRespondToSurvey(surveyToken);
-                    hasRespondedCallback.invoke(hasResponded);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Shows survey with a specific token.
-     * Does nothing if there are no available surveys with that specific token.
-     * Answered and cancelled surveys won't show up again.
-     *
-     * @param surveyToken A String with a survey token.
-     */
-    @ReactMethod
-    public void showSurveyWithToken(final String surveyToken) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.showSurvey(surveyToken);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -937,33 +642,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * Sets a block of code to be executed just before the SDK's UI is presented.
-     * This block is executed on the UI thread. Could be used for performing any
-     * UI changes before the SDK's UI is shown.
-     *
-     * @param preInvocationHandler - A callback that gets executed before
-     *                             invoking the SDK
-     */
-    @ReactMethod
-    public void setPreInvocationHandler(final Callback preInvocationHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
-                        @Override
-                        public void onInvoke() {
-                            sendEvent("IBGpreInvocationHandler", null);
-                        }
-                    });
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
      * Sets a block of code to be executed before sending each report.
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
@@ -1069,33 +747,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
     }
 
-    
-    @ReactMethod
-    public void getReport(Promise promise) {
-        try {
-            Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "getReport");
-            if (method != null) {
-                Report report = (Report) method.invoke(null);
-                WritableMap reportParam = Arguments.createMap();
-                reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
-                reportParam.putArray("consoleLogs", ReportUtil.parseConsoleLogs(report.getConsoleLog()));
-                reportParam.putString("userData", report.getUserData());
-                reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
-                reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
-                promise.resolve(reportParam);
-                currentReport = report;
-            }
-
-        } catch (ClassNotFoundException e) {
-            promise.reject(e);
-        } catch (IllegalAccessException e) {
-            promise.reject(e);
-        } catch (InvocationTargetException e) {
-            promise.reject(e);
-        }
-    }
-
-
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();
         for(int i = 0; i < hashMap.size(); i++) {
@@ -1138,100 +789,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         return writableArray;
 
     }
-
-    /**
-     * Sets a block of code to be executed right after the SDK's UI is dismissed.
-     * This block is executed on the UI thread. Could be used for performing any
-     * UI changes after the SDK's UI is dismissed.
-     *
-     * @param postInvocationHandler - A callback to get executed after
-     *                              dismissing the SDK.
-     */
-    @ReactMethod
-    public void setPostInvocationHandler(final Callback postInvocationHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
-                        @Override
-                        public void call(DismissType dismissType, ReportType reportType) {
-                            WritableMap params = Arguments.createMap();
-                            params.putString("dismissType", dismissType.toString());
-                            params.putString("reportType", reportType.toString());
-                            sendEvent("IBGpostInvocationHandler", params);
-                        }
-                    });
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Show any valid survey if exist
-     *
-     * @return true if a valid survey was shown otherwise false
-     */
-    @ReactMethod
-    public void showSurveysIfAvailable() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.showSurveyIfAvailable();
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets the runnable that gets executed just before showing any valid survey<br/>
-     * WARNING: This runs on your application's main UI thread. Please do not include
-     * any blocking operations to avoid ANRs.
-     *
-     * @param willShowSurveyHandler to run on the UI thread before showing any valid survey
-     */
-    @ReactMethod
-    public void setWillShowSurveyHandler(final Callback willShowSurveyHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Surveys.setOnShowCallback(new OnShowCallback() {
-                    @Override
-                    public void onShow() {
-                        sendEvent("IBGWillShowSurvey", null);
-                    }
-                });
-            }
-        });
-    }
-
-    /**
-     * Sets the runnable that gets executed just after showing any valid survey<br/>
-     * WARNING: This runs on your application's main UI thread. Please do not include
-     * any blocking operations to avoid ANRs.
-     *
-     * @param didDismissSurveyHandler to run on the UI thread after showing any valid survey
-     */
-    @ReactMethod
-    public void setDidDismissSurveyHandler(final Callback didDismissSurveyHandler) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Surveys.setOnDismissCallback(new OnDismissCallback() {
-                    @Override
-                    public void onDismiss() {
-                        sendEvent("IBGDidDismissSurvey", null);
-                    }
-                });
-            }
-        });
-    }
-
 
     /**
      * Clears all Uris of the attached files.
@@ -1316,134 +873,12 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Sets the threshold value of the shake gesture for android devices.
-     * Default for android is an integer value equals 350.
-     * you could increase the shaking difficulty level by
-     * increasing the `350` value and vice versa.
-     *
-     * @param androidThreshold Threshold for android devices.
-     */
-    @ReactMethod
-    public void setShakingThresholdForAndroid(final int androidThreshold) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BugReporting.setShakingThreshold(androidThreshold);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setOnNewReplyReceivedCallback(final Callback onNewReplyReceivedCallback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Runnable onNewReplyReceivedRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            sendEvent("IBGOnNewReplyReceivedCallback", null);
-                        }
-                    };
-                    Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Returns an array containing the available surveys.
-     * @param availableSurveysCallback - Callback with the returned value of the available surveys
-     *
-     */
-    @ReactMethod
-    public void getAvailableSurveys(final Callback availableSurveysCallback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<Survey> availableSurveys = Surveys.getAvailableSurveys();
-                    JSONArray surveysArray = toJson(availableSurveys);
-                    WritableArray array = convertJsonToArray(surveysArray);
-                    availableSurveysCallback.invoke(array);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void show() {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Instabug.show();
-            }
-        });
-    }
-
-    @ReactMethod
-    public void setBugReportingEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        BugReporting.setState(Feature.State.ENABLED);
-                    } else {
-                        BugReporting.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
-    @ReactMethod
-    public void setRepliesEnabled(final boolean isEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (isEnabled) {
-                        Replies.setState(Feature.State.ENABLED);
-                    } else {
-                        Replies.setState(Feature.State.DISABLED);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @ReactMethod
-    public void hasChats(final Callback callback) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                boolean hasChats = Replies.hasChats();
-                callback.invoke(hasChats);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void showReplies() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                Replies.show();
             }
         });
     }
@@ -1466,95 +901,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
     }
 
-
-
-    private static WritableMap convertJsonToMap(JSONObject jsonObject) throws JSONException {
-        WritableMap map = new WritableNativeMap();
-
-        Iterator<String> iterator = jsonObject.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            Object value = jsonObject.get(key);
-            if (value instanceof JSONObject) {
-                map.putMap(key, convertJsonToMap((JSONObject) value));
-            } else if (value instanceof  JSONArray) {
-                map.putArray(key, convertJsonToArray((JSONArray) value));
-            } else if (value instanceof  Boolean) {
-                map.putBoolean(key, (Boolean) value);
-            } else if (value instanceof  Integer) {
-                map.putInt(key, (Integer) value);
-            } else if (value instanceof  Double) {
-                map.putDouble(key, (Double) value);
-            } else if (value instanceof String)  {
-                map.putString(key, (String) value);
-            } else {
-                map.putString(key, value.toString());
-            }
-        }
-        return map;
-    }
-
-    private static WritableArray convertJsonToArray(JSONArray jsonArray) throws JSONException {
-        WritableArray array = Arguments.createArray();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
-            if (value instanceof JSONObject) {
-                array.pushMap(convertJsonToMap((JSONObject) value));
-            } else if (value instanceof  JSONArray) {
-                array.pushArray(convertJsonToArray((JSONArray) value));
-            } else if (value instanceof  Boolean) {
-                array.pushBoolean((Boolean) value);
-            } else if (value instanceof  Integer) {
-                array.pushInt((Integer) value);
-            } else if (value instanceof  Double) {
-                array.pushDouble((Double) value);
-            } else if (value instanceof String)  {
-                array.pushString((String) value);
-            }
-        }
-        return array;
-    }
-
-    /**
-     * Convenience method to convert from a list of Surveys to a JSON array
-     *
-     * @param list
-     *        List of Surveys to be converted to JSON array
-     */
-    public static JSONArray toJson(List<Survey> list) {
-        JSONArray jsonArray = new JSONArray();
-        try{
-            for (Survey obj : list) {
-                JSONObject object = new JSONObject();
-                object.put("title", obj.getTitle());
-                jsonArray.put(object);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonArray;
-    }
-
-    /**
-     * Set Surveys auto-showing state, default state auto-showing enabled
-     *
-     * @param autoShowingSurveysEnabled whether Surveys should be auto-showing or not
-     */
-    @ReactMethod
-    public void setAutoShowingSurveysEnabled(final boolean autoShowingSurveysEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Surveys.setAutoShowingEnabled(autoShowingSurveysEnabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     /**
      * Enable/disable session profiler
      *
@@ -1571,36 +917,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     } else {
                         Instabug.setSessionProfilerState(Feature.State.DISABLED);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Sets whether email field is required or not when submitting
-     * new-feature-request/new-comment-on-feature
-     *
-     * @param isEmailRequired set true to make email field required
-     * @param actionTypes Bitwise-or of actions
-     */
-    @SuppressLint("WrongConstant")
-    @ReactMethod
-    public void setEmailFieldRequiredForFeatureRequests(final boolean isEmailRequired, final ReadableArray actionTypes) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(actionTypes);
-                    final ArrayList<Integer> types = ArgsRegistry.actionTypes.getAll(keys);
-
-                    final int[] typesInts = new int[types.size()];
-                    for (int i = 0; i < types.size(); i++) {
-                        typesInts[i] = types.get(i);
-                    }
-
-                    FeatureRequests.setEmailFieldRequired(isEmailRequired, typesInts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
