@@ -16,8 +16,10 @@ jest.config.js
 
 ## Same as .gitignore
 
-# TypeScript
-# dist/ Include JS files in published package
+# Must be Included in published npm package
+# # Distribution
+# dist/
+# bin/
 
 # NodeJS
 node_modules/
