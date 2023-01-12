@@ -5,6 +5,7 @@ import typescript from '@rollup/plugin-typescript';
 import cleanup from 'rollup-plugin-cleanup';
 import shebang from 'rollup-plugin-preserve-shebang';
 
+/** @type import('rollup').RollupOptions */
 export default {
   input: ['cli/index.ts'],
   output: {
