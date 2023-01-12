@@ -5,9 +5,14 @@
 .circleci/
 example/
 
+# Config files
 .eslintrc.js
 .prettierrc.js
 Dangerfile
+
+# CLI Config files
+rollup.config.js
+tsconfig.cli.json
 
 # Tests
 android/src/test/
