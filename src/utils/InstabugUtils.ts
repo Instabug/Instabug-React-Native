@@ -67,8 +67,6 @@ export const getStackTrace = (e: ExtendedError): StackFrame[] => {
   return jsStackTrace;
 };
 
-const originalHandler = ErrorUtils.getGlobalHandler();
-
 export const captureJsErrors = () => {
   if (!process.env.JEST_WORKER_ID) {
     if (__DEV__) {
@@ -76,14 +74,16 @@ export const captureJsErrors = () => {
     }
   }
 
-  const errorHandler: ErrorHandlerCallback = (e, isFatal) => {
-    const jsStackTrace = getStackTrace(e);
+  const originalErrorHandler = ErrorUtils.getGlobalHandler();
+
+  const instabugErrorHandler: ErrorHandlerCallback = (err) => {
+    const jsStackTrace = getStackTrace(err);
 
     // JSON object to be sent to the native SDK
     const jsonObject = {
-      message: e.name + ' - ' + e.message,
-      e_message: e.message,
-      e_name: e.name,
+      message: err.name + ' - ' + err.message,
+      e_message: err.message,
+      e_name: err.name,
       os: Platform.OS,
       platform: 'react_native',
       exception: jsStackTrace,
@@ -98,19 +98,14 @@ export const captureJsErrors = () => {
     } else {
       NativeCrashReporting.sendJSCrash(jsonObject);
     }
-
-    if (originalHandler && !process.env.JEST_WORKER_ID) {
-      if (Platform.OS === 'ios') {
-        originalHandler(e, isFatal);
-      } else {
-        setTimeout(() => {
-          originalHandler(e, isFatal);
-        }, 500);
-      }
-    }
   };
 
-  ErrorUtils.setGlobalHandler(errorHandler);
+  ErrorUtils.setGlobalHandler((err, isFatal) => {
+    if (!process.env.JEST_WORKER_ID) {
+      originalErrorHandler(err, isFatal);
+    }
+    instabugErrorHandler(err, isFatal);
+  });
 };
 
 export const stringifyIfNotString = (input: unknown) => {
