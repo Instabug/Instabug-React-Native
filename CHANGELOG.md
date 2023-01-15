@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Fixes global error handler not being called.
 - Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
 - Deprecates Instabug.setDebugEnabled, Instabug.setSdkDebugLogsLevel, and APM.setLogLevel in favour of debugLogsLevel property, which can be passed to InstabugConfig while initializing the SDK using Instabug.init.
 - Deprecates the enums: sdkDebugLogsLevel and logLevel in favour of a new enum LogLevel.
