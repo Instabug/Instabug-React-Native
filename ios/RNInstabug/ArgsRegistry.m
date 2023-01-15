@@ -14,6 +14,7 @@
     [all addEntriesFromDictionary:ArgsRegistry.recordButtonPositions];
     [all addEntriesFromDictionary:ArgsRegistry.welcomeMessageStates];
     [all addEntriesFromDictionary:ArgsRegistry.reportTypes];
+    [all addEntriesFromDictionary:ArgsRegistry.sdkDimissReportTypes];
     [all addEntriesFromDictionary:ArgsRegistry.dismissTypes];
     [all addEntriesFromDictionary:ArgsRegistry.actionTypes];
     [all addEntriesFromDictionary:ArgsRegistry.extendedBugReportStates];
@@ -109,6 +110,15 @@
         @"bugReportingReportTypeBug": @(IBGBugReportingReportTypeBug),
         @"bugReportingReportTypeFeedback": @(IBGBugReportingReportTypeFeedback),
         @"bugReportingReportTypeQuestion": @(IBGBugReportingReportTypeQuestion),
+    };
+}
+
++ (ArgsDictionary *) sdkDimissReportTypes {
+    return @{
+        @"bugReportingReportTypeBug": @(IBGReportTypeBug),
+        @"bugReportingReportTypeFeedback": @(IBGReportTypeFeedback),
+        @"bugReportingReportTypeQuestion": @(IBGReportTypeQuestion),
+        @"bugReportingReportTypeOther": @(IBGReportTypeOther),
     };
 }
 
