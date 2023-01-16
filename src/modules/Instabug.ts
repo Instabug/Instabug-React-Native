@@ -444,6 +444,9 @@ export const disable = () => {
 };
 
 /**
+ * @deprecated This API will be removed in a future release.
+ * You can manage and check your app running environment using environment variables.
+ *
  * Checks whether app is development/Beta testing OR live
  * Note: This API is iOS only
  * It returns in the callback false if in development or beta testing on Test Flight, and
