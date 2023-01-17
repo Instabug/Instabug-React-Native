@@ -3,7 +3,13 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export function ColorButton({ color, checked = false, onPress }) {
+interface ColorButtonProps {
+  checked: boolean;
+  color: string;
+  onPress: (color: string) => void;
+}
+
+export const ColorButton: React.FC<ColorButtonProps> = ({ color, checked = false, onPress }) => {
   return (
     <TouchableOpacity
       accessibilityRole="checkbox"
@@ -14,7 +20,7 @@ export function ColorButton({ color, checked = false, onPress }) {
       {checked && <Icon name="checkmark-sharp" color="white" size={30} accessible={false} />}
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   button: {

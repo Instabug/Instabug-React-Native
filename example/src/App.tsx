@@ -8,9 +8,14 @@ import { createTabBarIcon } from './components/TabBarIcon';
 import { HomeScreen } from './screens/HomeScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 
-const Tab = createBottomTabNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  Settings: undefined;
+};
 
-export function App() {
+const Tab = createBottomTabNavigator<RootStackParamList>();
+
+export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
       token: '2c63627b9923e10eee2c8abf92e6925f',
@@ -29,4 +34,4 @@ export function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};

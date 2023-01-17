@@ -21,6 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/runtime": "^7.15.4",
+    "@types/react-native-vector-icons": "^6.4.13",
     "babel-jest": "^27.2.5",
     "detox": "^19.8.4",
     "jest": "^27.2.5",
