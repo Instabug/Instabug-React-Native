@@ -21,7 +21,7 @@ export function HomeScreen() {
 
   const showFeatureRequests = () => FeatureRequests.show();
 
-  const sendBugReport = () => BugReporting.show(BugReporting.reportType.bug);
+  const sendBugReport = () => BugReporting.show(BugReporting.reportType.bug, []);
 
   const sendCrashReport = () => {
     try {
@@ -37,7 +37,7 @@ export function HomeScreen() {
   const sendFeedback = () =>
     BugReporting.show(BugReporting.reportType.feedback, [BugReporting.option.emailFieldHidden]);
 
-  const startNewConversation = () => BugReporting.show(BugReporting.reportType.question);
+  const startNewConversation = () => BugReporting.show(BugReporting.reportType.question, []);
 
   const showUnreadMessagesCount = () =>
     Replies.getUnreadRepliesCount((count) => Alert.alert('Messages: ' + count));
