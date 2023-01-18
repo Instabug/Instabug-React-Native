@@ -1,14 +1,13 @@
 import '../mocks/mockXhrNetworkInterceptor';
 
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import * as Instabug from '../../src/modules/Instabug';
+import { NativeCrashReporting, NativeInstabug } from '../../src/native';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
-
-const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -17,9 +16,11 @@ describe('Test global error handler', () => {
 
   it('should call sendJSCrash when platform is ios', () => {
     Platform.OS = 'ios';
-    Platform.constants.reactNativeVersion = { minor: 64 };
-    const handler = global.ErrorUtils.getGlobalHandler();
+    Platform.constants.reactNativeVersion = { major: 0, minor: 64, patch: 0 };
+
+    const handler = ErrorUtils.getGlobalHandler();
     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
+
     const expected = {
       message: 'TypeError - This is a type error.',
       e_message: 'This is a type error.',
@@ -34,9 +35,9 @@ describe('Test global error handler', () => {
 
   it('should call sendJSCrash when platform is android and onReportSubmitHandler is not set', () => {
     Platform.OS = 'android';
-    Platform.constants.reactNativeVersion = { minor: 64 };
+    Platform.constants.reactNativeVersion = { major: 0, minor: 64, patch: 0 };
 
-    const handler = global.ErrorUtils.getGlobalHandler();
+    const handler = ErrorUtils.getGlobalHandler();
     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
 
     const expected = JSON.stringify({
@@ -53,11 +54,12 @@ describe('Test global error handler', () => {
 
   it('should emit event IBGSendUnhandledJSCrash when platform is android and onReportSubmitHandler is set', () => {
     Platform.OS = 'android';
-    Platform.constants.reactNativeVersion = { minor: 63 };
+    Platform.constants.reactNativeVersion = { major: 0, minor: 63, patch: 0 };
+
     InstabugUtils.setOnReportHandler(true);
-    const handler = global.ErrorUtils.getGlobalHandler();
+    const handler = ErrorUtils.getGlobalHandler();
     const callback = jest.fn();
-    IBGEventEmitter.addListener(Instabug, IBGConstants.SEND_UNHANDLED_CRASH, callback);
+    IBGEventEmitter.addListener(NativeInstabug, IBGConstants.SEND_UNHANDLED_CRASH, callback);
     handler({ name: 'TypeError', message: 'This is a type error.' }, false);
 
     expect(callback).toHaveBeenCalledWith({
@@ -84,6 +86,7 @@ describe('Instabug Utils', () => {
       routes: [{ routeName: 'Home' }, { routeName: 'Settings' }],
     };
 
+    // @ts-ignore
     const currentScreen = InstabugUtils.getActiveRouteName(navigationState);
 
     expect(currentScreen).toBe('Settings');
@@ -94,20 +97,22 @@ describe('Instabug Utils', () => {
       index: 0,
       routes: [
         {
-          routeName: 'Home',
           index: 1,
+          routeName: 'Home',
           routes: [{ routeName: 'MoviesList' }, { routeName: 'MovieDetails' }],
         },
         { routeName: 'Settings' },
       ],
     };
 
+    // @ts-ignore
     const currentScreen = InstabugUtils.getActiveRouteName(navigationState);
 
     expect(currentScreen).toBe('MovieDetails');
   });
 
   it('getActiveRouteName should return null if no navigation state', () => {
+    // @ts-ignore
     const output = InstabugUtils.getActiveRouteName(null);
     expect(output).toBeNull();
   });
@@ -141,6 +146,7 @@ describe('Instabug Utils', () => {
   });
 
   it('getFullRoute should return an empty string if navigation state is invalid', () => {
+    // @ts-ignore
     const output = InstabugUtils.getFullRoute({});
     expect(output).toBe('');
   });
@@ -154,7 +160,7 @@ describe('Instabug Utils', () => {
   });
 
   it("parseErrorStack should call React Native's parseErrorStackLib", () => {
-    Platform.constants.reactNativeVersion = { minor: 63 };
+    Platform.constants.reactNativeVersion = { major: 0, minor: 63, patch: 0 };
     const error = new Error();
 
     InstabugUtils.parseErrorStack(error);
@@ -163,7 +169,7 @@ describe('Instabug Utils', () => {
   });
 
   it('getStackTrace should call parseErrorStackLib with error stack in React Native >= 0.64', () => {
-    Platform.constants.reactNativeVersion = { minor: 64 };
+    Platform.constants.reactNativeVersion = { major: 0, minor: 64, patch: 0 };
     const error = new Error();
     error.stack = stack;
 
@@ -174,7 +180,7 @@ describe('Instabug Utils', () => {
   });
 
   it('getStackTrace should call parseErrorStackLib with error in React Native 0.63', () => {
-    Platform.constants.reactNativeVersion = { minor: 63 };
+    Platform.constants.reactNativeVersion = { major: 0, minor: 63, patch: 0 };
     const error = new Error();
     error.stack = stack;
 
@@ -185,7 +191,7 @@ describe('Instabug Utils', () => {
   });
 
   it('getStackTrace should call parseErrorStackLib with error in React Native < 0.63', () => {
-    delete Platform.constants;
+    Platform.constants.reactNativeVersion = { major: 0, minor: 60, patch: 0 };
 
     const error = new Error();
     error.stack = stack;

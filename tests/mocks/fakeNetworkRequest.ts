@@ -23,15 +23,15 @@ export default {
     // @ts-ignore
     xhr._hasError = true;
   },
-  mockXHRStatus(status: number) {
+  mockXHRStatus(status: number | null) {
     // @ts-ignore
     xhr.status = status;
   },
   mockResponse(
     request: Interceptor,
     status: number = 200,
-    body: string = 'ok',
-    headers: ReplyHeaders,
+    body: string | Buffer = 'ok',
+    headers: ReplyHeaders = {},
   ) {
     request.once().reply(status, body, headers);
   },
