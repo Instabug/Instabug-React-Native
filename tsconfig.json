@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",

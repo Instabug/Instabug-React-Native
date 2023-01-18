@@ -7,7 +7,7 @@ module.exports = {
   clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: ['./src/**/*.(js|ts)'],
-  setupFilesAfterEnv: ['./tests/setup.js'],
+  setupFilesAfterEnv: ['./tests/setup.ts'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   modulePathIgnorePatterns: ['example'],
   transform: {
