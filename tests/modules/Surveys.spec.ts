@@ -1,10 +1,9 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import * as Surveys from '../../src/modules/Surveys';
+import { NativeSurveys } from '../../src/native';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
-
-const { IBGSurveys: NativeSurveys } = NativeModules;
 
 describe('Surveys Module', () => {
   it('should call the native method setSurveysEnabled', () => {
