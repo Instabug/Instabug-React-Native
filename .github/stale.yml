@@ -1,0 +1,31 @@
+# Configuration for probot-stale - https://github.com/probot/stale
+
+# Number of days of inactivity before an Issue or Pull Request becomes stale
+daysUntilStale: 7
+
+# Number of days of inactivity before an Issue or Pull Request with the Pending Feedback label is closed.
+# Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
+daysUntilClose: 7
+
+# Only issues or pull requests with all of these labels are checked if stale. Defaults to `[]` (disabled)
+onlyLabels: [Pending Feedback]
+
+# Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
+exemptLabels:
+  - WIP
+  - Planned
+
+# Label to use when marking as stale
+staleLabel: Pending Feedback
+
+# Comment to post when marking as stale. Set to `false` to disable
+markComment: >
+  This issue has been automatically marked as pending feedback because we need additional information
+  to be able to investigate it further. It will be closed in 7 days if it remains inactive. Thank you
+  for your contributions.
+
+# Comment to post when closing a stale Issue.
+closeComment: >
+  This issue has been automatically closed since we haven't heard back from
+  you. Please feel free to re-open the issue if you have more information
+  to add.
