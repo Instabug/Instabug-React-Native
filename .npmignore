@@ -16,7 +16,7 @@ tsconfig.cli.json
 
 # Tests
 android/src/test/
-tests/
+test/
 jest.config.js
 
 ## Same as .gitignore

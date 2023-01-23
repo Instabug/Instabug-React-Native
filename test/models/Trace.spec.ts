@@ -1,8 +1,5 @@
-import { NativeModules } from 'react-native';
-
 import Trace from '../../src/models/Trace';
-
-const { IBGAPM: NativeAPM } = NativeModules;
+import { NativeAPM } from '../../src/native';
 
 describe('Trace Model', () => {
   it('should set the id, name and attributes if passed', () => {
@@ -17,7 +14,7 @@ describe('Trace Model', () => {
   });
 
   it('should set execution trace attributes', () => {
-    const attribute = { key: 'isAuthenticated', value: true };
+    const attribute = { key: 'isAuthenticated', value: 'yes' };
 
     const trace = new Trace('trace-id');
     trace.setAttribute(attribute.key, attribute.value);

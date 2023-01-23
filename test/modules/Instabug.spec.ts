@@ -1,19 +1,16 @@
 import '../mocks/mockInstabugUtils';
 
-import React from 'react';
-import { NativeModules, Platform, Text, findNodeHandle, processColor } from 'react-native';
+import { NativeModules, Platform, findNodeHandle, processColor } from 'react-native';
 
-import { green } from 'ansi-colors';
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
+import { NativeCrashReporting, NativeInstabug } from '../../src/native';
 import { LogLevel } from '../../src/utils/Enums';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
-
-const { Instabug: NativeInstabug, IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('Instabug Module', () => {
   it('should call the native method setEnabled', () => {
@@ -32,19 +29,27 @@ describe('Instabug Module', () => {
 
   it('componentDidAppearListener should call the native method reportScreenChange', () => {
     const screenName = 'some-screen';
-    const obj = { componentId: '1', componentName: screenName, passProps: 'screenName' };
-    Instabug.componentDidAppearListener(obj);
+
+    Instabug.componentDidAppearListener({
+      componentId: '1',
+      componentName: screenName,
+      componentType: 'Component',
+    });
+
     expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
     expect(NativeInstabug.reportScreenChange).toBeCalledWith(screenName);
   });
 
   it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
-    Instabug.init({ token: 'some-token' });
+    Instabug.init({
+      token: 'some-token',
+      invocationEvents: [Instabug.invocationEvent.none],
+    });
 
     Instabug.componentDidAppearListener({
       componentId: '1',
       componentName: 'screen',
-      passProps: 'screenName',
+      componentType: 'Component',
     });
 
     await waitForExpect(() => {
@@ -59,7 +64,7 @@ describe('Instabug Module', () => {
       Instabug.componentDidAppearListener({
         componentId: '1',
         componentName: 'screen',
-        passProps: 'screenName',
+        componentType: 'Component',
       });
     });
 
@@ -79,7 +84,9 @@ describe('Instabug Module', () => {
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange', async () => {
-    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
+    // @ts-ignore
     Instabug.onNavigationStateChange('home', 'settings');
 
     await waitForExpect(() => {
@@ -89,7 +96,9 @@ describe('Instabug Module', () => {
   });
 
   it('onNavigationStateChange should not call the native method reportScreenChange if screen is the same', (done) => {
-    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
+    // @ts-ignore
     Instabug.onNavigationStateChange('home', 'home');
 
     // Wait for 1.5s as reportScreenChange is delayed by 1s
@@ -100,11 +109,14 @@ describe('Instabug Module', () => {
   });
 
   it('onNavigationStateChange should call the native method reportScreenChange immediatly if _currentScreen is set', async () => {
-    InstabugUtils.getActiveRouteName.mockImplementation((screenName) => screenName);
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
     // sets _currentScreen and waits for 1s as _currentScreen is null
+    // @ts-ignore
     Instabug.onNavigationStateChange('home', 'settings');
 
-    // _currentScreen already set in prev call so it reports a screen change immediatly
+    // _currentScreen already set in prev call so it reports a screen change immediately
+    // @ts-ignore
     Instabug.onNavigationStateChange('home', 'settings');
 
     expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
@@ -115,6 +127,7 @@ describe('Instabug Module', () => {
 
   it('onStateChange should call the native method reportScreenChange', async () => {
     const state = { routes: [{ name: 'ScreenName' }], index: 0 };
+    // @ts-ignore
     Instabug.onStateChange(state);
 
     await waitForExpect(() => {
@@ -123,12 +136,15 @@ describe('Instabug Module', () => {
     });
   });
 
-  it('onStateChange should call the native method reportScreenChange immediatly if _currentScreen is set', async () => {
+  it('onStateChange should call the native method reportScreenChange immediately if _currentScreen is set', async () => {
     // sets _currentScreen and waits for 1s as _currentScreen is null
     const state = { routes: [{ name: 'ScreenName' }], index: 0 };
+
+    // @ts-ignore
     Instabug.onStateChange(state);
 
-    // _currentScreen already set in prev call so it reports a screen change immediatly
+    // _currentScreen already set in prev call so it reports a screen change immediately
+    // @ts-ignore
     Instabug.onStateChange(state);
 
     expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
@@ -154,7 +170,10 @@ describe('Instabug Module', () => {
   });
 
   it('should report the first screen on SDK initialization', async () => {
-    Instabug.init({ token: 'some-token' });
+    Instabug.init({
+      token: 'some-token',
+      invocationEvents: [Instabug.invocationEvent.none],
+    });
 
     await waitForExpect(() => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
@@ -224,7 +243,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setPrimaryColor', () => {
-    const color = green;
+    const color = '#fff';
     Instabug.setPrimaryColor(color);
 
     expect(NativeInstabug.setPrimaryColor).toBeCalledTimes(1);
@@ -246,7 +265,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call native method getTags', (done) => {
-    const callback = (tags) => {
+    const callback = (tags: string[]) => {
       expect(tags).toBeDefined();
       done();
     };
@@ -295,6 +314,7 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method logVerbose when no message', () => {
+    // @ts-ignore
     Instabug.logVerbose(null);
 
     expect(NativeInstabug.logVerbose).not.toBeCalled();
@@ -308,6 +328,7 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method logDebug when no message', () => {
+    // @ts-ignore
     Instabug.logDebug(null);
 
     expect(NativeInstabug.logDebug).not.toBeCalled();
@@ -321,6 +342,7 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method logInfo when no message', () => {
+    // @ts-ignore
     Instabug.logInfo(null);
 
     expect(NativeInstabug.logInfo).not.toBeCalled();
@@ -334,6 +356,7 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method logWarn when no message', () => {
+    // @ts-ignore
     Instabug.logWarn(null);
 
     expect(NativeInstabug.logWarn).not.toBeCalled();
@@ -347,6 +370,7 @@ describe('Instabug Module', () => {
   });
 
   it('should not call the native method logError when no message', () => {
+    // @ts-ignore
     Instabug.logError(null);
 
     expect(NativeInstabug.logError).not.toBeCalled();
@@ -392,6 +416,7 @@ describe('Instabug Module', () => {
     [{}, 'value'],
     ['key', []],
   ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
+    // @ts-ignore
     expect(() => Instabug.setUserAttribute(key, value)).toThrow(TypeError);
 
     expect(NativeInstabug.setUserAttribute).not.toBeCalled();
@@ -407,7 +432,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call native method getUserAttribute', (done) => {
-    const callback = (value) => {
+    const callback = (value: string) => {
       expect(value).toBeDefined();
       done();
     };
@@ -428,13 +453,14 @@ describe('Instabug Module', () => {
   it.each([null, 1, {}])(
     "should fail if key isn't a string when calling removeUserAttribute",
     (key) => {
+      // @ts-ignore
       expect(() => Instabug.removeUserAttribute(key)).toThrow(TypeError);
       expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
     },
   );
 
   it('should call native method getAllUserAttributes', (done) => {
-    const callback = (value) => {
+    const callback = (value: Record<string, string>) => {
       expect(value).toBeDefined();
       done();
     };
@@ -494,7 +520,7 @@ describe('Instabug Module', () => {
 
   it('should call the native method isRunningLive', (done) => {
     Platform.OS = 'ios';
-    const callback = (isRunningLive) => {
+    const callback = (isRunningLive: boolean) => {
       expect(isRunningLive).toBeDefined();
       done();
     };
@@ -530,7 +556,7 @@ describe('Instabug Module', () => {
   it('should call the native method setFileAttachment with filePath when platform is ios', () => {
     Platform.OS = 'ios';
     const path = '~/path';
-    Instabug.addFileAttachment(path);
+    Instabug.addFileAttachment(path, '');
 
     expect(NativeInstabug.setFileAttachment).toBeCalledTimes(1);
     expect(NativeInstabug.setFileAttachment).toBeCalledWith(path);
@@ -547,31 +573,27 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method addPrivateView', () => {
-    <Text ref={(c) => (this.textView = c)} />;
-    Instabug.addPrivateView(this.textView);
+    Instabug.addPrivateView(0);
 
     expect(NativeInstabug.addPrivateView).toBeCalledTimes(1);
-    expect(NativeInstabug.addPrivateView).toBeCalledWith(findNodeHandle(this.textView));
+    expect(NativeInstabug.addPrivateView).toBeCalledWith(findNodeHandle(0));
   });
 
   it('should map deprecated setPrivateView to addPrivateView', () => {
     const addPrivateView = jest.spyOn(Instabug, 'addPrivateView');
-
-    <Text ref={(c) => (this.textView = c)} />;
-    Instabug.setPrivateView(this.textView);
+    Instabug.setPrivateView(0);
 
     expect(addPrivateView).toBeCalledTimes(1);
-    expect(addPrivateView).toBeCalledWith(this.textView);
+    expect(addPrivateView).toBeCalledWith(0);
 
     addPrivateView.mockRestore();
   });
 
   it('should call the native method removePrivateView', () => {
-    <Text ref={(c) => (this.textView = c)} />;
-    Instabug.removePrivateView(this.textView);
+    Instabug.removePrivateView(0);
 
     expect(NativeInstabug.removePrivateView).toBeCalledTimes(1);
-    expect(NativeInstabug.removePrivateView).toBeCalledWith(findNodeHandle(this.textView));
+    expect(NativeInstabug.removePrivateView).toBeCalledWith(findNodeHandle(0));
   });
 
   it('should call the native method show', () => {
@@ -606,7 +628,7 @@ describe('Instabug Module', () => {
       userAttributes: [{ age: '24' }],
       fileAttachments: ['path'],
     };
-    const callback = (rep) => {
+    const callback = (rep: Report) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -632,7 +654,7 @@ describe('Instabug Module', () => {
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = (rep) => {
+    const callback = (rep: Report) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -645,12 +667,14 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(1);
-    await expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
-    await expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(jsonObject);
+    await waitForExpect(() => expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1));
+    await waitForExpect(() =>
+      expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(jsonObject),
+    );
   });
 
   it('should not break if pre-sending callback fails on emitting the event IBGSendHandledJSCrash', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     Platform.OS = 'android';
     NativeModules.Instabug.getReport.mockResolvedValue({});
@@ -665,7 +689,7 @@ describe('Instabug Module', () => {
     await waitForExpect(() => expect(callback).toBeCalled());
     expect(NativeCrashReporting.sendHandledJSCrash).not.toBeCalled();
 
-    console.error.mockRestore();
+    consoleSpy.mockRestore();
   });
 
   it('should not invoke callback on emitting the event IBGSendHandledJSCrash when Platform is iOS', () => {
@@ -686,7 +710,7 @@ describe('Instabug Module', () => {
     };
     NativeModules.Instabug.getReport.mockResolvedValue(report);
     const jsonObject = { stack: 'error' };
-    const callback = (rep) => {
+    const callback = (rep: Report) => {
       expect(rep).toBeInstanceOf(Report);
       expect(rep.tags).toBe(report.tags);
       expect(rep.consoleLogs).toBe(report.consoleLogs);
@@ -699,8 +723,8 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, jsonObject);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(1);
-    await expect(NativeCrashReporting.sendJSCrash).toBeCalledTimes(1);
-    await expect(NativeCrashReporting.sendJSCrash).toBeCalledWith(jsonObject);
+    await waitForExpect(() => expect(NativeCrashReporting.sendJSCrash).toBeCalledTimes(1));
+    await waitForExpect(() => expect(NativeCrashReporting.sendJSCrash).toBeCalledWith(jsonObject));
   });
 
   it('should not invoke callback on emitting the event IBGSendUnhandledJSCrash when Platform is iOS', () => {
@@ -713,10 +737,10 @@ describe('Instabug Module', () => {
   it('should invoke the native method callPrivateApi', () => {
     const apiName = 'name';
     const param = 'param';
-    Instabug.callPrivateApi(apiName, param);
+    Instabug.callPrivateApi(apiName, [param]);
 
     expect(NativeInstabug.callPrivateApi).toBeCalledTimes(1);
-    expect(NativeInstabug.callPrivateApi).toBeCalledWith(apiName, param);
+    expect(NativeInstabug.callPrivateApi).toBeCalledWith(apiName, [param]);
   });
 
   it('should call native addExperiments method', () => {

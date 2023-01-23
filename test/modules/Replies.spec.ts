@@ -1,10 +1,9 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import * as Replies from '../../src/modules/Replies';
+import { NativeReplies } from '../../src/native';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
-
-const { IBGReplies: NativeReplies } = NativeModules;
 
 describe('Replies Module', () => {
   it('should call the native method setRepliesEnabled', () => {
@@ -94,22 +93,24 @@ describe('Replies Module', () => {
 
   it('should call the native method showNotification on Android', () => {
     Platform.OS = 'android';
-    Replies.showNotificationAndroid('test');
+    const data = { id: '2' };
+
+    Replies.showNotificationAndroid(data);
 
     expect(NativeReplies.showNotification).toBeCalledTimes(1);
-    expect(NativeReplies.showNotification).toBeCalledWith('test');
+    expect(NativeReplies.showNotification).toBeCalledWith(data);
   });
 
   it('should not call the native method showNotification if platform is ios', () => {
     Platform.OS = 'ios';
-    Replies.showNotificationAndroid('test');
+    Replies.showNotificationAndroid({ id: '2' });
 
     expect(NativeReplies.showNotification).not.toBeCalled();
   });
 
   it('should not call the native method setPushNotificationRegistrationToken on iOS', () => {
     Platform.OS = 'ios';
-    Replies.setPushNotificationRegistrationTokenAndroid(true);
+    Replies.setPushNotificationRegistrationTokenAndroid('2');
 
     expect(NativeReplies.setPushNotificationRegistrationToken).not.toBeCalled();
   });

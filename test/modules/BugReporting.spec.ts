@@ -1,11 +1,10 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import * as BugReporting from '../../src/modules/BugReporting';
 import * as Instabug from '../../src/modules/Instabug';
+import { NativeBugReporting } from '../../src/native';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
-
-const { IBGBugReporting: NativeBugReporting } = NativeModules;
 
 describe('Testing BugReporting Module', () => {
   it('should call the native method setBugReportingEnabled', () => {
@@ -82,11 +81,13 @@ describe('Testing BugReporting Module', () => {
     expect(NativeBugReporting.setShakingThresholdForAndroid).not.toBeCalled();
   });
 
-  it('should call the native method setExtendedBugReportMode with a boolean', () => {
-    BugReporting.setExtendedBugReportMode(true);
+  it('should call the native method setExtendedBugReportMode with disabled', () => {
+    BugReporting.setExtendedBugReportMode(BugReporting.extendedBugReportMode.disabled);
 
     expect(NativeBugReporting.setExtendedBugReportMode).toBeCalledTimes(1);
-    expect(NativeBugReporting.setExtendedBugReportMode).toBeCalledWith(true);
+    expect(NativeBugReporting.setExtendedBugReportMode).toBeCalledWith(
+      BugReporting.extendedBugReportMode.disabled,
+    );
   });
 
   it('should call the native method setReportTypes with an array of reportTypes', () => {
@@ -108,7 +109,7 @@ describe('Testing BugReporting Module', () => {
 
   it('should call the native method show with a reportType and default options to an empty array', () => {
     const reportType = BugReporting.reportType.bug;
-    BugReporting.show(reportType);
+    BugReporting.show(reportType, []);
 
     expect(NativeBugReporting.show).toBeCalledTimes(1);
 
