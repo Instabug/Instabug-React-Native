@@ -1,19 +1,18 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import Report from '../../src/models/Report';
-
-const { Instabug: NativeInstabug } = NativeModules;
+import { NativeInstabug } from '../../src/native';
 
 describe('Report Model', () => {
-  let report;
+  let report: Report;
 
   beforeEach(() => {
     const reportData = {
       tags: ['tag1', 'tag2'],
       consoleLogs: ['consoleLog'],
-      instabugLogs: [{ log: 'message', type: 'debug' }],
+      instabugLogs: [{ log: 'message', type: 'debug' as const }],
       userAttributes: { age: '24' },
-      fileAttachments: [{ file: 'path', type: 'url' }],
+      fileAttachments: [{ file: 'path', type: 'url' as const }],
     };
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = reportData;
     report = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
@@ -104,7 +103,8 @@ describe('Report Model', () => {
     Platform.OS = 'ios';
     const filesBefore = report.fileAttachments;
     const file = 'path/to/file';
-    report.addFileAttachmentWithUrl(file);
+    const fileName = 'fileName';
+    report.addFileAttachmentWithUrl(file, fileName);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'url' }]);
     expect(NativeInstabug.addFileAttachmentWithURLToReport).toBeCalledTimes(1);
@@ -127,7 +127,8 @@ describe('Report Model', () => {
     Platform.OS = 'ios';
     const filesBefore = report.fileAttachments;
     const file = 'fileData';
-    report.addFileAttachmentWithData(file);
+    const fileName = 'fileName';
+    report.addFileAttachmentWithData(file, fileName);
 
     expect(report.fileAttachments).toEqual([...filesBefore, { file: file, type: 'data' }]);
     expect(NativeInstabug.addFileAttachmentWithDataToReport).toBeCalledTimes(1);

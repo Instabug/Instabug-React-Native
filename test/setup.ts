@@ -14,6 +14,13 @@ global.XMLHttpRequest = XHR;
 nock.disableNetConnect();
 
 beforeEach(() => {
-  Platform.constants = {};
   IBGEventEmitter.removeAllListeners();
+  Platform.constants = {
+    isTesting: true,
+    reactNativeVersion: {
+      major: 0,
+      minor: 60,
+      patch: 0,
+    },
+  };
 });

@@ -3,11 +3,10 @@ import '../mocks/mockInstabugUtils';
 import { NativeModules, Platform } from 'react-native';
 
 import * as CrashReporting from '../../src/modules/CrashReporting';
+import { NativeCrashReporting } from '../../src/native';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
-
-const { IBGCrashReporting: NativeCrashReporting } = NativeModules;
 
 describe('CrashReporting Module', () => {
   it('should call the native method setEnabled', () => {
@@ -56,7 +55,7 @@ describe('CrashReporting Module', () => {
   //TODO: finish this
   it('should emit event IBGSendHandledJSCrash with the error object when platform is android', () => {
     Platform.OS = 'android';
-    InstabugUtils.isOnReportHandlerSet.mockImplementation(() => true);
+    InstabugUtils.isOnReportHandlerSet = jest.fn().mockReturnValue(true);
 
     const errorObject = { name: 'TypeError', message: 'Invalid type' };
     const expectedObject = {

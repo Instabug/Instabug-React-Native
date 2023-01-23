@@ -1,9 +1,8 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import Trace from '../../src/models/Trace';
 import * as APM from '../../src/modules/APM';
-
-const { Instabug: NativeInstabug, IBGAPM: NativeAPM } = NativeModules;
+import { NativeAPM, NativeInstabug } from '../../src/native';
 
 describe('APM Module', () => {
   it('should call the native method setEnabled', () => {
@@ -68,7 +67,9 @@ describe('APM Module', () => {
   });
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce((_, __, callback) => callback());
+    NativeAPM.startExecutionTrace.mockImplementationOnce((_: any, __: any, callback: () => any) =>
+      callback(),
+    );
 
     const promise = APM.startExecutionTrace('trace');
 
@@ -76,7 +77,9 @@ describe('APM Module', () => {
   });
 
   it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce((_, __, callback) => callback('trace-id'));
+    NativeAPM.startExecutionTrace.mockImplementationOnce(
+      (_: any, __: any, callback: (arg0: string) => any) => callback('trace-id'),
+    );
 
     const promise = APM.startExecutionTrace('trace');
 
@@ -85,7 +88,7 @@ describe('APM Module', () => {
   });
 
   it('should call the native method setExecutionTraceAttribute', () => {
-    const trace = APM.startExecutionTrace('trace').then(() => {
+    APM.startExecutionTrace('trace').then((trace) => {
       trace.setAttribute('key', 'value');
 
       expect(NativeAPM.setExecutionTraceAttribute).toBeCalledTimes(1);
@@ -98,7 +101,7 @@ describe('APM Module', () => {
   });
 
   it('should call the native method endExecutionTrace', () => {
-    const trace = APM.startExecutionTrace('trace').then(() => {
+    APM.startExecutionTrace('trace').then((trace) => {
       trace.end();
 
       expect(NativeAPM.endExecutionTrace).toBeCalledTimes(1);

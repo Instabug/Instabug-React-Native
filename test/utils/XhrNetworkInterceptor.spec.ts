@@ -51,6 +51,7 @@ describe('Network Interceptor', () => {
     Interceptor.setOnDoneCallback(callback);
     FakeRequest.open(method, url);
     FakeRequest.mockResponse(request);
+    // @ts-ignore
     FakeRequest.setRequestHeaders(requestHeaders);
     FakeRequest.send();
 
@@ -111,6 +112,7 @@ describe('Network Interceptor', () => {
       expect(network.responseHeaders.accept.trim()).toEqual(headers.Accept);
       done();
     });
+    // @ts-ignore
     FakeRequest.mockResponse(request, 200, 'ok', headers);
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -158,7 +160,7 @@ describe('Network Interceptor', () => {
 
   it('should set blob responseBody in network object on receiving response', async () => {
     const callback = jest.fn();
-    const responseBody = new Buffer.from('blob-content');
+    const responseBody = Buffer.from('blob-content');
 
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback(callback);
@@ -180,6 +182,7 @@ describe('Network Interceptor', () => {
       done();
     });
 
+    // @ts-ignore
     FakeRequest.mockResponse(request, 200, 'ok', { 'Content-Length': 100 });
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -217,9 +220,11 @@ describe('Network Interceptor', () => {
   });
 
   it('should set gqlQueryName in network object on receiving response', (done) => {
-    const headers = {};
-    headers[InstabugConstants.GRAPHQL_HEADER] = InstabugConstants.GRAPHQL_HEADER;
     const responseBody = { data: [{ item: 'first' }, { item: 'second' }] };
+    const headers = {
+      [InstabugConstants.GRAPHQL_HEADER]: InstabugConstants.GRAPHQL_HEADER,
+    };
+
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       expect(network.gqlQueryName).toEqual(headers[InstabugConstants.GRAPHQL_HEADER]);
@@ -232,8 +237,10 @@ describe('Network Interceptor', () => {
   });
 
   it('should set gqlQueryName in network object on receiving response with empty string', (done) => {
-    const headers = {};
-    headers[InstabugConstants.GRAPHQL_HEADER] = 'null';
+    const headers = {
+      [InstabugConstants.GRAPHQL_HEADER]: 'null',
+    };
+
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       expect(network.gqlQueryName).toEqual('');
@@ -246,9 +253,11 @@ describe('Network Interceptor', () => {
   });
 
   it('should set serverErrorMessage in network object on receiving response', (done) => {
-    const headers = {};
-    headers[InstabugConstants.GRAPHQL_HEADER] = InstabugConstants.GRAPHQL_HEADER;
     const responseBody = { errors: [{ item: 'first' }, { item: 'second' }] };
+    const headers = {
+      [InstabugConstants.GRAPHQL_HEADER]: InstabugConstants.GRAPHQL_HEADER,
+    };
+
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       expect(network.serverErrorMessage).toEqual('GraphQLError');

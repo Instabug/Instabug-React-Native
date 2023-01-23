@@ -5,7 +5,7 @@ module.exports = {
   overrides: [
     {
       // Jest Overrides
-      files: ['tests/**'],
+      files: ['test/**'],
       env: {
         node: true,
         browser: true,

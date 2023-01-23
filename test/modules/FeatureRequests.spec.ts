@@ -1,18 +1,15 @@
-import { NativeModules } from 'react-native';
-
 import * as FeatureRequests from '../../src/modules/FeatureRequests';
-
-const { IBGFeatureRequests: NativeFeatureRequests } = NativeModules;
+import { NativeFeatureRequests } from '../../src/native';
 
 describe('Feature Requests Module', () => {
   it('should call the native method setEmailFieldRequiredForFeatureRequests', () => {
-    const actionTypes = [FeatureRequests.actionTypes.reportBug];
-    FeatureRequests.setEmailFieldRequired(true, actionTypes);
+    const actionType = FeatureRequests.actionTypes.reportBug;
+    FeatureRequests.setEmailFieldRequired(true, actionType);
 
     expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledTimes(1);
     expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledWith(
       true,
-      actionTypes,
+      actionType,
     );
   });
 
