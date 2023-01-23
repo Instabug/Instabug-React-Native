@@ -6127,10 +6127,10 @@ react-lifecycles-compat@2.0.0:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-2.0.0.tgz#71d9c4cde47114c4102454f76da055c2bc48c948"
   integrity sha512-txfpPCQYiazVdcbMRhatqWKcAxJweUu2wDXvts5/7Wyp6+Y9cHojqXHsLPEckzutfHlxZhG8Oiundbmp8Fd6eQ==
 
-react-native-navigation@7.29.1:
-  version "7.29.1"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-7.29.1.tgz#dfcf697167676d7d5636a8a4e7fdd96222a4fbd0"
-  integrity sha512-Kvk6u3erDtAPTJkRT0cnGT09utmNjCULAFOY7nXEn/s9OxcdJS9vHo8AOcXOF5c8PRMsSc91P+5zJAB0STF/ow==
+react-native-navigation@7.31.0:
+  version "7.31.0"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-7.31.0.tgz#c4a979bca7457656443d9b6dc1501d95014c78b2"
+  integrity sha512-jOdTzDeG408UkYG+bducd2T+SG84aymOT5+dBB8kzG3pP7MTo4KOi5whip1NNd075y5FyCJJMIsIKbY+G07Tcw==
   dependencies:
     hoist-non-react-statics "3.x.x"
     lodash "4.17.x"
