@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "InstabugSample.app"
-               BlueprintName = "InstabugSample"
-               ReferencedContainer = "container:InstabugSample.xcodeproj">
+               BuildableName = "InstabugExample.app"
+               BlueprintName = "InstabugExample"
+               ReferencedContainer = "container:InstabugExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,9 +44,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "InstabugSampleTests.xctest"
-               BlueprintName = "InstabugSampleTests"
-               ReferencedContainer = "container:InstabugSample.xcodeproj">
+               BuildableName = "InstabugTests.xctest"
+               BlueprintName = "InstabugTests"
+               ReferencedContainer = "container:InstabugExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "InstabugSample.app"
-            BlueprintName = "InstabugSample"
-            ReferencedContainer = "container:InstabugSample.xcodeproj">
+            BuildableName = "InstabugExample.app"
+            BlueprintName = "InstabugExample"
+            ReferencedContainer = "container:InstabugExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "InstabugSample.app"
-            BlueprintName = "InstabugSample"
-            ReferencedContainer = "container:InstabugSample.xcodeproj">
+            BuildableName = "InstabugExample.app"
+            BlueprintName = "InstabugExample"
+            ReferencedContainer = "container:InstabugExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -128,8 +128,8 @@ jobs:
           working_directory: ios
           command: |
             xcodebuild -allowProvisioningUpdates \
-                -workspace InstabugSample.xcworkspace \
-                -scheme InstabugSample \
+                -workspace InstabugExample.xcworkspace \
+                -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
                 -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \

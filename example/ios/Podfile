@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
-target 'InstabugSample' do
+target 'InstabugExample' do
   config = use_native_modules!
 
   use_react_native!(
@@ -11,12 +11,6 @@ target 'InstabugSample' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
-
-  target 'InstabugSampleTests' do
-    inherit! :complete
-    pod 'OCMock'
-    # Pods for testing
-  end
 
   # Enables Flipper.
   #
@@ -27,6 +21,12 @@ target 'InstabugSample' do
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
+
+  target 'InstabugTests' do
+    inherit! :complete
+    pod 'OCMock'
+    # Pods for testing
   end
 end
 
