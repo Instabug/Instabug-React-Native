@@ -1,3 +1,5 @@
+import { expect, waitFor } from 'detox';
+
 import { getElement } from './utils/elements';
 import mockData from './utils/mockData';
 

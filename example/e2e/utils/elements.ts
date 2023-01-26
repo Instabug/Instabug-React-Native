@@ -26,10 +26,8 @@ const elements = {
 
 /**
  * Get element based on current platform.
- *
- * @param {keyof elements} name
  */
-export function getElement(name) {
+export function getElement(name: keyof typeof elements) {
   if (!elements.hasOwnProperty(name)) {
     throw new Error(`Element with name ${name} does not exist.`);
   }
