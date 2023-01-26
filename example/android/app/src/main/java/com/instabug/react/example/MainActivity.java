@@ -1,4 +1,4 @@
-package com.instabugsample;
+package com.instabug.react.example;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "InstabugSample";
   }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
