@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "e2e/**/*"],
   "compilerOptions": {
     "paths": {
       "instabug-reactnative": ["../src/index.ts"]
