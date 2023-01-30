@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.9.8",
     "instabug-reactnative": "link:..",
     "react": "17.0.2",
     "react-native": "0.66.0",

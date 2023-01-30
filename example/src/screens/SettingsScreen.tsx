@@ -18,7 +18,7 @@ const invocationEvents = [
 
 const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 
-export function SettingsScreen() {
+export const SettingsScreen: React.FC = () => {
   const [theme, setTheme] = useState(Instabug.colorTheme.light);
   const [color, setColor] = useState(colors[0]);
 
@@ -77,7 +77,7 @@ export function SettingsScreen() {
       </Section>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   row: {
