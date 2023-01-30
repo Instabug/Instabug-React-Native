@@ -1,101 +1,72 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
 
 import Instabug, { BugReporting } from 'instabug-reactnative';
+import { Button, HStack, Switch, Text, VStack } from 'native-base';
 
-import { Button } from '../components/Button';
 import { ColorButton } from '../components/ColorButton';
-import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
 
+const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 const invocationEvents = [
+  { label: 'None', value: Instabug.invocationEvent.none },
   { label: 'Shake', value: Instabug.invocationEvent.shake },
   { label: 'Screenshot', value: Instabug.invocationEvent.screenshot },
   { label: 'Two fingers swipe left', value: Instabug.invocationEvent.twoFingersSwipe },
   { label: 'Floating button', value: Instabug.invocationEvent.floatingButton },
-  { label: 'None', value: Instabug.invocationEvent.none },
 ];
 
-const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
-
 export const SettingsScreen: React.FC = () => {
-  const [theme, setTheme] = useState(Instabug.colorTheme.light);
   const [color, setColor] = useState(colors[0]);
+  const [theme, setTheme] = useState(Instabug.colorTheme.light);
 
   const isLightTheme = theme === Instabug.colorTheme.light;
 
-  const toggleColorTheme = (isLight: boolean) => {
-    const newTheme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
-    Instabug.setColorTheme(newTheme);
-    setTheme(newTheme);
-  };
-
-  const setPrimaryColor = (newColor: string) => {
-    Instabug.setPrimaryColor(newColor);
-    setColor(newColor);
-  };
-
-  const changeInvocationEvent = (invocationEvent: Instabug.invocationEvent) =>
-    BugReporting.setInvocationEvents([invocationEvent]);
-
   return (
-    <Screen>
+    <VStack alignItems="stretch" padding="8" space="8">
       <Section title="Invocation Event">
-        <View style={styles.row}>
+        <HStack space="1" flexWrap="wrap">
           {invocationEvents.map((event) => (
-            <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
+            <Button
+              key={event.label}
+              margin="1"
+              onPress={() => BugReporting.setInvocationEvents([event.value])}>
               {event.label}
             </Button>
           ))}
-        </View>
+        </HStack>
       </Section>
 
       <Section title="Primary Color">
-        <View style={styles.row}>
-          {colors.map((_color) => (
+        <HStack space="4">
+          {colors.map((x) => (
             <ColorButton
-              key={_color}
-              color={_color}
-              checked={_color === color}
-              onPress={setPrimaryColor}
+              key={x}
+              color={x}
+              checked={x === color}
+              onPress={(value: string) => {
+                Instabug.setPrimaryColor(value);
+                setColor(value);
+              }}
             />
           ))}
-        </View>
+        </HStack>
       </Section>
 
       <Section title="Color Theme">
-        <View style={styles.colorThemeContainer}>
-          <Text style={styles.colorThemeText}>Dark</Text>
+        <HStack space="2" alignItems="center">
+          <Text>Dark</Text>
           <Switch
             accessibilityLabel="Light color theme"
-            onValueChange={toggleColorTheme}
             value={isLightTheme}
-            style={styles.colorThemeSwitch}
+            onValueChange={(value: boolean) => {
+              const newTheme = value ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
+              Instabug.setColorTheme(newTheme);
+              setTheme(newTheme);
+            }}
           />
-          <Text style={styles.colorThemeText}>Light</Text>
-        </View>
+          <Text>Light</Text>
+        </HStack>
       </Section>
-    </Screen>
+    </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    flexGrow: 1,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  colorThemeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  colorThemeText: {
-    fontSize: 18,
-  },
-  colorThemeSwitch: {
-    marginHorizontal: 15,
-  },
-});

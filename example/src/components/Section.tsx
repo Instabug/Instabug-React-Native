@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { Heading, VStack } from 'native-base';
 
 interface SectionProps extends PropsWithChildren {
   title: string;
@@ -7,21 +8,9 @@ interface SectionProps extends PropsWithChildren {
 
 export const Section: React.FC<SectionProps> = ({ title, children }) => {
   return (
-    <View style={styles.section}>
-      <Text style={styles.title}>{title}</Text>
+    <VStack space="4">
+      <Heading size="sm">{title}</Heading>
       {children}
-    </View>
+    </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  section: {
-    marginBottom: 25,
-  },
-  title: {
-    marginBottom: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
-  },
-});

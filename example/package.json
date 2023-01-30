@@ -13,10 +13,12 @@
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.9.8",
     "instabug-reactnative": "link:..",
+    "native-base": "^3.4.25",
     "react": "17.0.2",
     "react-native": "0.66.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
+    "react-native-svg": "12.1.1",
     "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {

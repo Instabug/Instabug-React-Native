@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import Instabug from 'instabug-reactnative';
+import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
 
@@ -14,8 +15,10 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <NavigationContainer onStateChange={Instabug.onStateChange}>
-      <RootTabNavigator />
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer onStateChange={Instabug.onStateChange}>
+        <RootTabNavigator />
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 };

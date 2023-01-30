@@ -2,13 +2,11 @@ import React from 'react';
 import { Alert } from 'react-native';
 
 import { CrashReporting } from 'instabug-reactnative';
-
-import { Button } from '../components/Button';
-import { Screen } from '../components/Screen';
+import { Button, VStack } from 'native-base';
 
 export const CrashReportingScreen: React.FC = () => {
   return (
-    <Screen>
+    <VStack alignItems="stretch" padding="8" space="4">
       <Button
         onPress={() => {
           try {
@@ -22,6 +20,6 @@ export const CrashReportingScreen: React.FC = () => {
         }}>
         Throw Handled Exception
       </Button>
-    </Screen>
+    </VStack>
   );
 };

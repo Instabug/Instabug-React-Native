@@ -1,13 +1,11 @@
 import React from 'react';
 
 import Instabug, { BugReporting } from 'instabug-reactnative';
-
-import { Button } from '../components/Button';
-import { Screen } from '../components/Screen';
+import { Button, VStack } from 'native-base';
 
 export const BugReportingScreen: React.FC = () => {
   return (
-    <Screen>
+    <VStack alignItems="stretch" padding="8" space="4">
       <Button onPress={() => Instabug.show()}>Invoke</Button>
       <Button onPress={() => BugReporting.show(BugReporting.reportType.bug, [])}>
         Send Bug Report
@@ -23,6 +21,6 @@ export const BugReportingScreen: React.FC = () => {
       <Button onPress={() => BugReporting.show(BugReporting.reportType.question, [])}>
         Ask a Question
       </Button>
-    </Screen>
+    </VStack>
   );
 };
