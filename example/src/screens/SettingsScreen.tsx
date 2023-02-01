@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 import Instabug, { BugReporting } from 'instabug-reactnative';
-import { Button, HStack, Switch, Text, VStack } from 'native-base';
+import { CheckIcon, Input, InputGroup, InputLeftAddon, Select } from 'native-base';
 
-import { ColorButton } from '../components/ColorButton';
-import { Section } from '../components/Section';
+import { ListTile } from '../components/ListTile';
+import { Screen } from '../components/Screen';
 
-const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
 const invocationEvents = [
   { label: 'None', value: Instabug.invocationEvent.none },
   { label: 'Shake', value: Instabug.invocationEvent.shake },
@@ -16,57 +15,66 @@ const invocationEvents = [
 ];
 
 export const SettingsScreen: React.FC = () => {
-  const [color, setColor] = useState(colors[0]);
-  const [theme, setTheme] = useState(Instabug.colorTheme.light);
-
-  const isLightTheme = theme === Instabug.colorTheme.light;
+  const [event, setEvent] = useState('Floating Button');
+  const [color, setColor] = useState('1D82DC');
+  const [theme, setTheme] = useState('light');
 
   return (
-    <VStack alignItems="stretch" padding="8" space="8">
-      <Section title="Invocation Event">
-        <HStack space="1" flexWrap="wrap">
-          {invocationEvents.map((event) => (
-            <Button
-              key={event.label}
-              margin="1"
-              onPress={() => BugReporting.setInvocationEvents([event.value])}>
-              {event.label}
-            </Button>
+    <Screen>
+      <ListTile title="Invocation Event">
+        <Select
+          accessibilityLabel="Invocation Event"
+          selectedValue={event}
+          onValueChange={(value) => {
+            setEvent(value);
+            const invocationEvent = invocationEvents.find((x) => x.label === value)!;
+            BugReporting.setInvocationEvents([invocationEvent?.value]);
+          }}
+          _selectedItem={{
+            bg: 'coolGray.200',
+            endIcon: <CheckIcon size="4" />,
+          }}>
+          {invocationEvents.map((x) => (
+            <Select.Item key={x.label} label={x.label} value={x.label} />
           ))}
-        </HStack>
-      </Section>
+        </Select>
+      </ListTile>
 
-      <Section title="Primary Color">
-        <HStack space="4">
-          {colors.map((x) => (
-            <ColorButton
-              key={x}
-              color={x}
-              checked={x === color}
-              onPress={(value: string) => {
-                Instabug.setPrimaryColor(value);
-                setColor(value);
-              }}
-            />
-          ))}
-        </HStack>
-      </Section>
-
-      <Section title="Color Theme">
-        <HStack space="2" alignItems="center">
-          <Text>Dark</Text>
-          <Switch
-            accessibilityLabel="Light color theme"
-            value={isLightTheme}
-            onValueChange={(value: boolean) => {
-              const newTheme = value ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
-              Instabug.setColorTheme(newTheme);
-              setTheme(newTheme);
+      <ListTile title="Primary Color">
+        <InputGroup>
+          <InputLeftAddon children="#" />
+          <Input
+            value={color}
+            maxLength={6}
+            flex={1}
+            onChangeText={(value) => {
+              setColor(value);
+              if (/^[0-9A-F]{6}$/i.test(value)) {
+                Instabug.setPrimaryColor(`#${value}`);
+              }
             }}
           />
-          <Text>Light</Text>
-        </HStack>
-      </Section>
-    </VStack>
+        </InputGroup>
+      </ListTile>
+
+      <ListTile title="Theme">
+        <Select
+          accessibilityLabel="Theme"
+          selectedValue={theme}
+          onValueChange={(value) => {
+            setTheme(value);
+            Instabug.setColorTheme(
+              value === 'light' ? Instabug.colorTheme.light : Instabug.colorTheme.dark,
+            );
+          }}
+          _selectedItem={{
+            bg: 'coolGray.200',
+            endIcon: <CheckIcon size="4" />,
+          }}>
+          <Select.Item label="Light" value="light" />
+          <Select.Item label="Dark" value="dark" />
+        </Select>
+      </ListTile>
+    </Screen>
   );
 };

@@ -1,16 +1,25 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
 import { Replies } from 'instabug-reactnative';
-import { Button, VStack } from 'native-base';
+import { Heading } from 'native-base';
+
+import { ListTile } from '../components/ListTile';
+import { Screen } from '../components/Screen';
 
 export const RepliesScreen: React.FC = () => {
+  const [count, setCount] = useState<number>();
+
+  useEffect(() => {
+    Replies.getUnreadRepliesCount(setCount);
+  }, []);
+
   return (
-    <VStack alignItems="stretch" padding="8" space="4">
-      <Button
-        onPress={() => Replies.getUnreadRepliesCount((count) => Alert.alert('Messages: ' + count))}>
-        Get Unread Messages Count
-      </Button>
-    </VStack>
+    <Screen>
+      <ListTile title="Unread Messages">
+        <Heading size="sm" textAlign="right">
+          {count ?? '...'}
+        </Heading>
+      </ListTile>
+    </Screen>
   );
 };

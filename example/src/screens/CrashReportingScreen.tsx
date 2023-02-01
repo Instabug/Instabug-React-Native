@@ -2,12 +2,15 @@ import React from 'react';
 import { Alert } from 'react-native';
 
 import { CrashReporting } from 'instabug-reactnative';
-import { Button, VStack } from 'native-base';
+
+import { ListTile } from '../components/ListTile';
+import { Screen } from '../components/Screen';
 
 export const CrashReportingScreen: React.FC = () => {
   return (
-    <VStack alignItems="stretch" padding="8" space="4">
-      <Button
+    <Screen>
+      <ListTile
+        title="Throw Handled Exception"
         onPress={() => {
           try {
             throw new Error('Handled Exception From Instabug Test App');
@@ -17,9 +20,8 @@ export const CrashReportingScreen: React.FC = () => {
               Alert.alert('Crash report Sent!');
             }
           }
-        }}>
-        Throw Handled Exception
-      </Button>
-    </VStack>
+        }}
+      />
+    </Screen>
   );
 };
