@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { FeatureRequests } from 'instabug-reactnative';
-import { Screen } from 'react-native-screens';
 
 import { ListTile } from '../components/ListTile';
+import { Screen } from '../components/Screen';
 
 export const FeatureRequestsScreen: React.FC = () => {
   return (

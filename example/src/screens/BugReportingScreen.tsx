@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Instabug, { BugReporting } from 'instabug-reactnative';
-import { Screen } from 'react-native-screens';
 
 import { ListTile } from '../components/ListTile';
+import { Screen } from '../components/Screen';
 
 export const BugReportingScreen: React.FC = () => {
   return (
