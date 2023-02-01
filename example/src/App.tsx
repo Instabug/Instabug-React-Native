@@ -9,7 +9,7 @@ import { RootTabNavigator } from './navigation/RootTab';
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
-      token: '2c63627b9923e10eee2c8abf92e6925f',
+      token: 'deb1910a7342814af4e4c9210c786f35',
       invocationEvents: [Instabug.invocationEvent.floatingButton],
     });
   }, []);
