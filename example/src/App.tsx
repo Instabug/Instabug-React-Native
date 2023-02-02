@@ -5,6 +5,8 @@ import Instabug, { LogLevel } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
+import { nativeBaseTheme } from './theme/nativeBaseTheme';
+import { navigationTheme } from './theme/navigationTheme';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -16,8 +18,8 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <NativeBaseProvider>
-      <NavigationContainer onStateChange={Instabug.onStateChange}>
+    <NativeBaseProvider theme={nativeBaseTheme}>
+      <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
         <RootTabNavigator />
       </NavigationContainer>
     </NativeBaseProvider>
