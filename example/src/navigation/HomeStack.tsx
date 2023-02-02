@@ -24,9 +24,21 @@ export const HomeStackNavigator: React.FC = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="BugReporting" component={BugReportingScreen} />
-      <HomeStack.Screen name="CrashReporting" component={CrashReportingScreen} />
-      <HomeStack.Screen name="FeatureRequests" component={FeatureRequestsScreen} />
+      <HomeStack.Screen
+        name="BugReporting"
+        component={BugReportingScreen}
+        options={{ title: 'Bug Reporting' }}
+      />
+      <HomeStack.Screen
+        name="CrashReporting"
+        component={CrashReportingScreen}
+        options={{ title: 'Crash Reporting' }}
+      />
+      <HomeStack.Screen
+        name="FeatureRequests"
+        component={FeatureRequestsScreen}
+        options={{ title: 'Feature Requests' }}
+      />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
     </HomeStack.Navigator>

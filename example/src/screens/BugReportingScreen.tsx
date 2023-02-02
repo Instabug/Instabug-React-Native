@@ -8,7 +8,7 @@ import { Screen } from '../components/Screen';
 export const BugReportingScreen: React.FC = () => {
   return (
     <Screen>
-      <ListTile title="Invoke" onPress={() => Instabug.show()} />
+      <ListTile title="Show" onPress={() => Instabug.show()} />
       <ListTile
         title="Send Bug Report"
         onPress={() => BugReporting.show(BugReporting.reportType.bug, [])}

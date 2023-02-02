@@ -8,7 +8,7 @@ import { Screen } from '../components/Screen';
 export const FeatureRequestsScreen: React.FC = () => {
   return (
     <Screen>
-      <ListTile title="Show Feature Requests" onPress={() => FeatureRequests.show()} />
+      <ListTile title="Show" onPress={() => FeatureRequests.show()} />
     </Screen>
   );
 };

@@ -20,6 +20,7 @@ export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
 
   return (
     <NativeBaseSelect
+      height="10"
       placeholder={label}
       accessibilityLabel={label}
       selectedValue={selectedItem.label}
@@ -30,6 +31,7 @@ export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
       }}
       _selectedItem={{
         bg: 'coolGray.200',
+        rounded: '10',
         endIcon: <CheckIcon size="4" />,
       }}>
       {items.map((item) => (
