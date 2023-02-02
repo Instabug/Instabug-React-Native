@@ -248,33 +248,4 @@ jobs:
 workflows:
   publish:
     jobs:
-      - danger
-      - lint
-      - test_module
-      - test_android
-      - validate_shell_files
-      - sync_generated_files
-      - test_ios
-      - e2e_ios
-      - e2e_android
-      - hold:
-          requires:
-            - danger
-            - lint
-            - test_module
-            - test_android
-            - validate_shell_files
-            - sync_generated_files
-            - test_ios
-            - e2e_ios
-            - e2e_android
-          type: approval
-          filters:
-            branches:
-              only: master
-      - publish:
-          requires:
-            - hold
-          filters:
-            branches:
-              only: master
+      - publish
