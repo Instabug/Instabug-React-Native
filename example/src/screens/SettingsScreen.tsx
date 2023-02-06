@@ -46,7 +46,7 @@ export const SettingsScreen: React.FC = () => {
 
       <ListTile title="Primary Color">
         <InputGroup>
-          <InputLeftAddon children="#" />
+          <InputLeftAddon>#</InputLeftAddon>
           <Input
             value={color}
             maxLength={6}
