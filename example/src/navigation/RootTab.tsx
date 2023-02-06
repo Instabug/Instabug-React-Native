@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SettingsScreen } from '../screens/SettingsScreen';
@@ -13,6 +16,10 @@ export type RootTabParamList = {
 
 const RootTab = createBottomTabNavigator<RootTabParamList>();
 
+const createTabBarIcon = (name: string): BottomTabNavigationOptions['tabBarIcon'] => {
+  return (props) => <Icon name={name} {...props} />;
+};
+
 export const RootTabNavigator: React.FC = () => {
   return (
     <RootTab.Navigator>
@@ -22,16 +29,14 @@ export const RootTabNavigator: React.FC = () => {
         options={{
           tabBarLabel: 'Home',
           headerShown: false,
-          // eslint-disable-next-line react/no-unstable-nested-components
-          tabBarIcon: (props) => <Icon name="home" {...props} />,
+          tabBarIcon: createTabBarIcon('home'),
         }}
       />
       <RootTab.Screen
         name="Settings"
         component={SettingsScreen}
         options={{
-          // eslint-disable-next-line react/no-unstable-nested-components
-          tabBarIcon: (props) => <Icon name="settings" {...props} />,
+          tabBarIcon: createTabBarIcon('settings'),
         }}
       />
     </RootTab.Navigator>
