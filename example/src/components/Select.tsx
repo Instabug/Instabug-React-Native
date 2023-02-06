@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { CheckIcon, Select as NativeBaseSelect } from 'native-base';
 
-interface SelectItemProps<T> {
+interface SelectItem<T> {
   label: string;
   value: T;
   isInitial?: boolean;
@@ -10,7 +10,7 @@ interface SelectItemProps<T> {
 
 interface SelectProps<T> {
   label: string;
-  items: SelectItemProps<T>[];
+  items: SelectItem<T>[];
   onValueChange: (value: T) => void;
 }
 
