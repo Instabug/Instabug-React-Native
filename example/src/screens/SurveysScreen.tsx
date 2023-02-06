@@ -10,11 +10,11 @@ export const SurveysScreen: React.FC = () => {
     <Screen>
       <ListTile
         title="Show NPS Survey"
-        onPress={() => Surveys.showSurvey('CHUJHGRx8s1qPcCSs85kFA')}
+        onPress={() => Surveys.showSurvey('KWjV8MqOm5HrsU5IKXxAmQ')}
       />
       <ListTile
-        title="Show Multiple Question Survey"
-        onPress={() => Surveys.showSurvey('95s5cjU1i74m23h0M9t_Sg')}
+        title="Show Custom Survey"
+        onPress={() => Surveys.showSurvey('6ZaEI4nVdjg19r5uekS5nw')}
       />
     </Screen>
   );
