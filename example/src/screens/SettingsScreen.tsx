@@ -14,7 +14,7 @@ export const SettingsScreen: React.FC = () => {
     <Screen>
       <ListTile title="Invocation Event">
         <Select
-          label="Invocation Event"
+          label="Select Invocation Event"
           items={[
             {
               label: 'None',
@@ -51,6 +51,7 @@ export const SettingsScreen: React.FC = () => {
             value={color}
             maxLength={6}
             flex={1}
+            accessibilityLabel="Primary Color Value"
             onChangeText={(value) => {
               setColor(value);
               if (/^[0-9A-F]{6}$/i.test(value)) {
@@ -63,7 +64,7 @@ export const SettingsScreen: React.FC = () => {
 
       <ListTile title="Theme">
         <Select
-          label="Theme"
+          label="Select Theme"
           items={[
             {
               label: 'Light',
