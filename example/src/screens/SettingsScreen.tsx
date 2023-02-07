@@ -1,101 +1,83 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
 
 import Instabug, { BugReporting } from 'instabug-reactnative';
+import { Input, InputGroup, InputLeftAddon } from 'native-base';
 
-import { Button } from '../components/Button';
-import { ColorButton } from '../components/ColorButton';
+import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
-import { Section } from '../components/Section';
+import { Select } from '../components/Select';
 
-const invocationEvents = [
-  { label: 'Shake', value: Instabug.invocationEvent.shake },
-  { label: 'Screenshot', value: Instabug.invocationEvent.screenshot },
-  { label: 'Two fingers swipe left', value: Instabug.invocationEvent.twoFingersSwipe },
-  { label: 'Floating button', value: Instabug.invocationEvent.floatingButton },
-  { label: 'None', value: Instabug.invocationEvent.none },
-];
-
-const colors = ['#1D82DC', 'crimson', 'olivedrab', 'gold'];
-
-export function SettingsScreen() {
-  const [theme, setTheme] = useState(Instabug.colorTheme.light);
-  const [color, setColor] = useState(colors[0]);
-
-  const isLightTheme = theme === Instabug.colorTheme.light;
-
-  const toggleColorTheme = (isLight: boolean) => {
-    const newTheme = isLight ? Instabug.colorTheme.light : Instabug.colorTheme.dark;
-    Instabug.setColorTheme(newTheme);
-    setTheme(newTheme);
-  };
-
-  const setPrimaryColor = (newColor: string) => {
-    Instabug.setPrimaryColor(newColor);
-    setColor(newColor);
-  };
-
-  const changeInvocationEvent = (invocationEvent: Instabug.invocationEvent) =>
-    BugReporting.setInvocationEvents([invocationEvent]);
+export const SettingsScreen: React.FC = () => {
+  const [color, setColor] = useState('1D82DC');
 
   return (
     <Screen>
-      <Section title="Invocation Event">
-        <View style={styles.row}>
-          {invocationEvents.map((event) => (
-            <Button key={event.label} onPress={() => changeInvocationEvent(event.value)}>
-              {event.label}
-            </Button>
-          ))}
-        </View>
-      </Section>
+      <ListTile title="Invocation Event">
+        <Select
+          label="Select Invocation Event"
+          items={[
+            {
+              label: 'None',
+              value: Instabug.invocationEvent.none,
+            },
+            {
+              label: 'Shake',
+              value: Instabug.invocationEvent.shake,
+            },
+            {
+              label: 'Screenshot',
+              value: Instabug.invocationEvent.screenshot,
+            },
+            {
+              label: 'Two fingers swipe left',
+              value: Instabug.invocationEvent.twoFingersSwipe,
+            },
+            {
+              label: 'Floating button',
+              value: Instabug.invocationEvent.floatingButton,
+              isInitial: true,
+            },
+          ]}
+          onValueChange={(value) => {
+            BugReporting.setInvocationEvents([value]);
+          }}
+        />
+      </ListTile>
 
-      <Section title="Primary Color">
-        <View style={styles.row}>
-          {colors.map((_color) => (
-            <ColorButton
-              key={_color}
-              color={_color}
-              checked={_color === color}
-              onPress={setPrimaryColor}
-            />
-          ))}
-        </View>
-      </Section>
-
-      <Section title="Color Theme">
-        <View style={styles.colorThemeContainer}>
-          <Text style={styles.colorThemeText}>Dark</Text>
-          <Switch
-            accessibilityLabel="Light color theme"
-            onValueChange={toggleColorTheme}
-            value={isLightTheme}
-            style={styles.colorThemeSwitch}
+      <ListTile title="Primary Color">
+        <InputGroup>
+          <InputLeftAddon>#</InputLeftAddon>
+          <Input
+            value={color}
+            maxLength={6}
+            flex={1}
+            accessibilityLabel="Primary Color Value"
+            onChangeText={(value) => {
+              setColor(value);
+              if (/^[0-9A-F]{6}$/i.test(value)) {
+                Instabug.setPrimaryColor(`#${value}`);
+              }
+            }}
           />
-          <Text style={styles.colorThemeText}>Light</Text>
-        </View>
-      </Section>
+        </InputGroup>
+      </ListTile>
+
+      <ListTile title="Theme">
+        <Select
+          label="Select Theme"
+          items={[
+            {
+              label: 'Light',
+              value: Instabug.colorTheme.light,
+            },
+            {
+              label: 'Dark',
+              value: Instabug.colorTheme.dark,
+            },
+          ]}
+          onValueChange={Instabug.setColorTheme}
+        />
+      </ListTile>
     </Screen>
   );
-}
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-    flexGrow: 1,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  colorThemeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  colorThemeText: {
-    fontSize: 18,
-  },
-  colorThemeSwitch: {
-    marginHorizontal: 15,
-  },
-});
+};
