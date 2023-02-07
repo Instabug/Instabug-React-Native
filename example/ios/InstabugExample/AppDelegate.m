@@ -4,6 +4,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <Instabug/Instabug.h>
+
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -22,6 +24,15 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
+
+
+// Enable Instabug to capture console logs from NSLog
+inline void NSLog(NSString *format, ...) {
+    va_list arg_list;
+    va_start(arg_list, format);
+    IBGNSLogWithLevel(format, arg_list, IBGLogLevelNone);
+    va_end(arg_list);
+}
 
 @implementation AppDelegate
 
