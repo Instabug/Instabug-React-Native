@@ -57,3 +57,6 @@ android/keystores/debug.keystore
 
 # Expo
 .expo/*
+
+# Bundle artifact
+*.jsbundle
