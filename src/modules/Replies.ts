@@ -1,8 +1,6 @@
 import { Platform } from 'react-native';
 
 import { NativeReplies } from '../native';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 /**
  * Enables and disables everything related to receiving replies.
@@ -32,7 +30,6 @@ export const show = () => {
  * @param handler A callback that gets executed when a new message is received.
  */
 export const setOnNewReplyReceivedHandler = (handler: () => void) => {
-  IBGEventEmitter.addListener(NativeReplies, InstabugConstants.ON_REPLY_RECEIVED_HANDLER, handler);
   NativeReplies.setOnNewReplyReceivedHandler(handler);
 };
 

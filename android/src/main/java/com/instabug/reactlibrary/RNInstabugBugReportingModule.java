@@ -3,13 +3,11 @@ package com.instabug.reactlibrary;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.library.Feature;
@@ -20,7 +18,6 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.reactlibrary.utils.ArrayUtil;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import java.util.ArrayList;
@@ -226,19 +223,19 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
      * This block is executed on the UI thread. Could be used for performing any
      * UI changes before the SDK's UI is shown.
      *
-     * @param onInvokeHandler - A callback that gets executed before
+     * @param handler - A callback that gets executed before
      *                             invoking the SDK
      */
     @ReactMethod
-    public void setOnInvokeHandler(final Callback onInvokeHandler) {
+    public void setOnInvokeHandler(final Callback handler) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                         @Override
                         public void onInvoke() {
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_PRE_INVOCATION_HANDLER, null);
+                            handler.invoke();
                         }
                     });
                 } catch (java.lang.Exception exception) {
@@ -283,10 +280,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
                     BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
                         @Override
                         public void call(DismissType dismissType, ReportType reportType) {
-                            WritableMap params = Arguments.createMap();
-                            params.putString("dismissType", dismissType.toString());
-                            params.putString("reportType", reportType.toString());
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_POST_INVOCATION_HANDLER, params);
+                            handler.invoke(dismissType.toString(), reportType.toString());
                         }
                     });
                 } catch (java.lang.Exception exception) {

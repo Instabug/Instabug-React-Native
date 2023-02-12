@@ -47,18 +47,18 @@ RCT_EXPORT_METHOD(setAutoScreenRecordingDuration:(CGFloat)duration) {
     IBGBugReporting.autoScreenRecordingDuration = duration;
 }
 
-RCT_EXPORT_METHOD(setOnInvokeHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
+RCT_EXPORT_METHOD(setOnInvokeHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGBugReporting.willInvokeHandler = ^{
-            [self sendEventWithName:@"IBGpreInvocationHandler" body:nil];
+            handler(@[]);
         };
     } else {
         IBGBugReporting.willInvokeHandler = nil;
     }
 }
 
-RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
+RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
             
             //parse dismiss type enum
@@ -80,20 +80,17 @@ RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
             } else {
                 reportTypeString = @"other";
             }
-            NSDictionary *result = @{ @"dismissType": dismissTypeString,
-                                      @"reportType": reportTypeString};
-            [self sendEventWithName:@"IBGpostInvocationHandler" body: result];
+
+            handler(@[dismissTypeString, reportTypeString]);
         };
     } else {
         IBGBugReporting.didDismissHandler = nil;
     }
 }
 
-RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
-        
+RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
-            
             NSString *promptOptionString;
             if (promptOption == IBGPromptOptionBug) {
                 promptOptionString = @"bug";
@@ -104,10 +101,8 @@ RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack)
             } else {
                 promptOptionString = @"none";
             }
-            
-            [self sendEventWithName:@"IBGDidSelectPromptOptionHandler" body:@{
-                                                                              @"promptOption": promptOptionString
-                                                                              }];
+
+            handler(@[promptOptionString]);
         };
     } else {
         IBGBugReporting.didSelectPromptOptionHandler = nil;

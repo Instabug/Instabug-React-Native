@@ -1,8 +1,5 @@
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,7 +9,6 @@ import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
@@ -270,20 +266,19 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setOnNewReplyReceivedHandler(final Callback onNewReplyReceivedCallback) {
+    public void setOnNewReplyReceivedHandler(final Callback handler) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Runnable onNewReplyReceivedRunnable = new Runnable() {
+                    Replies.setOnNewReplyReceivedCallback(new Runnable() {
                         @Override
                         public void run() {
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_NEW_REPLY_RECEIVED_CALLBACK, null);
+                            handler.invoke();
                         }
-                    };
-                    Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
-                } catch (java.lang.Exception exception) {
-                    exception.printStackTrace();
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

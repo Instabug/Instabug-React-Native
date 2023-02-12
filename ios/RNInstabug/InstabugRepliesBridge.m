@@ -46,10 +46,10 @@ RCT_EXPORT_METHOD(show) {
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[IBGReplies class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
-RCT_EXPORT_METHOD(setOnNewReplyReceivedHandler:(RCTResponseSenderBlock) callback) {
-    if (callback != nil) {
+RCT_EXPORT_METHOD(setOnNewReplyReceivedHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGReplies.didReceiveReplyHandler = ^{
-            [self sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil];
+            handler(@[]);
         };
     } else {
         IBGReplies.didReceiveReplyHandler = nil;

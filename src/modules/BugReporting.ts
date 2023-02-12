@@ -10,8 +10,6 @@ import {
   position,
   reportType,
 } from '../utils/ArgsRegistry';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 export { invocationEvent, extendedBugReportMode, reportType, option, position };
 
@@ -48,7 +46,6 @@ export const setOptions = (options: option[]) => {
  * @param handler A callback that gets executed before invoking the SDK
  */
 export const onInvokeHandler = (handler: () => void) => {
-  IBGEventEmitter.addListener(NativeBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
   NativeBugReporting.setOnInvokeHandler(handler);
 };
 
@@ -61,13 +58,6 @@ export const onInvokeHandler = (handler: () => void) => {
 export const onSDKDismissedHandler = (
   handler: (dismissType: dismissType, reportType: reportType) => void,
 ) => {
-  IBGEventEmitter.addListener(
-    NativeBugReporting,
-    InstabugConstants.ON_SDK_DISMISSED_HANDLER,
-    (payload) => {
-      handler(payload.dismissType, payload.reportType);
-    },
-  );
   NativeBugReporting.setOnSDKDismissedHandler(handler);
 };
 
@@ -182,13 +172,6 @@ export const setDidSelectPromptOptionHandler = (handler: (promptOption: string) 
   if (Platform.OS === 'android') {
     return;
   }
-  IBGEventEmitter.addListener(
-    NativeBugReporting,
-    InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER,
-    (payload) => {
-      handler(payload.promptOption);
-    },
-  );
   NativeBugReporting.setDidSelectPromptOptionHandler(handler);
 };
 

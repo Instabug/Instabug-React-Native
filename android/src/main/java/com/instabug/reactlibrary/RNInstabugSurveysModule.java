@@ -137,7 +137,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
                 Surveys.setOnShowCallback(new OnShowCallback() {
                     @Override
                     public void onShow() {
-                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
+                        handler.invoke();
                     }
                 });
             }
@@ -159,7 +159,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
                     @Override
                     public void onDismiss() {
-                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
+                        handler.invoke();
                     }
                 });
             }

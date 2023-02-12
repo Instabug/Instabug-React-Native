@@ -63,20 +63,20 @@ RCT_EXPORT_METHOD(showSurveysIfAvailable) {
     [IBGSurveys showSurveyIfAvailable];
 }
 
-RCT_EXPORT_METHOD(setOnShowHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
+RCT_EXPORT_METHOD(setOnShowHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGSurveys.willShowSurveyHandler = ^{
-            [self sendEventWithName:@"IBGWillShowSurvey" body:nil];
+            handler(@[]);
         };
     } else {
         IBGSurveys.willShowSurveyHandler = ^{};
     }
 }
 
-RCT_EXPORT_METHOD(setOnDismissHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
+RCT_EXPORT_METHOD(setOnDismissHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         IBGSurveys.didDismissSurveyHandler = ^{
-            [self sendEventWithName:@"IBGDidDismissSurvey" body:nil];
+            handler(@[]);
         };
     } else {
         IBGSurveys.didDismissSurveyHandler = ^{};

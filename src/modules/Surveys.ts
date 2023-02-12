@@ -1,8 +1,6 @@
 import { Platform } from 'react-native';
 
 import { NativeSurveys } from '../native';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 export interface Survey {
   title: string;
@@ -56,11 +54,6 @@ export const setAutoShowingEnabled = (autoShowingSurveysEnabled: boolean) => {
  * presenting the survey's UI.
  */
 export const setOnShowHandler = (onShowHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
-    onShowHandler,
-  );
   NativeSurveys.setOnShowHandler(onShowHandler);
 };
 
@@ -72,11 +65,6 @@ export const setOnShowHandler = (onShowHandler: () => void) => {
  * the survey's UI is dismissed.
  */
 export const setOnDismissHandler = (onDismissHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
-    onDismissHandler,
-  );
   NativeSurveys.setOnDismissHandler(onDismissHandler);
 };
 
