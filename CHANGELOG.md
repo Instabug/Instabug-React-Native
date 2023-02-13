@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Bumps Instabug Android SDK to v11.8.0
 - Bumps Instabug iOS SDK to v11.7.0
 - Fixes global error handler not being called.
 - Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
