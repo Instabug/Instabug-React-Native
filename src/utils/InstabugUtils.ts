@@ -8,19 +8,9 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import { NativeCrashReporting } from '../native';
-import IBGEventEmitter from './IBGEventEmitter';
-import InstabugConstants from './InstabugConstants';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
-};
-
-let _isOnReportHandlerSet = false;
-
-export const isOnReportHandlerSet = (): boolean => _isOnReportHandlerSet;
-
-export const setOnReportHandler = (flag: boolean) => {
-  _isOnReportHandlerSet = flag;
 };
 
 export const getActiveRouteName = (navigationState: NavigationStateV4): string | null => {
@@ -90,11 +80,7 @@ export const captureJsErrors = () => {
     };
 
     if (Platform.OS === 'android') {
-      if (_isOnReportHandlerSet) {
-        IBGEventEmitter.emit(InstabugConstants.SEND_UNHANDLED_CRASH, jsonObject);
-      } else {
-        NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
-      }
+      NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
     } else {
       NativeCrashReporting.sendJSCrash(jsonObject);
     }
@@ -115,8 +101,6 @@ export const stringifyIfNotString = (input: unknown) => {
 export default {
   parseErrorStack,
   captureJsErrors,
-  setOnReportHandler,
-  isOnReportHandlerSet,
   getActiveRouteName,
   getFullRoute,
   getStackTrace,

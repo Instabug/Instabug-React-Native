@@ -25,9 +25,8 @@
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
-             @"IBGpreSendingHandler",
              @"IBGSetNetworkDataObfuscationHandler",
-             ];
+    ];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -98,16 +97,16 @@ RCT_EXPORT_METHOD(setTrackUserSteps:(BOOL)isEnabled) {
 }
 
 IBGReport *currentReport = nil;
-RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
-    if (callBack != nil) {
+RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)handler) {
+    if (handler != nil) {
         Instabug.willSendReportHandler = ^IBGReport * _Nonnull(IBGReport * _Nonnull report) {
-            NSArray *tagsArray = report.tags;
+            NSArray *tags = report.tags;
             NSArray *instabugLogs= report.instabugLogs;
             NSArray *consoleLogs= report.consoleLogs;
             NSDictionary *userAttributes= report.userAttributes;
             NSArray *fileAttachments= report.fileLocations;
-            NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
-            [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
+            
+            handler(@[tags, consoleLogs, instabugLogs, userAttributes, fileAttachments]);
 
             currentReport = report;
             return report;

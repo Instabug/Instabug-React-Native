@@ -1,11 +1,8 @@
 package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
@@ -29,14 +26,10 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
-import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
-import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
-import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.Platform;
 import com.instabug.library.LogLevel;
@@ -45,8 +38,6 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
-import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
@@ -968,25 +959,25 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      * This block is executed in the background before sending each report. Could
      * be used for attaching logs and extra data to reports.
      *
-     * @param preSendingHandler - A callback that gets executed before
+     * @param handler - A callback that gets executed before
      *                          sending each bug
      *                          report.
      */
     @ReactMethod
-    public void setPreSendingHandler(final Callback preSendingHandler) {
+    public void setPreSendingHandler(final Callback handler) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
                     @Override
                     public void onReportCreated(Report report) {
-                        WritableMap reportParam = Arguments.createMap();
-                        reportParam.putArray("tagsArray", convertArrayListToWritableArray(report.getTags()));
-                        reportParam.putArray("consoleLogs", convertArrayListToWritableArray(report.getConsoleLog()));
-                        reportParam.putString("userData", report.getUserData());
-                        reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
-                        reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
-                        sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
+                        ReadableArray tags = convertArrayListToWritableArray(report.getTags());
+                        ReadableArray consoleLogs = convertArrayListToWritableArray(report.getConsoleLog());
+                        ReadableMap userAttributes = convertFromHashMapToWriteableMap(report.getUserAttributes());
+                        ReadableMap fileAttachments = convertFromHashMapToWriteableMap(report.getFileAttachments());
+
+                        handler.invoke(tags, consoleLogs, null, userAttributes, fileAttachments);
+
                         currentReport = report;
                     }
                 });
