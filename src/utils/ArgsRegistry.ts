@@ -28,6 +28,8 @@ export enum logLevel {
 }
 
 /**
+ * @deprecated Use `InvocationEvent` instead.
+ *
  * The event used to invoke the feedback form
  */
 export enum invocationEvent {
@@ -39,6 +41,8 @@ export enum invocationEvent {
 }
 
 /**
+ * @deprecated Use `InvocationOption` instead.
+ *
  * Options added while invoking bug reporting.
  */
 export enum option {
@@ -49,6 +53,8 @@ export enum option {
 }
 
 /**
+ * @deprecated Use `ColorTheme` instead.
+ *
  * The color theme of the different UI elements
  */
 export enum colorTheme {
@@ -57,6 +63,8 @@ export enum colorTheme {
 }
 
 /**
+ * @deprecated Use `FloatingButtonPosition` instead.
+ *
  * Floating Button edges
  */
 export enum floatingButtonEdge {
@@ -65,6 +73,8 @@ export enum floatingButtonEdge {
 }
 
 /**
+ * @deprecated Use `RecordingButtonPosition` instead.
+ *
  * NativeInstabug floating buttons positions.
  */
 export enum position {
@@ -75,6 +85,8 @@ export enum position {
 }
 
 /**
+ * @deprecated Use `RecordingButtonPosition` instead.
+ *
  * NativeInstabug floating buttons positions.
  */
 export enum IBGPosition {
@@ -85,6 +97,8 @@ export enum IBGPosition {
 }
 
 /**
+ * @deprecated Use `WelcomeMessageMode` instead.
+ *
  * The welcome message mode.
  */
 export enum welcomeMessageMode {
@@ -94,6 +108,8 @@ export enum welcomeMessageMode {
 }
 
 /**
+ * @deprecated Use `ReportType` instead.
+ *
  * Type of the report either feedback or bug.
  */
 export enum reportType {
@@ -103,6 +119,8 @@ export enum reportType {
 }
 
 /**
+ * @deprecated Use `DismissType` instead.
+ *
  * Type of SDK dismiss
  */
 export enum dismissType {
@@ -112,6 +130,8 @@ export enum dismissType {
 }
 
 /**
+ * @deprecated Use `ActionType` instead.
+ *
  * NativeInstabug action types.
  */
 export enum actionTypes {
@@ -122,6 +142,8 @@ export enum actionTypes {
 }
 
 /**
+ * @deprecated Use `ExtendedBugReportMode` instead.
+ *
  * The extended bug report mode
  */
 export enum extendedBugReportMode {
@@ -131,6 +153,8 @@ export enum extendedBugReportMode {
 }
 
 /**
+ * @deprecated Use `ReproStepsMode` instead.
+ *
  * The user steps option.
  */
 export enum reproStepsMode {
@@ -140,6 +164,8 @@ export enum reproStepsMode {
 }
 
 /**
+ * @deprecated Use `Locale` instead.
+ *
  * The supported locales
  */
 export enum locale {
@@ -166,6 +192,8 @@ export enum locale {
 }
 
 /**
+ * @deprecated Use `StringKey` instead.
+ *
  * NativeInstabug strings
  */
 export enum strings {

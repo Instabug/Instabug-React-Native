@@ -13,6 +13,7 @@ import * as Replies from './modules/Replies';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
 
+export * from './utils/Enums';
 export {
   Report,
   Trace,
@@ -24,8 +25,6 @@ export {
   Replies,
   Surveys,
 };
-export * from './utils/Enums';
-
 export type { InstabugConfig };
 export type { Survey };
 
