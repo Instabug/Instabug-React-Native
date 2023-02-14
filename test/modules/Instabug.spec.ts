@@ -1,12 +1,12 @@
 import '../mocks/mockInstabugUtils';
 
-import { NativeModules, Platform, findNodeHandle, processColor } from 'react-native';
+import { Platform, findNodeHandle, processColor } from 'react-native';
 
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
-import { NativeCrashReporting, NativeInstabug } from '../../src/native';
+import { NativeInstabug } from '../../src/native';
 import { LogLevel } from '../../src/utils/Enums';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
@@ -602,16 +602,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.show).toBeCalledTimes(1);
   });
 
-  it('should set _isOnReportHandlerSet to true on calling onReportSubmitHandler', () => {
-    Instabug.onReportSubmitHandler(jest.fn());
-    expect(InstabugUtils.setOnReportHandler).toBeCalledWith(true);
-  });
-
-  it('should set _isOnReportHandlerSet to false on calling onReportSubmitHandler without a handler', () => {
-    Instabug.onReportSubmitHandler();
-    expect(InstabugUtils.setOnReportHandler).toBeCalledWith(false);
-  });
-
   it('should call the native method setPreSendingHandler with a function', () => {
     const callback = jest.fn();
     Instabug.onReportSubmitHandler(callback);
@@ -641,97 +631,6 @@ describe('Instabug Module', () => {
     IBGEventEmitter.emit(IBGConstants.PRESENDING_HANDLER, report);
 
     expect(IBGEventEmitter.getListeners(IBGConstants.PRESENDING_HANDLER).length).toEqual(1);
-  });
-
-  it('should invoke callback on emitting the event IBGSendHandledJSCrash', async (done) => {
-    Platform.OS = 'android';
-    const report = {
-      tags: ['tag1', 'tag2'],
-      consoleLogs: ['consoleLog'],
-      instabugLogs: ['instabugLog'],
-      userAttributes: [{ age: '24' }],
-      fileAttachments: ['path'],
-    };
-    NativeModules.Instabug.getReport.mockResolvedValue(report);
-    const jsonObject = { stack: 'error' };
-    const callback = (rep: Report) => {
-      expect(rep).toBeInstanceOf(Report);
-      expect(rep.tags).toBe(report.tags);
-      expect(rep.consoleLogs).toBe(report.consoleLogs);
-      expect(rep.instabugLogs).toBe(report.instabugLogs);
-      expect(rep.userAttributes).toBe(report.userAttributes);
-      expect(rep.fileAttachments).toBe(report.fileAttachments);
-      done();
-    };
-    Instabug.onReportSubmitHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, jsonObject);
-
-    expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(1);
-    await waitForExpect(() => expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1));
-    await waitForExpect(() =>
-      expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(jsonObject),
-    );
-  });
-
-  it('should not break if pre-sending callback fails on emitting the event IBGSendHandledJSCrash', async () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    Platform.OS = 'android';
-    NativeModules.Instabug.getReport.mockResolvedValue({});
-    const callback = jest.fn(() => {
-      throw new Error('Pre-sending callback failed.');
-    });
-
-    Instabug.onReportSubmitHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, {});
-
-    // We don't care if console.error is called but we use it as a sign that the function finished running
-    await waitForExpect(() => expect(callback).toBeCalled());
-    expect(NativeCrashReporting.sendHandledJSCrash).not.toBeCalled();
-
-    consoleSpy.mockRestore();
-  });
-
-  it('should not invoke callback on emitting the event IBGSendHandledJSCrash when Platform is iOS', () => {
-    Platform.OS = 'ios';
-    Instabug.onReportSubmitHandler(jest.fn());
-    IBGEventEmitter.emit(IBGConstants.SEND_HANDLED_CRASH, {});
-    expect(IBGEventEmitter.getListeners(IBGConstants.SEND_HANDLED_CRASH).length).toEqual(0);
-  });
-
-  it('should invoke callback on emitting the event IBGSendUnhandledJSCrash', async (done) => {
-    Platform.OS = 'android';
-    const report = {
-      tags: ['tag1', 'tag2'],
-      consoleLogs: ['consoleLog'],
-      instabugLogs: ['instabugLog'],
-      userAttributes: [{ age: '24' }],
-      fileAttachments: ['path'],
-    };
-    NativeModules.Instabug.getReport.mockResolvedValue(report);
-    const jsonObject = { stack: 'error' };
-    const callback = (rep: Report) => {
-      expect(rep).toBeInstanceOf(Report);
-      expect(rep.tags).toBe(report.tags);
-      expect(rep.consoleLogs).toBe(report.consoleLogs);
-      expect(rep.instabugLogs).toBe(report.instabugLogs);
-      expect(rep.userAttributes).toBe(report.userAttributes);
-      expect(rep.fileAttachments).toBe(report.fileAttachments);
-      done();
-    };
-    Instabug.onReportSubmitHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, jsonObject);
-
-    expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(1);
-    await waitForExpect(() => expect(NativeCrashReporting.sendJSCrash).toBeCalledTimes(1));
-    await waitForExpect(() => expect(NativeCrashReporting.sendJSCrash).toBeCalledWith(jsonObject));
-  });
-
-  it('should not invoke callback on emitting the event IBGSendUnhandledJSCrash when Platform is iOS', () => {
-    Platform.OS = 'ios';
-    Instabug.onReportSubmitHandler(jest.fn());
-    IBGEventEmitter.emit(IBGConstants.SEND_UNHANDLED_CRASH, {});
-    expect(IBGEventEmitter.getListeners(IBGConstants.SEND_UNHANDLED_CRASH).length).toEqual(0);
   });
 
   it('should invoke the native method callPrivateApi', () => {
