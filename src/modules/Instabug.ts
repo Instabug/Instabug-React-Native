@@ -91,7 +91,7 @@ export const init = (config: InstabugConfig) => {
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
-    config.debugLogsLevel ?? LogLevel.Error,
+    config.debugLogsLevel ?? LogLevel.error,
   );
 
   _isFirstScreen = true;

@@ -9,12 +9,12 @@ export const BugReportingScreen: React.FC = () => {
   return (
     <Screen>
       <ListTile title="Show" onPress={() => Instabug.show()} />
-      <ListTile title="Send Bug Report" onPress={() => BugReporting.show(ReportType.Bug, [])} />
+      <ListTile title="Send Bug Report" onPress={() => BugReporting.show(ReportType.bug, [])} />
       <ListTile
         title="Send Feedback"
-        onPress={() => BugReporting.show(ReportType.Feedback, [InvocationOption.EmailFieldHidden])}
+        onPress={() => BugReporting.show(ReportType.feedback, [InvocationOption.emailFieldHidden])}
       />
-      <ListTile title="Ask a Question" onPress={() => BugReporting.show(ReportType.Question, [])} />
+      <ListTile title="Ask a Question" onPress={() => BugReporting.show(ReportType.question, [])} />
     </Screen>
   );
 };

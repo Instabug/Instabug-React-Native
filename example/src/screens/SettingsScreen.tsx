@@ -18,23 +18,23 @@ export const SettingsScreen: React.FC = () => {
           items={[
             {
               label: 'None',
-              value: InvocationEvent.None,
+              value: InvocationEvent.none,
             },
             {
               label: 'Shake',
-              value: InvocationEvent.Shake,
+              value: InvocationEvent.shake,
             },
             {
               label: 'Screenshot',
-              value: InvocationEvent.Screenshot,
+              value: InvocationEvent.screenshot,
             },
             {
               label: 'Two fingers swipe left',
-              value: InvocationEvent.TwoFingersSwipe,
+              value: InvocationEvent.twoFingersSwipe,
             },
             {
               label: 'Floating button',
-              value: InvocationEvent.FloatingButton,
+              value: InvocationEvent.floatingButton,
               isInitial: true,
             },
           ]}
@@ -68,11 +68,11 @@ export const SettingsScreen: React.FC = () => {
           items={[
             {
               label: 'Light',
-              value: ColorTheme.Light,
+              value: ColorTheme.light,
             },
             {
               label: 'Dark',
-              value: ColorTheme.Dark,
+              value: ColorTheme.dark,
             },
           ]}
           onValueChange={Instabug.setColorTheme}

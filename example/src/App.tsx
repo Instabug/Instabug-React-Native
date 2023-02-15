@@ -12,8 +12,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
       token: 'deb1910a7342814af4e4c9210c786f35',
-      invocationEvents: [InvocationEvent.FloatingButton],
-      debugLogsLevel: LogLevel.Verbose,
+      invocationEvents: [InvocationEvent.floatingButton],
+      debugLogsLevel: LogLevel.verbose,
     });
   }, []);
 
