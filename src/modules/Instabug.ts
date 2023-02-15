@@ -22,7 +22,15 @@ import {
   strings,
   welcomeMessageMode,
 } from '../utils/ArgsRegistry';
-import { LogLevel } from '../utils/Enums';
+import {
+  ColorTheme,
+  InvocationEvent,
+  Locale,
+  LogLevel,
+  ReproStepsMode,
+  StringKey,
+  WelcomeMessageMode,
+} from '../utils/Enums';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
@@ -65,7 +73,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param token The token that identifies the app, you can find it on your dashboard.
  * @param invocationEvents The events that invokes the SDK's UI.
  */
-export const start = (token: string, invocationEvents: invocationEvent[]) => {
+export const start = (token: string, invocationEvents: invocationEvent[] | InvocationEvent[]) => {
   init({ token: token, invocationEvents: invocationEvents });
 };
 
@@ -83,7 +91,7 @@ export const init = (config: InstabugConfig) => {
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
-    config.debugLogsLevel ?? LogLevel.Error,
+    config.debugLogsLevel ?? LogLevel.error,
   );
 
   _isFirstScreen = true;
@@ -159,7 +167,7 @@ export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
  * Defaults to the device's current locale.
  * @param sdkLocale A locale to set the SDK to.
  */
-export const setLocale = (sdkLocale: locale) => {
+export const setLocale = (sdkLocale: locale | Locale) => {
   NativeInstabug.setLocale(sdkLocale);
 };
 
@@ -167,7 +175,7 @@ export const setLocale = (sdkLocale: locale) => {
  * Sets the color theme of the SDK's whole UI.
  * @param sdkTheme
  */
-export const setColorTheme = (sdkTheme: colorTheme) => {
+export const setColorTheme = (sdkTheme: colorTheme | ColorTheme) => {
   NativeInstabug.setColorTheme(sdkTheme);
 };
 
@@ -212,7 +220,7 @@ export const getTags = (callback: (tags: string[]) => void) => {
  * @param key Key of string to override.
  * @param string String value to override the default one.
  */
-export const setString = (key: strings, string: string) => {
+export const setString = (key: strings | StringKey, string: string) => {
   NativeInstabug.setString(string, key);
 };
 
@@ -350,7 +358,7 @@ export const clearLogs = () => {
  *
  * @param mode An enum to set user steps tracking to be enabled, non visual or disabled.
  */
-export const setReproStepsMode = (mode: reproStepsMode) => {
+export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
 };
 
@@ -463,7 +471,7 @@ export const isRunningLive = (callback: (isLive: boolean) => void) => {
  * Shows the welcome message in a specific mode.
  * @param mode An enum to set the welcome message mode to live, or beta.
  */
-export const showWelcomeMessage = (mode: welcomeMessageMode) => {
+export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode) => {
   NativeInstabug.showWelcomeMessageWithMode(mode);
 };
 
@@ -471,7 +479,7 @@ export const showWelcomeMessage = (mode: welcomeMessageMode) => {
  * Sets the welcome message mode to live, beta or disabled.
  * @param mode An enum to set the welcome message mode to live, beta or disabled.
  */
-export const setWelcomeMessageMode = (mode: welcomeMessageMode) => {
+export const setWelcomeMessageMode = (mode: welcomeMessageMode | WelcomeMessageMode) => {
   NativeInstabug.setWelcomeMessageMode(mode);
 };
 

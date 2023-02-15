@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Instabug, { BugReporting } from 'instabug-reactnative';
+import Instabug, { BugReporting, ColorTheme, InvocationEvent } from 'instabug-reactnative';
 import { Input, InputGroup, InputLeftAddon } from 'native-base';
 
 import { ListTile } from '../components/ListTile';
@@ -18,23 +18,23 @@ export const SettingsScreen: React.FC = () => {
           items={[
             {
               label: 'None',
-              value: Instabug.invocationEvent.none,
+              value: InvocationEvent.none,
             },
             {
               label: 'Shake',
-              value: Instabug.invocationEvent.shake,
+              value: InvocationEvent.shake,
             },
             {
               label: 'Screenshot',
-              value: Instabug.invocationEvent.screenshot,
+              value: InvocationEvent.screenshot,
             },
             {
               label: 'Two fingers swipe left',
-              value: Instabug.invocationEvent.twoFingersSwipe,
+              value: InvocationEvent.twoFingersSwipe,
             },
             {
               label: 'Floating button',
-              value: Instabug.invocationEvent.floatingButton,
+              value: InvocationEvent.floatingButton,
               isInitial: true,
             },
           ]}
@@ -68,11 +68,11 @@ export const SettingsScreen: React.FC = () => {
           items={[
             {
               label: 'Light',
-              value: Instabug.colorTheme.light,
+              value: ColorTheme.light,
             },
             {
               label: 'Dark',
-              value: Instabug.colorTheme.dark,
+              value: ColorTheme.dark,
             },
           ]}
           onValueChange={Instabug.setColorTheme}

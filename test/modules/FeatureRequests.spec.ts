@@ -1,9 +1,10 @@
 import * as FeatureRequests from '../../src/modules/FeatureRequests';
 import { NativeFeatureRequests } from '../../src/native';
+import { ActionType } from '../../src/utils/Enums';
 
 describe('Feature Requests Module', () => {
   it('should call the native method setEmailFieldRequiredForFeatureRequests', () => {
-    const actionType = FeatureRequests.actionTypes.reportBug;
+    const actionType = ActionType.reportBug;
     FeatureRequests.setEmailFieldRequired(true, actionType);
 
     expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledTimes(1);
