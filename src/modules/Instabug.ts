@@ -479,7 +479,7 @@ export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode
  * Sets the welcome message mode to live, beta or disabled.
  * @param mode An enum to set the welcome message mode to live, beta or disabled.
  */
-export const setWelcomeMessageMode = (mode: welcomeMessageMode) => {
+export const setWelcomeMessageMode = (mode: welcomeMessageMode | WelcomeMessageMode) => {
   NativeInstabug.setWelcomeMessageMode(mode);
 };
 
