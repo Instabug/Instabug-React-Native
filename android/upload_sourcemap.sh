@@ -60,18 +60,26 @@ else
             *)        echo "unknown: $OSTYPE" ;;
         esac
 
-        #Find hermes(c) binary file path
-        INSTALLED_RN_VERSION_MAJOR=$(node -p "require('./node_modules/react-native/package.json').version" | cut -d "." -f2)
-        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 69 ]
-        then
-            HERMES_PATH=node_modules/react-native/sdks/hermesc/$HERMES_OS_BIN/hermesc
-        elif [ "$INSTALLED_RN_VERSION_MAJOR" -lt 63 ]
-        then
-            HERMES_PATH=node_modules/hermes-engine/$HERMES_OS_BIN/hermes
+        # Find hermes(c) binary file path
+        RN_VERSION=$(node -p "require('react-native/package.json').version")
+        RN_VERSION_MINOR=$(echo $RN_VERSION | cut -d "." -f2)
+        echo "Instabug: Using React Native v$RN_VERSION"
+
+        if [ "$RN_VERSION_MINOR" -ge 69 ]; then
+            RN_PACKAGE_PATH=$(node -p "require.resolve('react-native/package.json')")
+            RN_PATH=${RN_PACKAGE_PATH%"/package.json"}
+            HERMES_PATH=$RN_PATH/sdks/hermesc/$HERMES_OS_BIN/hermesc
         else
-            HERMES_PATH=node_modules/hermes-engine/$HERMES_OS_BIN/hermesc
+            HERMES_ENGINE_PACKAGE_PATH=$(node -p "require.resolve('hermes-engine/package.json')")
+            HERMES_ENGINE_PATH=${HERMES_ENGINE_PACKAGE_PATH%"/package.json"}
+            if [ "$RN_VERSION_MINOR" -lt 63 ]; then
+                HERMES_PATH=$HERMES_ENGINE_PATH/$HERMES_OS_BIN/hermes
+            else
+                HERMES_PATH=$HERMES_ENGINE_PATH/$HERMES_OS_BIN/hermesc
+            fi
         fi
-        if [ "$INSTALLED_RN_VERSION_MAJOR" -ge 65 ]
+    
+        if [ "$RN_VERSION_MINOR" -ge 65 ]
         then
             EXTRA_ARGS="--minify false"
         fi
@@ -84,11 +92,13 @@ else
         --sourcemap-output index.android.bundle.packager.map \
         $EXTRA_ARGS
 
+        echo "Instabug: Using Hermes from: $HERMES_PATH"
         $HERMES_PATH -emit-binary -out index.android.bundle.hbc index.android.bundle -O -output-source-map > /dev/null 2>&1
 
         cp index.android.bundle.hbc.map index.android.bundle.compiler.map
 
-        node node_modules/react-native/scripts/compose-source-maps.js index.android.bundle.packager.map index.android.bundle.compiler.map -o android-sourcemap.json
+        COMPOSE_SCRIPT_PATH=$(node -p "require.resolve('react-native/scripts/compose-source-maps.js')")
+        node $COMPOSE_SCRIPT_PATH index.android.bundle.packager.map index.android.bundle.compiler.map -o android-sourcemap.json
         rm -rf index.android.bundle
         rm -rf index.android.bundle.hbc.map
         rm -rf index.android.bundle.compiler.map
