@@ -1,5 +1,6 @@
 import { NativeFeatureRequests } from '../native';
 import { actionTypes } from '../utils/ArgsRegistry';
+import type { ActionType } from '../utils/Enums';
 
 export { actionTypes };
 
@@ -20,7 +21,10 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param isEmailFieldRequired A boolean to indicate whether email field is required or not.
  * @param types An enum that indicates which action types will have the isEmailFieldRequired
  */
-export const setEmailFieldRequired = (isEmailFieldRequired: boolean, types: actionTypes) => {
+export const setEmailFieldRequired = (
+  isEmailFieldRequired: boolean,
+  types: actionTypes | ActionType,
+) => {
   NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, types);
 };
 

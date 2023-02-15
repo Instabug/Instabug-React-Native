@@ -7,7 +7,15 @@ import waitForExpect from 'wait-for-expect';
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting, NativeInstabug } from '../../src/native';
-import { LogLevel } from '../../src/utils/Enums';
+import {
+  ColorTheme,
+  InvocationEvent,
+  Locale,
+  LogLevel,
+  ReproStepsMode,
+  StringKey,
+  WelcomeMessageMode,
+} from '../../src/utils/Enums';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
@@ -43,7 +51,7 @@ describe('Instabug Module', () => {
   it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
     Instabug.init({
       token: 'some-token',
-      invocationEvents: [Instabug.invocationEvent.none],
+      invocationEvents: [InvocationEvent.none],
     });
 
     Instabug.componentDidAppearListener({
@@ -156,8 +164,8 @@ describe('Instabug Module', () => {
   it('should call the native method init', () => {
     const instabugConfig = {
       token: 'some-token',
-      invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
-      debugLogsLevel: LogLevel.Debug,
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
     };
     Instabug.init(instabugConfig);
 
@@ -172,7 +180,7 @@ describe('Instabug Module', () => {
   it('should report the first screen on SDK initialization', async () => {
     Instabug.init({
       token: 'some-token',
-      invocationEvents: [Instabug.invocationEvent.none],
+      invocationEvents: [InvocationEvent.none],
     });
 
     await waitForExpect(() => {
@@ -227,7 +235,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setLocale', () => {
-    const locale = Instabug.locale.english;
+    const locale = Locale.english;
     Instabug.setLocale(locale);
 
     expect(NativeInstabug.setLocale).toBeCalledTimes(1);
@@ -235,7 +243,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setColorTheme', () => {
-    const theme = Instabug.colorTheme.dark;
+    const theme = ColorTheme.dark;
     Instabug.setColorTheme(theme);
 
     expect(NativeInstabug.setColorTheme).toBeCalledTimes(1);
@@ -276,7 +284,7 @@ describe('Instabug Module', () => {
 
   it('should call the native method setString', () => {
     const string = 'report an issue';
-    const key = Instabug.strings.reportBug;
+    const key = StringKey.reportBug;
     Instabug.setString(key, string);
 
     expect(NativeInstabug.setString).toBeCalledTimes(1);
@@ -383,7 +391,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setReproStepsMode', () => {
-    const mode = Instabug.reproStepsMode.enabled;
+    const mode = ReproStepsMode.enabled;
     Instabug.setReproStepsMode(mode);
 
     expect(NativeInstabug.setReproStepsMode).toBeCalledTimes(1);
@@ -546,7 +554,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setWelcomeMessageMode', () => {
-    const mode = Instabug.welcomeMessageMode.beta;
+    const mode = WelcomeMessageMode.beta;
     Instabug.setWelcomeMessageMode(mode);
 
     expect(NativeInstabug.setWelcomeMessageMode).toBeCalledTimes(1);
