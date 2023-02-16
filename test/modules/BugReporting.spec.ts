@@ -1,8 +1,15 @@
 import { Platform } from 'react-native';
 
 import * as BugReporting from '../../src/modules/BugReporting';
-import * as Instabug from '../../src/modules/Instabug';
 import { NativeBugReporting } from '../../src/native';
+import {
+  ExtendedBugReportMode,
+  FloatingButtonPosition,
+  InvocationEvent,
+  InvocationOption,
+  RecordingButtonPosition,
+  ReportType,
+} from '../../src/utils/Enums';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 
@@ -15,10 +22,7 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method setInvocationEvents with an array of invocationEvents', () => {
-    const arrayOfInvocationEvents = [
-      BugReporting.invocationEvent.floatingButton,
-      BugReporting.invocationEvent.shake,
-    ];
+    const arrayOfInvocationEvents = [InvocationEvent.floatingButton, InvocationEvent.shake];
     BugReporting.setInvocationEvents(arrayOfInvocationEvents);
 
     expect(NativeBugReporting.setInvocationEvents).toBeCalledTimes(1);
@@ -26,7 +30,7 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method setOptions with an array of options', () => {
-    const arrayOfOptions = [BugReporting.option.commentFieldRequired];
+    const arrayOfOptions = [InvocationOption.commentFieldRequired];
     BugReporting.setOptions(arrayOfOptions);
 
     expect(NativeBugReporting.setOptions).toBeCalledTimes(1);
@@ -82,16 +86,16 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method setExtendedBugReportMode with disabled', () => {
-    BugReporting.setExtendedBugReportMode(BugReporting.extendedBugReportMode.disabled);
+    BugReporting.setExtendedBugReportMode(ExtendedBugReportMode.disabled);
 
     expect(NativeBugReporting.setExtendedBugReportMode).toBeCalledTimes(1);
     expect(NativeBugReporting.setExtendedBugReportMode).toBeCalledWith(
-      BugReporting.extendedBugReportMode.disabled,
+      ExtendedBugReportMode.disabled,
     );
   });
 
   it('should call the native method setReportTypes with an array of reportTypes', () => {
-    const arrayOfReportTypes = [BugReporting.reportType.bug];
+    const arrayOfReportTypes = [ReportType.bug];
     BugReporting.setReportTypes(arrayOfReportTypes);
 
     expect(NativeBugReporting.setReportTypes).toBeCalledTimes(1);
@@ -99,8 +103,8 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method show with a reportType and array of options', () => {
-    const reportType = BugReporting.reportType.bug;
-    const arrayOfOptions = [BugReporting.option.commentFieldRequired];
+    const reportType = ReportType.bug;
+    const arrayOfOptions = [InvocationOption.commentFieldRequired];
     BugReporting.show(reportType, arrayOfOptions);
 
     expect(NativeBugReporting.show).toBeCalledTimes(1);
@@ -108,7 +112,7 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method show with a reportType and default options to an empty array', () => {
-    const reportType = BugReporting.reportType.bug;
+    const reportType = ReportType.bug;
     BugReporting.show(reportType, []);
 
     expect(NativeBugReporting.show).toBeCalledTimes(1);
@@ -221,7 +225,7 @@ describe('Testing BugReporting Module', () => {
 
   it('should call the native method setFloatingButtonEdge', () => {
     const offsetFromTop = 10;
-    const edge = Instabug.floatingButtonEdge.left;
+    const edge = FloatingButtonPosition.left;
     BugReporting.setFloatingButtonEdge(edge, offsetFromTop);
 
     expect(NativeBugReporting.setFloatingButtonEdge).toBeCalledTimes(1);
@@ -236,7 +240,7 @@ describe('Testing BugReporting Module', () => {
   });
 
   it('should call the native method setVideoRecordingFloatingButtonPosition', () => {
-    const position = 30;
+    const position = RecordingButtonPosition.topLeft;
     BugReporting.setVideoRecordingFloatingButtonPosition(position);
 
     expect(NativeBugReporting.setVideoRecordingFloatingButtonPosition).toBeCalledTimes(1);
@@ -253,7 +257,7 @@ describe('Testing BugReporting Module', () => {
 
   it('should call the native method setCommentMinimumCharacterCount', () => {
     const count = 20;
-    const reportTypes = [BugReporting.reportType.bug];
+    const reportTypes = [ReportType.bug];
 
     BugReporting.setCommentMinimumCharacterCount(count, reportTypes);
 

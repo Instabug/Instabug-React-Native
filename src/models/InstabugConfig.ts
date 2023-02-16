@@ -1,5 +1,5 @@
 import type { invocationEvent } from '../utils/ArgsRegistry';
-import type { LogLevel } from '../utils/Enums';
+import type { InvocationEvent, LogLevel } from '../utils/Enums';
 
 export interface InstabugConfig {
   /**
@@ -9,7 +9,7 @@ export interface InstabugConfig {
   /**
    * An array of events that invoke the SDK's UI.
    */
-  invocationEvents: invocationEvent[];
+  invocationEvents: invocationEvent[] | InvocationEvent[];
   /**
    * An optional LogLevel to indicate the verbosity of SDK logs. Default is Error.
    */

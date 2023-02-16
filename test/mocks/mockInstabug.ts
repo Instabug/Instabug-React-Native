@@ -1,5 +1,6 @@
 export default {
   Instabug: {
+    getConstants: jest.fn().mockReturnValue({}),
     setEnabled: jest.fn(),
     init: jest.fn(),
     setUserData: jest.fn(),

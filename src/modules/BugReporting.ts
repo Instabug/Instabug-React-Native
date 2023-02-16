@@ -10,6 +10,15 @@ import {
   position,
   reportType,
 } from '../utils/ArgsRegistry';
+import type {
+  DismissType,
+  ExtendedBugReportMode,
+  FloatingButtonPosition,
+  InvocationEvent,
+  InvocationOption,
+  RecordingButtonPosition,
+  ReportType,
+} from '../utils/Enums';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
@@ -28,7 +37,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * Default is set by `Instabug.init`.
  * @param events Array of events that invokes the feedback form.
  */
-export const setInvocationEvents = (events: invocationEvent[]) => {
+export const setInvocationEvents = (events: invocationEvent[] | InvocationEvent[]) => {
   NativeBugReporting.setInvocationEvents(events);
 };
 
@@ -37,7 +46,7 @@ export const setInvocationEvents = (events: invocationEvent[]) => {
  * Default is set by `Instabug.init`.
  * @param options Array of invocation options
  */
-export const setOptions = (options: option[]) => {
+export const setOptions = (options: option[] | InvocationOption[]) => {
   NativeBugReporting.setOptions(options);
 };
 
@@ -59,7 +68,7 @@ export const onInvokeHandler = (handler: () => void) => {
  * @param handler A callback to get executed after dismissing the SDK.
  */
 export const onSDKDismissedHandler = (
-  handler: (dismissType: dismissType, reportType: reportType) => void,
+  handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
 ) => {
   IBGEventEmitter.addListener(
     NativeBugReporting,
@@ -112,7 +121,7 @@ export const setShakingThresholdForAndroid = (threshold: number) => {
  * @param mode An enum to disable the extended bug report mode,
  * enable it with required or with optional fields.
  */
-export const setExtendedBugReportMode = (mode: extendedBugReportMode) => {
+export const setExtendedBugReportMode = (mode: extendedBugReportMode | ExtendedBugReportMode) => {
   NativeBugReporting.setExtendedBugReportMode(mode);
 };
 
@@ -120,7 +129,7 @@ export const setExtendedBugReportMode = (mode: extendedBugReportMode) => {
  * Sets what type of reports, bug or feedback, should be invoked.
  * @param types Array of reportTypes
  */
-export const setReportTypes = (types: reportType[]) => {
+export const setReportTypes = (types: reportType[] | ReportType[]) => {
   NativeBugReporting.setReportTypes(types);
 };
 
@@ -129,7 +138,7 @@ export const setReportTypes = (types: reportType[]) => {
  * @param type
  * @param options
  */
-export const show = (type: reportType, options: option[]) => {
+export const show = (type: reportType | ReportType, options: option[] | InvocationOption[]) => {
   NativeBugReporting.show(type, options ?? []);
 };
 
@@ -162,7 +171,9 @@ export const setAutoScreenRecordingDurationIOS = (maxDuration: number) => {
  * @param buttonPosition is of type position `topLeft` to show on the top left
  * of screen, or `bottomRight` to show on the bottom right of screen.
  */
-export const setVideoRecordingFloatingButtonPosition = (buttonPosition: position) => {
+export const setVideoRecordingFloatingButtonPosition = (
+  buttonPosition: position | RecordingButtonPosition,
+) => {
   NativeBugReporting.setVideoRecordingFloatingButtonPosition(buttonPosition);
 };
 
@@ -198,7 +209,10 @@ export const setDidSelectPromptOptionHandler = (handler: (promptOption: string) 
  * @param edge The screen edge to show the floating button onto. Default is `floatingButtonEdge.right`.
  * @param offset The offset of the floating button from the top of the screen. Default is 50.
  */
-export const setFloatingButtonEdge = (edge: floatingButtonEdge, offset: number) => {
+export const setFloatingButtonEdge = (
+  edge: floatingButtonEdge | FloatingButtonPosition,
+  offset: number,
+) => {
   NativeBugReporting.setFloatingButtonEdge(edge, offset);
 };
 
@@ -237,6 +251,9 @@ export const setDisclaimerText = (text: string) => {
  * @param limit int number of characters.
  * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
  */
-export const setCommentMinimumCharacterCount = (limit: number, reportTypes?: reportType[]) => {
+export const setCommentMinimumCharacterCount = (
+  limit: number,
+  reportTypes?: reportType[] | ReportType[],
+) => {
   NativeBugReporting.setCommentMinimumCharacterCount(limit, reportTypes ?? []);
 };
