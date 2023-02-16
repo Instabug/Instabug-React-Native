@@ -67,9 +67,9 @@ describe('APM Module', () => {
   });
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce((_: any, __: any, callback: () => any) =>
-      callback(),
-    );
+    NativeAPM.startExecutionTrace = jest
+      .fn()
+      .mockImplementationOnce((_: any, __: any, callback: () => any) => callback());
 
     const promise = APM.startExecutionTrace('trace');
 
@@ -77,9 +77,11 @@ describe('APM Module', () => {
   });
 
   it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce(
-      (_: any, __: any, callback: (arg0: string) => any) => callback('trace-id'),
-    );
+    NativeAPM.startExecutionTrace = jest
+      .fn()
+      .mockImplementationOnce((_: any, __: any, callback: (arg0: string) => any) =>
+        callback('trace-id'),
+      );
 
     const promise = APM.startExecutionTrace('trace');
 
