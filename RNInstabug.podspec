@@ -1,4 +1,6 @@
 require 'json'
+require_relative './ios/native'
+
 package = JSON.parse(File.read('package.json'))
 
 Pod::Spec.new do |s|
@@ -14,5 +16,5 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency 'React-Core'
-  s.dependency 'Instabug', '11.7.0'
+  use_instabug!(s)
 end

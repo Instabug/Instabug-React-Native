@@ -3,6 +3,7 @@
 - Bumps Instabug Android SDK to v11.8.0
 - Bumps Instabug iOS SDK to v11.7.0
 - Adds monorepo support for source maps scripts
+- Adds gradle and ruby files to integrate native SDKs within exiting native apps. See [#919](https://github.com/Instabug/Instabug-React-Native/pull/919) for more info.
 - Fixes global error handler not being called.
 - Deprecates all module-enums (e.g. `Instabug.invocationEvent`) in favour of standalone-enums (e.g. `InvocationEvent`). See [#914](https://github.com/Instabug/Instabug-React-Native/pull/914) for more info and detailed list of Enums.
 - Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
