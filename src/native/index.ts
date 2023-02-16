@@ -3,12 +3,14 @@ import {
   NativeModules as ReactNativeModules,
 } from 'react-native';
 
+import type { ApmNativeModule } from './ApmNativeModule';
+
 export interface NativeModule extends ReactNativeModule, Record<string, any> {
   getConstants: () => Record<string, any>;
 }
 
 interface InstabugNativeModules {
-  IBGAPM: NativeModule;
+  IBGAPM: ApmNativeModule;
   IBGBugReporting: NativeModule;
   IBGCrashReporting: NativeModule;
   IBGFeatureRequests: NativeModule;
