@@ -7,7 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeCrashReporting, NativeInstabug } from '../native';
+import { NativeInstabug } from '../native';
 import {
   IBGPosition,
   actionTypes,
@@ -533,63 +533,11 @@ export const show = () => {
 };
 
 export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
-  if (handler) {
-    InstabugUtils.setOnReportHandler(true);
-  } else {
-    InstabugUtils.setOnReportHandler(false);
-  }
-
-  // send bug report
   IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
     const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
     handler && handler(reportObj);
   });
-
-  // handled js crash
-  if (Platform.OS === 'android') {
-    IBGEventEmitter.addListener(
-      NativeInstabug,
-      InstabugConstants.SEND_HANDLED_CRASH,
-      async (jsonObject) => {
-        try {
-          const report = await NativeInstabug.getReport();
-          const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-          const reportObj = new Report(
-            tags,
-            consoleLogs,
-            instabugLogs,
-            userAttributes,
-            fileAttachments,
-          );
-          handler && handler(reportObj);
-          NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
-        } catch (e) {
-          console.error(e);
-        }
-      },
-    );
-  }
-
-  if (Platform.OS === 'android') {
-    IBGEventEmitter.addListener(
-      NativeInstabug,
-      InstabugConstants.SEND_UNHANDLED_CRASH,
-      async (jsonObject) => {
-        const report = await NativeInstabug.getReport();
-        const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
-        const reportObj = new Report(
-          tags,
-          consoleLogs,
-          instabugLogs,
-          userAttributes,
-          fileAttachments,
-        );
-        handler && handler(reportObj);
-        NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
-      },
-    );
-  }
 
   NativeInstabug.setPreSendingHandler(handler);
 };
