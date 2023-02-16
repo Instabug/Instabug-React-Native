@@ -1,5 +1,7 @@
 import { NativeInstabug } from '../native';
 
+const NativeConstants = NativeInstabug.getConstants();
+
 /**
  * @deprecated Pass a `LogLevel` to `debugLogsLevel` in `Instabug.init` instead.
  *
@@ -7,10 +9,10 @@ import { NativeInstabug } from '../native';
  * and only affect the logs used to debug the SDK itself.
  */
 export enum sdkDebugLogsLevel {
-  sdkDebugLogsLevelVerbose = NativeInstabug.sdkDebugLogsLevelVerbose,
-  sdkDebugLogsLevelDebug = NativeInstabug.sdkDebugLogsLevelDebug,
-  sdkDebugLogsLevelError = NativeInstabug.sdkDebugLogsLevelError,
-  sdkDebugLogsLevelNone = NativeInstabug.sdkDebugLogsLevelNone,
+  sdkDebugLogsLevelVerbose = NativeConstants.sdkDebugLogsLevelVerbose,
+  sdkDebugLogsLevelDebug = NativeConstants.sdkDebugLogsLevelDebug,
+  sdkDebugLogsLevelError = NativeConstants.sdkDebugLogsLevelError,
+  sdkDebugLogsLevelNone = NativeConstants.sdkDebugLogsLevelNone,
 }
 
 /**
@@ -19,12 +21,12 @@ export enum sdkDebugLogsLevel {
  * APM Log Level.
  */
 export enum logLevel {
-  none = NativeInstabug.logLevelNone,
-  error = NativeInstabug.logLevelError,
-  warning = NativeInstabug.logLevelWarning,
-  info = NativeInstabug.logLevelInfo,
-  debug = NativeInstabug.logLevelDebug,
-  verbose = NativeInstabug.logLevelVerbose,
+  none = NativeConstants.logLevelNone,
+  error = NativeConstants.logLevelError,
+  warning = NativeConstants.logLevelWarning,
+  info = NativeConstants.logLevelInfo,
+  debug = NativeConstants.logLevelDebug,
+  verbose = NativeConstants.logLevelVerbose,
 }
 
 /**
@@ -33,11 +35,11 @@ export enum logLevel {
  * The event used to invoke the feedback form
  */
 export enum invocationEvent {
-  none = NativeInstabug.invocationEventNone,
-  shake = NativeInstabug.invocationEventShake,
-  screenshot = NativeInstabug.invocationEventScreenshot,
-  twoFingersSwipe = NativeInstabug.invocationEventTwoFingersSwipeLeft,
-  floatingButton = NativeInstabug.invocationEventFloatingButton,
+  none = NativeConstants.invocationEventNone,
+  shake = NativeConstants.invocationEventShake,
+  screenshot = NativeConstants.invocationEventScreenshot,
+  twoFingersSwipe = NativeConstants.invocationEventTwoFingersSwipeLeft,
+  floatingButton = NativeConstants.invocationEventFloatingButton,
 }
 
 /**
@@ -46,10 +48,10 @@ export enum invocationEvent {
  * Options added while invoking bug reporting.
  */
 export enum option {
-  emailFieldHidden = NativeInstabug.optionEmailFieldHidden,
-  emailFieldOptional = NativeInstabug.optionEmailFieldOptional,
-  commentFieldRequired = NativeInstabug.optionCommentFieldRequired,
-  disablePostSendingDialog = NativeInstabug.optionDisablePostSendingDialog,
+  emailFieldHidden = NativeConstants.optionEmailFieldHidden,
+  emailFieldOptional = NativeConstants.optionEmailFieldOptional,
+  commentFieldRequired = NativeConstants.optionCommentFieldRequired,
+  disablePostSendingDialog = NativeConstants.optionDisablePostSendingDialog,
 }
 
 /**
@@ -58,8 +60,8 @@ export enum option {
  * The color theme of the different UI elements
  */
 export enum colorTheme {
-  light = NativeInstabug.colorThemeLight,
-  dark = NativeInstabug.colorThemeDark,
+  light = NativeConstants.colorThemeLight,
+  dark = NativeConstants.colorThemeDark,
 }
 
 /**
@@ -68,32 +70,32 @@ export enum colorTheme {
  * Floating Button edges
  */
 export enum floatingButtonEdge {
-  left = NativeInstabug.rectMinXEdge,
-  right = NativeInstabug.rectMaxXEdge,
+  left = NativeConstants.rectMinXEdge,
+  right = NativeConstants.rectMaxXEdge,
 }
 
 /**
  * @deprecated Use `RecordingButtonPosition` instead.
  *
- * NativeInstabug floating buttons positions.
+ * NativeConstants floating buttons positions.
  */
 export enum position {
-  bottomRight = NativeInstabug.bottomRight,
-  topRight = NativeInstabug.topRight,
-  bottomLeft = NativeInstabug.bottomLeft,
-  topLeft = NativeInstabug.topLeft,
+  bottomRight = NativeConstants.bottomRight,
+  topRight = NativeConstants.topRight,
+  bottomLeft = NativeConstants.bottomLeft,
+  topLeft = NativeConstants.topLeft,
 }
 
 /**
  * @deprecated Use `RecordingButtonPosition` instead.
  *
- * NativeInstabug floating buttons positions.
+ * NativeConstants floating buttons positions.
  */
 export enum IBGPosition {
-  bottomRight = NativeInstabug.bottomRight,
-  topRight = NativeInstabug.topRight,
-  bottomLeft = NativeInstabug.bottomLeft,
-  topLeft = NativeInstabug.topLeft,
+  bottomRight = NativeConstants.bottomRight,
+  topRight = NativeConstants.topRight,
+  bottomLeft = NativeConstants.bottomLeft,
+  topLeft = NativeConstants.topLeft,
 }
 
 /**
@@ -102,9 +104,9 @@ export enum IBGPosition {
  * The welcome message mode.
  */
 export enum welcomeMessageMode {
-  live = NativeInstabug.welcomeMessageModeLive,
-  beta = NativeInstabug.welcomeMessageModeBeta,
-  disabled = NativeInstabug.welcomeMessageModeDisabled,
+  live = NativeConstants.welcomeMessageModeLive,
+  beta = NativeConstants.welcomeMessageModeBeta,
+  disabled = NativeConstants.welcomeMessageModeDisabled,
 }
 
 /**
@@ -113,9 +115,9 @@ export enum welcomeMessageMode {
  * Type of the report either feedback or bug.
  */
 export enum reportType {
-  bug = NativeInstabug.bugReportingReportTypeBug,
-  feedback = NativeInstabug.bugReportingReportTypeFeedback,
-  question = NativeInstabug.bugReportingReportTypeQuestion,
+  bug = NativeConstants.bugReportingReportTypeBug,
+  feedback = NativeConstants.bugReportingReportTypeFeedback,
+  question = NativeConstants.bugReportingReportTypeQuestion,
 }
 
 /**
@@ -124,21 +126,21 @@ export enum reportType {
  * Type of SDK dismiss
  */
 export enum dismissType {
-  submit = NativeInstabug.dismissTypeSubmit,
-  cancel = NativeInstabug.dismissTypeCancel,
-  addAttachment = NativeInstabug.dismissTypeAddAttachment,
+  submit = NativeConstants.dismissTypeSubmit,
+  cancel = NativeConstants.dismissTypeCancel,
+  addAttachment = NativeConstants.dismissTypeAddAttachment,
 }
 
 /**
  * @deprecated Use `ActionType` instead.
  *
- * NativeInstabug action types.
+ * NativeConstants action types.
  */
 export enum actionTypes {
-  allActions = NativeInstabug.allActions,
-  reportBug = NativeInstabug.reportBugAction,
-  requestNewFeature = NativeInstabug.requestNewFeature,
-  addCommentToFeature = NativeInstabug.addCommentToFeature,
+  allActions = NativeConstants.allActions,
+  reportBug = NativeConstants.reportBugAction,
+  requestNewFeature = NativeConstants.requestNewFeature,
+  addCommentToFeature = NativeConstants.addCommentToFeature,
 }
 
 /**
@@ -147,9 +149,9 @@ export enum actionTypes {
  * The extended bug report mode
  */
 export enum extendedBugReportMode {
-  enabledWithRequiredFields = NativeInstabug.enabledWithRequiredFields,
-  enabledWithOptionalFields = NativeInstabug.enabledWithOptionalFields,
-  disabled = NativeInstabug.disabled,
+  enabledWithRequiredFields = NativeConstants.enabledWithRequiredFields,
+  enabledWithOptionalFields = NativeConstants.enabledWithOptionalFields,
+  disabled = NativeConstants.disabled,
 }
 
 /**
@@ -158,9 +160,9 @@ export enum extendedBugReportMode {
  * The user steps option.
  */
 export enum reproStepsMode {
-  enabled = NativeInstabug.reproStepsEnabled,
-  disabled = NativeInstabug.reproStepsDisabled,
-  enabledWithNoScreenshots = NativeInstabug.reproStepsEnabledWithNoScreenshots,
+  enabled = NativeConstants.reproStepsEnabled,
+  disabled = NativeConstants.reproStepsDisabled,
+  enabledWithNoScreenshots = NativeConstants.reproStepsEnabledWithNoScreenshots,
 }
 
 /**
@@ -169,100 +171,100 @@ export enum reproStepsMode {
  * The supported locales
  */
 export enum locale {
-  arabic = NativeInstabug.localeArabic,
-  azerbaijani = NativeInstabug.localeAzerbaijani,
-  chineseSimplified = NativeInstabug.localeChineseSimplified,
-  chineseTraditional = NativeInstabug.localeChineseTraditional,
-  czech = NativeInstabug.localeCzech,
-  danish = NativeInstabug.localeDanish,
-  dutch = NativeInstabug.localeDutch,
-  english = NativeInstabug.localeEnglish,
-  french = NativeInstabug.localeFrench,
-  german = NativeInstabug.localeGerman,
-  italian = NativeInstabug.localeItalian,
-  japanese = NativeInstabug.localeJapanese,
-  korean = NativeInstabug.localeKorean,
-  polish = NativeInstabug.localePolish,
-  portugueseBrazil = NativeInstabug.localePortugueseBrazil,
-  romanian = NativeInstabug.localeRomanian,
-  russian = NativeInstabug.localeRussian,
-  spanish = NativeInstabug.localeSpanish,
-  swedish = NativeInstabug.localeSwedish,
-  turkish = NativeInstabug.localeTurkish,
+  arabic = NativeConstants.localeArabic,
+  azerbaijani = NativeConstants.localeAzerbaijani,
+  chineseSimplified = NativeConstants.localeChineseSimplified,
+  chineseTraditional = NativeConstants.localeChineseTraditional,
+  czech = NativeConstants.localeCzech,
+  danish = NativeConstants.localeDanish,
+  dutch = NativeConstants.localeDutch,
+  english = NativeConstants.localeEnglish,
+  french = NativeConstants.localeFrench,
+  german = NativeConstants.localeGerman,
+  italian = NativeConstants.localeItalian,
+  japanese = NativeConstants.localeJapanese,
+  korean = NativeConstants.localeKorean,
+  polish = NativeConstants.localePolish,
+  portugueseBrazil = NativeConstants.localePortugueseBrazil,
+  romanian = NativeConstants.localeRomanian,
+  russian = NativeConstants.localeRussian,
+  spanish = NativeConstants.localeSpanish,
+  swedish = NativeConstants.localeSwedish,
+  turkish = NativeConstants.localeTurkish,
 }
 
 /**
  * @deprecated Use `StringKey` instead.
  *
- * NativeInstabug strings
+ * NativeConstants strings
  */
 export enum strings {
-  shakeHint = NativeInstabug.shakeHint,
-  swipeHint = NativeInstabug.swipeHint,
-  edgeSwipeStartHint = NativeInstabug.edgeSwipeStartHint,
-  startAlertText = NativeInstabug.startAlertText,
-  invalidEmailMessage = NativeInstabug.invalidEmailMessage,
-  invalidEmailTitle = NativeInstabug.invalidEmailTitle,
-  invalidCommentMessage = NativeInstabug.invalidCommentMessage,
-  invalidCommentTitle = NativeInstabug.invalidCommentTitle,
-  invocationHeader = NativeInstabug.invocationHeader,
-  reportQuestion = NativeInstabug.reportQuestion,
-  reportBug = NativeInstabug.reportBug,
-  reportFeedback = NativeInstabug.reportFeedback,
-  emailFieldHint = NativeInstabug.emailFieldHint,
-  commentFieldHintForBugReport = NativeInstabug.commentFieldHintForBugReport,
-  commentFieldHintForFeedback = NativeInstabug.commentFieldHintForFeedback,
-  commentFieldHintForQuestion = NativeInstabug.commentFieldHintForQuestion,
-  videoPressRecord = NativeInstabug.videoPressRecord,
-  addVideoMessage = NativeInstabug.addVideoMessage,
-  addVoiceMessage = NativeInstabug.addVoiceMessage,
-  addImageFromGallery = NativeInstabug.addImageFromGallery,
-  addExtraScreenshot = NativeInstabug.addExtraScreenshot,
-  audioRecordingPermissionDeniedTitle = NativeInstabug.audioRecordingPermissionDeniedTitle,
-  audioRecordingPermissionDeniedMessage = NativeInstabug.audioRecordingPermissionDeniedMessage,
-  microphonePermissionAlertSettingsButtonText = NativeInstabug.microphonePermissionAlertSettingsButtonTitle,
-  recordingMessageToHoldText = NativeInstabug.recordingMessageToHoldText,
-  recordingMessageToReleaseText = NativeInstabug.recordingMessageToReleaseText,
-  conversationsHeaderTitle = NativeInstabug.conversationsHeaderTitle,
-  screenshotHeaderTitle = NativeInstabug.screenshotHeaderTitle,
-  okButtonText = NativeInstabug.okButtonTitle,
-  cancelButtonText = NativeInstabug.cancelButtonTitle,
-  thankYouText = NativeInstabug.thankYouText,
-  audio = NativeInstabug.audio,
-  image = NativeInstabug.image,
-  team = NativeInstabug.team,
-  messagesNotification = NativeInstabug.messagesNotification,
-  messagesNotificationAndOthers = NativeInstabug.messagesNotificationAndOthers,
-  conversationTextFieldHint = NativeInstabug.conversationTextFieldHint,
-  collectingDataText = NativeInstabug.collectingDataText,
-  thankYouAlertText = NativeInstabug.thankYouAlertText,
-  welcomeMessageBetaWelcomeStepTitle = NativeInstabug.welcomeMessageBetaWelcomeStepTitle,
-  welcomeMessageBetaWelcomeStepContent = NativeInstabug.welcomeMessageBetaWelcomeStepContent,
-  welcomeMessageBetaHowToReportStepTitle = NativeInstabug.welcomeMessageBetaHowToReportStepTitle,
-  welcomeMessageBetaHowToReportStepContent = NativeInstabug.welcomeMessageBetaHowToReportStepContent,
-  welcomeMessageBetaFinishStepTitle = NativeInstabug.welcomeMessageBetaFinishStepTitle,
-  welcomeMessageBetaFinishStepContent = NativeInstabug.welcomeMessageBetaFinishStepContent,
-  welcomeMessageLiveWelcomeStepTitle = NativeInstabug.welcomeMessageLiveWelcomeStepTitle,
-  welcomeMessageLiveWelcomeStepContent = NativeInstabug.welcomeMessageLiveWelcomeStepContent,
-  surveysStoreRatingThanksTitle = NativeInstabug.surveysStoreRatingThanksTitle,
-  surveysStoreRatingThanksSubtitle = NativeInstabug.surveysStoreRatingThanksSubtitle,
-  reportBugDescription = NativeInstabug.reportBugDescription,
-  reportFeedbackDescription = NativeInstabug.reportFeedbackDescription,
-  reportQuestionDescription = NativeInstabug.reportQuestionDescription,
-  requestFeatureDescription = NativeInstabug.requestFeatureDescription,
-  discardAlertTitle = NativeInstabug.discardAlertTitle,
-  discardAlertMessage = NativeInstabug.discardAlertMessage,
-  discardAlertCancel = NativeInstabug.discardAlertCancel,
-  discardAlertAction = NativeInstabug.discardAlertAction,
-  addAttachmentButtonTitleStringName = NativeInstabug.addAttachmentButtonTitleStringName,
-  reportReproStepsDisclaimerBody = NativeInstabug.reportReproStepsDisclaimerBody,
-  reportReproStepsDisclaimerLink = NativeInstabug.reportReproStepsDisclaimerLink,
-  reproStepsProgressDialogBody = NativeInstabug.reproStepsProgressDialogBody,
-  reproStepsListHeader = NativeInstabug.reproStepsListHeader,
-  reproStepsListDescription = NativeInstabug.reproStepsListDescription,
-  reproStepsListEmptyStateDescription = NativeInstabug.reproStepsListEmptyStateDescription,
-  reproStepsListItemTitle = NativeInstabug.reproStepsListItemTitle,
-  screenRecording = NativeInstabug.screenRecording,
-  insufficientContentMessage = NativeInstabug.insufficientContentMessage,
-  insufficientContentTitle = NativeInstabug.insufficientContentTitle,
+  shakeHint = NativeConstants.shakeHint,
+  swipeHint = NativeConstants.swipeHint,
+  edgeSwipeStartHint = NativeConstants.edgeSwipeStartHint,
+  startAlertText = NativeConstants.startAlertText,
+  invalidEmailMessage = NativeConstants.invalidEmailMessage,
+  invalidEmailTitle = NativeConstants.invalidEmailTitle,
+  invalidCommentMessage = NativeConstants.invalidCommentMessage,
+  invalidCommentTitle = NativeConstants.invalidCommentTitle,
+  invocationHeader = NativeConstants.invocationHeader,
+  reportQuestion = NativeConstants.reportQuestion,
+  reportBug = NativeConstants.reportBug,
+  reportFeedback = NativeConstants.reportFeedback,
+  emailFieldHint = NativeConstants.emailFieldHint,
+  commentFieldHintForBugReport = NativeConstants.commentFieldHintForBugReport,
+  commentFieldHintForFeedback = NativeConstants.commentFieldHintForFeedback,
+  commentFieldHintForQuestion = NativeConstants.commentFieldHintForQuestion,
+  videoPressRecord = NativeConstants.videoPressRecord,
+  addVideoMessage = NativeConstants.addVideoMessage,
+  addVoiceMessage = NativeConstants.addVoiceMessage,
+  addImageFromGallery = NativeConstants.addImageFromGallery,
+  addExtraScreenshot = NativeConstants.addExtraScreenshot,
+  audioRecordingPermissionDeniedTitle = NativeConstants.audioRecordingPermissionDeniedTitle,
+  audioRecordingPermissionDeniedMessage = NativeConstants.audioRecordingPermissionDeniedMessage,
+  microphonePermissionAlertSettingsButtonText = NativeConstants.microphonePermissionAlertSettingsButtonTitle,
+  recordingMessageToHoldText = NativeConstants.recordingMessageToHoldText,
+  recordingMessageToReleaseText = NativeConstants.recordingMessageToReleaseText,
+  conversationsHeaderTitle = NativeConstants.conversationsHeaderTitle,
+  screenshotHeaderTitle = NativeConstants.screenshotHeaderTitle,
+  okButtonText = NativeConstants.okButtonTitle,
+  cancelButtonText = NativeConstants.cancelButtonTitle,
+  thankYouText = NativeConstants.thankYouText,
+  audio = NativeConstants.audio,
+  image = NativeConstants.image,
+  team = NativeConstants.team,
+  messagesNotification = NativeConstants.messagesNotification,
+  messagesNotificationAndOthers = NativeConstants.messagesNotificationAndOthers,
+  conversationTextFieldHint = NativeConstants.conversationTextFieldHint,
+  collectingDataText = NativeConstants.collectingDataText,
+  thankYouAlertText = NativeConstants.thankYouAlertText,
+  welcomeMessageBetaWelcomeStepTitle = NativeConstants.welcomeMessageBetaWelcomeStepTitle,
+  welcomeMessageBetaWelcomeStepContent = NativeConstants.welcomeMessageBetaWelcomeStepContent,
+  welcomeMessageBetaHowToReportStepTitle = NativeConstants.welcomeMessageBetaHowToReportStepTitle,
+  welcomeMessageBetaHowToReportStepContent = NativeConstants.welcomeMessageBetaHowToReportStepContent,
+  welcomeMessageBetaFinishStepTitle = NativeConstants.welcomeMessageBetaFinishStepTitle,
+  welcomeMessageBetaFinishStepContent = NativeConstants.welcomeMessageBetaFinishStepContent,
+  welcomeMessageLiveWelcomeStepTitle = NativeConstants.welcomeMessageLiveWelcomeStepTitle,
+  welcomeMessageLiveWelcomeStepContent = NativeConstants.welcomeMessageLiveWelcomeStepContent,
+  surveysStoreRatingThanksTitle = NativeConstants.surveysStoreRatingThanksTitle,
+  surveysStoreRatingThanksSubtitle = NativeConstants.surveysStoreRatingThanksSubtitle,
+  reportBugDescription = NativeConstants.reportBugDescription,
+  reportFeedbackDescription = NativeConstants.reportFeedbackDescription,
+  reportQuestionDescription = NativeConstants.reportQuestionDescription,
+  requestFeatureDescription = NativeConstants.requestFeatureDescription,
+  discardAlertTitle = NativeConstants.discardAlertTitle,
+  discardAlertMessage = NativeConstants.discardAlertMessage,
+  discardAlertCancel = NativeConstants.discardAlertCancel,
+  discardAlertAction = NativeConstants.discardAlertAction,
+  addAttachmentButtonTitleStringName = NativeConstants.addAttachmentButtonTitleStringName,
+  reportReproStepsDisclaimerBody = NativeConstants.reportReproStepsDisclaimerBody,
+  reportReproStepsDisclaimerLink = NativeConstants.reportReproStepsDisclaimerLink,
+  reproStepsProgressDialogBody = NativeConstants.reproStepsProgressDialogBody,
+  reproStepsListHeader = NativeConstants.reproStepsListHeader,
+  reproStepsListDescription = NativeConstants.reproStepsListDescription,
+  reproStepsListEmptyStateDescription = NativeConstants.reproStepsListEmptyStateDescription,
+  reproStepsListItemTitle = NativeConstants.reproStepsListItemTitle,
+  screenRecording = NativeConstants.screenRecording,
+  insufficientContentMessage = NativeConstants.insufficientContentMessage,
+  insufficientContentTitle = NativeConstants.insufficientContentTitle,
 }

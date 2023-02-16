@@ -7,6 +7,7 @@ import type { ApmNativeModule } from './ApmNativeModule';
 import type { BugReportingNativeModule } from './BugReportingNativeModule';
 import type { CrashReportingNativeModule } from './CrashReportingNativeModule';
 import type { FeatureRequestsNativeModule } from './FeatureRequestsNativeModule';
+import type { InstabugNativeModule } from './InstabugNativeModule';
 
 export interface NativeModule extends ReactNativeModule, Record<string, any> {
   getConstants: () => Record<string, any>;
@@ -17,7 +18,7 @@ interface InstabugNativeModules {
   IBGBugReporting: BugReportingNativeModule;
   IBGCrashReporting: CrashReportingNativeModule;
   IBGFeatureRequests: FeatureRequestsNativeModule;
-  Instabug: NativeModule;
+  Instabug: InstabugNativeModule;
   IBGReplies: NativeModule;
   IBGSurveys: NativeModule;
 }
