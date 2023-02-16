@@ -1,12 +1,11 @@
 import { Platform } from 'react-native';
 
 import { NativeSurveys } from '../native';
+import type { Survey } from '../native/SurveysNativeModule';
 import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 
-export interface Survey {
-  title: string;
-}
+export type { Survey };
 
 /**
  * Sets whether surveys are enabled or not.

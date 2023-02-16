@@ -1,7 +1,4 @@
-import {
-  NativeModule as ReactNativeModule,
-  NativeModules as ReactNativeModules,
-} from 'react-native';
+import { NativeModules as ReactNativeModules } from 'react-native';
 
 import type { ApmNativeModule } from './ApmNativeModule';
 import type { BugReportingNativeModule } from './BugReportingNativeModule';
@@ -9,10 +6,7 @@ import type { CrashReportingNativeModule } from './CrashReportingNativeModule';
 import type { FeatureRequestsNativeModule } from './FeatureRequestsNativeModule';
 import type { InstabugNativeModule } from './InstabugNativeModule';
 import type { RepliesNativeModule } from './RepliesNativeModule';
-
-export interface NativeModule extends ReactNativeModule, Record<string, any> {
-  getConstants: () => Record<string, any>;
-}
+import type { SurveysNativeModule } from './SurveysNativeModule';
 
 interface InstabugNativeModules {
   IBGAPM: ApmNativeModule;
@@ -21,7 +15,7 @@ interface InstabugNativeModules {
   IBGFeatureRequests: FeatureRequestsNativeModule;
   Instabug: InstabugNativeModule;
   IBGReplies: RepliesNativeModule;
-  IBGSurveys: NativeModule;
+  IBGSurveys: SurveysNativeModule;
 }
 
 export const NativeModules = ReactNativeModules as InstabugNativeModules;
