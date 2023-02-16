@@ -2,8 +2,6 @@ import { Platform } from 'react-native';
 import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import { NativeCrashReporting } from '../native';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils from '../utils/InstabugUtils';
 
 /**
@@ -42,13 +40,9 @@ export const reportError = (error: ExtendedError) => {
     exception: jsStackTrace,
   };
 
-  if (InstabugUtils.isOnReportHandlerSet() && Platform.OS === 'android') {
-    IBGEventEmitter.emit(InstabugConstants.SEND_HANDLED_CRASH, jsonObject);
+  if (Platform.OS === 'android') {
+    NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
   } else {
-    if (Platform.OS === 'android') {
-      NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
-    } else {
-      NativeCrashReporting.sendHandledJSCrash(jsonObject);
-    }
+    NativeCrashReporting.sendHandledJSCrash(jsonObject);
   }
 };
