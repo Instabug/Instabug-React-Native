@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 
 import type { ApmNativeModule } from './ApmNativeModule';
+import type { BugReportingNativeModule } from './BugReportingNativeModule';
 
 export interface NativeModule extends ReactNativeModule, Record<string, any> {
   getConstants: () => Record<string, any>;
@@ -11,7 +12,7 @@ export interface NativeModule extends ReactNativeModule, Record<string, any> {
 
 interface InstabugNativeModules {
   IBGAPM: ApmNativeModule;
-  IBGBugReporting: NativeModule;
+  IBGBugReporting: BugReportingNativeModule;
   IBGCrashReporting: NativeModule;
   IBGFeatureRequests: NativeModule;
   Instabug: NativeModule;
