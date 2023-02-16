@@ -1,8 +1,13 @@
+import type { FeatureRequestsNativeModule } from '../../src/native/FeatureRequestsNativeModule';
+
+const mockedFeatureRequests: FeatureRequestsNativeModule = {
+  addListener: jest.fn(),
+  removeListeners: jest.fn(),
+  setEmailFieldRequiredForFeatureRequests: jest.fn(),
+  show: jest.fn(),
+  setEnabled: jest.fn(),
+};
+
 export default {
-  IBGFeatureRequests: {
-    setEmailFieldRequiredForFeatureRequests: jest.fn(),
-    show: jest.fn(),
-    showFeatureRequests: jest.fn(),
-    setEnabled: jest.fn(),
-  },
+  IBGFeatureRequests: mockedFeatureRequests,
 };
