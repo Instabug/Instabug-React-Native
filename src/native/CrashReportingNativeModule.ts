@@ -1,11 +1,11 @@
-import type { NativeModule } from 'react-native';
+import type { NativeModule, Platform } from 'react-native';
 import type { StackFrame } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 export interface CrashData {
   message: string;
   e_message: string;
   e_name: string;
-  os: 'android' | 'ios';
+  os: typeof Platform['OS'];
   platform: 'react_native';
   exception: StackFrame[];
 }
