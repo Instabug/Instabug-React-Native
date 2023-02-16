@@ -20,9 +20,10 @@ import type {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import type { NetworkData } from '../utils/XhrNetworkInterceptor';
+import type { NativeConstants } from './NativeConstants';
 
 export interface InstabugNativeModule extends NativeModule {
-  getConstants(): Record<string, any>;
+  getConstants(): NativeConstants;
 
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
