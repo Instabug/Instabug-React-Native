@@ -6,8 +6,6 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native';
 import { InvocationEvent } from '../../src/utils/Enums';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 
 describe('Test global error handler', () => {
