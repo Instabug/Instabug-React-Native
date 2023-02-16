@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import { NativeCrashReporting } from '../native';
+import type { CrashData } from '../native/CrashReportingNativeModule';
 import InstabugUtils from '../utils/InstabugUtils';
 
 /**
@@ -31,12 +32,12 @@ export const reportJSException = (error: any) => {
 export const reportError = (error: ExtendedError) => {
   const jsStackTrace = InstabugUtils.getStackTrace(error);
 
-  const jsonObject = {
+  const jsonObject: CrashData = {
     message: error.name + ' - ' + error.message,
     e_message: error.message,
     e_name: error.name,
-    os: Platform.OS,
-    platform: 'react_native',
+    os: Platform.select({ ios: 'ios' as const, android: 'android' as const })!,
+    platform: 'react_native' as const,
     exception: jsStackTrace,
   };
 

@@ -8,6 +8,7 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import { NativeCrashReporting } from '../native';
+import type { CrashData } from '../native/CrashReportingNativeModule';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -70,12 +71,12 @@ export const captureJsErrors = () => {
     const jsStackTrace = getStackTrace(err);
 
     // JSON object to be sent to the native SDK
-    const jsonObject = {
+    const jsonObject: CrashData = {
       message: err.name + ' - ' + err.message,
       e_message: err.message,
       e_name: err.name,
-      os: Platform.OS,
-      platform: 'react_native',
+      os: Platform.select({ ios: 'ios' as const, android: 'android' as const })!,
+      platform: 'react_native' as const,
       exception: jsStackTrace,
     };
 
