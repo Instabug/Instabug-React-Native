@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { NativeEventEmitter, Platform } from 'react-native';
 
 import { NativeBugReporting } from '../native/NativeBugReporting';
 import {
@@ -19,10 +19,24 @@ import type {
   RecordingButtonPosition,
   ReportType,
 } from '../utils/Enums';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 export { invocationEvent, extendedBugReportMode, reportType, option, position };
+
+/**
+ * @internal You shouldn't use this enum since you never emit or listen
+ * for native events in your code.
+ */
+export enum $NativeEvents {
+  ON_INVOKE_HANDLER = 'IBGpreInvocationHandler',
+  ON_DISMISS_HANDLER = 'IBGpostInvocationHandler',
+  DID_SELECT_PROMPT_OPTION_HANDLER = 'IBGDidSelectPromptOptionHandler',
+}
+
+/**
+ * @internal You shouldn't use this since you never emit or listen for native
+ * events in your code.
+ */
+export const $emitter = new NativeEventEmitter(NativeBugReporting);
 
 /**
  * Enables and disables manual invocation and prompt options for bug and feedback.
@@ -57,7 +71,7 @@ export const setOptions = (options: option[] | InvocationOption[]) => {
  * @param handler A callback that gets executed before invoking the SDK
  */
 export const onInvokeHandler = (handler: () => void) => {
-  IBGEventEmitter.addListener(NativeBugReporting, InstabugConstants.ON_INVOKE_HANDLER, handler);
+  $emitter.addListener($NativeEvents.ON_INVOKE_HANDLER, handler);
   NativeBugReporting.setOnInvokeHandler(handler);
 };
 
@@ -70,13 +84,9 @@ export const onInvokeHandler = (handler: () => void) => {
 export const onSDKDismissedHandler = (
   handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
 ) => {
-  IBGEventEmitter.addListener(
-    NativeBugReporting,
-    InstabugConstants.ON_SDK_DISMISSED_HANDLER,
-    (payload) => {
-      handler(payload.dismissType, payload.reportType);
-    },
-  );
+  $emitter.addListener($NativeEvents.ON_DISMISS_HANDLER, (payload) => {
+    handler(payload.dismissType, payload.reportType);
+  });
   NativeBugReporting.setOnSDKDismissedHandler(handler);
 };
 
@@ -193,13 +203,9 @@ export const setDidSelectPromptOptionHandler = (handler: (promptOption: string) 
   if (Platform.OS === 'android') {
     return;
   }
-  IBGEventEmitter.addListener(
-    NativeBugReporting,
-    InstabugConstants.DID_SELECT_PROMPT_OPTION_HANDLER,
-    (payload) => {
-      handler(payload.promptOption);
-    },
-  );
+  $emitter.addListener($NativeEvents.DID_SELECT_PROMPT_OPTION_HANDLER, (payload) => {
+    handler(payload.promptOption);
+  });
   NativeBugReporting.setDidSelectPromptOptionHandler(handler);
 };
 
