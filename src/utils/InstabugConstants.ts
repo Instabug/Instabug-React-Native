@@ -1,5 +1,4 @@
 enum InstabugConstants {
-  NETWORK_DATA_OBFUSCATION_HANDLER_EVENT = 'IBGSetNetworkDataObfuscationHandler',
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
   ON_INVOKE_HANDLER = 'IBGpreInvocationHandler',
   ON_SDK_DISMISSED_HANDLER = 'IBGpostInvocationHandler',

@@ -4,13 +4,13 @@ import type { RequestHandler } from '@apollo/client';
 
 import { NativeAPM } from '../native/NativeAPM';
 import { NativeInstabug } from '../native/NativeInstabug';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 
 export type { NetworkData };
 
-let _networkDataObfuscationHandlerSet = false;
+export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<NetworkData>;
+let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
 
 /**
@@ -21,23 +21,23 @@ let _requestFilterExpression = 'false';
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
     xhr.enableInterception();
-    xhr.setOnDoneCallback((network) => {
+    xhr.setOnDoneCallback(async (network) => {
       // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       if (!predicate(network)) {
-        if (_networkDataObfuscationHandlerSet) {
-          IBGEventEmitter.emit(InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT, network);
-        } else {
-          try {
-            if (Platform.OS === 'android') {
-              NativeInstabug.networkLog(JSON.stringify(network));
-              NativeAPM.networkLog(JSON.stringify(network));
-            } else {
-              NativeInstabug.networkLog(network);
-            }
-          } catch (e) {
-            console.error(e);
+        try {
+          if (_networkDataObfuscationHandler) {
+            network = await _networkDataObfuscationHandler(network);
           }
+
+          if (Platform.OS === 'android') {
+            NativeInstabug.networkLog(JSON.stringify(network));
+            NativeAPM.networkLog(JSON.stringify(network));
+          } else {
+            NativeInstabug.networkLog(network);
+          }
+        } catch (e) {
+          console.error(e);
         }
       }
     });
@@ -51,32 +51,9 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param handler
  */
 export const setNetworkDataObfuscationHandler = (
-  handler: (data: NetworkData) => Promise<NetworkData>,
+  handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
-  if (handler === null) {
-    _networkDataObfuscationHandlerSet = false;
-    return;
-  }
-  _networkDataObfuscationHandlerSet = true;
-
-  IBGEventEmitter.addListener(
-    NativeInstabug,
-    InstabugConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT,
-    async (data: NetworkData) => {
-      try {
-        const newData = await handler(data);
-
-        if (Platform.OS === 'android') {
-          NativeInstabug.networkLog(JSON.stringify(newData));
-          NativeAPM.networkLog(JSON.stringify(newData));
-        } else {
-          NativeInstabug.networkLog(newData);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-  );
+  _networkDataObfuscationHandler = handler;
 };
 
 /**

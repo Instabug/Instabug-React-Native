@@ -24,10 +24,7 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[
-             @"IBGpreSendingHandler",
-             @"IBGSetNetworkDataObfuscationHandler",
-             ];
+    return @[@"IBGpreSendingHandler"];
 }
 
 RCT_EXPORT_MODULE(Instabug)
