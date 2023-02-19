@@ -89,7 +89,7 @@ RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
     }
 }
 
-RCT_EXPORT_METHOD(didSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
+RCT_EXPORT_METHOD(setDidSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         
         IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
