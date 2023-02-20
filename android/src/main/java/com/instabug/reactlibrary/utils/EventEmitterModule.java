@@ -1,6 +1,7 @@
 package com.instabug.reactlibrary.utils;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -14,7 +15,8 @@ public abstract class EventEmitterModule extends ReactContextBaseJavaModule {
         super(context);
     }
 
-    protected void sendEvent(String event, @Nullable WritableMap params) {
+    @VisibleForTesting
+    public void sendEvent(String event, @Nullable WritableMap params) {
         if (listenerCount > 0) {
             getReactApplicationContext()
                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)

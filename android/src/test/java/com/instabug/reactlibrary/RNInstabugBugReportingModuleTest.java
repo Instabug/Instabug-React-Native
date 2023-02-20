@@ -37,12 +37,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class RNInstabugBugReportingModuleTest {
 
-    private RNInstabugBugReportingModule bugReportingModule = new RNInstabugBugReportingModule(mock(ReactApplicationContext.class));
+    private RNInstabugBugReportingModule bugReportingModule = spy(new RNInstabugBugReportingModule(mock(ReactApplicationContext.class)));
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
     // Mock Objects
@@ -240,8 +241,7 @@ public class RNInstabugBugReportingModuleTest {
         bugReportingModule.setOnInvokeHandler(null);
 
         // then
-        verify(InstabugUtil.class,VerificationModeFactory.times(1));
-        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_PRE_INVOCATION_HANDLER), Matchers.isNull(WritableMap.class));
+        verify(bugReportingModule).sendEvent(Constants.IBG_PRE_INVOCATION_HANDLER, null);
     }
 
 
@@ -255,7 +255,6 @@ public class RNInstabugBugReportingModuleTest {
         when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
         mockBugReporting.when(() -> BugReporting.setOnDismissCallback(any(OnSdkDismissCallback.class))).thenAnswer(new Answer() {
             public Object answer(InvocationOnMock invocation) {
-                InstabugUtil.sendEvent(any(),any(),any());
                 ((OnSdkDismissCallback) invocation.getArguments()[0])
                         .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
                 return null;
@@ -266,8 +265,7 @@ public class RNInstabugBugReportingModuleTest {
         WritableMap params = new JavaOnlyMap();
         params.putString("dismissType", OnSdkDismissCallback.DismissType.CANCEL.toString());
         params.putString("reportType", OnSdkDismissCallback.ReportType.BUG.toString());
-        verify(InstabugUtil.class,VerificationModeFactory.times(1));
-        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_POST_INVOCATION_HANDLER), eq(params));
+        verify(bugReportingModule).sendEvent(Constants.IBG_POST_INVOCATION_HANDLER, params);
         mockArgument.close();
         mockReactApplicationContext.close();
     }
