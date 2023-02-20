@@ -1,11 +1,24 @@
-import { Platform } from 'react-native';
+import { NativeEventEmitter, Platform } from 'react-native';
 
 import { NativeSurveys } from '../native/NativeSurveys';
 import type { Survey } from '../native/NativeSurveys';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 export type { Survey };
+
+/**
+ * @internal You shouldn't use this enum since you never emit or listen
+ * for native events in your code.
+ */
+export enum $NativeEvents {
+  WILL_SHOW_SURVEY_HANDLER = 'IBGWillShowSurvey',
+  DID_DISMISS_SURVEY_HANDLER = 'IBGDidDismissSurvey',
+}
+
+/**
+ * @internal You shouldn't use this since you never emit or listen for native
+ * events in your code.
+ */
+export const $emitter = new NativeEventEmitter(NativeSurveys);
 
 /**
  * Sets whether surveys are enabled or not.
@@ -55,11 +68,7 @@ export const setAutoShowingEnabled = (autoShowingSurveysEnabled: boolean) => {
  * presenting the survey's UI.
  */
 export const setOnShowHandler = (onShowHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
-    onShowHandler,
-  );
+  $emitter.addListener($NativeEvents.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
   NativeSurveys.setOnShowHandler(onShowHandler);
 };
 
@@ -71,11 +80,7 @@ export const setOnShowHandler = (onShowHandler: () => void) => {
  * the survey's UI is dismissed.
  */
 export const setOnDismissHandler = (onDismissHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
-    onDismissHandler,
-  );
+  $emitter.addListener($NativeEvents.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
   NativeSurveys.setOnDismissHandler(onDismissHandler);
 };
 

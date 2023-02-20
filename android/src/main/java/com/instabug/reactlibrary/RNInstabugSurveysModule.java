@@ -1,15 +1,12 @@
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 import com.instabug.survey.callbacks.*;
@@ -22,7 +19,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
+public class RNInstabugSurveysModule extends EventEmitterModule {
 
     public RNInstabugSurveysModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -32,6 +29,16 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "IBGSurveys";
+    }
+
+    @ReactMethod
+    public void addListener(String event) {
+        super.addListener(event);
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        super.removeListeners(count);
     }
 
     /**
@@ -137,7 +144,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
                 Surveys.setOnShowCallback(new OnShowCallback() {
                     @Override
                     public void onShow() {
-                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
+                        sendEvent(Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
                     }
                 });
             }
@@ -159,7 +166,7 @@ public class RNInstabugSurveysModule extends ReactContextBaseJavaModule {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
                     @Override
                     public void onDismiss() {
-                        InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
+                        sendEvent(Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
                     }
                 });
             }
