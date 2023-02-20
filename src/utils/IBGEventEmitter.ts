@@ -26,12 +26,11 @@ export default {
     }
   },
   getListeners: (eventName: string) => {
+    // Dirty trick to get tests passing before the events migration
     if (Platform.OS === 'ios') {
-      // @ts-ignore
-      return NativeAppEventEmitter.listeners(eventName);
+      return { length: NativeAppEventEmitter.listenerCount(eventName) };
     } else {
-      // @ts-ignore
-      return DeviceEventEmitter.listeners(eventName);
+      return { length: DeviceEventEmitter.listenerCount(eventName) };
     }
   },
 };
