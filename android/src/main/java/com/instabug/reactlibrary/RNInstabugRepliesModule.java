@@ -1,25 +1,21 @@
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
-import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
+public class RNInstabugRepliesModule extends EventEmitterModule {
 
     public RNInstabugRepliesModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
@@ -29,6 +25,16 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "IBGReplies";
+    }
+
+    @ReactMethod
+    public void addListener(String event) {
+        super.addListener(event);
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        super.removeListeners(count);
     }
 
     @ReactMethod
@@ -278,7 +284,7 @@ public class RNInstabugRepliesModule extends ReactContextBaseJavaModule {
                     Runnable onNewReplyReceivedRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_ON_NEW_REPLY_RECEIVED_CALLBACK, null);
+                            sendEvent(Constants.IBG_ON_NEW_REPLY_RECEIVED_CALLBACK, null);
                         }
                     };
                     Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
