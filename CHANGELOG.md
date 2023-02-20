@@ -1,7 +1,7 @@
 ## Unreleased
 
 - Bumps Instabug Android SDK to v11.9.0
-- Bumps Instabug iOS SDK to v11.7.0
+- Bumps Instabug iOS SDK to v11.9.0
 - Adds monorepo support for source maps scripts
 - Adds gradle and ruby files to integrate native SDKs within exiting native apps. See [#919](https://github.com/Instabug/Instabug-React-Native/pull/919) for more info.
 - Fixes global error handler not being called.
