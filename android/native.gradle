@@ -1,0 +1,7 @@
+project.ext.instabug = [
+    version: '11.8.0'
+]
+
+dependencies {
+    api "com.instabug.library:instabug:${project.ext.instabug.version}"
+}
