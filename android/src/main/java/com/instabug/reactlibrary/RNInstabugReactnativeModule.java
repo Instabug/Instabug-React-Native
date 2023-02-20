@@ -1,42 +1,32 @@
 package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Callback;
 
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.instabugdisclaimer.Internal;
-import com.instabug.bug.invocation.Option;
 import com.instabug.chat.Replies;
-import com.instabug.crash.CrashReporting;
 import com.instabug.featuresrequest.FeatureRequests;
-import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
-import com.instabug.library.InstabugState;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.Platform;
 import com.instabug.library.LogLevel;
@@ -45,8 +35,6 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.invocation.OnInvokeCallback;
-import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
-import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
@@ -55,6 +43,7 @@ import com.instabug.library.model.NetworkLog;
 import com.instabug.library.visualusersteps.State;
 
 import com.instabug.reactlibrary.utils.ArrayUtil;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 import com.instabug.reactlibrary.utils.ReportUtil;
@@ -84,7 +73,7 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 /**
  * The type Rn instabug reactnative module.
  */
-public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
+public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
 
@@ -98,7 +87,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
      */
     public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        //init placHolders
+        //init placeHolders
         placeHolders = new InstabugCustomTextPlaceHolder();
     }
 
@@ -106,7 +95,18 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
     public String getName() {
         return "Instabug";
     }
-    
+
+
+    @ReactMethod
+    public void addListener(String event) {
+        super.addListener(event);
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        super.removeListeners(count);
+    }
+
     /** 
      * Enables or disables Instabug functionality.
      * @param isEnabled A boolean to enable/disable Instabug.
@@ -953,7 +953,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                         @Override
                         public void onInvoke() {
-                            sendEvent(getReactApplicationContext(), "IBGpreInvocationHandler", null);
+                            sendEvent("IBGpreInvocationHandler", null);
                         }
                     });
                 } catch (java.lang.Exception exception) {
@@ -986,7 +986,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                         reportParam.putString("userData", report.getUserData());
                         reportParam.putMap("userAttributes", convertFromHashMapToWriteableMap(report.getUserAttributes()));
                         reportParam.putMap("fileAttachments", convertFromHashMapToWriteableMap(report.getFileAttachments()));
-                        sendEvent(getReactApplicationContext(), "IBGpreSendingHandler", reportParam);
+                        sendEvent("IBGpreSendingHandler", reportParam);
                         currentReport = report;
                     }
                 });
@@ -1159,7 +1159,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                             WritableMap params = Arguments.createMap();
                             params.putString("dismissType", dismissType.toString());
                             params.putString("reportType", reportType.toString());
-                            sendEvent(getReactApplicationContext(), "IBGpostInvocationHandler", params);
+                            sendEvent("IBGpostInvocationHandler", params);
                         }
                     });
                 } catch (java.lang.Exception exception) {
@@ -1203,7 +1203,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 Surveys.setOnShowCallback(new OnShowCallback() {
                     @Override
                     public void onShow() {
-                        sendEvent(getReactApplicationContext(), "IBGWillShowSurvey", null);
+                        sendEvent("IBGWillShowSurvey", null);
                     }
                 });
             }
@@ -1225,7 +1225,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 Surveys.setOnDismissCallback(new OnDismissCallback() {
                     @Override
                     public void onDismiss() {
-                        sendEvent(getReactApplicationContext(), "IBGDidDismissSurvey", null);
+                        sendEvent("IBGDidDismissSurvey", null);
                     }
                 });
             }
@@ -1347,7 +1347,7 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                     Runnable onNewReplyReceivedRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            sendEvent(getReactApplicationContext(), "IBGOnNewReplyReceivedCallback", null);
+                            sendEvent("IBGOnNewReplyReceivedCallback", null);
                         }
                     };
                     Replies.setOnNewReplyReceivedCallback(onNewReplyReceivedRunnable);
@@ -1695,14 +1695,6 @@ public class RNInstabugReactnativeModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-    }
-
-    private void sendEvent(ReactApplicationContext reactContext,
-                           String eventName,
-                           WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
     }
 
     @ReactMethod

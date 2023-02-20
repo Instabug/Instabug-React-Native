@@ -1,5 +1,5 @@
 import type React from 'react';
-import { Platform, findNodeHandle, processColor } from 'react-native';
+import { NativeEventEmitter, Platform, findNodeHandle, processColor } from 'react-native';
 
 import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
@@ -31,8 +31,6 @@ import {
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 
@@ -55,6 +53,20 @@ export {
   actionTypes,
   strings,
 };
+
+/**
+ * @internal You shouldn't use this enum since you never emit or listen
+ * for native events in your code.
+ */
+export enum $NativeEvents {
+  PRESENDING_HANDLER = 'IBGpreSendingHandler',
+}
+
+/**
+ * @internal You shouldn't use this since you never emit or listen for native
+ * events in your code.
+ */
+export const $emitter = new NativeEventEmitter(NativeInstabug);
 
 /**
  * Enables or disables Instabug functionality.
@@ -533,7 +545,7 @@ export const show = () => {
 };
 
 export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
-  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
+  $emitter.addListener($NativeEvents.PRESENDING_HANDLER, (report) => {
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
     const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
     handler && handler(reportObj);

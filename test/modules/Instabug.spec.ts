@@ -16,11 +16,16 @@ import {
   StringKey,
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 
 describe('Instabug Module', () => {
+  beforeEach(() => {
+    const events = Object.values(Instabug.$NativeEvents);
+    events.forEach((event) => {
+      Instabug.$emitter.removeAllListeners(event);
+    });
+  });
+
   it('should call the native method setEnabled', () => {
     Instabug.setEnabled(true);
 
@@ -636,9 +641,9 @@ describe('Instabug Module', () => {
       done();
     };
     Instabug.onReportSubmitHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.PRESENDING_HANDLER, report);
+    Instabug.$emitter.emit(Instabug.$NativeEvents.PRESENDING_HANDLER, report);
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.PRESENDING_HANDLER).length).toEqual(1);
+    expect(Instabug.$emitter.listenerCount(Instabug.$NativeEvents.PRESENDING_HANDLER)).toBe(1);
   });
 
   it('should invoke the native method callPrivateApi', () => {
