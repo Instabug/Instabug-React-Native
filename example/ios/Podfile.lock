@@ -72,7 +72,7 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - Instabug (11.7.0)
+  - Instabug (11.9.0)
   - libevent (2.1.12)
   - OCMock (3.9.1)
   - OpenSSL-Universal (1.1.180)
@@ -342,7 +342,7 @@ PODS:
     - React-logger (= 0.66.0)
     - React-perflogger (= 0.66.0)
   - RNInstabug (11.6.0):
-    - Instabug (= 11.7.0)
+    - Instabug (= 11.9.0)
     - React-Core
   - RNScreens (3.17.0):
     - React-Core
@@ -524,7 +524,7 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  Instabug: 7c9b72efb697e0f11c21ddf74e5d57a2b67ce9f7
+  Instabug: 1d21096fdadbc1f26cd2fc2322ff8e060a611237
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
@@ -553,7 +553,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 53b92d54b923283638cb0186da7a5c2d2b70a49b
   React-runtimeexecutor: 4bb657a97aa74568d9ed634c8bd478299bb8a3a6
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
-  RNInstabug: 897c783d3ff926867a6ee007198e2eb11488258a
+  RNInstabug: 59478a0327edcc586133d7a3432de218b05fbfab
   RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
