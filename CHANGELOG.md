@@ -1,16 +1,24 @@
-## Unreleased
+## 11.9.0 (2023-02-20)
 
-- Bumps Instabug Android SDK to v11.9.0
-- Bumps Instabug iOS SDK to v11.9.0
-- Adds monorepo support for source maps scripts
+- Bumps Instabug Android SDK to v11.9.0.
+- Bumps Instabug iOS SDK to v11.9.0.
+- Adds the new `Instabug.init` API to start the SDK as follows:
+  ```js
+  Instabug.init({
+    token: '<APP_TOKEN>',
+    invocationEvents: [InvocationEvent.floatingButton],
+    debugLogsLevel: LogLevel.verbose,
+  });
+  ```
+- Adds monorepo support for source maps automatic upload scripts.
 - Adds gradle and ruby files to integrate native SDKs within exiting native apps. See [#919](https://github.com/Instabug/Instabug-React-Native/pull/919) for more info.
-- Fixes global error handler not being called.
-- Deprecates all module-enums (e.g. `Instabug.invocationEvent`) in favour of standalone-enums (e.g. `InvocationEvent`). See [#914](https://github.com/Instabug/Instabug-React-Native/pull/914) for more info and detailed list of Enums.
-- Deprecates Instabug.start in favour of Instabug.init that takes a configuration object for SDK initialization.
-- Deprecates Instabug.setDebugEnabled, Instabug.setSdkDebugLogsLevel, and APM.setLogLevel in favour of debugLogsLevel property, which can be passed to InstabugConfig while initializing the SDK using Instabug.init.
-- Deprecates the enums: sdkDebugLogsLevel and logLevel in favour of a new enum LogLevel.
-- Deprecates Instabug.isRunningLive API.
-- Exports native Android SDK
+- Deprecates all module-enums (e.g. `Instabug.invocationEvent`) in favour of standalone-enums (e.g. `InvocationEvent`). See [#914](https://github.com/Instabug/Instabug-React-Native/pull/914) for more info and the detailed list of Enums.
+- Deprecates `Instabug.start` in favour of `Instabug.init`.
+- Deprecates `Instabug.setDebugEnabled`, `Instabug.setSdkDebugLogsLevel`, and `APM.setLogLevel` in favour of `debugLogsLevel` property of `Instabug.init`.
+- Deprecates `Instabug.isRunningLive` API.
+- Fixes external global error handlers not being called after initializing Instabug.
+- Fixes `BugReporting.setDidSelectPromptOptionHandler` on iOS.
+- Exports native Android SDK using `api` instead of `implementation`.
 
 ## 11.6.0 (2022-12-29)
 
