@@ -9,12 +9,9 @@ jest.mock('react-native/Libraries/Core/Devtools/parseErrorStack', () => {
     );
 
     if (!Platform.hasOwnProperty('constants') || Platform.constants.reactNativeVersion.minor < 64) {
-      return originalParseErrorStack(error);
+      return originalParseErrorStack(error.stack);
     }
 
-    const wrapperError = new Error();
-    wrapperError.stack = error;
-
-    return originalParseErrorStack(wrapperError);
+    return originalParseErrorStack(error);
   });
 });
