@@ -56,7 +56,7 @@ describe('Instabug Utils', () => {
   // Sample stack trace and its parsed stack frames
   const stack = 'Error\n\tat login (auth.js:2:15)';
   const stackFrames = [
-    { arguments: [], column: 15, file: 'auth.js', lineNumber: 2, methodName: 'login' },
+    { arguments: [], column: 14, file: 'auth.js', lineNumber: 2, methodName: 'login' },
   ];
 
   it('getActiveRouteName should get route name from navigation state', () => {

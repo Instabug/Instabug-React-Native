@@ -67,7 +67,7 @@
     "pod-install": "^0.1.38",
     "prettier": "^2.7.1",
     "react": "^16.8.6",
-    "react-native": "^0.60.0",
+    "react-native": "^0.66.0",
     "react-native-navigation": "7.29.1",
     "react-navigation": "^4.4.4",
     "rollup": "^3.9.1",
