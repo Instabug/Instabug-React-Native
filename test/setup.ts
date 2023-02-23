@@ -15,12 +15,13 @@ nock.disableNetConnect();
 
 beforeEach(() => {
   IBGEventEmitter.removeAllListeners();
-  Platform.constants = {
+
+  jest.spyOn(Platform, 'constants', 'get').mockReturnValue({
     isTesting: true,
     reactNativeVersion: {
       major: 0,
       minor: 60,
       patch: 0,
     },
-  };
+  });
 });
