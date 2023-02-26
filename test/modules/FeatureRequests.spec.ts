@@ -8,10 +8,9 @@ describe('Feature Requests Module', () => {
     FeatureRequests.setEmailFieldRequired(true, actionType);
 
     expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledTimes(1);
-    expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledWith(
-      true,
+    expect(NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests).toBeCalledWith(true, [
       actionType,
-    );
+    ]);
   });
 
   it('should call the native method showFeatureRequests', () => {
