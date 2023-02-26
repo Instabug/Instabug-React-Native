@@ -37,7 +37,7 @@ export const reportError = (error: ExtendedError) => {
     e_message: error.message,
     e_name: error.name,
     os: Platform.OS,
-    platform: 'react_native' as const,
+    platform: 'react_native',
     exception: jsStackTrace,
   };
 

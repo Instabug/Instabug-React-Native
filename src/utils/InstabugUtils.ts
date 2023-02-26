@@ -76,7 +76,7 @@ export const captureJsErrors = () => {
       e_message: err.message,
       e_name: err.name,
       os: Platform.OS,
-      platform: 'react_native' as const,
+      platform: 'react_native',
       exception: jsStackTrace,
     };
 
