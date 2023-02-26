@@ -15,6 +15,4 @@ const mockSurveys: SurveysNativeModule = {
   setShouldShowWelcomeScreen: jest.fn(),
 };
 
-export default {
-  IBGSurveys: mockSurveys,
-};
+export default mockSurveys;

@@ -8,7 +8,7 @@ import type { InstabugNativeModule } from './InstabugNativeModule';
 import type { RepliesNativeModule } from './RepliesNativeModule';
 import type { SurveysNativeModule } from './SurveysNativeModule';
 
-interface InstabugNativeModules {
+export interface InstabugNativePackage {
   IBGAPM: ApmNativeModule;
   IBGBugReporting: BugReportingNativeModule;
   IBGCrashReporting: CrashReportingNativeModule;
@@ -18,7 +18,7 @@ interface InstabugNativeModules {
   IBGSurveys: SurveysNativeModule;
 }
 
-export const NativeModules = ReactNativeModules as InstabugNativeModules;
+export const NativeModules = ReactNativeModules as InstabugNativePackage;
 
 export const NativeAPM = NativeModules.IBGAPM;
 export const NativeBugReporting = NativeModules.IBGBugReporting;

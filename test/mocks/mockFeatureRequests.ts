@@ -8,6 +8,4 @@ const mockFeatureRequests: FeatureRequestsNativeModule = {
   setEnabled: jest.fn(),
 };
 
-export default {
-  IBGFeatureRequests: mockFeatureRequests,
-};
+export default mockFeatureRequests;

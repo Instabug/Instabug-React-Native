@@ -63,6 +63,4 @@ const mockInstabug: InstabugNativeModule = {
   setNetworkLoggingEnabled: jest.fn(),
 };
 
-export default {
-  Instabug: mockInstabug,
-};
+export default mockInstabug;

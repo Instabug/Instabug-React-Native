@@ -8,6 +8,4 @@ const mockCrashReporting: CrashReportingNativeModule = {
   sendJSCrash: jest.fn(),
 };
 
-export default {
-  IBGCrashReporting: mockCrashReporting,
-};
+export default mockCrashReporting;

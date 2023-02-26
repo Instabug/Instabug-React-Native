@@ -17,6 +17,4 @@ const mockAPM: ApmNativeModule = {
   networkLog: jest.fn(),
 };
 
-export default {
-  IBGAPM: mockAPM,
-};
+export default mockAPM;

@@ -18,6 +18,4 @@ const mockReplies: RepliesNativeModule = {
   setSystemReplyNotificationSoundEnabled: jest.fn(),
 };
 
-export default {
-  IBGReplies: mockReplies,
-};
+export default mockReplies;

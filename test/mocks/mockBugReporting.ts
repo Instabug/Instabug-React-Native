@@ -25,6 +25,4 @@ const mockBugReporting: BugReportingNativeModule = {
   setCommentMinimumCharacterCount: jest.fn(),
 };
 
-export default {
-  IBGBugReporting: mockBugReporting,
-};
+export default mockBugReporting;
