@@ -1,6 +1,6 @@
 import type { CrashReportingNativeModule } from '../../src/native/CrashReportingNativeModule';
 
-const mockedCrashReporting: CrashReportingNativeModule = {
+const mockCrashReporting: CrashReportingNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
@@ -9,5 +9,5 @@ const mockedCrashReporting: CrashReportingNativeModule = {
 };
 
 export default {
-  IBGCrashReporting: mockedCrashReporting,
+  IBGCrashReporting: mockCrashReporting,
 };

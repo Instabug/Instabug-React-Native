@@ -1,6 +1,6 @@
 import type { BugReportingNativeModule } from '../../src/native/BugReportingNativeModule';
 
-const mockedBugReporting: BugReportingNativeModule = {
+const mockBugReporting: BugReportingNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
@@ -26,5 +26,5 @@ const mockedBugReporting: BugReportingNativeModule = {
 };
 
 export default {
-  IBGBugReporting: mockedBugReporting,
+  IBGBugReporting: mockBugReporting,
 };

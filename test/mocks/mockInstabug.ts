@@ -1,6 +1,6 @@
 import type { InstabugNativeModule } from '../../src/native/InstabugNativeModule';
 
-const mockedInstabug: InstabugNativeModule = {
+const mockInstabug: InstabugNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   getConstants: jest.fn().mockReturnValue({}),
@@ -64,5 +64,5 @@ const mockedInstabug: InstabugNativeModule = {
 };
 
 export default {
-  Instabug: mockedInstabug,
+  Instabug: mockInstabug,
 };

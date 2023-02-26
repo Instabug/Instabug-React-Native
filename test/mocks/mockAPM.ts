@@ -1,6 +1,6 @@
 import type { ApmNativeModule } from '../../src/native/ApmNativeModule';
 
-const mockedApm: ApmNativeModule = {
+const mockAPM: ApmNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
@@ -18,5 +18,5 @@ const mockedApm: ApmNativeModule = {
 };
 
 export default {
-  IBGAPM: mockedApm,
+  IBGAPM: mockAPM,
 };

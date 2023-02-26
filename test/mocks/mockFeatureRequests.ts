@@ -1,6 +1,6 @@
 import type { FeatureRequestsNativeModule } from '../../src/native/FeatureRequestsNativeModule';
 
-const mockedFeatureRequests: FeatureRequestsNativeModule = {
+const mockFeatureRequests: FeatureRequestsNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEmailFieldRequiredForFeatureRequests: jest.fn(),
@@ -9,5 +9,5 @@ const mockedFeatureRequests: FeatureRequestsNativeModule = {
 };
 
 export default {
-  IBGFeatureRequests: mockedFeatureRequests,
+  IBGFeatureRequests: mockFeatureRequests,
 };

@@ -1,6 +1,6 @@
 import type { SurveysNativeModule } from '../../src/native/SurveysNativeModule';
 
-const mockedSurveys: SurveysNativeModule = {
+const mockSurveys: SurveysNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
@@ -16,5 +16,5 @@ const mockedSurveys: SurveysNativeModule = {
 };
 
 export default {
-  IBGSurveys: mockedSurveys,
+  IBGSurveys: mockSurveys,
 };

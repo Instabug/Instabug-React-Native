@@ -1,6 +1,6 @@
 import type { RepliesNativeModule } from '../../src/native/RepliesNativeModule';
 
-const mockedReplies: RepliesNativeModule = {
+const mockReplies: RepliesNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
@@ -19,5 +19,5 @@ const mockedReplies: RepliesNativeModule = {
 };
 
 export default {
-  IBGReplies: mockedReplies,
+  IBGReplies: mockReplies,
 };
