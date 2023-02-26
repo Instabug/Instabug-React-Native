@@ -94,18 +94,17 @@ export interface InstabugNativeModule extends NativeModule {
   setFileAttachment(filePath: string, fileName?: string): void;
 
   // Report APIs //
-  getReport(): void;
   setPreSendingHandler(handler?: (report: Report) => void): void;
-  appendTagToReport(tag: string): unknown;
-  appendConsoleLogToReport(consoleLog: string): unknown;
-  setUserAttributeToReport(key: string, value: string): unknown;
-  logDebugToReport(log: string): unknown;
-  logVerboseToReport(log: string): unknown;
-  logWarnToReport(log: string): unknown;
-  logErrorToReport(log: string): unknown;
-  logInfoToReport(log: string): unknown;
-  addFileAttachmentWithURLToReport(url: string, filename?: string): unknown;
-  addFileAttachmentWithDataToReport(data: string, filename?: string): unknown;
+  appendTagToReport(tag: string): void;
+  appendConsoleLogToReport(consoleLog: string): void;
+  setUserAttributeToReport(key: string, value: string): void;
+  logDebugToReport(log: string): void;
+  logVerboseToReport(log: string): void;
+  logWarnToReport(log: string): void;
+  logErrorToReport(log: string): void;
+  logInfoToReport(log: string): void;
+  addFileAttachmentWithURLToReport(url: string, filename?: string): void;
+  addFileAttachmentWithDataToReport(data: string, filename?: string): void;
 
   // Deprecated APIs //
   /** @deprecated */

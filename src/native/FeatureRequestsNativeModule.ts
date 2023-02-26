@@ -8,6 +8,6 @@ export interface FeatureRequestsNativeModule extends NativeModule {
   show(): void;
   setEmailFieldRequiredForFeatureRequests(
     isEmailFieldRequired: boolean,
-    types: actionTypes | ActionType,
+    types: actionTypes[] | ActionType[],
   ): void;
 }

@@ -20,9 +20,9 @@ import type {
 } from '../utils/Enums';
 
 export interface BugReportingNativeModule extends NativeModule {
-  // Essential APIs//
+  // Essential APIs //
   setEnabled(isEnabled: boolean): void;
-  show(type: reportType | ReportType, arg1: option[] | InvocationOption[]): void;
+  show(type: reportType | ReportType, options: option[] | InvocationOption[]): void;
 
   // Customization APIs //
   setInvocationEvents(events: invocationEvent[] | InvocationEvent[]): void;
@@ -30,7 +30,7 @@ export interface BugReportingNativeModule extends NativeModule {
   setExtendedBugReportMode(mode: extendedBugReportMode | ExtendedBugReportMode): void;
   setReportTypes(types: reportType[] | ReportType[]): void;
   setDisclaimerText(text: string): void;
-  setCommentMinimumCharacterCount(limit: number, arg1: reportType[] | ReportType[]): void;
+  setCommentMinimumCharacterCount(limit: number, reportTypes: reportType[] | ReportType[]): void;
   setFloatingButtonEdge(edge: floatingButtonEdge | FloatingButtonPosition, offset: number): void;
   setVideoRecordingFloatingButtonPosition(buttonPosition: position | RecordingButtonPosition): void;
   setEnabledAttachmentTypes(
@@ -40,7 +40,7 @@ export interface BugReportingNativeModule extends NativeModule {
     screenRecording: boolean,
   ): void;
 
-  // Screen Recording APIs
+  // Screen Recording APIs //
   setAutoScreenRecordingEnabled(isEnabled: boolean): void;
   setAutoScreenRecordingDuration(maxDuration: number): void;
   setViewHierarchyEnabled(isEnabled: boolean): void;
