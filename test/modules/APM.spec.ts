@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import { mocked } from 'ts-jest/utils';
+
 import Trace from '../../src/models/Trace';
 import * as APM from '../../src/modules/APM';
 import { NativeAPM, NativeInstabug } from '../../src/native';
@@ -67,8 +69,8 @@ describe('APM Module', () => {
   });
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce((_: any, __: any, callback: () => any) =>
-      callback(),
+    mocked(NativeAPM).startExecutionTrace.mockImplementationOnce((_, __, callback) =>
+      callback(null),
     );
 
     const promise = APM.startExecutionTrace('trace');
@@ -77,8 +79,8 @@ describe('APM Module', () => {
   });
 
   it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
-    NativeAPM.startExecutionTrace.mockImplementationOnce(
-      (_: any, __: any, callback: (arg0: string) => any) => callback('trace-id'),
+    mocked(NativeAPM).startExecutionTrace.mockImplementationOnce((_, __, callback) =>
+      callback('trace-id'),
     );
 
     const promise = APM.startExecutionTrace('trace');

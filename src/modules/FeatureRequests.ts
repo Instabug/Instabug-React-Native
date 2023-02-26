@@ -23,9 +23,11 @@ export const setEnabled = (isEnabled: boolean) => {
  */
 export const setEmailFieldRequired = (
   isEmailFieldRequired: boolean,
-  types: actionTypes | ActionType,
+  type: actionTypes | ActionType,
 ) => {
-  NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, types);
+  NativeFeatureRequests.setEmailFieldRequiredForFeatureRequests(isEmailFieldRequired, [
+    type,
+  ] as ActionType[]);
 };
 
 /**

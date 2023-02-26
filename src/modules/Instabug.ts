@@ -564,7 +564,7 @@ export const onNavigationStateChange = (
     }
     _currentScreen = currentScreen;
     setTimeout(() => {
-      if (_currentScreen === currentScreen) {
+      if (currentScreen && _currentScreen === currentScreen) {
         NativeInstabug.reportScreenChange(currentScreen);
         _currentScreen = null;
       }
