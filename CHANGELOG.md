@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fixes a TS compilation error due to a broken entry point path.
+
 ## 11.9.0 (2023-02-20)
 
 - Bumps Instabug Android SDK to v11.9.0.
