@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Fixes a TS compilation error due to a broken entry point path.
+- Re-exports `NetworkData` type to be imported from `instabug-reactnative`.
 
 ## 11.9.0 (2023-02-20)
 
