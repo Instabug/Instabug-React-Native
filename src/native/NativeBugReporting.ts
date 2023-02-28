@@ -18,6 +18,7 @@ import type {
   RecordingButtonPosition,
   ReportType,
 } from '../utils/Enums';
+import { NativeModules } from './NativePackage';
 
 export interface BugReportingNativeModule extends NativeModule {
   // Essential APIs //
@@ -57,3 +58,5 @@ export interface BugReportingNativeModule extends NativeModule {
     handler: (dismissType: dismissType | DismissType, reportType: reportType | ReportType) => void,
   ): void;
 }
+
+export const NativeBugReporting = NativeModules.IBGBugReporting;

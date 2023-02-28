@@ -6,7 +6,7 @@ import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
-import { NativeInstabug } from '../../src/native';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,

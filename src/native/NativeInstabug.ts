@@ -21,6 +21,7 @@ import type {
 } from '../utils/Enums';
 import type { NetworkData } from '../utils/XhrNetworkInterceptor';
 import type { NativeConstants } from './NativeConstants';
+import { NativeModules } from './NativePackage';
 
 export interface InstabugNativeModule extends NativeModule {
   getConstants(): NativeConstants;
@@ -120,3 +121,5 @@ export interface InstabugNativeModule extends NativeModule {
   /** @deprecated */
   callPrivateApi(apiName: string, param: any[]): void;
 }
+
+export const NativeInstabug = NativeModules.Instabug;

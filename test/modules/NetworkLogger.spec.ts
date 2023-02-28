@@ -5,7 +5,8 @@ import { Platform } from 'react-native';
 import waitForExpect from 'wait-for-expect';
 
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeAPM, NativeInstabug } from '../../src/native';
+import { NativeAPM } from '../../src/native/NativeAPM';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';

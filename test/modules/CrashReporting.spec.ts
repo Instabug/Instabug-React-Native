@@ -3,7 +3,7 @@ import '../mocks/mockInstabugUtils';
 import { Platform } from 'react-native';
 
 import * as CrashReporting from '../../src/modules/CrashReporting';
-import { NativeCrashReporting } from '../../src/native';
+import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 
 describe('CrashReporting Module', () => {
   it('should call the native method setEnabled', () => {

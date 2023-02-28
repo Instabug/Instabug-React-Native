@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import * as BugReporting from '../../src/modules/BugReporting';
-import { NativeBugReporting } from '../../src/native';
+import { NativeBugReporting } from '../../src/native/NativeBugReporting';
 import {
   ExtendedBugReportMode,
   FloatingButtonPosition,

@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import * as Instabug from '../../src/modules/Instabug';
-import { NativeCrashReporting } from '../../src/native';
+import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import { InvocationEvent } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 

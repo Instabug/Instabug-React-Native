@@ -1,5 +1,7 @@
 import type { NativeModule } from 'react-native';
 
+import { NativeModules } from './NativePackage';
+
 export interface RepliesNativeModule extends NativeModule {
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
@@ -22,3 +24,5 @@ export interface RepliesNativeModule extends NativeModule {
   setPushNotificationChannelId(id: string): void;
   setSystemReplyNotificationSoundEnabled(isEnabled: boolean): void;
 }
+
+export const NativeReplies = NativeModules.IBGReplies;
