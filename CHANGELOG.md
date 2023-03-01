@@ -1,7 +1,14 @@
-## Unreleased
+# Changelog
 
-- Fixes a TS compilation error due to a broken entry point path.
-- Re-exports `NetworkData` type to be imported from `instabug-reactnative`.
+## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
+
+### Changed
+
+- Re-export `NetworkData` type ([#932](https://github.com/Instabug/Instabug-React-Native/pull/932)), closes [#930](https://github.com/Instabug/Instabug-React-Native/issues/930).
+
+### Fixed
+
+- Fix a TS compilation error due to a broken entry point path ([#931](https://github.com/Instabug/Instabug-React-Native/pull/931)), closes [#930](https://github.com/Instabug/Instabug-React-Native/issues/930).
 
 ## 11.9.0 (2023-02-20)
 
