@@ -1,4 +1,4 @@
-import type { SurveysNativeModule } from '../../src/native/SurveysNativeModule';
+import type { SurveysNativeModule } from '../../src/native/NativeSurveys';
 
 const mockSurveys: SurveysNativeModule = {
   addListener: jest.fn(),

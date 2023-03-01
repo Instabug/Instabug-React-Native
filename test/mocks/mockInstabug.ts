@@ -1,4 +1,4 @@
-import type { InstabugNativeModule } from '../../src/native/InstabugNativeModule';
+import type { InstabugNativeModule } from '../../src/native/NativeInstabug';
 
 const mockInstabug: InstabugNativeModule = {
   addListener: jest.fn(),

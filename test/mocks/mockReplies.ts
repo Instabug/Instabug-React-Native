@@ -1,4 +1,4 @@
-import type { RepliesNativeModule } from '../../src/native/RepliesNativeModule';
+import type { RepliesNativeModule } from '../../src/native/NativeReplies';
 
 const mockReplies: RepliesNativeModule = {
   addListener: jest.fn(),
