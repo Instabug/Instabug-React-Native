@@ -1,13 +1,21 @@
-## Unreleased
+# Changelog
 
-- Fixes a TS compilation error due to a broken entry point path.
-- Re-exports `NetworkData` type to be imported from `instabug-reactnative`.
+## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...HEAD) (March 01, 2023)
 
-## 11.9.0 (2023-02-20)
+### Changed
 
-- Bumps Instabug Android SDK to v11.9.0.
-- Bumps Instabug iOS SDK to v11.9.0.
-- Adds the new `Instabug.init` API to start the SDK as follows:
+- Re-export `NetworkData` type ([#932](https://github.com/Instabug/Instabug-React-Native/pull/932)), closes [#930](https://github.com/Instabug/Instabug-React-Native/issues/930).
+
+### Fixed
+
+- Fix a TS compilation error due to a broken entry point path ([#931](https://github.com/Instabug/Instabug-React-Native/pull/931)), closes [#930](https://github.com/Instabug/Instabug-React-Native/issues/930).
+
+## [11.9.0](https://github.com/Instabug/Instabug/Instabug-React-Native/compare/v11.6.0...v11.9.0) (February 20, 2023)
+
+### Added
+
+- Add the new `Instabug.init` API to start the SDK ([#867](https://github.com/Instabug/Instabug-React-Native/pull/867)) as follows:
+
   ```js
   Instabug.init({
     token: '<APP_TOKEN>',
@@ -15,85 +23,151 @@
     debugLogsLevel: LogLevel.verbose,
   });
   ```
-- Adds monorepo support for source maps automatic upload scripts.
-- Adds gradle and ruby files to integrate native SDKs within exiting native apps. See [#919](https://github.com/Instabug/Instabug-React-Native/pull/919) for more info.
-- Deprecates all module-enums (e.g. `Instabug.invocationEvent`) in favour of standalone-enums (e.g. `InvocationEvent`). See [#914](https://github.com/Instabug/Instabug-React-Native/pull/914) for more info and the detailed list of Enums.
-- Deprecates `Instabug.start` in favour of `Instabug.init`.
-- Deprecates `Instabug.setDebugEnabled`, `Instabug.setSdkDebugLogsLevel`, and `APM.setLogLevel` in favour of `debugLogsLevel` property of `Instabug.init`.
-- Deprecates `Instabug.isRunningLive` API.
-- Fixes external global error handlers not being called after initializing Instabug.
-- Fixes `BugReporting.setDidSelectPromptOptionHandler` on iOS.
-- Exports native Android SDK using `api` instead of `implementation`.
 
-## 11.6.0 (2022-12-29)
+- Add monorepo support for source maps automatic upload scripts ([#915](https://github.com/Instabug/Instabug-React-Native/pull/915)).
+- Add gradle and ruby files to integrate native SDKs within exiting native apps ([#919](https://github.com/Instabug/Instabug-React-Native/pull/919)).
 
-- Bumps Instabug Android SDK to v11.7.0
-- Bumps Instabug iOS SDK to v11.6.0
-- Adds new string keys: insufficientContentMessage and insufficientContentTitle
-- Adds missing mapping for some existing keys if relevant to the other platform
-- Removes the string key: video
-- Deprecates the legacy API callPrivateApi
+### Changed
 
-## 11.5.1 (2022-12-14)
+- Bump Instabug Android SDK to v11.9.0 ([#926](https://github.com/Instabug/Instabug-React-Native/pull/926)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.9.0).
+- Bump Instabug iOS SDK to v11.9.0 ([#967](https://github.com/Instabug/Instabug-React-Native/pull/967)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/11.9.0).
+- Export native Android SDK using `api` instead of `implementation` ([#907](https://github.com/Instabug/Instabug-React-Native/pull/907)).
 
-- Deprecates CrashReporting.reportJSException in favour of a new strongly typed API: CrashReporting.reportError
-- Fixes Survey interface export causing a build error with certain babel versions
+### Deprecated
 
-## 11.5.0 (2022-11-28)
+- Deprecate all module-enums (e.g. `Instabug.invocationEvent`) in favour of standalone-enums (e.g. `InvocationEvent`) ([#914](https://github.com/Instabug/Instabug-React-Native/pull/914)).
+- Deprecate `Instabug.start` in favour of `Instabug.init` ([#867](https://github.com/Instabug/Instabug-React-Native/pull/867)).
+- Deprecate `Instabug.setDebugEnabled`, `Instabug.setSdkDebugLogsLevel`, and `APM.setLogLevel` in favour of `debugLogsLevel` property of `Instabug.init` ([#873](https://github.com/Instabug/Instabug-React-Native/pull/873)).
+- Deprecate `Instabug.isRunningLive` API ([#892](https://github.com/Instabug/Instabug-React-Native/pull/892)).
 
-- Bumps Instabug Android SDK to v11.6.0
-- Bumps Instabug iOS SDK to v11.5.0
-- Adds first-class TypeScript support
-- Adds Romanian locale support
-- Adds BugReporting.setDisclaimerText API
-- Adds BugReporting.setCommentMinimumCharacterCount API
-- Deprecates Instabug.enable and Instabug.disable APIs in favour of a new API Instabug.setEnabled, which works on both platforms
-- Fixes a compilation error on Android projects without buildToolsVersion property set
-- Fixes an issue with Hermes source maps generation script on React Native versions prior to 0.65.0
+### Fixed
 
-## 11.3.0 (2022-10-11)
+- Fix external global error handlers not being called after initializing Instabug ([#886](https://github.com/Instabug/Instabug-React-Native/pull/886)).
+- Fix `BugReporting.setDidSelectPromptOptionHandler` on iOS ([#920](https://github.com/Instabug/Instabug-React-Native/pull/920)).
 
-- Bumps Instabug Android SDK to v11.5.1
-- Bumps Instabug iOS SDK to v11.3.0
-- Uses Cocoapods for Instabug iOS SDK
-- Fixes a compilation error on projects with Java version prior to 8.
+## [11.6.0](https://github.com/Instabug/Instabug/Instabug-React-Native/compare/v11.5.1...v11.6.0) (December, 29, 2022)
 
-## 11.2.0 (2022-09-19)
+### Added
 
-- Bumps Instabug Android SDK to v11.4.1
-- Bumps Instabug iOS SDK to v11.2.0
-- React Native 0.69 support
-- Bumps the minimum supported React Native version to 0.60.0
-- Drops manual linking support
-- Adjusts source maps auto upload script on Android to support the bundled Hermes in React Native v0.69
-- Fixes an issue with Hermes source maps generation script causing JS crashes on Android not getting deobfuscated correctly
-- Adds support for iOS source maps auto upload when Hermes is enabled
+- Add new string keys: `insufficientContentMessage` and `insufficientContentTitle` ([#840](https://github.com/Instabug/Instabug-React-Native/pull/840)).
+- Add missing mapping for some existing keys if relevant to the other platform ([#840](https://github.com/Instabug/Instabug-React-Native/pull/840)).
 
-## 11.0.2 (2022-07-20)
+### Changed
 
-- Fixes a crash that occurs when logging some failed network requests
+- Bump Instabug Android SDK to v11.7.0 ([#863](https://github.com/Instabug/Instabug-React-Native/pull/863)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.7.0).
+- Bump Instabug iOS SDK to v11.6.0 ([#864](https://github.com/Instabug/Instabug-React-Native/pull/864)). [See release notes](https://github.com/Instabug/Instabug-IOS/releases/tag/11.6.0).
+- **BREAKING:** Remove the string key: `video` ([#840](https://github.com/Instabug/Instabug-React-Native/pull/840)).
 
-## 11.0.1 (2022-06-13)
+### Deprecated
 
-- Fixes an issue with network responses of type JSON not getting logged
-- Fixes an issue that may cause the android build to fail
-- Fixes an issue with iOS autolinking that causes the user local path to be referenced in xcode
+- Deprecate the legacy API `callPrivateApi` ([#866](https://github.com/Instabug/Instabug-React-Native/pull/866)).
 
-## 11.0.0 (2022-06-07)
+## [11.5.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.5.0...v11.5.1) (December 14, 2022)
 
-- Bumps Instabug native SDKs to v11
-- Adds the ability to initialize the Android SDK from JavaScript. Check the migration guide referenced in our docs
-- Adds the ability to opt out of iOS source maps auto upload through the INSTABUG_SOURCEMAPS_UPLOAD_DISABLE env variable
-- Adds dynamic entry file support through the INSTABUG_ENTRY_FILE env variable
-- Adds the string keys for Repro Steps
-- Adds the new APIs: Instabug.addPrivateView and Instabug.removePrivateView
-- Deprecates Instabug.setPrivateView in favor of the newly introduced APIs
-- Removes the deprecated APIs. Check the migration guide referenced in our docs
-- Removes Surveys.setThresholdForReshowingSurveyAfterDismiss
-- Removes the string keys: surveysCustomThanksTitle and surveysCustomThanksSubtitle
-- Renames BugReporting.setAutoScreenRecordingMaxDuration to BugReporting.setAutoScreenRecordingDurationIOS to target iOS only
-- Fixes an issue with the setRequestFilterExpression API not working with Hermes
-- Fixes an issue with the swipe invocation event not working on Android
+### Deprecated
+
+- Deprecate `CrashReporting.reportJSException` in favour of the new strongly-typed `CrashReporting.reportError` ([#852](https://github.com/Instabug/Instabug-React-Native/pull/852)).
+
+### Fixed
+
+- Fix `Survey` interface export causing a build error with certain babel versions ([#851](https://github.com/Instabug/Instabug-React-Native/pull/851)), closes [#845](https://github.com/Instabug/Instabug-React-Native/issues/845).
+
+## [11.5.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.3.0...v11.5.0) (November 28, 2022)
+
+### Added
+
+- Add first-class TypeScript support ([#783](https://github.com/Instabug/Instabug-React-Native/pull/783)).
+- Add Romanian locale support ([#835](https://github.com/Instabug/Instabug-React-Native/pull/835)).
+- Add `BugReporting.setDisclaimerText` API ([#830](https://github.com/Instabug/Instabug-React-Native/pull/830)).
+- Add `BugReporting.setCommentMinimumCharacterCount` API ([#830](https://github.com/Instabug/Instabug-React-Native/pull/830)).
+
+### Changed
+
+- Bump Instabug Android SDK to v11.6.0 ([#832](https://github.com/Instabug/Instabug-React-Native/pull/832)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.6.0).
+- Bump Instabug iOS SDK to v11.5.0 ([#833](https://github.com/Instabug/Instabug-React-Native/pull/833)). [See release notes](https://github.com/Instabug/Instabug-IOS/releases/tag/11.5.0).
+
+### Deprecated
+
+- Deprecate `Instabug.enable` and `Instabug.disable` APIs in favour of a new API `Instabug.setEnabled`, which works on both platforms ([#830](https://github.com/Instabug/Instabug-React-Native/pull/830)).
+
+### Fixed
+
+- Fix a compilation error on Android projects without `buildToolsVersion` property set ([#812](https://github.com/Instabug/Instabug-React-Native/pull/812)), closes [#719](https://github.com/Instabug/Instabug-React-Native/issues/719).
+- Fix an issue with Hermes source maps generation script on `react-native` versions prior to v0.65.0 ([#834](https://github.com/Instabug/Instabug-React-Native/pull/834)).
+
+## [11.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.2.0...v11.3.0) (October 11, 2022)
+
+### Changed
+
+- Bump Instabug Android SDK to v11.5.1 ([#789](https://github.com/Instabug/Instabug-React-Native/pull/789)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.5.1).
+- Bump Instabug iOS SDK to v11.3.0 ([#790](https://github.com/Instabug/Instabug-React-Native/pull/790)). [See release notes](https://github.com/Instabug/Instabug-IOS/releases/tag/11.3.0).
+- Use CocoaPods for Instabug iOS SDK; resulting in huge improvement for the npm package size ([#639](https://github.com/Instabug/Instabug-React-Native/pull/639)).
+
+### Fixed
+
+- Fix a compilation error on projects with Java version prior to 8 ([#788](https://github.com/Instabug/Instabug-React-Native/pull/788)).
+
+## [11.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.0.2...v11.2.0) (September 19, 2022)
+
+### Added
+
+- Add `react-native` v0.69.0 support ([#748](https://github.com/Instabug/Instabug-React-Native/pull/748)), closes [#732](https://github.com/Instabug/Instabug-React-Native/issues/732).
+- Add Hermes support for source maps automatic upload script on Android with `react-native` v0.69.0 ([#750](https://github.com/Instabug/Instabug-React-Native/pull/750)).
+- Add support for iOS source maps automatic upload when Hermes is enabled ([#756](https://github.com/Instabug/Instabug-React-Native/pull/756)).
+
+### Changed
+
+- Bump Instabug Android SDK to v11.4.1 ([#775](https://github.com/Instabug/Instabug-React-Native/pull/775)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.4.1).
+- Bump Instabug iOS SDK to v11.2.0 ([#778](https://github.com/Instabug/Instabug-React-Native/pull/778)). [See release notes](https://github.com/Instabug/Instabug-IOS/releases/tag/11.2.0).
+- Drop support for `react-native` versions prior to v0.60.0 ([#748](https://github.com/Instabug/Instabug-React-Native/pull/748)).
+- Drop support for manual linking ([#748](https://github.com/Instabug/Instabug-React-Native/pull/748)).
+
+### Fixed
+
+- Fix an issue with Hermes source maps generation script causing JS crashes on Android not getting deobfuscated correctly ([#751](https://github.com/Instabug/Instabug-React-Native/pull/751)).
+
+## [11.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v11.0.1...v11.0.2) (July 20, 2022)
+
+### Fixed
+
+- Fix a crash that occurs when logging some failed network requests ([#735](https://github.com/Instabug/Instabug-React-Native/pull/735)), closes [#733](https://github.com/Instabug/Instabug-React-Native/issues/733).
+
+## [11.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.0.0...v11.0.1) (June 13, 2022)
+
+### Fixed
+
+- Fix an issue with network responses of type JSON not getting logged ([#710](https://github.com/Instabug/Instabug-React-Native/pull/710)).
+- Fix an issue that may cause the android build to fail ([#722](https://github.com/Instabug/Instabug-React-Native/pull/722)).
+- Fix an issue with iOS autolinking that causes the user local path to be referenced in Xcode ([#726](https://github.com/Instabug/Instabug-React-Native/pull/726)).
+
+## [11.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v10.13.0...v11.0.0) (June 07, 2022)
+
+### Added
+
+- Add the ability to initialize the Android SDK from JavaScript. Check the [migration guide][migration-v11] for more info ([#704](https://github.com/Instabug/Instabug-React-Native/pull/704)).
+- Add the ability to opt out of iOS source maps auto upload through the `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` env variable ([#694](https://github.com/Instabug/Instabug-React-Native/pull/694)), closes [#643](https://github.com/Instabug/Instabug-React-Native/issues/643).
+- Add dynamic entry file support through the `INSTABUG_ENTRY_FILE` env variable ([#674](https://github.com/Instabug/Instabug-React-Native/pull/674)).
+- Add the string keys for Repro Steps ([#661](https://github.com/Instabug/Instabug-React-Native/pull/661)), closes [#659](https://github.com/Instabug/Instabug-React-Native/issues/659).
+
+### Changed
+
+- Bump Instabug Android SDK to v11.2.0 ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.2.0).
+- Bump Instabug iOS SDK to v11.0.2 ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)). [See release notes](https://github.com/Instabug/Instabug-IOS/releases/tag/11.0.2).
+- Remove the deprecated APIs. Check the [migration guide][migration-v11] for more info ([#703](https://github.com/Instabug/Instabug-React-Native/pull/703)).
+- **BREAKING:** Remove `Surveys.setThresholdForReshowingSurveyAfterDismiss` ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)).
+- **BREAKING:** Remove the string keys: `surveysCustomThanksTitle` and `surveysCustomThanksSubtitle` ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)).
+- **BREAKING:** Rename `BugReporting.setAutoScreenRecordingMaxDuration` to `BugReporting.setAutoScreenRecordingDurationIOS` to target iOS only ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)).
+
+### Deprecated
+
+- Deprecate `Instabug.setPrivateView` in favour of `Instabug.addPrivateView` and `Instabug.removePrivateView` ([#709](https://github.com/Instabug/Instabug-React-Native/pull/709)).
+
+### Fixed
+
+- Fix an issue with the `setRequestFilterExpression` not working with Hermes ([#705](https://github.com/Instabug/Instabug-React-Native/pull/705)).
+- Fix an issue with the swipe invocation event not working on Android ([#690](https://github.com/Instabug/Instabug-React-Native/pull/690)).
+
+[migration-v11]: https://docs.instabug.com/docs/react-native-migration-guide
 
 ## 10.13.0 (2022-03-17)
 
