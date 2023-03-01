@@ -1,20 +1,6 @@
-import { NativeEventEmitter, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
-import { NativeReplies } from '../native/NativeReplies';
-
-/**
- * @internal You shouldn't use this enum since you never emit or listen
- * for native events in your code.
- */
-export enum $NativeEvents {
-  ON_REPLY_RECEIVED_HANDLER = 'IBGOnNewReplyReceivedCallback',
-}
-
-/**
- * @internal You shouldn't use this since you never emit or listen for native
- * events in your code.
- */
-export const $emitter = new NativeEventEmitter(NativeReplies);
+import { NativeEvents, NativeReplies, emitter } from '../native/NativeReplies';
 
 /**
  * Enables and disables everything related to receiving replies.
@@ -44,7 +30,7 @@ export const show = () => {
  * @param handler A callback that gets executed when a new message is received.
  */
 export const setOnNewReplyReceivedHandler = (handler: () => void) => {
-  $emitter.addListener($NativeEvents.ON_REPLY_RECEIVED_HANDLER, handler);
+  emitter.addListener(NativeEvents.ON_REPLY_RECEIVED_HANDLER, handler);
   NativeReplies.setOnNewReplyReceivedHandler(handler);
 };
 

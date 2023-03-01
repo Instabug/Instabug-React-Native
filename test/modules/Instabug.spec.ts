@@ -6,7 +6,7 @@ import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
-import { NativeInstabug } from '../../src/native/NativeInstabug';
+import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -20,9 +20,9 @@ import InstabugUtils from '../../src/utils/InstabugUtils';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
-    const events = Object.values(Instabug.$NativeEvents);
+    const events = Object.values(NativeEvents);
     events.forEach((event) => {
-      Instabug.$emitter.removeAllListeners(event);
+      emitter.removeAllListeners(event);
     });
   });
 
@@ -641,9 +641,9 @@ describe('Instabug Module', () => {
       done();
     };
     Instabug.onReportSubmitHandler(callback);
-    Instabug.$emitter.emit(Instabug.$NativeEvents.PRESENDING_HANDLER, report);
+    emitter.emit(NativeEvents.PRESENDING_HANDLER, report);
 
-    expect(Instabug.$emitter.listenerCount(Instabug.$NativeEvents.PRESENDING_HANDLER)).toBe(1);
+    expect(emitter.listenerCount(NativeEvents.PRESENDING_HANDLER)).toBe(1);
   });
 
   it('should invoke the native method callPrivateApi', () => {

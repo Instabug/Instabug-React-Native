@@ -1,13 +1,13 @@
 import { Platform } from 'react-native';
 
 import * as Replies from '../../src/modules/Replies';
-import { NativeReplies } from '../../src/native/NativeReplies';
+import { NativeEvents, NativeReplies, emitter } from '../../src/native/NativeReplies';
 
 describe('Replies Module', () => {
   beforeEach(() => {
-    const events = Object.values(Replies.$NativeEvents);
+    const events = Object.values(NativeEvents);
     events.forEach((event) => {
-      Replies.$emitter.removeAllListeners(event);
+      emitter.removeAllListeners(event);
     });
   });
 
@@ -44,9 +44,9 @@ describe('Replies Module', () => {
   it('should invoke callback on emitting the event IBGOnNewReplyReceivedCallback', () => {
     const callback = jest.fn();
     Replies.setOnNewReplyReceivedHandler(callback);
-    Replies.$emitter.emit(Replies.$NativeEvents.ON_REPLY_RECEIVED_HANDLER);
+    emitter.emit(NativeEvents.ON_REPLY_RECEIVED_HANDLER);
 
-    expect(Replies.$emitter.listenerCount(Replies.$NativeEvents.ON_REPLY_RECEIVED_HANDLER)).toBe(1);
+    expect(emitter.listenerCount(NativeEvents.ON_REPLY_RECEIVED_HANDLER)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 

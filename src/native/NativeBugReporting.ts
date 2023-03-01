@@ -1,4 +1,4 @@
-import type { NativeModule } from 'react-native';
+import { NativeEventEmitter, NativeModule } from 'react-native';
 
 import type {
   dismissType,
@@ -60,3 +60,11 @@ export interface BugReportingNativeModule extends NativeModule {
 }
 
 export const NativeBugReporting = NativeModules.IBGBugReporting;
+
+export enum NativeEvents {
+  ON_INVOKE_HANDLER = 'IBGpreInvocationHandler',
+  ON_DISMISS_HANDLER = 'IBGpostInvocationHandler',
+  DID_SELECT_PROMPT_OPTION_HANDLER = 'IBGDidSelectPromptOptionHandler',
+}
+
+export const emitter = new NativeEventEmitter(NativeBugReporting);

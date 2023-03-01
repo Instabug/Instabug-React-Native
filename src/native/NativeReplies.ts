@@ -1,4 +1,4 @@
-import type { NativeModule } from 'react-native';
+import { NativeEventEmitter, NativeModule } from 'react-native';
 
 import { NativeModules } from './NativePackage';
 
@@ -26,3 +26,9 @@ export interface RepliesNativeModule extends NativeModule {
 }
 
 export const NativeReplies = NativeModules.IBGReplies;
+
+export enum NativeEvents {
+  ON_REPLY_RECEIVED_HANDLER = 'IBGOnNewReplyReceivedCallback',
+}
+
+export const emitter = new NativeEventEmitter(NativeReplies);
