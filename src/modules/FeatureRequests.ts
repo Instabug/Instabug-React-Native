@@ -1,4 +1,4 @@
-import { NativeFeatureRequests } from '../native';
+import { NativeFeatureRequests } from '../native/NativeFeatureRequests';
 import { actionTypes } from '../utils/ArgsRegistry';
 import type { ActionType } from '../utils/Enums';
 

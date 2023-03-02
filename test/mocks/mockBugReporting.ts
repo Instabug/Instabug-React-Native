@@ -1,4 +1,4 @@
-import type { BugReportingNativeModule } from '../../src/native/BugReportingNativeModule';
+import type { BugReportingNativeModule } from '../../src/native/NativeBugReporting';
 
 const mockBugReporting: BugReportingNativeModule = {
   addListener: jest.fn(),

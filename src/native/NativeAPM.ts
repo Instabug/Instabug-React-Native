@@ -1,6 +1,7 @@
 import type { NativeModule } from 'react-native';
 
 import type { logLevel } from '../utils/ArgsRegistry';
+import { NativeModules } from './NativePackage';
 
 export interface ApmNativeModule extends NativeModule {
   // Essential APIs //
@@ -28,3 +29,5 @@ export interface ApmNativeModule extends NativeModule {
   /** @deprecated */
   setLogLevel(level: logLevel): void;
 }
+
+export const NativeAPM = NativeModules.IBGAPM;

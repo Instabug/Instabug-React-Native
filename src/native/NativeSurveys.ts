@@ -1,5 +1,7 @@
 import type { NativeModule } from 'react-native';
 
+import { NativeModules } from './NativePackage';
+
 export interface Survey {
   title: string;
 }
@@ -24,3 +26,5 @@ export interface SurveysNativeModule extends NativeModule {
   setOnShowHandler(onShowHandler: () => void): void;
   setOnDismissHandler(onDismissHandler: () => void): void;
 }
+
+export const NativeSurveys = NativeModules.IBGSurveys;

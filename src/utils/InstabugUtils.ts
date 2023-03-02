@@ -7,8 +7,8 @@ import parseErrorStackLib, {
 import type { NavigationState as NavigationStateV5, PartialState } from '@react-navigation/native';
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
-import { NativeCrashReporting } from '../native';
-import type { CrashData } from '../native/CrashReportingNativeModule';
+import type { CrashData } from '../native/NativeCrashReporting';
+import { NativeCrashReporting } from '../native/NativeCrashReporting';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);

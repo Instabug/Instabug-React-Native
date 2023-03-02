@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { NativeBugReporting } from '../native';
+import { NativeBugReporting } from '../native/NativeBugReporting';
 import {
   dismissType,
   extendedBugReportMode,

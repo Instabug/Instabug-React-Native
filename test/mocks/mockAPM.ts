@@ -1,4 +1,4 @@
-import type { ApmNativeModule } from '../../src/native/ApmNativeModule';
+import type { ApmNativeModule } from '../../src/native/NativeAPM';
 
 const mockAPM: ApmNativeModule = {
   addListener: jest.fn(),

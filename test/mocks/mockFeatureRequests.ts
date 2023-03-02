@@ -1,4 +1,4 @@
-import type { FeatureRequestsNativeModule } from '../../src/native/FeatureRequestsNativeModule';
+import type { FeatureRequestsNativeModule } from '../../src/native/NativeFeatureRequests';
 
 const mockFeatureRequests: FeatureRequestsNativeModule = {
   addListener: jest.fn(),
