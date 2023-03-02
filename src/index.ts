@@ -9,7 +9,7 @@ import * as CrashReporting from './modules/CrashReporting';
 import * as FeatureRequests from './modules/FeatureRequests';
 import * as Instabug from './modules/Instabug';
 import * as NetworkLogger from './modules/NetworkLogger';
-import type { NetworkData } from './modules/NetworkLogger';
+import type { NetworkData, NetworkDataObfuscationHandler } from './modules/NetworkLogger';
 import * as Replies from './modules/Replies';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
@@ -26,8 +26,6 @@ export {
   Replies,
   Surveys,
 };
-export type { InstabugConfig };
-export type { Survey };
-export type { NetworkData };
+export type { InstabugConfig, Survey, NetworkData, NetworkDataObfuscationHandler };
 
 export default Instabug;
