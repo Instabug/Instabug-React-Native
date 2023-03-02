@@ -1,4 +1,4 @@
-import { NativeInstabug } from '../native';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 const constants = NativeInstabug.getConstants();
 

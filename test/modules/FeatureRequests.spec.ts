@@ -1,5 +1,5 @@
 import * as FeatureRequests from '../../src/modules/FeatureRequests';
-import { NativeFeatureRequests } from '../../src/native';
+import { NativeFeatureRequests } from '../../src/native/NativeFeatureRequests';
 import { ActionType } from '../../src/utils/Enums';
 
 describe('Feature Requests Module', () => {

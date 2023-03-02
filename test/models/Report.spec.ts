@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import Report from '../../src/models/Report';
-import { NativeInstabug } from '../../src/native';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 describe('Report Model', () => {
   let report: Report;

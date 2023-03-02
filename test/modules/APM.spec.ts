@@ -4,7 +4,8 @@ import { mocked } from 'ts-jest/utils';
 
 import Trace from '../../src/models/Trace';
 import * as APM from '../../src/modules/APM';
-import { NativeAPM, NativeInstabug } from '../../src/native';
+import { NativeAPM } from '../../src/native/NativeAPM';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 describe('APM Module', () => {
   it('should call the native method setEnabled', () => {

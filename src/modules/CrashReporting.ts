@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
 import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
-import { NativeCrashReporting } from '../native';
-import type { CrashData } from '../native/CrashReportingNativeModule';
+import type { CrashData } from '../native/NativeCrashReporting';
+import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
 
 /**

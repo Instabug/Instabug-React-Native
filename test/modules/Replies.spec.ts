@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import * as Replies from '../../src/modules/Replies';
-import { NativeReplies } from '../../src/native';
+import { NativeReplies } from '../../src/native/NativeReplies';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 

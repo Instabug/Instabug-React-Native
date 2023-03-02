@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { NativeInstabug } from '../native';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 interface LogInfo {
   log: string;

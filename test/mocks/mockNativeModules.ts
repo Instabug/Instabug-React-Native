@@ -1,4 +1,4 @@
-import type { InstabugNativePackage } from '../../src/native';
+import type { InstabugNativePackage } from '../../src/native/NativePackage';
 import mockAPM from './mockAPM';
 import mockBugReporting from './mockBugReporting';
 import mockCrashReporting from './mockCrashReporting';

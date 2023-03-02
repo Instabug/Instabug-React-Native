@@ -1,7 +1,8 @@
 import { Platform } from 'react-native';
 
 import Trace from '../models/Trace';
-import { NativeAPM, NativeInstabug } from '../native';
+import { NativeAPM } from '../native/NativeAPM';
+import { NativeInstabug } from '../native/NativeInstabug';
 import { logLevel } from '../utils/ArgsRegistry';
 
 export { logLevel };

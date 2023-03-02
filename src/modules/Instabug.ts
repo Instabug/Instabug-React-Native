@@ -7,7 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeInstabug } from '../native';
+import { NativeInstabug } from '../native/NativeInstabug';
 import {
   IBGPosition,
   actionTypes,

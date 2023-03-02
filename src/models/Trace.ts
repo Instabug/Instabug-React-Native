@@ -1,4 +1,4 @@
-import { NativeAPM } from '../native';
+import { NativeAPM } from '../native/NativeAPM';
 
 export default class Trace {
   constructor(

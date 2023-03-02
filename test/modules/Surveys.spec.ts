@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import * as Surveys from '../../src/modules/Surveys';
-import { NativeSurveys } from '../../src/native';
+import { NativeSurveys } from '../../src/native/NativeSurveys';
 import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
 import IBGConstants from '../../src/utils/InstabugConstants';
 

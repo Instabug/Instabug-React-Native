@@ -1,5 +1,5 @@
 import Trace from '../../src/models/Trace';
-import { NativeAPM } from '../../src/native';
+import { NativeAPM } from '../../src/native/NativeAPM';
 
 describe('Trace Model', () => {
   it('should set the id, name and attributes if passed', () => {
