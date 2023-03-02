@@ -1,11 +1,16 @@
 import { Platform } from 'react-native';
 
 import * as Replies from '../../src/modules/Replies';
-import { NativeReplies } from '../../src/native/NativeReplies';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
+import { NativeEvents, NativeReplies, emitter } from '../../src/native/NativeReplies';
 
 describe('Replies Module', () => {
+  beforeEach(() => {
+    const events = Object.values(NativeEvents);
+    events.forEach((event) => {
+      emitter.removeAllListeners(event);
+    });
+  });
+
   it('should call the native method setRepliesEnabled', () => {
     Replies.setEnabled(true);
 
@@ -39,9 +44,9 @@ describe('Replies Module', () => {
   it('should invoke callback on emitting the event IBGOnNewReplyReceivedCallback', () => {
     const callback = jest.fn();
     Replies.setOnNewReplyReceivedHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.ON_REPLY_RECEIVED_HANDLER);
+    emitter.emit(NativeEvents.ON_REPLY_RECEIVED_HANDLER);
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.ON_REPLY_RECEIVED_HANDLER).length).toEqual(1);
+    expect(emitter.listenerCount(NativeEvents.ON_REPLY_RECEIVED_HANDLER)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 

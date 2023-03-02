@@ -41,14 +41,6 @@ public class InstabugUtil {
         return null;
     }
 
-     public static void sendEvent(ReactApplicationContext reactContext,
-                           String eventName,
-                           WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
-    }
-
     /**
      * Convenience method to convert from a list of Surveys to a JSON array
      *

@@ -7,7 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeInstabug } from '../native/NativeInstabug';
+import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
 import {
   IBGPosition,
   actionTypes,
@@ -31,8 +31,6 @@ import {
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 
@@ -533,7 +531,7 @@ export const show = () => {
 };
 
 export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
-  IBGEventEmitter.addListener(NativeInstabug, InstabugConstants.PRESENDING_HANDLER, (report) => {
+  emitter.addListener(NativeEvents.PRESENDING_HANDLER, (report) => {
     const { tags, consoleLogs, instabugLogs, userAttributes, fileAttachments } = report;
     const reportObj = new Report(tags, consoleLogs, instabugLogs, userAttributes, fileAttachments);
     handler && handler(reportObj);

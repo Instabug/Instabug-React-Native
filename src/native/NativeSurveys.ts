@@ -1,4 +1,4 @@
-import type { NativeModule } from 'react-native';
+import { NativeEventEmitter, NativeModule } from 'react-native';
 
 import { NativeModules } from './NativePackage';
 
@@ -28,3 +28,10 @@ export interface SurveysNativeModule extends NativeModule {
 }
 
 export const NativeSurveys = NativeModules.IBGSurveys;
+
+export enum NativeEvents {
+  WILL_SHOW_SURVEY_HANDLER = 'IBGWillShowSurvey',
+  DID_DISMISS_SURVEY_HANDLER = 'IBGDidDismissSurvey',
+}
+
+export const emitter = new NativeEventEmitter(NativeSurveys);

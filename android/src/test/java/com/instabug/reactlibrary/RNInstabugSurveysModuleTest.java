@@ -7,7 +7,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.survey.Survey;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -34,19 +32,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
 public class RNInstabugSurveysModuleTest {
 
-    private RNInstabugSurveysModule surveysModule = new RNInstabugSurveysModule(mock(ReactApplicationContext.class));
-
-    private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
+    private RNInstabugSurveysModule surveysModule = spy(new RNInstabugSurveysModule(mock(ReactApplicationContext.class)));
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
@@ -180,8 +176,7 @@ public class RNInstabugSurveysModuleTest {
         surveysModule.setOnShowHandler(null);
 
         // then
-        verify(InstabugUtil.class,times(1));
-        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_SHOW_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
+        verify(surveysModule).sendEvent(Constants.IBG_ON_SHOW_SURVEY_HANDLER, null);
     }
 
     @Test
@@ -200,8 +195,7 @@ public class RNInstabugSurveysModuleTest {
         surveysModule.setOnDismissHandler(null);
 
         // then
-        verify(InstabugUtil.class,times(1));
-        InstabugUtil.sendEvent(any(ReactApplicationContext.class), eq(Constants.IBG_ON_DISMISS_SURVEY_HANDLER), Matchers.isNull(WritableMap.class));
+        verify(surveysModule).sendEvent(Constants.IBG_ON_DISMISS_SURVEY_HANDLER, null);
     }
 
     @Test

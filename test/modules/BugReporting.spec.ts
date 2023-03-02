@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import * as BugReporting from '../../src/modules/BugReporting';
-import { NativeBugReporting } from '../../src/native/NativeBugReporting';
+import { NativeBugReporting, NativeEvents, emitter } from '../../src/native/NativeBugReporting';
 import {
   ExtendedBugReportMode,
   FloatingButtonPosition,
@@ -10,10 +10,15 @@ import {
   RecordingButtonPosition,
   ReportType,
 } from '../../src/utils/Enums';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
 
 describe('Testing BugReporting Module', () => {
+  beforeEach(() => {
+    const events = Object.values(NativeEvents);
+    events.forEach((event) => {
+      emitter.removeAllListeners(event);
+    });
+  });
+
   it('should call the native method setBugReportingEnabled', () => {
     BugReporting.setEnabled(true);
 
@@ -131,9 +136,9 @@ describe('Testing BugReporting Module', () => {
   it('should invoke callback on emitting the event IBGpreInvocationHandler', () => {
     const callback = jest.fn();
     BugReporting.onInvokeHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.ON_INVOKE_HANDLER);
+    emitter.emit(NativeEvents.ON_INVOKE_HANDLER);
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.ON_INVOKE_HANDLER).length).toEqual(1);
+    expect(emitter.listenerCount(NativeEvents.ON_INVOKE_HANDLER)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 
@@ -151,12 +156,12 @@ describe('Testing BugReporting Module', () => {
     const callback = jest.fn();
 
     BugReporting.onSDKDismissedHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.ON_SDK_DISMISSED_HANDLER, {
+    emitter.emit(NativeEvents.ON_DISMISS_HANDLER, {
       dismissType: dismissType,
       reportType: reportType,
     });
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.ON_SDK_DISMISSED_HANDLER).length).toEqual(1);
+    expect(emitter.listenerCount(NativeEvents.ON_DISMISS_HANDLER)).toBe(1);
     expect(callback).toBeCalledTimes(1);
     expect(callback).toBeCalledWith(dismissType, reportType);
   });
@@ -192,12 +197,10 @@ describe('Testing BugReporting Module', () => {
     Platform.OS = 'android';
 
     BugReporting.setDidSelectPromptOptionHandler(jest.fn());
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, {});
+    emitter.emit(NativeEvents.DID_SELECT_PROMPT_OPTION_HANDLER, {});
 
     expect(NativeBugReporting.setDidSelectPromptOptionHandler).not.toBeCalled();
-    expect(
-      IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER).length,
-    ).toEqual(0);
+    expect(emitter.listenerCount(NativeEvents.DID_SELECT_PROMPT_OPTION_HANDLER)).toBe(0);
   });
 
   it('should call setDidSelectPromptOptionHandler event listener when platform is iOS', () => {
@@ -206,10 +209,9 @@ describe('Testing BugReporting Module', () => {
     const payload = { promptOption: 'bug' };
 
     BugReporting.setDidSelectPromptOptionHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
+    emitter.emit(NativeEvents.DID_SELECT_PROMPT_OPTION_HANDLER, payload);
 
-    const listeners = IBGEventEmitter.getListeners(IBGConstants.DID_SELECT_PROMPT_OPTION_HANDLER);
-    expect(listeners.length).toBe(1);
+    expect(emitter.listenerCount(NativeEvents.DID_SELECT_PROMPT_OPTION_HANDLER)).toBe(1);
     expect(callback).toBeCalledTimes(1);
     expect(callback).toBeCalledWith(payload.promptOption);
   });

@@ -1,9 +1,7 @@
 import { Platform } from 'react-native';
 
-import { NativeSurveys } from '../native/NativeSurveys';
+import { NativeEvents, NativeSurveys, emitter } from '../native/NativeSurveys';
 import type { Survey } from '../native/NativeSurveys';
-import IBGEventEmitter from '../utils/IBGEventEmitter';
-import InstabugConstants from '../utils/InstabugConstants';
 
 export type { Survey };
 
@@ -55,11 +53,7 @@ export const setAutoShowingEnabled = (autoShowingSurveysEnabled: boolean) => {
  * presenting the survey's UI.
  */
 export const setOnShowHandler = (onShowHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.WILL_SHOW_SURVEY_HANDLER,
-    onShowHandler,
-  );
+  emitter.addListener(NativeEvents.WILL_SHOW_SURVEY_HANDLER, onShowHandler);
   NativeSurveys.setOnShowHandler(onShowHandler);
 };
 
@@ -71,11 +65,7 @@ export const setOnShowHandler = (onShowHandler: () => void) => {
  * the survey's UI is dismissed.
  */
 export const setOnDismissHandler = (onDismissHandler: () => void) => {
-  IBGEventEmitter.addListener(
-    NativeSurveys,
-    InstabugConstants.DID_DISMISS_SURVEY_HANDLER,
-    onDismissHandler,
-  );
+  emitter.addListener(NativeEvents.DID_DISMISS_SURVEY_HANDLER, onDismissHandler);
   NativeSurveys.setOnDismissHandler(onDismissHandler);
 };
 
