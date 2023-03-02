@@ -1,11 +1,16 @@
 import { Platform } from 'react-native';
 
 import * as Surveys from '../../src/modules/Surveys';
-import { NativeSurveys } from '../../src/native/NativeSurveys';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
+import { NativeEvents, NativeSurveys, emitter } from '../../src/native/NativeSurveys';
 
 describe('Surveys Module', () => {
+  beforeEach(() => {
+    const events = Object.values(NativeEvents);
+    events.forEach((event) => {
+      emitter.removeAllListeners(event);
+    });
+  });
+
   it('should call the native method setSurveysEnabled', () => {
     Surveys.setEnabled(true);
 
@@ -60,9 +65,9 @@ describe('Surveys Module', () => {
   it('should invoke callback on emitting the event IBGWillShowSurvey', () => {
     const callback = jest.fn();
     Surveys.setOnShowHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.WILL_SHOW_SURVEY_HANDLER);
+    emitter.emit(NativeEvents.WILL_SHOW_SURVEY_HANDLER);
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.WILL_SHOW_SURVEY_HANDLER).length).toEqual(1);
+    expect(emitter.listenerCount(NativeEvents.WILL_SHOW_SURVEY_HANDLER)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 
@@ -77,9 +82,9 @@ describe('Surveys Module', () => {
   it('should invoke callback on emitting the event IBGDidDismissSurvey', () => {
     const callback = jest.fn();
     Surveys.setOnDismissHandler(callback);
-    IBGEventEmitter.emit(IBGConstants.DID_DISMISS_SURVEY_HANDLER);
+    emitter.emit(NativeEvents.DID_DISMISS_SURVEY_HANDLER);
 
-    expect(IBGEventEmitter.getListeners(IBGConstants.DID_DISMISS_SURVEY_HANDLER).length).toEqual(1);
+    expect(emitter.listenerCount(NativeEvents.DID_DISMISS_SURVEY_HANDLER)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 

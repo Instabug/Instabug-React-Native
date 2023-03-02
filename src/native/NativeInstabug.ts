@@ -1,4 +1,4 @@
-import type { NativeModule, ProcessedColorValue } from 'react-native';
+import { NativeEventEmitter, NativeModule, ProcessedColorValue } from 'react-native';
 
 import type Report from '../models/Report';
 import type {
@@ -123,3 +123,9 @@ export interface InstabugNativeModule extends NativeModule {
 }
 
 export const NativeInstabug = NativeModules.Instabug;
+
+export enum NativeEvents {
+  PRESENDING_HANDLER = 'IBGpreSendingHandler',
+}
+
+export const emitter = new NativeEventEmitter(NativeInstabug);

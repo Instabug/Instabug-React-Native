@@ -7,15 +7,11 @@ import 'react-native/Libraries/Network/fetch';
 import nock from 'nock';
 import XHR from 'xhr2';
 
-import IBGEventEmitter from '../src/utils/IBGEventEmitter';
-
 global.XMLHttpRequest = XHR;
 
 nock.disableNetConnect();
 
 beforeEach(() => {
-  IBGEventEmitter.removeAllListeners();
-
   jest.spyOn(Platform, 'constants', 'get').mockReturnValue({
     isTesting: true,
     reactNativeVersion: {

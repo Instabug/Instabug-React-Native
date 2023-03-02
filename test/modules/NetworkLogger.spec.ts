@@ -7,8 +7,6 @@ import waitForExpect from 'wait-for-expect';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeAPM } from '../../src/native/NativeAPM';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
-import IBGEventEmitter from '../../src/utils/IBGEventEmitter';
-import IBGConstants from '../../src/utils/InstabugConstants';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 
 const clone = (obj: any) => {
@@ -110,9 +108,6 @@ describe('NetworkLogger Module', () => {
     });
     NetworkLogger.setEnabled(true);
 
-    expect(
-      IBGEventEmitter.getListeners(IBGConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT).length,
-    ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;
@@ -132,9 +127,6 @@ describe('NetworkLogger Module', () => {
     });
     NetworkLogger.setEnabled(true);
 
-    expect(
-      IBGEventEmitter.getListeners(IBGConstants.NETWORK_DATA_OBFUSCATION_HANDLER_EVENT).length,
-    ).toEqual(1);
     await waitForExpect(() => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;

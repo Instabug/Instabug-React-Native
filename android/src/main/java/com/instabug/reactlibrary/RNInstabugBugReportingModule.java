@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -20,15 +19,14 @@ import com.instabug.library.invocation.OnInvokeCallback;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.reactlibrary.utils.ArrayUtil;
-import com.instabug.reactlibrary.utils.InstabugUtil;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
-
+public class RNInstabugBugReportingModule extends EventEmitterModule {
     public RNInstabugBugReportingModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -37,6 +35,16 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "IBGBugReporting";
+    }
+
+    @ReactMethod
+    public void addListener(String event) {
+        super.addListener(event);
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        super.removeListeners(count);
     }
 
     /**
@@ -235,10 +243,10 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                            BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
+                    BugReporting.setOnInvokeCallback(new OnInvokeCallback() {
                         @Override
                         public void onInvoke() {
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_PRE_INVOCATION_HANDLER, null);
+                            sendEvent(Constants.IBG_PRE_INVOCATION_HANDLER, null);
                         }
                     });
                 } catch (java.lang.Exception exception) {
@@ -286,7 +294,7 @@ public class RNInstabugBugReportingModule extends ReactContextBaseJavaModule {
                             WritableMap params = Arguments.createMap();
                             params.putString("dismissType", dismissType.toString());
                             params.putString("reportType", reportType.toString());
-                            InstabugUtil.sendEvent(getReactApplicationContext(), Constants.IBG_POST_INVOCATION_HANDLER, params);
+                            sendEvent(Constants.IBG_POST_INVOCATION_HANDLER, params);
                         }
                     });
                 } catch (java.lang.Exception exception) {
