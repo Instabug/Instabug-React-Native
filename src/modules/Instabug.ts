@@ -433,7 +433,7 @@ export const setDebugEnabled = (isEnabled: boolean) => {
  */
 export const enable = () => {
   if (Platform.OS === 'android') {
-    NativeInstabug.enable();
+    setEnabled(true);
   }
 };
 
@@ -445,7 +445,7 @@ export const enable = () => {
  */
 export const disable = () => {
   if (Platform.OS === 'android') {
-    NativeInstabug.disable();
+    setEnabled(false);
   }
 };
 
