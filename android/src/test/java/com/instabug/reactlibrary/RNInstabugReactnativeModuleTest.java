@@ -229,54 +229,6 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void given$isEnabled_whenQuery_thenShouldCallNativeApiAndReturnValue() {
-        // given
-
-        when(Instabug.isEnabled()).thenReturn(true);
-        // when
-        boolean isEnabled = rnModule.isEnabled();
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.isEnabled();
-        Assert.assertTrue(isEnabled);
-    }
-
-    @Test
-    public void given$enable_whenQuery_thenShouldCallNativeApi() {
-        // given
-
-        // when
-        rnModule.enable();
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.enable();
-    }
-
-    @Test
-    public void given$disable_whenQuery_thenShouldCallNativeApi() {
-        // given
-
-        // when
-        rnModule.disable();
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.disable();
-    }
-
-    @Test
-    public void given$getAppToken_whenQuery_thenShouldCallNativeApiAndReturnValue() {
-        // given
-
-        when(Instabug.getAppToken()).thenReturn("APP_TOKEN");
-        // when
-        String appToken = rnModule.getAppToken();
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.getAppToken();
-        Assert.assertEquals("APP_TOKEN", appToken);
-    }
-
-    @Test
     public void given$logOut_whenQuery_thenShouldCallNativeApi() {
         // given
 

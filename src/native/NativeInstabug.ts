@@ -113,10 +113,6 @@ export interface InstabugNativeModule extends NativeModule {
   /** @deprecated */
   setDebugEnabled(isEnabled: boolean): void;
   /** @deprecated */
-  enable(): void;
-  /** @deprecated */
-  disable(): void;
-  /** @deprecated */
   isRunningLive(callback: (isLive: boolean) => void): void;
   /** @deprecated */
   callPrivateApi(apiName: string, param: any[]): void;

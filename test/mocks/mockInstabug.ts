@@ -34,8 +34,6 @@ const mockInstabug: InstabugNativeModule = {
   getAllUserAttributes: jest.fn((cb) => cb({ age: '24' })),
   clearAllUserAttributes: jest.fn(),
   setDebugEnabled: jest.fn(),
-  enable: jest.fn(),
-  disable: jest.fn(),
   isRunningLive: jest.fn((cb) => cb(true)),
   showWelcomeMessageWithMode: jest.fn(),
   setWelcomeMessageMode: jest.fn(),
