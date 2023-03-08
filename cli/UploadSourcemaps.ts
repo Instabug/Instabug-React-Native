@@ -2,11 +2,10 @@ import axios from 'axios';
 import { Command, Option } from 'commander';
 import FormData from 'form-data';
 import fs from 'fs';
-import path from 'path';
 
 interface UploadSourcemapsOptions {
   platform: 'android' | 'ios';
-  dir: string;
+  file: string;
   token: string;
   name: string;
   code: string;
@@ -23,10 +22,7 @@ uploadSourcemapsCommand
       .makeOptionMandatory(),
   )
   .addOption(
-    new Option(
-      '-d, --dir <value>',
-      'The path of the directory including the source map file',
-    ).makeOptionMandatory(),
+    new Option('-f, --file <path>', 'The path of the source map file').makeOptionMandatory(),
   )
   .addOption(
     new Option('-t, --token <value>', 'Your App Token')
@@ -56,8 +52,7 @@ uploadSourcemapsCommand
 
 const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
   const fileName = `${opts.platform}-sourcemap.json`;
-  const filePath = path.join(opts.dir, fileName);
-  const fileBlob = fs.readFileSync(filePath);
+  const fileBlob = fs.readFileSync(opts.file);
 
   const version = {
     code: opts.code,
