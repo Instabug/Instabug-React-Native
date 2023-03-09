@@ -73,7 +73,7 @@ jobs:
           command: yarn
       - android/run-tests:
           working-directory: ./example/android
-          test-command: ./gradlew test
+          test-command: ./gradlew test -PinstabugUploadEnable=false
 
   validate_shell_files:
     machine:
