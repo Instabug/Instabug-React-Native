@@ -110,6 +110,7 @@ jobs:
     working_directory: ~/project/example
     environment:
       FL_OUTPUT_DIR: output
+      INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - checkout:
           path: ~/project
@@ -154,6 +155,7 @@ jobs:
     working_directory: ~/project
     environment:
       FL_OUTPUT_DIR: output
+      INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - checkout
       - run:
