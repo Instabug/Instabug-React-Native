@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...HEAD)
+
+### Added
+
+- Add support for Android automatic source map upload on Windows; This requires setting the `INSTABUG_APP_TOKEN` environment variable ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
+
+### Changed
+
+- Improve release variant's build time on Android, by using the react-native-generated source map file, instead of generating it within our scripts ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
+
 ## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
 
 ### Changed

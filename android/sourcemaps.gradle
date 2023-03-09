@@ -1,0 +1,62 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+def appProject = project(":app")
+
+gradle.projectsEvaluated {
+    // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets`
+    def bundleTask = appProject.tasks.find {
+        task -> task.name.endsWithIgnoreCase('bundleReleaseJsAndAssets')
+    }
+
+    bundleTask.finalizedBy uploadSourcemap
+}
+
+task uploadSourcemap(type: Exec) {
+    group 'instabug'
+    description 'Uploads sourcemaps file to Instabug server'
+    enabled rootProject.hasProperty('instabugUploadEnable')
+            ? new Boolean(rootProject.property('instabugUploadEnable'))
+            : true
+
+    def reactRoot = rootDir.parentFile
+    def instabugRoot = workingDir.parentFile
+    def env = System.getenv()
+
+    def tokenShellFile = new File(instabugRoot, 'scripts/find-token.sh')
+    def inferredToken = executeShellScript(tokenShellFile, reactRoot)
+    def appToken = env.getOrDefault('INSTABUG_APP_TOKEN', inferredToken)
+
+    if (appToken == null) {
+        project.logger.lifecycle 'Failed to find Instabug App Token! ' +
+                'Set the enviroment variable `INSTABUG_APP_TOKEN`, ' +
+                'to enable automatic sourcemap file uploads.'
+        return
+    }
+
+    def projectConfig = appProject.android.defaultConfig
+    def versionName = env.getOrDefault('INSTABUG_VERSION_NAME', projectConfig.versionName)
+    def versionCode = env.getOrDefault('INSTABUG_VERSION_CODE', projectConfig.versionCode)
+
+    def appRoot = appProject.projectDir
+    def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
+    def sourcemapFile = new File(appRoot, sourcemapDest)
+
+    commandLine 'npx', 'instabug', 'upload-sourcemaps',
+            '--platform', 'android',
+            '--token', appToken,
+            '--name', versionName,
+            '--code', versionCode,
+            '--file', sourcemapFile.getAbsolutePath()
+}
+
+static String executeShellScript(File script, File workingDir) {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        return null
+    }
+
+    def output = new StringBuffer()
+    def process = ['sh', script.getAbsolutePath()].execute(null, workingDir)
+    process?.waitForProcessOutput(output, new StringBuffer())
+
+    return process?.exitValue() == 0 ? output.toString().trim() : null
+}
