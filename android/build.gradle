@@ -53,8 +53,11 @@ task upload_sourcemap(type: Exec) {
 }
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'preReleaseBuild' &&
-        (rootProject.hasProperty("instabugUploadEnable") ? rootProject.instabugUploadEnable : true)) {
+    def isEnabled = rootProject.hasProperty('instabugUploadEnable')
+            ? new Boolean(rootProject.property('instabugUploadEnable'))
+            : true
+    
+    if (task.name == 'preReleaseBuild' && isEnabled) {
         task.dependsOn upload_sourcemap 
     }
 }
