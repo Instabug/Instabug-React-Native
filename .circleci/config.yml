@@ -4,10 +4,11 @@ orbs:
 jobs:
   danger:
     docker:
-      - image: dantoml/danger:latest
+      - image: circleci/ruby:2.6.4
     steps:
       - checkout
-      - run: danger
+      - run: bundle install
+      - run: bundle exec danger
 
   lint:
     working_directory: ~/project
