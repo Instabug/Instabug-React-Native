@@ -29,3 +29,6 @@ closeComment: >
   This issue has been automatically closed since we haven't heard back from
   you. Please feel free to re-open the issue if you have more information
   to add.
+
+# Limit to only `issues` or `pulls`
+only: issues
