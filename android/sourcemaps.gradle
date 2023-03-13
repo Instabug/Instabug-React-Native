@@ -49,12 +49,17 @@ task uploadSourcemap() {
         }
 
         exec {
-            commandLine 'npx', 'instabug', 'upload-sourcemaps',
-                    '--platform', 'android',
-                    '--token', appToken,
-                    '--name', versionName,
-                    '--code', versionCode,
-                    '--file', sourcemapFile.absolutePath
+            def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
+            def args = [
+                    'npx', 'instabug', 'upload-sourcemaps',
+                        '--platform', 'android',
+                        '--token', appToken,
+                        '--name', versionName,
+                        '--code', versionCode,
+                        '--file', sourcemapFile.absolutePath
+            ]
+
+            commandLine(*osCompatibility, *args)
         }
     }
 }
