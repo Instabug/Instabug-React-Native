@@ -200,8 +200,8 @@ RCT_EXPORT_METHOD(resetTags) {
     [Instabug resetTags];
 }
 
-RCT_EXPORT_METHOD(getTags:(RCTResponseSenderBlock)callBack) {
-    callBack(@[[Instabug getTags]]);
+RCT_EXPORT_METHOD(getTags:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve([Instabug getTags]);
 }
 
 RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(NSString*)key) {
@@ -228,11 +228,11 @@ RCT_EXPORT_METHOD(setUserAttribute:(NSString *)key withValue:(NSString *)value) 
     [Instabug setUserAttribute:value withKey:key];
 }
 
-RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key :(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     @try {
-    callback(@[[Instabug userAttributeForKey:key]]);
+        resolve([Instabug userAttributeForKey:key]);
     } @catch (NSException *exception) {
-        callback(@[[NSNull null]]);
+        resolve([NSNull null]);
     }
 }
 
@@ -240,8 +240,8 @@ RCT_EXPORT_METHOD(removeUserAttribute:(NSString *)key) {
     [Instabug removeUserAttributeForKey:key];
 }
 
-RCT_EXPORT_METHOD(getAllUserAttributes:(RCTResponseSenderBlock)callback) {
-    callback(@[[Instabug userAttributes]]);
+RCT_EXPORT_METHOD(getAllUserAttributes:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve([Instabug userAttributes]);
 }
 
 RCT_EXPORT_METHOD(clearAllUserAttributes) {

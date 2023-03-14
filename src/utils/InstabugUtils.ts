@@ -99,6 +99,20 @@ export const stringifyIfNotString = (input: unknown) => {
   return typeof input === 'string' ? input : JSON.stringify(input);
 };
 
+export const invokeDeprecatedCallback = <T>(callback?: (arg: T) => void, arg?: T | null) => {
+  if (!callback) {
+    return;
+  }
+
+  if (arg) {
+    callback(arg);
+  }
+
+  if (__DEV__) {
+    console.warn('Parameter callback is deprecated. You should use the returned Promise instead.');
+  }
+};
+
 export default {
   parseErrorStack,
   captureJsErrors,
@@ -106,4 +120,5 @@ export default {
   getFullRoute,
   getStackTrace,
   stringifyIfNotString,
+  invokeDeprecatedCallback,
 };

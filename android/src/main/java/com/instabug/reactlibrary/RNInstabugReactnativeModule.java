@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
@@ -289,7 +290,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * @see #resetTags()
      */
     @ReactMethod
-    public void getTags(final Callback tagsCallback) {
+    public void getTags(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -300,10 +301,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     for (int i = 0; i < tags.size(); i++) {
                         tagsArray.pushString(tags.get(i));
                     }
-                    tagsCallback.invoke(tagsArray);
-
+                    promise.resolve(tagsArray);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    promise.resolve(null);
                 }
             }
         });
@@ -481,15 +482,16 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * @return the desired user attribute
      */
     @ReactMethod
-    public void getUserAttribute(final String key, final Callback userAttributeCallback) {
+    public void getUserAttribute(final String key, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 String userAttribute;
                 try {
                     userAttribute = Instabug.getUserAttribute(key);
-                    userAttributeCallback.invoke(userAttribute);
+                    promise.resolve(userAttribute);
                 } catch (Exception e) {
+                    promise.resolve(null);
                     e.printStackTrace();
                 }
             }
@@ -522,7 +524,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * @return all user attributes as HashMap<String, String>
      */
     @ReactMethod
-    public void getAllUserAttributes(final Callback userAttributesCallback) {
+    public void getAllUserAttributes(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -535,7 +537,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                userAttributesCallback.invoke(writableMap);
+                promise.resolve(writableMap);
             }
         });
     }
