@@ -1,21 +1,23 @@
 version: 2.1
+
 orbs:
   android: circleci/android@2.0
+  advanced-checkout: vsco/advanced-checkout@1.0.0
+
 jobs:
   danger:
     docker:
       - image: circleci/ruby:2.6.4
     steps:
-      - checkout
+      - advanced-checkout/shallow-checkout
       - run: bundle install
       - run: bundle exec danger
 
   lint:
-    working_directory: ~/project
     docker:
       - image: cimg/node:16.17.1
     steps:
-      - checkout
+      - advanced-checkout/shallow-checkout
       - run:
           name: Install Node Packages
           command: yarn
@@ -27,12 +29,10 @@ jobs:
           command: yarn lint:ci
 
   test_module:
-    working_directory: ~/project
     docker:
       - image: cimg/node:16.17.1
     steps:
-      - checkout:
-          path: ~/project
+      - advanced-checkout/shallow-checkout
 
       - run:
           name: Install Node Packages
@@ -61,10 +61,8 @@ jobs:
     executor:
       name: android/android-machine
       tag: '2022.03.1'
-    working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project
+      - advanced-checkout/shallow-checkout
       - run:
           name: Install Yarn
           command: npm install -g yarn
@@ -79,10 +77,8 @@ jobs:
   validate_shell_files:
     machine:
       image: ubuntu-2004:current
-    working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project
+      - advanced-checkout/shallow-checkout
       - run:
           name: Validate Android Script
           command: bash -n android/upload_sourcemap.sh
@@ -96,9 +92,8 @@ jobs:
   sync_generated_files:
     macos:
       xcode: 13.4.1
-    working_directory: ~/project
     steps:
-      - checkout
+      - advanced-checkout/shallow-checkout
       - run: yarn
       - run: cd example && yarn
       - run: cd example/ios && pod install
@@ -113,8 +108,7 @@ jobs:
       FL_OUTPUT_DIR: output
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
-      - checkout:
-          path: ~/project
+      - advanced-checkout/shallow-checkout
       - run:
           name: Install CocoaPods
           command: sudo gem install cocoapods
@@ -153,12 +147,11 @@ jobs:
     macos:
       xcode: 13.4.1
     resource_class: large
-    working_directory: ~/project
     environment:
       FL_OUTPUT_DIR: output
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
-      - checkout
+      - advanced-checkout/shallow-checkout
       - run:
           name: Install CocoaPods
           command: sudo gem install cocoapods
@@ -199,9 +192,8 @@ jobs:
       name: android/android-machine
       tag: 2022.03.1
       resource-class: large
-    working_directory: ~/project
     steps:
-      - checkout
+      - advanced-checkout/shallow-checkout
       - run:
           name: Install Yarn
           command: npm install --global yarn
@@ -240,8 +232,7 @@ jobs:
       xcode: 13.4.1
     working_directory: '~'
     steps:
-      - checkout:
-          path: ~/project
+      - advanced-checkout/shallow-checkout
       - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
       - run: cd Escape && swift build -c release
       - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
