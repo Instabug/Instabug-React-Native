@@ -1,6 +1,7 @@
 package com.instabug.reactlibrary;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
@@ -46,21 +47,22 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
      * Will return false if the token does not exist or if the survey was not answered before.
      *
      * @param surveyToken          the attribute key as string
-     * @param hasRespondedCallback A callback that gets invoked with the returned value of whether
+     * @param promise A promise that gets resolved with the returned value of whether
      *                             the user has responded to the survey or not.
      * @return the desired value of whether the user has responded to the survey or not.
      */
     @ReactMethod
-    public void hasRespondedToSurvey(final String surveyToken, final Callback hasRespondedCallback) {
+    public void hasRespondedToSurvey(final String surveyToken, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasResponded;
                 try {
                     hasResponded = Surveys.hasRespondToSurvey(surveyToken);
-                    hasRespondedCallback.invoke(hasResponded);
+                    promise.resolve(hasResponded);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    promise.resolve(null);
                 }
             }
         });
@@ -175,11 +177,9 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
 
     /**
      * Returns an array containing the available surveys.
-     * @param availableSurveysCallback - Callback with the returned value of the available surveys
-     *
      */
     @ReactMethod
-    public void getAvailableSurveys(final Callback availableSurveysCallback) {
+    public void getAvailableSurveys(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -187,9 +187,10 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
                     List<Survey> availableSurveys = Surveys.getAvailableSurveys();
                     JSONArray surveysArray = InstabugUtil.surveyObjectToJson(availableSurveys);
                     WritableArray array = ArrayUtil.convertJsonToWritableArray(surveysArray);
-                    availableSurveysCallback.invoke(array);
+                    promise.resolve(array);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    promise.resolve(null);
                 }
             }
         });

@@ -30,9 +30,11 @@
 
 - (void)setShouldShowWelcomeScreen:(BOOL)shouldShowWelcomeScreen;
 
-- (void)hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback;
+- (void)hasRespondedToSurvey:(NSString *)surveyToken
+                            :(RCTPromiseResolveBlock)resolve
+                            :(RCTPromiseRejectBlock)reject;
 
-- (void)getAvailableSurveys:(RCTResponseSenderBlock)callback;
+- (void)getAvailableSurveys:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 
 - (void)setEnabled:(BOOL)surveysEnabled;
 
