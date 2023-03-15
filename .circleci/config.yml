@@ -5,6 +5,26 @@ orbs:
   advanced-checkout: vsco/advanced-checkout@1.0.0
 
 commands:
+  install_node_modules:
+    parameters:
+      working_directory:
+        type: string
+        default: .
+    steps:
+      - restore_cache:
+          name: Restore Yarn Cache
+          keys:
+            - v0.2-node-modules-{{ checksum "<< parameters.working_directory >>/yarn.lock" }}
+      - run:
+          name: Install Node Modules
+          working_directory: << parameters.working_directory >>
+          command: yarn install --frozen-lockfile --cache-folder /tmp/.cache/yarn
+      - save_cache:
+          name: Save Yarn Cache
+          key: v0.2-node-modules-{{ checksum "<< parameters.working_directory >>/yarn.lock" }}
+          paths:
+            - /tmp/.cache/yarn
+
   install_pods:
     parameters:
       working_directory:
@@ -37,9 +57,7 @@ jobs:
       - image: cimg/node:16.17.1
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Node Packages
-          command: yarn
+      - install_node_modules
       - run:
           name: Check Format
           command: yarn format
@@ -52,9 +70,7 @@ jobs:
       - image: cimg/node:16.17.1
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Node Packages
-          command: yarn
+      - install_node_modules
       - run:
           name: Run Tests
           command: yarn test
@@ -63,17 +79,15 @@ jobs:
     executor:
       name: android/android-machine
       tag: '2022.03.1'
+    working_directory: ~/project/example
     steps:
       - advanced-checkout/shallow-checkout
       - run:
           name: Install Yarn
           command: npm install -g yarn
-      - run:
-          name: Install Node Packages
-          working_directory: example
-          command: yarn
+      - install_node_modules
       - android/run-tests:
-          working-directory: ./example/android
+          working-directory: android
           test-command: ./gradlew test -PinstabugUploadEnable=false
 
   validate_shell_files:
@@ -96,8 +110,9 @@ jobs:
       xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
-      - run: yarn
-      - run: cd example && yarn
+      - install_node_modules
+      - install_node_modules:
+          working_directory: example
       - install_pods:
           working_directory: example/ios
       - run: git --no-pager diff
@@ -111,9 +126,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install node_modules
-          command: yarn
+      - install_node_modules
       - install_pods:
           working_directory: ios
       - run:
@@ -153,13 +166,9 @@ jobs:
       - run:
           name: Install Detox Utils
           command: brew tap wix/brew && brew install applesimutils
-      - run:
-          name: Install Node Packages
-          command: yarn
-      - run:
-          name: Install Example's Node Packages
+      - install_node_modules
+      - install_node_modules:
           working_directory: example
-          command: yarn
       - install_pods:
           working_directory: example/ios
       - run:
@@ -184,13 +193,9 @@ jobs:
       - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
-      - run:
-          name: Install Node Packages
-          command: yarn
-      - run:
-          name: Install Example's Node Packages
+      - install_node_modules
+      - install_node_modules:
           working_directory: example
-          command: yarn
       - android/create-avd:
           avd-name: Nexus_6P_API_27
           install: true
