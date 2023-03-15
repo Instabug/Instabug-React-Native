@@ -98,10 +98,11 @@
   id mock = OCMClassMock([IBGAPM class]);
   NSString* traceName = @"Trace_1";
   NSString* traceKey = @"1";
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   
   OCMStub([mock startExecutionTraceWithName:traceName]);
-  [self.instabugBridge startExecutionTrace:traceName :traceKey :callback];
+  [self.instabugBridge startExecutionTrace:traceName :traceKey :resolve :reject];
   OCMVerify([mock startExecutionTraceWithName:traceName]);
 }
 
@@ -110,13 +111,14 @@
   NSString* traceId = @"Id_1";
   NSString* traceKey = @"Key_1";
   NSString* traceValue = @"1";
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   IBGExecutionTrace * trace = [IBGExecutionTrace alloc];
   id mock = OCMClassMock([IBGAPM class]);
   id traceMock = OCMPartialMock(trace);
   
   OCMStub([mock startExecutionTraceWithName:traceName]).andReturn(trace);
-  [self.instabugBridge startExecutionTrace:traceName :traceId :callback];
+  [self.instabugBridge startExecutionTrace:traceName :traceId :resolve :reject];
   
   OCMStub([traceMock setAttributeWithKey:traceKey value:traceValue]);
   [self.instabugBridge setExecutionTraceAttribute:traceId :traceKey :traceValue];
@@ -126,13 +128,14 @@
 - (void) testEndExecutionTrace {
   NSString* traceName = @"Trace_1";
   NSString* traceId = @"Id_1";
-  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   IBGExecutionTrace * trace = [IBGExecutionTrace alloc];
   id apmMock = OCMClassMock([IBGAPM class]);
   id<ExecutionTraceCPTestProtocol> traceMock = OCMPartialMock(trace);
 
   OCMStub([apmMock startExecutionTraceWithName:traceName]).andReturn(trace);
-  [self.instabugBridge startExecutionTrace:traceName :traceId :callback];
+  [self.instabugBridge startExecutionTrace:traceName :traceId :resolve :reject];
   
   OCMStub([traceMock end]);
   [self.instabugBridge endExecutionTrace:traceId];

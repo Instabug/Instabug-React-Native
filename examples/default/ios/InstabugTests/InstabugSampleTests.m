@@ -164,11 +164,12 @@
 
 - (void)testGetTags {
   id mock = OCMClassMock([Instabug class]);
-  RCTResponseSenderBlock callbackBlock = ^void(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   NSDictionary *dictionary = @{ @"someKey" : @"someValue" };
 
   OCMStub([mock getTags]).andReturn(dictionary);
-  [self.instabugBridge getTags:callbackBlock];
+  [self.instabugBridge getTags:resolve :reject];
   OCMVerify([mock getTags]);
 }
 
@@ -240,10 +241,11 @@
 - (void)testGetUserAttribute {
   id mock = OCMClassMock([Instabug class]);
   NSString *key = @"someKey";
-  RCTResponseSenderBlock callbackBlock = ^void(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
 
   OCMStub([mock userAttributeForKey:key]).andReturn(@"someValue");
-  [self.instabugBridge getUserAttribute:key callback:callbackBlock];
+  [self.instabugBridge getUserAttribute:key :resolve :reject];
   OCMVerify([mock userAttributeForKey:key]);
 }
 
@@ -258,11 +260,12 @@
 
 - (void)testGetAllUserAttributes {
   id mock = OCMClassMock([Instabug class]);
-  RCTResponseSenderBlock callbackBlock = ^void(NSArray *response) {};
+  RCTPromiseResolveBlock resolve = ^(id result) {};
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   NSDictionary *dictionary = @{ @"someKey" : @"someValue" };
   
   OCMStub([mock userAttributes]).andReturn(dictionary);
-  [self.instabugBridge getAllUserAttributes:callbackBlock];
+  [self.instabugBridge getAllUserAttributes:resolve :reject];
   OCMVerify([mock userAttributes]);
 }
 
