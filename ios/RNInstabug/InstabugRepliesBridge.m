@@ -36,9 +36,9 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL) isEnabled) {
     IBGReplies.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(hasChats:(RCTResponseSenderBlock) callback) {
+RCT_EXPORT_METHOD(hasChats:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     BOOL hasChats = IBGReplies.hasChats;
-    callback(@[@(hasChats)]);
+    resolve(@(hasChats));
     
 }
 
@@ -57,8 +57,8 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedHandler:(RCTResponseSenderBlock) callback
     
 }
 
-RCT_EXPORT_METHOD(getUnreadRepliesCount:(RCTResponseSenderBlock)callBack) {
-    callBack(@[@(IBGReplies.unreadRepliesCount)]);
+RCT_EXPORT_METHOD(getUnreadRepliesCount:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGReplies.unreadRepliesCount));
 }
 
 RCT_EXPORT_METHOD(setInAppNotificationEnabled:(BOOL)isChatNotificationEnabled) {
