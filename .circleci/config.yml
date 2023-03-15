@@ -4,6 +4,25 @@ orbs:
   android: circleci/android@2.0
   advanced-checkout: vsco/advanced-checkout@1.0.0
 
+commands:
+  install_pods:
+    parameters:
+      working_directory:
+        type: string
+    steps:
+      - restore_cache:
+          name: Restore Pods Cache
+          keys:
+            - v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
+      - run:
+          name: Install Pods
+          working_directory: << parameters.working_directory >>
+          command: pod install --deployment
+      - save_cache:
+          name: Save Pods Cache
+          key: v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
+          paths:
+            - << parameters.working_directory >>/Pods
 jobs:
   danger:
     docker:
@@ -96,7 +115,8 @@ jobs:
       - advanced-checkout/shallow-checkout
       - run: yarn
       - run: cd example && yarn
-      - run: cd example/ios && pod install
+      - install_pods:
+          working_directory: example/ios
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
@@ -105,20 +125,14 @@ jobs:
       xcode: 13.4.1
     working_directory: ~/project/example
     environment:
-      FL_OUTPUT_DIR: output
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
       - run:
-          name: Install CocoaPods
-          command: sudo gem install cocoapods
-      - run:
           name: Install node_modules
           command: yarn
-      - run:
-          name: Install Pods
+      - install_pods:
           working_directory: ios
-          command: pod install
       - run:
           name: Build and run tests
           working_directory: ios
@@ -148,13 +162,9 @@ jobs:
       xcode: 13.4.1
     resource_class: large
     environment:
-      FL_OUTPUT_DIR: output
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install CocoaPods
-          command: sudo gem install cocoapods
       - run:
           name: Install React Native CLI
           command: npm install -g react-native-cli
@@ -174,10 +184,8 @@ jobs:
           name: Install Example's Node Packages
           working_directory: example
           command: yarn
-      - run:
-          name: Install Pods
+      - install_pods:
           working_directory: example/ios
-          command: pod install
       - run:
           name: Detox - Build Release App
           working_directory: example
