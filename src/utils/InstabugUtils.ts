@@ -104,7 +104,9 @@ export const invokeDeprecatedCallback = <T>(callback?: (arg: T) => void, arg?: T
     return;
   }
 
-  if (arg) {
+  // This is equivalent to `arg !== null || arg !== undefined` but more concise.
+  // It's not equivalent to only `arg` as this matches falsey values like `false` and `0`.
+  if (arg != null) {
     callback(arg);
   }
 
