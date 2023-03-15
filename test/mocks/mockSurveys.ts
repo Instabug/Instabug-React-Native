@@ -11,7 +11,7 @@ const mockSurveys: SurveysNativeModule = {
   setOnShowHandler: jest.fn(),
   setOnDismissHandler: jest.fn(),
   showSurvey: jest.fn(),
-  hasRespondedToSurvey: jest.fn((_, cb) => cb(true)),
+  hasRespondedToSurvey: jest.fn().mockResolvedValue(true),
   setShouldShowWelcomeScreen: jest.fn(),
 };
 
