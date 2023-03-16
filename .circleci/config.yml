@@ -52,29 +52,12 @@ jobs:
       - image: cimg/node:16.17.1
     steps:
       - advanced-checkout/shallow-checkout
-
       - run:
           name: Install Node Packages
           command: yarn
-
       - run:
-          name: jest tests
-          command: |
-            mkdir -p test-results/jest
-            yarn run test
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - node_modules
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
+          name: Run Tests
+          command: yarn test
 
   test_android:
     executor:
@@ -144,7 +127,6 @@ jobs:
                 -sdk iphonesimulator \
                 -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
                 test | xcpretty
-          no_output_timeout: 30m
       - run:
           name: Convert xcresult into JSON report
           working_directory: ios/coverage
@@ -166,9 +148,6 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - run:
-          name: Install React Native CLI
-          command: npm install -g react-native-cli
-      - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
       - run:
@@ -177,9 +156,6 @@ jobs:
       - run:
           name: Install Node Packages
           command: yarn
-      - run:
-          name: Build Project
-          command: yarn build:lib
       - run:
           name: Install Example's Node Packages
           working_directory: example
@@ -204,16 +180,13 @@ jobs:
       - advanced-checkout/shallow-checkout
       - run:
           name: Install Yarn
-          command: npm install --global yarn
+          command: npm install -g yarn
       - run:
           name: Install Detox CLI
-          command: npm install --global detox-cli
+          command: npm install -g detox-cli
       - run:
           name: Install Node Packages
           command: yarn
-      - run:
-          name: Build Project
-          command: yarn build:lib
       - run:
           name: Install Example's Node Packages
           working_directory: example
@@ -241,7 +214,7 @@ jobs:
     working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
-      - run: git clone https://InstabugCI:$RELEASE_GITHUB_TOKEN@github.com/Instabug/Escape.git
+      - run: git clone git@github.com:Instabug/Escape.git
       - run: cd Escape && swift build -c release
       - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
       - run: cd project && yarn && yarn build
