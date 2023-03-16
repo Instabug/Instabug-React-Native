@@ -191,10 +191,7 @@ jobs:
           avd-name: Nexus_6P_API_27
           no-window: true
           memory: 2048
-          post-emulator-launch-assemble-command: |
-            rm -rf ~/.gradle/caches
-            cd ~/project/example/android && ./gradlew androidDependencies
-            cd .. && detox build -c android.emu.release
+          post-emulator-launch-assemble-command: detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
           working_directory: example
