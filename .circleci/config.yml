@@ -140,7 +140,7 @@ jobs:
   e2e_ios:
     macos:
       xcode: 13.4.1
-    resource_class: large
+    resource_class: macos.x86.medium.gen2
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
