@@ -283,7 +283,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
      *                              dismissing the SDK.
      */
     @ReactMethod
-    public void setOnSDKDismissedHandler(final Callback handler) {
+    public void setOnDismissHandler(final Callback handler) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -291,9 +291,13 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
                     BugReporting.setOnDismissCallback(new OnSdkDismissCallback() {
                         @Override
                         public void call(DismissType dismissType, ReportType reportType) {
-                            WritableMap params = Arguments.createMap();
-                            params.putString("dismissType", dismissType.toString());
-                            params.putString("reportType", reportType.toString());
+                            final String dismissKey = ArgsRegistry.dismissTypes.getKey(dismissType);
+                            final String reportKey = ArgsRegistry.sdkDismissReportTypes.getKey(reportType);
+                            final WritableMap params = Arguments.createMap();
+
+                            params.putString("dismissType", dismissKey);
+                            params.putString("reportType", reportKey);
+
                             sendEvent(Constants.IBG_POST_INVOCATION_HANDLER, params);
                         }
                     });

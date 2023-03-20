@@ -1,6 +1,7 @@
 package com.instabug.reactlibrary;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.instabug.apm.model.LogLevel;
 import com.instabug.bug.BugReporting;
@@ -41,6 +42,17 @@ final class ArgsRegistry {
             }
             return values;
         }
+
+        @Nullable
+        public String getKey(T value) {
+            for (Entry<String, T> entry : this.entrySet()) {
+                if (entry.getValue().equals(value)) {
+                    return entry.getKey();
+                }
+            }
+
+            return null;
+        }
     }
 
     static Map<String, Object> getAll() {
@@ -53,6 +65,7 @@ final class ArgsRegistry {
             putAll(recordButtonPositions);
             putAll(welcomeMessageStates);
             putAll(reportTypes);
+            putAll(sdkDismissReportTypes);
             putAll(dismissTypes);
             putAll(actionTypes);
             putAll(extendedBugReportStates);
@@ -119,6 +132,13 @@ final class ArgsRegistry {
         put("bugReportingReportTypeBug", BugReporting.ReportType.BUG);
         put("bugReportingReportTypeFeedback", BugReporting.ReportType.FEEDBACK);
         put("bugReportingReportTypeQuestion", BugReporting.ReportType.QUESTION);
+    }};
+
+    static final ArgsMap<OnSdkDismissCallback.ReportType> sdkDismissReportTypes = new ArgsMap<OnSdkDismissCallback.ReportType>() {{
+        put("bugReportingReportTypeBug", OnSdkDismissCallback.ReportType.BUG);
+        put("bugReportingReportTypeFeedback", OnSdkDismissCallback.ReportType.FEEDBACK);
+        put("bugReportingReportTypeQuestion", OnSdkDismissCallback.ReportType.QUESTION);
+        put("bugReportingReportTypeOther", OnSdkDismissCallback.ReportType.OTHER);
     }};
 
     static final ArgsMap<DismissType> dismissTypes = new ArgsMap<DismissType>() {{

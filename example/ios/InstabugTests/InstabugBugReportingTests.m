@@ -70,40 +70,51 @@
 }
 
 
-- (void) testgivenHandlerCANCEL$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerCANCEL$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
+  IBGDismissType dismissType = IBGDismissTypeCancel;
+  IBGReportType reportType = IBGReportTypeBug;
+
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  NSDictionary *result = @{ @"dismissType": @"CANCEL",
-                            @"reportType": @"bug"};
+  NSDictionary *result = @{ @"dismissType": @(dismissType),
+                            @"reportType": @(reportType)};
+
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeCancel,IBGReportTypeBug);
+  IBGBugReporting.didDismissHandler(dismissType, reportType);
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 
-- (void) testgivenHandlerSUBMIT$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerSUBMIT$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
+  IBGDismissType dismissType = IBGDismissTypeSubmit;
+  IBGReportType reportType = IBGReportTypeFeedback;
+
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  
-  NSDictionary *result = @{ @"dismissType": @"SUBMIT",
-                            @"reportType": @"feedback"};
+  NSDictionary *result = @{ @"dismissType": @(dismissType),
+                            @"reportType": @(reportType)};
+
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeSubmit,IBGReportTypeFeedback);
+  IBGBugReporting.didDismissHandler(dismissType, reportType);
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 
-- (void) testgivenHandlerADD_ATTACHMENT$setOnSDKDismissedHandler_whenQuery_thenShouldCallNativeApi {
+- (void) testgivenHandlerADD_ATTACHMENT$setOnDismissHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
+  IBGDismissType dismissType = IBGDismissTypeAddAttachment;
+  IBGReportType reportType = IBGReportTypeFeedback;
+
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
-  [partialMock setOnSDKDismissedHandler:callback];
+  [partialMock setOnDismissHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  NSDictionary *result = @{ @"dismissType": @"ADD_ATTACHMENT",
-                            @"reportType": @"feedback"};
+  NSDictionary *result = @{ @"dismissType": @(dismissType),
+                            @"reportType": @(reportType)};
+
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
-  IBGBugReporting.didDismissHandler(IBGDismissTypeAddAttachment,IBGReportTypeFeedback);
+  IBGBugReporting.didDismissHandler(dismissType, reportType);
   OCMVerify([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
 }
 

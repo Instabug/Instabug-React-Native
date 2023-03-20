@@ -76,6 +76,7 @@ export enum ReportType {
   bug = constants.bugReportingReportTypeBug,
   feedback = constants.bugReportingReportTypeFeedback,
   question = constants.bugReportingReportTypeQuestion,
+  other = constants.bugReportingReportTypeOther,
 }
 
 /**

@@ -29,7 +29,7 @@
 
 - (void)setOnInvokeHandler:(RCTResponseSenderBlock)callBack;
 
-- (void)setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack;
+- (void)setOnDismissHandler:(RCTResponseSenderBlock)callBack;
 
 - (void)setShakingThresholdForiPhone:(double)iPhoneShakingThreshold;
 

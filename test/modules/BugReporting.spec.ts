@@ -142,20 +142,20 @@ describe('Testing BugReporting Module', () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it('should call the native method setOnSDKDismissedHandler with a function', () => {
+  it('should call the native method setOnDismissHandler with a function', () => {
     const callback = jest.fn();
-    BugReporting.onSDKDismissedHandler(callback);
+    BugReporting.onDismissHandler(callback);
 
-    expect(NativeBugReporting.setOnSDKDismissedHandler).toBeCalledTimes(1);
-    expect(NativeBugReporting.setOnSDKDismissedHandler).toBeCalledWith(callback);
+    expect(NativeBugReporting.setOnDismissHandler).toBeCalledTimes(1);
+    expect(NativeBugReporting.setOnDismissHandler).toBeCalledWith(callback);
   });
 
   it('should invoke callback on emitting the event IBGpostInvocationHandler', () => {
-    const dismissType = 'cancel';
-    const reportType = 'bug';
+    const dismissType = Instabug.dismissType.cancel;
+    const reportType = BugReporting.reportType.bug;
     const callback = jest.fn();
 
-    BugReporting.onSDKDismissedHandler(callback);
+    BugReporting.onDismissHandler(callback);
     emitter.emit(NativeEvents.ON_DISMISS_HANDLER, {
       dismissType: dismissType,
       reportType: reportType,
