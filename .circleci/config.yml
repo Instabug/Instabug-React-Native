@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   android: circleci/android@2.0
   advanced-checkout: vsco/advanced-checkout@1.0.0
+  node: circleci/node@5.1.0
 
 commands:
   install_pods:
@@ -33,13 +34,12 @@ jobs:
       - run: bundle exec danger
 
   lint:
-    docker:
-      - image: cimg/node:16.17.1
+    executor:
+      name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Node Packages
-          command: yarn
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Check Format
           command: yarn format
@@ -48,13 +48,12 @@ jobs:
           command: yarn lint:ci
 
   test_module:
-    docker:
-      - image: cimg/node:16.17.1
+    executor:
+      name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Node Packages
-          command: yarn
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Run Tests
           command: yarn test
@@ -63,17 +62,14 @@ jobs:
     executor:
       name: android/android-machine
       tag: '2022.03.1'
+    working_directory: ~/project/example
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Yarn
-          command: npm install -g yarn
-      - run:
-          name: Install Node Packages
-          working_directory: example
-          command: yarn
+      - node/install-yarn
+      - node/install-packages:
+          pkg-manager: yarn
       - android/run-tests:
-          working-directory: ./example/android
+          working-directory: android
           test-command: ./gradlew test -PinstabugUploadEnable=false
 
   validate_shell_files:
@@ -96,8 +92,11 @@ jobs:
       xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
-      - run: yarn
-      - run: cd example && yarn
+      - node/install-packages:
+          pkg-manager: yarn
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: example
       - install_pods:
           working_directory: example/ios
       - run: git --no-pager diff
@@ -111,9 +110,8 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install node_modules
-          command: yarn
+      - node/install-packages:
+          pkg-manager: yarn
       - install_pods:
           working_directory: ios
       - run:
@@ -147,6 +145,13 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: example
+      - install_pods:
+          working_directory: example/ios
       - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
@@ -154,14 +159,9 @@ jobs:
           name: Install Detox Utils
           command: brew tap wix/brew && brew install applesimutils
       - run:
-          name: Install Node Packages
-          command: yarn
-      - run:
-          name: Install Example's Node Packages
+          name: Rebuild Detox.framework Cache
           working_directory: example
-          command: yarn
-      - install_pods:
-          working_directory: example/ios
+          command: detox clean-framework-cache && detox build-framework-cache
       - run:
           name: Detox - Build Release App
           working_directory: example
@@ -178,19 +178,15 @@ jobs:
       resource-class: large
     steps:
       - advanced-checkout/shallow-checkout
-      - run:
-          name: Install Yarn
-          command: npm install -g yarn
+      - node/install-yarn
+      - node/install-packages:
+          pkg-manager: yarn
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: example
       - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
-      - run:
-          name: Install Node Packages
-          command: yarn
-      - run:
-          name: Install Example's Node Packages
-          working_directory: example
-          command: yarn
       - android/create-avd:
           avd-name: Nexus_6P_API_27
           install: true
@@ -215,10 +211,21 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - run: git clone git@github.com:Instabug/Escape.git
-      - run: cd Escape && swift build -c release
-      - run: cd Escape/.build/release && cp -f Escape /usr/local/bin/escape
-      - run: cd project && yarn && yarn build
-      - run: cd project && Escape react-native publish
+      - run:
+          working_directory: Escape
+          command: swift build -c release
+      - run:
+          working_directory: Escape/.build/release
+          command: cp -f Escape /usr/local/bin/escape
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: project
+      - run:
+          working_directory: project
+          command: yarn build
+      - run:
+          working_directory: project
+          command: Escape react-native publish
 
 workflows:
   publish:
