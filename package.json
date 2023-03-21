@@ -33,9 +33,9 @@
     "build": "yarn build:lib && yarn build:cli",
     "build:lib": "tsc",
     "build:cli": "npx rollup -c rollup.config.js --bundleConfigAsCjs",
-    "example": "yarn --cwd examples/example",
-    "pods": "cd examples/example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "example:default": "yarn --cwd examples/default",
+    "pods": "cd examples/default && pod-install --quiet",
+    "bootstrap": "yarn example:default && yarn && yarn pods"
   },
   "peerDependencies": {
     "react": ">=16.8.6",

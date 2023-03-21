@@ -62,7 +62,7 @@ jobs:
     executor:
       name: android/android-machine
       tag: '2022.03.1'
-    working_directory: ~/project/example
+    working_directory: ~/project/examples/default
     steps:
       - advanced-checkout/shallow-checkout
       - node/install-yarn
@@ -96,16 +96,16 @@ jobs:
           pkg-manager: yarn
       - node/install-packages:
           pkg-manager: yarn
-          app-dir: example
+          app-dir: examples/default
       - install_pods:
-          working_directory: examples/example/ios
+          working_directory: examples/default/ios
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
     macos:
       xcode: 13.4.1
-    working_directory: ~/project/examples/example
+    working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
@@ -149,9 +149,9 @@ jobs:
           pkg-manager: yarn
       - node/install-packages:
           pkg-manager: yarn
-          app-dir: example
+          app-dir: examples/default
       - install_pods:
-          working_directory: example/ios
+          working_directory: examples/default/ios
       - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
@@ -160,15 +160,15 @@ jobs:
           command: brew tap wix/brew && brew install applesimutils
       - run:
           name: Rebuild Detox.framework Cache
-          working_directory: example
+          working_directory: examples/default
           command: detox clean-framework-cache && detox build-framework-cache
       - run:
           name: Detox - Build Release App
-          working_directory: examples/example
+          working_directory: examples/default
           command: detox build --configuration ios.sim.release --cleanup
       - run:
           name: Detox - Run E2E Tests
-          working_directory: examples/example
+          working_directory: examples/default
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
@@ -183,7 +183,7 @@ jobs:
           pkg-manager: yarn
       - node/install-packages:
           pkg-manager: yarn
-          app-dir: example
+          app-dir: examples/default
       - run:
           name: Install Detox CLI
           command: npm install -g detox-cli
@@ -197,11 +197,11 @@ jobs:
           memory: 2048
           post-emulator-launch-assemble-command: |
             rm -rf ~/.gradle/caches
-            cd ~/project/examples/example/android && ./gradlew androidDependencies
+            cd ~/project/examples/default/android && ./gradlew androidDependencies
             cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          working_directory: examples/example
+          working_directory: examples/default
           command: detox test -c android.emu.release
 
   publish:
