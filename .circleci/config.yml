@@ -98,14 +98,14 @@ jobs:
           pkg-manager: yarn
           app-dir: example
       - install_pods:
-          working_directory: example/ios
+          working_directory: examples/example/ios
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
     macos:
       xcode: 13.4.1
-    working_directory: ~/project/example
+    working_directory: ~/project/examples/example
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
@@ -164,11 +164,11 @@ jobs:
           command: detox clean-framework-cache && detox build-framework-cache
       - run:
           name: Detox - Build Release App
-          working_directory: example
+          working_directory: examples/example
           command: detox build --configuration ios.sim.release --cleanup
       - run:
           name: Detox - Run E2E Tests
-          working_directory: example
+          working_directory: examples/example
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
@@ -197,11 +197,11 @@ jobs:
           memory: 2048
           post-emulator-launch-assemble-command: |
             rm -rf ~/.gradle/caches
-            cd ~/project/example/android && ./gradlew androidDependencies
+            cd ~/project/examples/example/android && ./gradlew androidDependencies
             cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
-          working_directory: example
+          working_directory: examples/example
           command: detox test -c android.emu.release
 
   publish:
