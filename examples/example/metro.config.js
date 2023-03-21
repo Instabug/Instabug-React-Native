@@ -1,9 +1,9 @@
 const path = require('path');
 const escape = require('escape-string-regexp');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
-const pkg = require('../package.json');
 
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(__dirname, '../..');
+const pkg = require(path.join(root, 'package.json'));
 const peerDependencies = Object.keys(pkg.peerDependencies);
 const modules = [...peerDependencies, '@babel/runtime'];
 
