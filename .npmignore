@@ -3,7 +3,7 @@
 # Misc
 .github/
 .circleci/
-example/
+examples/
 
 # Config files
 .eslintrc.js
@@ -61,7 +61,7 @@ DerivedData
 project.xcworkspace
 
 # Cocoapods
-example/ios/Pods
+Pods/
 
 # Android/IJ
 .classpath
