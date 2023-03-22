@@ -57,7 +57,7 @@ const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
   const version = {
     code: opts.code,
     name: opts.name,
-    codePush: opts.label,
+    codepush: opts.label,
   };
 
   const form = new FormData();
