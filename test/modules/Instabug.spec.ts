@@ -179,15 +179,15 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.init).toBeCalledWith(
       instabugConfig.token,
       instabugConfig.invocationEvents,
-      instabugConfig.codePushLabel,
       instabugConfig.debugLogsLevel,
+      instabugConfig.codePushLabel,
     );
   });
 
   it('should call the native method init with default optional parameters', () => {
     const instabugConfig = {
       token: 'some-token',
-      invocationEvents: [Instabug.invocationEvent.floatingButton, Instabug.invocationEvent.shake],
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
     };
     Instabug.init(instabugConfig);
 
@@ -195,8 +195,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.init).toBeCalledWith(
       instabugConfig.token,
       instabugConfig.invocationEvents,
+      LogLevel.error,
       '',
-      LogLevel.Error,
     );
   });
 
