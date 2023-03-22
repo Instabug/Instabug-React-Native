@@ -9,7 +9,7 @@ module.exports = {
   collectCoverageFrom: ['./src/**/*.(js|ts)'],
   setupFilesAfterEnv: ['./test/setup.ts'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  modulePathIgnorePatterns: ['example'],
+  modulePathIgnorePatterns: ['examples'],
   transform: {
     '^.+\\.jsx$': 'babel-jest',
     '^.+\\.tsx?$': 'ts-jest',

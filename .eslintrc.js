@@ -14,7 +14,7 @@ module.exports = {
     },
     {
       // Detox Overrides
-      files: ['example/e2e/**.js'],
+      files: ['examples/default/e2e/**.js'],
       env: {
         'jest/globals': true,
       },

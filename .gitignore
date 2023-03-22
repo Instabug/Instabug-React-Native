@@ -37,7 +37,7 @@ DerivedData
 project.xcworkspace
 
 # Cocoapods
-example/ios/Pods
+Pods/
 
 # Android/IJ
 .classpath
