@@ -1,38 +1,19 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
 import Instabug, {
   CrashReporting,
   InvocationEvent,
   LogLevel,
 } from 'instabug-reactnative';
-import React, {useEffect, type PropsWithChildren} from 'react';
+import React, {useEffect} from 'react';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
 import codePush from 'react-native-code-push';
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 
-const Section: React.FC<
-  PropsWithChildren<{
-    title: string;
-  }>
-> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
+const App = () => {
   useEffect(() => {
     codePush.getUpdateMetadata().then(update => {
       Instabug.init({
@@ -43,36 +24,6 @@ const Section: React.FC<
       });
     });
   }, []);
-
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   const checkUpdates = () => {
     codePush.sync({
@@ -93,47 +44,35 @@ const App = () => {
     }
   };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+    <View style={styles.container}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <Text style={styles.heading}>Instabug + CodePush</Text>
+        <View style={styles.content}>
           <TouchableOpacity style={styles.button} onPress={reportCrash}>
             <Text style={styles.text}>THROW HANDLED ERROR</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={checkUpdates}>
             <Text style={styles.text}>Check for updates</Text>
           </TouchableOpacity>
-          <Section title="Release version" />
+          <Text>Release Version: </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  heading: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  container: {
+    flex: 1,
+    alignItems: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  content: {
+    padding: 10,
   },
   text: {
     color: '#FFFFFF',
