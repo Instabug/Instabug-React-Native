@@ -9,6 +9,7 @@
 ### Changed
 
 - Improve release variant's build time on Android, by using the react-native-generated source map file, instead of generating it within our scripts ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
+- Improve debug variant's build time on iOS, by disabling automatic source map file uploads ([#942](https://github.com/Instabug/Instabug-React-Native/pull/942)).
 
 ## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
 

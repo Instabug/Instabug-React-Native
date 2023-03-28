@@ -54,10 +54,6 @@ REACT_NATIVE_DIR=$(dirname $(node -p "require.resolve('react-native/package.json
 # For more info: https://github.com/facebook/react-native/issues/32168
 export RN_DIR=$REACT_NATIVE_DIR 
 
-# Force generating sourcemap file in Debug configuration
-# This is intentionaly made to not break expected behaviour in previous versions.
-export FORCE_BUNDLING=true
-
 # Used withing `react-native-xcode.sh` to generate sourcemap file
 export SOURCEMAP_FILE="$(pwd)/main.jsbundle.map";
 
