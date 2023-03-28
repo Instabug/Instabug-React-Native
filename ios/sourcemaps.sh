@@ -11,6 +11,24 @@ if [[ -z "$INFOPLIST_FILE" ]] || [[ -z "$PROJECT_DIR" ]]; then
 fi
 
 
+## Generate Sourcemap ##
+
+REACT_NATIVE_DIR=$(dirname $(node -p "require.resolve('react-native/package.json')"))
+
+# Fixes an issue with react-native prior to v0.67.0
+# For more info: https://github.com/facebook/react-native/issues/32168
+export RN_DIR=$REACT_NATIVE_DIR 
+
+# Used withing `react-native-xcode.sh` to generate sourcemap file
+export SOURCEMAP_FILE="$(pwd)/main.jsbundle.map";
+
+source "$REACT_NATIVE_DIR/scripts/react-native-xcode.sh"
+
+if ![[ -f "$SOURCEMAP_FILE" ]]; then
+  echo "Unable to find source map file at: $SOURCEMAP_FILE"
+fi
+
+
 ## App Token ##
 
 JS_PROJECT_DIR="$PROJECT_DIR/.."
@@ -46,25 +64,11 @@ if [[ -z "$VERSION_NAME" ]]; then
 fi
 
 
-## Generate Sourcemap ##
-
-REACT_NATIVE_DIR=$(dirname $(node -p "require.resolve('react-native/package.json')"))
-
-# Fixes an issue with react-native prior to v0.67.0
-# For more info: https://github.com/facebook/react-native/issues/32168
-export RN_DIR=$REACT_NATIVE_DIR 
-
-# Used withing `react-native-xcode.sh` to generate sourcemap file
-export SOURCEMAP_FILE="$(pwd)/main.jsbundle.map";
-
-source "$REACT_NATIVE_DIR/scripts/react-native-xcode.sh"
-
-
 ## Upload Sourcemap ##
 
 npx instabug upload-sourcemaps \
     --platform ios \
+    --file $SOURCEMAP_FILE \
     --token $APP_TOKEN \
     --name $VERSION_NAME \
-    --code $VERSION_CODE \
-    --file $SOURCEMAP_FILE
+    --code $VERSION_CODE
