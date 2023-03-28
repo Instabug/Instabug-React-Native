@@ -72,7 +72,7 @@
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug init]"];
   
   OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents codePushLabel:codePushLabel debugLogsLevel:sdkDebugLogsLevel];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel codePushLabel:codePushLabel];
 
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock setCodePushVersion:codePushLabel]);

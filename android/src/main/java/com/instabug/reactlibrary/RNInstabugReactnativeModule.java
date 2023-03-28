@@ -118,7 +118,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * @param invocationEventValues The events that invoke the SDK's UI.
      */
     @ReactMethod
-    public void init(final String token, final ReadableArray invocationEventValues, final String codePushLabel, final String logLevel) {
+    public void init(final String token, final ReadableArray invocationEventValues, final String logLevel, final String codePushLabel) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -132,8 +132,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
                     new Instabug.Builder(getCurrentActivity().getApplication(), token)
                             .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
-                            .setCodePushVersion(codePushLabel)
                             .setSdkDebugLogsLevel(parsedLogLevel)
+                            .setCodePushVersion(codePushLabel)
                             .build();
 
                     // Temporarily disabling APM hot launches

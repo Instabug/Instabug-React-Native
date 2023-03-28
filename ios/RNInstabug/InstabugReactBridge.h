@@ -27,7 +27,7 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 
-- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray codePushLabel:(NSString *)codePushLabel debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel;
+- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel codePushLabel:(NSString *)codePushLabel;
 
 - (void)setUserData:(NSString *)userData;
 
