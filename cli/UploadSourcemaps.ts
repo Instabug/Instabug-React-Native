@@ -74,8 +74,8 @@ const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
       headers: form.getHeaders(),
     });
 
-    const appVersion = version.codePush
-      ? `${version.name} (${version.code})+codepush:${version.codePush}`
+    const appVersion = version.codepush
+      ? `${version.name} (${version.code})+codepush:${version.codepush}`
       : `${version.name} (${version.code})`;
 
     console.log(`Successfully uploaded Source maps for version: ${appVersion}`);
