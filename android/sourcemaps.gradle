@@ -8,10 +8,10 @@ gradle.projectsEvaluated {
         task -> task.name.endsWithIgnoreCase('bundleReleaseJsAndAssets')
     }
 
-    bundleTask.finalizedBy uploadSourcemap
+    bundleTask.finalizedBy uploadSourcemaps
 }
 
-task uploadSourcemap() {
+task uploadSourcemaps() {
     group 'instabug'
     description 'Uploads sourcemaps file to Instabug server'
     enabled rootProject.hasProperty('instabugUploadEnable')
@@ -21,11 +21,11 @@ task uploadSourcemap() {
     doLast {
         try {
             def appDir = appProject.projectDir
-            def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.mapx'
-            def sourcemapFile = new File(appDir, sourcemapDest)
+            def sourceMapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
+            def sourceMapFile = new File(appDir, sourceMapDest)
 
-            if (!sourcemapFile.exists()) {
-                throw new InvalidUserDataException("Unable to find Sourcemap file at: ${sourcemapFile.absolutePath}")
+            if (!sourceMapFile.exists()) {
+                throw new InvalidUserDataException("Unable to find source map file at: ${sourceMapFile.absolutePath}")
             }
 
             def jsProjectDir = rootDir.parentFile
@@ -44,7 +44,7 @@ task uploadSourcemap() {
                 def args = [
                         'npx', 'instabug', 'upload-sourcemaps',
                         '--platform', 'android',
-                        '--file', sourcemapFile.absolutePath,
+                        '--file', sourceMapFile.absolutePath,
                         '--token', appToken,
                         '--name', versionName,
                         '--code', versionCode
@@ -53,7 +53,7 @@ task uploadSourcemap() {
                 commandLine(*osCompatibility, *args)
             }
         } catch (exception) {
-            project.logger.error "Failed to upload sourcemap file.\n" +
+            project.logger.error "Failed to upload source map file.\n" +
                     "Reason: ${exception.message}"
         }
     }
@@ -64,9 +64,9 @@ String resolveVar(String name, String envKey, String defaultValue) {
     def envValue = env.get(envKey)
 
     if (envValue != null && envValue != defaultValue) {
-        project.logger.warn "Enviroment variable `${envKey}` might have incorrect value, " +
-                "make sure this was initional:\n" +
-                "   Enviroment Value: ${envValue}\n" +
+        project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
+                "make sure this was intentional:\n" +
+                "   Environment Value: ${envValue}\n" +
                 "   Default Value: ${defaultValue}"
     }
 
@@ -74,7 +74,7 @@ String resolveVar(String name, String envKey, String defaultValue) {
 
     if (value == null) {
         throw new InvalidUserDataException("Unable to find ${name}! " +
-                "Set the enviroment variable `${envKey}` and try again.")
+                "Set the environment variable `${envKey}` and try again.")
     }
 
     return value

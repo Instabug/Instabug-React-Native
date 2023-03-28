@@ -4,7 +4,7 @@
 
 ### Added
 
-- Add support for Android automatic source map upload on Windows; This requires setting the `INSTABUG_APP_TOKEN` environment variable ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
+- Add support for Android automatic source map file upload on Windows; This requires setting the `INSTABUG_APP_TOKEN` environment variable ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
 
 ### Changed
 
