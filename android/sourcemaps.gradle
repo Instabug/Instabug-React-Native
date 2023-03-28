@@ -20,6 +20,14 @@ task uploadSourcemap() {
 
     doLast {
         try {
+            def appDir = appProject.projectDir
+            def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.mapx'
+            def sourcemapFile = new File(appDir, sourcemapDest)
+
+            if (!sourcemapFile.exists()) {
+                throw new InvalidUserDataException("Unable to find Sourcemap file at: ${sourcemapFile.absolutePath}")
+            }
+
             def jsProjectDir = rootDir.parentFile
             def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
 
@@ -31,25 +39,15 @@ task uploadSourcemap() {
             def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
             def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
 
-            def appDir = appProject.projectDir
-            def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
-            def sourcemapFile = new File(appDir, sourcemapDest)
-
-            if (!sourcemapFile.exists()) {
-                project.logger.error "Failed to find Sourcemap file at: ${sourcemapFile.absolutePath}"
-                project.logger.error 'Skipping automatic sourcemap uploads'
-                return
-            }
-
             exec {
                 def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
                 def args = [
                         'npx', 'instabug', 'upload-sourcemaps',
                         '--platform', 'android',
+                        '--file', sourcemapFile.absolutePath,
                         '--token', appToken,
                         '--name', versionName,
-                        '--code', versionCode,
-                        '--file', sourcemapFile.absolutePath
+                        '--code', versionCode
                 ]
 
                 commandLine(*osCompatibility, *args)
