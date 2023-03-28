@@ -19,49 +19,67 @@ task uploadSourcemap() {
             : true
 
     doLast {
-        def env = System.getenv()
-        def jsProjectDir = rootDir.parentFile
-        def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
+        try {
+            def jsProjectDir = rootDir.parentFile
+            def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
 
-        def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
-        def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
-        def appToken = env.getOrDefault('INSTABUG_APP_TOKEN', inferredToken)
+            def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
+            def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
+            def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
 
-        if (appToken == null) {
-            project.logger.lifecycle 'Failed to find Instabug App Token! ' +
-                    'Set the enviroment variable `INSTABUG_APP_TOKEN`, ' +
-                    'to enable automatic sourcemap file uploads.'
-            return
-        }
+            def projectConfig = appProject.android.defaultConfig
+            def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
+            def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
 
-        def projectConfig = appProject.android.defaultConfig
-        def versionName = env.getOrDefault('INSTABUG_VERSION_NAME', projectConfig.versionName)
-        def versionCode = env.getOrDefault('INSTABUG_VERSION_CODE', projectConfig.versionCode)
+            def appDir = appProject.projectDir
+            def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
+            def sourcemapFile = new File(appDir, sourcemapDest)
 
-        def appDir = appProject.projectDir
-        def sourcemapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
-        def sourcemapFile = new File(appDir, sourcemapDest)
+            if (!sourcemapFile.exists()) {
+                project.logger.error "Failed to find Sourcemap file at: ${sourcemapFile.absolutePath}"
+                project.logger.error 'Skipping automatic sourcemap uploads'
+                return
+            }
 
-        if (!sourcemapFile.exists()) {
-            project.logger.lifecycle "Failed to find Sourcemap file at: ${sourcemapFile.absolutePath}"
-            project.logger.lifecycle 'Skipping automatic sourcemap uploads'
-            return
-        }
-
-        exec {
-            def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
-            def args = [
-                    'npx', 'instabug', 'upload-sourcemaps',
+            exec {
+                def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
+                def args = [
+                        'npx', 'instabug', 'upload-sourcemaps',
                         '--platform', 'android',
                         '--token', appToken,
                         '--name', versionName,
                         '--code', versionCode,
                         '--file', sourcemapFile.absolutePath
-            ]
+                ]
 
-            commandLine(*osCompatibility, *args)
+                commandLine(*osCompatibility, *args)
+            }
+        } catch (exception) {
+            project.logger.error "Failed to upload sourcemap file.\n" +
+                    "Reason: ${exception.message}"
         }
     }
+}
+
+String resolveVar(String name, String envKey, String defaultValue) {
+    def env = System.getenv()
+    def envValue = env.get(envKey)
+
+    if (envValue != null && envValue != defaultValue) {
+        project.logger.warn "Enviroment variable `${envKey}` might have incorrect value, " +
+                "make sure this was initional:\n" +
+                "   Enviroment Value: ${envValue}\n" +
+                "   Default Value: ${defaultValue}"
+    }
+
+    def value = envValue ?: defaultValue
+
+    if (value == null) {
+        throw new InvalidUserDataException("Unable to find ${name}! " +
+                "Set the enviroment variable `${envKey}` and try again.")
+    }
+
+    return value
 }
 
 static String executeShellScript(File script, File workingDir) {
