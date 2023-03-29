@@ -11,43 +11,45 @@ main() {
     exit 1
   fi
 
-  generate_sourcemaps
+  local source_map_file=$(generate_sourcemaps | tail -n 1)
 
-  JS_PROJECT_DIR="$PROJECT_DIR/.."
-  INSTABUG_DIR=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
-  INFERRED_TOKEN=$(cd $JS_PROJECT_DIR && source $INSTABUG_DIR/scripts/find-token.sh)
-  APP_TOKEN=$(resolve_var "App Token" "INSTABUG_APP_TOKEN" "$INFERRED_TOKEN" | tail -n 1)
+  local js_project_dir="$PROJECT_DIR/.."
+  local instabug_dir=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
+  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)
+  local app_token=$(resolve_var "App Token" "INSTABUG_APP_TOKEN" "$inferred_token" | tail -n 1)
 
-  INFERRED_NAME=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' "$PROJECT_DIR/$INFOPLIST_FILE")
-  VERSION_NAME=$(resolve_var "Version Name" "INSTABUG_APP_VERSION_NAME" "$INFERRED_NAME" | tail -n 1)
+  local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' "$PROJECT_DIR/$INFOPLIST_FILE")
+  local version_name=$(resolve_var "Version Name" "INSTABUG_APP_VERSION_NAME" "$inferred_name" | tail -n 1)
 
-  INFERRED_CODE=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' "$PROJECT_DIR/$INFOPLIST_FILE")
-  VERSION_CODE=$(resolve_var "Version Code" "INSTABUG_APP_VERSION_CODE" "$INFERRED_CODE" | tail -n 1)
+  local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' "$PROJECT_DIR/$INFOPLIST_FILE")
+  local version_code=$(resolve_var "Version Code" "INSTABUG_APP_VERSION_CODE" "$inferred_code" | tail -n 1)
 
   npx instabug upload-sourcemaps \
       --platform ios \
-      --file $SOURCEMAP_FILE \
-      --token $APP_TOKEN \
-      --name $VERSION_NAME \
-      --code $VERSION_CODE
+      --file $source_map_file \
+      --token $app_token \
+      --name $version_name \
+      --code $version_code
 }
 
 generate_sourcemaps() {
-  REACT_NATIVE_DIR=$(dirname $(node -p "require.resolve('react-native/package.json')"))
+  local react_native_dir=$(dirname $(node -p "require.resolve('react-native/package.json')"))
 
   # Fixes an issue with react-native prior to v0.67.0
   # For more info: https://github.com/facebook/react-native/issues/32168
-  export RN_DIR=$REACT_NATIVE_DIR 
+  export RN_DIR=$react_native_dir 
 
   # Used withing `react-native-xcode.sh` to generate sourcemap file
   export SOURCEMAP_FILE="$(pwd)/main.jsbundle.map";
 
-  source "$REACT_NATIVE_DIR/scripts/react-native-xcode.sh"
+  source "$react_native_dir/scripts/react-native-xcode.sh"
 
-  if ![[ -f "$SOURCEMAP_FILE" ]]; then
+  if [[ ! -f "$SOURCEMAP_FILE" ]]; then
     echo "[Error] Unable to find source map file at: $SOURCEMAP_FILE"
     exit 1
   fi
+
+  echo $SOURCEMAP_FILE
 }
 
 resolve_var() {
