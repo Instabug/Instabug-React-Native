@@ -78,8 +78,8 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - run:
-          name: Validate Android Script
-          command: bash -n android/upload_sourcemap.sh
+          name: Validate Scripts
+          command: ls scripts/*.sh | xargs bash -n
       - run:
           name: Validate iOS Script
           command: bash -n ios/upload_sourcemap.sh

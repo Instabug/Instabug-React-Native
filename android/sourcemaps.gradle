@@ -1,0 +1,93 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+def appProject = project(":app")
+
+gradle.projectsEvaluated {
+    // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets`
+    def bundleTask = appProject.tasks.find {
+        task -> task.name.endsWithIgnoreCase('bundleReleaseJsAndAssets')
+    }
+
+    bundleTask.finalizedBy uploadSourcemaps
+}
+
+task uploadSourcemaps() {
+    group 'instabug'
+    description 'Uploads sourcemaps file to Instabug server'
+    enabled rootProject.hasProperty('instabugUploadEnable')
+            ? new Boolean(rootProject.property('instabugUploadEnable'))
+            : true
+
+    doLast {
+        try {
+            def appDir = appProject.projectDir
+            def sourceMapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
+            def sourceMapFile = new File(appDir, sourceMapDest)
+
+            if (!sourceMapFile.exists()) {
+                throw new InvalidUserDataException("Unable to find source map file at: ${sourceMapFile.absolutePath}")
+            }
+
+            def jsProjectDir = rootDir.parentFile
+            def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
+
+            def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
+            def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
+            def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
+
+            def projectConfig = appProject.android.defaultConfig
+            def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
+            def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
+
+            exec {
+                def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
+                def args = [
+                        'npx', 'instabug', 'upload-sourcemaps',
+                        '--platform', 'android',
+                        '--file', sourceMapFile.absolutePath,
+                        '--token', appToken,
+                        '--name', versionName,
+                        '--code', versionCode
+                ]
+
+                commandLine(*osCompatibility, *args)
+            }
+        } catch (exception) {
+            project.logger.error "Failed to upload source map file.\n" +
+                    "Reason: ${exception.message}"
+        }
+    }
+}
+
+String resolveVar(String name, String envKey, String defaultValue) {
+    def env = System.getenv()
+    def envValue = env.get(envKey)
+
+    if (envValue != null && envValue != defaultValue) {
+        project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
+                "make sure this was intentional:\n" +
+                "   Environment Value: ${envValue}\n" +
+                "   Default Value: ${defaultValue}"
+    }
+
+    def value = envValue ?: defaultValue
+
+    if (value == null) {
+        throw new InvalidUserDataException("Unable to find ${name}! " +
+                "Set the environment variable `${envKey}` and try again.")
+    }
+
+    return value
+}
+
+static String executeShellScript(File script, File workingDir) {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        return null
+    }
+
+    def output = new StringBuffer()
+    def process = ['sh', script.getAbsolutePath()].execute(null, workingDir)
+    process?.waitForProcessOutput(output, new StringBuffer())
+
+    return process?.exitValue() == 0 ? output.toString().trim() : null
+}

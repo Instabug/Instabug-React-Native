@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 
 apply from: './jacoco.gradle'
 apply from: './native.gradle'
+apply from: './sourcemaps.gradle'
 
 String getExtOrDefault(String name) {
     if (rootProject.ext.has(name)) {
@@ -39,25 +40,4 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:3.4.0"
     testImplementation "org.mockito:mockito-android:3.4.0"
     testImplementation 'junit:junit:4.13.2'
-}
-
-
-import org.apache.tools.ant.taskdefs.condition.Os
-task upload_sourcemap(type: Exec) {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        commandLine 'cmd', '/c', 'echo Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard'
-        project.logger.lifecycle('Automatic Upload of sourcemap files is currently not available on windows, please generate the sourcemapfiles and upload them to the dashboard')
-    } else {
-        commandLine 'sh', './upload_sourcemap.sh', rootDir
-    }
-}
-
-tasks.whenTaskAdded { task ->
-    def isEnabled = rootProject.hasProperty('instabugUploadEnable')
-            ? new Boolean(rootProject.property('instabugUploadEnable'))
-            : true
-    
-    if (task.name == 'preReleaseBuild' && isEnabled) {
-        task.dependsOn upload_sourcemap 
-    }
 }
