@@ -82,7 +82,7 @@ jobs:
           command: ls scripts/*.sh | xargs bash -n
       - run:
           name: Validate iOS Script
-          command: bash -n ios/upload_sourcemap.sh
+          command: bash -n ios/sourcemaps.sh
 
   # Make sure that files like yarn.lock and project.pbxproj
   # are in sync with the latest changes in package.json and
