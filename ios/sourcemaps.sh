@@ -2,12 +2,12 @@
 
 main() {
   if [[ "$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE" = true ]]; then
-    echo 'Instabug: `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` was set to true, skipping sourcemap upload'
+    echo "[Info] \`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\` was set to true, skipping sourcemaps upload..."
     exit 0
   fi
 
   if [[ -z "$INFOPLIST_FILE" ]] || [[ -z "$PROJECT_DIR" ]]; then
-    echo '[Instabug] Sourcemaps script must be invoked by Xcode'
+    echo "[Error] Instabug sourcemaps script must be invoked by Xcode"
     exit 1
   fi
 
@@ -45,7 +45,7 @@ generate_sourcemaps() {
   source "$REACT_NATIVE_DIR/scripts/react-native-xcode.sh"
 
   if ![[ -f "$SOURCEMAP_FILE" ]]; then
-    echo "Unable to find source map file at: $SOURCEMAP_FILE"
+    echo "[Error] Unable to find source map file at: $SOURCEMAP_FILE"
     exit 1
   fi
 }
@@ -58,7 +58,7 @@ resolve_var() {
   local env_value="${!env_key}"
 
   if [[ -n "$env_value" ]] && [[ "$env_value" != default_value ]]; then
-    echo "Environment variable \`$env_key\` might have incorrect value, make sure this was intentional:"
+    echo "[Warning] Environment variable \`$env_key\` might have incorrect value, make sure this was intentional:"
     echo "   Environment Value: $env_value"
     echo "   Default Value: $default_value"
   fi
@@ -66,7 +66,7 @@ resolve_var() {
   local value="${env_value:-$default_value}"
 
   if [[ -z "$value" ]]; then
-    echo "Unable to find $name! Set the environment variable \`$env_key\` and try again."
+    echo "[Error] Unable to find $name! Set the environment variable \`$env_key\` and try again."
     exit 1
   fi
 
