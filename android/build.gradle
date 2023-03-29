@@ -1,3 +1,13 @@
+rootProject.allprojects {
+	repositories {
+		google()
+		jcenter()
+		maven {
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
+		}
+	}
+}
+
 apply plugin: 'com.android.library'
 
 apply from: './jacoco.gradle'
