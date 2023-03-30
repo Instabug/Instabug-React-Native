@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   android: circleci/android@2.0
-  advanced-checkout: vsco/advanced-checkout@1.0.0
+  advanced-checkout: vsco/advanced-checkout@1.1.0
   node: circleci/node@5.1.0
 
 commands:
@@ -61,7 +61,7 @@ jobs:
   test_android:
     executor:
       name: android/android-machine
-      tag: '2022.03.1'
+      tag: "2022.03.1"
     working_directory: ~/project/examples/default
     steps:
       - advanced-checkout/shallow-checkout
@@ -207,7 +207,7 @@ jobs:
   publish:
     macos:
       xcode: 13.4.1
-    working_directory: '~'
+    working_directory: "~"
     steps:
       - advanced-checkout/shallow-checkout
       - run: git clone git@github.com:Instabug/Escape.git
