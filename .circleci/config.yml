@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   android: circleci/android@2.0
-  advanced-checkout: vsco/advanced-checkout@1.0.0
+  advanced-checkout: vsco/advanced-checkout@1.1.0
   node: circleci/node@5.1.0
 
 commands:
