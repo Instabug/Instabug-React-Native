@@ -1,9 +1,9 @@
 import { danger, fail, schedule, warn } from 'danger';
 
-const hasAppChanges = !danger.git.modified_files.some((file) => file.includes('lib'));
+const hasSourceChanges = !danger.git.modified_files.some((file) => file.includes('src'));
 const declaredTrivial =
   (danger.github.pr.title + danger.github.pr.body).includes('#trivial') ||
-  !hasAppChanges ||
+  !hasSourceChanges ||
   danger.github.issue.labels.some((label) => label.name === 'trivial');
 
 // Make sure PR has a description.
