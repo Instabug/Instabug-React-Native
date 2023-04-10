@@ -1,15 +1,14 @@
 import { danger, fail, schedule, warn } from 'danger';
 
-const hasSourceChanges = !danger.git.modified_files.some((file) => file.includes('src'));
+const hasSourceChanges = danger.git.modified_files.some((file) => file.startsWith('src/'));
 const declaredTrivial =
-  (danger.github.pr.title + danger.github.pr.body).includes('#trivial') ||
-  !hasSourceChanges ||
-  danger.github.issue.labels.some((label) => label.name === 'trivial');
+  !hasSourceChanges || danger.github.issue.labels.some((label) => label.name === 'trivial');
 
 // Make sure PR has a description.
 async function hasDescription() {
   const linesOfCode = (await danger.git.linesOfCode()) ?? 0;
-  if (danger.github.pr.body.length < 3 && linesOfCode > 10) {
+  const hasNoDiscription = danger.github.pr.body.includes('> Description goes here');
+  if (hasNoDiscription && linesOfCode > 10) {
     fail('Please provide a summary of the changes in the pull request description.');
   }
 
