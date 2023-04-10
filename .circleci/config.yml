@@ -26,12 +26,15 @@ commands:
             - << parameters.working_directory >>/Pods
 jobs:
   danger:
-    docker:
-      - image: circleci/ruby:2.6.4
+    executor:
+      name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - run: bundle install
-      - run: bundle exec danger
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run Danger
+          command: yarn danger ci
 
   lint:
     executor:

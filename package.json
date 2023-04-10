@@ -57,6 +57,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "commander": "^9.4.1",
+    "danger": "^11.2.5",
     "eslint": "^8.24.0",
     "eslint-plugin-prettier": "^4.2.1",
     "esprima": "^4.0.1",
