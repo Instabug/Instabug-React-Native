@@ -294,18 +294,16 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                WritableArray tagsArray;
+                WritableArray tagsArray = Arguments.createArray();
                 try {
                     ArrayList<String> tags = Instabug.getTags();
-                    tagsArray = Arguments.createArray();
                     for (int i = 0; i < tags.size(); i++) {
                         tagsArray.pushString(tags.get(i));
                     }
-                    promise.resolve(tagsArray);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    promise.resolve(null);
                 }
+                promise.resolve(tagsArray);
             }
         });
     }
@@ -486,14 +484,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                String userAttribute;
+                String userAttribute = "";
                 try {
                     userAttribute = Instabug.getUserAttribute(key);
-                    promise.resolve(userAttribute);
                 } catch (Exception e) {
-                    promise.resolve(null);
                     e.printStackTrace();
                 }
+                promise.resolve(userAttribute);
             }
         });
     }

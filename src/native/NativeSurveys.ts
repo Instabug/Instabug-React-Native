@@ -12,8 +12,8 @@ export interface SurveysNativeModule extends NativeModule {
   setAutoShowingEnabled(autoShowingSurveysEnabled: boolean): void;
   showSurvey(surveyToken: string): void;
   showSurveysIfAvailable(): void;
-  getAvailableSurveys(): Promise<Survey[] | null>;
-  hasRespondedToSurvey(surveyToken: string): Promise<boolean | null>;
+  getAvailableSurveys(): Promise<Survey[]>;
+  hasRespondedToSurvey(surveyToken: string): Promise<boolean>;
 
   // Misc APIs //
   setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;

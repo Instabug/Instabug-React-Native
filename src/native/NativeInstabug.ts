@@ -72,7 +72,7 @@ export interface InstabugNativeModule extends NativeModule {
 
   // User Attributes APIs //
   setUserAttribute(key: string, value: string): void;
-  getUserAttribute(key: string): Promise<string | null>;
+  getUserAttribute(key: string): Promise<string>;
   removeUserAttribute(key: string): void;
   getAllUserAttributes(): Promise<Record<string, string>>;
   clearAllUserAttributes(): void;
@@ -84,7 +84,7 @@ export interface InstabugNativeModule extends NativeModule {
   // Tags APIs //
   appendTags(tags: string[]): void;
   resetTags(): void;
-  getTags(): Promise<string[] | null>;
+  getTags(): Promise<string[]>;
 
   // Experiments APIs //
   addExperiments(experiments: string[]): void;

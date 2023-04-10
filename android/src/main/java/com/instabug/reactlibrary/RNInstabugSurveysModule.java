@@ -1,5 +1,6 @@
 package com.instabug.reactlibrary;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -56,14 +57,13 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                boolean hasResponded;
+                boolean hasResponded = false;
                 try {
                     hasResponded = Surveys.hasRespondToSurvey(surveyToken);
-                    promise.resolve(hasResponded);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    promise.resolve(null);
                 }
+                promise.resolve(hasResponded);
             }
         });
     }
@@ -190,7 +190,7 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
                     promise.resolve(array);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    promise.resolve(null);
+                    promise.resolve(Arguments.createArray());
                 }
             }
         });

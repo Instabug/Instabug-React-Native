@@ -232,7 +232,7 @@ RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key :(RCTPromiseResolveBlock)reso
     @try {
         resolve([Instabug userAttributeForKey:key]);
     } @catch (NSException *exception) {
-        resolve([NSNull null]);
+        resolve(@"");
     }
 }
 
