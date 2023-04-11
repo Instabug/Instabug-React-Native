@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Return a `Promise` from the below methods ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
+- Return a `Promise` from the below APIs ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
 
   - `Instabug.getTags`
   - `Instabug.getUserAttribute`
@@ -18,7 +18,7 @@
   - `Surveys.getAvailableSurveys`
   - `Surveys.hasRespondedToSurvey`
 
-  You should not pass it a callback and use the returned `Promise` as follows:
+  You should not pass it a callback but use the returned `Promise` as follows:
 
   ```js
   const tags = await Instabug.getTags();
