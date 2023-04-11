@@ -2,6 +2,7 @@ import '../mocks/mockInstabugUtils';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
 
+import { mocked } from 'ts-jest/utils';
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
@@ -277,14 +278,15 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.resetTags).toBeCalledTimes(1);
   });
 
-  it('should call native method getTags', (done) => {
-    const callback = (tags: string[]) => {
-      expect(tags).toBeDefined();
-      done();
-    };
-    Instabug.getTags(callback);
+  it('should call native method getTags', async () => {
+    const expected = ['tag1', 'tag2'];
+
+    mocked(NativeInstabug).getTags.mockResolvedValueOnce(expected);
+
+    const actual = await Instabug.getTags();
+
+    expect(actual).toBe(expected);
     expect(NativeInstabug.getTags).toBeCalledTimes(1);
-    expect(NativeInstabug.getTags).toBeCalledWith(callback);
   });
 
   it('should call the native method setString', () => {
@@ -444,15 +446,17 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setUserAttribute).toBeCalledWith(key, value);
   });
 
-  it('should call native method getUserAttribute', (done) => {
-    const callback = (value: string) => {
-      expect(value).toBeDefined();
-      done();
-    };
+  it('should call native method getUserAttribute', async () => {
     const key = 'age';
-    Instabug.getUserAttribute(key, callback);
+    const expected = '21';
+
+    mocked(NativeInstabug).getUserAttribute.mockResolvedValueOnce(expected);
+
+    const actual = await Instabug.getUserAttribute(key);
+
+    expect(actual).toBe(expected);
     expect(NativeInstabug.getUserAttribute).toBeCalledTimes(1);
-    expect(NativeInstabug.getUserAttribute).toBeCalledWith(key, callback);
+    expect(NativeInstabug.getUserAttribute).toBeCalledWith(key);
   });
 
   it('should call the native method removeUserAttribute', () => {
@@ -472,14 +476,16 @@ describe('Instabug Module', () => {
     },
   );
 
-  it('should call native method getAllUserAttributes', (done) => {
-    const callback = (value: Record<string, string>) => {
-      expect(value).toBeDefined();
-      done();
-    };
-    Instabug.getAllUserAttributes(callback);
+  it('should call native method getAllUserAttributes', async () => {
+    const expected = { type: 'guest' };
+
+    mocked(NativeInstabug).getAllUserAttributes.mockResolvedValueOnce(expected);
+
+    const actual = await Instabug.getAllUserAttributes();
+
+    expect(actual).toBe(expected);
     expect(NativeInstabug.getAllUserAttributes).toBeCalledTimes(1);
-    expect(NativeInstabug.getAllUserAttributes).toBeCalledWith(callback);
+    expect(NativeInstabug.getAllUserAttributes).toBeCalledWith();
   });
 
   it('should call the native method clearAllUserAttributes', () => {

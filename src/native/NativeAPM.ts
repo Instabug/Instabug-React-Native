@@ -15,7 +15,7 @@ export interface ApmNativeModule extends NativeModule {
   endAppLaunch(): void;
 
   // Execution Traces APIs //
-  startExecutionTrace(name: string, timestamp: string, callback: (id: string | null) => void): void;
+  startExecutionTrace(name: string, timestamp: string): Promise<string | null>;
   setExecutionTraceAttribute(id: string, key: string, value: string): void;
   endExecutionTrace(id: string): void;
 

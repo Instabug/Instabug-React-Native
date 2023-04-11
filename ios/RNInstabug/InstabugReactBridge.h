@@ -47,7 +47,7 @@
 
 - (void)resetTags;
 
-- (void)getTags:(RCTResponseSenderBlock)callBack;
+- (void)getTags:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 
 - (void)setString:(NSString *)value toKey:(NSString *)key;
 
@@ -63,11 +63,14 @@
 
 - (void)setUserAttribute:(NSString *)key withValue:(NSString *)value;
 
-- (void)getUserAttribute:(NSString *)key callback:(RCTResponseSenderBlock)callback;
+- (void)getUserAttribute:(NSString *)key
+                        :(RCTPromiseResolveBlock)resolve
+                        :(RCTPromiseRejectBlock)reject;
 
 - (void)removeUserAttribute:(NSString *)key;
 
-- (void)getAllUserAttributes:(RCTResponseSenderBlock)callback;
+- (void)getAllUserAttributes:(RCTPromiseResolveBlock)resolve
+                            :(RCTPromiseRejectBlock)reject;
 
 - (void)clearAllUserAttributes;
 

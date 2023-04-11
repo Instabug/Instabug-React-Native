@@ -59,20 +59,16 @@ describe('APM Module', () => {
   });
 
   it('should call the native method startExecutionTrace', () => {
+    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
+
     APM.startExecutionTrace('trace');
 
     expect(NativeAPM.startExecutionTrace).toBeCalledTimes(1);
-    expect(NativeAPM.startExecutionTrace).toBeCalledWith(
-      'trace',
-      expect.any(String),
-      expect.any(Function),
-    );
+    expect(NativeAPM.startExecutionTrace).toBeCalledWith('trace', expect.any(String));
   });
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
-    mocked(NativeAPM).startExecutionTrace.mockImplementationOnce((_, __, callback) =>
-      callback(null),
-    );
+    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce(null);
 
     const promise = APM.startExecutionTrace('trace');
 
@@ -80,9 +76,7 @@ describe('APM Module', () => {
   });
 
   it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
-    mocked(NativeAPM).startExecutionTrace.mockImplementationOnce((_, __, callback) =>
-      callback('trace-id'),
-    );
+    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
 
     const promise = APM.startExecutionTrace('trace');
 
@@ -91,6 +85,8 @@ describe('APM Module', () => {
   });
 
   it('should call the native method setExecutionTraceAttribute', () => {
+    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
+
     APM.startExecutionTrace('trace').then((trace) => {
       trace.setAttribute('key', 'value');
 
@@ -104,6 +100,8 @@ describe('APM Module', () => {
   });
 
   it('should call the native method endExecutionTrace', () => {
+    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
+
     APM.startExecutionTrace('trace').then((trace) => {
       trace.end();
 

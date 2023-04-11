@@ -89,25 +89,27 @@
   id mock = OCMClassMock([IBGSurveys class]);
   NSString *surveyToken = @"survey_token";
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing hasRespondedToSurveyWithToken callback"];
-  RCTResponseSenderBlock callback = ^void(NSArray *response) {
-    BOOL actualValue = [response[0] boolValue];
+  RCTPromiseResolveBlock resolve = ^(id result) {
+    BOOL actualValue = [result boolValue];
     XCTAssertFalse(actualValue);
     [expectation fulfill];
   };
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   
   OCMStub([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg invokeBlock]]);
-  [self.instabugBridge hasRespondedToSurvey:surveyToken callback:callback];
+  [self.instabugBridge hasRespondedToSurvey:surveyToken :resolve :reject];
   OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg isNotNil]]);
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
 // - (void) testGetAvailableSurveys {
 //   id mock = OCMClassMock([IBGSurveys class]);
-//   RCTResponseSenderBlock callback = ^void(NSArray *response) {};
+//   RCTPromiseResolveBlock resolve = ^(id result) {};
+//   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
 //   AvailableSurveysWithCompletionBlock deeperCallback = ^(NSArray<IBGSurveys *> *availableSurveys) {};
 
 //   OCMStub([mock availableSurveysWithCompletionHandler:deeperCallback]);
-//   [self.instabugBridge getAvailableSurveys:callback];
+//   [self.instabugBridge getAvailableSurveys:resolve :reject];
 //   OCMVerify([mock availableSurveysWithCompletionHandler:deeperCallback]);
 // }
 

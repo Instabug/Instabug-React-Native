@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 import android.os.Looper;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.instabug.apm.APM;
 
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -116,14 +117,13 @@ public class RNInstabugAPMModuleTest {
 
     @Test
     public void givenString$startExecutionTrace_whenQuery_thenShouldCallNativeApi() {
-
-        Callback callback = mock(Callback.class);
+        Promise promise = mock(Promise.class);
         // when
-        apmModule.startExecutionTrace("trace", "1", callback);
+        apmModule.startExecutionTrace("trace", "1", promise);
         // then
         verify(APM.class, times(1));
         APM.startExecutionTrace("trace");
-        verify(callback).invoke(any());
+        verify(promise).resolve(any());
     }
 
     // @Test

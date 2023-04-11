@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.InstabugUtil;
@@ -112,12 +113,12 @@ public class RNInstabugSurveysModuleTest {
     }
 
     @Test
-    public void given$getAvailableSurveys_whenQuery_thenShouldCallNativeApiAndInvokeCallback() throws Exception {
+    public void given$getAvailableSurveys_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // given
         MockedStatic mockClock = mockStatic(SystemClock.class);
         MockedStatic mockArgument =mockStatic(Arguments.class);
 
-        Callback callback = mock(Callback.class);
+        Promise promise = mock(Promise.class);
         JSONArray json = mock(JSONArray.class);
 
         // Override surveyObjectToJson
@@ -142,11 +143,11 @@ public class RNInstabugSurveysModuleTest {
         InstabugUtil.surveyObjectToJson(any(List.class));
         Mockito.when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
         // when
-        surveysModule.getAvailableSurveys(callback);
+        surveysModule.getAvailableSurveys(promise);
         // then
         verify(Surveys.class,times(1));
         Surveys.getAvailableSurveys();
-        verify(callback).invoke(any());
+        verify(promise).resolve(any());
         mockArgument.close();
         mockClock.close();
     }
@@ -210,12 +211,12 @@ public class RNInstabugSurveysModuleTest {
     @Test
     public void givenBoolean$hasRespondedToSurvey_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
         // when
-        Callback callback = mock(Callback.class);
-        surveysModule.hasRespondedToSurvey("123", callback);
+        Promise promise = mock(Promise.class);
+        surveysModule.hasRespondedToSurvey("123", promise);
         // then
         verify(Surveys.class,times(1));
         Surveys.hasRespondToSurvey("123");
-        verify(callback).invoke(any());
+        verify(promise).resolve(any());
     }
 
     @Test
