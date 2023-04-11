@@ -8,8 +8,28 @@
 
 ### Changed
 
+- Return a `Promise` from the below APIs ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
+
+  - `Instabug.getTags`
+  - `Instabug.getUserAttribute`
+  - `Instabug.getAllUserAttributes`
+  - `Replies.hasChats`
+  - `Replies.getUnreadRepliesCount`
+  - `Surveys.getAvailableSurveys`
+  - `Surveys.hasRespondedToSurvey`
+
+  You should not pass it a callback but use the returned `Promise` as follows:
+
+  ```js
+  const tags = await Instabug.getTags();
+  ```
+
 - Improve release variant's build time on Android, by using the react-native-generated source map file, instead of generating it within our scripts ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
 - Improve debug variant's build time on iOS, by disabling automatic source map file uploads ([#942](https://github.com/Instabug/Instabug-React-Native/pull/942)).
+
+### Deprecated
+
+- Deprecate the callback parameter in the aforementioned methods ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)).
 
 ## [11.9.1](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.0...v11.9.1) (March 01, 2023)
 

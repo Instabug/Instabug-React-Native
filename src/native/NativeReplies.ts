@@ -6,8 +6,8 @@ export interface RepliesNativeModule extends NativeModule {
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
   show(): void;
-  hasChats(callback: (hasChats: boolean) => void): void;
-  getUnreadRepliesCount(callback: (count: number) => void): void;
+  hasChats(): Promise<boolean>;
+  getUnreadRepliesCount(): Promise<number>;
 
   // Callbacks //
   setOnNewReplyReceivedHandler(handler: () => void): void;

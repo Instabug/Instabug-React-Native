@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import { mocked } from 'ts-jest/utils';
+
 import * as Surveys from '../../src/modules/Surveys';
 import { NativeEvents, NativeSurveys, emitter } from '../../src/native/NativeSurveys';
 
@@ -39,12 +41,15 @@ describe('Surveys Module', () => {
     expect(NativeSurveys.showSurveysIfAvailable).toBeCalledTimes(1);
   });
 
-  it('should call the native method getAvailableSurveys', () => {
-    const callback = jest.fn();
-    Surveys.getAvailableSurveys(callback);
+  it('should call the native method getAvailableSurveys', async () => {
+    const expected = [{ title: 'survey1' }, { title: 'survey2' }];
 
+    mocked(NativeSurveys).getAvailableSurveys.mockResolvedValueOnce(expected);
+
+    const actual = await Surveys.getAvailableSurveys();
+
+    expect(actual).toBe(expected);
     expect(NativeSurveys.getAvailableSurveys).toBeCalledTimes(1);
-    expect(NativeSurveys.getAvailableSurveys).toBeCalledWith(callback);
   });
 
   it('should call the native method setAutoShowingSurveysEnabled', () => {
@@ -96,14 +101,17 @@ describe('Surveys Module', () => {
     expect(NativeSurveys.showSurvey).toBeCalledWith(surveyToken);
   });
 
-  it('should call the native method hasRespondedToSurveyWithToken', () => {
-    const callback = jest.fn();
+  it('should call the native method hasRespondedToSurveyWithToken', async () => {
     const surveyToken = 'HEU128JD';
-    Surveys.hasRespondedToSurvey(surveyToken, callback);
+    const expected = true;
 
+    mocked(NativeSurveys).hasRespondedToSurvey.mockResolvedValueOnce(expected);
+
+    const actual = await Surveys.hasRespondedToSurvey(surveyToken);
+
+    expect(actual).toBe(expected);
     expect(NativeSurveys.hasRespondedToSurvey).toBeCalledTimes(1);
-    expect(NativeSurveys.hasRespondedToSurvey).toBeCalledWith(surveyToken, callback);
-    expect(callback).toBeCalledWith(true);
+    expect(NativeSurveys.hasRespondedToSurvey).toBeCalledWith(surveyToken);
   });
 
   it('should call the native method setShouldShowSurveysWelcomeScreen', () => {

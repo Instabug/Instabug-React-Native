@@ -10,6 +10,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.Feature;
@@ -368,62 +369,62 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenCallback$getTags_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenCallback$getTags_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // given
 
         MockedStatic mockArgument = mockStatic(Arguments.class);
-        Callback callback = mock(Callback.class);
+        Promise promise = mock(Promise.class);
         // when
         ArrayList<String> tags = new ArrayList<>();
         tags.add("tag1");
         tags.add("tag2");
         when(Instabug.getTags()).thenReturn(tags);
         when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
-        rnModule.getTags(callback);
+        rnModule.getTags(promise);
         // then
         verify(Instabug.class,times(1));
         Instabug.getTags();
         WritableArray expectedArray = new JavaOnlyArray();
         expectedArray.pushString("tag1");
         expectedArray.pushString("tag2");
-        verify(callback).invoke(expectedArray);
+        verify(promise).resolve(expectedArray);
         mockArgument.close();
 
     }
 
     @Test
-    public void givenArgs$getUserAttribute_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenArgs$getUserAttribute_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // given
 
-        Callback callback = mock(Callback.class);
+        Promise promise = mock(Promise.class);
         // when
         String key = "company";
         String value = "Instabug";
         when(Instabug.getUserAttribute(key)).thenReturn(value);
-        rnModule.getUserAttribute(key, callback);
+        rnModule.getUserAttribute(key, promise);
         // then
         verify(Instabug.class,times(1));
         Instabug.getUserAttribute(key);
-        verify(callback).invoke(value);
+        verify(promise).resolve(value);
     }
 
     @Test
-    public void givenCallback$getAllUserAttributes_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenCallback$getAllUserAttributes_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // given
         MockedStatic mockArgument = mockStatic(Arguments.class);
-        Callback callback = mock(Callback.class);
+        Promise promise = mock(Promise.class);
         // when
         HashMap<String, String> userAttributes = new HashMap<>();
         userAttributes.put("email", "sali@instabug.com");
         when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
         when(Instabug.getAllUserAttributes()).thenReturn(userAttributes);
-        rnModule.getAllUserAttributes(callback);
+        rnModule.getAllUserAttributes(promise);
         // then
         verify(Instabug.class,times(1));
         Instabug.getAllUserAttributes();
         WritableMap expectedMap = new JavaOnlyMap();
         expectedMap.putString("email", "sali@instabug.com");
-        verify(callback).invoke(expectedMap);
+        verify(promise).resolve(expectedMap);
         mockArgument.close();
     }
 

@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import { mocked } from 'ts-jest/utils';
+
 import * as Replies from '../../src/modules/Replies';
 import { NativeEvents, NativeReplies, emitter } from '../../src/native/NativeReplies';
 
@@ -24,13 +26,16 @@ describe('Replies Module', () => {
     expect(NativeReplies.show).toBeCalledTimes(1);
   });
 
-  it('should call the native method hasChats', () => {
-    const callback = jest.fn();
-    Replies.hasChats(callback);
+  it('should call the native method hasChats', async () => {
+    const expected = true;
 
+    mocked(NativeReplies).hasChats.mockResolvedValueOnce(expected);
+
+    const actual = await Replies.hasChats();
+
+    expect(actual).toBe(expected);
     expect(NativeReplies.hasChats).toBeCalledTimes(1);
-    expect(NativeReplies.hasChats).toBeCalledWith(callback);
-    expect(callback).toBeCalledWith(true);
+    expect(NativeReplies.hasChats).toBeCalledWith();
   });
 
   it('should call the native method setOnNewReplyReceivedCallback with a function', () => {
@@ -50,13 +55,16 @@ describe('Replies Module', () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  it('should call the native method getUnreadRepliesCount', () => {
-    const callback = jest.fn();
-    Replies.getUnreadRepliesCount(callback);
+  it('should call the native method getUnreadRepliesCount', async () => {
+    const expected = 10;
 
+    mocked(NativeReplies).getUnreadRepliesCount.mockResolvedValueOnce(expected);
+
+    const actual = await Replies.getUnreadRepliesCount();
+
+    expect(actual).toBe(expected);
     expect(NativeReplies.getUnreadRepliesCount).toBeCalledTimes(1);
-    expect(NativeReplies.getUnreadRepliesCount).toBeCalledWith(callback);
-    expect(callback).toBeCalledWith(2);
+    expect(NativeReplies.getUnreadRepliesCount).toBeCalledWith();
   });
 
   it('should call the native method setInAppNotificationEnabled', () => {

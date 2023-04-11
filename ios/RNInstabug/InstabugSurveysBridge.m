@@ -38,20 +38,20 @@ RCT_EXPORT_METHOD(showSurvey:(NSString *)surveyToken) {
     [IBGSurveys showSurveyWithToken:surveyToken];
 }
 
-RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(hasRespondedToSurvey:(NSString *)surveyToken :(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     [IBGSurveys hasRespondedToSurveyWithToken:surveyToken
                             completionHandler:^(BOOL hasResponded) {
-        callback(@[@(hasResponded)]);
+        resolve(@(hasResponded));
     }];
 }
 
-RCT_EXPORT_METHOD(getAvailableSurveys:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(getAvailableSurveys:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     [IBGSurveys availableSurveysWithCompletionHandler:^(NSArray<IBGSurvey *> *availableSurveys) {
         NSMutableArray<NSDictionary*>* mappedSurveys = [[NSMutableArray alloc] init];
         for (IBGSurvey* survey in availableSurveys) {
             [mappedSurveys addObject:@{@"title": survey.title }];
         }
-        callback(@[mappedSurveys]);
+        resolve(mappedSurveys);
     }];
 }
 

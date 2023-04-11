@@ -1,42 +1,24 @@
 
 package com.instabug.reactlibrary;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
-import com.instabug.apm.model.LogLevel;
 import com.instabug.apm.networking.APMNetworkLogger;
-import com.instabug.bug.BugReporting;
-import com.instabug.library.Feature;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import com.instabug.library.Platform;
 
 import javax.annotation.Nonnull;
 
@@ -167,7 +149,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * @param name string name of the trace.
      */
     @ReactMethod
-    public void startExecutionTrace(final String name, final String id, final Callback callback) {
+    public void startExecutionTrace(final String name, final String id, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -178,9 +160,10 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                         result = id;
                         traces.put(id, trace);
                     }
-                    callback.invoke(result);
+                    promise.resolve(result);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    promise.resolve(null);
                 }
             }
         });

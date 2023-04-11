@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 
 import { NativeEvents, NativeSurveys, emitter } from '../native/NativeSurveys';
 import type { Survey } from '../native/NativeSurveys';
+import { invokeDeprecatedCallback } from '../utils/InstabugUtils';
 
 export type { Survey };
 
@@ -30,10 +31,16 @@ export const showSurveyIfAvailable = () => {
 
 /**
  * Returns an array containing the available surveys.
- * @param availableSurveysCallback callback with argument available surveys
+ * @param callback DEPRECATED: callback with argument available surveys
  */
-export const getAvailableSurveys = (availableSurveysCallback: (surveys: Survey[]) => void) => {
-  NativeSurveys.getAvailableSurveys(availableSurveysCallback);
+export const getAvailableSurveys = async (
+  callback?: (surveys: Survey[]) => void,
+): Promise<Survey[] | null> => {
+  const surveys = await NativeSurveys.getAvailableSurveys();
+
+  invokeDeprecatedCallback(callback, surveys);
+
+  return surveys;
 };
 
 /**
@@ -84,15 +91,19 @@ export const showSurvey = (surveyToken: string) => {
  * Returns true if the survey with a specific token was answered before.
  * Will return false if the token does not exist or if the survey was not answered before.
  * @param surveyToken - A String with a survey token.
- * @param surveyTokenCallback callback with argument as the desired value of the whether
+ * @param callback DEPRECATED: callback with argument as the desired value of the whether
  * the survey has been responded to or not.
  *
  */
-export const hasRespondedToSurvey = (
+export const hasRespondedToSurvey = async (
   surveyToken: string,
-  surveyTokenCallback: (hasResponded: boolean) => void,
-) => {
-  NativeSurveys.hasRespondedToSurvey(surveyToken, surveyTokenCallback);
+  callback?: (hasResponded: boolean) => void,
+): Promise<boolean | null> => {
+  const hasResponded = await NativeSurveys.hasRespondedToSurvey(surveyToken);
+
+  invokeDeprecatedCallback(callback, hasResponded);
+
+  return hasResponded;
 };
 
 /**

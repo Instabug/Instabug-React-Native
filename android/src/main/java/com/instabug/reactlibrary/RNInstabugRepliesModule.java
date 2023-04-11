@@ -1,6 +1,7 @@
 package com.instabug.reactlibrary;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
@@ -56,12 +57,12 @@ public class RNInstabugRepliesModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void hasChats(final Callback callback) {
+    public void hasChats(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 boolean hasChats = Replies.hasChats();
-                callback.invoke(hasChats);
+                promise.resolve(hasChats);
             }
         });
     }
@@ -103,7 +104,7 @@ public class RNInstabugRepliesModule extends EventEmitterModule {
      * @return number of messages that are unread for this user
      */
     @ReactMethod
-    public void getUnreadRepliesCount(final Callback messageCountCallback) {
+    public void getUnreadRepliesCount(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -114,7 +115,7 @@ public class RNInstabugRepliesModule extends EventEmitterModule {
                     e.printStackTrace();
                 }
 
-                messageCountCallback.invoke(unreadMessages);
+                promise.resolve(unreadMessages);
             }
         });
     }

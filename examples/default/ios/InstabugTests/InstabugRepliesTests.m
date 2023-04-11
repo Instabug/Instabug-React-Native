@@ -41,8 +41,9 @@
 // and the value is checked after callback execution to verify.
 - (void) testgivenCallback$hasChats_whenQuery_thenShouldCallNativeApi {
   IBGReplies.enabled = true;
-  RCTResponseSenderBlock callback = ^(NSArray *response) { IBGReplies.enabled = false; };
-  [self.instabugBridge hasChats:callback];
+  RCTPromiseResolveBlock resolve = ^(id result) { IBGReplies.enabled = false; };
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
+  [self.instabugBridge hasChats:resolve :reject];
   XCTAssertFalse(IBGReplies.enabled);
 }
 
@@ -74,8 +75,9 @@
 
 - (void) testgivenCallback$getUnreadRepliesCount_whenQuery_thenShouldCallNativeApi {
   IBGReplies.enabled = true;
-  RCTResponseSenderBlock callback = ^(NSArray *response) { IBGReplies.enabled = false; };
-  [self.instabugBridge getUnreadRepliesCount:callback];
+  RCTPromiseResolveBlock resolve = ^(id result) { IBGReplies.enabled = false; };
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
+  [self.instabugBridge getUnreadRepliesCount:resolve :reject];
   XCTAssertFalse(IBGReplies.enabled);
 }
 

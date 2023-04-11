@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyMap;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
@@ -94,14 +95,14 @@ public class RNInstabugRepliesModuleTest {
     }
 
     @Test
-    public void givenCallback$hasChats_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenCallback$hasChats_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // when
-        Callback callback = mock(Callback.class);
-        rnModule.hasChats(callback);
+        Promise promise = mock(Promise.class);
+        rnModule.hasChats(promise);
         // then
         verify(Replies.class,times(1));
         Replies.hasChats();
-        verify(callback).invoke(any());
+        verify(promise).resolve(any());
     }
 
     @Test
@@ -125,14 +126,14 @@ public class RNInstabugRepliesModuleTest {
     }
 
     @Test
-    public void givenCallback$getUnreadRepliesCount_whenQuery_thenShouldCallNativeApiAndInvokeCallback() {
+    public void givenCallback$getUnreadRepliesCount_whenQuery_thenShouldCallNativeApiAndResolvePromise() {
         // when
-        Callback callback = mock(Callback.class);
-        rnModule.getUnreadRepliesCount(callback);
+        Promise promise = mock(Promise.class);
+        rnModule.getUnreadRepliesCount(promise);
         // then
         verify(Replies.class,times(1));
         Replies.getUnreadRepliesCount();
-        verify(callback).invoke(any());
+        verify(promise).resolve(any());
     }
 
     @Test
