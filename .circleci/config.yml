@@ -32,6 +32,8 @@ jobs:
       - advanced-checkout/shallow-checkout
       - node/install-packages:
           pkg-manager: yarn
+      - attach_workspace:
+          at: coverage
       - run:
           name: Run Danger
           command: yarn danger ci
@@ -60,6 +62,10 @@ jobs:
       - run:
           name: Run Tests
           command: yarn test
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - lcov.info
 
   test_android:
     executor:
@@ -74,6 +80,10 @@ jobs:
       - android/run-tests:
           working-directory: android
           test-command: ./gradlew test -PinstabugUploadEnable=false
+      - persist_to_workspace:
+          root: ~/project/android/build/reports/jacoco/jacocoTestReport
+          paths:
+            - jacocoTestReport.xml
 
   validate_shell_files:
     machine:
@@ -131,14 +141,11 @@ jobs:
       - run:
           name: Convert xcresult into JSON report
           working_directory: ios/coverage
-          command: xcrun xccov view --report --json result.xcresult > report.json
-      - run:
-          name: Clone xccov2lcov
-          command: git clone git@github.com:trax-retail/xccov2lcov.git
-      - run:
-          name: Convert xccov into lcov report
-          working_directory: xccov2lcov
-          command: swift run xccov2lcov ../ios/coverage/report.json > ../ios/coverage/coverage.txt
+          command: xcrun xccov view --report --json result.xcresult > xcode.json
+      - persist_to_workspace:
+          root: ios/coverage
+          paths:
+            - xcode.json
 
   e2e_ios:
     macos:
@@ -233,7 +240,11 @@ jobs:
 workflows:
   publish:
     jobs:
-      - danger
+      - danger:
+          requires:
+            - test_module
+            - test_android
+            - test_ios
       - lint
       - test_module
       - test_android

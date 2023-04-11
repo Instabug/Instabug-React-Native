@@ -1,3 +1,4 @@
+import collectCoverage, { ReportType } from '@instabug/danger-plugin-coverage';
 import { danger, fail, schedule, warn } from 'danger';
 
 const hasSourceChanges = danger.git.modified_files.some((file) => file.startsWith('src/'));
@@ -20,3 +21,21 @@ async function hasDescription() {
 }
 
 schedule(hasDescription());
+
+collectCoverage([
+  {
+    label: 'JavaScript',
+    type: ReportType.LCOV,
+    filePath: 'coverage/lcov.info',
+  },
+  {
+    label: 'Android',
+    type: ReportType.JACOCO,
+    filePath: 'coverage/jacocoTestReport.xml',
+  },
+  {
+    label: 'iOS',
+    type: ReportType.XCODE,
+    filePath: 'coverage/xcode.json',
+  },
+]);
