@@ -1617,6 +1617,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.2.0.tgz#7d6d789ae8edf73dc9bed1246cd48277edea8066"
   integrity sha512-o6aam+0Ug1xGK3ABYmBm0B1YuEKfM/5kaoZO0eHbZwSpw9UzDX4G5y4Nx/K20FHqUmJHkZmLvOUFYwN4N+HqKA==
 
+"@react-native-ml-kit/translate-text@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-ml-kit/translate-text/-/translate-text-0.2.1.tgz#7cfef533db23a54986b7d2bf7951a8321f13950b"
+  integrity sha512-vsOI3rawir8N10t+BkwWxx/MTkqCJXIx3tEkJvQNeazMhxdrJbN0m7I5TRBCymuEo5VSj9ucYhXDhYwFjbR6/Q==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"

@@ -44,6 +44,7 @@
   "devDependencies": {
     "@apollo/client": "^3.7.0",
     "@react-native-community/eslint-config": "^3.1.0",
+    "@react-native-ml-kit/translate-text": "^0.2.1",
     "@react-navigation/native": "^5.9.8",
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-json": "^6.0.0",
