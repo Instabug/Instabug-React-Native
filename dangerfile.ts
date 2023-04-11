@@ -27,15 +27,18 @@ collectCoverage([
     label: 'JavaScript',
     type: ReportType.LCOV,
     filePath: 'coverage/lcov.info',
+    threshold: 90,
   },
   {
     label: 'Android',
     type: ReportType.JACOCO,
     filePath: 'coverage/jacocoTestReport.xml',
+    threshold: 40,
   },
   {
     label: 'iOS',
     type: ReportType.XCODE,
     filePath: 'coverage/xcode.json',
+    threshold: 30,
   },
 ]);
