@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@apollo/client": "^3.7.0",
+    "@instabug/danger-plugin-coverage": "Instabug/danger-plugin-coverage",
     "@react-native-community/eslint-config": "^3.1.0",
     "@react-navigation/native": "^5.9.8",
     "@rollup/plugin-commonjs": "^24.0.0",

@@ -6,6 +6,17 @@ orbs:
   node: circleci/node@5.1.0
 
 commands:
+  install_node_modules:
+    parameters:
+      app-dir:
+        type: string
+        default: .
+    steps:
+      - node/install-packages:
+          pkg-manager: yarn
+          # Network concurrency is set to 1 for installation from GitHub to work.
+          override-ci-command: yarn install --frozen-lockfile --network-concurrency 1
+          app-dir: << parameters.app-dir >>
   install_pods:
     parameters:
       working_directory:
@@ -30,8 +41,9 @@ jobs:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
+      - attach_workspace:
+          at: coverage
       - run:
           name: Run Danger
           command: yarn danger ci
@@ -41,8 +53,7 @@ jobs:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - run:
           name: Check Format
           command: yarn format
@@ -55,11 +66,14 @@ jobs:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - run:
           name: Run Tests
           command: yarn test
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - lcov.info
 
   test_android:
     executor:
@@ -69,11 +83,14 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - node/install-yarn
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - android/run-tests:
           working-directory: android
           test-command: ./gradlew test -PinstabugUploadEnable=false
+      - persist_to_workspace:
+          root: ~/project/android/build/reports/jacoco/jacocoTestReport
+          paths:
+            - jacocoTestReport.xml
 
   validate_shell_files:
     machine:
@@ -95,8 +112,7 @@ jobs:
       xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -113,8 +129,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - install_pods:
           working_directory: ios
       - run:
@@ -131,14 +146,11 @@ jobs:
       - run:
           name: Convert xcresult into JSON report
           working_directory: ios/coverage
-          command: xcrun xccov view --report --json result.xcresult > report.json
-      - run:
-          name: Clone xccov2lcov
-          command: git clone git@github.com:trax-retail/xccov2lcov.git
-      - run:
-          name: Convert xccov into lcov report
-          working_directory: xccov2lcov
-          command: swift run xccov2lcov ../ios/coverage/report.json > ../ios/coverage/coverage.txt
+          command: xcrun xccov view --report --json result.xcresult > xcode.json
+      - persist_to_workspace:
+          root: ios/coverage
+          paths:
+            - xcode.json
 
   e2e_ios:
     macos:
@@ -148,8 +160,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -182,8 +193,7 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - node/install-yarn
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -220,8 +230,7 @@ jobs:
       - run:
           working_directory: Escape/.build/release
           command: cp -f Escape /usr/local/bin/escape
-      - node/install-packages:
-          pkg-manager: yarn
+      - install_node_modules:
           app-dir: project
       - run:
           working_directory: project
@@ -233,7 +242,11 @@ jobs:
 workflows:
   publish:
     jobs:
-      - danger
+      - danger:
+          requires:
+            - test_module
+            - test_android
+            - test_ios
       - lint
       - test_module
       - test_android
