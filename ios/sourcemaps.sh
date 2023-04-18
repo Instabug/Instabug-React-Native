@@ -6,9 +6,14 @@ main() {
     exit 0
   fi
 
+  if [[ "$CONFIGURATION" = "Debug" ]]; then
+    echo "[Info] Building in debug mode, skipping sourcemaps upload..."
+    exit 0
+  fi
+
   if [[ -z "$INFOPLIST_FILE" ]] || [[ -z "$PROJECT_DIR" ]]; then
     echo "[Error] Instabug sourcemaps script must be invoked by Xcode"
-    exit 1
+    exit 0
   fi
 
   local source_map_file=$(generate_sourcemaps | tail -n 1)
@@ -46,7 +51,7 @@ generate_sourcemaps() {
 
   if [[ ! -f "$SOURCEMAP_FILE" ]]; then
     echo "[Error] Unable to find source map file at: $SOURCEMAP_FILE"
-    exit 1
+    exit 0
   fi
 
   echo $SOURCEMAP_FILE
@@ -69,7 +74,7 @@ resolve_var() {
 
   if [[ -z "$value" ]]; then
     echo "[Error] Unable to find $name! Set the environment variable \`$env_key\` and try again."
-    exit 1
+    exit 0
   fi
 
   echo $value
