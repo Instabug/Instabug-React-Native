@@ -6,6 +6,11 @@ main() {
     exit 0
   fi
 
+  if [[ "$CONFIGURATION" = "Debug" ]]; then
+    echo "[Info] Building in debug mode, skipping sourcemaps upload..."
+    exit 0
+  fi
+
   if [[ -z "$INFOPLIST_FILE" ]] || [[ -z "$PROJECT_DIR" ]]; then
     echo "[Error] Instabug sourcemaps script must be invoked by Xcode"
     exit 1
