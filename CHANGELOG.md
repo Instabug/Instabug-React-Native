@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Bump Instabug Android SDK to v11.11.0 ([#963](https://github.com/Instabug/Instabug-React-Native/pull/963)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.11.0).
 - Return a `Promise` from the below APIs ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
 
   - `Instabug.getTags`
