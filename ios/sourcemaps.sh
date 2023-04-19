@@ -29,7 +29,7 @@ main() {
   local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' "$PROJECT_DIR/$INFOPLIST_FILE")
   local version_code=$(resolve_var "Version Code" "INSTABUG_APP_VERSION_CODE" "$inferred_code" | tail -n 1)
 
-  npx instabug upload-sourcemaps \
+  node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
       --file $source_map_file \
       --token $app_token \
