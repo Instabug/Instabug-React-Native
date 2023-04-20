@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...HEAD)
+## [11.10.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...11.10.0) (April 20, 2023)
 
 ### Added
 
