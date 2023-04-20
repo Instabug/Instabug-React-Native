@@ -4,12 +4,12 @@
 
 ### Added
 
-- Add support for Android automatic source map file upload on Windows; This requires setting the `INSTABUG_APP_TOKEN` environment variable ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
+- Add support for Android automatic source map file upload on Windows; this requires setting the `INSTABUG_APP_TOKEN` environment variable ([#938](https://github.com/Instabug/Instabug-React-Native/pull/938)).
 
 ### Changed
 
 - Bump Instabug Android SDK to v11.11.0 ([#963](https://github.com/Instabug/Instabug-React-Native/pull/963)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.11.0).
-- Bump Instabug iOS SDK to v11.10.1 ([#964](https://github.com/Instabug/Instabug-Flutter/pull/964)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/11.10.1).
+- Bump Instabug iOS SDK to v11.10.1 ([#964](https://github.com/Instabug/Instabug-React-Native/pull/964)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/11.10.1).
 - Return a `Promise` from the below APIs ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
 
   - `Instabug.getTags`
