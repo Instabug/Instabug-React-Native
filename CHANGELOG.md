@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...dev)
+
+### Fixed
+
+- Fix the Android sourcemaps upload script in older versions of Gradle ([#970](https://github.com/Instabug/Instabug-React-Native/pull/970)), closes [#969](https://github.com/Instabug/Instabug-React-Native/issues/969).
+
 ## [11.10.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...11.10.0) (April 20, 2023)
 
 ### Added
