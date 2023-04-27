@@ -5,7 +5,7 @@ def appProject = project(":app")
 gradle.projectsEvaluated {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets`
     def bundleTask = appProject.tasks.find {
-        task -> task.name.endsWithIgnoreCase('bundleReleaseJsAndAssets')
+        task -> task.name.toLowerCase().endsWith('bundlereleasejsandassets')
     }
 
     bundleTask.finalizedBy uploadSourcemaps
