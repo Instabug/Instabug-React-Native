@@ -3,9 +3,12 @@ import org.apache.tools.ant.taskdefs.condition.Os
 def appProject = project(":app")
 
 gradle.projectsEvaluated {
-    // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets`
+    // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
     def bundleTask = appProject.tasks.find {
-        task -> task.name.toLowerCase().endsWith('bundlereleasejsandassets')
+        def task = it.name
+        def hasPrefix = task.startsWith('bundle') || task.startsWith('createBundle')
+        def hasSuffix = task.endsWith('ReleaseJsAndAssets')
+        return hasPrefix && hasSuffix
     }
 
     bundleTask.finalizedBy uploadSourcemaps
