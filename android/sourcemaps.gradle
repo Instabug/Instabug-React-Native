@@ -5,10 +5,7 @@ def appProject = project(":app")
 gradle.projectsEvaluated {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
     def bundleTask = appProject.tasks.find {
-        def task = it.name
-        def hasPrefix = task.startsWith('bundle') || task.startsWith('createBundle')
-        def hasSuffix = task.endsWith('ReleaseJsAndAssets')
-        return hasPrefix && hasSuffix
+        task -> task.name.endsWith('ReleaseJsAndAssets')
     }
 
     bundleTask.finalizedBy uploadSourcemaps
