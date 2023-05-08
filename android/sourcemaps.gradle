@@ -42,7 +42,7 @@ task uploadSourcemaps() {
             exec {
                 def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
                 def args = [
-                        'npx', 'instabug', 'upload-sourcemaps',
+                        'node', instabugDir.absolutePath + '/bin/index.js', 'upload-sourcemaps',
                         '--platform', 'android',
                         '--file', sourceMapFile.absolutePath,
                         '--token', appToken,
