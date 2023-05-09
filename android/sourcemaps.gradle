@@ -4,11 +4,13 @@ def appProject = project(":app")
 
 gradle.projectsEvaluated {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
-    def bundleTask = appProject.tasks.find {
+    def bundleTasks = appProject.tasks.findAll {
         task -> task.name.endsWith('ReleaseJsAndAssets')
     }
 
-    bundleTask.finalizedBy uploadSourcemaps
+    bundleTasks.forEach { task ->
+        task.finalizedBy uploadSourcemaps
+    }
 }
 
 task uploadSourcemaps() {
