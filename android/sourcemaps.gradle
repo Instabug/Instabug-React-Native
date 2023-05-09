@@ -12,14 +12,14 @@ gradle.projectsEvaluated {
         def prefixes = ['bundle', 'createBundle']
         def start = name.startsWith(prefixes[0]) ? prefixes[0].length() : prefixes[1].length()
         def end = name.length() - suffix.length()
-        def variant = name.substring(start, end).uncapitalize()
+        def flavor = name.substring(start, end).uncapitalize()
 
-        task.finalizedBy createUploadSourcemapsTask(variant)
+        task.finalizedBy createUploadSourcemapsTask(flavor)
     }
 }
 
-Task createUploadSourcemapsTask(String variant) {
-    def name = 'uploadSourcemaps' + variant.capitalize()
+Task createUploadSourcemapsTask(String flavor) {
+    def name = 'uploadSourcemaps' + flavor.capitalize()
     def provider = tasks.register(name) {
         group 'instabug'
         description 'Uploads sourcemaps file to Instabug server'
@@ -29,8 +29,8 @@ Task createUploadSourcemapsTask(String variant) {
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def variantPath = variant + variant.empty ? '' : '/'
-                def sourceMapDest = "build/generated/sourcemaps/react/${variantPath}release/index.android.bundle.map"
+                def flavorPath = flavor + flavor.empty ? '' : '/'
+                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}release/index.android.bundle.map"
                 def sourceMapFile = new File(appDir, sourceMapDest)
 
                 if (!sourceMapFile.exists()) {
