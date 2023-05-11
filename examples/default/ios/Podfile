@@ -6,6 +6,8 @@ platform :ios, '11.0'
 target 'InstabugExample' do
   config = use_native_modules!
 
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-add-more-languages/11.10.4/Instabug.podspec'
+
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
