@@ -2,6 +2,19 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...dev)
 
+### Added
+
+- Add support for more locales ([#979](https://github.com/Instabug/Instabug-React-Native/pull/979)):
+  1. Bulgarian
+  2. Croatian
+  3. Estonian
+  4. Greek
+  5. Latvian
+  6. Lithuanian
+  7. Serbian
+  8. Slovenian
+  9. Ukrainian
+
 ### Fixed
 
 - Fix an issue with the Android sourcemaps upload script, causing the build to fail on older versions of Gradle ([#970](https://github.com/Instabug/Instabug-React-Native/pull/970)), closes [#969](https://github.com/Instabug/Instabug-React-Native/issues/969).
