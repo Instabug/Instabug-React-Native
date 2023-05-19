@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Fix an issue with unhandled JavaScript crashes being reported as native Android crashes ([#980](https://github.com/Instabug/Instabug-React-Native/pull/980)).
 - Fix an issue with the Android sourcemaps upload script, causing the build to fail on older versions of Gradle ([#970](https://github.com/Instabug/Instabug-React-Native/pull/970)), closes [#969](https://github.com/Instabug/Instabug-React-Native/issues/969).
 - Fix an issue with the Android sourcemaps upload script, causing the build to fail when using product flavors ([#975](https://github.com/Instabug/Instabug-React-Native/pull/975)), closes [#974](https://github.com/Instabug/Instabug-React-Native/issues/974).
 
