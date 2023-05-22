@@ -88,10 +88,19 @@ export const captureJsErrors = () => {
   };
 
   ErrorUtils.setGlobalHandler((err, isFatal) => {
-    if (!process.env.JEST_WORKER_ID) {
+    instabugErrorHandler(err, isFatal);
+
+    if (process.env.JEST_WORKER_ID) {
+      return;
+    }
+
+    if (Platform.OS === 'android') {
+      setTimeout(() => {
+        originalErrorHandler(err, isFatal);
+      }, 500);
+    } else {
       originalErrorHandler(err, isFatal);
     }
-    instabugErrorHandler(err, isFatal);
   });
 };
 
