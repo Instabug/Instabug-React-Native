@@ -163,28 +163,37 @@ final class ArgsRegistry {
     static final ArgsMap<InstabugLocale> locales = new ArgsMap<InstabugLocale>() {{
         put("localeArabic", InstabugLocale.ARABIC);
         put("localeAzerbaijani", InstabugLocale.AZERBAIJANI);
+        put("localeBulgarian", InstabugLocale.BULGARIAN);
         put("localeChineseSimplified", InstabugLocale.SIMPLIFIED_CHINESE);
         put("localeChineseTraditional", InstabugLocale.TRADITIONAL_CHINESE);
+        put("localeCroatian", InstabugLocale.CROATIAN);
         put("localeCzech", InstabugLocale.CZECH);
         put("localeDanish", InstabugLocale.DANISH);
         put("localeDutch", InstabugLocale.NETHERLANDS);
         put("localeEnglish", InstabugLocale.ENGLISH);
+        put("localeEstonian", InstabugLocale.ESTONIAN);
         put("localeFrench", InstabugLocale.FRENCH);
         put("localeGerman", InstabugLocale.GERMAN);
+        put("localeGreek", InstabugLocale.GREEK);
         put("localeIndonesian", InstabugLocale.INDONESIAN);
         put("localeItalian", InstabugLocale.ITALIAN);
         put("localeJapanese", InstabugLocale.JAPANESE);
         put("localeKorean", InstabugLocale.KOREAN);
+        put("localeLatvian", InstabugLocale.LATVIAN);
+        put("localeLithuanian", InstabugLocale.LITHUANIAN);
         put("localeNorwegian", InstabugLocale.NORWEGIAN);
         put("localePolish", InstabugLocale.POLISH);
         put("localePortugueseBrazil", InstabugLocale.PORTUGUESE_BRAZIL);
         put("localePortuguesePortugal", InstabugLocale.PORTUGUESE_PORTUGAL);
         put("localeRomanian", InstabugLocale.ROMANIAN);
         put("localeRussian", InstabugLocale.RUSSIAN);
-        put("localeSpanish", InstabugLocale.SPANISH);
+        put("localeSerbian", InstabugLocale.SERBIAN);
         put("localeSlovak", InstabugLocale.SLOVAK);
+        put("localeSlovenian", InstabugLocale.SLOVENIAN);
+        put("localeSpanish", InstabugLocale.SPANISH);
         put("localeSwedish", InstabugLocale.SWEDISH);
         put("localeTurkish", InstabugLocale.TURKISH);
+        put("localeUkrainian", InstabugLocale.UKRAINIAN);
     }};
 
     static final ArgsMap<Key> placeholders = new ArgsMap<Key>() {{

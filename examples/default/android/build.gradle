@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-subprojects { 
+subprojects {
     ext {
         compileSdk = rootProject.ext.compileSdkVersion
         minSdk = rootProject.ext.minSdkVersion
@@ -68,5 +68,9 @@ allprojects {
         }
         google()
         maven { url 'https://www.jitpack.io' }
+
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
 }

@@ -106,24 +106,33 @@ interface NativeReproStepsMode {
 interface NativeLocale {
   localeArabic: any;
   localeAzerbaijani: any;
+  localeBulgarian: any;
   localeChineseSimplified: any;
   localeChineseTraditional: any;
+  localeCroatian: any;
   localeCzech: any;
   localeDanish: any;
   localeDutch: any;
   localeEnglish: any;
+  localeEstonian: any;
   localeFrench: any;
   localeGerman: any;
+  localeGreek: any;
   localeItalian: any;
   localeJapanese: any;
   localeKorean: any;
+  localeLatvian: any;
+  localeLithuanian: any;
   localePolish: any;
   localePortugueseBrazil: any;
   localeRomanian: any;
   localeRussian: any;
+  localeSlovenian: any;
   localeSpanish: any;
+  localeSerbian: any;
   localeSwedish: any;
   localeTurkish: any;
+  localeUkrainian: any;
 }
 
 interface NativeStringKey {
