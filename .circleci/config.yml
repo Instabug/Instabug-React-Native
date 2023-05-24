@@ -80,13 +80,15 @@ jobs:
       name: android/android-machine
       tag: '2022.03.1'
     working_directory: ~/project/examples/default
+    environment:
+      INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
       - node/install-yarn
       - install_node_modules
       - android/run-tests:
           working-directory: android
-          test-command: ./gradlew test -PinstabugUploadEnable=false
+          test-command: ./gradlew test
       - persist_to_workspace:
           root: ~/project/android/build/reports/jacoco/jacocoTestReport
           paths:
