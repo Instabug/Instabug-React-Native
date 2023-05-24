@@ -192,6 +192,8 @@ jobs:
       name: android/android-machine
       tag: 2022.03.1
       resource-class: large
+    environment:
+      INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
       - node/install-yarn
