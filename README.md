@@ -72,13 +72,7 @@ For your app crashes to show up with a fully symbolicated stack trace, we will a
 If your app token is defined as a constant, you can set an environment variable `INSTABUG_APP_TOKEN` to be used instead.
 We also automatically read your `versionName` and `versionCode` to upload your sourcemap file. alternatively, can also set the environment variables `INSTABUG_APP_VERSION_NAME` and `INSTABUG_APP_VERSION_CODE` to be used instead.
 
-To disable the automatic upload in android, you can set the following property your build.gradle:
-
-```dart
-ext {
-    instabugUploadEnable = false;
-}
-```
+To disable the automatic upload, you can set the environment variable `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` to TRUE.
 
 ## Network Logging
 
