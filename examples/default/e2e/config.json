@@ -1,9 +1,12 @@
 {
   "preset": "ts-jest",
   "testEnvironment": "./environment",
-  "testRunner": "jest-circus/runner",
   "testTimeout": 120000,
-  "testRegex": "\\.e2e\\.ts$",
-  "reporters": ["detox/runners/jest/streamlineReporter"],
-  "verbose": true
+  "reporters": ["detox/runners/jest/reporter"],
+  "verbose": true,
+  "rootDir": ".",
+  "testMatch": ["<rootDir>/**/*.e2e.ts"],
+  "maxWorkers": 1,
+  "globalSetup": "detox/runners/jest/globalSetup",
+  "globalTeardown": "detox/runners/jest/globalTeardown"
 }
