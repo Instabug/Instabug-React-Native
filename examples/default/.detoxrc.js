@@ -43,7 +43,7 @@ module.exports = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'Pixel_3_API_28',
+        avdName: 'Nexus_6P_API_27',
       },
     },
   },
