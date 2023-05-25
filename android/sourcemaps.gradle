@@ -14,9 +14,7 @@ gradle.projectsEvaluated {
 task uploadSourcemaps() {
     group 'instabug'
     description 'Uploads sourcemaps file to Instabug server'
-    enabled rootProject.hasProperty('instabugUploadEnable')
-            ? new Boolean(rootProject.property('instabugUploadEnable'))
-            : true
+    enabled = isUploadSourcemapsEnabled()
 
     doLast {
         try {
@@ -57,6 +55,19 @@ task uploadSourcemaps() {
                     "Reason: ${exception.message}"
         }
     }
+}
+
+boolean isUploadSourcemapsEnabled() {
+    def envValue = System.getenv('INSTABUG_SOURCEMAPS_UPLOAD_DISABLE')?.toBoolean()
+    def defaultValue = true
+       
+    if (rootProject.hasProperty('instabugUploadEnable')) {
+        project.logger.warn "The property instabugUploadEnable is deprecated and will be removed in an upcoming version. \n" +
+        "You can use INSTABUG_SOURCEMAPS_UPLOAD_DISABLE environment variable instead."
+        defaultValue = rootProject.property('instabugUploadEnable')
+    }
+
+    return (envValue != null) ? !envValue : defaultValue
 }
 
 String resolveVar(String name, String envKey, String defaultValue) {
