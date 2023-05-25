@@ -29,7 +29,7 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
-  it('should call patched XMLHttpRequest methods', () => {
+  it('should keep patched XMLHttpRequest methods', () => {
     Interceptor.disableInterception();
 
     // Patch XMLHttpRequest.open
