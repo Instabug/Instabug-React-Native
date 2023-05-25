@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...dev)
 
+### Deprecated
+
+- Deprecate `instabugUploadEnable` gradle property to disable Android sourcemaps auto upload in favor of `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` env variable ([#983](https://github.com/Instabug/Instabug-React-Native/pull/983)).
+
 ### Fixed
 
 - Fix an issue with unhandled JavaScript crashes being reported as native Android crashes ([#980](https://github.com/Instabug/Instabug-React-Native/pull/980)).
