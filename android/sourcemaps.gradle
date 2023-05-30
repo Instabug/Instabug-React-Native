@@ -1,66 +1,80 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def appProject = project(":app")
-
 gradle.projectsEvaluated {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
-    def bundleTask = appProject.tasks.find {
-        task -> task.name.endsWith('ReleaseJsAndAssets')
+    def suffix = 'ReleaseJsAndAssets'
+    def bundleTasks = project(':app').tasks.findAll {
+        task -> task.name.endsWith(suffix)
     }
 
-    bundleTask.finalizedBy uploadSourcemaps
+    bundleTasks.forEach { task ->
+        def name = task.name
+        def prefixes = ['bundle', 'createBundle']
+        def start = name.startsWith(prefixes[0]) ? prefixes[0].length() : prefixes[1].length()
+        def end = name.length() - suffix.length()
+        def flavor = name.substring(start, end).uncapitalize()
+
+        task.finalizedBy createUploadSourcemapsTask(flavor)
+    }
 }
 
-task uploadSourcemaps() {
-    group 'instabug'
-    description 'Uploads sourcemaps file to Instabug server'
-    enabled = isUploadSourcemapsEnabled()
+Task createUploadSourcemapsTask(String flavor) {
+    def name = 'uploadSourcemaps' + flavor.capitalize()
+    def provider = tasks.register(name) {
+        group 'instabug'
+        description 'Uploads sourcemaps file to Instabug server'
+        enabled = isUploadSourcemapsEnabled()
 
-    doLast {
-        try {
-            def appDir = appProject.projectDir
-            def sourceMapDest = 'build/generated/sourcemaps/react/release/index.android.bundle.map'
-            def sourceMapFile = new File(appDir, sourceMapDest)
+        doLast {
+            try {
+                def appProject = project(':app')
+                def appDir = appProject.projectDir
+                def flavorPath = flavor + (flavor.empty ? '' : '/')
+                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}release/index.android.bundle.map"
+                def sourceMapFile = new File(appDir, sourceMapDest)
 
-            if (!sourceMapFile.exists()) {
-                throw new InvalidUserDataException("Unable to find source map file at: ${sourceMapFile.absolutePath}")
+                if (!sourceMapFile.exists()) {
+                    throw new InvalidUserDataException("Unable to find source map file at: ${sourceMapFile.absolutePath}")
+                }
+
+                def jsProjectDir = rootDir.parentFile
+                def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
+
+                def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
+                def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
+                def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
+
+                def projectConfig = appProject.android.defaultConfig
+                def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
+                def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
+
+                exec {
+                    def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
+                    def args = [
+                            'npx', 'instabug', 'upload-sourcemaps',
+                            '--platform', 'android',
+                            '--file', sourceMapFile.absolutePath,
+                            '--token', appToken,
+                            '--name', versionName,
+                            '--code', versionCode
+                    ]
+
+                    commandLine(*osCompatibility, *args)
+                }
+            } catch (exception) {
+                project.logger.error "Failed to upload source map file.\n" +
+                        "Reason: ${exception.message}"
             }
-
-            def jsProjectDir = rootDir.parentFile
-            def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
-
-            def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
-            def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
-            def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
-
-            def projectConfig = appProject.android.defaultConfig
-            def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
-            def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
-
-            exec {
-                def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
-                def args = [
-                        'npx', 'instabug', 'upload-sourcemaps',
-                        '--platform', 'android',
-                        '--file', sourceMapFile.absolutePath,
-                        '--token', appToken,
-                        '--name', versionName,
-                        '--code', versionCode
-                ]
-
-                commandLine(*osCompatibility, *args)
-            }
-        } catch (exception) {
-            project.logger.error "Failed to upload source map file.\n" +
-                    "Reason: ${exception.message}"
         }
     }
+
+    return provider.get()
 }
 
 boolean isUploadSourcemapsEnabled() {
     def envValue = System.getenv('INSTABUG_SOURCEMAPS_UPLOAD_DISABLE')?.toBoolean()
     def defaultValue = true
-       
+
     if (rootProject.hasProperty('instabugUploadEnable')) {
         project.logger.warn "The property instabugUploadEnable is deprecated and will be removed in an upcoming version. \n" +
         "You can use INSTABUG_SOURCEMAPS_UPLOAD_DISABLE environment variable instead."
