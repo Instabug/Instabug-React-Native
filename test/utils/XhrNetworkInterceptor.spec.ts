@@ -29,6 +29,29 @@ describe('Network Interceptor', () => {
     FakeRequest.send();
   });
 
+  it('should keep patched XMLHttpRequest methods', () => {
+    Interceptor.disableInterception();
+
+    // Patch XMLHttpRequest.open
+    const originalXHROpen = XMLHttpRequest.prototype.open;
+    const patchedCode = jest.fn();
+    XMLHttpRequest.prototype.open = function (...args: Parameters<XMLHttpRequest['open']>) {
+      patchedCode();
+      originalXHROpen.apply(this, args);
+    };
+
+    // Enable and disable network interception to see if disabling network interception
+    // keeps the patched XMLHttpRequest methods
+    Interceptor.enableInterception();
+    Interceptor.disableInterception();
+
+    FakeRequest.open(method, url);
+
+    expect(patchedCode).toHaveBeenCalledTimes(1);
+
+    XMLHttpRequest.prototype.open = originalXHROpen;
+  });
+
   it('should set network object on calling setRequestHeader', (done) => {
     const requestHeaders = { 'content-type': 'application/json', token: '9u4hiudhi3bf' };
 
