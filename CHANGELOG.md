@@ -11,6 +11,7 @@
 - Fix an issue with unhandled JavaScript crashes being reported as native Android crashes ([#980](https://github.com/Instabug/Instabug-React-Native/pull/980)).
 - Fix an issue with the Android sourcemaps upload script, causing the build to fail on older versions of Gradle ([#970](https://github.com/Instabug/Instabug-React-Native/pull/970)), closes [#969](https://github.com/Instabug/Instabug-React-Native/issues/969).
 - Fix an issue with the Android sourcemaps upload script, causing the build to fail when using product flavors ([#975](https://github.com/Instabug/Instabug-React-Native/pull/975)), closes [#974](https://github.com/Instabug/Instabug-React-Native/issues/974).
+- Fix an issue with the network interceptor reverting the user's changes to `XMLHttpRequest` after disabling network logging ([#984](https://github.com/Instabug/Instabug-React-Native/pull/984)), closes [#981](https://github.com/Instabug/Instabug-React-Native/issues/981).
 
 ## [11.10.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.9.1...11.10.0) (April 20, 2023)
 

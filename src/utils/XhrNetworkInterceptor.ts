@@ -24,9 +24,9 @@ export interface NetworkData {
 }
 
 const XMLHttpRequest = global.XMLHttpRequest;
-const originalXHROpen = XMLHttpRequest.prototype.open;
-const originalXHRSend = XMLHttpRequest.prototype.send;
-const originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+let originalXHROpen = XMLHttpRequest.prototype.open;
+let originalXHRSend = XMLHttpRequest.prototype.send;
+let originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
 
 let onProgressCallback: ProgressCallback | null;
 let onDoneCallback: NetworkDataCallback | null;
@@ -63,6 +63,15 @@ export default {
     onProgressCallback = callback;
   },
   enableInterception() {
+    // Prevents infinite calls to XMLHttpRequest.open when enabling interception multiple times
+    if (isInterceptorEnabled) {
+      return;
+    }
+
+    originalXHROpen = XMLHttpRequest.prototype.open;
+    originalXHRSend = XMLHttpRequest.prototype.send;
+    originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+
     XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
       network.url = url;
