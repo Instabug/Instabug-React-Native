@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...dev)
 
+### Changed
+
+- Bump Instabug Android SDK to v11.12.0 ([#985](https://github.com/Instabug/Instabug-React-Native/pull/985)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.12.0).
+
 ### Deprecated
 
 - Deprecate `instabugUploadEnable` gradle property to disable Android sourcemaps auto upload in favor of `INSTABUG_SOURCEMAPS_UPLOAD_DISABLE` env variable ([#983](https://github.com/Instabug/Instabug-React-Native/pull/983)).
