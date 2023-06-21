@@ -20,6 +20,15 @@ gradle.projectsEvaluated {
 
 Task createUploadSourcemapsTask(String flavor) {
     def name = 'uploadSourcemaps' + flavor.capitalize()
+
+    // Don't recreate the task if it already exists.
+    // This prevents the build from failing in an edge case where the user has
+    // both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets`
+    def taskExists = tasks.getNames().contains(name)
+    if (taskExists) {
+        return tasks.named(name).get()
+    }
+
     def provider = tasks.register(name) {
         group 'instabug'
         description 'Uploads sourcemaps file to Instabug server'
