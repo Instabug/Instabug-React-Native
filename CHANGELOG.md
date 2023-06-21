@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.12.0...dev)
+
+### Fixed
+
+- Fix an issue with the Android sourcemaps upload Gradle task getting recreated when both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` tasks exist in the same Android project ([#991](https://github.com/Instabug/Instabug-React-Native/pull/991)), closes [#989](https://github.com/Instabug/Instabug-React-Native/issues/989).
+
 ## [11.12.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...11.12.0) (May 30, 2023)
 
 ### Changed
