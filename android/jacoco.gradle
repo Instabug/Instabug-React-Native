@@ -11,8 +11,8 @@ task jacocoTestReport(type: JacocoReport) {
   dependsOn 'testDebugUnitTest'
 
   reports {
-    html.enabled true
-    xml.enabled true
+    html.required=true
+    xml.required=true
   }
 
   def excludes = [
