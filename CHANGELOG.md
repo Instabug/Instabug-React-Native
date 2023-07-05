@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fix an issue with the Android sourcemaps upload Gradle task getting recreated when both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` tasks exist in the same Android project ([#991](https://github.com/Instabug/Instabug-React-Native/pull/991)), closes [#989](https://github.com/Instabug/Instabug-React-Native/issues/989).
+- Fix an issue with JaCoCo gradle plugin replacing the `enabled` method with `required` prop to prevent gradle scripts breaking on version `0.72` ([#995](https://github.com/Instabug/Instabug-React-Native/pull/995)), closes [#994](https://github.com/Instabug/Instabug-React-Native/issues/994).
 
 ## [11.12.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.10.0...11.12.0) (May 30, 2023)
 
