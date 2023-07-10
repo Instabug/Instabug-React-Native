@@ -76,7 +76,7 @@ PODS:
   - hermes-engine (0.71.8):
     - hermes-engine/Pre-built (= 0.71.8)
   - hermes-engine/Pre-built (0.71.8)
-  - Instabug (11.12.0)
+  - Instabug (11.13.3)
   - libevent (2.1.12)
   - OCMock (3.9.1)
   - OpenSSL-Universal (1.1.1100)
@@ -422,7 +422,7 @@ PODS:
     - React-logger (= 0.71.8)
     - React-perflogger (= 0.71.8)
   - RNInstabug (11.12.0):
-    - Instabug (= 11.12.0)
+    - Instabug (= 11.13.3)
     - React-Core
   - RNScreens (3.20.0):
     - React-Core
@@ -621,7 +621,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 47986d26692ae75ee7a17ab049caee8864f855de
-  Instabug: fe77a2b326fb7e7079fac27dc20117c2da792a75
+  Instabug: f7c3880823873cff9ee70307d373e8266c9ea0f8
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -653,7 +653,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 43ffd976a25f6057a7cf95ea3648ba4e00287f89
   React-runtimeexecutor: 7c51ae9d4b3e9608a2366e39ccaa606aa551b9ed
   ReactCommon: 85c98ab0a509e70bf5ee5d9715cf68dbf495b84c
-  RNInstabug: 289bdfabfa30de22347f6c7a2902133ab4b673a6
+  RNInstabug: f05378714b4d1a009213e39b1c916c4132fb1e45
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
