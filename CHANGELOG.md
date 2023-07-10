@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.12.0...dev)
 
+### Changed
+
+- Bump Instabug Android SDK to v11.13.0 ([#996](https://github.com/Instabug/Instabug-React-Native/pull/996)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.13.0).
+
 ### Fixed
 
 - Fix an issue with the Android sourcemaps upload Gradle task getting recreated when both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` tasks exist in the same Android project ([#991](https://github.com/Instabug/Instabug-React-Native/pull/991)), closes [#989](https://github.com/Instabug/Instabug-React-Native/issues/989).
