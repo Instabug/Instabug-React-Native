@@ -244,6 +244,8 @@
         @"discardAlertMessage": kIBGDiscardAlertMessage,
         @"discardAlertCancel": kIBGDiscardAlertCancel,
         @"discardAlertAction": kIBGDiscardAlertAction,
+        @"discardAlertDiscard": kIBGDiscardAlertCancel,
+        @"discardAlertStay": kIBGDiscardAlertAction,
         @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName,
 
         @"reportReproStepsDisclaimerBody": kIBGReproStepsDisclaimerBody,

@@ -144,6 +144,8 @@ interface NativeStringKey {
   conversationTextFieldHint: any;
   discardAlertAction: any;
   discardAlertCancel: any;
+  discardAlertStay: any;
+  discardAlertDiscard: any;
   discardAlertMessage: any;
   discardAlertTitle: any;
   edgeSwipeStartHint: any;

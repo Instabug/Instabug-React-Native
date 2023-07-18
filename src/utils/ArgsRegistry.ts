@@ -254,8 +254,12 @@ export enum strings {
   requestFeatureDescription = constants.requestFeatureDescription,
   discardAlertTitle = constants.discardAlertTitle,
   discardAlertMessage = constants.discardAlertMessage,
+  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
   discardAlertCancel = constants.discardAlertCancel,
+  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
   discardAlertAction = constants.discardAlertAction,
+  discardAlertDiscard = constants.discardAlertDiscard,
+  discardAlertStay = constants.discardAlertStay,
   addAttachmentButtonTitleStringName = constants.addAttachmentButtonTitleStringName,
   reportReproStepsDisclaimerBody = constants.reportReproStepsDisclaimerBody,
   reportReproStepsDisclaimerLink = constants.reportReproStepsDisclaimerLink,
