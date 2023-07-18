@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -453,11 +454,15 @@ public class RNInstabugReactnativeModuleTest {
         // given
         mockStatic(Log.class);
         Map<String, InstabugCustomTextPlaceHolder.Key> args = ArgsRegistry.placeholders;
-        String[] keysArray = args.keySet().toArray(new String[0]);
+        Set<String> keys = args.keySet();
+
+        // Ignore deprecated keys
+        keys.remove("discardAlertCancel");
+        keys.remove("discardAlertAction");
 
         // when
         InstabugCustomTextPlaceHolder expectedPlaceHolders = new InstabugCustomTextPlaceHolder();
-        for (String key : keysArray) {
+        for (String key : keys) {
             InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
             expectedPlaceHolders.set(placeHolder, key);
             rnModule.setString(key, key);
@@ -473,7 +478,7 @@ public class RNInstabugReactnativeModuleTest {
                     getDeclaredField("placeHolders");
             privateStringField.setAccessible(true);
             InstabugCustomTextPlaceHolder placeHolders = (InstabugCustomTextPlaceHolder) privateStringField.get(rnModule);
-        for (String key : keysArray) {
+        for (String key : keys) {
             InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
             Assert.assertEquals(placeHolders.get(placeHolder), key);
         }
