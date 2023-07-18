@@ -234,6 +234,9 @@ final class ArgsRegistry {
         put("discardAlertMessage", Key.REPORT_DISCARD_DIALOG_BODY);
         put("discardAlertCancel", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         put("discardAlertAction", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
+        put("discardAlertStay", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
+        put("discardAlertDiscard", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
+
         put("addAttachmentButtonTitleStringName", Key.REPORT_ADD_ATTACHMENT_HEADER);
 
         put("reportReproStepsDisclaimerBody", Key.REPORT_REPRO_STEPS_DISCLAIMER_BODY);
