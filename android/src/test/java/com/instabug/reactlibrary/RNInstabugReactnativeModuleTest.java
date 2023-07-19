@@ -459,6 +459,7 @@ public class RNInstabugReactnativeModuleTest {
         // Ignore deprecated keys
         keys.remove("discardAlertCancel");
         keys.remove("discardAlertAction");
+        keys.remove("reproStepsListItemTitle");
 
         // when
         InstabugCustomTextPlaceHolder expectedPlaceHolders = new InstabugCustomTextPlaceHolder();
