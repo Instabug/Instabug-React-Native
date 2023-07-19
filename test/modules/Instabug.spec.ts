@@ -298,6 +298,19 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setString).toBeCalledWith(string, key);
   });
 
+  it('should suffix the repro steps list item numbering title string on Android', () => {
+    Platform.OS = 'android';
+
+    const key = StringKey.reproStepsListItemNumberingTitle;
+    const string = 'Page';
+    const expected = 'Page #';
+
+    Instabug.setString(key, string);
+
+    expect(NativeInstabug.setString).toBeCalledTimes(1);
+    expect(NativeInstabug.setString).toBeCalledWith(expected, key);
+  });
+
   it('should call the native method identifyUser', () => {
     const email = 'foo@instabug.com';
     const name = 'Instabug';
