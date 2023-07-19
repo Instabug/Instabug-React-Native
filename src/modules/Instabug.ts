@@ -226,6 +226,12 @@ export const getTags = async (callback?: (tags: string[]) => void): Promise<stri
  * @param string String value to override the default one.
  */
 export const setString = (key: strings | StringKey, string: string) => {
+  // Suffix the repro steps list item numbering title with a # to unify the string key's
+  // behavior between Android and iOS
+  if (Platform.OS === 'android' && key === StringKey.reproStepsListItemNumberingTitle) {
+    string = `${string} #`;
+  }
+
   NativeInstabug.setString(string, key);
 };
 

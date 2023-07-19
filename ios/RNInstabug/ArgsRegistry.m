@@ -255,6 +255,7 @@
         @"reproStepsListDescription": kIBGReproStepsListHeader,
         @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
         @"reproStepsListItemTitle": kIBGReproStepsListItemName,
+        @"reproStepsListItemNumberingTitle": kIBGReproStepsListItemName,
         @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
         @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,
         @"insufficientContentMessage" : kIBGInsufficientContentMessageStringName,
