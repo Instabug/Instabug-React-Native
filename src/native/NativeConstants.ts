@@ -176,6 +176,7 @@ interface NativeStringKey {
   reproStepsListEmptyStateDescription: any;
   reproStepsListHeader: any;
   reproStepsListItemTitle: any;
+  reproStepsListItemNumberingTitle: any;
   reproStepsProgressDialogBody: any;
   requestFeatureDescription: any;
   screenRecording: any;

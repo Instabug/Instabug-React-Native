@@ -3,7 +3,9 @@ import type { InstabugNativeModule } from '../../src/native/NativeInstabug';
 const mockInstabug: InstabugNativeModule = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
-  getConstants: jest.fn().mockReturnValue({}),
+  getConstants: jest.fn().mockReturnValue({
+    reproStepsListItemNumberingTitle: 'reproStepsListItemNumberingTitle',
+  }),
   setEnabled: jest.fn(),
   init: jest.fn(),
   setUserData: jest.fn(),

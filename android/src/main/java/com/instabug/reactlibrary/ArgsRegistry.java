@@ -246,6 +246,7 @@ final class ArgsRegistry {
         put("reproStepsListDescription", Key.REPRO_STEPS_LIST_DESCRIPTION);
         put("reproStepsListEmptyStateDescription", Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
         put("reproStepsListItemTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
+        put("reproStepsListItemNumberingTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
         put("okButtonTitle", Key.BUG_ATTACHMENT_DIALOG_OK_BUTTON);
         put("audio", Key.CHATS_TYPE_AUDIO);
         put("image", Key.CHATS_TYPE_IMAGE);
