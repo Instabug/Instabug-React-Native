@@ -195,7 +195,9 @@ export enum StringKey {
   reproStepsListDescription = constants.reproStepsListDescription,
   reproStepsListEmptyStateDescription = constants.reproStepsListEmptyStateDescription,
   reproStepsListHeader = constants.reproStepsListHeader,
+  /** @deprecated Use {@link reproStepsListItemNumberingTitle} instead */
   reproStepsListItemTitle = constants.reproStepsListItemTitle,
+  reproStepsListItemNumberingTitle = constants.reproStepsListItemNumberingTitle,
   reproStepsProgressDialogBody = constants.reproStepsProgressDialogBody,
   requestFeatureDescription = constants.requestFeatureDescription,
   screenRecording = constants.screenRecording,
