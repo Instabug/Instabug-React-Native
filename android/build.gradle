@@ -10,12 +10,15 @@ def shouldUseNameSpace = agpVersion >= 7
 def PACKAGE_PROP = "package=\"com.instabug.reactlibrary\""
 def manifestOutFile = file("${projectDir}/src/main/AndroidManifest.xml")
 def manifestContent = manifestOutFile.getText()
+def isManifestContentUpdated = manifestOutFile.getText() != manifestContent
+def isPackageNamespaceMissing = !manifestContent.contains("$PACKAGE_PROP")
 
 String getExtOrDefault(String name) {
+    def defaultPropertyKey = 'InstabugReactNative_' + name
     if (rootProject.ext.has(name)) {
         return rootProject.ext.get(name)
     }
-    return project.properties['InstabugReactNative_' + name]
+    return project.properties[defaultPropertyKey]
 }
 
 if(shouldUseNameSpace){
@@ -24,7 +27,7 @@ if(shouldUseNameSpace){
         ''
     )  
 } else {
-    if(!manifestContent.contains("$PACKAGE_PROP")){
+    if(isPackageNamespaceMissing){
         manifestContent = manifestContent.replace(
             '<manifest',
             "<manifest $PACKAGE_PROP "
@@ -33,7 +36,10 @@ if(shouldUseNameSpace){
 }
 
 manifestContent.replaceAll("  ", " ")
-manifestOutFile.write(manifestContent)
+
+if(isManifestContentUpdated){
+    manifestOutFile.write(manifestContent)
+}
 
 android {
     if (shouldUseNameSpace){
