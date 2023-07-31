@@ -4,14 +4,45 @@ apply from: './jacoco.gradle'
 apply from: './native.gradle'
 apply from: './sourcemaps.gradle'
 
+/* (Preparing to support RN 0.73) Checking APG version to be backward-compatible with RN versions < 0.71 */
+def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+def shouldUseNameSpace = agpVersion >= 7
+def PACKAGE_PROP = "package=\"com.instabug.reactlibrary\""
+def manifestOutFile = file("${projectDir}/src/main/AndroidManifest.xml")
+def manifestContent = manifestOutFile.getText()
+def isManifestContentUpdated = manifestOutFile.getText() != manifestContent
+def isPackageNamespaceMissing = !manifestContent.contains("$PACKAGE_PROP")
+
 String getExtOrDefault(String name) {
+    def defaultPropertyKey = 'InstabugReactNative_' + name
     if (rootProject.ext.has(name)) {
         return rootProject.ext.get(name)
     }
-    return project.properties['InstabugReactNative_' + name]
+    return project.properties[defaultPropertyKey]
+}
+
+if(shouldUseNameSpace){
+    manifestContent = manifestContent.replaceAll(
+        PACKAGE_PROP,
+        ''
+    )  
+} else if(isPackageNamespaceMissing) {
+    manifestContent = manifestContent.replace(
+        '<manifest',
+        "<manifest $PACKAGE_PROP "
+    )
+}
+
+manifestContent.replaceAll("  ", " ")
+
+if(isManifestContentUpdated){
+    manifestOutFile.write(manifestContent)
 }
 
 android {
+    if (shouldUseNameSpace){
+        namespace = "com.instabug.reactlibrary"
+    }
     compileSdkVersion getExtOrDefault('compileSdkVersion').toInteger()
     buildToolsVersion getExtOrDefault('buildToolsVersion')
 
