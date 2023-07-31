@@ -22,17 +22,15 @@ String getExtOrDefault(String name) {
 }
 
 if(shouldUseNameSpace){
-      manifestContent = manifestContent.replaceAll(
+    manifestContent = manifestContent.replaceAll(
         PACKAGE_PROP,
         ''
     )  
-} else {
-    if(isPackageNamespaceMissing){
-        manifestContent = manifestContent.replace(
-            '<manifest',
-            "<manifest $PACKAGE_PROP "
-        )
-    }
+} else if(isPackageNamespaceMissing) {
+    manifestContent = manifestContent.replace(
+        '<manifest',
+        "<manifest $PACKAGE_PROP "
+    )
 }
 
 manifestContent.replaceAll("  ", " ")
