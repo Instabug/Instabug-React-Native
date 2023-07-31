@@ -4,7 +4,7 @@ apply from: './jacoco.gradle'
 apply from: './native.gradle'
 apply from: './sourcemaps.gradle'
 
-/* Checking APG version to be backward-compatible with RN versions < 0.71 */
+/* (Preparing to support RN 0.73) Checking APG version to be backward-compatible with RN versions < 0.71 */
 def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
 def shouldUseNameSpace = agpVersion >= 7
 def PACKAGE_PROP = "package=\"com.instabug.reactlibrary\""
