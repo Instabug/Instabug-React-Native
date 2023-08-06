@@ -2,6 +2,28 @@
 
 const { execSync } = require('child_process');
 
+
+// Currently we only test on `Pixel_4_API_31`
+const specificAvdName = null;
+
+// Returns the AVD name from available installed AVDs
+function getAVDName() {
+  try {
+
+    // Execute 'emulator -list-avds' command to get the list of AVDs
+    const avdListOutput = execSync('emulator -list-avds').toString();
+
+    // Split the output to get individual AVD names
+    const avdList = avdListOutput.trim().split('\n');
+
+    // Assuming you want to use the first AVD from the list, you can modify this logic as needed
+    return (specificAvdName !== null) ? specificAvdName : avdList.length > 0 ? avdList[0] : null;
+  } catch (error) {
+    console.error('Error while fetching AVD list:', error);
+    return null;
+  }
+}
+
 // Function to get the iOS simulator device type
 function getSimulatorDeviceType() {
   try {
