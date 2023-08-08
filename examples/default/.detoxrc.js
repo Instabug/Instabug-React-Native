@@ -22,25 +22,41 @@ function getAVDName() {
   }
 }
 
-// Function to get the iOS simulator device type
-function getSimulatorDeviceType() {
+// Function to get the latest iOS simulator device type
+function getLatestIphoneSimulatorDeviceType() {
   try {
-    /// Execute 'xcrun simctl list devices' command to get the list of iOS simulator devices
+    // Execute 'xcrun simctl list devices' command to get the list of iOS simulator devices
     const allSimulatorDevices = execSync('xcrun simctl list devices').toString();
 
-    /// Filter the output to get the list of iPhone devices
+    // Filter the output to get the list of iPhone devices
     const filteredDevices = allSimulatorDevices.match(/iPhone[^)]*/g);
 
-    /// Clean the device names to get the final device type
+    // Clean the device names to get the final device type (excluding the device ID)
     const cleanedDevices = filteredDevices.map((device) => device.replace(/\(.*$/, '').trim());
 
-    /// Assuming you want to use the last device from the list, you can modify this logic as needed
-    const lastDeviceType = cleanedDevices[cleanedDevices.length - 1];
+    // Order of iPhone models to prioritize
+    const priorityOrder = [/Pro Max/i, /Pro/i, /\d/];
 
-    /// Remove the trailing newline character from the device type
-    const trimmedDeviceType = lastDeviceType.replace('\n', '');
+    let selectedDeviceType = null;
 
-    /// Return the final device type
+    // Loop through the priority order and select the first matching device type
+    for (const regex of priorityOrder) {
+      const matchingDevice = cleanedDevices.find((device) => regex.test(device));
+      if (matchingDevice) {
+        selectedDeviceType = matchingDevice;
+        break;
+      }
+    }
+
+    // If no matching device is found, default to the last device in the list
+    if (!selectedDeviceType) {
+      selectedDeviceType = cleanedDevices[cleanedDevices.length - 1];
+    }
+
+    // Remove the trailing newline character from the device type
+    const trimmedDeviceType = selectedDeviceType.replace('\n', '');
+
+    // Return the final device type
     return trimmedDeviceType;
   } catch (error) {
     console.error('Error while fetching iOS simulator device list:', error);
@@ -86,7 +102,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: getSimulatorDeviceType(),
+        type: getLatestIphoneSimulatorDeviceType(),
       },
     },
     emulator: {
