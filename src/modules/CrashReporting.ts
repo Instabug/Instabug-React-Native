@@ -1,7 +1,5 @@
-import { Platform } from 'react-native';
 import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
-import type { CrashData } from '../native/NativeCrashReporting';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
 
@@ -30,20 +28,5 @@ export const reportJSException = (error: any) => {
  * @param error Error object to be sent to Instabug's servers
  */
 export const reportError = (error: ExtendedError) => {
-  const jsStackTrace = InstabugUtils.getStackTrace(error);
-
-  const jsonObject: CrashData = {
-    message: error.name + ' - ' + error.message,
-    e_message: error.message,
-    e_name: error.name,
-    os: Platform.OS,
-    platform: 'react_native',
-    exception: jsStackTrace,
-  };
-
-  if (Platform.OS === 'android') {
-    NativeCrashReporting.sendHandledJSCrash(JSON.stringify(jsonObject));
-  } else {
-    NativeCrashReporting.sendHandledJSCrash(jsonObject);
-  }
+  InstabugUtils.sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
 };

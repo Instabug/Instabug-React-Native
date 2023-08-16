@@ -68,23 +68,7 @@ export const captureJsErrors = () => {
   const originalErrorHandler = ErrorUtils.getGlobalHandler();
 
   const instabugErrorHandler: ErrorHandlerCallback = (err) => {
-    const jsStackTrace = getStackTrace(err);
-
-    // JSON object to be sent to the native SDK
-    const jsonObject: CrashData = {
-      message: err.name + ' - ' + err.message,
-      e_message: err.message,
-      e_name: err.name,
-      os: Platform.OS,
-      platform: 'react_native',
-      exception: jsStackTrace,
-    };
-
-    if (Platform.OS === 'android') {
-      NativeCrashReporting.sendJSCrash(JSON.stringify(jsonObject));
-    } else {
-      NativeCrashReporting.sendJSCrash(jsonObject);
-    }
+    sendCrashReport(err, NativeCrashReporting.sendJSCrash);
   };
 
   ErrorUtils.setGlobalHandler((err, isFatal) => {
@@ -124,6 +108,40 @@ export const invokeDeprecatedCallback = <T>(callback?: (arg: T) => void, arg?: T
   }
 };
 
+/**
+ * Sends crash report to Instabug's servers based on @param sendFunction
+ *
+ * @param error Error object to be sent to Instabug's servers
+ * @param remoteSenderCallback Function to send the crash report to Instabug's servers
+ *
+ * @example
+ * `sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);`
+ * or
+ * `sendCrashReport(error, NativeCrashReporting.sendJSCrash);`
+ *
+ */
+export function sendCrashReport(
+  error: ExtendedError,
+  remoteSenderCallback: (json: CrashData | string) => void,
+) {
+  const jsStackTrace = getStackTrace(error);
+
+  const jsonObject: CrashData = {
+    message: error.name + ' - ' + error.message,
+    e_message: error.message,
+    e_name: error.name,
+    os: Platform.OS,
+    platform: 'react_native',
+    exception: jsStackTrace,
+  };
+
+  if (Platform.OS === 'android') {
+    remoteSenderCallback(JSON.stringify(jsonObject));
+  } else {
+    remoteSenderCallback(jsonObject);
+  }
+}
+
 export default {
   parseErrorStack,
   captureJsErrors,
@@ -132,4 +150,5 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   invokeDeprecatedCallback,
+  sendCrashReport,
 };
