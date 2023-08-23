@@ -46,6 +46,11 @@ android {
     compileSdkVersion getExtOrDefault('compileSdkVersion').toInteger()
     buildToolsVersion getExtOrDefault('buildToolsVersion')
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         minSdkVersion getExtOrDefault('minSdkVersion').toInteger()
         targetSdkVersion getExtOrDefault('targetSdkVersion').toInteger()
@@ -68,7 +73,7 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.facebook.react:react-native:+'
 
-    testImplementation "org.mockito:mockito-inline:3.4.0"
+    testImplementation "org.mockito:mockito-inline:3.12.1"
     testImplementation "org.mockito:mockito-android:3.4.0"
     testImplementation 'junit:junit:4.13.2'
 }
