@@ -37,14 +37,6 @@ public class RNInstabug {
     /**
      * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
      *
-     * <p>
-     *     This method is used for setting up the SDK's native side initialization in our MainApplication.
-     *     It helps capture problems that occur before the React-Native bridge is established.
-     *     This offers an alternative to the {@link RNInstabugReactnativeModule#init}.
-     *     It catches start-up crashes that might slip.
-     *     This is due to a gap between the native app launch and the initialization of the react-native.
-     * </p>
-     *
      * @param application The application context.
      * @param applicationToken The app's identifying token, available on your dashboard.
      * @param logLevel The level of detail in logs that you want to print.
@@ -55,29 +47,14 @@ public class RNInstabug {
      *
      * @example <p>Here's an example usage: </p>
      * <blockquote><pre>
-     * RNInstabug.initNativeSdk(
+     * RNInstabug.getInstance().init(
      *     this,
-     *     "f23c....",
+     *     "your_token_here",
      *     LogLevel.VERBOSE,
      *     InstabugInvocationEvent.SHAKE,
      *     ... // Other invocation events
      * );
      * </pre></blockquote>
-     *
-     * @example <p> you can pass an empty string in place of the last argument logLevel param and also
-     * {@link InstabugInvocationEvent#NONE} to disable all invocation events:</p>
-     *
-     * <blockquote><pre>
-     * RNInstabug.initNativeSdk(
-     *     this,
-     *     "f23c....",
-     *     new InstabugInvocationEvent[]{
-     *         InstabugInvocationEvent.NONE,
-     *     },
-     *     ""
-     * );
-     * </pre></blockquote>
-     *
      */
     public void init(
             @NonNull Application application,
