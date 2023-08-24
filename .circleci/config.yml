@@ -12,6 +12,9 @@ commands:
         type: string
         default: .
     steps:
+      - node/install:
+          install-yarn: true
+          node-version: 'v18.17.0'
       - node/install-packages:
           pkg-manager: yarn
           # Network concurrency is set to 1 for installation from GitHub to work.
