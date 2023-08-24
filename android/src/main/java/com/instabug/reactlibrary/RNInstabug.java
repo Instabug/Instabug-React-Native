@@ -79,6 +79,34 @@ public class RNInstabug {
 
     }
 
+
+
+    /**
+     * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
+     *
+     * @param application The application context.
+     * @param applicationToken The app's identifying token, available on your dashboard.
+     * @param invocationEvent The events that trigger the SDK's user interface.
+     *      Choose from the available events listed in {@link InstabugInvocationEvent}.
+     *
+     * @example <p>Here's an example usage: </p>
+     * <blockquote><pre>
+     * RNInstabug.getInstance().init(
+     *     this,
+     *     "your_token_here",
+     *     InstabugInvocationEvent.SHAKE,
+     *     ... // Other invocation events
+     * );
+     * </pre></blockquote>
+     */
+    public void init(
+            @NonNull Application application,
+            @NonNull String applicationToken,
+            @NonNull InstabugInvocationEvent... invocationEvent
+    ) {
+        init(application, applicationToken, LogLevel.ERROR, invocationEvent);
+    }
+
     @VisibleForTesting
     public void setCurrentPlatform() {
         try {
