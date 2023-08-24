@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { mocked } from 'ts-jest/utils';
+import { mocked } from 'jest-mock';
 
 import Trace from '../../src/models/Trace';
 import * as APM from '../../src/modules/APM';
