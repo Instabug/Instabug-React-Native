@@ -42,7 +42,7 @@ public class RNInstabug {
      * @param logLevel The level of detail in logs that you want to print.
      *      <p>Pick one of the log levels described in {@link LogLevel}.
      *      default logLevel is {@link LogLevel#ERROR}</p>
-     * @param instabugInvocationEvent The events that trigger the SDK's user interface.
+     * @param InvocationEvent The events that trigger the SDK's user interface.
      *      Choose from the available events listed in {@link InstabugInvocationEvent}.
      *
      * @example <p>Here's an example usage: </p>
@@ -60,14 +60,15 @@ public class RNInstabug {
             @NonNull Application application,
             @NonNull String applicationToken,
             int logLevel,
-            @NonNull InstabugInvocationEvent... instabugInvocationEvent
+            @NonNull InstabugInvocationEvent... InvocationEvent
     ) {
         try {
 
             setBaseUrlForDeprecationLogs();
             setCurrentPlatform();
 
-            new Instabug.Builder(application, applicationToken, instabugInvocationEvent)
+            new Instabug.Builder(application, applicationToken)
+                    .setInvocationEvents(InvocationEvent)
                     .setSdkDebugLogsLevel(logLevel)
                     .build();
 

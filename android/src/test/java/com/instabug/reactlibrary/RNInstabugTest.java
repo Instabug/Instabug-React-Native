@@ -78,6 +78,7 @@ public class RNInstabugTest {
 
         verify(sut).setBaseUrlForDeprecationLogs();
         verify(sut).setCurrentPlatform();
+        mInstabugBuilder.close();
     }
 
     @Test
@@ -95,6 +96,7 @@ public class RNInstabugTest {
         sut.init(mContext, token, invocationEvents);
 
         verify(sut).init(mContext, token, defaultLogLevel, invocationEvents);
+        mInstabugBuilder.close();
     }
 
     @Test
