@@ -107,10 +107,10 @@ public class RNInstabug {
         try {
             Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
             if (method != null) {
-                Log.i("IB-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
+                Log.i("IBG-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
                 method.invoke(null, Platform.RN);
             } else {
-                Log.e("IB-CP-Bridge", "setCurrentPlatform was not found by reflection");
+                Log.e("IBG-CP-Bridge", "setCurrentPlatform was not found by reflection");
             }
         } catch (Exception e) {
             e.printStackTrace();
