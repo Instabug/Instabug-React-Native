@@ -452,7 +452,6 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenString$setString_whenQuery_thenShouldCallNativeApiWithEnum() {
         // given
-        mockStatic(Log.class);
         Map<String, InstabugCustomTextPlaceHolder.Key> args = ArgsRegistry.placeholders;
         Set<String> keys = args.keySet();
 

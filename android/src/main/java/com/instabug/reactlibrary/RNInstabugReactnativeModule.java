@@ -4,7 +4,6 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -20,14 +19,12 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.instabug.apm.APM;
 import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.LogLevel;
-import com.instabug.library.Platform;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
@@ -37,7 +34,6 @@ import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONException;
@@ -45,7 +41,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +87,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         super.removeListeners(count);
     }
 
-    /** 
+    /**
      * Enables or disables Instabug functionality.
      * @param isEnabled A boolean to enable/disable Instabug.
      */
@@ -111,7 +106,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 }
             }
         });
-    } 
+    }
 
     /**
      * Initializes the SDK.
@@ -120,59 +115,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      */
     @ReactMethod
     public void init(final String token, final ReadableArray invocationEventValues, final String logLevel) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
-                    final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
-                    final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
-
-                    setCurrentPlatform();
-                    setBaseUrlForDeprecationLogs();
-
-                    new Instabug.Builder(getCurrentActivity().getApplication(), token)
-                            .setInvocationEvents(parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]))
-                            .setSdkDebugLogsLevel(parsedLogLevel)
-                            .build();
-
-                    // Temporarily disabling APM hot launches
-                    APM.setHotAppLaunchEnabled(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        MainThreadHandler.runOnMainThread(() -> {
+            final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+            final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+            final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
+            final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
+            RNInstabug.getInstance().init(getCurrentActivity().getApplication(), token, parsedLogLevel, invocationEvents);
         });
     }
 
-    private void setCurrentPlatform() {
-        try {
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
-            if (method != null) {
-                Log.i("IB-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN);
-                method.invoke(null, Platform.RN);
-            } else {
-                Log.e("IB-CP-Bridge", "setCurrentPlatform was not found by reflection");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setBaseUrlForDeprecationLogs() {
-        try {
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class);
-            if (method != null) {
-                method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Adds tag(s) to issues before sending them
@@ -282,7 +233,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-    
+
     /**
      * Gets tags.
      *
@@ -576,7 +527,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-    
+
     /**
      * Overrides any of the strings shown in the SDK with custom ones.
      * Allows you to customize any of the strings shown to users in the SDK.
