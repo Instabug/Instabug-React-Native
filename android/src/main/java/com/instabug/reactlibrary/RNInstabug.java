@@ -124,11 +124,7 @@ public class RNInstabug {
             if (method != null) {
                 method.invoke(null, "https://docs.instabug.com/docs/react-native-sdk-migration-guide");
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
