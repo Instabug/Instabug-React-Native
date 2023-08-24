@@ -7,7 +7,7 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import { InvocationEvent } from '../../src/utils/Enums';
-import InstabugUtils, { sendCrashReport } from '../../src/utils/InstabugUtils';
+import InstabugUtils, { getStackTrace, sendCrashReport } from '../../src/utils/InstabugUtils';
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -224,7 +224,8 @@ describe('Instabug Utils', () => {
   it('should call remoteSenderCallback with the correct JSON object on Android', () => {
     const remoteSenderCallback = NativeCrashReporting.sendHandledJSCrash;
     Platform.OS = 'android';
-    const errorMock = { name: 'TypeError', message: 'Invalid type' };
+    const errorMock = new TypeError('Invalid type');
+    const jsStackTrace = getStackTrace(errorMock);
 
     sendCrashReport(errorMock, remoteSenderCallback);
 
@@ -234,7 +235,7 @@ describe('Instabug Utils', () => {
       e_name: 'TypeError',
       os: 'android',
       platform: 'react_native',
-      exception: [],
+      exception: jsStackTrace,
     };
     const expectedJsonObject = JSON.stringify(expectedMap);
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
@@ -244,7 +245,8 @@ describe('Instabug Utils', () => {
   it('should call remoteSenderCallback with the correct JSON object on iOS', () => {
     const remoteSenderCallback = NativeCrashReporting.sendHandledJSCrash;
     Platform.OS = 'ios';
-    const errorMock = { name: 'TypeError', message: 'Invalid type' };
+    const errorMock = new TypeError('Invalid type');
+    const jsStackTrace = getStackTrace(errorMock);
 
     sendCrashReport(errorMock, remoteSenderCallback);
 
@@ -254,7 +256,7 @@ describe('Instabug Utils', () => {
       e_name: 'TypeError',
       os: 'ios',
       platform: 'react_native',
-      exception: [],
+      exception: jsStackTrace,
     };
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
     expect(remoteSenderCallback).toHaveBeenCalledWith(expectedMap);

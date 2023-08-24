@@ -13,7 +13,7 @@ describe('CrashReporting Module', () => {
   });
 
   it('should call the native method sendCrashReporting with JSON object and sendHandledJsCrash as a callback', () => {
-    const error = { name: 'TypeError', message: 'Invalid type' };
+    const error = new TypeError('Invalid type');
     CrashReporting.reportError(error);
 
     expect(InstabugUtils.sendCrashReport).toBeCalledTimes(1);
