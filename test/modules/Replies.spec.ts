@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { mocked } from 'ts-jest/utils';
+import { mocked } from 'jest-mock';
 
 import * as Replies from '../../src/modules/Replies';
 import { NativeEvents, NativeReplies, emitter } from '../../src/native/NativeReplies';
