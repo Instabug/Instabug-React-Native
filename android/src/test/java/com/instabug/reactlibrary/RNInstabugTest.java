@@ -28,7 +28,6 @@ import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 
 
-// Todo: Rename it to match the class name
 public class RNInstabugTest {
     private final Application mContext = mock(Application.class);
 
