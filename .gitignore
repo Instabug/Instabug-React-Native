@@ -60,3 +60,4 @@ android/keystores/debug.keystore
 
 # Bundle artifact
 *.jsbundle
+/examples/default/ios/main.jsbundle.map

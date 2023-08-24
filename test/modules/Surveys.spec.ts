@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { mocked } from 'ts-jest/utils';
+import { mocked } from 'jest-mock';
 
 import * as Surveys from '../../src/modules/Surveys';
 import { NativeEvents, NativeSurveys, emitter } from '../../src/native/NativeSurveys';
