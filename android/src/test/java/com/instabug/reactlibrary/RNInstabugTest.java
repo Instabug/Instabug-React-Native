@@ -51,7 +51,7 @@ public class RNInstabugTest {
     }
 
     @Test
-    public void testInit() {
+    public void testInitWithLogLevel() {
         final InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[]{InstabugInvocationEvent.FLOATING_BUTTON};
         final String token = "fde....";
         final int logLevel = LogLevel.VERBOSE;
@@ -65,25 +65,36 @@ public class RNInstabugTest {
                     when(mock.setInvocationEvents(any())).thenReturn(mock);
                 });
 
-        sut.init(mContext, token, logLevel);
+        sut.init(mContext, token, logLevel, invocationEvents);
 
         Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
 
-        // Originally it is created as `LogLevelError` then after calling `setSdkDebugLogsLevel` it is changed to the value `logLevel` property
-        assertEquals(
-                "expected Instabug to be initialized using Instabug.Builder",
-                LogLevel.ERROR,
-                mInstabugBuilder.constructed().size()
-        );
-
         // Here we check that it has changed to verbose value of the `logLevel` property
         verify(builder).setSdkDebugLogsLevel(LogLevel.VERBOSE);
+        verify(builder).setInvocationEvents(invocationEvents);
         verify(builder).build();
 
 
 
         verify(sut).setBaseUrlForDeprecationLogs();
         verify(sut).setCurrentPlatform();
+    }
+
+    @Test
+    public void testInitWithoutLogLevel() {
+        final InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[]{InstabugInvocationEvent.FLOATING_BUTTON};
+        final String token = "fde....";
+        final int defaultLogLevel = LogLevel.ERROR;
+
+        MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(
+                Instabug.Builder.class, (mock, context) -> {
+                    when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+                    when(mock.setInvocationEvents(any())).thenReturn(mock);
+                });
+
+        sut.init(mContext, token, invocationEvents);
+
+        verify(sut).init(mContext, token, defaultLogLevel, invocationEvents);
     }
 
     @Test
