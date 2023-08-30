@@ -224,6 +224,25 @@ jobs:
           working_directory: examples/default
           command: detox test -c android.emu.release
 
+  # Automate the enterprise NN sdk changes
+  automate_enterprise_nn_sdk_changes:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - advanced-checkout/shallow-checkout
+      - run:
+          name: Remove README.md file
+          command: rm README.md
+      - run:
+          name: Update package.json file
+          command: sed -i 's/instabug-reactnative/@instabug\/react-native-nn/g' package.json
+      - run:
+          name: Update upload_sourcemap.sh file on iOS
+          command: sed -i 's/api.instabug.com\/api\/sdk/st001009nn.instabug.com\/api\/sdk/g' cli/UploadSourcemaps.ts
+      - run:
+          name: Update the native library name on Android
+          command: sed -i 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g' android/native.gradle
+
   publish:
     macos:
       xcode: 13.4.1
@@ -279,6 +298,10 @@ workflows:
               only: master
       - publish:
           requires:
+            - hold
+      - automate_enterprise_nn_sdk_changes:
+          requires:
+            - publish
             - hold
           filters:
             branches:
