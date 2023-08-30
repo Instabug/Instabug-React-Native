@@ -92,6 +92,20 @@ export const stringifyIfNotString = (input: unknown) => {
   return typeof input === 'string' ? input : JSON.stringify(input);
 };
 
+export const errorifyIfNotError = (value: unknown): Error => {
+  if (value instanceof Error) {
+    return value;
+  }
+
+  const message = stringifyIfNotString(value);
+  const error = new Error(message);
+
+  // Empty the stack trace since it'd be inaccurate
+  error.stack = '';
+
+  return error;
+};
+
 export const invokeDeprecatedCallback = <T>(callback?: (arg: T) => void, arg?: T | null) => {
   if (!callback) {
     return;
