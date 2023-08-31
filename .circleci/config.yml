@@ -250,10 +250,10 @@ jobs:
           replace-pattern: 's/instabug-reactnative/@instabug\/react-native-nn/g'
       - search_and_replace:
           file: cli/UploadSourcemaps.ts
-          replace: 's/api.instabug.com\/api\/sdk/st001009nn.instabug.com\/api\/sdk/g'
+          replace-pattern: 's/api.instabug.com\/api\/sdk/st001009nn.instabug.com\/api\/sdk/g'
       - search_and_replace:
           file: android/native.gradle
-          command: 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g'
+          replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g'
       - run:
           name: Create enterprise release branch
           command: bash scripts/create-nn-release-branch.sh
