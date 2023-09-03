@@ -115,12 +115,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      */
     @ReactMethod
     public void init(final String token, final ReadableArray invocationEventValues, final String logLevel) {
-        MainThreadHandler.runOnMainThread(() -> {
-            final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
-            final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
-            final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
-            final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
-            RNInstabug.getInstance().init(getCurrentActivity().getApplication(), token, parsedLogLevel, invocationEvents);
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
+                final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
+                final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
+                final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
+                RNInstabug.getInstance().init(getCurrentActivity().getApplication(), token, parsedLogLevel, invocationEvents);
+            }
         });
     }
 
