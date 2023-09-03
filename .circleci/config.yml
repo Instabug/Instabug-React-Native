@@ -259,8 +259,6 @@ jobs:
           command: bash scripts/create-nn-release-branch.sh
       - node/install-packages:
           pkg-manager: yarn
-      - install_pods:
-          working_directory: examples/default/ios
       - run:
           working_directory: project
           command: yarn build
