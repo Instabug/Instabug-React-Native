@@ -13,7 +13,7 @@ git checkout -b "$branch_name"
 git add .
 
 # Committing the changes
-git commit -m "NN Release v$version"
+git commit -m "Test Enterprise Release v$version"
 
 # Add the private instabug react native library
 git remote add private https://github.com/Instabug/react-native.git
