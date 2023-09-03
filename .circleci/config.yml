@@ -242,6 +242,7 @@ jobs:
       xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
+      - node/install-packages
       - run:
           name: Remove README.md file
           command: rm README.md
@@ -257,8 +258,6 @@ jobs:
       - run:
           name: Create enterprise release branch
           command: bash scripts/create-nn-release-branch.sh
-      - node/install-packages:
-          pkg-manager: yarn
       - run:
           working_directory: project
           command: yarn build
