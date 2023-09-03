@@ -7,7 +7,11 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import { InvocationEvent } from '../../src/utils/Enums';
-import InstabugUtils, { getStackTrace, sendCrashReport } from '../../src/utils/InstabugUtils';
+import InstabugUtils, {
+  errorifyIfNotError,
+  getStackTrace,
+  sendCrashReport,
+} from '../../src/utils/InstabugUtils';
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -260,5 +264,23 @@ describe('Instabug Utils', () => {
     };
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
     expect(remoteSenderCallback).toHaveBeenCalledWith(expectedMap);
+  });
+
+  it('errorifyIfNotError should convert non-errors into an error', () => {
+    const message = 'Something went wrong';
+
+    const result = errorifyIfNotError(message);
+
+    expect(result).toBeInstanceOf(Error);
+    expect(result.message).toBe(message);
+    expect(result.stack).toBe('');
+  });
+
+  it('errorifyIfNotError should not affect errors', () => {
+    const error = new TypeError('Something went wrong');
+
+    const result = errorifyIfNotError(error);
+
+    expect(result).toBe(error);
   });
 });
