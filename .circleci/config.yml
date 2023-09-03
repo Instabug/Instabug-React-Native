@@ -243,11 +243,12 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - run:
+          working_directory: project
           name: Remove README.md file
           command: rm README.md
       - search_and_replace:
           file: package.json
-          replace-pattern: 's/instabug-reactnative/@instabug\/react-native-private/g'
+          replace-pattern: 's/instabug-reactnative/@instabug\/react-native-nn/g'
       - search_and_replace:
           file: cli/UploadSourcemaps.ts
           replace-pattern: 's/api.instabug.com\/api\/sdk/st001009nn.instabug.com\/api\/sdk/g'
@@ -329,6 +330,9 @@ workflows:
             - e2e_ios
             - e2e_android
           type: approval
+          filters:
+            branches:
+              only: master
       - publish:
           requires:
             - hold_publish
@@ -338,3 +342,6 @@ workflows:
       - release_nn:
           requires:
             - hold_release_nn
+          filters:
+            branches:
+              only: master
