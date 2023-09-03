@@ -6,14 +6,14 @@ version_line=$(echo "$file_contents" | grep -o '"version": *"[^"]*"')
 version=$(echo "$version_line" | grep -o '"[^"]*"$' | sed 's/"//g')
 
 # Create release branch
-branch_name="enterprise/nn-$version"
+branch_name="enterprise/test-$version"
 git checkout -b "$branch_name"
 
 # Staging the changes
 git add .
 
 # Committing the changes
-git commit -m "NN Release v$version"
+git commit -m "Test Enterprise Release v$version"
 
 # Add the private instabug react native library
 git remote add private https://github.com/Instabug/react-native.git
