@@ -243,7 +243,6 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - run:
-          working_directory: project
           name: Remove README.md file
           command: rm README.md
       - search_and_replace:
