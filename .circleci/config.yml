@@ -242,7 +242,9 @@ jobs:
       xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-packages
+      - install_node_modules:
+          app-dir: project
+          pkg-manager: yarn
       - run:
           name: Remove README.md file
           command: rm README.md
