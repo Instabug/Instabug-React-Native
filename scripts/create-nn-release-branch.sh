@@ -6,7 +6,7 @@ version_line=$(echo "$file_contents" | grep -o '"version": *"[^"]*"')
 version=$(echo "$version_line" | grep -o '"[^"]*"$' | sed 's/"//g')
 
 # Create release branch
-branch_name="enterprise/nn-$version"
+branch_name="enterprise/private-$version"
 git checkout -b "$branch_name"
 
 # Staging the changes
