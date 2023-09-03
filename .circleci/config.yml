@@ -239,7 +239,6 @@ jobs:
   release_nn:
     macos:
       xcode: 13.4.1
-    working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
       - run:
@@ -247,12 +246,15 @@ jobs:
           name: Remove README.md file
           command: rm README.md
       - search_and_replace:
+          working-directory: project
           file: package.json
           replace-pattern: 's/instabug-reactnative/@instabug\/react-native-private/g'
       - search_and_replace:
+          working-directory: project
           file: cli/UploadSourcemaps.ts
           replace-pattern: 's/api.instabug.com\/api\/sdk/st001009private.instabug.com\/api\/sdk/g'
       - search_and_replace:
+          working-directory: project
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g'
       - run:
