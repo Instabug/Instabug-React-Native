@@ -259,7 +259,7 @@ jobs:
           command: bash scripts/create-nn-release-branch.sh
       - run:
           working_directory: project
-          command: yarn build
+          command: yarn && yarn build
       - run:
           name: Publish new enterprise version
           command: npm publish
