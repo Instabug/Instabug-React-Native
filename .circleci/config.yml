@@ -244,7 +244,6 @@ jobs:
       - advanced-checkout/shallow-checkout
       - install_node_modules:
           app-dir: project
-          pkg-manager: yarn
       - run:
           name: Remove README.md file
           command: rm README.md
