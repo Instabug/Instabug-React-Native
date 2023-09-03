@@ -47,7 +47,7 @@ commands:
     steps:
       - run:
           name: Search and Replace in << parameters.file >>
-          command: sed -i "" -e << parameters.replace-pattern >> << parameters.file >>
+          command: sed -i "" -e '<< parameters.replace-pattern >>' << parameters.file >>
 
 jobs:
   danger:
