@@ -2,7 +2,7 @@ import tracking, { RejectionTrackingOptions } from 'promise/setimmediate/rejecti
 import { errorifyIfNotError, sendCrashReport } from './InstabugUtils';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 
-interface HermesInternalType {
+export interface HermesInternalType {
   enablePromiseRejectionTracker?: (options?: RejectionTrackingOptions) => void;
   hasPromise?: () => boolean;
 }
@@ -11,16 +11,19 @@ interface HermesInternalType {
  * A typed version of the `HermesInternal` global object with the properties
  * we use.
  */
-const _hermes = (global as any).HermesInternal as HermesInternalType | null;
+function _getHermes(): HermesInternalType | null {
+  return (global as any).HermesInternal;
+}
 
 /**
  * Checks whether the Promise object is provided by Hermes.
  *
  * @returns whether the `Promise` object is provided by Hermes.
  */
-function _isHermesPromise(): boolean {
-  const hasPromise = _hermes?.hasPromise?.() === true;
-  const canTrack = _hermes?.enablePromiseRejectionTracker != null;
+function _isHermesPromise() {
+  const hermes = _getHermes();
+  const hasPromise = hermes?.hasPromise?.() === true;
+  const canTrack = hermes?.enablePromiseRejectionTracker != null;
 
   return hasPromise && canTrack;
 }
@@ -31,7 +34,9 @@ function _isHermesPromise(): boolean {
  * @param options Rejection tracking options.
  */
 function _enableHermesRejectionTracking(options?: RejectionTrackingOptions) {
-  _hermes!.enablePromiseRejectionTracker!(options);
+  const hermes = _getHermes();
+
+  hermes!.enablePromiseRejectionTracker!(options);
 }
 
 /**
@@ -75,6 +80,7 @@ function _onUnhandled(id: number, rejection: unknown) {
   sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
 }
 
+/* istanbul ignore next */
 /**
  * The default unhandled promise rejection handler set by React Native.
  *
