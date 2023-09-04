@@ -16,7 +16,7 @@ git add .
 git commit -m "Test Enterprise Release v$version"
 
 # Add the private instabug react native library
-git remote add private https://github.com/Instabug/react-native.git
+git remote add private git@github.com:Instabug/react-native.git
 
 # Push the changes to it
 git push private "$branch_name"
