@@ -26,6 +26,7 @@ target 'InstabugExample' do
 
   # Flags change depending on the env values.
   flags = get_default_flags()
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/disable_automatic_capturing_of_network_logs/11.13.3/Instabug.podspec'
 
   use_react_native!(
     :path => config[:reactNativePath],
