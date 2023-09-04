@@ -262,6 +262,9 @@ jobs:
           working_directory: project
           command: yarn build
       - run:
+          name: Authorize with npm
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
           name: Publish new enterprise version
           command: npm publish
 
