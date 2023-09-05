@@ -7,7 +7,7 @@ export interface CrashData {
   message: string;
   e_message: string;
   e_name: string;
-  os: typeof Platform['OS'];
+  os: (typeof Platform)['OS'];
   platform: 'react_native';
   exception: StackFrame[];
 }

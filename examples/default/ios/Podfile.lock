@@ -422,7 +422,7 @@ PODS:
     - React-logger (= 0.71.8)
     - React-perflogger (= 0.71.8)
   - RNInstabug (11.13.0):
-    - Instabug (= 11.13.3)
+    - Instabug
     - React-Core
   - RNScreens (3.20.0):
     - React-Core
@@ -464,6 +464,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.125.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/disable_automatic_capturing_of_network_logs/11.13.3/Instabug.podspec`)
   - libevent (~> 2.1.12)
   - OCMock
   - OpenSSL-Universal (= 1.1.1100)
@@ -516,7 +517,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - Instabug
     - libevent
     - OCMock
     - OpenSSL-Universal
@@ -536,6 +536,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
+  Instabug:
+    :podspec: https://ios-releases.instabug.com/custom/disable_automatic_capturing_of_network_logs/11.13.3/Instabug.podspec
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -621,7 +623,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 47986d26692ae75ee7a17ab049caee8864f855de
-  Instabug: f7c3880823873cff9ee70307d373e8266c9ea0f8
+  Instabug: 5a780a0652cf2da4765318cfcac9d9e74595ada4
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -653,7 +655,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 43ffd976a25f6057a7cf95ea3648ba4e00287f89
   React-runtimeexecutor: 7c51ae9d4b3e9608a2366e39ccaa606aa551b9ed
   ReactCommon: 85c98ab0a509e70bf5ee5d9715cf68dbf495b84c
-  RNInstabug: a72078ae892268b40d72ce812b213fd8f127c2e9
+  RNInstabug: 25e4bf4c9f7096ce5086a88bacaed6887f5e7883
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
@@ -661,6 +663,6 @@ SPEC CHECKSUMS:
   Yoga: 065f0b74dba4832d6e328238de46eb72c5de9556
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d169b4508f413ff5d69cdf38428960e0828e6282
+PODFILE CHECKSUM: f3ad365852c967d139f3a65799ab0f1566a41693
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1
