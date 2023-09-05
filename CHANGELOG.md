@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/snapshot/11.13.3-INSD-9896...dev)
+
+## Fixed
+
+- Fix an issue with iOS network request logging, which prevented any requests from being resolved by disabling automatic network log capturing. ([#1018](https://github.com/Instabug/Instabug-React-Native/pull/1018))
+
 ## [11.13.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.12.0...v11.13.0) (July 10, 2023)
 
 ### Changed
