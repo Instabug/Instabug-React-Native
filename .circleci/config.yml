@@ -287,6 +287,21 @@ jobs:
           working_directory: project
           command: Escape react-native publish
 
+  generate_snapshot:
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules
+      - run: yarn build
+      - run: yarn remove @instabug/danger-plugin-coverage
+      - run:
+          name: Remove build files from .gitignore
+          command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
+      - run: git add .
+      - run: 'git commit -m "chore: add generate files"'
+      - run: git push origin snapshot/$CIRCLE_BRANCH
+
 workflows:
   publish:
     jobs:
@@ -303,6 +318,21 @@ workflows:
       - test_ios
       - e2e_ios
       - e2e_android
+      - hold_generate_snapshot:
+          type: approval
+          requires:
+              - danger
+              - lint
+              - test_module
+              - test_android
+              - validate_shell_files
+              - sync_generated_files
+              - test_ios
+              - e2e_ios
+              - e2e_android
+      - generate_snapshot:
+          requires:
+            - hold_generate_snapshot
       - hold_publish:
           requires:
             - danger
