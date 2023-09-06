@@ -321,15 +321,15 @@ workflows:
       - hold_generate_snapshot:
           type: approval
           requires:
-              - danger
-              - lint
-              - test_module
-              - test_android
-              - validate_shell_files
-              - sync_generated_files
-              - test_ios
-              - e2e_ios
-              - e2e_android
+            - danger
+            - lint
+            - test_module
+            - test_android
+            - validate_shell_files
+            - sync_generated_files
+            - test_ios
+            - e2e_ios
+            - e2e_android
       - generate_snapshot:
           requires:
             - hold_generate_snapshot
