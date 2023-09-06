@@ -16,7 +16,7 @@
 
 ### Changed
 
-- Bump Insabug Android SDK to 11.14.0 ([#1019](https://github.com/Instabug/Instabug-React-Native/pull/1019)) [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.14.0)
+- Bump Instabug Android SDK to 11.14.0 ([#1019](https://github.com/Instabug/Instabug-React-Native/pull/1019)) [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.14.0)
 
 ## [11.13.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.12.0...v11.13.0) (July 10, 2023)
 
