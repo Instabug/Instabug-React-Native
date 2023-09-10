@@ -23,12 +23,12 @@ public class GlobalMocks {
         reflection = mockStatic(InstabugUtil.class);
         reflected = mockStatic(MockReflected.class);
 
-        Method mSetCurrentPlatform = MockReflected.class.getDeclaredMethod("setCurrentPlatform", int.class);
+        Method mSetCurrentPlatform = MockReflected.class.getDeclaredMethod("setCurrentPlatform", int.class, String.class);
         mSetCurrentPlatform.setAccessible(true);
 
         // setCurrentPlatform mock
         reflection
-                .when(() -> InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class))
+                .when(() -> InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class, String.class))
                 .thenReturn(mSetCurrentPlatform);
 
         // setBaseUrl mock

@@ -433,6 +433,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
         [inv setTarget:[Instabug class]];
         IBGPlatform platform = IBGPlatformReactNative;
         [inv setArgument:&(platform) atIndex:2];
+        [inv setArgument:&(cpSDKVersion) atIndex:3];
         
         [inv invoke];
     }

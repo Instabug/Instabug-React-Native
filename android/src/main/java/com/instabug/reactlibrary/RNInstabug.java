@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 public class RNInstabug {
 
     private static RNInstabug instance;
+    public static final String SDK_VERSION = "11.13.0";
     
     private RNInstabug() {}
 
@@ -111,10 +112,10 @@ public class RNInstabug {
     @VisibleForTesting
     public void setCurrentPlatform() {
         try {
-            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class);
+            Method method = InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setCurrentPlatform", int.class, String.class);
             if (method != null) {
                 Log.i("IBG-CP-Bridge", "invoking setCurrentPlatform with platform: " + Platform.RN + " and version: 11.13.0");
-                method.invoke(null, Platform.RN, "11.13.0"); // Second parameter is the version of the RN SDK
+                method.invoke(null, Platform.RN, SDK_VERSION); // Second parameter is the version of the RN SDK
             } else {
                 Log.e("IBG-CP-Bridge", "setCurrentPlatform was not found by reflection");
             }
