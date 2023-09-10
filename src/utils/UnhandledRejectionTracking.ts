@@ -1,5 +1,5 @@
 import tracking, { RejectionTrackingOptions } from 'promise/setimmediate/rejection-tracking';
-import { errorifyIfNotError, sendCrashReport } from './InstabugUtils';
+import { sendCrashReport } from './InstabugUtils';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 
 export interface HermesInternalType {
@@ -75,9 +75,9 @@ function _onUnhandled(id: number, rejection: unknown) {
     return;
   }
 
-  const error = errorifyIfNotError(rejection);
-
-  sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
+  if (rejection instanceof Error) {
+    sendCrashReport(rejection, NativeCrashReporting.sendHandledJSCrash);
+  }
 }
 
 /* istanbul ignore next */

@@ -36,27 +36,25 @@ it('tracks Promise rejections when using `promise` polyfill', () => {
   });
 });
 
-it.each([new Error(), "Couldn't fetch data"])(
-  'reports unhandled Promise rejections in release mode',
-  (rejection) => {
-    const mockDev = mockDevMode(false);
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+it('reports unhandled Promise rejections in release mode', () => {
+  const mockDev = mockDevMode(false);
+  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-    const id = 123;
+  const rejection = new Error('something went wrong');
+  const id = 123;
 
-    // Simulate an immediate unhandled promise rejection
-    mocked(tracking.enable).mockImplementationOnce((options) => {
-      options?.onUnhandled?.(id, rejection);
-    });
+  // Simulate an immediate unhandled promise rejection
+  mocked(tracking.enable).mockImplementationOnce((options) => {
+    options?.onUnhandled?.(id, rejection);
+  });
 
-    captureUnhandledRejections();
+  captureUnhandledRejections();
 
-    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
+  expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
 
-    mockDev.mockRestore();
-    consoleWarnSpy.mockRestore();
-  },
-);
+  mockDev.mockRestore();
+  consoleWarnSpy.mockRestore();
+});
 
 it('does not report unhandled Promise rejections in dev mode', () => {
   const mockDev = mockDevMode(true);
@@ -64,6 +62,26 @@ it('does not report unhandled Promise rejections in dev mode', () => {
 
   const id = 123;
   const rejection = new TypeError("Couldn't fetch data");
+
+  // Simulate an immediate unhandled promise rejection
+  mocked(tracking.enable).mockImplementationOnce((options) => {
+    options?.onUnhandled?.(id, rejection);
+  });
+
+  captureUnhandledRejections();
+
+  expect(NativeCrashReporting.sendHandledJSCrash).not.toBeCalled();
+
+  mockDev.mockRestore();
+  consoleWarnSpy.mockRestore();
+});
+
+it('does not report non-error unhandled Promise rejections', () => {
+  const mockDev = mockDevMode(true);
+  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const id = 123;
+  const rejection = 'something went wrong';
 
   // Simulate an immediate unhandled promise rejection
   mocked(tracking.enable).mockImplementationOnce((options) => {
