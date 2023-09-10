@@ -39,7 +39,7 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
+    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:cpSDKVersion:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
         NSString *cpSDKVersion = @"11.13.0";
@@ -47,7 +47,7 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
         [inv setSelector:setPrivateApiSEL];
         [inv setTarget:[Instabug class]];
         [inv setArgument:&(platform) atIndex:2];
-        [inv setArgument:&(cpSDKVersion) atIndex:3]; // setting cpSDKVersion as the 3rd argument
+        [inv setArgument:&cpSDKVersion atIndex:3]; // setting cpSDKVersion as the 3rd argument
         [inv invoke];
     }
     IBGInvocationEvent invocationEvents = 0;
@@ -426,7 +426,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
 }
 
 - (void) setBaseUrlForDeprecationLogs {
-    SEL setCurrentPlatformSEL = NSSelectorFromString(@"setCurrentPlatform:");
+    SEL setCurrentPlatformSEL = NSSelectorFromString(@"setCurrentPlatform:cpSDKVersion:");
     if([[Instabug class] respondsToSelector:setCurrentPlatformSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setCurrentPlatformSEL]];
         [inv setSelector:setCurrentPlatformSEL];
@@ -434,7 +434,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
         IBGPlatform platform = IBGPlatformReactNative;
         NSString *cpSDKVersion = @"11.13.0";
         [inv setArgument:&(platform) atIndex:2];
-        [inv setArgument:&(cpSDKVersion) atIndex:3];
+        [inv setArgument:&cpSDKVersion atIndex:3];
         
         [inv invoke];
     }
