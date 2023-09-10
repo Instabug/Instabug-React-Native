@@ -9,14 +9,15 @@
 - Add support for RN version 0.73 by updating the `build.gradle` file with the `namespace` ([#1004](https://github.com/Instabug/Instabug-React-Native/pull/1004))
 - Add native-side init API which can be used to catch and report startup crashes on android. ([#1012](https://github.com/Instabug/Instabug-React-Native/pull/1012))
 
+### Changed
+
+- Bump Instabug Android SDK to v11.14.0 ([#1019](https://github.com/Instabug/Instabug-React-Native/pull/1019)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.14.0).
+
 ### Deprecated
 
 - Deprecate the old `StringKey.discardAlertCancel` and `StringKey.discardAlertAction` string keys for overriding the discard alert buttons as they had incosistent behavior between iOS and Android ([#1001](https://github.com/Instabug/Instabug-React-Native/pull/1001)).
 - Deprecate the old `StringKey.reproStepsListItemNumberingTitle` string key for overriding the repro steps list item (screen) title as it had incosistent behavior between iOS and Android ([#1002](https://github.com/Instabug/Instabug-React-Native/pull/1002)).
 
-### Changed
-
-- Bump Instabug Android SDK to 11.14.0 ([#1019](https://github.com/Instabug/Instabug-React-Native/pull/1019)) [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.14.0)
 
 ## [11.13.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.12.0...v11.13.0) (July 10, 2023)
 
