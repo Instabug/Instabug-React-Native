@@ -42,10 +42,12 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
     SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInteger *platform = IBGPlatformReactNative;
+        NSString *cpSDKVersion = @"11.13.0";
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
         [inv setSelector:setPrivateApiSEL];
         [inv setTarget:[Instabug class]];
         [inv setArgument:&(platform) atIndex:2];
+        [inv setArgument:&cpSDKVersion atIndex:3]; // setting cpSDKVersion as the 3rd argument
         [inv invoke];
     }
     IBGInvocationEvent invocationEvents = 0;
