@@ -330,9 +330,9 @@ workflows:
             - e2e_ios
             - e2e_android
           type: approval
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - publish:
           requires:
             - hold_publish
@@ -342,6 +342,6 @@ workflows:
       - release_nn:
           requires:
             - hold_release_nn
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
