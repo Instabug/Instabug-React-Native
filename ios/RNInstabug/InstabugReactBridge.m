@@ -16,6 +16,7 @@
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
+#import "Util/IBGNetworkLogger+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -53,12 +54,13 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
+    [IBGNetworkLogger disableAutomaticCapturingOfNetworkLogs];
     [Instabug startWithToken:token invocationEvents:invocationEvents];
     [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
 
     RCTAddLogFunction(InstabugReactLogFunction);
     RCTSetLogThreshold(RCTLogLevelInfo);
-    
+
     IBGNetworkLogger.enabled = YES;
 
     // Temporarily disabling APM hot launches
@@ -72,7 +74,7 @@ RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) para
             [[Instabug class] performSelector:setPrivateApiSEL];
         } else {
             [[Instabug class] performSelector:setPrivateApiSEL withObject:param];
-            
+
         }
     }
 }
@@ -344,7 +346,7 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     int32_t errorCode = [networkData[@"errorCode"] integerValue];
     int64_t startTime = [networkData[@"startTime"] integerValue] * 1000;
     int64_t duration = [networkData[@"duration"] doubleValue] * 1000;
-    
+
     NSString* gqlQueryName = nil;
     NSString* serverErrorMessage = nil;
     if (networkData[@"gqlQueryName"] != [NSNull null]) {
@@ -355,12 +357,12 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     }
 
     SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:");
-    
+
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
         [inv setSelector:networkLogSEL];
         [inv setTarget:[IBGNetworkLogger class]];
-        
+
         [inv setArgument:&(url) atIndex:2];
         [inv setArgument:&(method) atIndex:3];
         [inv setArgument:&(requestBody) atIndex:4];
@@ -431,7 +433,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
         [inv setTarget:[Instabug class]];
         IBGPlatform platform = IBGPlatformReactNative;
         [inv setArgument:&(platform) atIndex:2];
-        
+
         [inv invoke];
     }
 }
@@ -464,7 +466,7 @@ RCTLogFunction InstabugReactLogFunction = ^(
 {
     NSString *formatString = @"Instabug - REACT LOG: %@";
     NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-    
+
     switch(level) {
         case RCTLogLevelTrace:
             RNIBGLog(IBGLogLevelVerbose, formatString, log);
