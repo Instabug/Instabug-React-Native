@@ -5,7 +5,15 @@ const exclusionList = require('metro-config/src/defaults/exclusionList');
 const root = path.resolve(__dirname, '../..');
 const pkg = require(path.join(root, 'package.json'));
 const peerDependencies = Object.keys(pkg.peerDependencies);
-const modules = [...peerDependencies, '@babel/runtime'];
+const modules = [
+  ...peerDependencies,
+  '@babel/runtime',
+
+  // We need to exclude the `promise` package in the root node_modules directory
+  // to be able to track unhandled Promise rejections on the correct example app
+  // Promise object.
+  'promise',
+];
 
 module.exports = {
   watchFolders: [root],
