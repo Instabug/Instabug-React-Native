@@ -4,6 +4,7 @@
 
 ### Added
 
+- Add support for automatic capturing of unhandled Promise rejection crashes ([#1014](https://github.com/Instabug/Instabug-React-Native/pull/1014)).
 - Add new strings (`StringKey.discardAlertStay` and `StringKey.discardAlertDiscard`) for overriding the discard alert buttons for consistency between iOS and Android ([#1001](https://github.com/Instabug/Instabug-React-Native/pull/1001)).
 - Add a new string (`StringKey.reproStepsListItemNumberingTitle`) for overriding the repro steps list item (screen) title for consistency between iOS and Android ([#1002](https://github.com/Instabug/Instabug-React-Native/pull/1002)).
 - Add support for RN version 0.73 by updating the `build.gradle` file with the `namespace` ([#1004](https://github.com/Instabug/Instabug-React-Native/pull/1004))
@@ -11,6 +12,7 @@
 
 ### Changed
 
+- Bump Instabug iOS SDK to v11.14.0 ([#1020](https://github.com/Instabug/Instabug-React-Native/pull/1020)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/11.14.0).
 - Bump Instabug Android SDK to v11.14.0 ([#1019](https://github.com/Instabug/Instabug-React-Native/pull/1019)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v11.14.0).
 
 ### Deprecated

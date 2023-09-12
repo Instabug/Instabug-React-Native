@@ -22,6 +22,13 @@ export const CrashReportingScreen: React.FC = () => {
           }
         }}
       />
+      <ListTile
+        title="Reject an Unhandled Promise"
+        onPress={() => {
+          Promise.reject(new Error('Unhandled Promise Rejection from Instabug Test App'));
+          Alert.alert('Crash report sent!');
+        }}
+      />
     </Screen>
   );
 };
