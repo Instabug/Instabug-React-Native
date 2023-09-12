@@ -3,7 +3,6 @@ import '../mocks/mockInstabugUtils';
 import { Platform, findNodeHandle, processColor } from 'react-native';
 
 import { mocked } from 'jest-mock';
-
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
