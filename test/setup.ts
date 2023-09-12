@@ -1,4 +1,5 @@
 import './mocks/mockNativeModules';
+import './mocks/mockPromiseRejectionTracking';
 import './mocks/mockParseErrorStackLib';
 
 import { Platform } from 'react-native';

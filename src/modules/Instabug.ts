@@ -36,6 +36,7 @@ import InstabugUtils, {
   stringifyIfNotString,
 } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
+import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -87,6 +88,7 @@ export const start = (token: string, invocationEvents: invocationEvent[] | Invoc
  */
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
+  captureUnhandledRejections();
   NetworkLogger.setEnabled(true);
 
   NativeInstabug.init(
