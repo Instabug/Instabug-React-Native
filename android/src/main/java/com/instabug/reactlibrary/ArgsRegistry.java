@@ -243,8 +243,6 @@ final class ArgsRegistry {
 
         put("discardAlertTitle", Key.REPORT_DISCARD_DIALOG_TITLE);
         put("discardAlertMessage", Key.REPORT_DISCARD_DIALOG_BODY);
-        put("discardAlertCancel", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
-        put("discardAlertAction", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         put("discardAlertStay", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         put("discardAlertDiscard", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
 
@@ -256,7 +254,6 @@ final class ArgsRegistry {
         put("reproStepsListHeader", Key.REPRO_STEPS_LIST_HEADER);
         put("reproStepsListDescription", Key.REPRO_STEPS_LIST_DESCRIPTION);
         put("reproStepsListEmptyStateDescription", Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
-        put("reproStepsListItemTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
         put("reproStepsListItemNumberingTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
         put("okButtonTitle", Key.BUG_ATTACHMENT_DIALOG_OK_BUTTON);
         put("audio", Key.CHATS_TYPE_AUDIO);
