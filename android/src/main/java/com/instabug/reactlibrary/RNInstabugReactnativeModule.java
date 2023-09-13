@@ -24,7 +24,9 @@ import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
+import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
+import com.instabug.library.ReproConfigurations;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
@@ -48,6 +50,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -761,12 +765,14 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
- /**
+    /**
      * Sets whether user steps tracking is visual, non visual or disabled.
      *
      * @param reproStepsMode A string to set user steps tracking to be
      *                       enabled, non visual or disabled.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated()
     @ReactMethod
     public void setReproStepsMode(final String reproStepsMode) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -780,6 +786,29 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 }
             }
         });
+    }
+
+    @ReactMethod
+    public void setReproStepsConfig(@Nullable final String bugMode, @Nullable final String crashMode) {
+        try {
+            final ReproConfigurations.Builder builder = new ReproConfigurations.Builder();
+
+            if (bugMode != null) {
+                final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
+                builder.setIssueMode(IssueType.Bug, resolvedBugMode);
+            }
+
+            if (crashMode != null) {
+                final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
+                builder.setIssueMode(IssueType.Crash, resolvedCrashMode);
+            }
+
+            final ReproConfigurations config = builder.build();
+
+            Instabug.setReproConfigurations(config);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
