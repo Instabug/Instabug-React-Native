@@ -61,6 +61,8 @@
 
 - (void)setReproStepsMode:(IBGUserStepsMode)reproStepsMode;
 
+- (void)setReproStepsConfig:(IBGUserStepsMode)bugMode:(IBGUserStepsMode)crashMode;
+
 - (void)setUserAttribute:(NSString *)key withValue:(NSString *)value;
 
 - (void)getUserAttribute:(NSString *)key
