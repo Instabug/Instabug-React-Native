@@ -37,6 +37,7 @@ import InstabugUtils, {
 } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
+import type { ReproConfig } from '../models/ReproConfig';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -365,6 +366,8 @@ export const clearLogs = () => {
 };
 
 /**
+ * @deprecated Use {@link setReproStepsConfig} instead.
+ *
  * Sets whether user steps tracking is visual, non visual or disabled.
  * User Steps tracking is enabled by default if it's available
  * in your current plan.
@@ -373,6 +376,18 @@ export const clearLogs = () => {
  */
 export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
+};
+
+export const setReproStepsConfig = (config: ReproConfig) => {
+  let bug = config.bug ?? ReproStepsMode.enabled;
+  let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
+
+  if (config.all != null) {
+    bug = config.all;
+    crash = config.all;
+  }
+
+  NativeInstabug.setReproStepsConfig(bug, crash);
 };
 
 /**
