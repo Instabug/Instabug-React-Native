@@ -387,6 +387,15 @@ export const setReproStepsConfig = (config: ReproConfig) => {
     crash = config.all;
   }
 
+  // There's an issue with crashes repro steps with screenshots in the iOS SDK
+  // at the moment, so we'll map enabled with screenshots to enabled with no
+  // screenshots to avoid storing the images on disk if it's not needed until
+  // this issue is fixed in a future version.
+  if (Platform.OS === 'ios' && crash === ReproStepsMode.enabled) {
+    /* istanbul ignore next */
+    crash = ReproStepsMode.enabledWithNoScreenshots;
+  }
+
   NativeInstabug.setReproStepsConfig(bug, crash);
 };
 
