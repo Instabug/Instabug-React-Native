@@ -11,6 +11,7 @@ import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.OnSdkDismissCallback.DismissType;
+import com.instabug.library.ReproMode;
 import com.instabug.library.core.plugin.PluginPromptOption;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -43,6 +44,7 @@ final class ArgsRegistry {
         }
     }
 
+    @SuppressWarnings("deprecation")
     static Map<String, Object> getAll() {
         return new HashMap<String, Object>() {{
             putAll(logLevels);
@@ -57,6 +59,7 @@ final class ArgsRegistry {
             putAll(actionTypes);
             putAll(extendedBugReportStates);
             putAll(reproStates);
+            putAll(reproModes);
             putAll(sdkLogLevels);
             putAll(promptOptions);
             putAll(locales);
@@ -140,10 +143,17 @@ final class ArgsRegistry {
         put("disabled", ExtendedBugReport.State.DISABLED);
     }};
 
+    @Deprecated()
     static final ArgsMap<State> reproStates = new ArgsMap<State>() {{
         put("reproStepsEnabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
         put("reproStepsEnabled", State.ENABLED);
         put("reproStepsDisabled", State.DISABLED);
+    }};
+
+    static final ArgsMap<Integer> reproModes = new ArgsMap<Integer>() {{
+        put("reproStepsEnabledWithNoScreenshots", ReproMode.EnableWithNoScreenshots);
+        put("reproStepsEnabled", ReproMode.EnableWithScreenshots);
+        put("reproStepsDisabled", ReproMode.Disable);
     }};
 
     static final ArgsMap<Integer> sdkLogLevels = new ArgsMap<Integer>() {{
