@@ -483,11 +483,6 @@ public class RNInstabugReactnativeModuleTest {
         Map<String, InstabugCustomTextPlaceHolder.Key> args = ArgsRegistry.placeholders;
         Set<String> keys = args.keySet();
 
-        // Ignore deprecated keys
-        keys.remove("discardAlertCancel");
-        keys.remove("discardAlertAction");
-        keys.remove("reproStepsListItemTitle");
-
         // when
         InstabugCustomTextPlaceHolder expectedPlaceHolders = new InstabugCustomTextPlaceHolder();
         for (String key : keys) {

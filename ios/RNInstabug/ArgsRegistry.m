@@ -246,8 +246,6 @@
 
         @"discardAlertTitle": kIBGDiscardAlertTitle,
         @"discardAlertMessage": kIBGDiscardAlertMessage,
-        @"discardAlertCancel": kIBGDiscardAlertCancel,
-        @"discardAlertAction": kIBGDiscardAlertAction,
         @"discardAlertDiscard": kIBGDiscardAlertCancel,
         @"discardAlertStay": kIBGDiscardAlertAction,
         @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName,
@@ -258,7 +256,6 @@
         @"reproStepsListHeader": kIBGReproStepsListTitle,
         @"reproStepsListDescription": kIBGReproStepsListHeader,
         @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
-        @"reproStepsListItemTitle": kIBGReproStepsListItemName,
         @"reproStepsListItemNumberingTitle": kIBGReproStepsListItemName,
         @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
         @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,

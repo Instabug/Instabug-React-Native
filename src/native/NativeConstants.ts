@@ -142,8 +142,6 @@ interface NativeStringKey {
   commentFieldHintForQuestion: any;
   conversationsHeaderTitle: any;
   conversationTextFieldHint: any;
-  discardAlertAction: any;
-  discardAlertCancel: any;
   discardAlertStay: any;
   discardAlertDiscard: any;
   discardAlertMessage: any;
@@ -175,7 +173,6 @@ interface NativeStringKey {
   reproStepsListDescription: any;
   reproStepsListEmptyStateDescription: any;
   reproStepsListHeader: any;
-  reproStepsListItemTitle: any;
   reproStepsListItemNumberingTitle: any;
   reproStepsProgressDialogBody: any;
   requestFeatureDescription: any;

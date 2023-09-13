@@ -160,10 +160,6 @@ export enum StringKey {
   commentFieldHintForQuestion = constants.commentFieldHintForQuestion,
   conversationsHeaderTitle = constants.conversationsHeaderTitle,
   conversationTextFieldHint = constants.conversationTextFieldHint,
-  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
-  discardAlertAction = constants.discardAlertAction,
-  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
-  discardAlertCancel = constants.discardAlertCancel,
   discardAlertDiscard = constants.discardAlertDiscard,
   discardAlertStay = constants.discardAlertStay,
   discardAlertMessage = constants.discardAlertMessage,
@@ -200,8 +196,6 @@ export enum StringKey {
   reproStepsListDescription = constants.reproStepsListDescription,
   reproStepsListEmptyStateDescription = constants.reproStepsListEmptyStateDescription,
   reproStepsListHeader = constants.reproStepsListHeader,
-  /** @deprecated Use {@link reproStepsListItemNumberingTitle} instead */
-  reproStepsListItemTitle = constants.reproStepsListItemTitle,
   reproStepsListItemNumberingTitle = constants.reproStepsListItemNumberingTitle,
   reproStepsProgressDialogBody = constants.reproStepsProgressDialogBody,
   requestFeatureDescription = constants.requestFeatureDescription,
