@@ -2,15 +2,6 @@ import { NativeEventEmitter, NativeModule, ProcessedColorValue } from 'react-nat
 
 import type Report from '../models/Report';
 import type {
-  colorTheme,
-  invocationEvent,
-  locale,
-  reproStepsMode,
-  sdkDebugLogsLevel,
-  strings,
-  welcomeMessageMode,
-} from '../utils/ArgsRegistry';
-import type {
   ColorTheme,
   InvocationEvent,
   Locale,
@@ -28,11 +19,7 @@ export interface InstabugNativeModule extends NativeModule {
 
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
-  init(
-    token: string,
-    invocationEvents: InvocationEvent[] | invocationEvent[],
-    debugLogsLevel: LogLevel,
-  ): void;
+  init(token: string, invocationEvents: InvocationEvent[], debugLogsLevel: LogLevel): void;
   show(): void;
 
   // Misc APIs //
@@ -40,10 +27,10 @@ export interface InstabugNativeModule extends NativeModule {
   setSessionProfilerEnabled(isEnabled: boolean): void;
 
   // Customization APIs //
-  setLocale(sdkLocale: Locale | locale): void;
-  setColorTheme(sdkTheme: ColorTheme | colorTheme): void;
+  setLocale(sdkLocale: Locale): void;
+  setColorTheme(sdkTheme: ColorTheme): void;
   setPrimaryColor(color: ProcessedColorValue | null | undefined): void;
-  setString(string: string, key: StringKey | strings): void;
+  setString(string: string, key: StringKey): void;
 
   // Network APIs //
   networkLog(network: NetworkData | string): void;
@@ -51,7 +38,7 @@ export interface InstabugNativeModule extends NativeModule {
 
   // Repro Steps APIs //
   /** @deprecated */
-  setReproStepsMode(mode: ReproStepsMode | reproStepsMode): void;
+  setReproStepsMode(mode: ReproStepsMode): void;
   setReproStepsConfig(bugMode: ReproStepsMode, crashMode: ReproStepsMode): void;
   setTrackUserSteps(isEnabled: boolean): void;
   reportScreenChange(firstScreen: string): void;
@@ -80,8 +67,8 @@ export interface InstabugNativeModule extends NativeModule {
   clearAllUserAttributes(): void;
 
   // Welcome Message APIs //
-  showWelcomeMessageWithMode(mode: WelcomeMessageMode | welcomeMessageMode): void;
-  setWelcomeMessageMode(mode: WelcomeMessageMode | welcomeMessageMode): void;
+  showWelcomeMessageWithMode(mode: WelcomeMessageMode): void;
+  setWelcomeMessageMode(mode: WelcomeMessageMode): void;
 
   // Tags APIs //
   appendTags(tags: string[]): void;
@@ -110,8 +97,6 @@ export interface InstabugNativeModule extends NativeModule {
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
 
   // Deprecated APIs //
-  /** @deprecated */
-  setSdkDebugLogsLevel(level: sdkDebugLogsLevel): void;
   /** @deprecated */
   setDebugEnabled(isEnabled: boolean): void;
   /** @deprecated */

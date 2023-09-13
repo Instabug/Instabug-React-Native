@@ -1,6 +1,5 @@
 import type { NativeModule } from 'react-native';
 
-import type { logLevel } from '../utils/ArgsRegistry';
 import { NativeModules } from './NativePackage';
 
 export interface ApmNativeModule extends NativeModule {
@@ -24,10 +23,6 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
-
-  // Deprecated APIs //
-  /** @deprecated */
-  setLogLevel(level: logLevel): void;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

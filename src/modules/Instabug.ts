@@ -9,20 +9,6 @@ import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
 import {
-  IBGPosition,
-  actionTypes,
-  colorTheme,
-  dismissType,
-  extendedBugReportMode,
-  floatingButtonEdge,
-  invocationEvent,
-  locale,
-  reproStepsMode,
-  sdkDebugLogsLevel,
-  strings,
-  welcomeMessageMode,
-} from '../utils/ArgsRegistry';
-import {
   ColorTheme,
   InvocationEvent,
   Locale,
@@ -44,21 +30,6 @@ let _lastScreen: string | null = null;
 let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
 
-export {
-  invocationEvent,
-  reproStepsMode,
-  dismissType,
-  sdkDebugLogsLevel,
-  extendedBugReportMode,
-  locale,
-  colorTheme,
-  floatingButtonEdge,
-  IBGPosition,
-  welcomeMessageMode,
-  actionTypes,
-  strings,
-};
-
 /**
  * Enables or disables Instabug functionality.
  * @param isEnabled A boolean to enable/disable Instabug.
@@ -76,7 +47,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param token The token that identifies the app, you can find it on your dashboard.
  * @param invocationEvents The events that invokes the SDK's UI.
  */
-export const start = (token: string, invocationEvents: invocationEvent[] | InvocationEvent[]) => {
+export const start = (token: string, invocationEvents: InvocationEvent[]) => {
   init({ token: token, invocationEvents: invocationEvents });
 };
 
@@ -153,25 +124,12 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
 };
 
 /**
- * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
- *
- * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
- * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
- * @param level The verbosity level of logs.
- */
-export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.setSdkDebugLogsLevel(level);
-  }
-};
-
-/**
  * Sets the SDK's locale.
  * Use to change the SDK's UI to different language.
  * Defaults to the device's current locale.
  * @param sdkLocale A locale to set the SDK to.
  */
-export const setLocale = (sdkLocale: locale | Locale) => {
+export const setLocale = (sdkLocale: Locale) => {
   NativeInstabug.setLocale(sdkLocale);
 };
 
@@ -179,7 +137,7 @@ export const setLocale = (sdkLocale: locale | Locale) => {
  * Sets the color theme of the SDK's whole UI.
  * @param sdkTheme
  */
-export const setColorTheme = (sdkTheme: colorTheme | ColorTheme) => {
+export const setColorTheme = (sdkTheme: ColorTheme) => {
   NativeInstabug.setColorTheme(sdkTheme);
 };
 
@@ -228,7 +186,7 @@ export const getTags = async (callback?: (tags: string[]) => void): Promise<stri
  * @param key Key of string to override.
  * @param string String value to override the default one.
  */
-export const setString = (key: strings | StringKey, string: string) => {
+export const setString = (key: StringKey, string: string) => {
   // Suffix the repro steps list item numbering title with a # to unify the string key's
   // behavior between Android and iOS
   if (Platform.OS === 'android' && key === StringKey.reproStepsListItemNumberingTitle) {
@@ -374,7 +332,7 @@ export const clearLogs = () => {
  *
  * @param mode An enum to set user steps tracking to be enabled, non visual or disabled.
  */
-export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
+export const setReproStepsMode = (mode: ReproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
 };
 
@@ -534,7 +492,7 @@ export const isRunningLive = (callback: (isLive: boolean) => void) => {
  * Shows the welcome message in a specific mode.
  * @param mode An enum to set the welcome message mode to live, or beta.
  */
-export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode) => {
+export const showWelcomeMessage = (mode: WelcomeMessageMode) => {
   NativeInstabug.showWelcomeMessageWithMode(mode);
 };
 
@@ -542,7 +500,7 @@ export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode
  * Sets the welcome message mode to live, beta or disabled.
  * @param mode An enum to set the welcome message mode to live, beta or disabled.
  */
-export const setWelcomeMessageMode = (mode: welcomeMessageMode | WelcomeMessageMode) => {
+export const setWelcomeMessageMode = (mode: WelcomeMessageMode) => {
   NativeInstabug.setWelcomeMessageMode(mode);
 };
 
