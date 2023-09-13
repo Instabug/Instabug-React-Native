@@ -16,7 +16,7 @@ public class MockReflected {
     /**
      * Instabug.setCurrentPlatform
      */
-    public static void setCurrentPlatform(int platform) {}
+    public static void setCurrentPlatform(int platform, String cpSDKVersion) {}
 
     /**
      * Instabug.util.InstabugDeprecationLogger.setBaseUrl

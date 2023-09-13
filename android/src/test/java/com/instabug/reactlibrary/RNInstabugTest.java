@@ -103,7 +103,7 @@ public class RNInstabugTest {
     public void testSetCurrentPlatform() {
         sut.setCurrentPlatform();
 
-        reflected.verify(() -> MockReflected.setCurrentPlatform(Platform.RN));
+        reflected.verify(() -> MockReflected.setCurrentPlatform(Platform.RN, RNInstabug.SDK_VERSION));
     }
 
     @Test
