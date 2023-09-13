@@ -419,6 +419,47 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setReproStepsMode).toBeCalledWith(mode);
   });
 
+  it('setReproStepsConfig should call the native setReproStepsConfig', () => {
+    Platform.OS = 'android';
+
+    const bug = ReproStepsMode.disabled;
+    const crash = ReproStepsMode.enabled;
+    const config = { bug, crash };
+
+    Instabug.setReproStepsConfig(config);
+
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(bug, crash);
+  });
+
+  it('setReproStepsConfig should prioritize `all` over `bug` and `crash`', () => {
+    Platform.OS = 'android';
+
+    const bug = ReproStepsMode.disabled;
+    const crash = ReproStepsMode.enabled;
+    const all = ReproStepsMode.enabledWithNoScreenshots;
+    const config = { all, bug, crash };
+
+    Instabug.setReproStepsConfig(config);
+
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(all, all);
+  });
+
+  it('setReproStepsConfig should use defaults for `bug` and `crash`', () => {
+    Platform.OS = 'android';
+
+    const config = {};
+
+    Instabug.setReproStepsConfig(config);
+
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
+      ReproStepsMode.enabled,
+      ReproStepsMode.enabledWithNoScreenshots,
+    );
+  });
+
   it('should call the native method setSdkDebugLogsLevel on iOS', () => {
     const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
 
