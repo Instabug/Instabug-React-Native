@@ -378,6 +378,19 @@ export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
 };
 
+/**
+ * Sets the repro steps mode for bugs and crashes.
+ *
+ * @param config The repro steps config.
+ *
+ * @example
+ * ```js
+ * Instabug.setReproStepsConfig({
+ *   bug: ReproStepsMode.enabled,
+ *   crash: ReproStepsMode.disabled,
+ * });
+ * ```
+ */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
   let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
