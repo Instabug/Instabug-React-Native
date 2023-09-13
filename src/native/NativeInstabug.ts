@@ -52,7 +52,7 @@ export interface InstabugNativeModule extends NativeModule {
   // Repro Steps APIs //
   /** @deprecated */
   setReproStepsMode(mode: ReproStepsMode | reproStepsMode): void;
-  setReproStepsConfig(bugMode?: ReproStepsMode | null, crashMode?: ReproStepsMode | null): void;
+  setReproStepsConfig(bugMode: ReproStepsMode, crashMode: ReproStepsMode): void;
   setTrackUserSteps(isEnabled: boolean): void;
   reportScreenChange(firstScreen: string): void;
   addPrivateView(nativeTag: number | null): void;

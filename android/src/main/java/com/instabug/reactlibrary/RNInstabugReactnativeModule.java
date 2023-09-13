@@ -789,21 +789,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setReproStepsConfig(@Nullable final String bugMode, @Nullable final String crashMode) {
+    public void setReproStepsConfig(final String bugMode, final String crashMode) {
         try {
-            final ReproConfigurations.Builder builder = new ReproConfigurations.Builder();
+            final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
+            final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
 
-            if (bugMode != null) {
-                final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
-                builder.setIssueMode(IssueType.Bug, resolvedBugMode);
-            }
-
-            if (crashMode != null) {
-                final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
-                builder.setIssueMode(IssueType.Crash, resolvedCrashMode);
-            }
-
-            final ReproConfigurations config = builder.build();
+            final ReproConfigurations config = new ReproConfigurations.Builder()
+                    .setIssueMode(IssueType.Bug, resolvedBugMode)
+                    .setIssueMode(IssueType.Crash, resolvedCrashMode)
+                    .build();
 
             Instabug.setReproConfigurations(config);
         } catch (Exception e) {
