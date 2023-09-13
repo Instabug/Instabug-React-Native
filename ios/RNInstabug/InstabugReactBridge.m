@@ -81,6 +81,11 @@ RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
     [Instabug setReproStepsMode:reproStepsMode];
 }
 
+RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode) {
+    [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
+    [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
+}
+
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     NSURL *url = [NSURL URLWithString:fileLocation];
     [Instabug addFileAttachmentWithURL:url];
