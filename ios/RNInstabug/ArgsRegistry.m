@@ -187,8 +187,12 @@
         @"startAlertText": kIBGStartAlertTextStringName,
         @"invalidEmailMessage": kIBGInvalidEmailMessageStringName,
         @"invalidEmailTitle": kIBGInvalidEmailTitleStringName,
+
+        // Deprecated
         @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
+        // Deprecated
         @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
+
         @"invocationHeader": kIBGInvocationTitleStringName,
         @"reportQuestion": kIBGAskAQuestionStringName,
         @"reportBug": kIBGReportBugStringName,

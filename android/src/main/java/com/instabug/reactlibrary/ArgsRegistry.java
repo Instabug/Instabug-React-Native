@@ -201,6 +201,7 @@ final class ArgsRegistry {
         put("shakeHint", Key.SHAKE_HINT);
         put("swipeHint", Key.SWIPE_HINT);
         put("invalidEmailMessage", Key.INVALID_EMAIL_MESSAGE);
+        // Deprecated
         put("invalidCommentMessage", Key.INVALID_COMMENT_MESSAGE);
         put("emailFieldHint", Key.EMAIL_FIELD_HINT);
         put("commentFieldHintForBugReport", Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
