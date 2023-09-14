@@ -73,7 +73,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (11.13.3)
+  - Instabug (11.14.0)
   - libevent (2.1.12)
   - OCMock (3.9.1)
   - OpenSSL-Universal (1.1.1100)
@@ -490,7 +490,7 @@ PODS:
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
   - RNInstabug (11.13.0):
-    - Instabug
+    - Instabug (= 11.14.0)
     - React-Core
   - RNScreens (3.24.0):
     - React-Core
@@ -531,7 +531,6 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/disable_automatic_capturing_of_network_logs/11.13.3/Instabug.podspec`)
   - libevent (~> 2.1.12)
   - OCMock
   - OpenSSL-Universal (= 1.1.1100)
@@ -588,6 +587,7 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - FlipperKit
     - fmt
+    - Instabug
     - libevent
     - OCMock
     - OpenSSL-Universal
@@ -608,8 +608,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
-  Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/disable_automatic_capturing_of_network_logs/11.13.3/Instabug.podspec
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -704,7 +702,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: 5a780a0652cf2da4765318cfcac9d9e74595ada4
+  Instabug: b4976b1a96ed7462b772ff63f7c4e0166389c86a
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -741,7 +739,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 837c1bebd2f84572db17698cd702ceaf585b0d9a
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
-  RNInstabug: 25e4bf4c9f7096ce5086a88bacaed6887f5e7883
+  RNInstabug: 229d6ece2c9e8d085758578bdc12566aa9bef6f2
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
   RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
@@ -749,6 +747,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: f3ad365852c967d139f3a65799ab0f1566a41693
+PODFILE CHECKSUM: d169b4508f413ff5d69cdf38428960e0828e6282
 
 COCOAPODS: 1.11.3
