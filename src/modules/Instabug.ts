@@ -10,7 +10,6 @@ import Report from '../models/Report';
 import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
 import {
   ColorTheme,
-  InvocationEvent,
   Locale,
   LogLevel,
   ReproStepsMode,
@@ -36,19 +35,6 @@ const firstScreen = 'Initial Screen';
  */
 export const setEnabled = (isEnabled: boolean) => {
   NativeInstabug.setEnabled(isEnabled);
-};
-
-/**
- * @deprecated Use {@link init} instead.
- * Starts the SDK.
- * This is the main SDK method that does all the magic. This is the only
- * method that SHOULD be called.
- * Should be called in constructor of the AppRegistry component
- * @param token The token that identifies the app, you can find it on your dashboard.
- * @param invocationEvents The events that invokes the SDK's UI.
- */
-export const start = (token: string, invocationEvents: InvocationEvent[]) => {
-  init({ token: token, invocationEvents: invocationEvents });
 };
 
 /**
@@ -435,60 +421,6 @@ export const clearAllUserAttributes = () => {
 };
 
 /**
- * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
- *
- * Enable/Disable debug logs from Instabug SDK
- * Default state: disabled
- *
- * @param isEnabled whether debug logs should be printed or not into LogCat
- */
-export const setDebugEnabled = (isEnabled: boolean) => {
-  if (Platform.OS === 'android') {
-    NativeInstabug.setDebugEnabled(isEnabled);
-  }
-};
-
-/**
- * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
- *
- * Enables all Instabug functionality
- * It works on android only
- */
-export const enable = () => {
-  if (Platform.OS === 'android') {
-    setEnabled(true);
-  }
-};
-
-/**
- * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
- *
- * Disables all Instabug functionality
- * It works on android only
- */
-export const disable = () => {
-  if (Platform.OS === 'android') {
-    setEnabled(false);
-  }
-};
-
-/**
- * @deprecated This API will be removed in a future release.
- * You can manage and check your app running environment using environment variables.
- *
- * Checks whether app is development/Beta testing OR live
- * Note: This API is iOS only
- * It returns in the callback false if in development or beta testing on Test Flight, and
- * true if app is live on the app store.
- * @param callback callback with argument as return value 'isLive'
- */
-export const isRunningLive = (callback: (isLive: boolean) => void) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.isRunningLive(callback);
-  }
-};
-
-/**
  * Shows the welcome message in a specific mode.
  * @param mode An enum to set the welcome message mode to live, or beta.
  */
@@ -515,16 +447,6 @@ export const addFileAttachment = (filePath: string, fileName: string) => {
   } else {
     NativeInstabug.setFileAttachment(filePath);
   }
-};
-
-/**
- * @deprecated Use {@link addPrivateView} instead.
- *
- * Hides component from screenshots, screen recordings and view hierarchy.
- * @param viewRef the ref of the component to hide
- */
-export const setPrivateView = (viewRef: number | React.Component | React.ComponentClass) => {
-  addPrivateView(viewRef);
 };
 
 /**
@@ -561,13 +483,6 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   });
 
   NativeInstabug.setPreSendingHandler(handler);
-};
-
-/**
- * @deprecated Legacy API that will be removed in future releases.
- */
-export const callPrivateApi = (apiName: string, param: any[]) => {
-  NativeInstabug.callPrivateApi(apiName, param);
 };
 
 export const onNavigationStateChange = (
