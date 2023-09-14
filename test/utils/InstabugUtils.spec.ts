@@ -1,4 +1,3 @@
-import { mockDevMode } from '../mocks/mockDevMode';
 import '../mocks/mockXhrNetworkInterceptor';
 
 import { Platform } from 'react-native';
@@ -178,47 +177,6 @@ describe('Instabug Utils', () => {
     expect(InstabugUtils.stringifyIfNotString('hello')).toBe('hello');
     expect(InstabugUtils.stringifyIfNotString(100)).toBe('100');
     expect(InstabugUtils.stringifyIfNotString([])).toBe('[]');
-  });
-
-  it('invokeDeprecatedCallback should call the callback if it was passed', () => {
-    const callback = jest.fn();
-    const arg = 'x';
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-    const mockDev = mockDevMode(true);
-
-    InstabugUtils.invokeDeprecatedCallback(callback, arg);
-
-    expect(callback).toBeCalledTimes(1);
-    expect(callback).toBeCalledWith(arg);
-    expect(consoleWarnSpy).toBeCalledTimes(1);
-
-    mockDev.mockRestore();
-    consoleWarnSpy.mockRestore();
-  });
-
-  it("invokeDeprecatedCallback shouldn't invoke the callback if it is undefined", () => {
-    const mockDev = mockDevMode(false);
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-    expect(() => InstabugUtils.invokeDeprecatedCallback()).not.toThrowError(TypeError);
-
-    mockDev.mockRestore();
-    consoleWarnSpy.mockRestore();
-  });
-
-  it("invokeDeprecatedCallback shouldn't warn the user in production mode", () => {
-    const callback = jest.fn();
-    const arg = 'x';
-    const mockDev = mockDevMode(false);
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-
-    InstabugUtils.invokeDeprecatedCallback(callback, arg);
-
-    expect(consoleWarnSpy).not.toBeCalled();
-
-    mockDev.mockRestore();
-    consoleWarnSpy.mockRestore();
   });
 
   it('should call remoteSenderCallback with the correct JSON object on Android', () => {
