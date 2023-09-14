@@ -121,7 +121,6 @@ final class ArgsRegistry {
 
     static final ArgsMap<Integer> actionTypes = new ArgsMap<Integer>() {{
         put("allActions", ActionType.REQUEST_NEW_FEATURE | ActionType.ADD_COMMENT_TO_FEATURE);
-        put("reportBugAction", 0); // Deprecated
         put("requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
         put("addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
     }};
