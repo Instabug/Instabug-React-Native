@@ -16,10 +16,7 @@ import {
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import InstabugUtils, {
-  invokeDeprecatedCallback,
-  stringifyIfNotString,
-} from '../utils/InstabugUtils';
+import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
@@ -156,12 +153,9 @@ export const resetTags = () => {
 
 /**
  * Gets all tags of reported feedback, bug or crash.
- * @param callback DEPRECATED: callback with argument tags of reported feedback, bug or crash.
  */
-export const getTags = async (callback?: (tags: string[]) => void): Promise<string[] | null> => {
+export const getTags = async (): Promise<string[] | null> => {
   const tags = await NativeInstabug.getTags();
-
-  invokeDeprecatedCallback(callback, tags);
 
   return tags;
 };
@@ -372,15 +366,9 @@ export const setUserAttribute = (key: string, value: string) => {
 /**
  * Returns the user attribute associated with a given key.
  * @param key The attribute key as string
- * @param callback DEPRECATED: callback with argument as the desired user attribute value
  */
-export const getUserAttribute = async (
-  key: string,
-  callback?: (attribute: string) => void,
-): Promise<string | null> => {
+export const getUserAttribute = async (key: string): Promise<string | null> => {
   const attribute = await NativeInstabug.getUserAttribute(key);
-
-  invokeDeprecatedCallback(callback, attribute);
 
   return attribute;
 };
@@ -400,15 +388,10 @@ export const removeUserAttribute = (key: string) => {
 
 /**
  * Returns all user attributes.
- * @param callback DEPRECATED: callback with argument A new dictionary containing all the currently
  * set user attributes, or an empty dictionary if no user attributes have been set.
  */
-export const getAllUserAttributes = async (
-  callback?: (attributes: Record<string, string>) => void,
-): Promise<Record<string, string>> => {
+export const getAllUserAttributes = async (): Promise<Record<string, string>> => {
   const attributes = await NativeInstabug.getAllUserAttributes();
-
-  invokeDeprecatedCallback(callback, attributes);
 
   return attributes;
 };
