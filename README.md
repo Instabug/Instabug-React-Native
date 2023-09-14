@@ -125,7 +125,7 @@ Instabug.reportScreenChange('screenName');
 You can disable Repro Steps using the following API:
 
 ```javascript
-Instabug.setReproStepsMode(Instabug.reproStepsMode.disabled);
+Instabug.setReproStepsConfig({ all: ReproStepsMode.disabled });
 ```
 
 ## Documentation

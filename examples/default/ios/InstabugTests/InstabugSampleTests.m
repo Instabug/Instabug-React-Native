@@ -219,6 +219,17 @@
   OCMVerify([mock setReproStepsMode:reproStepsMode]);
 }
 
+- (void)testSetReproStepsConfig {
+  id mock = OCMClassMock([Instabug class]);
+  IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
+  IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
+
+  [self.instabugBridge setReproStepsConfig:bugMode :crashMode];
+
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+}
+
 - (void)testSetSdkDebugLogsLevel {
   id mock = OCMClassMock([Instabug class]);
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelVerbose;

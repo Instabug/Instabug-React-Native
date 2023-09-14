@@ -37,6 +37,7 @@ import InstabugUtils, {
 } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
+import type { ReproConfig } from '../models/ReproConfig';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -365,6 +366,8 @@ export const clearLogs = () => {
 };
 
 /**
+ * @deprecated Use {@link setReproStepsConfig} instead.
+ *
  * Sets whether user steps tracking is visual, non visual or disabled.
  * User Steps tracking is enabled by default if it's available
  * in your current plan.
@@ -373,6 +376,40 @@ export const clearLogs = () => {
  */
 export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
   NativeInstabug.setReproStepsMode(mode);
+};
+
+/**
+ * Sets the repro steps mode for bugs and crashes.
+ *
+ * @param config The repro steps config.
+ *
+ * @example
+ * ```js
+ * Instabug.setReproStepsConfig({
+ *   bug: ReproStepsMode.enabled,
+ *   crash: ReproStepsMode.disabled,
+ * });
+ * ```
+ */
+export const setReproStepsConfig = (config: ReproConfig) => {
+  let bug = config.bug ?? ReproStepsMode.enabled;
+  let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
+
+  if (config.all != null) {
+    bug = config.all;
+    crash = config.all;
+  }
+
+  // There's an issue with crashes repro steps with screenshots in the iOS SDK
+  // at the moment, so we'll map enabled with screenshots to enabled with no
+  // screenshots to avoid storing the images on disk if it's not needed until
+  // this issue is fixed in a future version.
+  if (Platform.OS === 'ios' && crash === ReproStepsMode.enabled) {
+    /* istanbul ignore next */
+    crash = ReproStepsMode.enabledWithNoScreenshots;
+  }
+
+  NativeInstabug.setReproStepsConfig(bug, crash);
 };
 
 /**
