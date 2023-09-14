@@ -35,8 +35,6 @@
 
 - (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled;
 
-- (void)setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel;
-
 - (void)setLocale:(IBGLocale)locale;
 
 - (void)setColorTheme:(IBGColorTheme)colorTheme;

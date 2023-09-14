@@ -51,13 +51,6 @@ describe('APM Module', () => {
     expect(NativeAPM.setAutoUITraceEnabled).toBeCalledWith(true);
   });
 
-  it('should call the native method setLogLevel', () => {
-    APM.setLogLevel(APM.logLevel.verbose);
-
-    expect(NativeAPM.setLogLevel).toBeCalledTimes(1);
-    expect(NativeAPM.setLogLevel).toBeCalledWith(APM.logLevel.verbose);
-  });
-
   it('should call the native method startExecutionTrace', () => {
     mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
 
