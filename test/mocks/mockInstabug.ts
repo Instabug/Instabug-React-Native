@@ -1,11 +1,16 @@
 import type { InstabugNativeModule } from '../../src/native/NativeInstabug';
 
+/**
+ * A fake implementation of the NativeConstants object using `Proxy` that
+ * returns the name of the property as its value instead of hardcoding all
+ * the constants.
+ */
+const fakeNativeConstants = new Proxy({}, { get: (_, prop) => prop });
+
 const mockInstabug: InstabugNativeModule = {
+  getConstants: jest.fn().mockReturnValue(fakeNativeConstants),
   addListener: jest.fn(),
   removeListeners: jest.fn(),
-  getConstants: jest.fn().mockReturnValue({
-    reproStepsListItemNumberingTitle: 'reproStepsListItemNumberingTitle',
-  }),
   setEnabled: jest.fn(),
   init: jest.fn(),
   setUserData: jest.fn(),
@@ -29,6 +34,7 @@ const mockInstabug: InstabugNativeModule = {
   logDebug: jest.fn(),
   clearLogs: jest.fn(),
   setReproStepsMode: jest.fn(),
+  setReproStepsConfig: jest.fn(),
   setSdkDebugLogsLevel: jest.fn(),
   setUserAttribute: jest.fn(),
   getUserAttribute: jest.fn(),
