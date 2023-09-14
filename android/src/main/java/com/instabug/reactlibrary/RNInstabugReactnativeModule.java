@@ -304,26 +304,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Enable/Disable debug logs from Instabug SDK
-     * Default state: disabled
-     *
-     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
-     */
-    @ReactMethod
-    public void setDebugEnabled(final boolean isDebugEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.setDebugEnabled(isDebugEnabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void logVerbose(final String message) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -862,24 +842,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 Instabug.show();
             }
         });
-    }
-
-    @ReactMethod
-    public void callPrivateApi(String apiName, String param) {
-        try {
-            if (param == null) {
-                Method m = Internal.class.getDeclaredMethod(apiName);
-                m.setAccessible(true);
-                m.invoke(null);
-            } else {
-                Method m = Internal.class.getDeclaredMethod(apiName, param.getClass());
-                m.setAccessible(true);
-                m.invoke(null, param);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**

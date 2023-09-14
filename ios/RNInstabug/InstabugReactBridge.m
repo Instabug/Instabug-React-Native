@@ -67,18 +67,6 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
     IBGAPM.hotAppLaunchEnabled = NO;
 }
 
-RCT_EXPORT_METHOD(callPrivateApi:(NSString *)apiName apiParam: (NSString *) param) {
-    SEL setPrivateApiSEL = NSSelectorFromString([apiName stringByAppendingString:@":"]);
-    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        if (param == nil) {
-            [[Instabug class] performSelector:setPrivateApiSEL];
-        } else {
-            [[Instabug class] performSelector:setPrivateApiSEL withObject:param];
-
-        }
-    }
-}
-
 RCT_EXPORT_METHOD(setReproStepsMode:(IBGUserStepsMode)reproStepsMode) {
     [Instabug setReproStepsMode:reproStepsMode];
 }
@@ -299,24 +287,6 @@ RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessa
 
 RCT_EXPORT_METHOD(setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
     [Instabug setWelcomeMessageMode:welcomeMessageMode];
-}
-
-
-RCT_EXPORT_METHOD(isRunningLive:(RCTResponseSenderBlock)callback) {
-    BOOL result = NO;
-#if TARGET_OS_SIMULATOR
-    result = NO;
-#else
-    BOOL isRunningTestFlightBeta = [[[[NSBundle mainBundle] appStoreReceiptURL] lastPathComponent] isEqualToString:@"sandboxReceipt"];
-    BOOL hasEmbeddedMobileProvision = !![[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"];
-    if (isRunningTestFlightBeta || hasEmbeddedMobileProvision)
-    {
-        result = NO;
-    } else {
-        result = YES;
-    }
-#endif
-    callback(@[[NSNumber numberWithBool:result]]);
 }
 
 RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {

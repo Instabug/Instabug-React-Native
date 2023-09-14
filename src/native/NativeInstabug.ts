@@ -95,14 +95,6 @@ export interface InstabugNativeModule extends NativeModule {
   logInfoToReport(log: string): void;
   addFileAttachmentWithURLToReport(url: string, filename?: string): void;
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
-
-  // Deprecated APIs //
-  /** @deprecated */
-  setDebugEnabled(isEnabled: boolean): void;
-  /** @deprecated */
-  isRunningLive(callback: (isLive: boolean) => void): void;
-  /** @deprecated */
-  callPrivateApi(apiName: string, param: any[]): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
