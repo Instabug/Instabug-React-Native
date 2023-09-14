@@ -59,22 +59,13 @@
   OCMVerify([mock setEnabled:isEnabled]);
 }
 
-- (void) testSetLogLevel {
-  id mock = OCMClassMock([IBGAPM class]);
-  BOOL logLevel = IBGLogLevelVerbose;
-  
-  OCMStub([mock setLogLevel:logLevel]);
-  [self.instabugBridge setLogLevel:logLevel];
-  OCMVerify([mock setLogLevel:logLevel]);
-}
-
 - (void) testSetAppLaunchEnabled {
   id mock = OCMClassMock([IBGAPM class]);
   BOOL isEnabled = YES;
   
-  OCMStub([mock setAppLaunchEnabled:isEnabled]);
+  OCMStub([mock setColdAppLaunchEnabled:isEnabled]);
   [self.instabugBridge setAppLaunchEnabled:isEnabled];
-  OCMVerify([mock setAppLaunchEnabled:isEnabled]);
+  OCMVerify([mock setColdAppLaunchEnabled:isEnabled]);
 }
 
 - (void) testEndAppLaunch {

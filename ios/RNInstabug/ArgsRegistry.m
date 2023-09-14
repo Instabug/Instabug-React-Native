@@ -6,7 +6,6 @@
     NSMutableDictionary *all = [[NSMutableDictionary alloc] init];
 
     [all addEntriesFromDictionary:ArgsRegistry.sdkLogLevels];
-    [all addEntriesFromDictionary:ArgsRegistry.logLevels];
     [all addEntriesFromDictionary:ArgsRegistry.invocationEvents];
     [all addEntriesFromDictionary:ArgsRegistry.invocationOptions];
     [all addEntriesFromDictionary:ArgsRegistry.colorThemes];
@@ -18,7 +17,6 @@
     [all addEntriesFromDictionary:ArgsRegistry.actionTypes];
     [all addEntriesFromDictionary:ArgsRegistry.extendedBugReportStates];
     [all addEntriesFromDictionary:ArgsRegistry.reproStates];
-    [all addEntriesFromDictionary:ArgsRegistry.promptOptions];
     [all addEntriesFromDictionary:ArgsRegistry.locales];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
 
@@ -31,17 +29,6 @@
         @"sdkDebugLogsLevelDebug": @(IBGSDKDebugLogsLevelDebug),
         @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
         @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
-    };
-}
-
-+ (ArgsDictionary *) logLevels {
-    return @{
-        @"logLevelNone": @(IBGLogLevelNone),
-        @"logLevelError": @(IBGLogLevelError),
-        @"logLevelWarning": @(IBGLogLevelWarning),
-        @"logLevelInfo": @(IBGLogLevelInfo),
-        @"logLevelDebug": @(IBGLogLevelDebug),
-        @"logLevelVerbose": @(IBGLogLevelVerbose),
     };
 }
 
@@ -142,15 +129,6 @@
         @"reproStepsEnabled": @(IBGUserStepsModeEnable),
         @"reproStepsDisabled": @(IBGUserStepsModeDisable),
         @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
-    };
-}
-
-+ (ArgsDictionary *) promptOptions {
-    return @{
-        @"promptOptionNone": @(IBGPromptOptionNone),
-        @"promptOptionBug": @(IBGPromptOptionBug),
-        @"promptOptionChat": @(IBGPromptOptionChat),
-        @"promptOptionFeedback": @(IBGPromptOptionFeedback),
     };
 }
 

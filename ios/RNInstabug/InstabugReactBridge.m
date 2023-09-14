@@ -171,10 +171,6 @@ RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
     }
 }
 
-RCT_EXPORT_METHOD(setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
-    [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
-}
-
 RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }

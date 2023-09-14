@@ -47,7 +47,6 @@ final class ArgsRegistry {
     @SuppressWarnings("deprecation")
     static Map<String, Object> getAll() {
         return new HashMap<String, Object>() {{
-            putAll(logLevels);
             putAll(invocationEvents);
             putAll(invocationOptions);
             putAll(colorThemes);
@@ -61,20 +60,10 @@ final class ArgsRegistry {
             putAll(reproStates);
             putAll(reproModes);
             putAll(sdkLogLevels);
-            putAll(promptOptions);
             putAll(locales);
             putAll(placeholders);
         }};
     }
-
-    static final ArgsMap<Integer> logLevels = new ArgsMap<Integer>() {{
-        put("logLevelNone", LogLevel.NONE);
-        put("logLevelError", LogLevel.ERROR);
-        put("logLevelWarning", LogLevel.WARNING);
-        put("logLevelInfo", LogLevel.INFO);
-        put("logLevelDebug", LogLevel.DEBUG);
-        put("logLevelVerbose", LogLevel.VERBOSE);
-    }};
 
     static ArgsMap<InstabugInvocationEvent> invocationEvents = new ArgsMap<InstabugInvocationEvent>() {{
         put("invocationEventNone", InstabugInvocationEvent.NONE);
@@ -161,13 +150,6 @@ final class ArgsRegistry {
         put("sdkDebugLogsLevelError", com.instabug.library.LogLevel.ERROR);
         put("sdkDebugLogsLevelDebug", com.instabug.library.LogLevel.DEBUG);
         put("sdkDebugLogsLevelVerbose", com.instabug.library.LogLevel.VERBOSE);
-    }};
-
-    @Deprecated
-    static final ArgsMap<Integer> promptOptions = new ArgsMap<Integer>() {{
-        put("promptOptionBug", PluginPromptOption.PromptOptionIdentifier.BUG_REPORT);
-        put("promptOptionChat", PluginPromptOption.PromptOptionIdentifier.CHAT_LIST);
-        put("promptOptionFeedback", PluginPromptOption.PromptOptionIdentifier.FEEDBACK);
     }};
 
     static final ArgsMap<InstabugLocale> locales = new ArgsMap<InstabugLocale>() {{
