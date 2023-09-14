@@ -49,12 +49,6 @@
         @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
         @"optionCommentFieldRequired": @(IBGBugReportingOptionCommentFieldRequired),
         @"optionDisablePostSendingDialog": @(IBGBugReportingOptionDisablePostSendingDialog),
-
-        // Deprecated
-        @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
-        @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
-        @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
-        @"disablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
     };
 }
 
@@ -110,7 +104,6 @@
 + (ArgsDictionary *) actionTypes {
     return @{
         @"allActions": @(IBGActionAllActions),
-        @"reportBugAction": @(IBGActionReportBug), // Deprecated
         @"requestNewFeature": @(IBGActionRequestNewFeature),
         @"addCommentToFeature": @(IBGActionAddCommentToFeature),
     };
