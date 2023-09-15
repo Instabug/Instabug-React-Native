@@ -489,7 +489,7 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
-  - RNInstabug (11.13.0):
+  - RNInstabug (11.14.0):
     - Instabug (= 11.14.0)
     - React-Core
   - RNScreens (3.24.0):
@@ -739,7 +739,7 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 837c1bebd2f84572db17698cd702ceaf585b0d9a
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
-  RNInstabug: 229d6ece2c9e8d085758578bdc12566aa9bef6f2
+  RNInstabug: 23170c925dda2299c1643005f69f5605f1a9d38a
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
   RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
