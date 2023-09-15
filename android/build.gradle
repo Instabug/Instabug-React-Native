@@ -25,7 +25,7 @@ if(shouldUseNameSpace){
     manifestContent = manifestContent.replaceAll(
         PACKAGE_PROP,
         ''
-    )  
+    )
 } else if(isPackageNamespaceMissing) {
     manifestContent = manifestContent.replace(
         '<manifest',
@@ -50,7 +50,7 @@ android {
         minSdkVersion getExtOrDefault('minSdkVersion').toInteger()
         targetSdkVersion getExtOrDefault('targetSdkVersion').toInteger()
         versionCode 1
-        versionName "11.13.0"
+        versionName "11.14.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
