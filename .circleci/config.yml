@@ -344,7 +344,7 @@ jobs:
             ### Installation \n
             You can install the snapshot through NPM: \n
             ```sh \n
-            npm install https://github.com/Instabug/Instabug-React-Native\#snapshot/$CIRCLE_BRANCH \n
+            npm install https://github.com/Instabug/Instabug-React-Native\\#snapshot/$CIRCLE_BRANCH \n
             ``` \n
             or Yarn: \n
             ```sh \n
