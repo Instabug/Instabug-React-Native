@@ -339,7 +339,7 @@ jobs:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
       - notify_github:
-          message: >
+          message: >-
             Your snapshot has been generated! :rocket: \n
             ### Installation \n
             You can install the snapshot through NPM: \n
