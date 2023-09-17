@@ -334,7 +334,7 @@ jobs:
             git commit -m "chore: add generate files"
       - run:
           name: Push snapshot
-          command: git push origin snapshot/$CIRCLE_BRANCH
+          command: git push --force origin snapshot/$CIRCLE_BRANCH
       - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
