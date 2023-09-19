@@ -52,6 +52,11 @@ commands:
     parameters:
       message:
         type: string
+        description: |
+          The message to post in the GitHub comment.
+          The message is placed in a shell script, so make sure to escape
+          special characters like `"` and `\` and not include new lines, use \n
+          instead along with YAML's >- syntax to avoid new lines.
     steps:
       - run:
           name: Post comment on GitHub
@@ -68,7 +73,7 @@ commands:
             curl --location --request POST "$pr_comment_url" \
               --header 'Content-Type: application/json' \
               --header "Authorization: Bearer $RELEASE_GITHUB_TOKEN" \
-              --data-raw '{ "body": "<< parameters.message >>" }'
+              --data-raw "{ \"body\": \"<< parameters.message >>\" }"
 
 jobs:
   danger:
