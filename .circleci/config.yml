@@ -55,7 +55,7 @@ commands:
         description: |
           The message to post in the GitHub comment.
           The message is placed in a shell script, so make sure to escape
-          special characters like `"` and `\` and not include new lines, use \n
+          special characters like ", `, and \ and not include new lines, use \n
           instead along with YAML's >- syntax to avoid new lines.
     steps:
       - run:
@@ -348,13 +348,13 @@ jobs:
             Your snapshot has been generated! :rocket: \n
             ### Installation \n
             You can install the snapshot through NPM: \n
-            ```sh \n
+            \`\`\`sh \n
             npm install https://github.com/Instabug/Instabug-React-Native\\#snapshot/$CIRCLE_BRANCH \n
-            ``` \n
+            \`\`\` \n
             or Yarn: \n
-            ```sh \n
+            \`\`\`sh \n
             yarn add https://github.com/Instabug/Instabug-React-Native\\#snapshot/$CIRCLE_BRANCH \n
-            ```
+            \`\`\`
 
 workflows:
   publish:
