@@ -50,13 +50,9 @@ commands:
           command: sed -i '<< parameters.replace-pattern >>' << parameters.file >>
   notify_github:
     parameters:
-      message:
+      data:
         type: string
-        description: |
-          The message to post in the GitHub comment.
-          The message is placed in a shell script, so make sure to escape
-          special characters like ", `, and \ and not include new lines, use \n
-          instead along with YAML's >- syntax to avoid new lines.
+        description: The data to be passed to the GitHub API for creating the comment.
     steps:
       - run:
           name: Post comment on GitHub
@@ -73,7 +69,7 @@ commands:
             curl --location --request POST "$pr_comment_url" \
               --header 'Content-Type: application/json' \
               --header "Authorization: Bearer $RELEASE_GITHUB_TOKEN" \
-              --data-raw "{ \"body\": \"<< parameters.message >>\" }"
+              --data-raw "<< parameters.data >>"
 
 jobs:
   danger:
@@ -343,18 +339,11 @@ jobs:
       - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
+      - run:
+          name: Replace snapshot branch in comment template
+          command: sed -i "s|{BRANCH}|$CIRCLECI_BRANCH|g" scripts/snapshot-comment.md
       - notify_github:
-          message: >-
-            Your snapshot has been generated! :rocket: \\n
-            ### Installation \\n
-            You can install the snapshot through NPM: \\n
-            \`\`\`sh \\n
-            npm install https://github.com/Instabug/Instabug-React-Native\\#snapshot/$CIRCLE_BRANCH \\n
-            \`\`\` \\n
-            or Yarn: \\n
-            \`\`\`sh \\n
-            yarn add https://github.com/Instabug/Instabug-React-Native\\#snapshot/$CIRCLE_BRANCH \\n
-            \`\`\`
+          data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
 
 workflows:
   publish:
