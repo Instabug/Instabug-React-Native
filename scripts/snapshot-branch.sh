@@ -1,3 +1,5 @@
+#!/bin/sh
+
 pr_url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls?head=$CIRCLE_PROJECT_USERNAME:$CIRCLE_BRANCH&state=open"
 pr_response=$(curl --location --request GET "$pr_url" --header "Authorization: Bearer $RELEASE_GITHUB_TOKEN")
 
