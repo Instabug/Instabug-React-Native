@@ -56,7 +56,7 @@ commands:
     steps:
       - run:
           name: Post comment on GitHub
-          command: sh scripts/notify-github.sh "<< parameters.data >>"
+          command: ./scripts/notify-github.sh "<< parameters.data >>"
 
 jobs:
   danger:
