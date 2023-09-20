@@ -311,7 +311,7 @@ jobs:
           name: Get snapshot branch name
           command: |
             source scripts/snapshot-branch.sh
-            echo "export SNAPSHOT_BRANCH=\"$SNAPSHOT_BRANCH\"" >> "$BASH_ENV"
+            echo "export SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$BASH_ENV"
       - run:
           name: Setup Git
           command: |

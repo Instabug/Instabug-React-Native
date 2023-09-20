@@ -10,7 +10,7 @@ if [ $(echo "$pr_response" | jq length) -eq 0 ]; then
 else
   pr_description=$(echo "$pr_response" | jq -r '.[].body')
 
-  SNAPSHOT_BRANCH=$(echo -E "$pr_description" | grep 'Snapshot name:' | cut -d ':' -f 2 | xargs)
+  SNAPSHOT_BRANCH=$(echo -E "$pr_description" | grep 'Snapshot name:' | cut -d ':' -f 2 | xargs echo -n)
 
   if [ -z "$SNAPSHOT_BRANCH" ]; then
     echo "No custom snapshot name found, proceeding with default snapshot naming convention"
