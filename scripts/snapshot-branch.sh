@@ -11,13 +11,13 @@ else
   pr_description=$(echo "$pr_response" | jq -r '.[].body')
 
   # The `sed "s/\r//g"` is used to remove the carriage return character \r from the end of the string
-  SNAPSHOT_BRANCH=$(echo -E "$pr_description" | grep 'Snapshot name:' | cut -d ':' -f 2 | xargs echo -n | sed "s/\r//g")
+  SNAPSHOT_BRANCH=$(echo -E "$pr_description" | grep 'Snapshot name:' | cut -d ':' -f 2 | xargs echo -n | sed "s/\r//g" || echo -n)
 
   if [ -z "$SNAPSHOT_BRANCH" ]; then
     echo "No custom snapshot name found, proceeding with default snapshot naming convention"
 
     version=$(jq -r '.version' package.json)
-    jira_id=$(echo -E "$pr_description" | grep 'Jira ID:' | grep -Eo '[A-Z]+-[0-9]+')
+    jira_id=$(echo -E "$pr_description" | grep 'Jira ID:' | grep -Eo '[A-Z]+-[0-9]+' || echo -n)
 
     if [ -z "$jira_id" ]; then
       echo "No Jira ID found, proceeding with branch name instead"
