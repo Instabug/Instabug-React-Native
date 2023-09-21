@@ -5,6 +5,18 @@ orbs:
   advanced-checkout: vsco/advanced-checkout@1.1.0
   node: circleci/node@5.1.0
 
+references:
+  release_dependencies: &release_dependencies
+    - danger
+    - lint
+    - test_module
+    - test_android
+    - validate_shell_files
+    - sync_generated_files
+    - test_ios
+    - e2e_ios
+    - e2e_android
+
 commands:
   install_node_modules:
     parameters:
@@ -355,45 +367,18 @@ workflows:
       - e2e_android
       - hold_generate_snapshot:
           type: approval
-          # requires:
-          #   - danger
-          #   - lint
-          #   - test_module
-          #   - test_android
-          #   - validate_shell_files
-          #   - sync_generated_files
-          #   - test_ios
-          #   - e2e_ios
-          #   - e2e_android
+          requires: *release_dependencies
       - generate_snapshot:
           requires:
             - hold_generate_snapshot
       - hold_publish:
-          requires:
-            - danger
-            - lint
-            - test_module
-            - test_android
-            - validate_shell_files
-            - sync_generated_files
-            - test_ios
-            - e2e_ios
-            - e2e_android
+          requires: *release_dependencies
           type: approval
           filters:
             branches:
               only: master
       - hold_release_nn:
-          requires:
-            - danger
-            - lint
-            - test_module
-            - test_android
-            - validate_shell_files
-            - sync_generated_files
-            - test_ios
-            - e2e_ios
-            - e2e_android
+          requires: *release_dependencies
           type: approval
           filters:
             branches:
