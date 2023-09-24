@@ -1,6 +1,6 @@
 # Changelog
 
-## [11.14.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.13.0...11.14.0) (September 15, 2023)
+## [11.14.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.13.0...v11.14.0) (September 15, 2023)
 
 ### Added
 
@@ -18,8 +18,8 @@
 
 ### Deprecated
 
-- Deprecate the old `StringKey.discardAlertCancel` and `StringKey.discardAlertAction` string keys for overriding the discard alert buttons as they had incosistent behavior between iOS and Android ([#1001](https://github.com/Instabug/Instabug-React-Native/pull/1001)).
-- Deprecate the old `StringKey.reproStepsListItemNumberingTitle` string key for overriding the repro steps list item (screen) title as it had incosistent behavior between iOS and Android ([#1002](https://github.com/Instabug/Instabug-React-Native/pull/1002)).
+- Deprecate the old `StringKey.discardAlertCancel` and `StringKey.discardAlertAction` string keys for overriding the discard alert buttons as they had inconsistent behavior between iOS and Android ([#1001](https://github.com/Instabug/Instabug-React-Native/pull/1001)).
+- Deprecate the old `StringKey.reproStepsListItemTitle` string key for overriding the repro steps list item (screen) title as it had inconsistent behavior between iOS and Android ([#1002](https://github.com/Instabug/Instabug-React-Native/pull/1002)).
 - Deprecate `Instabug.setReproStepsMode` in favor of the new `Instabug.setReproStepsConfig` ([#1024](https://github.com/Instabug/Instabug-React-Native/pull/1024)).
 - Deprecate the old `StringKey.invalidCommentMessage` and `StringKey.invalidCommentTitle` in favor of `StringKey.insufficientContentMessage` and `StringKey.insufficientContentTitle` ([#1026](https://github.com/Instabug/Instabug-React-Native/pull/1026)).
 
