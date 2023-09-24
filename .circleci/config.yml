@@ -5,6 +5,18 @@ orbs:
   advanced-checkout: vsco/advanced-checkout@1.1.0
   node: circleci/node@5.1.0
 
+references:
+  release_dependencies: &release_dependencies
+    - danger
+    - lint
+    - test_module
+    - test_android
+    - validate_shell_files
+    - sync_generated_files
+    - test_ios
+    - e2e_ios
+    - e2e_android
+
 commands:
   install_node_modules:
     parameters:
@@ -48,6 +60,15 @@ commands:
       - run:
           name: Search and Replace in << parameters.file >>
           command: sed -i '<< parameters.replace-pattern >>' << parameters.file >>
+  notify_github:
+    parameters:
+      data:
+        type: string
+        description: The data to be passed to the GitHub API for creating the comment.
+    steps:
+      - run:
+          name: Post comment on GitHub
+          command: ./scripts/notify-github.sh "<< parameters.data >>"
 
 jobs:
   danger:
@@ -287,6 +308,47 @@ jobs:
           working_directory: project
           command: Escape react-native publish
 
+  generate_snapshot:
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules
+      - run: yarn build
+      - run: yarn remove @instabug/danger-plugin-coverage
+      - run:
+          name: Remove build files from .gitignore
+          command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
+      - run:
+          name: Get snapshot branch name
+          command: |
+            source scripts/snapshot-branch.sh
+            echo "export SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$BASH_ENV"
+      - run:
+          name: Setup Git
+          command: |
+            git config --global user.name "Instabug-CP-CI"
+            git config --global user.email github-ci+cp@instabug.com
+      - run:
+          name: Create snapshot branch
+          command: git checkout -b $SNAPSHOT_BRANCH
+      - run:
+          name: Commit changes
+          command: |
+            git add .
+            git commit -m "chore: add generate files"
+      - run:
+          name: Push snapshot
+          command: git push --force origin $SNAPSHOT_BRANCH
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+      - run:
+          name: Replace snapshot branch in comment template
+          command: sed -i "s|{BRANCH}|$SNAPSHOT_BRANCH|g" scripts/snapshot-comment.md
+      - notify_github:
+          data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+
 workflows:
   publish:
     jobs:
@@ -303,32 +365,20 @@ workflows:
       - test_ios
       - e2e_ios
       - e2e_android
-      - hold_publish:
+      - hold_generate_snapshot:
+          type: approval
+          requires: *release_dependencies
+      - generate_snapshot:
           requires:
-            - danger
-            - lint
-            - test_module
-            - test_android
-            - validate_shell_files
-            - sync_generated_files
-            - test_ios
-            - e2e_ios
-            - e2e_android
+            - hold_generate_snapshot
+      - hold_publish:
+          requires: *release_dependencies
           type: approval
           filters:
             branches:
               only: master
       - hold_release_nn:
-          requires:
-            - danger
-            - lint
-            - test_module
-            - test_android
-            - validate_shell_files
-            - sync_generated_files
-            - test_ios
-            - e2e_ios
-            - e2e_android
+          requires: *release_dependencies
           type: approval
           filters:
             branches:
