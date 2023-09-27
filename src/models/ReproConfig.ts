@@ -16,6 +16,13 @@ export interface ReproConfig {
   crash?: ReproStepsMode;
 
   /**
+   *e Repro steps mode for session replay.
+   *
+   * @default ReproStepsMode.enabledWithNoScreenshots
+   */
+  sessionReplay?: ReproStepsMode;
+
+  /**
    * Repro steps mode for both bug and crash reporting.
    *
    * When this is set, `bug` and `crash` will be ignored.

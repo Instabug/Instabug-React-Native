@@ -313,16 +313,19 @@ export const clearLogs = () => {
  * Instabug.setReproStepsConfig({
  *   bug: ReproStepsMode.enabled,
  *   crash: ReproStepsMode.disabled,
+ *   sessionReplay: ReproStepsMode.enabled,
  * });
  * ```
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
   let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
 
   if (config.all != null) {
     bug = config.all;
     crash = config.all;
+    sessionReplay = config.all;
   }
 
   // There's an issue with crashes repro steps with screenshots in the iOS SDK
@@ -334,7 +337,7 @@ export const setReproStepsConfig = (config: ReproConfig) => {
     crash = ReproStepsMode.enabledWithNoScreenshots;
   }
 
-  NativeInstabug.setReproStepsConfig(bug, crash);
+  NativeInstabug.setReproStepsConfig(bug, crash, sessionReplay);
 };
 
 /**
