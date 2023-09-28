@@ -19,7 +19,6 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.instabug.bug.instabugdisclaimer.Internal;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -33,7 +32,6 @@ import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -50,8 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 
 /**
@@ -297,26 +293,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     Instabug.resetTags();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Enable/Disable debug logs from Instabug SDK
-     * Default state: disabled
-     *
-     * @param isDebugEnabled whether debug logs should be printed or not into LogCat
-     */
-    @ReactMethod
-    public void setDebugEnabled(final boolean isDebugEnabled) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.setDebugEnabled(isDebugEnabled);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -765,29 +741,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Sets whether user steps tracking is visual, non visual or disabled.
-     *
-     * @param reproStepsMode A string to set user steps tracking to be
-     *                       enabled, non visual or disabled.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated()
-    @ReactMethod
-    public void setReproStepsMode(final String reproStepsMode) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final State parsedState = ArgsRegistry.reproStates.get(reproStepsMode);
-                    Instabug.setReproStepsState(parsedState);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setReproStepsConfig(final String bugMode, final String crashMode) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -862,24 +815,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 Instabug.show();
             }
         });
-    }
-
-    @ReactMethod
-    public void callPrivateApi(String apiName, String param) {
-        try {
-            if (param == null) {
-                Method m = Internal.class.getDeclaredMethod(apiName);
-                m.setAccessible(true);
-                m.invoke(null);
-            } else {
-                Method m = Internal.class.getDeclaredMethod(apiName, param.getClass());
-                m.setAccessible(true);
-                m.invoke(null, param);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**

@@ -1,5 +1,4 @@
-export type NativeConstants = NativeLogLevel &
-  NativeSdkDebugLogsLevel &
+export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeInvocationEvent &
   NativeInvocationOption &
   NativeColorTheme &
@@ -15,23 +14,11 @@ export type NativeConstants = NativeLogLevel &
   NativeLocale &
   NativeStringKey;
 
-/** @deprecated */
 interface NativeSdkDebugLogsLevel {
   sdkDebugLogsLevelVerbose: any;
   sdkDebugLogsLevelDebug: any;
   sdkDebugLogsLevelError: any;
   sdkDebugLogsLevelNone: any;
-}
-
-interface NativeLogLevel {
-  logLevelNone: any;
-  logLevelError: any;
-  /** @deprecated */
-  logLevelWarning: any;
-  /** @deprecated */
-  logLevelInfo: any;
-  logLevelDebug: any;
-  logLevelVerbose: any;
 }
 
 interface NativeInvocationEvent {
@@ -142,8 +129,6 @@ interface NativeStringKey {
   commentFieldHintForQuestion: any;
   conversationsHeaderTitle: any;
   conversationTextFieldHint: any;
-  discardAlertAction: any;
-  discardAlertCancel: any;
   discardAlertStay: any;
   discardAlertDiscard: any;
   discardAlertMessage: any;
@@ -153,8 +138,6 @@ interface NativeStringKey {
   image: any;
   insufficientContentMessage: any;
   insufficientContentTitle: any;
-  invalidCommentMessage: any;
-  invalidCommentTitle: any;
   invalidEmailMessage: any;
   invalidEmailTitle: any;
   invocationHeader: any;
@@ -175,7 +158,6 @@ interface NativeStringKey {
   reproStepsListDescription: any;
   reproStepsListEmptyStateDescription: any;
   reproStepsListHeader: any;
-  reproStepsListItemTitle: any;
   reproStepsListItemNumberingTitle: any;
   reproStepsProgressDialogBody: any;
   requestFeatureDescription: any;

@@ -46,16 +46,12 @@ RCT_EXPORT_METHOD(ibgSleep) {
     // [NSThread sleepForTimeInterval:3.0f];
 }
 
-RCT_EXPORT_METHOD(setLogLevel:(IBGLogLevel)_logLevel) {
-    IBGAPM.logLevel = _logLevel;
-}
-
 RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     IBGAPM.enabled = isEnabled;
 }
 
 RCT_EXPORT_METHOD(setAppLaunchEnabled:(BOOL)isEnabled) {
-    IBGAPM.appLaunchEnabled = isEnabled;
+    IBGAPM.coldAppLaunchEnabled = isEnabled;
 }
 
 RCT_EXPORT_METHOD(endAppLaunch) {

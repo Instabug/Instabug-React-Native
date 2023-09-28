@@ -13,7 +13,6 @@ import com.instabug.library.Platform;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class RNInstabug {

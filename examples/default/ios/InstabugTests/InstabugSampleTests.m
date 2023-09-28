@@ -55,7 +55,7 @@
 - (void)testSetEnabled {
   id mock = OCMClassMock([Instabug class]);
   BOOL isEnabled = true;
-  
+
   OCMStub([mock setEnabled:isEnabled]);
   [self.instabugBridge setEnabled:isEnabled];
   OCMVerify([mock setEnabled:isEnabled]);
@@ -67,9 +67,9 @@
   NSString *appToken = @"app_token";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
-  
+
   XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug init]"];
-  
+
   OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
 
@@ -84,7 +84,7 @@
 - (void)testSetUserData {
   id mock = OCMClassMock([Instabug class]);
   NSString *userData = @"user_data";
-  
+
   OCMStub([mock setUserData:userData]);
   [self.instabugBridge setUserData:userData];
   OCMVerify([mock setUserData:userData]);
@@ -93,7 +93,7 @@
 - (void)testSetTrackUserSteps {
   id mock = OCMClassMock([Instabug class]);
   BOOL isEnabled = true;
-  
+
   OCMStub([mock setTrackUserSteps:isEnabled]);
   [self.instabugBridge setTrackUserSteps:isEnabled];
   OCMVerify([mock setTrackUserSteps:isEnabled]);
@@ -102,7 +102,7 @@
 - (void)testSetSessionProfilerEnabled {
   id mock = OCMClassMock([Instabug class]);
   BOOL sessionProfilerEnabled = true;
-  
+
   OCMStub([mock setSessionProfilerEnabled:sessionProfilerEnabled]);
   [self.instabugBridge setSessionProfilerEnabled:sessionProfilerEnabled];
   OCMVerify([mock setSessionProfilerEnabled:sessionProfilerEnabled]);
@@ -141,7 +141,7 @@
     XCTAssertEqualObjects(Instabug.tintColor, color);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
@@ -156,7 +156,7 @@
 
 - (void)testResetTags {
   id mock = OCMClassMock([Instabug class]);
-  
+
   OCMStub([mock resetTags]);
   [self.instabugBridge resetTags];
   OCMVerify([mock resetTags]);
@@ -187,7 +187,7 @@
   id mock = OCMClassMock([Instabug class]);
   NSString *email = @"em@il.com";
   NSString *name = @"this is my name";
-  
+
   OCMStub([mock identifyUserWithEmail:email name:name]);
   [self.instabugBridge identifyUser:email name:name];
   OCMVerify([mock identifyUserWithEmail:email name:name]);
@@ -195,7 +195,7 @@
 
 - (void)testLogOut {
   id mock = OCMClassMock([Instabug class]);
-  
+
   OCMStub([mock logOut]);
   [self.instabugBridge logOut];
   OCMVerify([mock logOut]);
@@ -204,19 +204,10 @@
 - (void)testLogUserEvent {
   id mock = OCMClassMock([Instabug class]);
   NSString *name = @"event name";
-  
+
   OCMStub([mock logUserEventWithName:name]);
   [self.instabugBridge logUserEvent:name];
   OCMVerify([mock logUserEventWithName:name]);
-}
-
-- (void)testSetReproStepsMode {
-  id mock = OCMClassMock([Instabug class]);
-  IBGUserStepsMode reproStepsMode = IBGUserStepsModeEnabledWithNoScreenshots;
-  
-  OCMStub([mock setReproStepsMode:reproStepsMode]);
-  [self.instabugBridge setReproStepsMode:reproStepsMode];
-  OCMVerify([mock setReproStepsMode:reproStepsMode]);
 }
 
 - (void)testSetReproStepsConfig {
@@ -228,15 +219,6 @@
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
   OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
-}
-
-- (void)testSetSdkDebugLogsLevel {
-  id mock = OCMClassMock([Instabug class]);
-  IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelVerbose;
-  
-  OCMStub([mock setSdkDebugLogsLevel:sdkDebugLogsLevel]);
-  [self.instabugBridge setSdkDebugLogsLevel:sdkDebugLogsLevel];
-  OCMVerify([mock setSdkDebugLogsLevel:sdkDebugLogsLevel]);
 }
 
 - (void)testSetUserAttribute {
@@ -263,7 +245,7 @@
 - (void)testRemoveUserAttribute {
   id mock = OCMClassMock([Instabug class]);
   NSString *key = @"someKey";
-  
+
   OCMStub([mock removeUserAttributeForKey:key]);
   [self.instabugBridge removeUserAttribute:key];
   OCMVerify([mock removeUserAttributeForKey:key]);
@@ -274,7 +256,7 @@
   RCTPromiseResolveBlock resolve = ^(id result) {};
   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
   NSDictionary *dictionary = @{ @"someKey" : @"someValue" };
-  
+
   OCMStub([mock userAttributes]).andReturn(dictionary);
   [self.instabugBridge getAllUserAttributes:resolve :reject];
   OCMVerify([mock userAttributes]);
@@ -294,7 +276,7 @@
 - (void)testShowWelcomeMessageWithMode {
   id mock = OCMClassMock([Instabug class]);
   IBGWelcomeMessageMode welcomeMessageMode = IBGWelcomeMessageModeBeta;
-  
+
   OCMStub([mock showWelcomeMessageWithMode:welcomeMessageMode]);
   [self.instabugBridge showWelcomeMessageWithMode:welcomeMessageMode];
   OCMVerify([mock showWelcomeMessageWithMode:welcomeMessageMode]);
@@ -303,7 +285,7 @@
 - (void)testSetWelcomeMessageMode {
   id mock = OCMClassMock([Instabug class]);
   IBGWelcomeMessageMode welcomeMessageMode = IBGWelcomeMessageModeBeta;
-  
+
   OCMStub([mock setWelcomeMessageMode:welcomeMessageMode]);
   [self.instabugBridge setWelcomeMessageMode:welcomeMessageMode];
   OCMVerify([mock setWelcomeMessageMode:welcomeMessageMode]);
@@ -313,7 +295,7 @@
   id mock = OCMClassMock([Instabug class]);
   NSString *fileLocation = @"test";
   NSURL *url = [NSURL URLWithString:fileLocation];
-  
+
   OCMStub([mock addFileAttachmentWithURL:url]);
   [self.instabugBridge setFileAttachment:fileLocation];
   OCMVerify([mock addFileAttachmentWithURL:url]);
@@ -331,7 +313,7 @@
     OCMVerify([mock show]);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
@@ -350,7 +332,7 @@
 - (void)testLogVerbose {
   id mock = OCMClassMock([IBGLog class]);
   NSString *log = @"some log";
-  
+
   OCMStub([mock logVerbose:log]);
   [self.instabugBridge logVerbose:log];
   OCMVerify([mock logVerbose:log]);
@@ -359,7 +341,7 @@
 - (void)testLogDebug {
   id mock = OCMClassMock([IBGLog class]);
   NSString *log = @"some log";
-  
+
   OCMStub([mock logDebug:log]);
   [self.instabugBridge logDebug:log];
   OCMVerify([mock logDebug:log]);
@@ -368,7 +350,7 @@
 - (void)testLogInfo {
   id mock = OCMClassMock([IBGLog class]);
   NSString *log = @"some log";
-  
+
   OCMStub([mock logInfo:log]);
   [self.instabugBridge logInfo:log];
   OCMVerify([mock logInfo:log]);
@@ -377,7 +359,7 @@
 - (void)testLogWarn {
   id mock = OCMClassMock([IBGLog class]);
   NSString *log = @"some log";
-  
+
   OCMStub([mock logWarn:log]);
   [self.instabugBridge logWarn:log];
   OCMVerify([mock logWarn:log]);
@@ -386,7 +368,7 @@
 - (void)testLogError {
   id mock = OCMClassMock([IBGLog class]);
   NSString *log = @"some log";
-  
+
   OCMStub([mock logError:log]);
   [self.instabugBridge logError:log];
   OCMVerify([mock logError:log]);
@@ -394,7 +376,7 @@
 
 - (void)testClearLogs {
   id mock = OCMClassMock([IBGLog class]);
-  
+
   OCMStub([mock clearAllLogs]);
   [self.instabugBridge clearLogs];
   OCMVerify([mock clearAllLogs]);

@@ -8,7 +8,6 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (NSMutableDictionary *) getAll;
 
 + (ArgsDictionary *) sdkLogLevels;
-+ (ArgsDictionary *) logLevels;
 + (ArgsDictionary *) invocationEvents;
 + (ArgsDictionary *) invocationOptions;
 + (ArgsDictionary *) colorThemes;
@@ -20,7 +19,6 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) actionTypes;
 + (ArgsDictionary *) extendedBugReportStates;
 + (ArgsDictionary *) reproStates;
-+ (ArgsDictionary *) promptOptions __attribute__ ((deprecated));
 + (ArgsDictionary *) locales;
 + (NSDictionary<NSString *, NSString *> *) placeholders;
 

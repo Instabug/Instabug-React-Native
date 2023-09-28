@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
 
 import { NativeEvents, NativeReplies, emitter } from '../native/NativeReplies';
-import { invokeDeprecatedCallback } from '../utils/InstabugUtils';
 
 /**
  * Enables and disables everything related to receiving replies.
@@ -13,12 +12,9 @@ export const setEnabled = (isEnabled: boolean) => {
 
 /**
  * Tells whether the user has chats already or not.
- * @param callback DEPRECATED: callback that is invoked if chats exist
  */
-export const hasChats = async (callback?: (hasChats: boolean) => void): Promise<boolean> => {
+export const hasChats = async (): Promise<boolean> => {
   const result = await NativeReplies.hasChats();
-
-  invokeDeprecatedCallback(callback, result);
 
   return result;
 };
@@ -43,15 +39,10 @@ export const setOnNewReplyReceivedHandler = (handler: () => void) => {
  * Returns the number of unread messages the user currently has.
  * Use this method to get the number of unread messages the user
  * has, then possibly notify them about it with your own UI.
- * @param callback DEPRECATED: callback with argument
  * Notifications count, or -1 in case the SDK has not been initialized.
  */
-export const getUnreadRepliesCount = async (
-  callback?: (count: number) => void,
-): Promise<number> => {
+export const getUnreadRepliesCount = async (): Promise<number> => {
   const count = await NativeReplies.getUnreadRepliesCount();
-
-  invokeDeprecatedCallback(callback, count);
 
   return count;
 };

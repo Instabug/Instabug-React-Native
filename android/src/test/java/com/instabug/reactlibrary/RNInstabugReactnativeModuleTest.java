@@ -4,10 +4,8 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.graphics.Bitmap;
 import android.os.Looper;
-import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
@@ -22,7 +20,6 @@ import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
@@ -39,7 +36,6 @@ import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,15 +118,6 @@ public class RNInstabugReactnativeModuleTest {
         // then
         verify(Instabug.class, times(1));
         Instabug.disable();
-    }
-
-    @Test
-    public void givenBoolean$setDebugEnabled_whenQuery_thenShouldCallNativeApi() {
-        // when
-        rnModule.setDebugEnabled(true);
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.setDebugEnabled(true);
     }
 
     @Test
@@ -271,25 +258,6 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArg$setReproStepsMode_whenQuery_thenShouldCallNativeApiWithArg() throws Exception {
-        // given
-        Map<String, State> args = ArgsRegistry.reproStates;
-        final String[] keysArray = args.keySet().toArray(new String[0]);
-
-        // when
-        for (String key : keysArray) {
-            rnModule.setReproStepsMode(key);
-        }
-
-        // then
-        for (String key : keysArray) {
-            verify(Instabug.class, times(1));
-            State mode = args.get(key);
-            Instabug.setReproStepsState(mode);
-        }
-    }
-
-    @Test
     public void givenArg$setReproStepsConfig_whenQuery_thenShouldCallNativeApiWithArg() {
         String bug = "reproStepsEnabled";
         String crash = "reproStepsDisabled";
@@ -309,6 +277,8 @@ public class RNInstabugReactnativeModuleTest {
         verify(builder).build();
 
         mockInstabug.verify(() -> Instabug.setReproConfigurations(config));
+
+        mReproConfigurationsBuilder.close();
     }
 
     @Test
@@ -482,11 +452,6 @@ public class RNInstabugReactnativeModuleTest {
         // given
         Map<String, InstabugCustomTextPlaceHolder.Key> args = ArgsRegistry.placeholders;
         Set<String> keys = args.keySet();
-
-        // Ignore deprecated keys
-        keys.remove("discardAlertCancel");
-        keys.remove("discardAlertAction");
-        keys.remove("reproStepsListItemTitle");
 
         // when
         InstabugCustomTextPlaceHolder expectedPlaceHolders = new InstabugCustomTextPlaceHolder();

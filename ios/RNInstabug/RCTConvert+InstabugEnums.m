@@ -19,13 +19,6 @@ RCT_ENUM_CONVERTER(
 );
 
 RCT_ENUM_CONVERTER(
-  IBGLogLevel,
-  ArgsRegistry.logLevels,
-  IBGLogLevelInfo,
-  integerValue
-);
-
-RCT_ENUM_CONVERTER(
   IBGInvocationEvent,
   ArgsRegistry.invocationEvents,
   IBGInvocationEventNone,
@@ -99,13 +92,6 @@ RCT_ENUM_CONVERTER(
   IBGUserStepsMode,
   ArgsRegistry.reproStates,
   IBGUserStepsModeEnabledWithNoScreenshots,
-  integerValue
-);
-
-RCT_ENUM_CONVERTER(
-  IBGPromptOption,
-  ArgsRegistry.promptOptions,
-  IBGPromptOptionNone,
   integerValue
 );
 
