@@ -410,14 +410,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.clearLogs).toBeCalledTimes(1);
   });
 
-  it('should call the native method setReproStepsMode', () => {
-    const mode = ReproStepsMode.enabled;
-    Instabug.setReproStepsMode(mode);
-
-    expect(NativeInstabug.setReproStepsMode).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsMode).toBeCalledWith(mode);
-  });
-
   it('setReproStepsConfig should call the native setReproStepsConfig', () => {
     Platform.OS = 'android';
 
@@ -457,25 +449,6 @@ describe('Instabug Module', () => {
       ReproStepsMode.enabled,
       ReproStepsMode.enabledWithNoScreenshots,
     );
-  });
-
-  it('should call the native method setSdkDebugLogsLevel on iOS', () => {
-    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
-
-    Platform.OS = 'ios';
-    Instabug.setSdkDebugLogsLevel(debugLevel);
-
-    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledTimes(1);
-    expect(NativeInstabug.setSdkDebugLogsLevel).toBeCalledWith(debugLevel);
-  });
-
-  it('should not call the native method setSdkDebugLogsLevel on Android', () => {
-    const debugLevel = Instabug.sdkDebugLogsLevel.sdkDebugLogsLevelVerbose;
-
-    Platform.OS = 'android';
-    Instabug.setSdkDebugLogsLevel(debugLevel);
-
-    expect(NativeInstabug.setSdkDebugLogsLevel).not.toBeCalled();
   });
 
   it.each([
@@ -548,84 +521,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.clearAllUserAttributes).toBeCalledTimes(1);
   });
 
-  it('should call the native method setDebugEnabled', () => {
-    Platform.OS = 'android';
-    Instabug.setDebugEnabled(true);
-
-    expect(NativeInstabug.setDebugEnabled).toBeCalledTimes(1);
-    expect(NativeInstabug.setDebugEnabled).toBeCalledWith(true);
-  });
-
-  it('should not call the native method setDebugEnabled when platform is ios', () => {
-    Platform.OS = 'ios';
-    Instabug.setDebugEnabled(true);
-
-    expect(NativeInstabug.setDebugEnabled).not.toBeCalled();
-  });
-
-  it('should map deprecated enable to setEnabled on android', () => {
-    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
-    Platform.OS = 'android';
-    Instabug.enable();
-
-    expect(setEnabled).toBeCalledTimes(1);
-    expect(setEnabled).toBeCalledWith(true);
-
-    setEnabled.mockRestore();
-  });
-
-  it('should not map deprecated enable to setEnabled on ios', () => {
-    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
-    Platform.OS = 'ios';
-    Instabug.enable();
-
-    expect(setEnabled).not.toBeCalled();
-
-    setEnabled.mockRestore();
-  });
-
-  it('should map deprecated disable to setEnabled on android', () => {
-    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
-    Platform.OS = 'android';
-    Instabug.disable();
-
-    expect(setEnabled).toBeCalledTimes(1);
-    expect(setEnabled).toBeCalledWith(false);
-
-    setEnabled.mockRestore();
-  });
-
-  it('should not map deprecated disable to setEnabled on ios', () => {
-    const setEnabled = jest.spyOn(Instabug, 'setEnabled');
-    Platform.OS = 'ios';
-    Instabug.disable();
-
-    expect(setEnabled).not.toBeCalled();
-
-    setEnabled.mockRestore();
-  });
-
-  it('should call the native method isRunningLive', (done) => {
-    Platform.OS = 'ios';
-    const callback = (isRunningLive: boolean) => {
-      expect(isRunningLive).toBeDefined();
-      done();
-    };
-    Instabug.isRunningLive(callback);
-
-    expect(NativeInstabug.isRunningLive).toBeCalledTimes(1);
-    expect(NativeInstabug.isRunningLive).toBeCalledWith(callback);
-  });
-
-  it('should not call the native method isRunningLive when platform is android', () => {
-    Platform.OS = 'android';
-    Instabug.isRunningLive(jest.fn());
-
-    expect(NativeInstabug.isRunningLive).not.toBeCalled();
-  });
-
   it('should call the native method showWelcomeMessageWithMode', () => {
-    const mode = Instabug.welcomeMessageMode.beta;
+    const mode = WelcomeMessageMode.beta;
     Instabug.showWelcomeMessage(mode);
 
     expect(NativeInstabug.showWelcomeMessageWithMode).toBeCalledTimes(1);
@@ -664,16 +561,6 @@ describe('Instabug Module', () => {
 
     expect(NativeInstabug.addPrivateView).toBeCalledTimes(1);
     expect(NativeInstabug.addPrivateView).toBeCalledWith(findNodeHandle(0));
-  });
-
-  it('should map deprecated setPrivateView to addPrivateView', () => {
-    const addPrivateView = jest.spyOn(Instabug, 'addPrivateView');
-    Instabug.setPrivateView(0);
-
-    expect(addPrivateView).toBeCalledTimes(1);
-    expect(addPrivateView).toBeCalledWith(0);
-
-    addPrivateView.mockRestore();
   });
 
   it('should call the native method removePrivateView', () => {
@@ -718,15 +605,6 @@ describe('Instabug Module', () => {
     emitter.emit(NativeEvents.PRESENDING_HANDLER, report);
 
     expect(emitter.listenerCount(NativeEvents.PRESENDING_HANDLER)).toBe(1);
-  });
-
-  it('should invoke the native method callPrivateApi', () => {
-    const apiName = 'name';
-    const param = 'param';
-    Instabug.callPrivateApi(apiName, [param]);
-
-    expect(NativeInstabug.callPrivateApi).toBeCalledTimes(1);
-    expect(NativeInstabug.callPrivateApi).toBeCalledWith(apiName, [param]);
   });
 
   it('should call native addExperiments method', () => {

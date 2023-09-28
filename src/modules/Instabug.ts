@@ -9,32 +9,14 @@ import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
 import {
-  IBGPosition,
-  actionTypes,
-  colorTheme,
-  dismissType,
-  extendedBugReportMode,
-  floatingButtonEdge,
-  invocationEvent,
-  locale,
-  reproStepsMode,
-  sdkDebugLogsLevel,
-  strings,
-  welcomeMessageMode,
-} from '../utils/ArgsRegistry';
-import {
   ColorTheme,
-  InvocationEvent,
   Locale,
   LogLevel,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import InstabugUtils, {
-  invokeDeprecatedCallback,
-  stringifyIfNotString,
-} from '../utils/InstabugUtils';
+import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
@@ -44,40 +26,12 @@ let _lastScreen: string | null = null;
 let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
 
-export {
-  invocationEvent,
-  reproStepsMode,
-  dismissType,
-  sdkDebugLogsLevel,
-  extendedBugReportMode,
-  locale,
-  colorTheme,
-  floatingButtonEdge,
-  IBGPosition,
-  welcomeMessageMode,
-  actionTypes,
-  strings,
-};
-
 /**
  * Enables or disables Instabug functionality.
  * @param isEnabled A boolean to enable/disable Instabug.
  */
 export const setEnabled = (isEnabled: boolean) => {
   NativeInstabug.setEnabled(isEnabled);
-};
-
-/**
- * @deprecated Use {@link init} instead.
- * Starts the SDK.
- * This is the main SDK method that does all the magic. This is the only
- * method that SHOULD be called.
- * Should be called in constructor of the AppRegistry component
- * @param token The token that identifies the app, you can find it on your dashboard.
- * @param invocationEvents The events that invokes the SDK's UI.
- */
-export const start = (token: string, invocationEvents: invocationEvent[] | InvocationEvent[]) => {
-  init({ token: token, invocationEvents: invocationEvents });
 };
 
 /**
@@ -153,25 +107,12 @@ export const setSessionProfilerEnabled = (isEnabled: boolean) => {
 };
 
 /**
- * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
- *
- * This API sets the verbosity level of logs used to debug The SDK. The default value in debug
- * mode is sdkDebugLogsLevelVerbose and in production is sdkDebugLogsLevelError.
- * @param level The verbosity level of logs.
- */
-export const setSdkDebugLogsLevel = (level: sdkDebugLogsLevel) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.setSdkDebugLogsLevel(level);
-  }
-};
-
-/**
  * Sets the SDK's locale.
  * Use to change the SDK's UI to different language.
  * Defaults to the device's current locale.
  * @param sdkLocale A locale to set the SDK to.
  */
-export const setLocale = (sdkLocale: locale | Locale) => {
+export const setLocale = (sdkLocale: Locale) => {
   NativeInstabug.setLocale(sdkLocale);
 };
 
@@ -179,7 +120,7 @@ export const setLocale = (sdkLocale: locale | Locale) => {
  * Sets the color theme of the SDK's whole UI.
  * @param sdkTheme
  */
-export const setColorTheme = (sdkTheme: colorTheme | ColorTheme) => {
+export const setColorTheme = (sdkTheme: ColorTheme) => {
   NativeInstabug.setColorTheme(sdkTheme);
 };
 
@@ -212,12 +153,9 @@ export const resetTags = () => {
 
 /**
  * Gets all tags of reported feedback, bug or crash.
- * @param callback DEPRECATED: callback with argument tags of reported feedback, bug or crash.
  */
-export const getTags = async (callback?: (tags: string[]) => void): Promise<string[] | null> => {
+export const getTags = async (): Promise<string[] | null> => {
   const tags = await NativeInstabug.getTags();
-
-  invokeDeprecatedCallback(callback, tags);
 
   return tags;
 };
@@ -228,7 +166,7 @@ export const getTags = async (callback?: (tags: string[]) => void): Promise<stri
  * @param key Key of string to override.
  * @param string String value to override the default one.
  */
-export const setString = (key: strings | StringKey, string: string) => {
+export const setString = (key: StringKey, string: string) => {
   // Suffix the repro steps list item numbering title with a # to unify the string key's
   // behavior between Android and iOS
   if (Platform.OS === 'android' && key === StringKey.reproStepsListItemNumberingTitle) {
@@ -366,19 +304,6 @@ export const clearLogs = () => {
 };
 
 /**
- * @deprecated Use {@link setReproStepsConfig} instead.
- *
- * Sets whether user steps tracking is visual, non visual or disabled.
- * User Steps tracking is enabled by default if it's available
- * in your current plan.
- *
- * @param mode An enum to set user steps tracking to be enabled, non visual or disabled.
- */
-export const setReproStepsMode = (mode: reproStepsMode | ReproStepsMode) => {
-  NativeInstabug.setReproStepsMode(mode);
-};
-
-/**
  * Sets the repro steps mode for bugs and crashes.
  *
  * @param config The repro steps config.
@@ -428,15 +353,9 @@ export const setUserAttribute = (key: string, value: string) => {
 /**
  * Returns the user attribute associated with a given key.
  * @param key The attribute key as string
- * @param callback DEPRECATED: callback with argument as the desired user attribute value
  */
-export const getUserAttribute = async (
-  key: string,
-  callback?: (attribute: string) => void,
-): Promise<string | null> => {
+export const getUserAttribute = async (key: string): Promise<string | null> => {
   const attribute = await NativeInstabug.getUserAttribute(key);
-
-  invokeDeprecatedCallback(callback, attribute);
 
   return attribute;
 };
@@ -456,15 +375,10 @@ export const removeUserAttribute = (key: string) => {
 
 /**
  * Returns all user attributes.
- * @param callback DEPRECATED: callback with argument A new dictionary containing all the currently
  * set user attributes, or an empty dictionary if no user attributes have been set.
  */
-export const getAllUserAttributes = async (
-  callback?: (attributes: Record<string, string>) => void,
-): Promise<Record<string, string>> => {
+export const getAllUserAttributes = async (): Promise<Record<string, string>> => {
   const attributes = await NativeInstabug.getAllUserAttributes();
-
-  invokeDeprecatedCallback(callback, attributes);
 
   return attributes;
 };
@@ -477,64 +391,10 @@ export const clearAllUserAttributes = () => {
 };
 
 /**
- * @deprecated Pass a {@link LogLevel} to debugLogsLevel in {@link init} instead. This will work on both Android and iOS.
- *
- * Enable/Disable debug logs from Instabug SDK
- * Default state: disabled
- *
- * @param isEnabled whether debug logs should be printed or not into LogCat
- */
-export const setDebugEnabled = (isEnabled: boolean) => {
-  if (Platform.OS === 'android') {
-    NativeInstabug.setDebugEnabled(isEnabled);
-  }
-};
-
-/**
- * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
- *
- * Enables all Instabug functionality
- * It works on android only
- */
-export const enable = () => {
-  if (Platform.OS === 'android') {
-    setEnabled(true);
-  }
-};
-
-/**
- * @deprecated Use {@link setEnabled} instead. This will work on both Android and iOS.
- *
- * Disables all Instabug functionality
- * It works on android only
- */
-export const disable = () => {
-  if (Platform.OS === 'android') {
-    setEnabled(false);
-  }
-};
-
-/**
- * @deprecated This API will be removed in a future release.
- * You can manage and check your app running environment using environment variables.
- *
- * Checks whether app is development/Beta testing OR live
- * Note: This API is iOS only
- * It returns in the callback false if in development or beta testing on Test Flight, and
- * true if app is live on the app store.
- * @param callback callback with argument as return value 'isLive'
- */
-export const isRunningLive = (callback: (isLive: boolean) => void) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.isRunningLive(callback);
-  }
-};
-
-/**
  * Shows the welcome message in a specific mode.
  * @param mode An enum to set the welcome message mode to live, or beta.
  */
-export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode) => {
+export const showWelcomeMessage = (mode: WelcomeMessageMode) => {
   NativeInstabug.showWelcomeMessageWithMode(mode);
 };
 
@@ -542,7 +402,7 @@ export const showWelcomeMessage = (mode: welcomeMessageMode | WelcomeMessageMode
  * Sets the welcome message mode to live, beta or disabled.
  * @param mode An enum to set the welcome message mode to live, beta or disabled.
  */
-export const setWelcomeMessageMode = (mode: welcomeMessageMode | WelcomeMessageMode) => {
+export const setWelcomeMessageMode = (mode: WelcomeMessageMode) => {
   NativeInstabug.setWelcomeMessageMode(mode);
 };
 
@@ -557,16 +417,6 @@ export const addFileAttachment = (filePath: string, fileName: string) => {
   } else {
     NativeInstabug.setFileAttachment(filePath);
   }
-};
-
-/**
- * @deprecated Use {@link addPrivateView} instead.
- *
- * Hides component from screenshots, screen recordings and view hierarchy.
- * @param viewRef the ref of the component to hide
- */
-export const setPrivateView = (viewRef: number | React.Component | React.ComponentClass) => {
-  addPrivateView(viewRef);
 };
 
 /**
@@ -603,13 +453,6 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   });
 
   NativeInstabug.setPreSendingHandler(handler);
-};
-
-/**
- * @deprecated Legacy API that will be removed in future releases.
- */
-export const callPrivateApi = (apiName: string, param: any[]) => {
-  NativeInstabug.callPrivateApi(apiName, param);
 };
 
 export const onNavigationStateChange = (

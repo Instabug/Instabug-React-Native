@@ -35,8 +35,6 @@
 
 - (void)setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled;
 
-- (void)setSdkDebugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel;
-
 - (void)setLocale:(IBGLocale)locale;
 
 - (void)setColorTheme:(IBGColorTheme)colorTheme;
@@ -58,8 +56,6 @@
 - (void)logUserEvent:(NSString *)name;
 
 - (void)logVerbose:(NSString *)log;
-
-- (void)setReproStepsMode:(IBGUserStepsMode)reproStepsMode;
 
 - (void)setReproStepsConfig:(IBGUserStepsMode)bugMode:(IBGUserStepsMode)crashMode;
 

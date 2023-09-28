@@ -6,7 +6,6 @@
     NSMutableDictionary *all = [[NSMutableDictionary alloc] init];
 
     [all addEntriesFromDictionary:ArgsRegistry.sdkLogLevels];
-    [all addEntriesFromDictionary:ArgsRegistry.logLevels];
     [all addEntriesFromDictionary:ArgsRegistry.invocationEvents];
     [all addEntriesFromDictionary:ArgsRegistry.invocationOptions];
     [all addEntriesFromDictionary:ArgsRegistry.colorThemes];
@@ -18,7 +17,6 @@
     [all addEntriesFromDictionary:ArgsRegistry.actionTypes];
     [all addEntriesFromDictionary:ArgsRegistry.extendedBugReportStates];
     [all addEntriesFromDictionary:ArgsRegistry.reproStates];
-    [all addEntriesFromDictionary:ArgsRegistry.promptOptions];
     [all addEntriesFromDictionary:ArgsRegistry.locales];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
 
@@ -31,17 +29,6 @@
         @"sdkDebugLogsLevelDebug": @(IBGSDKDebugLogsLevelDebug),
         @"sdkDebugLogsLevelError": @(IBGSDKDebugLogsLevelError),
         @"sdkDebugLogsLevelNone": @(IBGSDKDebugLogsLevelNone),
-    };
-}
-
-+ (ArgsDictionary *) logLevels {
-    return @{
-        @"logLevelNone": @(IBGLogLevelNone),
-        @"logLevelError": @(IBGLogLevelError),
-        @"logLevelWarning": @(IBGLogLevelWarning),
-        @"logLevelInfo": @(IBGLogLevelInfo),
-        @"logLevelDebug": @(IBGLogLevelDebug),
-        @"logLevelVerbose": @(IBGLogLevelVerbose),
     };
 }
 
@@ -62,12 +49,6 @@
         @"optionEmailFieldOptional": @(IBGBugReportingOptionEmailFieldOptional),
         @"optionCommentFieldRequired": @(IBGBugReportingOptionCommentFieldRequired),
         @"optionDisablePostSendingDialog": @(IBGBugReportingOptionDisablePostSendingDialog),
-
-        // Deprecated
-        @"emailFieldHidden": @(IBGBugReportingInvocationOptionEmailFieldHidden),
-        @"emailFieldOptional": @(IBGBugReportingInvocationOptionEmailFieldOptional),
-        @"commentFieldRequired": @(IBGBugReportingInvocationOptionCommentFieldRequired),
-        @"disablePostSendingDialog": @(IBGBugReportingInvocationOptionDisablePostSendingDialog),
     };
 }
 
@@ -123,7 +104,6 @@
 + (ArgsDictionary *) actionTypes {
     return @{
         @"allActions": @(IBGActionAllActions),
-        @"reportBugAction": @(IBGActionReportBug), // Deprecated
         @"requestNewFeature": @(IBGActionRequestNewFeature),
         @"addCommentToFeature": @(IBGActionAddCommentToFeature),
     };
@@ -142,15 +122,6 @@
         @"reproStepsEnabled": @(IBGUserStepsModeEnable),
         @"reproStepsDisabled": @(IBGUserStepsModeDisable),
         @"reproStepsEnabledWithNoScreenshots": @(IBGUserStepsModeEnabledWithNoScreenshots),
-    };
-}
-
-+ (ArgsDictionary *) promptOptions {
-    return @{
-        @"promptOptionNone": @(IBGPromptOptionNone),
-        @"promptOptionBug": @(IBGPromptOptionBug),
-        @"promptOptionChat": @(IBGPromptOptionChat),
-        @"promptOptionFeedback": @(IBGPromptOptionFeedback),
     };
 }
 
@@ -187,11 +158,6 @@
         @"startAlertText": kIBGStartAlertTextStringName,
         @"invalidEmailMessage": kIBGInvalidEmailMessageStringName,
         @"invalidEmailTitle": kIBGInvalidEmailTitleStringName,
-
-        // Deprecated
-        @"invalidCommentMessage": kIBGInvalidCommentMessageStringName,
-        // Deprecated
-        @"invalidCommentTitle": kIBGInvalidCommentTitleStringName,
 
         @"invocationHeader": kIBGInvocationTitleStringName,
         @"reportQuestion": kIBGAskAQuestionStringName,
@@ -246,8 +212,6 @@
 
         @"discardAlertTitle": kIBGDiscardAlertTitle,
         @"discardAlertMessage": kIBGDiscardAlertMessage,
-        @"discardAlertCancel": kIBGDiscardAlertCancel,
-        @"discardAlertAction": kIBGDiscardAlertAction,
         @"discardAlertDiscard": kIBGDiscardAlertCancel,
         @"discardAlertStay": kIBGDiscardAlertAction,
         @"addAttachmentButtonTitleStringName": kIBGAddAttachmentButtonTitleStringName,
@@ -258,7 +222,6 @@
         @"reproStepsListHeader": kIBGReproStepsListTitle,
         @"reproStepsListDescription": kIBGReproStepsListHeader,
         @"reproStepsListEmptyStateDescription": kIBGReproStepsListEmptyStateLabel,
-        @"reproStepsListItemTitle": kIBGReproStepsListItemName,
         @"reproStepsListItemNumberingTitle": kIBGReproStepsListItemName,
         @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
         @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,

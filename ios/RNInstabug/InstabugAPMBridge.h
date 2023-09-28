@@ -11,7 +11,6 @@
  +------------------------------------------------------------------------+
  */
 
-- (void)setLogLevel:(IBGLogLevel)_logLevel;
 - (void)setEnabled:(BOOL)isEnabled;
 - (void)setAppLaunchEnabled:(BOOL)isEnabled;
 - (void)endAppLaunch;

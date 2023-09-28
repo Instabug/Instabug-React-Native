@@ -1,7 +1,6 @@
 package com.instabug.reactlibrary;
 import android.os.Looper;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.instabug.apm.APM;
 
@@ -92,7 +91,7 @@ public class RNInstabugAPMModuleTest {
         apmModule.setAppLaunchEnabled(false);
         // then
         verify(APM.class, times(1));
-        APM.setAppLaunchEnabled(false);
+        APM.setColdAppLaunchEnabled(false);
     }
 
     @Test
@@ -102,7 +101,7 @@ public class RNInstabugAPMModuleTest {
         apmModule.setAppLaunchEnabled(true);
         // then
         verify(APM.class, times(1));
-        APM.setAppLaunchEnabled(true);
+        APM.setColdAppLaunchEnabled(true);
     }
 
     @Test

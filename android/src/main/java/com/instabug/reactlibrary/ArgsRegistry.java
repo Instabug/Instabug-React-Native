@@ -2,24 +2,20 @@ package com.instabug.reactlibrary;
 
 import androidx.annotation.NonNull;
 
-import com.instabug.apm.model.LogLevel;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.featuresrequest.ActionType;
 
-import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.OnSdkDismissCallback.DismissType;
 import com.instabug.library.ReproMode;
-import com.instabug.library.core.plugin.PluginPromptOption;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +43,6 @@ final class ArgsRegistry {
     @SuppressWarnings("deprecation")
     static Map<String, Object> getAll() {
         return new HashMap<String, Object>() {{
-            putAll(logLevels);
             putAll(invocationEvents);
             putAll(invocationOptions);
             putAll(colorThemes);
@@ -58,23 +53,12 @@ final class ArgsRegistry {
             putAll(dismissTypes);
             putAll(actionTypes);
             putAll(extendedBugReportStates);
-            putAll(reproStates);
             putAll(reproModes);
             putAll(sdkLogLevels);
-            putAll(promptOptions);
             putAll(locales);
             putAll(placeholders);
         }};
     }
-
-    static final ArgsMap<Integer> logLevels = new ArgsMap<Integer>() {{
-        put("logLevelNone", LogLevel.NONE);
-        put("logLevelError", LogLevel.ERROR);
-        put("logLevelWarning", LogLevel.WARNING);
-        put("logLevelInfo", LogLevel.INFO);
-        put("logLevelDebug", LogLevel.DEBUG);
-        put("logLevelVerbose", LogLevel.VERBOSE);
-    }};
 
     static ArgsMap<InstabugInvocationEvent> invocationEvents = new ArgsMap<InstabugInvocationEvent>() {{
         put("invocationEventNone", InstabugInvocationEvent.NONE);
@@ -132,7 +116,6 @@ final class ArgsRegistry {
 
     static final ArgsMap<Integer> actionTypes = new ArgsMap<Integer>() {{
         put("allActions", ActionType.REQUEST_NEW_FEATURE | ActionType.ADD_COMMENT_TO_FEATURE);
-        put("reportBugAction", 0); // Deprecated
         put("requestNewFeature", ActionType.REQUEST_NEW_FEATURE);
         put("addCommentToFeature", ActionType.ADD_COMMENT_TO_FEATURE);
     }};
@@ -141,13 +124,6 @@ final class ArgsRegistry {
         put("enabledWithRequiredFields", ExtendedBugReport.State.ENABLED_WITH_REQUIRED_FIELDS);
         put("enabledWithOptionalFields", ExtendedBugReport.State.ENABLED_WITH_OPTIONAL_FIELDS);
         put("disabled", ExtendedBugReport.State.DISABLED);
-    }};
-
-    @Deprecated()
-    static final ArgsMap<State> reproStates = new ArgsMap<State>() {{
-        put("reproStepsEnabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
-        put("reproStepsEnabled", State.ENABLED);
-        put("reproStepsDisabled", State.DISABLED);
     }};
 
     static final ArgsMap<Integer> reproModes = new ArgsMap<Integer>() {{
@@ -161,13 +137,6 @@ final class ArgsRegistry {
         put("sdkDebugLogsLevelError", com.instabug.library.LogLevel.ERROR);
         put("sdkDebugLogsLevelDebug", com.instabug.library.LogLevel.DEBUG);
         put("sdkDebugLogsLevelVerbose", com.instabug.library.LogLevel.VERBOSE);
-    }};
-
-    @Deprecated
-    static final ArgsMap<Integer> promptOptions = new ArgsMap<Integer>() {{
-        put("promptOptionBug", PluginPromptOption.PromptOptionIdentifier.BUG_REPORT);
-        put("promptOptionChat", PluginPromptOption.PromptOptionIdentifier.CHAT_LIST);
-        put("promptOptionFeedback", PluginPromptOption.PromptOptionIdentifier.FEEDBACK);
     }};
 
     static final ArgsMap<InstabugLocale> locales = new ArgsMap<InstabugLocale>() {{
@@ -201,8 +170,6 @@ final class ArgsRegistry {
         put("shakeHint", Key.SHAKE_HINT);
         put("swipeHint", Key.SWIPE_HINT);
         put("invalidEmailMessage", Key.INVALID_EMAIL_MESSAGE);
-        // Deprecated
-        put("invalidCommentMessage", Key.INVALID_COMMENT_MESSAGE);
         put("emailFieldHint", Key.EMAIL_FIELD_HINT);
         put("commentFieldHintForBugReport", Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
         put("commentFieldHintForFeedback", Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);
@@ -243,8 +210,6 @@ final class ArgsRegistry {
 
         put("discardAlertTitle", Key.REPORT_DISCARD_DIALOG_TITLE);
         put("discardAlertMessage", Key.REPORT_DISCARD_DIALOG_BODY);
-        put("discardAlertCancel", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
-        put("discardAlertAction", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
         put("discardAlertStay", Key.REPORT_DISCARD_DIALOG_NEGATIVE_ACTION);
         put("discardAlertDiscard", Key.REPORT_DISCARD_DIALOG_POSITIVE_ACTION);
 
@@ -256,7 +221,6 @@ final class ArgsRegistry {
         put("reproStepsListHeader", Key.REPRO_STEPS_LIST_HEADER);
         put("reproStepsListDescription", Key.REPRO_STEPS_LIST_DESCRIPTION);
         put("reproStepsListEmptyStateDescription", Key.REPRO_STEPS_LIST_EMPTY_STATE_DESCRIPTION);
-        put("reproStepsListItemTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
         put("reproStepsListItemNumberingTitle", Key.REPRO_STEPS_LIST_ITEM_NUMBERING_TITLE);
         put("okButtonTitle", Key.BUG_ATTACHMENT_DIALOG_OK_BUTTON);
         put("audio", Key.CHATS_TYPE_AUDIO);

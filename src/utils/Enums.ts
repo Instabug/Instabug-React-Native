@@ -160,10 +160,6 @@ export enum StringKey {
   commentFieldHintForQuestion = constants.commentFieldHintForQuestion,
   conversationsHeaderTitle = constants.conversationsHeaderTitle,
   conversationTextFieldHint = constants.conversationTextFieldHint,
-  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
-  discardAlertAction = constants.discardAlertAction,
-  /** @deprecated Use {@link discardAlertStay} and {@link discardAlertDiscard} instead */
-  discardAlertCancel = constants.discardAlertCancel,
   discardAlertDiscard = constants.discardAlertDiscard,
   discardAlertStay = constants.discardAlertStay,
   discardAlertMessage = constants.discardAlertMessage,
@@ -175,11 +171,6 @@ export enum StringKey {
   insufficientContentMessage = constants.insufficientContentMessage,
   /** iOS only */
   insufficientContentTitle = constants.insufficientContentTitle,
-  /** @deprecated Use {@link insufficientContentMessage} instead. */
-  invalidCommentMessage = constants.invalidCommentMessage,
-  /** @deprecated Use {@link insufficientContentTitle} instead. */
-  invalidCommentTitle = constants.invalidCommentTitle,
-
   invalidEmailMessage = constants.invalidEmailMessage,
   invalidEmailTitle = constants.invalidEmailTitle,
   invocationHeader = constants.invocationHeader,
@@ -200,8 +191,6 @@ export enum StringKey {
   reproStepsListDescription = constants.reproStepsListDescription,
   reproStepsListEmptyStateDescription = constants.reproStepsListEmptyStateDescription,
   reproStepsListHeader = constants.reproStepsListHeader,
-  /** @deprecated Use {@link reproStepsListItemNumberingTitle} instead */
-  reproStepsListItemTitle = constants.reproStepsListItemTitle,
   reproStepsListItemNumberingTitle = constants.reproStepsListItemNumberingTitle,
   reproStepsProgressDialogBody = constants.reproStepsProgressDialogBody,
   requestFeatureDescription = constants.requestFeatureDescription,
