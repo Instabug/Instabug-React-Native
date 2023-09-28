@@ -80,7 +80,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    APM.setAppLaunchEnabled(isEnabled);
+                    APM.setColdAppLaunchEnabled(isEnabled);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

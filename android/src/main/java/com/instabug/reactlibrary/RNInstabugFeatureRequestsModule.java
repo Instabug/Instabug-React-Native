@@ -1,8 +1,6 @@
 package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -11,11 +9,9 @@ import com.facebook.react.bridge.ReadableArray;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.ArrayUtil;
-import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 

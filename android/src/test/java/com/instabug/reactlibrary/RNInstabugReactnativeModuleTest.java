@@ -4,10 +4,8 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.graphics.Bitmap;
 import android.os.Looper;
-import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
@@ -22,7 +20,6 @@ import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
@@ -39,7 +36,6 @@ import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -281,6 +277,8 @@ public class RNInstabugReactnativeModuleTest {
         verify(builder).build();
 
         mockInstabug.verify(() -> Instabug.setReproConfigurations(config));
+
+        mReproConfigurationsBuilder.close();
     }
 
     @Test
