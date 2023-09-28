@@ -138,8 +138,6 @@ interface NativeStringKey {
   image: any;
   insufficientContentMessage: any;
   insufficientContentTitle: any;
-  invalidCommentMessage: any;
-  invalidCommentTitle: any;
   invalidEmailMessage: any;
   invalidEmailTitle: any;
   invocationHeader: any;

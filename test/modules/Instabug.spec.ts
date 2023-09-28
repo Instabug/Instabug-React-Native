@@ -410,14 +410,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.clearLogs).toBeCalledTimes(1);
   });
 
-  it('should call the native method setReproStepsMode', () => {
-    const mode = ReproStepsMode.enabled;
-    Instabug.setReproStepsMode(mode);
-
-    expect(NativeInstabug.setReproStepsMode).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsMode).toBeCalledWith(mode);
-  });
-
   it('setReproStepsConfig should call the native setReproStepsConfig', () => {
     Platform.OS = 'android';
 

@@ -19,7 +19,6 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.visualusersteps.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,13 +130,6 @@ final class ArgsRegistry {
         put("disabled", ExtendedBugReport.State.DISABLED);
     }};
 
-    @Deprecated()
-    static final ArgsMap<State> reproStates = new ArgsMap<State>() {{
-        put("reproStepsEnabledWithNoScreenshots", State.ENABLED_WITH_NO_SCREENSHOTS);
-        put("reproStepsEnabled", State.ENABLED);
-        put("reproStepsDisabled", State.DISABLED);
-    }};
-
     static final ArgsMap<Integer> reproModes = new ArgsMap<Integer>() {{
         put("reproStepsEnabledWithNoScreenshots", ReproMode.EnableWithNoScreenshots);
         put("reproStepsEnabled", ReproMode.EnableWithScreenshots);
@@ -182,8 +174,6 @@ final class ArgsRegistry {
         put("shakeHint", Key.SHAKE_HINT);
         put("swipeHint", Key.SWIPE_HINT);
         put("invalidEmailMessage", Key.INVALID_EMAIL_MESSAGE);
-        // Deprecated
-        put("invalidCommentMessage", Key.INVALID_COMMENT_MESSAGE);
         put("emailFieldHint", Key.EMAIL_FIELD_HINT);
         put("commentFieldHintForBugReport", Key.COMMENT_FIELD_HINT_FOR_BUG_REPORT);
         put("commentFieldHintForFeedback", Key.COMMENT_FIELD_HINT_FOR_FEEDBACK);

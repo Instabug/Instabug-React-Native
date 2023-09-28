@@ -33,7 +33,6 @@ const mockInstabug: InstabugNativeModule = {
   logError: jest.fn(),
   logDebug: jest.fn(),
   clearLogs: jest.fn(),
-  setReproStepsMode: jest.fn(),
   setReproStepsConfig: jest.fn(),
   setUserAttribute: jest.fn(),
   getUserAttribute: jest.fn(),

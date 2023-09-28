@@ -48,17 +48,6 @@
   XCTAssertEqual(IBGBugReporting.invocationEvents, invocationEvents);
 }
 
-- (void) testgivenOptions$setOptions_whenQuery_thenShouldCallNativeApiWithArgs {
-  NSArray *invocationOptionsArr = [NSArray arrayWithObjects:  @(IBGBugReportingInvocationOptionEmailFieldHidden), nil];
-  
-  [self.instabugBridge setOptions:invocationOptionsArr];
-  IBGBugReportingOption invocationOptions = 0;
-  for (NSNumber *boxedValue in invocationOptionsArr) {
-    invocationOptions |= [boxedValue intValue];
-  }
-  XCTAssertEqual(IBGBugReporting.bugReportingOptions, invocationOptions);
-}
-
 - (void) testgivenHandler$setOnInvokeHandler_whenQuery_thenShouldCallNativeApi {
   id partialMock = OCMPartialMock(self.instabugBridge);
   RCTResponseSenderBlock callback = ^(NSArray *response) {};

@@ -171,11 +171,6 @@ export enum StringKey {
   insufficientContentMessage = constants.insufficientContentMessage,
   /** iOS only */
   insufficientContentTitle = constants.insufficientContentTitle,
-  /** @deprecated Use {@link insufficientContentMessage} instead. */
-  invalidCommentMessage = constants.invalidCommentMessage,
-  /** @deprecated Use {@link insufficientContentTitle} instead. */
-  invalidCommentTitle = constants.invalidCommentTitle,
-
   invalidEmailMessage = constants.invalidEmailMessage,
   invalidEmailTitle = constants.invalidEmailTitle,
   invocationHeader = constants.invocationHeader,

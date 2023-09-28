@@ -262,25 +262,6 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArg$setReproStepsMode_whenQuery_thenShouldCallNativeApiWithArg() throws Exception {
-        // given
-        Map<String, State> args = ArgsRegistry.reproStates;
-        final String[] keysArray = args.keySet().toArray(new String[0]);
-
-        // when
-        for (String key : keysArray) {
-            rnModule.setReproStepsMode(key);
-        }
-
-        // then
-        for (String key : keysArray) {
-            verify(Instabug.class, times(1));
-            State mode = args.get(key);
-            Instabug.setReproStepsState(mode);
-        }
-    }
-
-    @Test
     public void givenArg$setReproStepsConfig_whenQuery_thenShouldCallNativeApiWithArg() {
         String bug = "reproStepsEnabled";
         String crash = "reproStepsDisabled";

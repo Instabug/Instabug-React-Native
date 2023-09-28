@@ -745,29 +745,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Sets whether user steps tracking is visual, non visual or disabled.
-     *
-     * @param reproStepsMode A string to set user steps tracking to be
-     *                       enabled, non visual or disabled.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated()
-    @ReactMethod
-    public void setReproStepsMode(final String reproStepsMode) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final State parsedState = ArgsRegistry.reproStates.get(reproStepsMode);
-                    Instabug.setReproStepsState(parsedState);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setReproStepsConfig(final String bugMode, final String crashMode) {
         MainThreadHandler.runOnMainThread(new Runnable() {

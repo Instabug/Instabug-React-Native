@@ -304,19 +304,6 @@ export const clearLogs = () => {
 };
 
 /**
- * @deprecated Use {@link setReproStepsConfig} instead.
- *
- * Sets whether user steps tracking is visual, non visual or disabled.
- * User Steps tracking is enabled by default if it's available
- * in your current plan.
- *
- * @param mode An enum to set user steps tracking to be enabled, non visual or disabled.
- */
-export const setReproStepsMode = (mode: ReproStepsMode) => {
-  NativeInstabug.setReproStepsMode(mode);
-};
-
-/**
  * Sets the repro steps mode for bugs and crashes.
  *
  * @param config The repro steps config.
