@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v11.14.0...dev)
 
+### Added
+
+- Add support for Session Replay, which includes capturing session details, visual reproduction of sessions as well as support for user steps, network and Instabug logs. ([#1034](https://github.com/Instabug/Instabug-React-Native/pull/1034)).
+
 ### Changed
 
 - **BREAKING** Remove deprecated APIs ([#1027](https://github.com/Instabug/Instabug-React-Native/pull/1027)). See migration guide for more details.
