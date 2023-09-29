@@ -214,11 +214,13 @@
   id mock = OCMClassMock([Instabug class]);
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
   IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
 
-  [self.instabugBridge setReproStepsConfig:bugMode :crashMode];
+  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
   OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+ OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
 }
 
 - (void)testSetUserAttribute {

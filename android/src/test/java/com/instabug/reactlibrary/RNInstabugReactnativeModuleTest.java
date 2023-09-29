@@ -261,6 +261,7 @@ public class RNInstabugReactnativeModuleTest {
     public void givenArg$setReproStepsConfig_whenQuery_thenShouldCallNativeApiWithArg() {
         String bug = "reproStepsEnabled";
         String crash = "reproStepsDisabled";
+        String sessionReplay = "reproStepsEnabled";
 
         ReproConfigurations config = mock(ReproConfigurations.class);
         MockedConstruction<ReproConfigurations.Builder> mReproConfigurationsBuilder = mockConstruction(ReproConfigurations.Builder.class, (mock, context) -> {
@@ -268,12 +269,13 @@ public class RNInstabugReactnativeModuleTest {
             when(mock.build()).thenReturn(config);
         });
 
-        rnModule.setReproStepsConfig(bug, crash);
+        rnModule.setReproStepsConfig(bug, crash, sessionReplay);
 
         ReproConfigurations.Builder builder = mReproConfigurationsBuilder.constructed().get(0);
 
         verify(builder).setIssueMode(IssueType.Bug, ReproMode.EnableWithScreenshots);
         verify(builder).setIssueMode(IssueType.Crash, ReproMode.Disable);
+        verify(builder).setIssueMode(IssueType.SessionReplay, ReproMode.EnableWithScreenshots);
         verify(builder).build();
 
         mockInstabug.verify(() -> Instabug.setReproConfigurations(config));

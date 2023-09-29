@@ -415,29 +415,31 @@ describe('Instabug Module', () => {
 
     const bug = ReproStepsMode.disabled;
     const crash = ReproStepsMode.enabled;
-    const config = { bug, crash };
+    const sessionReplay = ReproStepsMode.enabledWithNoScreenshots;
+    const config = { bug, crash, sessionReplay };
 
     Instabug.setReproStepsConfig(config);
 
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(bug, crash);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(bug, crash, sessionReplay);
   });
 
-  it('setReproStepsConfig should prioritize `all` over `bug` and `crash`', () => {
+  it('setReproStepsConfig should prioritize `all` over `bug`, `crash`, and `sessionReplay`', () => {
     Platform.OS = 'android';
 
     const bug = ReproStepsMode.disabled;
     const crash = ReproStepsMode.enabled;
+    const sessionReplay = ReproStepsMode.enabledWithNoScreenshots;
     const all = ReproStepsMode.enabledWithNoScreenshots;
-    const config = { all, bug, crash };
+    const config = { all, bug, crash, sessionReplay };
 
     Instabug.setReproStepsConfig(config);
 
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(all, all);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(all, all, all);
   });
 
-  it('setReproStepsConfig should use defaults for `bug` and `crash`', () => {
+  it('setReproStepsConfig should use defaults for `bug`, `crash`, and `sessionReplay`', () => {
     Platform.OS = 'android';
 
     const config = {};
@@ -448,6 +450,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
       ReproStepsMode.enabled,
       ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabled,
     );
   });
 
