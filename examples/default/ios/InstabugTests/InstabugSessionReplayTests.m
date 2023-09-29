@@ -22,34 +22,34 @@
  +------------------------------------------------------------------------+
  */
 
-- (void) testSetEnabled {
-  BOOL enabled = false;
+- (void)testSetEnabled {
+  BOOL enabled = NO;
   [self.instabugBridge setEnabled:enabled];
   XCTAssertFalse(IBGSessionReplay.enabled);
 }
 
 - (void)testSetInstabugLogsEnabled {
-  BOOL enabled = false;
+  BOOL enabled = NO;
 
-    [self.instabugBridge setInstabugLogsEnabled:enabled];
+  [self.instabugBridge setInstabugLogsEnabled:enabled];
 
-    XCTAssertFalse(IBGSessionReplay.IBGLogsEnabled);
+  XCTAssertFalse(IBGSessionReplay.IBGLogsEnabled);
 }
 
 - (void)testSetNetworkLogsEnabled {
-  BOOL enabled = false;
+  BOOL enabled = NO;
 
-    [self.instabugBridge setNetworkLogsEnabledIsEnabled:isEnabled];
+  [self.instabugBridge setNetworkLogsEnabledIsEnabled:isEnabled];
 
-    XCTAssertFalse(IBGSessionReplay.networkLogsEnabled);
+  XCTAssertFalse(IBGSessionReplay.networkLogsEnabled);
 }
 
 - (void)testSetUserStepsEnabled {
-  BOOL enabled = false;
+  BOOL enabled = NO;
 
-    [self.instabugBridge setUserStepsEnabledIsEnabled:isEnabled];
+  [self.instabugBridge setUserStepsEnabledIsEnabled:isEnabled];
 
-    XCTAssertFalse(IBGSessionReplay.userStepsEnabled);
+  XCTAssertFalse(IBGSessionReplay.userStepsEnabled);
 }
 
 
