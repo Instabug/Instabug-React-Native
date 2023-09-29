@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
 import com.instabug.featuresrequest.ActionType;
-
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
 import com.instabug.library.OnSdkDismissCallback.DismissType;

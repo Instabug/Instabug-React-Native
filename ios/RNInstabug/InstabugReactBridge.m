@@ -67,9 +67,10 @@ RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEv
     IBGAPM.hotAppLaunchEnabled = NO;
 }
 
-RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode) {
+RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
     [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
+   [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
 }
 
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {

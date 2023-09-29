@@ -39,8 +39,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Sets the printed logs priority. Filter to one of the following levels.
-     *
-     * @param logLevel the priority level.
      */
     @ReactMethod
     public void ibgSleep() {

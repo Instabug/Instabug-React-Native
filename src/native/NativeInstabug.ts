@@ -37,7 +37,11 @@ export interface InstabugNativeModule extends NativeModule {
   setNetworkLoggingEnabled(isEnabled: boolean): void;
 
   // Repro Steps APIs //
-  setReproStepsConfig(bugMode: ReproStepsMode, crashMode: ReproStepsMode): void;
+  setReproStepsConfig(
+    bugMode: ReproStepsMode,
+    crashMode: ReproStepsMode,
+    sessionReplay: ReproStepsMode,
+  ): void;
   setTrackUserSteps(isEnabled: boolean): void;
   reportScreenChange(firstScreen: string): void;
   addPrivateView(nativeTag: number | null): void;
