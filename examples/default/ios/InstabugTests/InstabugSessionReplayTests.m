@@ -6,52 +6,51 @@
 #import "IBGConstants.h"
 
 @interface InstabugSessionReplayTests : XCTestCase
-@property (nonatomic, retain) InstabugSessionReplayBridge *instabugBridge;
+
+@property (nonatomic, strong) id mSessionReplay;
+@property (nonatomic, strong) InstabugSessionReplayBridge *bridge;
+
 @end
 
 @implementation InstabugSessionReplayTests
 
-- (void)setUp {
-  // Put setup code here. This method is called before the invocation of each test method in the class.
-  self.instabugBridge = [[InstabugSessionReplayBridge alloc] init];
-}
 
-/*
- +------------------------------------------------------------------------+
- |                              Session Replay Module                     |
- +------------------------------------------------------------------------+
- */
+- (void)setUp {
+    self.mSessionReplay = OCMClassMock([IBGSessionReplay class]);
+    self.bridge = [[InstabugSessionReplayBridge alloc] init];
+}
 
 - (void)testSetEnabled {
   BOOL enabled = NO;
-  [self.instabugBridge setEnabled:enabled];
-  XCTAssertFalse(IBGSessionReplay.enabled);
+
+  [self.bridge setEnabled:enabled];
+
+  OCMVerify([self.mSessionReplay setEnabled:enabled]);
 }
 
 - (void)testSetInstabugLogsEnabled {
   BOOL enabled = NO;
 
-  [self.instabugBridge setInstabugLogsEnabled:enabled];
+  [self.bridge setInstabugLogsEnabled:enabled];
 
-  XCTAssertFalse(IBGSessionReplay.IBGLogsEnabled);
+  OCMVerify([self.mSessionReplay setIBGLogsEnabled:enabled]);
 }
 
 - (void)testSetNetworkLogsEnabled {
   BOOL enabled = NO;
 
-  [self.instabugBridge setNetworkLogsEnabledIsEnabled:isEnabled];
+  [self.bridge setNetworkLogsEnabled:enabled];
 
-  XCTAssertFalse(IBGSessionReplay.networkLogsEnabled);
+  OCMVerify([self.mSessionReplay setNetworkLogsEnabled:enabled]);
 }
 
 - (void)testSetUserStepsEnabled {
   BOOL enabled = NO;
 
-  [self.instabugBridge setUserStepsEnabledIsEnabled:isEnabled];
+  [self.bridge setUserStepsEnabled:enabled];
 
-  XCTAssertFalse(IBGSessionReplay.userStepsEnabled);
+  OCMVerify([self.mSessionReplay setUserStepsEnabled:enabled]);
 }
 
 
 @end
-
