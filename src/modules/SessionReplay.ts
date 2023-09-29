@@ -7,10 +7,8 @@ import { NativeSessionReplay } from '../native/NativeSessionReplay';
  *
  * @param isEnabled
  *
- * Example:
- * ```typescript
- * import { SessionReplay } from 'instabug-reactnative';
- *
+ * @example
+ * ```ts
  * SessionReplay.setEnabled(true);
  * ```
  */
@@ -25,10 +23,8 @@ export const setEnabled = (isEnabled: boolean) => {
  *
  * @param isEnabled
  *
- * Example:
- * ```typescript
- * import { SessionReplay } from 'instabug-reactnative';
- *
+ * @example
+ * ```ts
  * SessionReplay.setNetworkLogsEnabled(true);
  * ```
  */
@@ -43,10 +39,8 @@ export const setNetworkLogsEnabled = (isEnabled: boolean) => {
  *
  * @param isEnabled
  *
- * Example:
- * ```typescript
- * import { SessionReplay } from 'instabug-reactnative';
- *
+ * @example
+ * ```ts
  * SessionReplay.setInstabugLogsEnabled(true);
  * ```
  */
@@ -61,11 +55,9 @@ export const setInstabugLogsEnabled = (isEnabled: boolean) => {
  *
  * @param isEnabled
  *
- * Example:
- * ```typescript
- * import { SessionReplay } from 'instabug-reactnative';
- *
- * SessionReplay.setReproStepsEnabled(true);
+ * @example
+ * ```ts
+ * SessionReplay.setUserStepsEnabled(true);
  * ```
  */
 export const setUserStepsEnabled = (isEnabled: boolean) => {
