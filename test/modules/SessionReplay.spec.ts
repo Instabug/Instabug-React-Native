@@ -23,7 +23,7 @@ describe('Session Replay Module', () => {
     expect(NativeSessionReplay.setInstabugLogsEnabled).toBeCalledWith(true);
   });
 
-  it('should call the native method setReproStepsEnabled', () => {
+  it('should call the native method setUserStepsEnabled', () => {
     SessionReplay.setUserStepsEnabled(true);
 
     expect(NativeSessionReplay.setUserStepsEnabled).toBeCalledTimes(1);
