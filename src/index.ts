@@ -13,6 +13,7 @@ import type { NetworkData, NetworkDataObfuscationHandler } from './modules/Netwo
 import * as Replies from './modules/Replies';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
+import * as SessionReplay from './modules/SessionReplay';
 
 export * from './utils/Enums';
 export {
@@ -23,6 +24,7 @@ export {
   CrashReporting,
   FeatureRequests,
   NetworkLogger,
+  SessionReplay,
   Replies,
   Surveys,
 };
