@@ -7,6 +7,7 @@ import type { FeatureRequestsNativeModule } from './NativeFeatureRequests';
 import type { InstabugNativeModule } from './NativeInstabug';
 import type { RepliesNativeModule } from './NativeReplies';
 import type { SurveysNativeModule } from './NativeSurveys';
+import type { SessionReplayNativeModule } from './NativeSessionReplay';
 
 export interface InstabugNativePackage {
   IBGAPM: ApmNativeModule;
@@ -16,6 +17,7 @@ export interface InstabugNativePackage {
   Instabug: InstabugNativeModule;
   IBGReplies: RepliesNativeModule;
   IBGSurveys: SurveysNativeModule;
+  IBGSessionReplay: SessionReplayNativeModule;
 }
 
 export const NativeModules = ReactNativeModules as InstabugNativePackage;
