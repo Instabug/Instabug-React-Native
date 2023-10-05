@@ -1,5 +1,6 @@
 const path = require('path');
 const escape = require('escape-string-regexp');
+const { mergeConfig, getDefaultConfig } = require('@react-native/metro-config');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 const root = path.resolve(__dirname, '../..');
@@ -15,7 +16,7 @@ const modules = [
   'promise',
 ];
 
-module.exports = {
+const config = {
   watchFolders: [root],
   transformer: {
     getTransformOptions: async () => ({
@@ -35,3 +36,5 @@ module.exports = {
     }, {}),
   },
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
