@@ -20,16 +20,26 @@ let _requestFilterExpression = 'false';
  */
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
+    console.log('IBG-RN: enabled XHR interception');
+
     xhr.enableInterception();
     xhr.setOnDoneCallback(async (network) => {
       // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
+
+      console.log('IBG-RN: recieved a network log');
+
       if (!predicate(network)) {
+        console.log('IBG-RN: the network log is not ignored');
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
+            console.log('IBG-RN: obfuscated the network log');
+          } else {
+            console.log('IBG-RN: no obfuscation has been applied');
           }
 
+          console.log(`IBG-RN: the network log is sent to the native ${Platform.OS} SDK`);
           if (Platform.OS === 'android') {
             NativeInstabug.networkLog(JSON.stringify(network));
             NativeAPM.networkLog(JSON.stringify(network));
@@ -37,11 +47,18 @@ export const setEnabled = (isEnabled: boolean) => {
             NativeInstabug.networkLog(network);
           }
         } catch (e) {
+          console.log(
+            `IBG-RN: failed to obfuscate and send the network log to the native ${Platform.OS} SDK`,
+          );
           console.error(e);
         }
+      } else {
+        console.log('IBG-RN: ignored the network log through request filter expression');
       }
     });
   } else {
+    console.log('IBG-RN: disabled XHR interception');
+
     xhr.disableInterception();
   }
 };
@@ -53,6 +70,7 @@ export const setEnabled = (isEnabled: boolean) => {
 export const setNetworkDataObfuscationHandler = (
   handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
+  console.log('IBG-RN: network data obfuscation handler is now set');
   _networkDataObfuscationHandler = handler;
 };
 
@@ -61,6 +79,7 @@ export const setNetworkDataObfuscationHandler = (
  * @param expression
  */
 export const setRequestFilterExpression = (expression: string) => {
+  console.log('IBG-RN: network data obfuscation handler is now set to', expression);
   _requestFilterExpression = expression;
 };
 
