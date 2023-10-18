@@ -7,6 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
+import type { ReproConfig } from '../models/ReproConfig';
 import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
 import {
   ColorTheme,
@@ -17,9 +18,8 @@ import {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
-import type { ReproConfig } from '../models/ReproConfig';
+import * as NetworkLogger from './NetworkLogger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;

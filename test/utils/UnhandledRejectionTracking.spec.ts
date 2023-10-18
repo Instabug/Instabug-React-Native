@@ -1,11 +1,12 @@
 /// <reference path="../../src/promise.d.ts" />
-
-import tracking from 'promise/setimmediate/rejection-tracking';
-import { captureUnhandledRejections } from '../../src/utils/UnhandledRejectionTracking';
-import { mockHermesInternal } from '../mocks/mockHermesInternal';
 import { mockDevMode } from '../mocks/mockDevMode';
+import { mockHermesInternal } from '../mocks/mockHermesInternal';
+
 import { mocked } from 'jest-mock';
+import tracking from 'promise/setimmediate/rejection-tracking';
+
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
+import { captureUnhandledRejections } from '../../src/utils/UnhandledRejectionTracking';
 
 it('tracks Promise rejections when using Hermes', () => {
   const enablePromiseRejectionTracker = jest.fn();

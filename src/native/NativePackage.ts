@@ -6,8 +6,8 @@ import type { CrashReportingNativeModule } from './NativeCrashReporting';
 import type { FeatureRequestsNativeModule } from './NativeFeatureRequests';
 import type { InstabugNativeModule } from './NativeInstabug';
 import type { RepliesNativeModule } from './NativeReplies';
-import type { SurveysNativeModule } from './NativeSurveys';
 import type { SessionReplayNativeModule } from './NativeSessionReplay';
+import type { SurveysNativeModule } from './NativeSurveys';
 
 export interface InstabugNativePackage {
   IBGAPM: ApmNativeModule;
