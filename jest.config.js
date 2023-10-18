@@ -12,11 +12,6 @@ module.exports = {
   modulePathIgnorePatterns: ['examples'],
   transform: {
     '^.+\\.jsx$': 'babel-jest',
-    '^.+\\.tsx?$': 'ts-jest',
-  },
-  globals: {
-    'ts-jest': {
-      tsConfig: 'tsconfig.test.json',
-    },
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],
   },
 };
