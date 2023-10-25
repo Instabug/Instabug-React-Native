@@ -12,7 +12,7 @@ String getExtOrDefault(String name) {
     return project.properties[defaultPropertyKey]
 }
 
-void supportsNamespace() {
+static boolean supportsNamespace() {
     def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
     def major = parsed[0].toInteger()
     def minor = parsed[1].toInteger()
@@ -22,18 +22,18 @@ void supportsNamespace() {
 }
 
 void updateManifestPackage() {
-    def package = 'package="com.instabug.reactlibrary"'
-    def manifestFile = file("${projectDir}/src/main/AndroidManifest.xml")
+    def packageProp = 'package="com.instabug.reactlibrary"'
+    def manifestFile = file("$projectDir/src/main/AndroidManifest.xml")
     def currentContent = manifestFile.getText()
     def content = currentContent
-    def hasPackage = currentContent.contains(package)
+    def hasPackage = currentContent.contains(packageProp)
 
     if (supportsNamespace()) {
-        content = content.replaceAll(package, '')
-    } else (!hasPackage) {
+        content = content.replaceAll(packageProp, '')
+    } else if (!hasPackage) {
         content = content.replace(
             '<manifest',
-            "<manifest $package "
+            "<manifest $packageProp "
         )
     }
 
