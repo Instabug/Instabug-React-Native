@@ -1,10 +1,9 @@
 import React from 'react';
-import { Alert } from 'react-native';
-
-import { CrashReporting } from 'instabug-reactnative';
+import { Alert, Platform } from 'react-native';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
+import { NativeExampleModule } from '../native';
 
 export const CrashReportingScreen: React.FC = () => {
   return (
@@ -12,13 +11,18 @@ export const CrashReportingScreen: React.FC = () => {
       <ListTile
         title="Throw Handled Exception"
         onPress={() => {
-          try {
-            throw new Error('Handled Exception From Instabug Test App');
-          } catch (err) {
-            if (err instanceof Error) {
-              CrashReporting.reportError(err);
-              Alert.alert('Crash report Sent!');
-            }
+          Alert.alert('Crash report Sent!');
+          throw new Error('Handled Exception From Instabug Test App');
+        }}
+      />
+      <ListTile
+        title="Throw Unhandled NDK Exception"
+        onPress={() => {
+          console.log('Sending NDK Crash Report');
+          if (Platform.OS === 'android') {
+            NativeExampleModule.sendNDKCrash();
+          } else {
+            Alert.alert('NDK crashes are only available on Android.');
           }
         }}
       />
