@@ -22,4 +22,11 @@ describe('CrashReporting Module', () => {
       NativeCrashReporting.sendHandledJSCrash,
     );
   });
+
+  it('should call the native method setNDKCrashesEnabled', () => {
+    CrashReporting.setNDKCrashesEnabled(true);
+
+    expect(NativeCrashReporting.setNDKCrashesEnabled).toBeCalledTimes(1);
+    expect(NativeCrashReporting.setNDKCrashesEnabled).toBeCalledWith(true);
+  });
 });

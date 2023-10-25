@@ -2,6 +2,7 @@ import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseEr
 
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
+import { Platform } from 'react-native';
 
 /**
  * Enables and disables everything related to crash reporting including intercepting
@@ -18,4 +19,14 @@ export const setEnabled = (isEnabled: boolean) => {
  */
 export const reportError = (error: ExtendedError) => {
   InstabugUtils.sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
+};
+
+/**
+ * Enables and disables capturing native C++ NDK crashes.
+ * @param isEnabled
+ */
+export const setNDKCrashesEnabled = (isEnabled: boolean) => {
+  if (Platform.OS === 'android') {
+    NativeCrashReporting.setNDKCrashesEnabled(isEnabled);
+  }
 };

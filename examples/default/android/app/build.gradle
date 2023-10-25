@@ -1,6 +1,14 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+def instabugGradleScript = file('../../../../android/native.gradle') // Relative path to native.gradle
+
+if (instabugGradleScript.exists()) {
+    apply from: instabugGradleScript
+} else {
+    throw new GradleException("native.gradle file not found at: $instabugGradleScript")
+}
+
 import com.android.build.OutputFile
 
 /**
@@ -169,6 +177,9 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+
+    // ndk crash reporting library
+    implementation ("com.instabug.library:instabug-ndk-crash:${project.ext.instabug.version}")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
