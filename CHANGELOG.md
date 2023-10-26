@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...dev)
+
+### Added
+
+- Add support for NDK crashes, which captures NDK C++ crashes native code crashes using `CrashReporting.setNDKCrashesEnabled` API. ([#1043](https://github.com/Instabug/Instabug-React-Native/pull/1043)).
+
 ## [12.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...v11.14.0)
 
 ### Added
