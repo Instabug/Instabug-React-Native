@@ -8,6 +8,7 @@ import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
 import { SurveysScreen } from '../screens/SurveysScreen';
+import { UserStepsScreen } from '../screens/UserStepsScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -16,6 +17,7 @@ export type HomeStackParamList = {
   FeatureRequests: undefined;
   Replies: undefined;
   Surveys: undefined;
+  UserSteps: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -41,6 +43,11 @@ export const HomeStackNavigator: React.FC = () => {
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
+      <HomeStack.Screen
+        name="UserSteps"
+        component={UserStepsScreen}
+        options={{ title: 'User Steps' }}
+      />
     </HomeStack.Navigator>
   );
 };
