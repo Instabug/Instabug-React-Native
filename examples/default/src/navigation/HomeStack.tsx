@@ -9,6 +9,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
 import { SurveysScreen } from '../screens/SurveysScreen';
 import { UserStepsScreen } from '../screens/UserStepsScreen';
+import { BasicComponentsScreen } from '../screens/BasicComponentsScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -18,6 +19,7 @@ export type HomeStackParamList = {
   Replies: undefined;
   Surveys: undefined;
   UserSteps: undefined;
+  BasicComponents: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -47,6 +49,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="UserSteps"
         component={UserStepsScreen}
         options={{ title: 'User Steps' }}
+      />
+      <HomeStack.Screen
+        name="BasicComponents"
+        component={BasicComponentsScreen}
+        options={{ title: 'Basic Components' }}
       />
     </HomeStack.Navigator>
   );
