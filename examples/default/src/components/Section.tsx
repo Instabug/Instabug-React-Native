@@ -3,12 +3,13 @@ import { Heading, VStack } from 'native-base';
 
 interface SectionProps {
   title: string;
+  flex?: number;
   children?: React.ReactNode;
 }
 
-export const Section: React.FC<SectionProps> = ({ title, children }) => {
+export const Section: React.FC<SectionProps> = ({ title, flex, children }) => {
   return (
-    <VStack marginBottom="4">
+    <VStack marginBottom="4" flex={flex}>
       <Heading size="md" marginBottom="1.5">
         {title}
       </Heading>

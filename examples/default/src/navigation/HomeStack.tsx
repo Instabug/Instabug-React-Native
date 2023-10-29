@@ -10,6 +10,8 @@ import { RepliesScreen } from '../screens/RepliesScreen';
 import { SurveysScreen } from '../screens/SurveysScreen';
 import { UserStepsScreen } from '../screens/UserStepsScreen';
 import { BasicComponentsScreen } from '../screens/BasicComponentsScreen';
+import { ScrollViewScreen } from '../screens/ScrollViewScreen';
+import { FlatListScreen } from '../screens/FlatListScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -20,6 +22,8 @@ export type HomeStackParamList = {
   Surveys: undefined;
   UserSteps: undefined;
   BasicComponents: undefined;
+  ScrollView: undefined;
+  FlatList: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -54,6 +58,16 @@ export const HomeStackNavigator: React.FC = () => {
         name="BasicComponents"
         component={BasicComponentsScreen}
         options={{ title: 'Basic Components' }}
+      />
+      <HomeStack.Screen
+        name="ScrollView"
+        component={ScrollViewScreen}
+        options={{ title: 'Scroll View' }}
+      />
+      <HomeStack.Screen
+        name="FlatList"
+        component={FlatListScreen}
+        options={{ title: 'Flat List' }}
       />
     </HomeStack.Navigator>
   );
