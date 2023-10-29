@@ -11,6 +11,7 @@ import {
   Switch,
   useWindowDimensions,
 } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
 
 import { Screen } from '../components/Screen';
@@ -79,6 +80,10 @@ export const BasicComponentsScreen: React.FC = () => {
             />
             <Text>Is Switch On</Text>
           </HStack>
+        </Section>
+
+        <Section title="Slider">
+          <Slider minimumValue={0} maximumValue={100} accessibilityLabel="Progress Bar" />
         </Section>
       </Screen>
     </ScrollView>
