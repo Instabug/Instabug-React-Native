@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Screen } from '../components/Screen';
-import { ScrollView } from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
 import { VStack, Skeleton, HStack } from 'native-base';
 import { createList } from '../utils/createList';
 import { Section } from '../components/Section';
-import DelayedRefreshControl from '../components/DelayedRefreshControl';
+import { useDelayedRefresh } from '../utils/useDelayedRefresh';
 
 export const ScrollViewScreen: React.FC = () => {
+  const { refreshing, onRefresh } = useDelayedRefresh();
+
   return (
     <Screen>
       <Section title="Horizontal">
@@ -21,7 +23,8 @@ export const ScrollViewScreen: React.FC = () => {
       </Section>
 
       <Section title="Vertical" flex={1}>
-        <ScrollView refreshControl={<DelayedRefreshControl />}>
+        <ScrollView
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
           <VStack space="xs">
             {createList(20).map((num) => (
               <Skeleton key={num} height={100} rounded="md" startColor="gray.300" />

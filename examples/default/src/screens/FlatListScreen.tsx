@@ -1,13 +1,15 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { Skeleton } from 'native-base';
 
-import DelayedRefreshControl from '../components/DelayedRefreshControl';
 import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
 import { createList } from '../utils/createList';
+import { useDelayedRefresh } from '../utils/useDelayedRefresh';
 
 export const FlatListScreen: React.FC = () => {
+  const { refreshing, onRefresh } = useDelayedRefresh();
+
   return (
     <Screen>
       <Section title="Horizontal">
@@ -23,7 +25,7 @@ export const FlatListScreen: React.FC = () => {
 
       <Section title="Vertical" flex={1}>
         <FlatList
-          refreshControl={<DelayedRefreshControl />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           data={createList(20)}
           keyExtractor={(item) => item.toString()}
           renderItem={() => (

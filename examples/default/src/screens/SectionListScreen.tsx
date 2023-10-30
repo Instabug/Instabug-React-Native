@@ -1,10 +1,10 @@
 import React from 'react';
-import { SectionList } from 'react-native';
+import { RefreshControl, SectionList } from 'react-native';
 import { Heading, Skeleton } from 'native-base';
 
-import DelayedRefreshControl from '../components/DelayedRefreshControl';
 import { Screen } from '../components/Screen';
 import { createList } from '../utils/createList';
+import { useDelayedRefresh } from '../utils/useDelayedRefresh';
 
 const sections = [
   {
@@ -18,10 +18,12 @@ const sections = [
 ];
 
 export const SectionListScreen: React.FC = () => {
+  const { refreshing, onRefresh } = useDelayedRefresh();
+
   return (
     <Screen>
       <SectionList
-        refreshControl={<DelayedRefreshControl />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         sections={sections}
         keyExtractor={(item) => item.toString()}
         renderSectionHeader={(info) => (
