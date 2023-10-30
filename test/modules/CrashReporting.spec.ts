@@ -3,6 +3,7 @@ import '../mocks/mockInstabugUtils';
 import * as CrashReporting from '../../src/modules/CrashReporting';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import InstabugUtils from '../../src/utils/InstabugUtils';
+import { Platform } from 'react-native';
 
 describe('CrashReporting Module', () => {
   it('should call the native method setEnabled', () => {
@@ -23,7 +24,8 @@ describe('CrashReporting Module', () => {
     );
   });
 
-  it('should call the native method setNDKCrashesEnabled', () => {
+  it('should call the native method setNDKCrashesEnabled for Android platform', () => {
+    Platform.OS = 'android';
     CrashReporting.setNDKCrashesEnabled(true);
 
     expect(NativeCrashReporting.setNDKCrashesEnabled).toBeCalledTimes(1);
