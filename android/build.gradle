@@ -4,15 +4,6 @@ apply from: './jacoco.gradle'
 apply from: './native.gradle'
 apply from: './sourcemaps.gradle'
 
-/* (Preparing to support RN 0.73) Checking APG version to be backward-compatible with RN versions < 0.71 */
-def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
-def shouldUseNameSpace = agpVersion >= 7
-def PACKAGE_PROP = "package=\"com.instabug.reactlibrary\""
-def manifestOutFile = file("${projectDir}/src/main/AndroidManifest.xml")
-def manifestContent = manifestOutFile.getText()
-def isManifestContentUpdated = manifestOutFile.getText() != manifestContent
-def isPackageNamespaceMissing = !manifestContent.contains("$PACKAGE_PROP")
-
 String getExtOrDefault(String name) {
     def defaultPropertyKey = 'InstabugReactNative_' + name
     if (rootProject.ext.has(name)) {
@@ -21,28 +12,44 @@ String getExtOrDefault(String name) {
     return project.properties[defaultPropertyKey]
 }
 
-if(shouldUseNameSpace){
-    manifestContent = manifestContent.replaceAll(
-        PACKAGE_PROP,
-        ''
-    )
-} else if(isPackageNamespaceMissing) {
-    manifestContent = manifestContent.replace(
-        '<manifest',
-        "<manifest $PACKAGE_PROP "
-    )
+static boolean supportsNamespace() {
+    def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+    def major = parsed[0].toInteger()
+    def minor = parsed[1].toInteger()
+
+    // Namespace support was added in 7.3.0
+    return (major == 7 && minor >= 3) || major >= 8
 }
 
-manifestContent.replaceAll("  ", " ")
+void updateManifestPackage() {
+    def packageProp = 'package="com.instabug.reactlibrary"'
+    def manifestFile = file("$projectDir/src/main/AndroidManifest.xml")
+    def currentContent = manifestFile.getText()
+    def content = currentContent
+    def hasPackage = currentContent.contains(packageProp)
 
-if(isManifestContentUpdated){
-    manifestOutFile.write(manifestContent)
+    if (supportsNamespace()) {
+        content = content.replaceAll(packageProp, '')
+    } else if (!hasPackage) {
+        content = content.replace(
+            '<manifest',
+            "<manifest $packageProp "
+        )
+    }
+
+    def shouldUpdateManifest = content != currentContent
+    if (shouldUpdateManifest) {
+        manifestFile.write(content)
+    }
 }
+
+updateManifestPackage()
 
 android {
-    if (shouldUseNameSpace){
-        namespace = "com.instabug.reactlibrary"
+    if (supportsNamespace()) {
+        namespace "com.instabug.reactlibrary"
     }
+
     compileSdkVersion getExtOrDefault('compileSdkVersion').toInteger()
     buildToolsVersion getExtOrDefault('buildToolsVersion')
 
