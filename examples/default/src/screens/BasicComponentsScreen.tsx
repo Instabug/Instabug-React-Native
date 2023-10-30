@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Switch,
   useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
@@ -84,6 +85,10 @@ export const BasicComponentsScreen: React.FC = () => {
 
         <Section title="Slider">
           <Slider minimumValue={0} maximumValue={100} accessibilityLabel="Progress Bar" />
+        </Section>
+
+        <Section title="Activity Indicator">
+          <ActivityIndicator size="large" />
         </Section>
       </Screen>
     </ScrollView>
