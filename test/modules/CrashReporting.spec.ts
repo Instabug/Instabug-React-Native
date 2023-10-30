@@ -31,4 +31,11 @@ describe('CrashReporting Module', () => {
     expect(NativeCrashReporting.setNDKCrashesEnabled).toBeCalledTimes(1);
     expect(NativeCrashReporting.setNDKCrashesEnabled).toBeCalledWith(true);
   });
+
+  it('should not call the native method setNDKCrashesEnabled for ios platform', () => {
+    Platform.OS = 'ios';
+    CrashReporting.setNDKCrashesEnabled(true);
+
+    expect(NativeCrashReporting.setNDKCrashesEnabled).not.toBeCalled();
+  });
 });
