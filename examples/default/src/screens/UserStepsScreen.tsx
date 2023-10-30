@@ -13,6 +13,7 @@ export const UserStepsScreen: React.FC<NativeStackScreenProps<HomeStackParamList
       <ListTile title="Basic Components" onPress={() => navigation.navigate('BasicComponents')} />
       <ListTile title="Scroll View" onPress={() => navigation.navigate('ScrollView')} />
       <ListTile title="Flat List" onPress={() => navigation.navigate('FlatList')} />
+      <ListTile title="Section List" onPress={() => navigation.navigate('SectionList')} />
     </Screen>
   );
 };
