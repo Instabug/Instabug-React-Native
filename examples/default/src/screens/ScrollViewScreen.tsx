@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native';
 import { VStack, Skeleton, HStack } from 'native-base';
 import { createList } from '../utils/createList';
 import { Section } from '../components/Section';
+import DelayedRefreshControl from '../components/DelayedRefreshControl';
 
 export const ScrollViewScreen: React.FC = () => {
   return (
@@ -20,7 +21,7 @@ export const ScrollViewScreen: React.FC = () => {
       </Section>
 
       <Section title="Vertical" flex={1}>
-        <ScrollView>
+        <ScrollView refreshControl={<DelayedRefreshControl />}>
           <VStack space="xs">
             {createList(20).map((num) => (
               <Skeleton key={num} height={100} rounded="md" startColor="gray.300" />
