@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import Instabug, { InvocationEvent, LogLevel } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -18,10 +20,18 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <NativeBaseProvider theme={nativeBaseTheme}>
-      <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
-        <RootTabNavigator />
-      </NavigationContainer>
-    </NativeBaseProvider>
+    <GestureHandlerRootView style={styles.root}>
+      <NativeBaseProvider theme={nativeBaseTheme}>
+        <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
+          <RootTabNavigator />
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});

@@ -13,6 +13,7 @@ import { BasicComponentsScreen } from '../screens/BasicComponentsScreen';
 import { ScrollViewScreen } from '../screens/ScrollViewScreen';
 import { FlatListScreen } from '../screens/FlatListScreen';
 import { SectionListScreen } from '../screens/SectionListScreen';
+import { GesturesScreen } from '../screens/GesturesScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -26,6 +27,7 @@ export type HomeStackParamList = {
   ScrollView: undefined;
   FlatList: undefined;
   SectionList: undefined;
+  Gestures: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -76,6 +78,7 @@ export const HomeStackNavigator: React.FC = () => {
         component={SectionListScreen}
         options={{ title: 'Section List' }}
       />
+      <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>
   );
 };
