@@ -1,5 +1,5 @@
 project.ext.instabug = [
-    version: '12.5.1'
+    version: '12.2.0.5390171-SNAPSHOT'
 ]
 
 dependencies {
