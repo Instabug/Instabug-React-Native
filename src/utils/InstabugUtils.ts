@@ -1,4 +1,4 @@
-import { ErrorHandlerCallback, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import parseErrorStackLib, {
   ExtendedError,
   StackFrame,
@@ -67,12 +67,16 @@ export const captureJsErrors = () => {
 
   const originalErrorHandler = ErrorUtils.getGlobalHandler();
 
-  const instabugErrorHandler: ErrorHandlerCallback = (err) => {
-    sendCrashReport(err, NativeCrashReporting.sendJSCrash);
+  const instabugErrorHandler = (err: any, _isFatal?: boolean): Promise<void> => {
+    return sendCrashReport(err, NativeCrashReporting.sendJSCrash);
   };
 
-  ErrorUtils.setGlobalHandler((err, isFatal) => {
-    instabugErrorHandler(err, isFatal);
+  ErrorUtils.setGlobalHandler(async (err, isFatal) => {
+    console.log('IBG-RN: Captured a JavaScript error', err);
+
+    await instabugErrorHandler(err, isFatal);
+
+    console.log('IBG-RN: Reported the JavaScript error to Instabug', err);
 
     if (process.env.JEST_WORKER_ID) {
       return;
@@ -86,6 +90,8 @@ export const captureJsErrors = () => {
       originalErrorHandler(err, isFatal);
     }
   });
+
+  console.log('IBG-RN: Global error handler is now set.');
 };
 
 export const stringifyIfNotString = (input: unknown) => {
@@ -104,9 +110,9 @@ export const stringifyIfNotString = (input: unknown) => {
  * `sendCrashReport(error, NativeCrashReporting.sendJSCrash);`
  *
  */
-export function sendCrashReport(
+export async function sendCrashReport(
   error: ExtendedError,
-  remoteSenderCallback: (json: CrashData | string) => void,
+  remoteSenderCallback: (json: CrashData | string) => Promise<void>,
 ) {
   const jsStackTrace = getStackTrace(error);
 
@@ -120,10 +126,10 @@ export function sendCrashReport(
   };
 
   if (Platform.OS === 'android') {
-    remoteSenderCallback(JSON.stringify(jsonObject));
-  } else {
-    remoteSenderCallback(jsonObject);
+    return remoteSenderCallback(JSON.stringify(jsonObject));
   }
+
+  return remoteSenderCallback(jsonObject);
 }
 
 export default {
