@@ -59,11 +59,11 @@ export const getStackTrace = (e: ExtendedError): StackFrame[] => {
 };
 
 export const captureJsErrors = () => {
-  if (!process.env.JEST_WORKER_ID) {
-    if (__DEV__) {
-      return;
-    }
-  }
+  // if (!process.env.JEST_WORKER_ID) {
+  //   if (__DEV__) {
+  //     return;
+  //   }
+  // }
 
   const originalErrorHandler = ErrorUtils.getGlobalHandler();
 
