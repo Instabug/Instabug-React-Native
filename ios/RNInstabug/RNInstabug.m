@@ -40,8 +40,8 @@ static BOOL didInit = NO;
 + (void)initWithToken:(NSString *)token
      invocationEvents:(IBGInvocationEvent)invocationEvents
        debugLogsLevel:(IBGSDKDebugLogsLevel)debugLogsLevel {
-    [self initWithToken:token invocationEvents:invocationEvents];
     [Instabug setSdkDebugLogsLevel:debugLogsLevel];
+    [self initWithToken:token invocationEvents:invocationEvents];
 }
 
 // Note: This function is used to bridge IBGNSLog with RCTLogFunction.
