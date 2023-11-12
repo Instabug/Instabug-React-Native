@@ -12,11 +12,9 @@
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGAPM.h>
 #import <asl.h>
-#import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
-#import "Util/IBGNetworkLogger+CP.h"
+#import "RNInstabug.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -40,31 +38,13 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
-    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        NSInteger *platform = IBGPlatformReactNative;
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
-        [inv setSelector:setPrivateApiSEL];
-        [inv setTarget:[Instabug class]];
-        [inv setArgument:&(platform) atIndex:2];
-        [inv invoke];
-    }
     IBGInvocationEvent invocationEvents = 0;
-    NSLog(@"invocation events: %ld",(long)invocationEvents);
+
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
-    [IBGNetworkLogger disableAutomaticCapturingOfNetworkLogs];
-    [Instabug startWithToken:token invocationEvents:invocationEvents];
-    [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
 
-    RCTAddLogFunction(InstabugReactLogFunction);
-    RCTSetLogThreshold(RCTLogLevelInfo);
-
-    IBGNetworkLogger.enabled = YES;
-
-    // Temporarily disabling APM hot launches
-    IBGAPM.hotAppLaunchEnabled = NO;
+    [RNInstabug initWithToken:token invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
