@@ -8,6 +8,11 @@
 
 static BOOL didInit = NO;
 
+/// Resets `didInit` allowing re-initialization, it should not be added to the header file and is there for testing purposes.
++ (void)reset {
+    didInit = NO;
+}
+
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents  {
     // Initialization is performed only once to avoid unexpected behavior.
     if (didInit) {

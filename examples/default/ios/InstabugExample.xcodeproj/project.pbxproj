@@ -20,6 +20,7 @@
 		CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */; };
 		CC3DF8942A1DFC9A003E9914 /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */; };
 		CC3DF8952A1DFC9A003E9914 /* IBGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */; };
+		CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF1E4082B022CF20024802D /* RNInstabugTests.m */; };
 		CD36F4707EA1F435D2CC7A15 /* libPods-InstabugExample-InstabugTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7A6E02D40E0CEEA833CC4 /* libPods-InstabugExample-InstabugTests.a */; };
 		F7BF47401EF3A435254C97BB /* libPods-InstabugExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
 		CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
+		CCF1E4082B022CF20024802D /* RNInstabugTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInstabugTests.m; sourceTree = "<group>"; };
 		DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample-InstabugTests.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample-InstabugTests/Pods-InstabugExample-InstabugTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -97,6 +99,7 @@
 				CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */,
 				CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
+				CCF1E4082B022CF20024802D /* RNInstabugTests.m */,
 			);
 			path = InstabugTests;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */,
 				20E556262AC55766007416B1 /* InstabugSessionReplayTests.m in Sources */,
 				CC3DF88F2A1DFC9A003E9914 /* InstabugBugReportingTests.m in Sources */,
+				CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */,
 				CC3DF88E2A1DFC9A003E9914 /* InstabugCrashReportingTests.m in Sources */,
 				CC3DF8942A1DFC9A003E9914 /* InstabugAPMTests.m in Sources */,
 				CC3DF8922A1DFC9A003E9914 /* InstabugRepliesTests.m in Sources */,
