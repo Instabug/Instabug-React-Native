@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...dev)
 
+### Changed
+
+- Bump Instabug Android SDK to v12.2.0 ([#1052](https://github.com/Instabug/Instabug-React-Native/pull/1052)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.2.0).
+
 ### Fixed
 
 - Fix an issue with Android Gradle Plugin namespace support required for React Native 0.73 and backward compatibility with previous versions ([#1044](https://github.com/Instabug/Instabug-React-Native/pull/1044)).
