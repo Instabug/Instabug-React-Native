@@ -12,6 +12,7 @@
 #import "InstabugReactBridge.h"
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
+#import "RNInstabug.h"
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -36,6 +37,7 @@
 
 @interface InstabugSampleTests : XCTestCase
 @property (nonatomic, retain) InstabugReactBridge *instabugBridge;
+@property (nonatomic, retain) id mRNInstabug;
 @end
 
 @implementation InstabugSampleTests
@@ -44,6 +46,7 @@
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
   self.instabugBridge = [[InstabugReactBridge alloc] init];
+  self.mRNInstabug = OCMClassMock([RNInstabug class]);
 }
 
 /*
@@ -62,23 +65,14 @@
 }
 
 - (void)testInit {
-  id<InstabugCPTestProtocol> mock = OCMClassMock([Instabug class]);
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
 
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug init]"];
-
-  OCMStub([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
 
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    OCMVerify([mock startWithToken:appToken invocationEvents:floatingButtonInvocationEvent]);
-    [expectation fulfill];
-  }];
-
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
+  OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel]);
 }
 
 - (void)testSetUserData {
