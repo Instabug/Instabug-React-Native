@@ -12,6 +12,8 @@
 - Fix an issue with Android Gradle Plugin namespace support required for React Native 0.73 and backward compatibility with previous versions ([#1044](https://github.com/Instabug/Instabug-React-Native/pull/1044)).
 - Fix an issue with unhandled JavaScript crashes being reported as native iOS crashes ([#1054](https://github.com/Instabug/Instabug-React-Native/pull/1054))
 - Re-enable screenshot capturing for Crash Reporting and Session Replay by removing redundant mapping ([#1055](https://github.com/Instabug/Instabug-React-Native/pull/1055)).
+- Fix an issue with unhandled JavaScript crashes being reported as native Android crashes ([#1059](https://github.com/Instabug/Instabug-React-Native/pull/1059))
+
 
 ## [12.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...v11.14.0)
 
