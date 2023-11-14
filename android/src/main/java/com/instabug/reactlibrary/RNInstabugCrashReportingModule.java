@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -52,32 +53,38 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Send unhandled JS error object
+     * Send unhandled JS error object using reflection
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
+     * @param promise A Promise object for handling the asynchronous result of the operation.
      */
     @ReactMethod
-    public void sendJSCrash(final String exceptionObject) {
+    public void sendJSCrash(final String exceptionObject, final Promise promise) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
             sendJSCrashByReflection(jsonObject, false);
+            promise.resolve(null);
         } catch (Exception e) {
             e.printStackTrace();
+            promise.reject("IBG_CRASH", "sendJSCrash: Error sending JS crash", e);
         }
     }
 
     /**
-     * Send handled JS error object
+     * Send handled JS error object using reflection
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
+     * @param promise A Promise object for handling the asynchronous result of the operation.
      */
     @ReactMethod
-    public void sendHandledJSCrash(final String exceptionObject) {
+    public void sendHandledJSCrash(final String exceptionObject, final Promise promise) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
             sendJSCrashByReflection(jsonObject, true);
+            promise.resolve(null);
         } catch (Exception e) {
             e.printStackTrace();
+            promise.reject("IBG_CRASH", "sendHandledJSCrash: Error sending Handled JS crash", e);
         }
     }
 

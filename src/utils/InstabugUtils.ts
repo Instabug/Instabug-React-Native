@@ -78,13 +78,7 @@ export const captureJsErrors = () => {
       return;
     }
 
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        originalErrorHandler(err, isFatal);
-      }, 500);
-    } else {
-      originalErrorHandler(err, isFatal);
-    }
+    originalErrorHandler(err, isFatal);
   });
 };
 
