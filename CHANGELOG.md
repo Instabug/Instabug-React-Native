@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...dev)
 
+### Added
+
+- Add an iOS-side init API which allows capturing crashes that happen early in the app lifecycle and before the JavaScript code has started ([#1056](https://github.com/Instabug/Instabug-React-Native/pull/1056)).
+
 ### Changed
 
 - Bump Instabug iOS SDK to v12.2.0 ([#1053](https://github.com/Instabug/Instabug-React-Native/pull/1053)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.2.0).

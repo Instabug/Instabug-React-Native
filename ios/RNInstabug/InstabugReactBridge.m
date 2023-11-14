@@ -12,11 +12,9 @@
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGAPM.h>
 #import <asl.h>
-#import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
-#import "Util/IBGNetworkLogger+CP.h"
+#import "RNInstabug.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -40,31 +38,13 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
 }
 
 RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
-    SEL setPrivateApiSEL = NSSelectorFromString(@"setCurrentPlatform:");
-    if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
-        NSInteger *platform = IBGPlatformReactNative;
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];
-        [inv setSelector:setPrivateApiSEL];
-        [inv setTarget:[Instabug class]];
-        [inv setArgument:&(platform) atIndex:2];
-        [inv invoke];
-    }
     IBGInvocationEvent invocationEvents = 0;
-    NSLog(@"invocation events: %ld",(long)invocationEvents);
+
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
-    [IBGNetworkLogger disableAutomaticCapturingOfNetworkLogs];
-    [Instabug startWithToken:token invocationEvents:invocationEvents];
-    [Instabug setSdkDebugLogsLevel:sdkDebugLogsLevel];
 
-    RCTAddLogFunction(InstabugReactLogFunction);
-    RCTSetLogThreshold(RCTLogLevelInfo);
-
-    IBGNetworkLogger.enabled = YES;
-
-    // Temporarily disabling APM hot launches
-    IBGAPM.hotAppLaunchEnabled = NO;
+    [RNInstabug initWithToken:token invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
@@ -414,45 +394,5 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
 + (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
-
-// Note: This function is used to bridge IBGNSLog with RCTLogFunction.
-// This log function should not be used externally and is only an implementation detail.
-void RNIBGLog(IBGLogLevel logLevel, NSString *format,  ...) {
-    va_list arg_list;
-    va_start(arg_list, format);
-    IBGNSLogWithLevel(format, arg_list, logLevel);
-    va_end(arg_list);
-}
-
-RCTLogFunction InstabugReactLogFunction = ^(
-                                            RCTLogLevel level,
-                                            __unused RCTLogSource source,
-                                            NSString *fileName,
-                                            NSNumber *lineNumber,
-                                            NSString *message
-                                            )
-{
-    NSString *formatString = @"Instabug - REACT LOG: %@";
-    NSString *log = RCTFormatLog([NSDate date], level, fileName, lineNumber, message);
-
-    switch(level) {
-        case RCTLogLevelTrace:
-            RNIBGLog(IBGLogLevelVerbose, formatString, log);
-            break;
-        case RCTLogLevelInfo:
-            RNIBGLog(IBGLogLevelInfo, formatString, log);
-            break;
-        case RCTLogLevelWarning:
-            RNIBGLog(IBGLogLevelWarning, formatString, log);
-            break;
-        case RCTLogLevelError:
-            RNIBGLog(IBGLogLevelError, formatString, log);
-            break;
-        case RCTLogLevelFatal:
-            RNIBGLog(IBGLogLevelError, formatString, log);
-            break;
-    }
-};
-
 
 @end
