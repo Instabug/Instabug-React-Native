@@ -277,7 +277,7 @@ jobs:
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g'
       - run:
-          working_directory: project
+          name: Build the SDK
           command: yarn build
       - run:
           name: Authorize with npm
