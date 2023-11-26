@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
@@ -59,6 +60,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private InstabugCustomTextPlaceHolder placeHolders;
     private static Report currentReport;
+    private final ReactApplicationContext reactContext;
 
     /**
      * Instantiates a new Rn Instabug ReactNative module.
@@ -67,6 +69,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      */
     public RNInstabugReactnativeModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        this.reactContext = reactContext;
+
         //init placeHolders
         placeHolders = new InstabugCustomTextPlaceHolder();
     }
@@ -122,7 +127,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
                 final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
                 final int parsedLogLevel = ArgsRegistry.sdkLogLevels.getOrDefault(logLevel, LogLevel.ERROR);
-                RNInstabug.getInstance().init(getCurrentActivity().getApplication(), token, parsedLogLevel, invocationEvents);
+
+                final Application application = (Application) reactContext.getApplicationContext();
+
+                RNInstabug.getInstance().init(application, token, parsedLogLevel, invocationEvents);
             }
         });
     }
