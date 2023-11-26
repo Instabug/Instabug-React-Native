@@ -315,8 +315,17 @@ jobs:
       - advanced-checkout/shallow-checkout
       - install_node_modules
       - run: yarn build
-      - run: yarn remove @instabug/danger-plugin-coverage
-      - run:
+      # Look for our private dependency "instabug/danger-plugin-coverage"
+      # If found, it's removed to prevent issues in our snapshot (it's a private package meant for internal use)
+      # If not found, we skip removal to prevent accidental script breakage (in case it was previously removed)
+      - run: |
+          if yarn list --pattern "instabug/danger-plugin-coverage" | grep -q "instabug/danger-plugin-coverage"; then
+            echo "Package matching Instabug/danger-plugin-coverage found, removing..."
+            package_name=$(yarn list --pattern "instabug/danger-plugin-coverage" | awk '{print $1}')
+            yarn remove $package_name
+          else
+            echo "Package matching Instabug/danger-plugin-coverage not found, skipping removal."
+          fi- run:
           name: Remove build files from .gitignore
           command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
       - run:
