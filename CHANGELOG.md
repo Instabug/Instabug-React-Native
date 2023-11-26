@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...dev)
+
+### Fixed
+
+- Fix an issue with `Instabug.init` on Android causing the app to crash while trying to get the current `Application` instance through the current activity which can be `null` in some cases by utilizing the React context instead ([#1069](https://github.com/Instabug/Instabug-React-Native/pull/1069)).
+
 ## [12.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.1.0)
 
 ### Added
