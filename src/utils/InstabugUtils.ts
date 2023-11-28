@@ -77,14 +77,7 @@ export const captureJsErrors = () => {
     if (process.env.JEST_WORKER_ID) {
       return;
     }
-
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        originalErrorHandler(err, isFatal);
-      }, 500);
-    } else {
-      originalErrorHandler(err, isFatal);
-    }
+    originalErrorHandler(err, isFatal);
   });
 };
 
