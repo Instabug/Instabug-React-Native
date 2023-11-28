@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
 
@@ -55,12 +57,19 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * Send unhandled JS error object
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
+     * @param promise This makes sure that the RN side crashes the app only after the Android SDK
+     *                finishes processing/handling the crash.
      */
     @ReactMethod
-    public void sendJSCrash(final String exceptionObject) {
+    public void sendJSCrash(final String exceptionObject, final Promise promise) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, false);
+            sendJSCrashByReflection(jsonObject, false, new Runnable() {
+                @Override
+                public void run() {
+                    promise.resolve(null);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,13 +84,13 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
     public void sendHandledJSCrash(final String exceptionObject) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
-            sendJSCrashByReflection(jsonObject, true);
+            sendJSCrashByReflection(jsonObject, true, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-     private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled) {
+     private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled, @Nullable final Runnable onComplete) {
          MainThreadHandler.runOnMainThread(new Runnable() {
              @Override
              public void run() {
@@ -97,6 +106,10 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
                      e.printStackTrace();
                  } catch (InvocationTargetException e) {
                      e.printStackTrace();
+                 } finally {
+                     if (onComplete != null) {
+                         onComplete.run();
+                     }
                  }
              }
          });
