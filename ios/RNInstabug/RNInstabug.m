@@ -49,6 +49,10 @@ static BOOL didInit = NO;
     [self initWithToken:token invocationEvents:invocationEvents];
 }
 
++ (void)setCodePushVersion:(NSString *)codePushVersion {
+    [Instabug setCodePushVersion:codePushVersion];
+}
+
 // Note: This function is used to bridge IBGNSLog with RCTLogFunction.
 // This log function should not be used externally and is only an implementation detail.
 void RNIBGLog(IBGLogLevel logLevel, NSString *format,  ...) {
