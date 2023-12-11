@@ -50,6 +50,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 
 /**
  * The type Rn instabug reactnative module.
@@ -117,9 +119,16 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Initializes the SDK.
      * @param token The token that identifies the app. You can find it on your dashboard.
      * @param invocationEventValues The events that invoke the SDK's UI.
+     * @param logLevel The level of detail in logs that you want to print.
+     * @param codePushVersion The Code Push version to be used for all reports.
      */
     @ReactMethod
-    public void init(final String token, final ReadableArray invocationEventValues, final String logLevel) {
+    public void init(
+            final String token,
+            final ReadableArray invocationEventValues,
+            final String logLevel,
+            @Nullable final String codePushVersion
+    ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -130,7 +139,14 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
                 final Application application = (Application) reactContext.getApplicationContext();
 
-                RNInstabug.getInstance().init(application, token, parsedLogLevel, invocationEvents);
+                RNInstabug.Builder builder = new RNInstabug.Builder(application, token)
+                        .setInvocationEvents(invocationEvents)
+                        .setLogLevel(parsedLogLevel);
+
+                if(codePushVersion != null) {
+                    builder.setCodePushVersion(codePushVersion);
+                }
+                builder.build();
             }
         });
     }
