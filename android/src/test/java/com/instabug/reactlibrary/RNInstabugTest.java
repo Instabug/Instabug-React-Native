@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.app.Application;
@@ -111,6 +112,139 @@ public class RNInstabugTest {
         sut.setBaseUrlForDeprecationLogs();
 
         reflected.verify(() -> MockReflected.setBaseUrl(any()));
+    }
+
+    @Test
+    public void testBuildWithoutLogLevelShouldSetLogLevelToError() {
+        final String token = "fde....";
+
+
+        MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(Instabug.Builder.class, (mock, context) -> {
+            String actualToken = (String) context.arguments().get(1);
+            // Initializes Instabug with the correct token
+            assertEquals(token, actualToken);
+            when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+            when(mock.setInvocationEvents(any())).thenReturn(mock);
+        });
+
+        new RNInstabug.Builder(mContext, token)
+                .build();
+
+        Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
+
+        verify(builder).setSdkDebugLogsLevel(LogLevel.ERROR);
+        verify(builder).setInvocationEvents(null);
+        verify(builder).build();
+
+
+//        verify(sut).setBaseUrlForDeprecationLogs();
+//        verify(sut).setCurrentPlatform();
+
+
+        mInstabugBuilder.close();
+    }
+
+    @Test
+    public void testBuildWithVerboseLogLevel() {
+        final String token = "fde....";
+        final int logLevel = LogLevel.VERBOSE;
+
+
+        MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(Instabug.Builder.class, (mock, context) -> {
+            String actualToken = (String) context.arguments().get(1);
+            // Initializes Instabug with the correct token
+            assertEquals(token, actualToken);
+            when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+            when(mock.setInvocationEvents(any())).thenReturn(mock);
+        });
+
+        new RNInstabug.Builder(mContext, token)
+                .setLogLevel(logLevel)
+                .build();
+
+        Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
+
+        verify(builder).setSdkDebugLogsLevel(logLevel);
+        verify(builder).setInvocationEvents(null);
+        verify(builder).build();
+
+
+        verify(sut).setBaseUrlForDeprecationLogs();
+        verify(sut).setCurrentPlatform();
+
+
+        mInstabugBuilder.close();
+    }
+
+    @Test
+    public void testBuildWithInvocationEvents() {
+        final InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[]{InstabugInvocationEvent.FLOATING_BUTTON};
+        final String token = "fde....";
+
+
+        MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(Instabug.Builder.class, (mock, context) -> {
+            String actualToken = (String) context.arguments().get(1);
+            // Initializes Instabug with the correct token
+            assertEquals(token, actualToken);
+            when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+            when(mock.setInvocationEvents(any())).thenReturn(mock);
+        });
+
+        new RNInstabug.Builder(mContext, token)
+                .setInvocationEvents(invocationEvents)
+                .build();
+
+        Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
+
+        verify(builder).setSdkDebugLogsLevel(LogLevel.ERROR);
+        verify(builder).setInvocationEvents(invocationEvents);
+        verify(builder).build();
+
+
+//        verify(sut).setBaseUrlForDeprecationLogs();
+//        verify(sut).setCurrentPlatform();
+
+
+        mInstabugBuilder.close();
+    }
+
+    @Test
+    public void testBuildWithCodePushVersion() {
+        final InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[]{InstabugInvocationEvent.FLOATING_BUTTON};
+        final String token = "fde....";
+        final String codePushVersion = "1.0.0(1)";
+
+
+        MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(Instabug.Builder.class, (mock, context) -> {
+            String actualToken = (String) context.arguments().get(1);
+            // Initializes Instabug with the correct token
+            assertEquals(token, actualToken);
+            when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+            when(mock.setInvocationEvents(any())).thenReturn(mock);
+            when(mock.setCodePushVersion(any())).thenReturn(mock);
+        });
+
+        new RNInstabug.Builder(mContext, token)
+                .setLogLevel(LogLevel.ERROR)
+                .setInvocationEvents(null)
+                .setCodePushVersion(codePushVersion)
+                .build();
+
+        Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
+
+        verify(builder).setSdkDebugLogsLevel(LogLevel.ERROR);
+        verify(builder).setCodePushVersion(codePushVersion);
+        verify(builder).setInvocationEvents(null);
+        verify(builder).build();
+
+
+//        verify(sut).setBaseUrlForDeprecationLogs();
+//        verify(sut).setCurrentPlatform();
+
+        verifyNoMoreInteractions(sut);
+
+
+        mInstabugBuilder.close();
     }
 }
 
