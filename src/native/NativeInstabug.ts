@@ -19,7 +19,12 @@ export interface InstabugNativeModule extends NativeModule {
 
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
-  init(token: string, invocationEvents: InvocationEvent[], debugLogsLevel: LogLevel): void;
+  init(
+    token: string,
+    invocationEvents: InvocationEvent[],
+    debugLogsLevel: LogLevel,
+    codePushVersion?: string,
+  ): void;
   show(): void;
 
   // Misc APIs //
