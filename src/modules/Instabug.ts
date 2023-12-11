@@ -50,6 +50,7 @@ export const init = (config: InstabugConfig) => {
     config.token,
     config.invocationEvents,
     config.debugLogsLevel ?? LogLevel.error,
+    config.codePushVersion,
   );
 
   _isFirstScreen = true;

@@ -13,4 +13,9 @@ export interface InstabugConfig {
    * An optional LogLevel to indicate the verbosity of SDK logs. Default is Error.
    */
   debugLogsLevel?: LogLevel;
+
+  /**
+   * An optional code push version to be used for all reports.
+   */
+  codePushVersion?: string;
 }

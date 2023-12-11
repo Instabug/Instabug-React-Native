@@ -172,6 +172,7 @@ describe('Instabug Module', () => {
       token: 'some-token',
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
       debugLogsLevel: LogLevel.debug,
+      codePushVersion: '1.1.0',
     };
     Instabug.init(instabugConfig);
 
@@ -180,6 +181,7 @@ describe('Instabug Module', () => {
       instabugConfig.token,
       instabugConfig.invocationEvents,
       instabugConfig.debugLogsLevel,
+      instabugConfig.codePushVersion,
     );
   });
 
