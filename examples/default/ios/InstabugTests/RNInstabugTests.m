@@ -68,4 +68,11 @@
   OCMVerify([self.mIBGNetworkLogger setEnabled:YES]);
 }
 
+- (void) testSetCodePushVersion {
+  NSString *codePushVersion = @"1.0.0(1)";
+  [RNInstabug setCodePushVersion:codePushVersion];
+  
+  OCMVerify([self.mInstabug setCodePushVersion:codePushVersion]);
+}
+
 @end
