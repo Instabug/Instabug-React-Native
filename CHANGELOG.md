@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.4.0...dev)
+
+### Fixed
+
+- Fix a delay issue in reporting the 'Current View' that resulted in displaying outdated values ([#1080](https://github.com/Instabug/Instabug-React-Native/pull/1080)).
+
 ## [12.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.4.0) (December 6, 2023)
 
 ### Changed
