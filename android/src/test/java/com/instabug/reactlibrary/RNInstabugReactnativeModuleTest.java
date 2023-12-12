@@ -483,6 +483,18 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
+    public void givenString$reportCurrentViewChange_whenQuery_thenShouldCallNativeApiWithString() throws Exception {
+        // when
+        rnModule.reportCurrentViewChange("screen");
+        Method privateStringMethod = getMethod(Class.forName("com.instabug.library.Instabug"), "reportCurrentViewChange", String.class);
+        privateStringMethod.setAccessible(true);
+
+        // then
+        verify(Instabug.class, VerificationModeFactory.times(1));
+        privateStringMethod.invoke("reportCurrentViewChange","screen");
+    }
+
+    @Test
     public void givenString$reportScreenChange_whenQuery_thenShouldCallNativeApiWithString() throws Exception {
         // when
         rnModule.reportScreenChange("screen");

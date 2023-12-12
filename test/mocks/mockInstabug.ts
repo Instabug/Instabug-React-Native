@@ -47,6 +47,7 @@ const mockInstabug: InstabugNativeModule = {
   show: jest.fn(),
   setPreSendingHandler: jest.fn(),
   reportScreenChange: jest.fn(),
+  reportCurrentViewChange: jest.fn(),
   addExperiments: jest.fn(),
   removeExperiments: jest.fn(),
   clearAllExperiments: jest.fn(),
