@@ -48,7 +48,7 @@ export const BasicComponentsScreen: React.FC = () => {
         <Section title="Image">
           <Center>
             <Image
-              source={require('../images/logo.png')}
+              source={require('../../images/logo.png')}
               style={[styles.image, { width: width / 2, height: width / 6 }]}
             />
           </Center>
