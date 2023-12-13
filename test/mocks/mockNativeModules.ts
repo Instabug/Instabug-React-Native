@@ -3,9 +3,9 @@ import mockAPM from './mockAPM';
 import mockBugReporting from './mockBugReporting';
 import mockCrashReporting from './mockCrashReporting';
 import mockFeatureRequests from './mockFeatureRequests';
-import mockSessionReplay from './mockSessionReplay';
 import mockInstabug from './mockInstabug';
 import mockReplies from './mockReplies';
+import mockSessionReplay from './mockSessionReplay';
 import mockSurveys from './mockSurveys';
 
 jest.mock('react-native', () => {

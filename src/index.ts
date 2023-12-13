@@ -11,9 +11,9 @@ import * as Instabug from './modules/Instabug';
 import * as NetworkLogger from './modules/NetworkLogger';
 import type { NetworkData, NetworkDataObfuscationHandler } from './modules/NetworkLogger';
 import * as Replies from './modules/Replies';
+import * as SessionReplay from './modules/SessionReplay';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
-import * as SessionReplay from './modules/SessionReplay';
 
 export * from './utils/Enums';
 export {

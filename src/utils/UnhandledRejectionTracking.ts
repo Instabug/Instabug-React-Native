@@ -1,6 +1,7 @@
 import tracking, { RejectionTrackingOptions } from 'promise/setimmediate/rejection-tracking';
-import { sendCrashReport } from './InstabugUtils';
+
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import { sendCrashReport } from './InstabugUtils';
 
 export interface HermesInternalType {
   enablePromiseRejectionTracker?: (options?: RejectionTrackingOptions) => void;

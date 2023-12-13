@@ -1,6 +1,6 @@
 import './mocks/mockNativeModules';
-import './mocks/mockPromiseRejectionTracking';
 import './mocks/mockParseErrorStackLib';
+import './mocks/mockPromiseRejectionTracking';
 
 import { Platform } from 'react-native';
 import 'react-native/Libraries/Network/fetch';

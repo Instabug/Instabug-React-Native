@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
 
 import { NativeBugReporting, NativeEvents, emitter } from '../native/NativeBugReporting';
-
 import type {
   DismissType,
   ExtendedBugReportMode,
