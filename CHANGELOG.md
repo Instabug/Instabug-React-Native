@@ -1,5 +1,17 @@
 # Changelog
 
+## [12.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.4.0) (December 6, 2023)
+
+### Changed
+
+- Bump Instabug iOS SDK to v12.4.0 ([#1074](https://github.com/Instabug/Instabug-React-Native/pull/1074)). See release notes for [v12.3.0](https://github.com/instabug/instabug-ios/releases/tag/12.3.0) and [v12.4.0](https://github.com/instabug/instabug-ios/releases/tag/12.4.0).
+- Bump Instabug Android SDK to v12.4.1 ([#1076](https://github.com/Instabug/Instabug-React-Native/pull/1076)). See release notes for [v12.3.0](https://github.com/Instabug/android/releases/tag/v12.3.0), [v12.3.1](https://github.com/Instabug/android/releases/tag/v12.3.1), [v12.4.0](https://github.com/Instabug/android/releases/tag/v12.4.0) and [v12.4.1](https://github.com/Instabug/android/releases/tag/v12.4.1).
+
+### Fixed
+
+- Fix an issue with `Instabug.init` on Android causing the app to crash while trying to get the current `Application` instance through the current activity which can be `null` in some cases by utilizing the React context instead ([#1069](https://github.com/Instabug/Instabug-React-Native/pull/1069)).
+- Fix an issue with unhandled JavaScript crashes not getting linked with the current session causing inaccurate session metrics ([#1071](https://github.com/Instabug/Instabug-React-Native/pull/1071)).
+
 ## [12.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.1.0)
 
 ### Added
