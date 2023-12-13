@@ -8,6 +8,12 @@ import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
 import { SurveysScreen } from '../screens/SurveysScreen';
+import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
+import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
+import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
+import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
+import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
+import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -16,6 +22,12 @@ export type HomeStackParamList = {
   FeatureRequests: undefined;
   Replies: undefined;
   Surveys: undefined;
+  UserSteps: undefined;
+  BasicComponents: undefined;
+  ScrollView: undefined;
+  FlatList: undefined;
+  SectionList: undefined;
+  Gestures: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -41,6 +53,32 @@ export const HomeStackNavigator: React.FC = () => {
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
+      <HomeStack.Screen
+        name="UserSteps"
+        component={UserStepsScreen}
+        options={{ title: 'User Steps' }}
+      />
+      <HomeStack.Screen
+        name="BasicComponents"
+        component={BasicComponentsScreen}
+        options={{ title: 'Basic Components' }}
+      />
+      <HomeStack.Screen
+        name="ScrollView"
+        component={ScrollViewScreen}
+        options={{ title: 'Scroll View' }}
+      />
+      <HomeStack.Screen
+        name="FlatList"
+        component={FlatListScreen}
+        options={{ title: 'Flat List' }}
+      />
+      <HomeStack.Screen
+        name="SectionList"
+        component={SectionListScreen}
+        options={{ title: 'Section List' }}
+      />
+      <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>
   );
 };
