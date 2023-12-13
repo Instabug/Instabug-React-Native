@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Screen } from '../components/Screen';
+import { Screen } from '../../components/Screen';
 import { RefreshControl, ScrollView } from 'react-native';
 import { VStack, Skeleton, HStack } from 'native-base';
-import { createList } from '../utils/createList';
-import { Section } from '../components/Section';
-import { useDelayedRefresh } from '../utils/useDelayedRefresh';
+import { createList } from '../../utils/createList';
+import { Section } from '../../components/Section';
+import { useDelayedRefresh } from '../../utils/useDelayedRefresh';
 
 export const ScrollViewScreen: React.FC = () => {
   const { refreshing, onRefresh } = useDelayedRefresh();

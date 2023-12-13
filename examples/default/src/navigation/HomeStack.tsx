@@ -8,12 +8,12 @@ import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
 import { SurveysScreen } from '../screens/SurveysScreen';
-import { UserStepsScreen } from '../screens/UserStepsScreen';
-import { BasicComponentsScreen } from '../screens/BasicComponentsScreen';
-import { ScrollViewScreen } from '../screens/ScrollViewScreen';
-import { FlatListScreen } from '../screens/FlatListScreen';
-import { SectionListScreen } from '../screens/SectionListScreen';
-import { GesturesScreen } from '../screens/GesturesScreen';
+import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
+import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
+import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
+import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
+import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
+import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
 
 export type HomeStackParamList = {
   Home: undefined;

@@ -5,8 +5,8 @@ import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-nativ
 import { Gesture, GestureDetector, Swipeable } from 'react-native-gesture-handler';
 import { Box, Center, Text } from 'native-base';
 
-import { Screen } from '../components/Screen';
-import { Section } from '../components/Section';
+import { Screen } from '../../components/Screen';
+import { Section } from '../../components/Section';
 
 const AnimatedBox = Animated.createAnimatedComponent(Box);
 

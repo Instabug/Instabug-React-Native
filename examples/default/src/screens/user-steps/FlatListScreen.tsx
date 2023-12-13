@@ -2,10 +2,10 @@ import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { Skeleton } from 'native-base';
 
-import { Screen } from '../components/Screen';
-import { Section } from '../components/Section';
-import { createList } from '../utils/createList';
-import { useDelayedRefresh } from '../utils/useDelayedRefresh';
+import { Screen } from '../../components/Screen';
+import { Section } from '../../components/Section';
+import { createList } from '../../utils/createList';
+import { useDelayedRefresh } from '../../utils/useDelayedRefresh';
 
 export const FlatListScreen: React.FC = () => {
   const { refreshing, onRefresh } = useDelayedRefresh();

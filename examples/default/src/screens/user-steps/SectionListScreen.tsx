@@ -2,9 +2,9 @@ import React from 'react';
 import { RefreshControl, SectionList } from 'react-native';
 import { Heading, Skeleton } from 'native-base';
 
-import { Screen } from '../components/Screen';
-import { createList } from '../utils/createList';
-import { useDelayedRefresh } from '../utils/useDelayedRefresh';
+import { Screen } from '../../components/Screen';
+import { createList } from '../../utils/createList';
+import { useDelayedRefresh } from '../../utils/useDelayedRefresh';
 
 const sections = [
   {

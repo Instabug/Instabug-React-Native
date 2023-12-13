@@ -15,9 +15,9 @@ import {
 import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
 
-import { Screen } from '../components/Screen';
-import { Section } from '../components/Section';
-import { nativeBaseTheme } from '../theme/nativeBaseTheme';
+import { Screen } from '../../components/Screen';
+import { Section } from '../../components/Section';
+import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
 
 /**
  * A screen that demonstates the usage of user steps with basic React Native components.

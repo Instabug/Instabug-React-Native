@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ListTile } from '../components/ListTile';
-import { Screen } from '../components/Screen';
-import type { HomeStackParamList } from '../navigation/HomeStack';
+import { ListTile } from '../../components/ListTile';
+import { Screen } from '../../components/Screen';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export const UserStepsScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'UserSteps'>> = ({
