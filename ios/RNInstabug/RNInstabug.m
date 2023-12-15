@@ -14,11 +14,6 @@ static BOOL didInit = NO;
 }
 
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents  {
-    // Initialization is performed only once to avoid unexpected behavior.
-    if (didInit) {
-        NSLog(@"IBG-RN: Skipped iOS SDK re-initialization");
-        return;
-    }
 
     didInit = YES;
 
