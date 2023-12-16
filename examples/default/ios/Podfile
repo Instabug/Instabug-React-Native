@@ -26,7 +26,7 @@ target 'InstabugExample' do
 
   # Flags change depending on the env values.
   flags = get_default_flags()
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/custom_build-session_replay_crash_code_push/12.4.1/Instabug.podspec'
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/custom-build-force-set-codepush/12.4.3/Instabug.podspec'
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
