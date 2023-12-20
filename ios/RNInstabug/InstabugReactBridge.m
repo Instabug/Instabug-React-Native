@@ -48,6 +48,7 @@ RCT_EXPORT_METHOD(init:(NSString *)token
     }
 
     [Instabug setCodePushVersion:codePushVersion];
+    NSLog(@“[Instabug] CodePush: %@“, codePushVersion);
 
     [RNInstabug initWithToken:token
              invocationEvents:invocationEvents
