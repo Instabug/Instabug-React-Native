@@ -1,6 +1,6 @@
 # Changelog
 
-## [12.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.4.0) (December 6, 2023)
+## [12.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.4.0) (December 7, 2023)
 
 ### Changed
 
@@ -12,7 +12,7 @@
 - Fix an issue with `Instabug.init` on Android causing the app to crash while trying to get the current `Application` instance through the current activity which can be `null` in some cases by utilizing the React context instead ([#1069](https://github.com/Instabug/Instabug-React-Native/pull/1069)).
 - Fix an issue with unhandled JavaScript crashes not getting linked with the current session causing inaccurate session metrics ([#1071](https://github.com/Instabug/Instabug-React-Native/pull/1071)).
 
-## [12.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.1.0)
+## [12.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...v12.2.0) (November 14, 2023)
 
 ### Added
 
@@ -29,7 +29,7 @@
 - Fix an issue with unhandled JavaScript crashes being reported as native iOS crashes ([#1054](https://github.com/Instabug/Instabug-React-Native/pull/1054))
 - Re-enable screenshot capturing for Crash Reporting and Session Replay by removing redundant mapping ([#1055](https://github.com/Instabug/Instabug-React-Native/pull/1055)).
 
-## [12.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.1.0...v11.14.0)
+## [12.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v11.14.0...v12.1.0) (October 3, 2023)
 
 ### Added
 
