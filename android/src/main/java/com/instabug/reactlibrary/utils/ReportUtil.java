@@ -70,7 +70,7 @@ public class ReportUtil {
         for(int i = 0; i < consoleLogs.size(); i++) {
             try {
                 writableArray.pushString(consoleLogs.get(i).toJson());
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
