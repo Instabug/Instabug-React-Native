@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.4.0...dev)
+
+### Changed
+
+- Bump Instabug iOS SDK to v12.5.0 ([#1085](https://github.com/Instabug/Instabug-React-Native/pull/1085)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.5.0).
+
 ## [12.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.2.0...v12.4.0) (December 7, 2023)
 
 ### Changed
