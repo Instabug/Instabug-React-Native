@@ -44,6 +44,7 @@ export interface InstabugNativeModule extends NativeModule {
   ): void;
   setTrackUserSteps(isEnabled: boolean): void;
   reportScreenChange(firstScreen: string): void;
+  reportCurrentViewChange(screenName: string): void;
   addPrivateView(nativeTag: number | null): void;
   removePrivateView(nativeTag: number | null): void;
 
