@@ -35,6 +35,23 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * Reports that the screen name been changed (Current View field on dashboard).
+ * only for android.
+ *
+ * Normally reportScreenChange handles taking a screenshot for reproduction
+ * steps and the Current View field on the dashboard. But we've faced issues
+ * in android where we needed to separate them, that's why we only call it
+ * for android.
+ *
+ * @param screenName string containing the screen name
+ */
+function reportCurrentViewForAndroid(screenName: string | null) {
+  if (Platform.OS === 'android' && screenName != null) {
+    NativeInstabug.reportCurrentViewChange(screenName);
+  }
+}
+
+/**
  * Initializes the SDK.
  * This is the main SDK method that does all the magic. This is the only
  * method that SHOULD be called.
@@ -55,6 +72,7 @@ export const init = (config: InstabugConfig) => {
   _isFirstScreen = true;
   _currentScreen = firstScreen;
 
+  reportCurrentViewForAndroid(firstScreen);
   setTimeout(() => {
     if (_currentScreen === firstScreen) {
       NativeInstabug.reportScreenChange(firstScreen);
@@ -458,6 +476,7 @@ export const onNavigationStateChange = (
   const prevScreen = InstabugUtils.getActiveRouteName(prevState);
 
   if (prevScreen !== currentScreen) {
+    reportCurrentViewForAndroid(currentScreen);
     if (_currentScreen != null && _currentScreen !== firstScreen) {
       NativeInstabug.reportScreenChange(_currentScreen);
       _currentScreen = null;
@@ -478,6 +497,7 @@ export const onStateChange = (state?: NavigationStateV5) => {
   }
 
   const currentScreen = InstabugUtils.getFullRoute(state);
+  reportCurrentViewForAndroid(currentScreen);
   if (_currentScreen !== null && _currentScreen !== firstScreen) {
     NativeInstabug.reportScreenChange(_currentScreen);
     _currentScreen = null;
