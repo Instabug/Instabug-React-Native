@@ -917,6 +917,29 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
+     * Reports that the screen name been changed (Current View).
+     *
+     * @param screenName string containing the screen name
+     *
+     */
+    @ReactMethod
+    public void reportCurrentViewChange(final String screenName) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportCurrentViewChange", String.class);
+                    if (method != null) {
+                        method.invoke(null, screenName);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
      *
      * @param screenName string containing the screen name

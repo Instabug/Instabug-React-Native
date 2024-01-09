@@ -109,6 +109,33 @@ describe('Instabug Module', () => {
     });
   });
 
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('onNavigationStateChange should call the native method reportCurrentViewChange on Android Platform', async () => {
+    Platform.OS = 'android';
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
+    // @ts-ignore
+    Instabug.onNavigationStateChange('home', 'settings');
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledTimes(1);
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledWith('settings');
+    });
+  });
+
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('onNavigationStateChange should not call the native method reportCurrentViewChange on iOS Platform', async () => {
+    Platform.OS = 'ios';
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
+    // @ts-ignore
+    Instabug.onNavigationStateChange('home', 'settings');
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).not.toBeCalled();
+    });
+  });
+
   it('onNavigationStateChange should not call the native method reportScreenChange if screen is the same', (done) => {
     InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
 
@@ -122,7 +149,20 @@ describe('Instabug Module', () => {
     }, 1500);
   });
 
-  it('onNavigationStateChange should call the native method reportScreenChange immediatly if _currentScreen is set', async () => {
+  it('onNavigationStateChange should not call the native method reportCurrentViewChange if screen is the same', (done) => {
+    InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
+
+    // @ts-ignore
+    Instabug.onNavigationStateChange('home', 'home');
+
+    // Wait for 1.5s as reportScreenChange is delayed by 1s
+    setTimeout(() => {
+      expect(NativeInstabug.reportCurrentViewChange).not.toBeCalled();
+      done();
+    }, 1500);
+  });
+
+  it('onNavigationStateChange should call the native method reportScreenChange immediately if _currentScreen is set', async () => {
     InstabugUtils.getActiveRouteName = jest.fn().mockImplementation((screenName) => screenName);
 
     // sets _currentScreen and waits for 1s as _currentScreen is null
@@ -147,6 +187,31 @@ describe('Instabug Module', () => {
     await waitForExpect(() => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
       expect(NativeInstabug.reportScreenChange).toBeCalledWith('ScreenName');
+    });
+  });
+
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('onStateChange should call the native method reportCurrentViewChange on Android Platform', async () => {
+    Platform.OS = 'android';
+    const state = { routes: [{ name: 'ScreenName' }], index: 0 };
+    // @ts-ignore
+    Instabug.onStateChange(state);
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledTimes(1);
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledWith('ScreenName');
+    });
+  });
+
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('onStateChange should not call the native method reportCurrentViewChange on iOS Platform', async () => {
+    Platform.OS = 'ios';
+    const state = { routes: [{ name: 'ScreenName' }], index: 0 };
+    // @ts-ignore
+    Instabug.onStateChange(state);
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).not.toBeCalled();
     });
   });
 
@@ -192,6 +257,31 @@ describe('Instabug Module', () => {
     await waitForExpect(() => {
       expect(NativeInstabug.reportScreenChange).toBeCalledTimes(1);
       expect(NativeInstabug.reportScreenChange).toBeCalledWith('Initial Screen');
+    });
+  });
+
+  it('init should call reportCurrentViewChange on Android Platform', async () => {
+    Platform.OS = 'android';
+    Instabug.init({
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.none],
+    });
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledTimes(1);
+      expect(NativeInstabug.reportCurrentViewChange).toBeCalledWith('Initial Screen');
+    });
+  });
+
+  it('init should not call reportCurrentViewChange on ios Platform', async () => {
+    Platform.OS = 'ios';
+    Instabug.init({
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.none],
+    });
+
+    await waitForExpect(() => {
+      expect(NativeInstabug.reportCurrentViewChange).not.toBeCalled();
     });
   });
 
