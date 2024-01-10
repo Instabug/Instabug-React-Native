@@ -312,7 +312,6 @@ jobs:
           name: Publish new enterprise version
           command: npm publish
 
-
   publish:
     macos:
       xcode: 13.4.1
@@ -455,4 +454,3 @@ workflows:
       - release_d11:
           requires:
             - hold_release_d11
-
