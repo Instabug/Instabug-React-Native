@@ -302,6 +302,9 @@ jobs:
       - search_and_replace:
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-d11:instabug:/g'
+      - search_and_replace:
+          file: android/native.gradle
+          replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-d11:instabug:/g'
       - run:
           name: Build the SDK
           command: yarn build
