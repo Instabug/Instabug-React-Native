@@ -6,8 +6,8 @@ for feature in "${deletedFeaturesFilesInJavaScript[@]}";
  do
 rm -f  ../src/modules/"$feature".ts
 rm -f ../test/mocks/mock"$feature".ts
-gsed -i "s/import..*$feature';//g"  ../src/index.ts
-gsed -i "s/$feature,//g"  ../src/index.ts
+sed -i "s/import..*$feature';//g"  ../src/index.ts
+sed -i "s/$feature,//g"  ../src/index.ts
 
 done
 npx eslint  ../src/index.ts --fix
@@ -18,7 +18,7 @@ for feature in "${deletedFeaturesFilesInAndroidApp[@]}";
  do
 rm -f ../android/src/main/java/com/instabug/reactlibrary/"$feature".java
 rm -f ../android/src/test/java/com/instabug/reactlibrary/"$feature"Test.java
-gsed -i "s/modules.add(new $feature(reactContext));//g"  ../android/src/main/java/com/instabug/reactlibrary/RNInstabugReactnativePackage.java
+sed -i "s/modules.add(new $feature(reactContext));//g"  ../android/src/main/java/com/instabug/reactlibrary/RNInstabugReactnativePackage.java
 
 done
 
@@ -34,5 +34,5 @@ done
 #rm -rf '../examples'
 
 # remove all locales except English locale
-gsed -i -E '/english/!s/.*constants.locale.*//g' ../src/utils/Enums.ts
+sed -i -E '/english/!s/.*constants.locale.*//g' ../src/utils/Enums.ts
 npx eslint  ../src/index.ts --fix ../src/utils/Enums.ts
