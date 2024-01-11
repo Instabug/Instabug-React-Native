@@ -454,6 +454,12 @@ workflows:
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: chore/add_d11_release_pipeline_to_ci
       - release_d11:
           requires:
             - hold_release_d11
+          filters:
+            branches:
+              only: chore/add_d11_release_pipeline_to_ci
