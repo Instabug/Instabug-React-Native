@@ -301,7 +301,7 @@ jobs:
           replace-pattern: 's/instabug-reactnative/@instabug\/react-native-d11-test-2/g'
       - run:
           name: remove un-required features
-          command: ./scripts/dream-11-delete-unused-features.sh
+          command: scripts/dream-11-delete-unused-features.sh
       - run:
           name: Build the SDK
           command: yarn build
