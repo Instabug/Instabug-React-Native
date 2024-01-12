@@ -14,11 +14,6 @@ static BOOL didInit = NO;
 }
 
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents  {
-    // Initialization is performed only once to avoid unexpected behavior.
-    if (didInit) {
-        NSLog(@"IBG-RN: Skipped iOS SDK re-initialization");
-        return;
-    }
 
     didInit = YES;
 
@@ -47,6 +42,10 @@ static BOOL didInit = NO;
        debugLogsLevel:(IBGSDKDebugLogsLevel)debugLogsLevel {
     [Instabug setSdkDebugLogsLevel:debugLogsLevel];
     [self initWithToken:token invocationEvents:invocationEvents];
+}
+
++ (void)setCodePushVersion:(NSString *)codePushVersion {
+    [Instabug setCodePushVersion:codePushVersion];
 }
 
 // Note: This function is used to bridge IBGNSLog with RCTLogFunction.

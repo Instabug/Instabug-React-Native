@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 public class RNInstabug {
 
     private static RNInstabug instance;
-    
+
     private RNInstabug() {}
 
 
@@ -131,6 +131,119 @@ public class RNInstabug {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static class Builder {
+
+        /**
+         * Application instance to initialize Instabug.
+         */
+        private Application application;
+
+        /**
+         * The application token obtained from the Instabug dashboard.
+         */
+        private String applicationToken;
+
+        /**
+         * The level of detail in logs that you want to print.
+         */
+        private int logLevel = LogLevel.ERROR;
+
+        /**
+         * The Code Push version to be used for all reports.
+         */
+        private String codePushVersion;
+
+        /**
+         * The events that trigger the SDK's user interface.
+         */
+        private InstabugInvocationEvent[] invocationEvents;
+
+
+        /**
+         * Initialize Instabug SDK with application token
+         *
+         * @param application      Application object for initialization of library
+         * @param applicationToken The app's identifying token, available on your dashboard.
+         */
+        public Builder(Application application, String applicationToken) {
+            this.application = application;
+            this.applicationToken = applicationToken;
+        }
+
+        /**
+         * Initialize Instabug SDK with application token and invocation trigger events
+         *
+         * @param application      Application object for initialization of library
+         * @param applicationToken The app's identifying token, available on your dashboard.
+         * @param invocationEvents The events that trigger the SDK's user interface.
+         *                         <p>Choose from the available events listed in {@link InstabugInvocationEvent}.</p>
+         */
+        public Builder(Application application, String applicationToken, InstabugInvocationEvent... invocationEvents) {
+            this.application = application;
+            this.applicationToken = applicationToken;
+            this.invocationEvents = invocationEvents;
+        }
+
+        /**
+         * Sets the filtering level for printed SDK logs.
+         *
+         * @param logLevel The log filtering level to be set.
+         *                 Choose from {@link LogLevel} constants:
+         *                 {@link LogLevel#NONE}, {@link LogLevel#ERROR}, {@link LogLevel#DEBUG}, or {@link LogLevel#VERBOSE}.
+         *                 <p>Default level is {@link LogLevel#ERROR}.</p>
+         */
+        public Builder setLogLevel(int logLevel) {
+            this.logLevel = logLevel;
+            return this;
+        }
+
+        /**
+         * Sets Code Push version to be used for all reports.
+         *
+         * @param codePushVersion the Code Push version to work with.
+         */
+        public Builder setCodePushVersion(String codePushVersion) {
+            this.codePushVersion = codePushVersion;
+            return this;
+        }
+
+        /**
+         * Sets the invocation triggering events for the SDK's user interface
+         *
+         * @param invocationEvents The events that trigger the SDK's user interface.
+         *                         Choose from the available events listed in {@link InstabugInvocationEvent}.
+         */
+        public Builder setInvocationEvents(InstabugInvocationEvent... invocationEvents) {
+            this.invocationEvents = invocationEvents;
+            return this;
+        }
+
+        /**
+         * Builds the Instabug instance with the provided configurations.
+         */
+        public void build() {
+            try {
+                RNInstabug.getInstance().setBaseUrlForDeprecationLogs();
+                RNInstabug.getInstance().setCurrentPlatform();
+
+                Instabug.Builder instabugBuilder = new Instabug.Builder(application, applicationToken)
+                        .setInvocationEvents(invocationEvents)
+                        .setSdkDebugLogsLevel(logLevel);
+
+                if (codePushVersion != null) {
+                    instabugBuilder.setCodePushVersion(codePushVersion);
+                }
+
+                instabugBuilder.build();
+
+                // Temporarily disabling APM hot launches
+                APM.setHotAppLaunchEnabled(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

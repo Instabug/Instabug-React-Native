@@ -41,20 +41,6 @@
   OCMVerify([self.mIBGNetworkLogger setEnabled:YES]);
 }
 
-- (void)testInitStartsOnce {
-  NSString *token = @"app-token";
-  IBGInvocationEvent invocationEvents = IBGInvocationEventFloatingButton | IBGInvocationEventShake;
-
-  // Call init twice to check that only 1 call to native methods happens.
-  [RNInstabug initWithToken:token invocationEvents:invocationEvents];
-  [RNInstabug initWithToken:token invocationEvents:invocationEvents];
-
-  OCMVerify(times(1), [self.mInstabug startWithToken:token invocationEvents:invocationEvents]);
-  OCMVerify(times(1), [self.mInstabug setCurrentPlatform:IBGPlatformReactNative]);
-  OCMVerify(times(1), [self.mIBGNetworkLogger disableAutomaticCapturingOfNetworkLogs]);
-  OCMVerify(times(1), [self.mIBGNetworkLogger setEnabled:YES]);
-}
-
 - (void)testInitWithLogsLevel {
   NSString *token = @"app-token";
   IBGInvocationEvent invocationEvents = IBGInvocationEventFloatingButton | IBGInvocationEventShake;
@@ -66,6 +52,13 @@
   OCMVerify([self.mInstabug setCurrentPlatform:IBGPlatformReactNative]);
   OCMVerify([self.mIBGNetworkLogger disableAutomaticCapturingOfNetworkLogs]);
   OCMVerify([self.mIBGNetworkLogger setEnabled:YES]);
+}
+
+- (void) testSetCodePushVersion {
+  NSString *codePushVersion = @"1.0.0(1)";
+  [RNInstabug setCodePushVersion:codePushVersion];
+  
+  OCMVerify([self.mInstabug setCodePushVersion:codePushVersion]);
 }
 
 @end
