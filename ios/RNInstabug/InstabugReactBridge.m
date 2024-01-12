@@ -37,14 +37,21 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     Instabug.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(init:(NSString *)token invocationEvents:(NSArray*)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel) {
+RCT_EXPORT_METHOD(init:(NSString *)token
+          invocationEvents:(NSArray *)invocationEventsArray
+          debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
+          codePushVersion:(NSString *)codePushVersion) {
     IBGInvocationEvent invocationEvents = 0;
 
     for (NSNumber *boxedValue in invocationEventsArray) {
         invocationEvents |= [boxedValue intValue];
     }
 
-    [RNInstabug initWithToken:token invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel];
+    [Instabug setCodePushVersion:codePushVersion];
+
+    [RNInstabug initWithToken:token
+             invocationEvents:invocationEvents
+               debugLogsLevel:sdkDebugLogsLevel];
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
