@@ -7,6 +7,10 @@
 - Bump Instabug iOS SDK to v12.6.0 ([#1095](https://github.com/Instabug/Instabug-React-Native/pull/1095)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.6.0).
 - Bump Instabug Android SDK to v12.6.0 ([#1096](https://github.com/Instabug/Instabug-React-Native/pull/1096)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.6.0).
 
+### Added
+
+- Add support for code push ([#1079](https://github.com/Instabug/Instabug-React-Native/pull/1079)).
+
 ## [12.5.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.4.0...v12.5.0) (January 9, 2024)
 
 ### Changed
