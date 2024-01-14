@@ -29,6 +29,8 @@ for feature in "${deletedFeaturesFilesInIosApp[@]}";
 rm -f ios/RNInstabug/"$feature".h
 rm -f ios/RNInstabug/"$feature".m
 done
+sed -i "s/#import <Instabug/IBGSurveys.h>//g"  ios/RNInstabug/InstabugReactBridge.m
+sed -i "s/#import <Instabug/IBGSurveys.h>//g"  ios/RNInstabug/InstabugReactBridge.h
 
 
 # remove all locales except English locale
