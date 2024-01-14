@@ -1,34 +1,126 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView, Text } from 'react-native';
 
 import { CrashReporting } from 'instabug-reactnative';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
+import { Section } from '../components/Section';
+import { NativeCrashReporting } from '../../../../src/native/NativeCrashReporting';
+import { PlatformListTile } from '../components/PlatformListTie';
 
 export const CrashReportingScreen: React.FC = () => {
+  function throwHandledException(error: Error) {
+    try {
+      if (!error.message) {
+        const appName = 'Instabug Test App';
+        error.message = `Handled ${error.name} From ${appName}`;
+      }
+      throw error;
+    } catch (err) {
+      if (err instanceof Error) {
+        CrashReporting.reportError(err).then(() =>
+          Alert.alert(`Crash report for ${error.name} is Sent!`),
+        );
+      }
+    }
+  }
+
+  function throwUnhandledException(error: Error, isPromise: boolean = false) {
+    const appName = 'Instabug Test App';
+    const rejectionType = isPromise ? 'Promise Rejection ' : '';
+    const errorMessage = `Unhandled ${rejectionType}${error.name} from ${appName}`;
+
+    if (!error.message) {
+      console.log(`IBG-CRSH | Error message: ${error.message}`);
+      error.message = errorMessage;
+    }
+
+    if (isPromise) {
+      console.log('IBG-CRSH | Promise');
+      Promise.reject(error).then(() =>
+        Alert.alert(`Promise Rejection Crash report for ${error.name} is Sent!`),
+      );
+    } else {
+      throw error;
+    }
+  }
+
   return (
     <Screen>
-      <ListTile
-        title="Throw Handled Exception"
-        onPress={() => {
-          try {
-            throw new Error('Handled Exception From Instabug Test App');
-          } catch (err) {
-            if (err instanceof Error) {
-              CrashReporting.reportError(err);
-              Alert.alert('Crash report Sent!');
-            }
-          }
-        }}
-      />
-      <ListTile
-        title="Reject an Unhandled Promise"
-        onPress={() => {
-          Promise.reject(new Error('Unhandled Promise Rejection from Instabug Test App'));
-          Alert.alert('Crash report sent!');
-        }}
-      />
+      <ScrollView>
+        <Section title="Non-Fatals">
+          <ListTile
+            title="Throw Handled Exception"
+            onPress={() => throwHandledException(new Error())}
+          />
+          <ListTile
+            title="Throw Handled Syntax Exception"
+            onPress={() => throwHandledException(new SyntaxError())}
+          />
+          <ListTile
+            title="Throw Handled Range Exception"
+            onPress={() => throwHandledException(new RangeError())}
+          />
+          <ListTile
+            title="Throw Handled Reference Exception"
+            onPress={() => throwHandledException(new ReferenceError())}
+          />
+          <ListTile
+            title="Throw Handled URIError Exception"
+            onPress={() => throwHandledException(new URIError())}
+          />
+          <ListTile
+            title="Throw Handled Native Exception"
+            onPress={() => NativeCrashReporting.sendNativeNonFatal()}
+          />
+        </Section>
+        <Section title={'Fatal Crashes'}>
+          <Text>Fatal Crashes can only be tested in release mode </Text>
+          <Text>These buttons will crash the application.</Text>
+          <ListTile
+            title="Reject Unhandled Promise"
+            onPress={() => throwUnhandledException(Error(), true)}
+          />
+          <ListTile
+            title="Throw Unhandled Fatal Exception"
+            onPress={() => throwUnhandledException(Error())}
+          />
+          <ListTile
+            title="Throw Unhandled Syntax Exception"
+            onPress={() => throwUnhandledException(new SyntaxError())}
+          />
+          <ListTile
+            title="Throw Unhandled Range Exception"
+            onPress={() => throwUnhandledException(new RangeError())}
+          />
+          <ListTile
+            title="Throw Unhandled Reference Exception"
+            onPress={() => throwUnhandledException(new ReferenceError())}
+          />
+          <ListTile
+            title="Throw Unhandled URIError Exception"
+            onPress={() => throwUnhandledException(new URIError())}
+          />
+          <ListTile
+            title="Throw Unhandled Native Exception"
+            onPress={() => NativeCrashReporting.sendNativeFatalCrash()}
+          />
+          <ListTile
+            title="Send Native Fatal Hang"
+            onPress={() => NativeCrashReporting.sendFatalHang()}
+          />
+          <PlatformListTile
+            title="Send Native ANR"
+            onPress={() => NativeCrashReporting.sendANR()}
+            platform={'android'}
+          />
+          <ListTile
+            title="Throw Unhandled Native OOM Exception"
+            onPress={() => NativeCrashReporting.sendOOM()}
+          />
+        </Section>
+      </ScrollView>
     </Screen>
   );
 };
