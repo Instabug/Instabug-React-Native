@@ -439,30 +439,3 @@ workflows:
           filters:
             branches:
               only: master
-  publish_d11_test:
-    jobs:
-      - danger:
-          requires:
-            - test_module
-            - test_android
-            - test_ios
-      - lint
-      - test_module
-      - test_android
-      - validate_shell_files
-      - sync_generated_files
-      - test_ios
-      - e2e_ios
-      - e2e_android
-      - hold_release_d11:
-          requires: *release_dependencies
-          type: approval
-          filters:
-            branches:
-              only: chore/add_d11_release_pipeline_to_ci
-      - release_d11:
-          requires:
-            - hold_release_d11
-          filters:
-            branches:
-              only: chore/add_d11_release_pipeline_to_ci
