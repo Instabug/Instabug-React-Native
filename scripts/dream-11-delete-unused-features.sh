@@ -31,8 +31,6 @@ rm -f ios/RNInstabug/"$feature".m
 done
 
 
-#rm -rf 'examples'
-
 # remove all locales except English locale
 sed -i -E '/english/!s/.*constants.locale.*//g' src/utils/Enums.ts
 npx eslint  src/index.ts --fix src/utils/Enums.ts
