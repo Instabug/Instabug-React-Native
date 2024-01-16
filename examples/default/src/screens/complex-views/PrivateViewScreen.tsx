@@ -17,10 +17,7 @@ import { Section } from '../../components/Section';
 import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
 
 /**
- * A screen that demonstates the usage of user steps with basic React Native components.
- *
- * This specific screen doesn't use NativeBase in some parts since we need to focus on
- * capturing React Native provided components rather than implementations built on top of it.
+ * A screen that demonstates the usage of private views with basic React Native components.
  */
 export const PrivateViewScreen: React.FC = () => {
   const { width } = useWindowDimensions();
