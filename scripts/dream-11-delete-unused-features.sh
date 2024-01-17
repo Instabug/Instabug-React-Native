@@ -41,8 +41,8 @@ sed -i "s/\#import <Instabug\/IBGSurveys.h>//g"  ios/RNInstabug/InstabugReactBri
 sed -i -E '/english/!s/.*constants.locale.*//g' src/utils/Enums.ts
 npx eslint  src/index.ts --fix src/utils/Enums.ts
 
-sed -i "s/return (major == 7 && minor >= 3) || major >= 8/return false/g"  ./android/build.gradle
+sed -i "s/return (major == 7 && minor >= 3) || major >= 8/return false/g"  android/build.gradle
 
-sed -i "s/static boolean supportsNamespace() {/static boolean supportsNamespace() { \n return false;/g"  ./android/build.gradle
+sed -i "s/static boolean supportsNamespace() {/static boolean supportsNamespace() { \n return false;/g"  android/build.gradle
 
 
