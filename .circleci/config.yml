@@ -298,7 +298,7 @@ jobs:
           command: rm README.md
       - search_and_replace:
           file: package.json
-          replace-pattern: 's/instabug-reactnative/@instabug\/react-native-dream11/g'
+          replace-pattern: 's/instabug-reactnative/@instabug\/instabug-reactnative-dream11/g'
       - search_and_replace:
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-dream11:instabug:/g'
