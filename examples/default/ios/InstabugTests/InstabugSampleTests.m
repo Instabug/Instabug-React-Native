@@ -408,4 +408,19 @@
   OCMVerify([mock clearAllExperiments]);
 }
 
+- (void) testGivenNetworkDiagnosticsHandler$setOnNetworkDiagnosticsHandler_whenQuery_thenShouldCallNetworkDiagnosticsCallback {
+  id partialMock = OCMPartialMock(self.instabugBridge);
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [partialMock setOnNetworkDiagnosticsHandle:callback];
+  XCTAssertNotNil(IBGBugReporting.didDismissHandler);
+  
+  NSDictionary *result = @{ @"date": @"dismissTypeString",
+                            @"totalRequestCount": @"1"
+                            ,
+                                                      @"failureCount": @"1"
+  };
+  OCMStub([partialMock sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:result]);
+  IBGBugReporting.didDismissHandler(IBGDismissTypeSubmit,IBGReportTypeFeedback);
+  OCMVerify([partialMock sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:result]);
+}
 @end

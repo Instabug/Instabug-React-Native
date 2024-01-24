@@ -96,6 +96,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Enables or disables Instabug functionality.
+     *
      * @param isEnabled A boolean to enable/disable Instabug.
      */
     @ReactMethod
@@ -104,7 +105,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    if(isEnabled)
+                    if (isEnabled)
                         Instabug.enable();
                     else
                         Instabug.disable();
@@ -117,10 +118,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Initializes the SDK.
-     * @param token The token that identifies the app. You can find it on your dashboard.
+     *
+     * @param token                 The token that identifies the app. You can find it on your dashboard.
      * @param invocationEventValues The events that invoke the SDK's UI.
-     * @param logLevel The level of detail in logs that you want to print.
-     * @param codePushVersion The Code Push version to be used for all reports.
+     * @param logLevel              The level of detail in logs that you want to print.
+     * @param codePushVersion       The Code Push version to be used for all reports.
      */
     @ReactMethod
     public void init(
@@ -143,7 +145,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
 
-                if(codePushVersion != null) {
+                if (codePushVersion != null) {
                     builder.setCodePushVersion(codePushVersion);
                 }
                 builder.build();
@@ -299,7 +301,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    Instabug.identifyUser(userName, userEmail);
+                    Instabug.identifyUser(userName, userEmail,null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -629,6 +631,38 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    /**
+     * Sets a block of code to be executed if the percentage of failing requests that done in pervious day along with success and failure
+     * counts is more than or equal 70% it will trigger a callback with total requests sent and no. of failing requests
+     *
+     * @param networkDiagnosticsCallback - A callback that gets executed if the failure requests
+     *                                   percentage more than 70%
+     *                                   .
+     */
+    @ReactMethod
+    public void setNetworkDiagnosticsCallback(final Callback networkDiagnosticsCallback) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                Instabug.onReportSubmitHandler(new Report.OnReportCreatedListener() {
+                    @Override
+                    public void onReportCreated(Report report) {
+                        try {
+                            WritableMap params = Arguments.createMap();
+                            params.putString("date", "");
+                            params.putInt("totalRequestCount", 1);
+                            params.putInt("failureCount", 1);
+                            sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            ;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     protected static void clearCurrentReport() {
         currentReport = null;
     }
@@ -706,15 +740,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();
-        for(int i = 0; i < hashMap.size(); i++) {
+        for (int i = 0; i < hashMap.size(); i++) {
             Object key = hashMap.keySet().toArray()[i];
             Object value = hashMap.get(key);
-            writableMap.putString((String) key,(String) value);
+            writableMap.putString((String) key, (String) value);
         }
         return writableMap;
     }
 
-    private static JSONObject objectToJSONObject(Object object){
+    private static JSONObject objectToJSONObject(Object object) {
         Object json = null;
         JSONObject jsonObject = null;
         try {
@@ -731,13 +765,12 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     private WritableArray convertArrayListToWritableArray(List arrayList) {
         WritableArray writableArray = new WritableNativeArray();
 
-        for(int i = 0; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             Object object = arrayList.get(i);
 
-            if(object instanceof String) {
+            if (object instanceof String) {
                 writableArray.pushString((String) object);
-            }
-            else {
+            } else {
                 JSONObject jsonObject = objectToJSONObject(object);
                 writableArray.pushMap((WritableMap) jsonObject);
             }
@@ -793,7 +826,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Shows the welcome message in a specific mode.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                          live, or beta.
+     *                           live, or beta.
      */
     @ReactMethod
     public void showWelcomeMessageWithMode(final String welcomeMessageMode) {
@@ -815,7 +848,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Sets the welcome message mode to live, beta or disabled.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                          live, beta or disabled.
+     *                           live, beta or disabled.
      */
     @ReactMethod
     public void setWelcomeMessageMode(final String welcomeMessageMode) {
@@ -875,7 +908,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     @ReactMethod
     public void networkLog(String jsonObject) throws JSONException {
         NetworkLog networkLog = new NetworkLog();
-        String date = System.currentTimeMillis()+"";
+        String date = System.currentTimeMillis() + "";
         networkLog.setDate(date);
         JSONObject newJSONObject = new JSONObject(jsonObject);
         networkLog.setUrl(newJSONObject.getString("url"));
@@ -902,7 +935,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         try {
                             final View view = nativeViewHierarchyManager.resolveView(reactTag);
                             Instabug.addPrivateViews(view);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -923,7 +956,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         try {
                             final View view = nativeViewHierarchyManager.resolveView(reactTag);
                             Instabug.removePrivateViews(view);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -936,7 +969,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen name been changed (Current View).
      *
      * @param screenName string containing the screen name
-     *
      */
     @ReactMethod
     public void reportCurrentViewChange(final String screenName) {
@@ -959,7 +991,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
      *
      * @param screenName string containing the screen name
-     *
      */
     @ReactMethod
     public void reportScreenChange(final String screenName) {
@@ -969,7 +1000,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportScreenChange", Bitmap.class, String.class);
                     if (method != null) {
-                        method.invoke(null , null, screenName);
+                        method.invoke(null, null, screenName);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1028,7 +1059,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the
      * constant with its actual value from the {@link ArgsRegistry} maps.
-     *
+     * <p>
      * This is a workaround, because RN cannot resolve enums in the constants map.
      */
     @Override

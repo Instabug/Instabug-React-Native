@@ -16,9 +16,11 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.IssueType;
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -352,6 +354,29 @@ public class RNInstabugReactnativeModuleTest {
         // then
         verify(Instabug.class,times(1));
         Instabug.setSessionProfilerState(Feature.State.DISABLED);
+    }
+    @Test
+    public void given$setNetworkDiagnosticsCallback_whenQuery_thenShouldCallNetworkDiagnosticsCallback() {
+        // given
+        MockedStatic<Arguments> mockArgument = mockStatic(Arguments.class);
+
+        // when
+        when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+        mockInstabug.when(() -> Instabug.onReportSubmitHandler(any(Report.OnReportCreatedListener.class))).thenAnswer(new Answer() {
+            public Object answer(InvocationOnMock invocation) {
+                ((Report.OnReportCreatedListener) invocation.getArguments()[0]).onReportCreated(new Report())
+                        .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
+                return null;
+            }});
+        rnModule.setNetworkDiagnosticsCallback(null);
+
+        // then
+        WritableMap params = new JavaOnlyMap();
+        params.putString("date", "");
+        params.putInt("totalRequestCount", 1);
+        params.putInt("failureCount", 1);
+        verify(rnModule).sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+        mockArgument.close();
     }
 
     @Test

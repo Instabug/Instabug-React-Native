@@ -352,6 +352,21 @@ RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
 RCT_EXPORT_METHOD(show) {
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
+RCT_EXPORT_METHOD(setOnNetworkDiagnosticsHandler:(RCTResponseSenderBlock)callBack) {
+    if (callBack != nil) {
+        Instabug.didDismissWelcomeMessageHandler = ^() {
+            
+            NSDictionary *result = @{ @"date": @"dismissTypeString",
+                                      @"totalRequestCount": @"1"
+                                      ,
+                                                                @"failureCount": @"1"
+            };
+            [self sendEventWithName:@"IBGNetworkDiagnosticsHandler" body: result];
+        };
+    } else {
+        IBGBugReporting.didDismissHandler = nil;
+    }
+}
 
 RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
     SEL setPrivateApiSEL = NSSelectorFromString(@"logViewDidAppearEvent:");

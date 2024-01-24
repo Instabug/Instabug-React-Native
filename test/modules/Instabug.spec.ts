@@ -720,4 +720,22 @@ describe('Instabug Module', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
   });
+
+  it('should invoke callback on emitting the event IBGNetworkDiagnosticsHandler', (done) => {
+    const data = {
+      date: Date.now(),
+      totalRequestCount: 1,
+      failureCount: 1,
+    };
+    const callback = (rep: any) => {
+      expect(rep.date).toBe(data.date);
+      expect(rep.totalRequestCount).toBe(data.totalRequestCount);
+      expect(rep.failureCount).toBe(data.failureCount);
+      done();
+    };
+    Instabug.onReportSubmitHandler(callback);
+    emitter.emit(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER, data);
+
+    expect(emitter.listenerCount(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER)).toBe(1);
+  });
 });
