@@ -12,6 +12,7 @@ import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
 import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
 import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
 import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
+import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
 
@@ -26,6 +27,7 @@ export type HomeStackParamList = {
   BasicComponents: undefined;
   ScrollView: undefined;
   FlatList: undefined;
+  ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
 };
@@ -61,6 +63,11 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen
         name="BasicComponents"
         component={BasicComponentsScreen}
+        options={{ title: 'Basic Components' }}
+      />
+      <HomeStack.Screen
+        name="ComplexViews"
+        component={ComplexViewsScreen}
         options={{ title: 'Basic Components' }}
       />
       <HomeStack.Screen
