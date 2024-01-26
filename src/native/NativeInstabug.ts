@@ -62,7 +62,8 @@ export interface InstabugNativeModule extends NativeModule {
   clearLogs(): void;
 
   // User APIs //
-  identifyUser(email: string, name: string): void;
+  identifyUser(email: string, name: string, id?: string): void;
+  identifyUserWithId(email: string, name: string, id: string): void;
   logOut(): void;
   logUserEvent(name: string): void;
   setUserData(data: string): void;

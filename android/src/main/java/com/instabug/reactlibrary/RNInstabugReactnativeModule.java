@@ -292,15 +292,19 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      *
      * @param userName  Username.
      * @param userEmail User's default email
+     * @param userId User's ID
      */
     @ReactMethod
-    @Deprecated
-    public void identifyUser(final String userEmail, final String userName) {
+    public void identifyUser(
+            final String userEmail,
+            final String userName,
+            @Nullable final String userId
+    ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Instabug.identifyUser(userName, userEmail);
+                    Instabug.identifyUser(userName, userEmail, userId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

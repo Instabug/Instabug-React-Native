@@ -409,7 +409,17 @@ describe('Instabug Module', () => {
     Instabug.identifyUser(email, name);
 
     expect(NativeInstabug.identifyUser).toBeCalledTimes(1);
-    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name);
+    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name, undefined);
+  });
+
+  it('identifyUser when id is defined should call the native method identifyUser', () => {
+    const email = 'foo@instabug.com';
+    const name = 'Instabug';
+    const id = 'instabug-id';
+    Instabug.identifyUser(email, name, id);
+
+    expect(NativeInstabug.identifyUser).toBeCalledTimes(1);
+    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name, id);
   });
 
   it('should call the native method logOut', () => {

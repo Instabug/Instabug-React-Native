@@ -188,8 +188,19 @@
   NSString *name = @"this is my name";
 
   OCMStub([mock identifyUserWithEmail:email name:name]);
-  [self.instabugBridge identifyUser:email name:name];
-  OCMVerify([mock identifyUserWithEmail:email name:name]);
+  [self.instabugBridge identifyUser:email name:name id:nil];
+  OCMVerify([mock identifyUserWithID:nil email:email name:name]);
+}
+
+- (void)testIdentifyUserWithID {
+  id mock = OCMClassMock([Instabug class]);
+  NSString *email = @"em@il.com";
+  NSString *name = @"this is my name";
+  NSString *id = @"this is my id";
+
+  OCMStub([mock identifyUserWithID:id email:email name:name]);
+  [self.instabugBridge identifyUser:email name:name id:id];
+  OCMVerify([mock identifyUserWithID:id email:email name:name]);
 }
 
 - (void)testLogOut {

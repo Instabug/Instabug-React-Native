@@ -49,7 +49,7 @@
 
 - (void)setString:(NSString *)value toKey:(NSString *)key;
 
-- (void)identifyUser:(NSString *)email name:(NSString *)name;
+- (void)identifyUser:(NSString *)email name:(NSString *)name id:(nullable NSString *)id;
 
 - (void)logOut;
 

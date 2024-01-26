@@ -25,6 +25,7 @@ const mockInstabug: InstabugNativeModule = {
   getTags: jest.fn(),
   setString: jest.fn(),
   identifyUser: jest.fn(),
+  identifyUserWithId: jest.fn(),
   logOut: jest.fn(),
   logUserEvent: jest.fn(),
   logVerbose: jest.fn(),
