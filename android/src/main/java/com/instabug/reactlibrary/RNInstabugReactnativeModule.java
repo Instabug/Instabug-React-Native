@@ -294,6 +294,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * @param userEmail User's default email
      */
     @ReactMethod
+    @Deprecated
     public void identifyUser(final String userEmail, final String userName) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
