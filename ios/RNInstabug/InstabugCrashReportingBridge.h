@@ -7,5 +7,9 @@
 - (void)setEnabled:(BOOL) isEnabled;
 - (void)sendJSCrash:(NSDictionary *)stackTrace;
 - (void)sendHandledJSCrash:(NSDictionary *)stackTrace;
+- (void)sendNativeNonFatal;
+- (void)sendNativeFatalCrash;
+- (void)sendFatalHang;
+- (void)sendOOM;
 
 @end
