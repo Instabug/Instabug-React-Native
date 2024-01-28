@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import { KeyboardTypeOptions, StyleSheet, TextInput } from 'react-native';
 
-interface InputFieldProps extends PropsWithChildren {
+interface InputFieldProps {
   placeholder?: string;
   value?: string;
   onChangeText?: (text: string) => void;

@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import { Text } from 'native-base';
 import { StyleSheet, View } from 'react-native';
 
-interface NestedViewProps extends PropsWithChildren {
+interface NestedViewProps {
   children?: React.ReactNode;
   depth: number;
   breadth?: number;
