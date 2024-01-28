@@ -17,7 +17,6 @@ import {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
-import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 
@@ -61,7 +60,7 @@ function reportCurrentViewForAndroid(screenName: string | null) {
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
-  NetworkLogger.setEnabled(true);
+  // NetworkLogger.setEnabled(true);
 
   NativeInstabug.init(
     config.token,

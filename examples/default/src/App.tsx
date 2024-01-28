@@ -10,10 +10,14 @@ import { RootTabNavigator } from './navigation/RootTab';
 import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
-      token: 'deb1910a7342814af4e4c9210c786f35',
+      token: '315f28620a2a59c3d9d170b2462f926e',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
@@ -22,9 +26,11 @@ export const App: React.FC = () => {
   return (
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
-        <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
-          <RootTabNavigator />
-        </NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
+            <RootTabNavigator />
+          </NavigationContainer>
+        </QueryClientProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
   );
