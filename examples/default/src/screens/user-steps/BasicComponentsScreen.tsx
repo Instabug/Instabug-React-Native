@@ -6,7 +6,6 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   Switch,
   useWindowDimensions,
@@ -19,6 +18,7 @@ import { Center, HStack, ScrollView, VStack } from 'native-base';
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';
 import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
+import { InputField } from '../../components/InputField';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
@@ -57,7 +57,7 @@ export const BasicComponentsScreen: React.FC = () => {
         </Section>
 
         <Section title="Text Input">
-          <TextInput placeholder="Enter your name" style={styles.textInput} />
+          <InputField placeholder="Enter your name" />
         </Section>
 
         <Section title="Button">
