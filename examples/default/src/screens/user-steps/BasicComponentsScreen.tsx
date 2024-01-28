@@ -10,6 +10,7 @@ import {
   Switch,
   useWindowDimensions,
   ActivityIndicator,
+  View,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
@@ -17,10 +18,11 @@ import { Center, HStack, ScrollView, VStack } from 'native-base';
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';
 import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { InputField } from '../../components/InputField';
 
 /**
- * A screen that demonstates the usage of user steps with basic React Native components.
+ * A screen that demonstrates the usage of user steps with basic React Native components.
  *
  * This specific screen doesn't use NativeBase in some parts since we need to focus on
  * capturing React Native provided components rather than implementations built on top of it.
@@ -62,12 +64,50 @@ export const BasicComponentsScreen: React.FC = () => {
           <VStack space="xs">
             <Button onPress={onPress('Default Button')} title="Default Button" />
 
-            <Pressable onPress={onPress('Pressable Button')} style={styles.button}>
-              <Text style={styles.buttonText}>Pressable Button</Text>
+            <Pressable onPress={onPress('Icon Pressable Button')} style={styles.button}>
+              <HStack space={2} alignItems="center" justifyContent="center">
+                <Icon name="alert-circle-outline" color="white" />
+                <Text style={styles.buttonText}>Icon Pressable Button</Text>
+              </HStack>
             </Pressable>
 
             <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
               <Text style={styles.buttonText}>Touchable Button</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
+              <Text style={styles.buttonText}>Touchable Button</Text>
+              <Text style={styles.buttonText}>Multiple Texts</Text>
+            </TouchableOpacity>
+
+            <Pressable onPress={onPress('Touchable Opacity Button')} style={styles.button}>
+              <Text style={styles.buttonText}>Pressable Button</Text>
+              <View>
+                <HStack space={2} alignItems="center" justifyContent="center">
+                  <Icon name="alert-circle-outline" color="white" />
+                  <Text style={styles.buttonText}>Icon Pressable Button</Text>
+                </HStack>
+              </View>
+            </Pressable>
+
+            <Icon.Button
+              style={styles.button}
+              name="alert-circle-outline"
+              backgroundColor="#4A99E9"
+              size={12}
+              onPress={onPress('Icon.Button')}>
+              <Text style={styles.buttonText}>Icon Button</Text>
+            </Icon.Button>
+
+            <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
+              <Text style={styles.buttonText}>1 Tier</Text>
+              <View>
+                <View>
+                  <View>
+                    <Text style={styles.buttonText}>4 Tier Nested Button</Text>
+                  </View>
+                </View>
+              </View>
             </TouchableOpacity>
           </VStack>
         </Section>
@@ -129,6 +169,7 @@ const styles = StyleSheet.create({
     formControlStyles.formControl,
     {
       backgroundColor: nativeBaseTheme.colors.primary[600],
+      justifyContent: 'center',
     },
   ]),
 });
