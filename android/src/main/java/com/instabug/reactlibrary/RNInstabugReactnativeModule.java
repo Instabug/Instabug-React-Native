@@ -27,6 +27,7 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
+import com.instabug.library.core.InstabugCore;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
@@ -37,6 +38,7 @@ import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import com.instabug.reactlibrary.utils.RNTouchedViewExtractor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -132,6 +134,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
+                final RNTouchedViewExtractor rnTouchedViewExtractor = new RNTouchedViewExtractor();
+                InstabugCore.setTouchedViewExtractorExtension(rnTouchedViewExtractor);
                 final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
                 final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
                 final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
