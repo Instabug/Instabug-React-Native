@@ -15,11 +15,13 @@ import {
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
+import Instabug from 'instabug-reactnative';
 
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';
 import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useRef } from 'react';
 
 /**
  * A screen that demonstrates the usage of user steps with basic React Native components.
@@ -37,100 +39,184 @@ export const BasicComponentsScreen: React.FC = () => {
     };
   };
 
+  function maskAllViews() {
+    // Mask Text
+    Instabug.addPrivateView(textRef.current!);
+
+    // Mask Image
+    Instabug.addPrivateView(imageRef.current!);
+
+    // Mask TextInput
+    Instabug.addPrivateView(textInputRef.current!);
+
+    // Mask Button
+    Instabug.addPrivateView(buttonRef.current!);
+
+    // Mask Pressable
+    Instabug.addPrivateView(pressableRef.current!);
+
+    // Mask TouchableOpacity
+    Instabug.addPrivateView(touchableOpacityRef.current!);
+
+    // Mask MultiText touchable opacity Button
+    Instabug.addPrivateView(multiTextTouchableOpacityRef.current!);
+
+    // Mask Icon Pressable Button
+    Instabug.addPrivateView(iconPressableButtonRef.current!);
+
+    // Mask Icon.Button
+    Instabug.addPrivateView(iconButtonRef.current!);
+
+    // Mask A four TouchableOpacity Button
+    Instabug.addPrivateView(fourTierTouchableOpacityButtonRef.current!);
+
+    // Mask Switch Button
+    Instabug.addPrivateView(switchButtonRef.current!);
+
+    // Mask slider
+    Instabug.addPrivateView(sliderRef.current!);
+
+    // Mask slider
+    Instabug.addPrivateView(activityIndicatorRef.current!);
+  }
+
+  const textRef = useRef<View>(null);
+  const imageRef = useRef<Image>(null);
+  const textInputRef = useRef<TextInput>(null);
+  const buttonRef = useRef<Button>(null);
+  const pressableRef = useRef<View>(null);
+  const touchableOpacityRef = useRef<TouchableOpacity>(null);
+  const multiTextTouchableOpacityRef = useRef<TouchableOpacity>(null);
+  const iconPressableButtonRef = useRef<View>(null);
+  const iconButtonRef = useRef<Icon.Button>(null);
+  const fourTierTouchableOpacityButtonRef = useRef<TouchableOpacity>(null);
+  const switchButtonRef = useRef<Switch>(null);
+  const sliderRef = useRef<Slider>(null);
+  const activityIndicatorRef = useRef<ActivityIndicator>(null);
+
   return (
     <ScrollView>
-      <Screen>
-        <Section title="Text">
-          <Text style={styles.text}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias tempore inventore quas
-            cum cupiditate ratione, iusto itaque natus maiores fugit.
-          </Text>
-        </Section>
+      <View>
+        <Screen>
+          <Section title="Text">
+            <Text ref={textRef} style={styles.text}>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias tempore inventore quas
+              cum cupiditate ratione, iusto itaque natus maiores fugit.
+            </Text>
+          </Section>
 
-        <Section title="Image">
-          <Center>
-            <Image
-              source={require('../../images/logo.png')}
-              style={[styles.image, { width: width / 2, height: width / 6 }]}
-            />
-          </Center>
-        </Section>
+          <Section title="Image">
+            <Center>
+              <Image
+                ref={imageRef}
+                source={require('../../images/logo.png')}
+                style={[styles.image, { width: width / 2, height: width / 6 }]}
+              />
+            </Center>
+          </Section>
 
-        <Section title="Text Input">
-          <TextInput placeholder="Enter your name" style={styles.textInput} />
-        </Section>
+          <Section title="Text Input">
+            <TextInput ref={textInputRef} placeholder="Enter your name" style={styles.textInput} />
+          </Section>
 
-        <Section title="Button">
-          <VStack space="xs">
-            <Button onPress={onPress('Default Button')} title="Default Button" />
+          <Section title="Button">
+            <VStack space="xs">
+              <Button ref={buttonRef} onPress={onPress('Default Button')} title="Default Button" />
 
-            <Pressable onPress={onPress('Icon Pressable Button')} style={styles.button}>
-              <HStack space={2} alignItems="center" justifyContent="center">
-                <Icon name="alert-circle-outline" color="white" />
-                <Text style={styles.buttonText}>Icon Pressable Button</Text>
-              </HStack>
-            </Pressable>
-
-            <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
-              <Text style={styles.buttonText}>Touchable Button</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
-              <Text style={styles.buttonText}>Touchable Button</Text>
-              <Text style={styles.buttonText}>Multiple Texts</Text>
-            </TouchableOpacity>
-
-            <Pressable onPress={onPress('Touchable Opacity Button')} style={styles.button}>
-              <Text style={styles.buttonText}>Pressable Button</Text>
-              <View>
+              <Pressable
+                ref={pressableRef}
+                onPress={onPress('Icon Pressable Button')}
+                style={styles.button}>
                 <HStack space={2} alignItems="center" justifyContent="center">
                   <Icon name="alert-circle-outline" color="white" />
                   <Text style={styles.buttonText}>Icon Pressable Button</Text>
                 </HStack>
-              </View>
-            </Pressable>
+              </Pressable>
 
-            <Icon.Button
-              style={styles.button}
-              name="alert-circle-outline"
-              backgroundColor="#4A99E9"
-              size={12}
-              onPress={onPress('Icon.Button')}>
-              <Text style={styles.buttonText}>Icon Button</Text>
-            </Icon.Button>
+              <TouchableOpacity
+                ref={touchableOpacityRef}
+                onPress={onPress('Touchable Opacity Button')}
+                style={styles.button}>
+                <Text style={styles.buttonText}>Touchable Button</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={onPress('Touchable Opacity Button')} style={styles.button}>
-              <Text style={styles.buttonText}>1 Tier</Text>
-              <View>
+              <TouchableOpacity
+                ref={multiTextTouchableOpacityRef}
+                onPress={onPress('Touchable Opacity Button')}
+                style={styles.button}>
+                <Text style={styles.buttonText}>Touchable Button</Text>
+                <Text style={styles.buttonText}>Multiple Texts</Text>
+              </TouchableOpacity>
+
+              <Pressable
+                ref={iconPressableButtonRef}
+                onPress={onPress('Touchable Opacity Button')}
+                style={styles.button}>
+                <Text style={styles.buttonText}>Pressable Button</Text>
+                <View>
+                  <HStack space={2} alignItems="center" justifyContent="center">
+                    <Icon name="alert-circle-outline" color="white" />
+                    <Text style={styles.buttonText}>Icon Pressable Button</Text>
+                  </HStack>
+                </View>
+              </Pressable>
+
+              <Icon.Button
+                style={styles.button}
+                ref={iconButtonRef}
+                name="alert-circle-outline"
+                backgroundColor="#4A99E9"
+                size={12}
+                onPress={onPress('Icon.Button')}>
+                <Text style={styles.buttonText}>Icon Button</Text>
+              </Icon.Button>
+
+              <TouchableOpacity
+                ref={fourTierTouchableOpacityButtonRef}
+                onPress={onPress('Touchable Opacity Button')}
+                style={styles.button}>
+                <Text style={styles.buttonText}>1 Tier</Text>
                 <View>
                   <View>
-                    <Text style={styles.buttonText}>4 Tier Nested Button</Text>
+                    <View>
+                      <Text style={styles.buttonText}>4 Tier Nested Button</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          </VStack>
-        </Section>
+              </TouchableOpacity>
+            </VStack>
+          </Section>
 
-        <Section title="Switch">
-          <HStack alignItems="center" space="xs">
-            <Switch
-              value={isSwitchOn}
-              onValueChange={setIsSwitchOn}
-              accessibilityLabel="Is Switch On"
+          <Section title="Switch">
+            <HStack alignItems="center" space="xs">
+              <Switch
+                ref={switchButtonRef}
+                value={isSwitchOn}
+                onValueChange={setIsSwitchOn}
+                accessibilityLabel="Is Switch On"
+              />
+              <Text>Is Switch On</Text>
+            </HStack>
+          </Section>
+
+          <Section title="Slider">
+            <Slider
+              ref={sliderRef}
+              minimumValue={0}
+              maximumValue={100}
+              accessibilityLabel="Progress Bar"
             />
-            <Text>Is Switch On</Text>
-          </HStack>
-        </Section>
+          </Section>
 
-        <Section title="Slider">
-          <Slider minimumValue={0} maximumValue={100} accessibilityLabel="Progress Bar" />
-        </Section>
+          <Section title="Activity Indicator">
+            <ActivityIndicator ref={activityIndicatorRef} size="large" />
+          </Section>
 
-        <Section title="Activity Indicator">
-          <ActivityIndicator size="large" />
-        </Section>
-      </Screen>
+          <Section title="Private Views">
+            <Button title="add Private Views" onPress={() => maskAllViews()} />
+          </Section>
+        </Screen>
+      </View>
     </ScrollView>
   );
 };
