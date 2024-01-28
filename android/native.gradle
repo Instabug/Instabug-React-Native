@@ -5,3 +5,24 @@ project.ext.instabug = [
 dependencies {
     api "com.instabug.library:instabug:${project.ext.instabug.version}"
 }
+
+def instabugProperties = new Properties()
+file("local.properties").withInputStream { instabugProperties.load(it) }
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+        maven {
+            url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+            credentials {
+                username instabugProperties.getProperty("instabugUsername")
+                password instabugProperties.getProperty("instabugPassword")
+            }
+        }
+    }
+}
