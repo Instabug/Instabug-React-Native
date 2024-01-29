@@ -12,6 +12,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
+#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
 #import "ArgsRegistry.h"
@@ -89,6 +90,7 @@
  */
 
 - (void)setIBGLogPrintsToConsole:(BOOL)printsToConsole;
+- (void)logVerbose:(NSString *)log;
 - (void)logDebug:(NSString *)log;
 - (void)logInfo:(NSString *)log;
 - (void)logWarn:(NSString *)log;

@@ -8,9 +8,7 @@ import android.net.Uri;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-
 import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;

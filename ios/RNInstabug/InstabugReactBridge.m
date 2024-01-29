@@ -8,7 +8,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
-
+#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGAPM.h>
 #import <asl.h>
@@ -19,7 +19,7 @@
 #import "Instabug+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
-+ (void)setWillSendReportHandler_private:(void (^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
++ (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
 @end
 
 @implementation InstabugReactBridge
@@ -35,19 +35,14 @@ RCT_EXPORT_MODULE(Instabug)
 }
 
 
-RCT_EXPORT_METHOD(setEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     Instabug.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(init:
-    (NSString *) token
-            invocationEvents:
-            (NSArray *) invocationEventsArray
-            debugLogsLevel:
-            (IBGSDKDebugLogsLevel) sdkDebugLogsLevel
-            codePushVersion:
-            (NSString *) codePushVersion) {
+RCT_EXPORT_METHOD(init:(NSString *)token
+          invocationEvents:(NSArray *)invocationEventsArray
+          debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
+          codePushVersion:(NSString *)codePushVersion) {
     IBGInvocationEvent invocationEvents = 0;
 
     for (NSNumber *boxedValue in invocationEventsArray) {
@@ -61,41 +56,35 @@ RCT_EXPORT_METHOD(init:
                debugLogsLevel:sdkDebugLogsLevel];
 }
 
-RCT_EXPORT_METHOD(setReproStepsConfig:
-    (IBGUserStepsMode) bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
+RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
     [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
-    [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
+   [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
 }
 
-RCT_EXPORT_METHOD(setFileAttachment:
-    (NSString *) fileLocation) {
+RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
     NSURL *url = [NSURL URLWithString:fileLocation];
     [Instabug addFileAttachmentWithURL:url];
 }
 
-RCT_EXPORT_METHOD(setUserData:
-    (NSString *) userData) {
+RCT_EXPORT_METHOD(setUserData:(NSString *)userData) {
     [Instabug setUserData:userData];
 }
 
-RCT_EXPORT_METHOD(setTrackUserSteps:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setTrackUserSteps:(BOOL)isEnabled) {
     [Instabug setTrackUserSteps:isEnabled];
 }
 
 IBGReport *currentReport = nil;
-
-RCT_EXPORT_METHOD(setPreSendingHandler:
-    (RCTResponseSenderBlock) callBack) {
+RCT_EXPORT_METHOD(setPreSendingHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        Instabug.willSendReportHandler = ^IBGReport *_Nonnull(IBGReport *_Nonnull report) {
+        Instabug.willSendReportHandler = ^IBGReport * _Nonnull(IBGReport * _Nonnull report) {
             NSArray *tagsArray = report.tags;
-            NSArray *instabugLogs = report.instabugLogs;
-            NSArray *consoleLogs = report.consoleLogs;
-            NSDictionary *userAttributes = report.userAttributes;
-            NSArray *fileAttachments = report.fileLocations;
-            NSDictionary *dict = @{@"tagsArray": tagsArray, @"instabugLogs": instabugLogs, @"consoleLogs": consoleLogs, @"userAttributes": userAttributes, @"fileAttachments": fileAttachments};
+            NSArray *instabugLogs= report.instabugLogs;
+            NSArray *consoleLogs= report.consoleLogs;
+            NSDictionary *userAttributes= report.userAttributes;
+            NSArray *fileAttachments= report.fileLocations;
+            NSDictionary *dict = @{ @"tagsArray" : tagsArray, @"instabugLogs" : instabugLogs, @"consoleLogs" : consoleLogs,       @"userAttributes" : userAttributes, @"fileAttachments" : fileAttachments};
             [self sendEventWithName:@"IBGpreSendingHandler" body:dict];
 
             currentReport = report;
@@ -106,95 +95,81 @@ RCT_EXPORT_METHOD(setPreSendingHandler:
     }
 }
 
-RCT_EXPORT_METHOD(appendTagToReport:
-    (NSString *) tag) {
+RCT_EXPORT_METHOD(appendTagToReport:(NSString*) tag) {
     if (currentReport != nil) {
         [currentReport appendTag:tag];
     }
 }
 
-RCT_EXPORT_METHOD(appendConsoleLogToReport:
-    (NSString *) consoleLog) {
+RCT_EXPORT_METHOD(appendConsoleLogToReport:(NSString*) consoleLog) {
     if (currentReport != nil) {
         [currentReport appendToConsoleLogs:consoleLog];
     }
 }
 
-RCT_EXPORT_METHOD(setUserAttributeToReport:
-    (NSString *) key:(NSString*) value) {
+RCT_EXPORT_METHOD(setUserAttributeToReport:(NSString*) key:(NSString*) value) {
     if (currentReport != nil) {
         [currentReport setUserAttribute:value withKey:key];
     }
 }
 
-RCT_EXPORT_METHOD(logDebugToReport:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logDebugToReport:(NSString*) log) {
     if (currentReport != nil) {
         [currentReport logDebug:log];
     }
 }
 
-RCT_EXPORT_METHOD(logVerboseToReport:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logVerboseToReport:(NSString*) log) {
     if (currentReport != nil) {
         [currentReport logVerbose:log];
     }
 }
 
-RCT_EXPORT_METHOD(logWarnToReport:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logWarnToReport:(NSString*) log) {
     if (currentReport != nil) {
         [currentReport logWarn:log];
     }
 }
 
-RCT_EXPORT_METHOD(logErrorToReport:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logErrorToReport:(NSString*) log) {
     if (currentReport != nil) {
         [currentReport logError:log];
     }
 }
 
-RCT_EXPORT_METHOD(logInfoToReport:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logInfoToReport:(NSString*) log) {
     if (currentReport != nil) {
         [currentReport logInfo:log];
     }
 }
 
-RCT_EXPORT_METHOD(addFileAttachmentWithURLToReport:
-    (NSString *) urlString) {
+RCT_EXPORT_METHOD(addFileAttachmentWithURLToReport:(NSString*) urlString) {
     if (currentReport != nil) {
         NSURL *url = [NSURL URLWithString:urlString];
         [currentReport addFileAttachmentWithURL:url];
     }
 }
 
-RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:
-    (NSString *) dataString) {
+RCT_EXPORT_METHOD(addFileAttachmentWithDataToReport:(NSString*) dataString) {
     if (currentReport != nil) {
-        NSData *data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
+        NSData* data = [dataString dataUsingEncoding:NSUTF8StringEncoding];
         [currentReport addFileAttachmentWithData:data];
     }
 }
 
-RCT_EXPORT_METHOD(setLocale:
-    (IBGLocale) locale) {
+RCT_EXPORT_METHOD(setLocale:(IBGLocale)locale) {
     [Instabug setLocale:locale];
 }
 
-RCT_EXPORT_METHOD(setColorTheme:
-    (IBGColorTheme) colorTheme) {
-    [Instabug setColorTheme:colorTheme];
+RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
+        [Instabug setColorTheme:colorTheme];
 }
 
-RCT_EXPORT_METHOD(setPrimaryColor:
-    (UIColor *) color) {
-    Instabug.tintColor = color;
+RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
+        Instabug.tintColor = color;
 }
 
-RCT_EXPORT_METHOD(appendTags:
-    (NSArray *) tags) {
+RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
     [Instabug appendTags:tags];
 }
 
@@ -202,19 +177,15 @@ RCT_EXPORT_METHOD(resetTags) {
     [Instabug resetTags];
 }
 
-RCT_EXPORT_METHOD(getTags:
-    (RCTPromiseResolveBlock) resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getTags:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve([Instabug getTags]);
 }
 
-RCT_EXPORT_METHOD(setString:
-    (NSString *) value toKey:
-    (NSString *) key) {
+RCT_EXPORT_METHOD(setString:(NSString*)value toKey:(NSString*)key) {
     [Instabug setValue:value forStringWithKey:key];
 }
 
-RCT_EXPORT_METHOD(addFileAttachment:
-    (NSString *) fileURLString) {
+RCT_EXPORT_METHOD(addFileAttachment:(NSString *)fileURLString) {
     [Instabug addFileAttachmentWithURL:[NSURL URLWithString:fileURLString]];
 }
 
@@ -222,9 +193,7 @@ RCT_EXPORT_METHOD(clearFileAttachments) {
     [Instabug clearFileAttachments];
 }
 
-RCT_EXPORT_METHOD(identifyUser:
-    (NSString *) email name:
-    (NSString *) name) {
+RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name) {
     [Instabug identifyUserWithEmail:email name:name];
 }
 
@@ -232,14 +201,11 @@ RCT_EXPORT_METHOD(logOut) {
     [Instabug logOut];
 }
 
-RCT_EXPORT_METHOD(setUserAttribute:
-    (NSString *) key withValue:
-    (NSString *) value) {
+RCT_EXPORT_METHOD(setUserAttribute:(NSString *)key withValue:(NSString *)value) {
     [Instabug setUserAttribute:value withKey:key];
 }
 
-RCT_EXPORT_METHOD(getUserAttribute:
-    (NSString *) key :(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getUserAttribute:(NSString *)key :(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     @try {
         resolve([Instabug userAttributeForKey:key]);
     } @catch (NSException *exception) {
@@ -247,13 +213,11 @@ RCT_EXPORT_METHOD(getUserAttribute:
     }
 }
 
-RCT_EXPORT_METHOD(removeUserAttribute:
-    (NSString *) key) {
+RCT_EXPORT_METHOD(removeUserAttribute:(NSString *)key) {
     [Instabug removeUserAttributeForKey:key];
 }
 
-RCT_EXPORT_METHOD(getAllUserAttributes:
-    (RCTPromiseResolveBlock) resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(getAllUserAttributes:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve([Instabug userAttributes]);
 }
 
@@ -263,38 +227,31 @@ RCT_EXPORT_METHOD(clearAllUserAttributes) {
     }
 }
 
-RCT_EXPORT_METHOD(logUserEvent:
-    (NSString *) name) {
+RCT_EXPORT_METHOD(logUserEvent:(NSString *)name) {
     [Instabug logUserEventWithName:name];
 }
 
-RCT_EXPORT_METHOD(setIBGLogPrintsToConsole:
-    (BOOL) printsToConsole) {
+RCT_EXPORT_METHOD(setIBGLogPrintsToConsole:(BOOL) printsToConsole) {
     IBGLog.printsToConsole = printsToConsole;
 }
 
-RCT_EXPORT_METHOD(logVerbose:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logVerbose:(NSString *)log) {
     [IBGLog logVerbose:log];
 }
 
-RCT_EXPORT_METHOD(logDebug:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logDebug:(NSString *)log) {
     [IBGLog logDebug:log];
 }
 
-RCT_EXPORT_METHOD(logInfo:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logInfo:(NSString *)log) {
     [IBGLog logInfo:log];
 }
 
-RCT_EXPORT_METHOD(logWarn:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logWarn:(NSString *)log) {
     [IBGLog logWarn:log];
 }
 
-RCT_EXPORT_METHOD(logError:
-    (NSString *) log) {
+RCT_EXPORT_METHOD(logError:(NSString *)log) {
     [IBGLog logError:log];
 }
 
@@ -302,58 +259,53 @@ RCT_EXPORT_METHOD(clearLogs) {
     [IBGLog clearAllLogs];
 }
 
-RCT_EXPORT_METHOD(setSessionProfilerEnabled:
-    (BOOL) sessionProfilerEnabled) {
+RCT_EXPORT_METHOD(setSessionProfilerEnabled:(BOOL)sessionProfilerEnabled) {
     [Instabug setSessionProfilerEnabled:sessionProfilerEnabled];
 }
 
-RCT_EXPORT_METHOD(showWelcomeMessageWithMode:
-    (IBGWelcomeMessageMode) welcomeMessageMode) {
+RCT_EXPORT_METHOD(showWelcomeMessageWithMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
     [Instabug showWelcomeMessageWithMode:welcomeMessageMode];
 }
 
-RCT_EXPORT_METHOD(setWelcomeMessageMode:
-    (IBGWelcomeMessageMode) welcomeMessageMode) {
+RCT_EXPORT_METHOD(setWelcomeMessageMode:(IBGWelcomeMessageMode)welcomeMessageMode) {
     [Instabug setWelcomeMessageMode:welcomeMessageMode];
 }
 
-RCT_EXPORT_METHOD(setNetworkLoggingEnabled:
-    (BOOL) isEnabled) {
-    if (isEnabled) {
+RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
+    if(isEnabled) {
         IBGNetworkLogger.enabled = YES;
     } else {
         IBGNetworkLogger.enabled = NO;
     }
 }
 
-RCT_EXPORT_METHOD(networkLog:
-    (NSDictionary *) networkData) {
-    NSString *url = networkData[@"url"];
-    NSString *method = networkData[@"method"];
-    NSString *requestBody = networkData[@"requestBody"];
+RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
+    NSString* url = networkData[@"url"];
+    NSString* method = networkData[@"method"];
+    NSString* requestBody = networkData[@"requestBody"];
     int64_t requestBodySize = [networkData[@"requestBodySize"] integerValue];
-    NSString *responseBody = nil;
+    NSString* responseBody = nil;
     if (networkData[@"responseBody"] != [NSNull null]) {
         responseBody = networkData[@"responseBody"];
     }
     int64_t responseBodySize = [networkData[@"responseBodySize"] integerValue];
     int32_t responseCode = [networkData[@"responseCode"] integerValue];
-    NSDictionary *requestHeaders = @{};
-    if ([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]) {
+    NSDictionary* requestHeaders = @{};
+    if([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]){
         requestHeaders = networkData[@"requestHeaders"];
     }
-    NSDictionary *responseHeaders = @{};
-    if ([networkData[@"responseHeaders"] isKindOfClass:[NSDictionary class]]) {
+    NSDictionary* responseHeaders = @{};
+    if([networkData[@"responseHeaders"] isKindOfClass:[NSDictionary class]]){
         responseHeaders = networkData[@"responseHeaders"];
     }
-    NSString *contentType = networkData[@"contentType"];
-    NSString *errorDomain = networkData[@"errorDomain"];
+    NSString* contentType = networkData[@"contentType"];
+    NSString* errorDomain = networkData[@"errorDomain"];
     int32_t errorCode = [networkData[@"errorCode"] integerValue];
     int64_t startTime = [networkData[@"startTime"] integerValue] * 1000;
     int64_t duration = [networkData[@"duration"] doubleValue] * 1000;
 
-    NSString *gqlQueryName = nil;
-    NSString *serverErrorMessage = nil;
+    NSString* gqlQueryName = nil;
+    NSString* serverErrorMessage = nil;
     if (networkData[@"gqlQueryName"] != [NSNull null]) {
         gqlQueryName = networkData[@"gqlQueryName"];
     }
@@ -363,7 +315,7 @@ RCT_EXPORT_METHOD(networkLog:
 
     SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:");
 
-    if ([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
+    if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
         [inv setSelector:networkLogSEL];
         [inv setTarget:[IBGNetworkLogger class]];
@@ -389,9 +341,8 @@ RCT_EXPORT_METHOD(networkLog:
     }
 }
 
-RCT_EXPORT_METHOD(addPrivateView:
-    (nonnull NSNumber *)reactTag) {
-    UIView *view = [self.bridge.uiManager viewForReactTag:reactTag];
+RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
+    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;
 }
 
@@ -430,13 +381,11 @@ RCT_EXPORT_METHOD(reportScreenChange:
     }
 }
 
-RCT_EXPORT_METHOD(addExperiments:
-    (NSArray *) experiments) {
+RCT_EXPORT_METHOD(addExperiments:(NSArray *)experiments) {
     [Instabug addExperiments:experiments];
 }
 
-RCT_EXPORT_METHOD(removeExperiments:
-    (NSArray *) experiments) {
+RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
     [Instabug removeExperiments:experiments];
 }
 
@@ -448,9 +397,9 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
     return ArgsRegistry.getAll;
 }
 
-- (void)setBaseUrlForDeprecationLogs {
+- (void) setBaseUrlForDeprecationLogs {
     SEL setCurrentPlatformSEL = NSSelectorFromString(@"setCurrentPlatform:");
-    if ([[Instabug class] respondsToSelector:setCurrentPlatformSEL]) {
+    if([[Instabug class] respondsToSelector:setCurrentPlatformSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setCurrentPlatformSEL]];
         [inv setSelector:setCurrentPlatformSEL];
         [inv setTarget:[Instabug class]];
@@ -461,7 +410,8 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
     }
 }
 
-+ (BOOL)requiresMainQueueSetup {
++ (BOOL)requiresMainQueueSetup
+{
     return NO;
 }
 
