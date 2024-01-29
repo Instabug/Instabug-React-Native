@@ -64,3 +64,6 @@ android/keystores/debug.keystore
 
 # Vscode local history
 .history/
+
+# .idea run configurations
+/.run/*
