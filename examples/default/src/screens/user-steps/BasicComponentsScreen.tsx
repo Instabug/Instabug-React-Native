@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Alert,
   Button,
@@ -10,6 +10,7 @@ import {
   Switch,
   useWindowDimensions,
   ActivityIndicator,
+  TextInput,
   View,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -21,7 +22,6 @@ import { Section } from '../../components/Section';
 import { nativeBaseTheme } from '../../theme/nativeBaseTheme';
 import { InputField } from '../../components/InputField';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useRef } from 'react';
 
 /**
  * A screen that demonstrates the usage of user steps with basic React Native components.
@@ -115,9 +115,9 @@ export const BasicComponentsScreen: React.FC = () => {
             </Center>
           </Section>
 
-        <Section title="Text Input">
-          <InputField ref={textInputRef} placeholder="Enter your name" />
-        </Section>
+          <Section title="Text Input">
+            <InputField ref={textInputRef} placeholder="Enter your name" />
+          </Section>
 
           <Section title="Button">
             <VStack space="xs">

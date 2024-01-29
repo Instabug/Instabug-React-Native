@@ -68,7 +68,7 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen
         name="ComplexViews"
         component={ComplexViewsScreen}
-        options={{ title: 'Complex Components' }}
+        options={{ title: 'Basic Components' }}
       />
       <HomeStack.Screen
         name="ScrollView"
