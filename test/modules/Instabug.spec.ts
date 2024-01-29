@@ -679,6 +679,14 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setPreSendingHandler).toBeCalledWith(callback);
   });
 
+  it('should call the native method onNetworkDiagnosticsHandler with a function', () => {
+    const callback = jest.fn();
+    Instabug.onNetworkDiagnosticsHandler(callback);
+
+    expect(NativeInstabug.setNetworkDiagnosticsCallback).toBeCalledTimes(1);
+    expect(NativeInstabug.setNetworkDiagnosticsCallback).toBeCalledWith(callback);
+  });
+
   it('should invoke callback on emitting the event IBGpreSendingHandler', (done) => {
     const report = {
       tags: ['tag1', 'tag2'],
