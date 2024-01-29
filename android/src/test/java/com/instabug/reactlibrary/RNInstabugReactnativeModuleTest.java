@@ -69,8 +69,8 @@ public class RNInstabugReactnativeModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic<Instabug> mockInstabug;
+    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic <Instabug> mockInstabug;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -94,7 +94,6 @@ public class RNInstabugReactnativeModuleTest {
         Mockito.doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
         MainThreadHandler.runOnMainThread(any(Runnable.class));
     }
-
     @After
     public void tearDown() {
         // Remove static mocks
@@ -137,7 +136,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.setUserAttribute(key, value);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.setUserAttribute(key, value);
     }
 
@@ -149,7 +148,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.removeUserAttribute(key);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.removeUserAttribute(key);
     }
 
@@ -160,7 +159,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.clearAllUserAttributes();
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.clearAllUserAttributes();
     }
 
@@ -171,12 +170,12 @@ public class RNInstabugReactnativeModuleTest {
         final String[] keysArray = themesArgs.keySet().toArray(new String[0]);
 
         // when
-        for (String key : keysArray) {
+        for (String key: keysArray) {
             rnModule.setColorTheme(key);
         }
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         for (String key : keysArray) {
             InstabugColorTheme theme = themesArgs.get(key);
             Instabug.setColorTheme(theme);
@@ -191,7 +190,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.setUserData(data);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.setUserData(data);
     }
 
@@ -203,7 +202,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.setPrimaryColor(color);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.setPrimaryColor(color);
     }
 
@@ -216,7 +215,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.identifyUser(email, userName);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.identifyUser(userName, email);
     }
 
@@ -227,7 +226,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.resetTags();
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.resetTags();
     }
 
@@ -238,7 +237,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.logOut();
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.logoutUser();
     }
 
@@ -250,7 +249,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.logUserEvent(eventName);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.logUserEvent(eventName);
     }
 
@@ -261,7 +260,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.clearFileAttachment();
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.clearFileAttachment();
     }
 
@@ -303,7 +302,7 @@ public class RNInstabugReactnativeModuleTest {
         }
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         for (String key : keysArray) {
             WelcomeMessage.State state = (WelcomeMessage.State) args.get(key);
             Instabug.showWelcomeMessage(state);
@@ -322,7 +321,7 @@ public class RNInstabugReactnativeModuleTest {
         }
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         for (String key : keysArray) {
             WelcomeMessage.State state = args.get(key);
             Instabug.setWelcomeMessageState(state);
@@ -336,7 +335,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.show();
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.show();
     }
 
@@ -347,7 +346,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.setSessionProfilerEnabled(true);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.setSessionProfilerState(Feature.State.ENABLED);
     }
 
@@ -358,7 +357,7 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.setSessionProfilerEnabled(false);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.setSessionProfilerState(Feature.State.DISABLED);
     }
 
@@ -420,8 +419,8 @@ public class RNInstabugReactnativeModuleTest {
         // when
         rnModule.appendTags(array);
         // then
-        verify(Instabug.class, times(1));
-        String[] expectedArray = {"tag1", "tag2"};
+        verify(Instabug.class,times(1));
+        String [] expectedArray = {"tag1", "tag2"};
         Instabug.addTags(expectedArray);
     }
 
@@ -439,7 +438,7 @@ public class RNInstabugReactnativeModuleTest {
         when(Arguments.createArray()).thenReturn(new JavaOnlyArray());
         rnModule.getTags(promise);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.getTags();
         WritableArray expectedArray = new JavaOnlyArray();
         expectedArray.pushString("tag1");
@@ -460,7 +459,7 @@ public class RNInstabugReactnativeModuleTest {
         when(Instabug.getUserAttribute(key)).thenReturn(value);
         rnModule.getUserAttribute(key, promise);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.getUserAttribute(key);
         verify(promise).resolve(value);
     }
@@ -477,7 +476,7 @@ public class RNInstabugReactnativeModuleTest {
         when(Instabug.getAllUserAttributes()).thenReturn(userAttributes);
         rnModule.getAllUserAttributes(promise);
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.getAllUserAttributes();
         WritableMap expectedMap = new JavaOnlyMap();
         expectedMap.putString("email", "sali@instabug.com");
@@ -497,7 +496,7 @@ public class RNInstabugReactnativeModuleTest {
         }
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         for (String key : keysArray) {
             final InstabugLocale instabugLocale = args.get(key);
             final Locale locale = new Locale(instabugLocale.getCode(), instabugLocale.getCountry());
@@ -520,7 +519,7 @@ public class RNInstabugReactnativeModuleTest {
         }
 
         // then
-        verify(Instabug.class, VerificationModeFactory.atLeastOnce());
+        verify(Instabug.class ,VerificationModeFactory.atLeastOnce());
         Instabug.setCustomTextPlaceHolders(Matchers.any(InstabugCustomTextPlaceHolder.class));
 
         // access placeHolders field by reflection
@@ -529,10 +528,10 @@ public class RNInstabugReactnativeModuleTest {
                     getDeclaredField("placeHolders");
             privateStringField.setAccessible(true);
             InstabugCustomTextPlaceHolder placeHolders = (InstabugCustomTextPlaceHolder) privateStringField.get(rnModule);
-            for (String key : keys) {
-                InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
-                Assert.assertEquals(placeHolders.get(placeHolder), key);
-            }
+        for (String key : keys) {
+            InstabugCustomTextPlaceHolder.Key placeHolder = args.get(key);
+            Assert.assertEquals(placeHolders.get(placeHolder), key);
+        }
         } catch (NoSuchFieldException | IllegalAccessException nsfe) {
             throw new RuntimeException(nsfe);
         }
@@ -547,7 +546,7 @@ public class RNInstabugReactnativeModuleTest {
 
         // then
         verify(Instabug.class, VerificationModeFactory.times(1));
-        privateStringMethod.invoke("reportCurrentViewChange", "screen");
+        privateStringMethod.invoke("reportCurrentViewChange","screen");
     }
 
     @Test
@@ -559,7 +558,7 @@ public class RNInstabugReactnativeModuleTest {
 
         // then
         verify(Instabug.class, VerificationModeFactory.times(1));
-        privateStringMethod.invoke("reportScreenChange", null, "screen");
+        privateStringMethod.invoke("reportScreenChange", null,"screen");
 
     }
 
@@ -574,7 +573,7 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.addExperiments(array);
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         List<String> expectedList = new ArrayList<String>();
         expectedList.add("exp1");
         expectedList.add("exp2");
@@ -592,7 +591,7 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.removeExperiments(array);
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         List<String> expectedList = new ArrayList<String>();
         expectedList.add("exp1");
         expectedList.add("exp2");
@@ -607,7 +606,7 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.clearAllExperiments();
 
         // then
-        verify(Instabug.class, times(1));
+        verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
     }
 }
