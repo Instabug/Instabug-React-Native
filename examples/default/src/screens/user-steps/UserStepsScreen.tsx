@@ -14,6 +14,7 @@ export const UserStepsScreen: React.FC<NativeStackScreenProps<HomeStackParamList
       <ListTile title="Scroll View" onPress={() => navigation.navigate('ScrollView')} />
       <ListTile title="Flat List" onPress={() => navigation.navigate('FlatList')} />
       <ListTile title="Section List" onPress={() => navigation.navigate('SectionList')} />
+      <ListTile title="Complex Views" onPress={() => navigation.navigate('ComplexViews')} />
       <ListTile title="Gestures" onPress={() => navigation.navigate('Gestures')} />
     </Screen>
   );
