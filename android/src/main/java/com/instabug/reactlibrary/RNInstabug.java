@@ -30,7 +30,6 @@ public class RNInstabug {
                 }
             }
         }
-
         return instance;
     }
 

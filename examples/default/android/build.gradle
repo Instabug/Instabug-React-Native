@@ -15,7 +15,6 @@ buildscript {
         google()
         mavenCentral()
     }
-
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
@@ -27,16 +26,6 @@ allprojects {
     repositories {
         maven {
             url("$rootDir/../node_modules/detox/Detox-android")
-        }
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
-        }
-        maven {
-            url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
-            credentials {
-                username "instabug"
-                password "8UHh3vBg8aDBhycXq@qhEweoMgwz2w"
-            }
         }
     }
 }
