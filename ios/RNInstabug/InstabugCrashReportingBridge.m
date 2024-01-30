@@ -8,31 +8,27 @@
     return dispatch_get_main_queue();
 }
 
-+ (BOOL)requiresMainQueueSetup {
++ (BOOL)requiresMainQueueSetup
+{
     return NO;
 }
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
-            @"IBGSendHandledJSCrash",
-            @"IBGSendUnhandledJSCrash",
+        @"IBGSendHandledJSCrash",
+        @"IBGSendUnhandledJSCrash",
     ];
 }
 
 RCT_EXPORT_MODULE(IBGCrashReporting)
 
-RCT_EXPORT_METHOD(setEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setEnabled: (BOOL) isEnabled) {
     IBGCrashReporting.enabled = isEnabled;
 }
 
-
-RCT_EXPORT_METHOD(sendJSCrash:
-    (NSDictionary *) stackTrace
-            resolver:
-            (RCTPromiseResolveBlock) resolve
-            rejecter:
-            (RCTPromiseRejectBlock) reject) {
+RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
     dispatch_async(queue, ^{
         SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
@@ -43,12 +39,9 @@ RCT_EXPORT_METHOD(sendJSCrash:
     });
 }
 
-RCT_EXPORT_METHOD(sendHandledJSCrash:
-    (NSDictionary *) stackTrace
-            resolver:
-            (RCTPromiseResolveBlock) resolve
-            rejecter:
-            (RCTPromiseRejectBlock) reject) {
+RCT_EXPORT_METHOD(sendHandledJSCrash:(NSDictionary *)stackTrace
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
     dispatch_async(queue, ^{
         SEL reportCrashWithStackTraceSEL = NSSelectorFromString(@"reportCrashWithStackTrace:handled:");
