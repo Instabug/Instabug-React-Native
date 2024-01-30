@@ -73,7 +73,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (12.6.0)
+  - Instabug (12.6.1)
   - libevent (2.1.12)
   - OCMock (3.9.3)
   - OpenSSL-Universal (1.1.1100)
@@ -494,8 +494,8 @@ PODS:
   - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNInstabug (12.6.0):
-    - Instabug (= 12.6.0)
+  - RNInstabug (12.6.1):
+    - Instabug (= 12.6.1)
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -565,6 +565,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/dream11/12.6.1/Instabug.podspec`)
   - libevent (~> 2.1.12)
   - OCMock
   - OpenSSL-Universal (= 1.1.1100)
@@ -624,7 +625,6 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - FlipperKit
     - fmt
-    - Instabug
     - libevent
     - OCMock
     - OpenSSL-Universal
@@ -645,6 +645,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
+  Instabug:
+    :podspec: https://ios-releases.instabug.com/custom/dream11/12.6.1/Instabug.podspec
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -745,7 +747,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: b65a22b3262b708eab62f1fcdad3ddc870ede1d3
+  Instabug: 41c30fdf004eebfc0c5ec3efc2deeea862a9f5e0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -784,7 +786,7 @@ SPEC CHECKSUMS:
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: 99b120a54798ce1ef3df3b4bf7cf0c6527917cde
+  RNInstabug: 45840ab044b0bcf6dd3e2eeac85cba7b2ecd7ef2
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
@@ -793,6 +795,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d169b4508f413ff5d69cdf38428960e0828e6282
+PODFILE CHECKSUM: 9948094b325ce6a82feac1dc32a788c7f7feaf3a
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3

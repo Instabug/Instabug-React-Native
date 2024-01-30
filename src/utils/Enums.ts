@@ -119,26 +119,7 @@ export enum ReproStepsMode {
  * Supported locales
  */
 export enum Locale {
-  arabic = constants.localeArabic,
-  azerbaijani = constants.localeAzerbaijani,
-  chineseSimplified = constants.localeChineseSimplified,
-  chineseTraditional = constants.localeChineseTraditional,
-  czech = constants.localeCzech,
-  danish = constants.localeDanish,
-  dutch = constants.localeDutch,
   english = constants.localeEnglish,
-  french = constants.localeFrench,
-  german = constants.localeGerman,
-  italian = constants.localeItalian,
-  japanese = constants.localeJapanese,
-  korean = constants.localeKorean,
-  polish = constants.localePolish,
-  portugueseBrazil = constants.localePortugueseBrazil,
-  romanian = constants.localeRomanian,
-  russian = constants.localeRussian,
-  spanish = constants.localeSpanish,
-  swedish = constants.localeSwedish,
-  turkish = constants.localeTurkish,
 }
 
 /**
