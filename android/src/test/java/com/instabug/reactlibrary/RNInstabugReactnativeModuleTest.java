@@ -200,31 +200,29 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArgs$identifyUser_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void testIdentifyUserWithNoId() {
         // given
 
         String email = "sali@instabug.com";
         String userName = "salmaali";
         String id = null;
         // when
-        rnModule.identifyUser(email, userName, id);
+        rnModule.identifyUser(userName, email, id);
         // then
-        verify(Instabug.class,times(1));
-        Instabug.identifyUser(userName, email, id);
+        mockInstabug.verify(() -> Instabug.identifyUser(userName, email, id));
     }
 
     @Test
-    public void givenArgs$identifyUserwithId_whenQuery_thenShouldCallNativeApiWithArgs() {
+    public void testIdentifyUserWithId() {
         // given
 
         String email = "sali@instabug.com";
         String userName = "salmaali";
         String id = "salmaali";
         // when
-        rnModule.identifyUser(email, userName, id);
+        rnModule.identifyUser(userName, email, id);
         // then
-        verify(Instabug.class,times(1));
-        Instabug.identifyUser(userName, email, id);
+        mockInstabug.verify(() -> Instabug.identifyUser(userName, email, id));
     }
 
     @Test

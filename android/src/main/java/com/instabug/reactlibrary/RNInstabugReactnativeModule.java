@@ -290,8 +290,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
      *
-     * @param userName  Username.
      * @param userEmail User's default email
+     * @param userName  Username.
      * @param userId User's ID
      */
     @ReactMethod
@@ -304,6 +304,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
+                    // The arguments get re-ordered here to match the API signature.
                     Instabug.identifyUser(userName, userEmail, userId);
                 } catch (Exception e) {
                     e.printStackTrace();
