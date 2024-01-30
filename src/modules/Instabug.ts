@@ -468,6 +468,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   NativeInstabug.setPreSendingHandler(handler);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const onNetworkDiagnosticsHandler = (
   handler?: (date: Date, totalRequestCount: number, failureCount: number) => void,
 ) => {
