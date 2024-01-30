@@ -27,5 +27,15 @@ allprojects {
         maven {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
+
+        	    maven {
+        		credentials {
+        			username "dream11"
+        			password "wyx8ZEA*krw8zea6hbr"
+        		}
+        	        url "https://mvn.instabug.com/nexus/repository/dream-11"
+        	    }
+
+
     }
 }

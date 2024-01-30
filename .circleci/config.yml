@@ -300,6 +300,9 @@ jobs:
           file: package.json
           replace-pattern: 's/instabug-reactnative/@instabug\/instabug-reactnative-dream11/g'
       - search_and_replace:
+          file: cli/UploadSourcemaps.ts
+          replace-pattern: 's/api.instabug.com\/api\/sdk/st001012dream11.instabug.com\/api\/sdk/g'
+      - search_and_replace:
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-dream11:instabug:/g'
       - run:
