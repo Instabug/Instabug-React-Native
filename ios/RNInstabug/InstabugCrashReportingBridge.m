@@ -59,16 +59,30 @@ RCT_EXPORT_METHOD(sendHandledJSCrash:
     });
 }
 
-RCT_EXPORT_METHOD(sendUnHandledCrash:
-    (NSException *) stackTrace :(NSDictionary *)userAttributes :(NSString *)groupingString :(IBGNonFatalLevel)level) {
++ (void)sendUnHandledNSExceptionCrash:(NSException *)stackTrace :(NSDictionary *)userAttributes :(NSString *)groupingString :(IBGNonFatalLevel *)level {
     IBGNonFatalException *nonFatalException = [IBGCrashReporting exception:stackTrace];
     if (userAttributes != nil)
         nonFatalException.userAttributes = userAttributes;
     if (groupingString != nil)
         nonFatalException.groupingString = groupingString;
     if (level != nil)
-        nonFatalException.level = level;
+        nonFatalException.level = *(level);
 
+    [nonFatalException report];
+}
+
+
+
+
++ (void)sendUnHandledNSErrorCrash:(NSError *)stackTrace :(NSDictionary *)userAttributes :(NSString *)groupingString :(IBGNonFatalLevel * )level {
+    IBGNonFatalError *nonFatalException = [IBGCrashReporting error:stackTrace];
+    if (userAttributes != nil)
+        nonFatalException.userAttributes = userAttributes;
+    if (groupingString != nil)
+        nonFatalException.groupingString = groupingString;
+    if (level != nil)
+        nonFatalException.level = *(level);
+    nonFatalException.stackTraceMode = IBGNonFatalStackTraceModeFull;
     [nonFatalException report];
 }
 
@@ -78,6 +92,8 @@ RCT_EXPORT_METHOD(sendUnHandledCrash:
 @synthesize hash;
 
 @synthesize superclass;
+
+
 
 
 @end

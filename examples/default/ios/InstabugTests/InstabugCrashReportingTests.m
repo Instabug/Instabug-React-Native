@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMock.h>
 #import "Instabug/Instabug.h"
 #import "InstabugCrashReportingBridge.h"
 
@@ -20,11 +21,21 @@
   XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
-- (void)testSendUnHandledCrash {
-  NSException *exception2 = [NSException exceptionWithName:@"some_exception" reason:@"Exception reason" userInfo:nil];
+- (void)testSendUnHandledNSExceptionCrash {
+  NSException *exception = [NSException exceptionWithName:@"some_exception" reason:@"Exception reason" userInfo:nil];
 
-  [self.bridge sendUnHandledCrash:exception2 :nil :nil :nil];
-  XCTAssertTrue([IBGCrashReporting exception:exception2]);
+  id mock = OCMClassMock([IBGCrashReporting class]);
+  [InstabugCrashReportingBridge sendUnHandledNSExceptionCrash:exception :nil :nil :nil];
+  OCMVerify([mock exception:exception]);
+
+}
+
+- (void)testSendUnHandledNSErrorCrash {
+  NSError *error = [[NSError alloc] initWithDomain:@"Domain" code:0 userInfo:nil];
+  id mock = OCMClassMock([IBGCrashReporting class]);
+  [InstabugCrashReportingBridge sendUnHandledNSErrorCrash:error :nil :nil :nil];
+  OCMVerify([mock error:error]);
+
 }
 
 

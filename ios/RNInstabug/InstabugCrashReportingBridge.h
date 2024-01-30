@@ -11,6 +11,7 @@
 
 - (void)sendHandledJSCrash:(NSDictionary *)stackTrace;
 
-- (void)sendUnHandledCrash:(NSException *)stackTrace :(NSDictionary *)userAttributes :(NSString *)fingerprint :(IBGNonFatalLevel)level;
++ (void)sendUnHandledNSExceptionCrash:(NSException *)stackTrace :(NSDictionary *)userAttributes :(NSString *)groupingString :(IBGNonFatalLevel * )level;
++ (void)sendUnHandledNSErrorCrash:(NSError *)stackTrace :(NSDictionary *)userAttributes :(NSString *)groupingString :(IBGNonFatalLevel * )level;
 
 @end
