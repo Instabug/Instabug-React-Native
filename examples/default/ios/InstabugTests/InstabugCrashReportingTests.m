@@ -20,4 +20,12 @@
   XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
+- (void)testSendUnHandledCrash {
+  NSException *exception2 = [NSException exceptionWithName:@"some_exception" reason:@"Exception reason" userInfo:nil];
+
+  [self.bridge sendUnHandledCrash:exception2 :nil :nil :nil];
+  XCTAssertTrue([IBGCrashReporting exception:exception2]);
+}
+
+
 @end
