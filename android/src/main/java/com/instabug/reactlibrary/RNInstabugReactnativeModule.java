@@ -144,7 +144,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setLogLevel(parsedLogLevel);
 
                 if(codePushVersion != null) {
-                    builder.setCodePushVersion(codePushVersion);
+                    if(Instabug.isBuilt()) {
+                        Instabug.setCodePushVersion(codePushVersion);
+                    } else {
+                        builder.setCodePushVersion(codePushVersion);
+                    }
                 }
                 builder.build();
             }
