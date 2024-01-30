@@ -202,7 +202,7 @@ export const setString = (key: StringKey, string: string) => {
  * user data and completed surveys.
  * @param email Email address to be set as the user's email.
  * @param name Name of the user to be set.
- * @param id optional ID of the user to be set.
+ * @param [id] ID of the user to be set.
  */
 export const identifyUser = (email: string, name: string, id?: string) => {
   NativeInstabug.identifyUser(email, name, id);
