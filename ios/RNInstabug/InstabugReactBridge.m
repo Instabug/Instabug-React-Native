@@ -195,10 +195,6 @@ RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name id:(nulla
     [Instabug identifyUserWithID:id email:email name:name];
 }
 
-RCT_EXPORT_METHOD(identifyUserWithID:(NSString *)userID email:(NSString *)email name:(NSString *)name) {
-    [Instabug identifyUserWithID:userID email:email name:name];
-}
-
 RCT_EXPORT_METHOD(logOut) {
     [Instabug logOut];
 }
