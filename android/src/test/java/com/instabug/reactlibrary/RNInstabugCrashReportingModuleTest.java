@@ -78,7 +78,7 @@ public class RNInstabugCrashReportingModuleTest {
     @Test
     public void givenThrowable$sendUnHandledCrash_whenQuery_thenShouldCallNativeApiWithArgs() throws Exception {
 
-        rnInstabugCrashReportingModule.sendUnHandledCrash(new Throwable("test"), null, null, null);
+        RNInstabugCrashReportingModule.sendUnHandledCrash(new Throwable("test"), null, null, null);
         crashReportingMockedStatic.verify(() -> {
             CrashReporting.report(any(IBGNonFatalException.class));
         }, times(1));
