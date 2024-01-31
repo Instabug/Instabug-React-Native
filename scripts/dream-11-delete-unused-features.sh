@@ -45,5 +45,3 @@ sed -i "s/return (major == 7 && minor >= 3) || major >= 8/return false/g"  andro
 
 sed -i "s/static boolean supportsNamespace() {/static boolean supportsNamespace() { \n return false/g"  android/build.gradle
 
-sed -i "s/const onNetworkDiagnosticsHandler /export const onNetworkDiagnosticsHandler /g"  src/modules/Instabug.ts
-
