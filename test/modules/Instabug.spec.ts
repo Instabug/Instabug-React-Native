@@ -679,6 +679,14 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setPreSendingHandler).toBeCalledWith(callback);
   });
 
+  it('should call the native method onNetworkDiagnosticsHandler with a function', () => {
+    const callback = jest.fn();
+    Instabug.onNetworkDiagnosticsHandler(callback);
+
+    expect(NativeInstabug.setNetworkDiagnosticsCallback).toBeCalledTimes(1);
+    expect(NativeInstabug.setNetworkDiagnosticsCallback).toBeCalledWith(callback);
+  });
+
   it('should invoke callback on emitting the event IBGpreSendingHandler', (done) => {
     const report = {
       tags: ['tag1', 'tag2'],
@@ -719,5 +727,23 @@ describe('Instabug Module', () => {
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
+  });
+
+  it('should invoke callback on emitting the event IBGNetworkDiagnosticsHandler', (done) => {
+    const data = {
+      date: Date.now(),
+      totalRequestCount: 1,
+      failureCount: 1,
+    };
+    const callback = (rep: any) => {
+      expect(rep.date).toBe(data.date);
+      expect(rep.totalRequestCount).toBe(data.totalRequestCount);
+      expect(rep.failureCount).toBe(data.failureCount);
+      done();
+    };
+    Instabug.onReportSubmitHandler(callback);
+    emitter.emit(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER, data);
+
+    expect(emitter.listenerCount(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER)).toBe(1);
   });
 });

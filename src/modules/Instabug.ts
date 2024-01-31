@@ -468,6 +468,17 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   NativeInstabug.setPreSendingHandler(handler);
 };
 
+export const onNetworkDiagnosticsHandler = (
+  handler?: (date: Date, totalRequestCount: number, failureCount: number) => void,
+) => {
+  emitter.addListener(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER, (data) => {
+    const { date, totalRequestCount, failureCount } = data;
+    handler && handler(date, totalRequestCount, failureCount);
+  });
+
+  NativeInstabug.setNetworkDiagnosticsCallback(handler);
+};
+
 export const onNavigationStateChange = (
   prevState: NavigationStateV4,
   currentState: NavigationStateV4,

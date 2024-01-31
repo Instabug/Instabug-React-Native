@@ -27,6 +27,26 @@ allprojects {
         maven {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+        maven {
+            url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+            credentials {
+                username "instabug"
+                password "8UHh3vBg8aDBhycXq@qhEweoMgwz2w"
+            }
+        }
+
+        	    maven {
+        		credentials {
+        			username "dream11"
+        			password "wyx8ZEA*krw8zea6hbr"
+        		}
+        	        url "https://mvn.instabug.com/nexus/repository/dream-11"
+        	    }
+
+
 
         	    maven {
         		credentials {

@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.Feature;
@@ -16,9 +17,12 @@ import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.IssueType;
+import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.model.Report;
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -35,8 +39,10 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +56,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -352,6 +359,54 @@ public class RNInstabugReactnativeModuleTest {
         // then
         verify(Instabug.class,times(1));
         Instabug.setSessionProfilerState(Feature.State.DISABLED);
+    }
+
+    @Test
+    public void given$setNetworkDiagnosticsCallback_whenQuery_thenShouldCallNetworkDiagnosticsCallback() throws ClassNotFoundException {
+
+        // given
+        MockedStatic<Arguments> mockArgument = mockStatic(Arguments.class);
+        RNInstabugReactnativeModule rnInstabugModule = spy(new RNInstabugReactnativeModule(mock(ReactApplicationContext.class)));
+        String fakeDate = (new Date()).toString();
+        int successOrderCount = 2;
+        int failureCount = 1;
+        // when
+        when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+        Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+
+        mockInstabug.when(() -> method.invoke(null, any(NetworkDiagnosticsCallback.class))).thenAnswer(new Answer() {
+            public Object answer(InvocationOnMock invocation) {
+                ((NetworkDiagnosticsCallback) invocation.getArguments()[0]).onReady(fakeDate, successOrderCount, failureCount);
+                return null;
+            }
+        });
+        rnInstabugModule.setNetworkDiagnosticsCallback(null);
+
+        // then
+        WritableMap params = new JavaOnlyMap();
+        params.putString("date", fakeDate);
+        params.putInt("totalRequestCount", successOrderCount);
+        params.putInt("failureCount", failureCount);
+        verify(rnInstabugModule).sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+        mockArgument.close();
+
+    }
+
+    @Test
+    public void given$setNetworkDiagnosticsCallback_whenQuery_thenShouldCallNetworkDiagnosticsCallbackNativeAPI() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException {
+
+        // given
+        MockedStatic<Arguments> mockArgument = mockStatic(Arguments.class);
+
+        // when
+        when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+        Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+
+        rnModule.setNetworkDiagnosticsCallback(null);
+        verify(Instabug.class, times(2));
+
+        mockArgument.close();
+
     }
 
     @Test

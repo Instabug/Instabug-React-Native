@@ -80,6 +80,8 @@
 
 - (void)show;
 
+- (void)setOnNetworkDiagnosticsHandler:(RCTResponseSenderBlock)callBack;
+
 
 /*
  +------------------------------------------------------------------------+

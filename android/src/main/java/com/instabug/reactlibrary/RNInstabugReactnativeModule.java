@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -42,6 +44,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -625,6 +628,48 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         currentReport = report;
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * Sets a block of code to be executed if the percentage of failing requests that done in pervious day along with success and failure
+     * counts is more than or equal 70% it will trigger a callback with total requests sent and no. of failing requests
+     *
+     * @param networkDiagnosticsCallback - A callback that gets executed if the failure requests
+     *                                   percentage more than 70%
+     *                                   .
+     */
+    @ReactMethod
+    public void setNetworkDiagnosticsCallback(final Callback networkDiagnosticsCallback) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                        try {
+                            Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+                            if (method != null) {
+                                method.invoke(null, new NetworkDiagnosticsCallback() {
+                                    @Override
+                                    public void onReady(@NonNull String date, int totalRequestCount, int failureCount  ) {
+                                        try {
+                                            WritableMap params = Arguments.createMap();
+                                            params.putString("date", date);
+                                            params.putInt("totalRequestCount", totalRequestCount);
+                                            params.putInt("failureCount", failureCount);
+                                            sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            ;
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (ClassNotFoundException | IllegalAccessException |
+                                 InvocationTargetException e) {
+                            e.printStackTrace();
+                        } finally {
+
+                        }
             }
         });
     }

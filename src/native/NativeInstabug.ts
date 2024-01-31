@@ -30,6 +30,9 @@ export interface InstabugNativeModule extends NativeModule {
   // Misc APIs //
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
+  setNetworkDiagnosticsCallback(
+    handler?: (date: Date, totalRequestCount: number, failureCount: number) => void,
+  ): void;
 
   // Customization APIs //
   setLocale(sdkLocale: Locale): void;
@@ -109,6 +112,7 @@ export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  IBG_NETWORK_DIAGNOSTICS_HANDLER = 'IBGNetworkDiagnosticsHandler',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

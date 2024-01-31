@@ -14,7 +14,9 @@
 #import <asl.h>
 #import <os/log.h>
 #import <React/RCTUIManager.h>
+#import <Foundation/Foundation.h>
 #import "RNInstabug.h"
+#import "Instabug+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -344,8 +346,9 @@ RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     view.instabug_privateView = true;
 }
 
-RCT_EXPORT_METHOD(removePrivateView: (nonnull NSNumber *)reactTag) {
-    UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
+RCT_EXPORT_METHOD(removePrivateView:
+    (nonnull NSNumber *)reactTag) {
+    UIView *view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = false;
 }
 
@@ -353,7 +356,21 @@ RCT_EXPORT_METHOD(show) {
     [[NSRunLoop mainRunLoop] performSelector:@selector(show) target:[Instabug class] argument:nil order:0 modes:@[NSDefaultRunLoopMode]];
 }
 
-RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
+RCT_EXPORT_METHOD(setOnNetworkDiagnosticsHandler:
+    (RCTResponseSenderBlock) callBack) {
+
+    [Instabug setWillSendNetworkDiagnosticsHandler:^(NSString *date, NSInteger totalRequestCount, NSInteger failureCount) {
+        NSDictionary *result = @{@"date": date,
+                @"totalRequestCount": [@(totalRequestCount) stringValue],
+                @"failureCount": [@(failureCount) stringValue],};
+
+        [self sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:result];
+    }];
+
+}
+
+RCT_EXPORT_METHOD(reportScreenChange:
+    (NSString *) screenName) {
     SEL setPrivateApiSEL = NSSelectorFromString(@"logViewDidAppearEvent:");
     if ([[Instabug class] respondsToSelector:setPrivateApiSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[Instabug class] methodSignatureForSelector:setPrivateApiSEL]];

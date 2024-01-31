@@ -71,7 +71,6 @@
   NSString *codePushVersion = @"1.0.0(1)";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
-  
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel codePushVersion:codePushVersion];
@@ -408,4 +407,14 @@
   OCMVerify([mock clearAllExperiments]);
 }
 
+- (void)testGivenNetworkDiagnosticsHandler$setOnNetworkDiagnosticsHandler_whenQuery_thenShouldCallNetworkDiagnosticsNativeCallback {
+  id mock = OCMClassMock([Instabug class]);
+  id partialMock = OCMPartialMock(self.instabugBridge);
+
+  RCTResponseSenderBlock callback = ^(NSArray *response) {};
+  [partialMock setOnNetworkDiagnosticsHandler:callback];
+
+  OCMVerify([mock setWillSendNetworkDiagnosticsHandler:[OCMArg any]]);
+
+}
 @end
