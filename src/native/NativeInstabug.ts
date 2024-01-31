@@ -31,7 +31,7 @@ export interface InstabugNativeModule extends NativeModule {
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
   setNetworkDiagnosticsCallback(
-    handler?: (date: Date, totalRequestCount: number, failureCount: number) => void,
+    handler?: (date: String, totalRequestCount: number, failureCount: number) => void,
   ): void;
 
   // Customization APIs //

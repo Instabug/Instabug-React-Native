@@ -469,7 +469,7 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
 };
 
 export const onNetworkDiagnosticsHandler = (
-  handler?: (date: Date, totalRequestCount: number, failureCount: number) => void,
+  handler?: (date: String, totalRequestCount: number, failureCount: number) => void,
 ) => {
   emitter.addListener(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER, (data) => {
     const { date, totalRequestCount, failureCount } = data;

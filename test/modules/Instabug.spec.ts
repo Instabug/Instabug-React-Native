@@ -731,17 +731,17 @@ describe('Instabug Module', () => {
 
   it('should invoke callback on emitting the event IBGNetworkDiagnosticsHandler', (done) => {
     const data = {
-      date: Date.now(),
+      date: 'date',
       totalRequestCount: 1,
       failureCount: 1,
     };
-    const callback = (rep: any) => {
-      expect(rep.date).toBe(data.date);
-      expect(rep.totalRequestCount).toBe(data.totalRequestCount);
-      expect(rep.failureCount).toBe(data.failureCount);
+    const callback = (date: String, totalRequestCount: number, failureCount: number) => {
+      expect(date).toBe(data.date);
+      expect(totalRequestCount).toBe(data.totalRequestCount);
+      expect(failureCount).toBe(data.failureCount);
       done();
     };
-    Instabug.onReportSubmitHandler(callback);
+    Instabug.onNetworkDiagnosticsHandler(callback);
     emitter.emit(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER, data);
 
     expect(emitter.listenerCount(NativeEvents.IBG_NETWORK_DIAGNOSTICS_HANDLER)).toBe(1);
