@@ -95,11 +95,10 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendNativeNonFatal(final String exceptionObject) {
+    public void sendNativeNonFatal() {
         final IBGNonFatalException exception = new IBGNonFatalException.Builder(new IllegalStateException("Test exception"))
                 .build();
         CrashReporting.report(exception);
-
     }
 
     @ReactMethod
