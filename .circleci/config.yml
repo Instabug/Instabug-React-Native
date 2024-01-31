@@ -147,6 +147,7 @@ jobs:
   sync_generated_files:
     macos:
       xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules
@@ -161,6 +162,7 @@ jobs:
   test_ios:
     macos:
       xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
@@ -192,7 +194,7 @@ jobs:
   e2e_ios:
     macos:
       xcode: 13.4.1
-    resource_class: macos.x86.medium.gen2
+    resource_class: macos.m1.medium.gen1
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
@@ -321,6 +323,7 @@ jobs:
   publish:
     macos:
       xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
     working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
