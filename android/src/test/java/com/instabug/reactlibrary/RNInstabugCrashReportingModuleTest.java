@@ -24,7 +24,6 @@ import org.mockito.stubbing.Answer;
 
 
 public class RNInstabugCrashReportingModuleTest {
-    private RNInstabugCrashReportingModule rnInstabugCrashReportingModule = new RNInstabugCrashReportingModule(null);
 
     private MockedStatic<Looper> mockLooper;
     private MockedStatic<MainThreadHandler> mockMainThreadHandler;
@@ -59,6 +58,7 @@ public class RNInstabugCrashReportingModuleTest {
         // Remove static mocks
         mockLooper.close();
         mockMainThreadHandler.close();
+        crashReportingMockedStatic.close();
     }
 
     @Test
