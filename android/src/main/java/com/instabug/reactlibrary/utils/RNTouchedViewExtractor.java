@@ -104,7 +104,7 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
     }
 
     class MultiLabelsExtractionStrategy implements ReactButtonExtractionStrategy {
-        private final String MULTI_LABEL_BUTTON_PRE_STRING = "A button that contains \"%s\"";
+        private final String MULTI_LABEL_BUTTON_PRE_STRING = "a button that contains \"%s\"";
 
         @Override
         @Nullable
