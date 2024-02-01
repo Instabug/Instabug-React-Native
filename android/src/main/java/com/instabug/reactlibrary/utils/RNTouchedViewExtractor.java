@@ -10,6 +10,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 import com.instabug.library.core.InstabugCore;
 import com.instabug.library.visualusersteps.TouchedView;
 import com.instabug.library.visualusersteps.TouchedViewExtractor;
+import com.instabug.library.visualusersteps.VisualUserStepsHelper;
 
 public class RNTouchedViewExtractor implements TouchedViewExtractor {
 
@@ -75,10 +76,13 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
         return group.isFocusable() && group.isClickable();
     }
 
-    private ReactButtonExtractionStrategy getExtractionStrategy(ReactViewGroup reactButton){
+    private ReactButtonExtractionStrategy getExtractionStrategy(ReactViewGroup reactButton) {
+        boolean isPrivateView = VisualUserStepsHelper.isPrivateView(reactButton);
+        if (isPrivateView) return new PrivateViewLabelExtractionStrategy();
+
         int labelsCount = 0;
         int groupsCount = 0;
-        for (int index=0; index < reactButton.getChildCount(); index++){
+        for (int index = 0; index < reactButton.getChildCount(); index++) {
             View currentView = reactButton.getChildAt(index);
             if (currentView instanceof ReactTextView) {
 
@@ -109,6 +113,17 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
             touchedView.setProminentLabel(
                     InstabugCore.composeProminentLabelForViewGroup(reactButton, MULTI_LABEL_BUTTON_PRE_STRING)
             );
+            return touchedView;
+        }
+    }
+
+    class PrivateViewLabelExtractionStrategy implements ReactButtonExtractionStrategy {
+
+        private final String PRIVATE_VIEW_LABEL_BUTTON_PRE_STRING = "a button";
+
+        @Override
+        public TouchedView extract(ReactViewGroup reactButton, TouchedView touchedView) {
+            touchedView.setProminentLabel(PRIVATE_VIEW_LABEL_BUTTON_PRE_STRING);
             return touchedView;
         }
     }
