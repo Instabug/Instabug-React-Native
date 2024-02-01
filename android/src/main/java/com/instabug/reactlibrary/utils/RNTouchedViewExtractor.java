@@ -27,15 +27,15 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
      * <br>
      * - If it returns {@code null}:
      * <br>
-     *   - If {@code shouldDependOnNative} is {@code true}, the native Android SDK
-     *     will try to extract the label from the view.
+     * - If {@code shouldDependOnNative} is {@code true}, the native Android SDK
+     * will try to extract the label from the view.
      * <br>
-     *   - If it's {@code false}, the Android SDK will label it {@code null} as returned
-     *     from {@code RNTouchedViewExtractor} without trying to label it.
+     * - If it's {@code false}, the Android SDK will label it {@code null} as returned
+     * from {@code RNTouchedViewExtractor} without trying to label it.
      * </p>
      *
      * @return {@code true} if the native Android SDK should depend on native extraction,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     @Override
     public boolean getShouldDependOnNative() {
