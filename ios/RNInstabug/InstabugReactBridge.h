@@ -112,5 +112,6 @@
 - (void)addExperiments:(NSArray *)experiments;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
+- (void)setOnNetworkDiagnosticsHandler;
 
 @end
