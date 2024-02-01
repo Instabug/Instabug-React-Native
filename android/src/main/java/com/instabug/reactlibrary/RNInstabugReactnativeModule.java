@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -32,6 +34,7 @@ import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
@@ -42,6 +45,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1022,6 +1026,39 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Instabug.clearAllExperiments();
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setNetworkDiagnosticsCallback() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+
+                    if (method != null) {
+                        method.invoke(null, new NetworkDiagnosticsCallback() {
+                            @Override
+                            public void onReady(@NonNull String date, int totalRequestCount, int failureCount) {
+                                try {
+                                    WritableMap params = Arguments.createMap();
+                                    params.putString("date", date);
+                                    params.putInt("totalRequestCount", totalRequestCount);
+                                    params.putInt("failureCount", failureCount);
+
+                                    sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                } catch (ClassNotFoundException | IllegalAccessException |
+                         InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
