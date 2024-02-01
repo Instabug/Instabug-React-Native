@@ -10,6 +10,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 import com.instabug.library.core.InstabugCore;
 import com.instabug.library.visualusersteps.TouchedView;
 import com.instabug.library.visualusersteps.TouchedViewExtractor;
+import com.instabug.library.visualusersteps.VisualUserStepsHelper;
 
 public class RNTouchedViewExtractor implements TouchedViewExtractor {
 
@@ -26,15 +27,15 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
      * <br>
      * - If it returns {@code null}:
      * <br>
-     *   - If {@code shouldDependOnNative} is {@code true}, the native Android SDK
-     *     will try to extract the label from the view.
+     * - If {@code shouldDependOnNative} is {@code true}, the native Android SDK
+     * will try to extract the label from the view.
      * <br>
-     *   - If it's {@code false}, the Android SDK will label it {@code null} as returned
-     *     from {@code RNTouchedViewExtractor} without trying to label it.
+     * - If it's {@code false}, the Android SDK will label it {@code null} as returned
+     * from {@code RNTouchedViewExtractor} without trying to label it.
      * </p>
      *
      * @return {@code true} if the native Android SDK should depend on native extraction,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     @Override
     public boolean getShouldDependOnNative() {
@@ -75,10 +76,13 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
         return group.isFocusable() && group.isClickable();
     }
 
-    private ReactButtonExtractionStrategy getExtractionStrategy(ReactViewGroup reactButton){
+    private ReactButtonExtractionStrategy getExtractionStrategy(ReactViewGroup reactButton) {
+        boolean isPrivateView = VisualUserStepsHelper.isPrivateView(reactButton);
+        if (isPrivateView) return new PrivateViewLabelExtractionStrategy();
+
         int labelsCount = 0;
         int groupsCount = 0;
-        for (int index=0; index < reactButton.getChildCount(); index++){
+        for (int index = 0; index < reactButton.getChildCount(); index++) {
             View currentView = reactButton.getChildAt(index);
             if (currentView instanceof ReactTextView) {
 
@@ -100,7 +104,7 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
     }
 
     class MultiLabelsExtractionStrategy implements ReactButtonExtractionStrategy {
-        private final String MULTI_LABEL_BUTTON_PRE_STRING = "A button that contains \"%s\"";
+        private final String MULTI_LABEL_BUTTON_PRE_STRING = "a button that contains \"%s\"";
 
         @Override
         @Nullable
@@ -109,6 +113,17 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
             touchedView.setProminentLabel(
                     InstabugCore.composeProminentLabelForViewGroup(reactButton, MULTI_LABEL_BUTTON_PRE_STRING)
             );
+            return touchedView;
+        }
+    }
+
+    class PrivateViewLabelExtractionStrategy implements ReactButtonExtractionStrategy {
+
+        private final String PRIVATE_VIEW_LABEL_BUTTON_PRE_STRING = "a button";
+
+        @Override
+        public TouchedView extract(ReactViewGroup reactButton, TouchedView touchedView) {
+            touchedView.setProminentLabel(PRIVATE_VIEW_LABEL_BUTTON_PRE_STRING);
             return touchedView;
         }
     }
