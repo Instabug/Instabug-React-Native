@@ -207,7 +207,7 @@ public class RNInstabugReactnativeModuleTest {
         String userName = "salmaali";
         String id = null;
         // when
-        rnModule.identifyUser(userName, email, id);
+        rnModule.identifyUser(email, userName, id);
         // then
         mockInstabug.verify(() -> Instabug.identifyUser(userName, email, id));
     }
@@ -220,7 +220,7 @@ public class RNInstabugReactnativeModuleTest {
         String userName = "salmaali";
         String id = "salmaali";
         // when
-        rnModule.identifyUser(userName, email, id);
+        rnModule.identifyUser(email, userName, id);
         // then
         mockInstabug.verify(() -> Instabug.identifyUser(userName, email, id));
     }
