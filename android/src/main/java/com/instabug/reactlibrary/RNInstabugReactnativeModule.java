@@ -1033,7 +1033,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setNetworkDiagnosticsCallback() {
+    public void setOnNetworkDiagnosticsHandler() {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

@@ -105,7 +105,7 @@ export interface InstabugNativeModule extends NativeModule {
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
 
   // Callbacks //
-  setNetworkDiagnosticsCallback(): void;
+  setOnNetworkDiagnosticsHandler(): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;

@@ -555,7 +555,7 @@ export const onNetworkDiagnosticsHandler = (handler?: NetworkDiagnosticsHandler)
     }
   });
 
-  NativeInstabug.setNetworkDiagnosticsCallback();
+  NativeInstabug.setOnNetworkDiagnosticsHandler();
 };
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {

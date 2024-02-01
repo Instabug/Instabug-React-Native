@@ -561,7 +561,7 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void testSetNetworkDiagnosticsCallback() {
+    public void testSetOnNetworkDiagnosticsHandler() {
         String date = new Date().toString();
         int successOrderCount = 2;
         int failureCount = 1;
@@ -577,7 +577,7 @@ public class RNInstabugReactnativeModuleTest {
                     return null;
                 });
 
-        rnModule.setNetworkDiagnosticsCallback();
+        rnModule.setOnNetworkDiagnosticsHandler();
 
         WritableMap params = new JavaOnlyMap();
         params.putString("date", date);
