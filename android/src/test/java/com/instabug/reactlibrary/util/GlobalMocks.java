@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mockStatic;
 
 import android.util.Log;
 
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.instabug.reactlibrary.utils.InstabugUtil;
 
 import org.mockito.MockedStatic;
@@ -37,6 +38,13 @@ public class GlobalMocks {
         reflection
                 .when(() -> InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class))
                 .thenReturn(mSetBaseUrl);
+
+        // setNetworkDiagnosticsCallback mock
+        Method mSetNetworkDiagnosticsCallback = MockReflected.class.getDeclaredMethod("setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+        mSetNetworkDiagnosticsCallback.setAccessible(true);
+        reflection
+                .when(() -> InstabugUtil.getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class))
+                .thenReturn(mSetNetworkDiagnosticsCallback);
     }
 
     public static void close() {
