@@ -25,6 +25,14 @@ export enum InvocationEvent {
 }
 
 /**
+ * The network interceptor to use.
+ */
+export enum NetworkInterceptionMode {
+  javascript,
+  native,
+}
+
+/**
  * Options added while invoking bug reporting.
  */
 export enum InvocationOption {

@@ -127,6 +127,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final String token,
             final ReadableArray invocationEventValues,
             final String logLevel,
+            final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {

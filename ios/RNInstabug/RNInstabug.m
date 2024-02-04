@@ -13,15 +13,19 @@ static BOOL didInit = NO;
     didInit = NO;
 }
 
-+ (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents  {
++ (void)initWithToken:(NSString *)token
+     invocationEvents:(IBGInvocationEvent)invocationEvents
+useNativeNetworkInterception:(BOOL)useNativeNetworkInterception {
 
     didInit = YES;
 
     [Instabug setCurrentPlatform:IBGPlatformReactNative];
 
-    // Disable automatic network logging in the iOS SDK to avoid duplicate network logs coming
-    // from both the iOS and React Native SDKs
-    [IBGNetworkLogger disableAutomaticCapturingOfNetworkLogs];
+    if (!useNativeNetworkInterception) {
+        // Disable automatic network logging in the iOS SDK to avoid duplicate network logs coming
+        // from both the iOS and React Native SDKs
+        [IBGNetworkLogger disableAutomaticCapturingOfNetworkLogs];
+    }
 
     [Instabug startWithToken:token invocationEvents:invocationEvents];
 
@@ -35,6 +39,15 @@ static BOOL didInit = NO;
 
     // Temporarily disabling APM hot launches
     IBGAPM.hotAppLaunchEnabled = NO;
+}
+
++ (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents {
+    [self initWithToken:token invocationEvents:invocationEvents useNativeNetworkInterception:NO];
+}
+
++ (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents debugLogsLevel:(IBGSDKDebugLogsLevel)debugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception {
+    [Instabug setSdkDebugLogsLevel:debugLogsLevel];
+    [self initWithToken:token invocationEvents:invocationEvents useNativeNetworkInterception:useNativeNetworkInterception];
 }
 
 + (void)initWithToken:(NSString *)token
