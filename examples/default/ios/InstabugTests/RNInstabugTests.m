@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "Instabug/Instabug.h"
-#import "Instabug/IBGSurvey.h"
 #import <Instabug/IBGTypes.h>
 #import "RNInstabug.h"
 #import "RNInstabug/Instabug+CP.h"
@@ -57,7 +56,7 @@
 - (void) testSetCodePushVersion {
   NSString *codePushVersion = @"1.0.0(1)";
   [RNInstabug setCodePushVersion:codePushVersion];
-  
+
   OCMVerify([self.mInstabug setCodePushVersion:codePushVersion]);
 }
 
