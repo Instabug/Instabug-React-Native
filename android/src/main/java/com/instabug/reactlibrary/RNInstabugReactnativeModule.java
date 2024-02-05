@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.annotation.UiThread;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -17,8 +19,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.NativeViewHierarchyManager;
-import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
@@ -899,24 +899,32 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         networkLog.insert();
     }
 
+    @UiThread
+    @Nullable
+    private View resolveReactView(final int reactTag) {
+        final ReactApplicationContext reactContext = getReactApplicationContext();
+        final UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
+
+        if (uiManagerModule == null) {
+            return null;
+        }
+
+        return uiManagerModule.resolveView(reactTag);
+    }
+
 
     @ReactMethod
     public void addPrivateView(final int reactTag) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-                uiManagerModule.prependUIBlock(new UIBlock() {
-                    @Override
-                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        try {
-                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
-                            Instabug.addPrivateViews(view);
-                        } catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    final View view = resolveReactView(reactTag);
+
+                    Instabug.addPrivateViews(view);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -926,18 +934,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-                uiManagerModule.prependUIBlock(new UIBlock() {
-                    @Override
-                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        try {
-                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
-                            Instabug.removePrivateViews(view);
-                        } catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    final View view = resolveReactView(reactTag);
+
+                    Instabug.removePrivateViews(view);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
