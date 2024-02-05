@@ -191,8 +191,8 @@ RCT_EXPORT_METHOD(clearFileAttachments) {
     [Instabug clearFileAttachments];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name) {
-    [Instabug identifyUserWithEmail:email name:name];
+RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name userId:(nullable NSString *)userId) {
+    [Instabug identifyUserWithID:userId email:email name:name];
 }
 
 RCT_EXPORT_METHOD(logOut) {
