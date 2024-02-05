@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.6.0...dev)
+
+### Fixed
+
+- Fix an Android `NullPointerException` crash in private views APIs ([#1121](https://github.com/Instabug/Instabug-React-Native/pull/1121)), closes [#514](https://github.com/Instabug/Instabug-React-Native/issues/514).
+
 ## [12.6.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.5.0...v12.6.0) (January 14, 2024)
 
 ### Changed
