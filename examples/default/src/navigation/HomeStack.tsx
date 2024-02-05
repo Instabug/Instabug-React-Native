@@ -6,7 +6,6 @@ import { BugReportingScreen } from '../screens/BugReportingScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
-import { SurveysScreen } from '../screens/SurveysScreen';
 import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
 import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
 import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
@@ -20,7 +19,6 @@ export type HomeStackParamList = {
   BugReporting: undefined;
   CrashReporting: undefined;
   Replies: undefined;
-  Surveys: undefined;
   UserSteps: undefined;
   BasicComponents: undefined;
   ScrollView: undefined;
@@ -47,7 +45,6 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Crash Reporting' }}
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
-      <HomeStack.Screen name="Surveys" component={SurveysScreen} />
       <HomeStack.Screen
         name="UserSteps"
         component={UserStepsScreen}
