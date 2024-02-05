@@ -4,7 +4,7 @@
 
 ### Added
 
-- Add support for user identification with ID ([#1115](https://github.com/Instabug/Instabug-React-Native/pull/1115))
+- Support user identification using ID ([#1115](https://github.com/Instabug/Instabug-React-Native/pull/1115))
 
 ## [12.6.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.5.0...v12.6.0) (January 14, 2024)
 
