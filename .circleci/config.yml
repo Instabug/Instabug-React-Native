@@ -302,6 +302,9 @@ jobs:
           file: package.json
           replace-pattern: 's/instabug-reactnative/@instabug\/instabug-reactnative-dream11/g'
       - search_and_replace:
+          file: cli/UploadSourcemaps.ts
+          replace-pattern: 's/api.instabug.com\/api\/sdk/st001012dream11.instabug.com\/api\/sdk/g'
+      - search_and_replace:
           file: android/native.gradle
           replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-dream11:instabug:/g'
       - run:
@@ -421,9 +424,6 @@ workflows:
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
-          filters:
-            branches:
-              only: master
       - publish:
           requires:
             - hold_publish
@@ -439,6 +439,3 @@ workflows:
       - release_d11:
           requires:
             - hold_release_d11
-          filters:
-            branches:
-              only: master
