@@ -1,4 +1,4 @@
-import type { InvocationEvent, LogLevel } from '../utils/Enums';
+import type { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../utils/Enums';
 
 export interface InstabugConfig {
   /**
@@ -18,4 +18,15 @@ export interface InstabugConfig {
    * An optional code push version to be used for all reports.
    */
   codePushVersion?: string;
+
+  /**
+   * An optional network interception mode, this determines whether network interception
+   * is done in the JavaScript side or in the native Android and iOS SDK side.
+   *
+   * When set to `NetworkInterceptionMode.native`, configuring network logging
+   * should be done through native code not JavaScript (e.g. network request obfuscation).
+   *
+   * @default NetworkInterceptionMode.javascript
+   */
+  networkInterceptionMode?: NetworkInterceptionMode;
 }

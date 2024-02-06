@@ -6,6 +6,14 @@
 @interface RNInstabug : NSObject
 
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents debugLogsLevel:(IBGSDKDebugLogsLevel)debugLogsLevel;
+
++ (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents debugLogsLevel:(IBGSDKDebugLogsLevel)debugLogsLevel
+useNativeNetworkInterception:(BOOL)useNativeNetworkInterception;
+
++ (void)initWithToken:(NSString *)token
+     invocationEvents:(IBGInvocationEvent)invocationEvents
+useNativeNetworkInterception:(BOOL)useNativeNetworkInterception;
+
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents;
 
 /**

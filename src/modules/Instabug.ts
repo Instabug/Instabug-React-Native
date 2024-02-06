@@ -12,6 +12,7 @@ import {
   ColorTheme,
   Locale,
   LogLevel,
+  NetworkInterceptionMode,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -61,12 +62,19 @@ function reportCurrentViewForAndroid(screenName: string | null) {
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
-  NetworkLogger.setEnabled(true);
+
+  // Default networkInterceptionMode to JavaScript
+  config.networkInterceptionMode ??= NetworkInterceptionMode.javascript;
+
+  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    NetworkLogger.setEnabled(true);
+  }
 
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
     config.debugLogsLevel ?? LogLevel.error,
+    config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
   );
 
