@@ -23,6 +23,7 @@ export interface InstabugNativeModule extends NativeModule {
     token: string,
     invocationEvents: InvocationEvent[],
     debugLogsLevel: LogLevel,
+    useNativeNetworkInterception: boolean,
     codePushVersion?: string,
   ): void;
   show(): void;

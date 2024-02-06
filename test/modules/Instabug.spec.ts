@@ -1,4 +1,5 @@
 import '../mocks/mockInstabugUtils';
+import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
 
@@ -7,12 +8,14 @@ import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
   Locale,
   LogLevel,
+  NetworkInterceptionMode,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -239,13 +242,40 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
     };
+    const usesNativeNetworkInterception = false;
+
     Instabug.init(instabugConfig);
 
+    expect(NetworkLogger.setEnabled).toBeCalledWith(true);
     expect(NativeInstabug.init).toBeCalledTimes(1);
     expect(NativeInstabug.init).toBeCalledWith(
       instabugConfig.token,
       instabugConfig.invocationEvents,
       instabugConfig.debugLogsLevel,
+      usesNativeNetworkInterception,
+      instabugConfig.codePushVersion,
+    );
+  });
+
+  it('init should disable JavaScript interceptor when using native interception mode', () => {
+    const instabugConfig = {
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
+      networkInterceptionMode: NetworkInterceptionMode.native,
+      codePushVersion: '1.1.0',
+    };
+
+    Instabug.init(instabugConfig);
+
+    expect(NetworkLogger.setEnabled).not.toBeCalled();
+    expect(NativeInstabug.init).toBeCalledTimes(1);
+    expect(NativeInstabug.init).toBeCalledWith(
+      instabugConfig.token,
+      instabugConfig.invocationEvents,
+      instabugConfig.debugLogsLevel,
+      // usesNativeNetworkInterception should be true when using native interception mode
+      true,
       instabugConfig.codePushVersion,
     );
   });
