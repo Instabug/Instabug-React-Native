@@ -177,7 +177,9 @@ export const BasicComponentsScreen: React.FC = () => {
               <View collapsable={false}>
                 <View collapsable={false}>
                   <View collapsable={false}>
-                    <Text style={styles.buttonText}>4th Tier Nested Button</Text>
+                    <View collapsable={false}>
+                      <Text style={styles.buttonText}>4th Tier Nested Button</Text>
+                    </View>
                   </View>
                 </View>
               </View>
