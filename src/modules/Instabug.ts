@@ -549,6 +549,24 @@ export const clearAllExperiments = () => {
   NativeInstabug.clearAllExperiments();
 };
 
+export type NetworkDiagnosticsHandler = (
+  date: String,
+  totalRequestCount: number,
+  failureCount: number,
+) => void;
+
+export const onNetworkDiagnosticsHandler = (handler?: NetworkDiagnosticsHandler) => {
+  emitter.addListener(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER, (data) => {
+    const { date, totalRequestCount, failureCount } = data;
+
+    if (handler) {
+      handler(date, totalRequestCount, failureCount);
+    }
+  });
+
+  NativeInstabug.setOnNetworkDiagnosticsHandler();
+};
+
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
     _lastScreen = event.componentName;
