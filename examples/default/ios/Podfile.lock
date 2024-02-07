@@ -565,7 +565,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/dream11/12.6.1/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/fix-generate_binary_error/12.6.1/Instabug.podspec`)
   - libevent (~> 2.1.12)
   - OCMock
   - OpenSSL-Universal (= 1.1.1100)
@@ -646,7 +646,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/dream11/12.6.1/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/fix-generate_binary_error/12.6.1/Instabug.podspec
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -731,7 +731,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  boost: 7dcd2de282d72e344012f7d6564d024930a6a440
+  boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 4cce221dd782d3ff7c4172167bba09d58af67ccb
@@ -747,7 +747,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: 41c30fdf004eebfc0c5ec3efc2deeea862a9f5e0
+  Instabug: 003cd60312ee6f9954a5686e38f8ce9bddf46669
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -795,6 +795,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9948094b325ce6a82feac1dc32a788c7f7feaf3a
+PODFILE CHECKSUM: 2664daf5889951e1a0341b6124c3a919b029301a
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.12.0
