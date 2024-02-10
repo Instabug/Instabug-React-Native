@@ -6,6 +6,10 @@
 
 - Support user identification using ID ([#1115](https://github.com/Instabug/Instabug-React-Native/pull/1115))
 
+### Changed
+
+- Bump Instabug iOS SDK to v12.7.0 ([#1125](https://github.com/Instabug/Instabug-React-Native/pull/1125)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.7.0).
+
 ### Fixed
 
 - Fix an Android `NullPointerException` crash in private views APIs ([#1121](https://github.com/Instabug/Instabug-React-Native/pull/1121)), closes [#514](https://github.com/Instabug/Instabug-React-Native/issues/514).

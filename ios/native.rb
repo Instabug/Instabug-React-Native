@@ -1,4 +1,4 @@
-$instabug = { :version => '12.6.0' }
+$instabug = { :version => '12.7.0' }
 
 def use_instabug! (spec = nil)
   version = $instabug[:version]
