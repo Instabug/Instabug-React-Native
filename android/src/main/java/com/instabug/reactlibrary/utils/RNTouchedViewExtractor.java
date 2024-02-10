@@ -159,12 +159,8 @@ public class RNTouchedViewExtractor implements TouchedViewExtractor {
     }
 
     class NoLabelsExtractionStrategy implements ReactButtonExtractionStrategy {
-
         @Override
         public TouchedView extract(ReactViewGroup reactButton, TouchedView touchedView) {
-            touchedView.setProminentLabel(
-                    InstabugCore.composeProminentLabelFor(null, false)
-            );
             return touchedView;
         }
     }
