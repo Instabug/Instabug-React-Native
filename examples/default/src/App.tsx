@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import Instabug, { InvocationEvent, LogLevel } from 'instabug-reactnative';
+import Instabug, { InvocationEvent, LogLevel, ReproStepsMode } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -16,6 +16,10 @@ export const App: React.FC = () => {
       token: 'deb1910a7342814af4e4c9210c786f35',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
+    });
+
+    Instabug.setReproStepsConfig({
+      all: ReproStepsMode.enabled,
     });
   }, []);
 
