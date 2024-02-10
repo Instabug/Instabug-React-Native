@@ -15,6 +15,7 @@
 #import <os/log.h>
 #import <React/RCTUIManager.h>
 #import "RNInstabug.h"
+#import "Util/Instabug+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -23,7 +24,10 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[
+        @"IBGpreSendingHandler",
+        @"IBGNetworkDiagnosticsHandler"
+    ];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -380,6 +384,18 @@ RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
 
 RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
+}
+
+RCT_EXPORT_METHOD(setOnNetworkDiagnosticsHandler) {
+    [Instabug setWillSendNetworkDiagnosticsHandler:^(NSString *date, NSInteger totalRequestCount, NSInteger failureCount) {
+        NSDictionary *params = @{
+            @"date": date,
+            @"totalRequestCount": @(totalRequestCount),
+            @"failureCount": @(failureCount)
+        };
+
+        [self sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:params];
+    }];
 }
 
 - (NSDictionary *)constantsToExport {

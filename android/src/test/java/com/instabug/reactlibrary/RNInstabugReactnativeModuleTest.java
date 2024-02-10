@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
 import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.Feature;
@@ -19,7 +20,10 @@ import com.instabug.library.IssueType;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.module.InstabugLocale;
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.reactlibrary.util.GlobalMocks;
+import com.instabug.reactlibrary.util.MockReflected;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
@@ -37,6 +41,7 @@ import org.mockito.stubbing.Answer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,18 +50,21 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static com.instabug.reactlibrary.util.GlobalMocks.reflected;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 public class RNInstabugReactnativeModuleTest {
-    private RNInstabugReactnativeModule rnModule = new RNInstabugReactnativeModule(null);
+    private RNInstabugReactnativeModule rnModule;
+    private ReactApplicationContext mReactContext = mock(ReactApplicationContext.class);
 
     private final static ScheduledExecutorService mainThread = Executors.newSingleThreadScheduledExecutor();
 
@@ -66,7 +74,9 @@ public class RNInstabugReactnativeModuleTest {
     private MockedStatic <Instabug> mockInstabug;
 
     @Before
-    public void mockMainThreadHandler() throws Exception {
+    public void setUp() throws Exception {
+        rnModule = spy(new RNInstabugReactnativeModule(mReactContext));
+
         // Mock static functions
         mockInstabug = mockStatic(Instabug.class);
         mockLooper = mockStatic(Looper.class);
@@ -86,6 +96,9 @@ public class RNInstabugReactnativeModuleTest {
         };
         Mockito.doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
         MainThreadHandler.runOnMainThread(any(Runnable.class));
+
+        // Set up global mocks
+        GlobalMocks.setUp();
     }
     @After
     public void tearDown() {
@@ -93,6 +106,9 @@ public class RNInstabugReactnativeModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockInstabug.close();
+
+        // Remove global mocks
+        GlobalMocks.close();
     }
 
     /********Instabug*********/
@@ -505,28 +521,17 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenString$reportCurrentViewChange_whenQuery_thenShouldCallNativeApiWithString() throws Exception {
-        // when
+    public void testReportCurrentViewChange() {
         rnModule.reportCurrentViewChange("screen");
-        Method privateStringMethod = getMethod(Class.forName("com.instabug.library.Instabug"), "reportCurrentViewChange", String.class);
-        privateStringMethod.setAccessible(true);
 
-        // then
-        verify(Instabug.class, VerificationModeFactory.times(1));
-        privateStringMethod.invoke("reportCurrentViewChange","screen");
+        reflected.verify(() -> MockReflected.reportCurrentViewChange("screen"), times(1));
     }
 
     @Test
-    public void givenString$reportScreenChange_whenQuery_thenShouldCallNativeApiWithString() throws Exception {
-        // when
+    public void testReportScreenChange() {
         rnModule.reportScreenChange("screen");
-        Method privateStringMethod = getMethod(Class.forName("com.instabug.library.Instabug"), "reportScreenChange", Bitmap.class, String.class);
-        privateStringMethod.setAccessible(true);
 
-        // then
-        verify(Instabug.class, VerificationModeFactory.times(1));
-        privateStringMethod.invoke("reportScreenChange", null,"screen");
-
+        reflected.verify(() -> MockReflected.reportScreenChange(null, "screen"), times(1));
     }
 
     @Test
@@ -575,5 +580,34 @@ public class RNInstabugReactnativeModuleTest {
         // then
         verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
+    }
+
+    @Test
+    public void testSetOnNetworkDiagnosticsHandler() {
+        String date = new Date().toString();
+        int successOrderCount = 2;
+        int failureCount = 1;
+
+        MockedStatic<Arguments> mockArgument = mockStatic(Arguments.class);
+        mockArgument.when(Arguments::createMap).thenReturn(new JavaOnlyMap());
+
+        reflected
+                .when(() -> MockReflected.setNetworkDiagnosticsCallback(any(NetworkDiagnosticsCallback.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    NetworkDiagnosticsCallback callback = invocation.getArgument(0);
+                    callback.onReady(date, successOrderCount, failureCount);
+                    return null;
+                });
+
+        rnModule.setOnNetworkDiagnosticsHandler();
+
+        WritableMap params = new JavaOnlyMap();
+        params.putString("date", date);
+        params.putInt("totalRequestCount", successOrderCount);
+        params.putInt("failureCount", failureCount);
+
+        verify(rnModule).sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+
+        mockArgument.close();
     }
 }
