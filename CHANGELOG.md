@@ -5,7 +5,7 @@
 ### Added
 
 - Support user identification using ID ([#1115](https://github.com/Instabug/Instabug-React-Native/pull/1115)).
-- Support button detection and label extraction for repro steps ([#1109](https://github.com/Instabug/Instabug-React-Native/pull/1109)).
+- Add support for user steps on Android ([#1109](https://github.com/Instabug/Instabug-React-Native/pull/1109)).
 
 ### Changed
 
