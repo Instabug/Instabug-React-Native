@@ -9,6 +9,7 @@
 ### Changed
 
 - Bump Instabug iOS SDK to v12.7.0 ([#1125](https://github.com/Instabug/Instabug-React-Native/pull/1125)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.7.0).
+- Bump Instabug Android SDK to v12.7.0 ([#1126](https://github.com/Instabug/Instabug-React-Native/pull/1126)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.7.0).
 
 ### Fixed
 
