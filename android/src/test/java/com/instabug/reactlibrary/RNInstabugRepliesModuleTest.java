@@ -74,6 +74,7 @@ public class RNInstabugRepliesModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockReplies.close();
+        mockInstabugUtil.close();
     }
 
     /********Replies*********/
