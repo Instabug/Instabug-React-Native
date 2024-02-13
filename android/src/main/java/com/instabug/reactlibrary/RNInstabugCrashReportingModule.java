@@ -7,7 +7,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.crash.CrashReporting;
-import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -15,9 +14,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,8 +57,8 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * Send unhandled JS error object
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
-     * @param promise         This makes sure that the RN side crashes the app only after the Android SDK
-     *                        finishes processing/handling the crash.
+     * @param promise This makes sure that the RN side crashes the app only after the Android SDK
+     *                finishes processing/handling the crash.
      */
     @ReactMethod
     public void sendJSCrash(final String exceptionObject, final Promise promise) {
@@ -94,38 +90,29 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    @ReactMethod
-    public void sendNativeNonFatal(final String exceptionObject) {
-        final IBGNonFatalException exception = new IBGNonFatalException.Builder(new IllegalStateException("Test exception"))
-                .build();
-        CrashReporting.report(exception);
-
-    }
-
-
-    private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled, @Nullable final Runnable onComplete) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
-                    if (method != null) {
-                        method.invoke(null, exceptionObject, isHandled);
-                        RNInstabugReactnativeModule.clearCurrentReport();
-                    }
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (onComplete != null) {
-                        onComplete.run();
-                    }
-                }
-            }
-        });
+     private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled, @Nullable final Runnable onComplete) {
+         MainThreadHandler.runOnMainThread(new Runnable() {
+             @Override
+             public void run() {
+                 try {
+                     Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class);
+                     if (method != null) {
+                         method.invoke(null, exceptionObject, isHandled);
+                         RNInstabugReactnativeModule.clearCurrentReport();
+                     }
+                 } catch (ClassNotFoundException e) {
+                     e.printStackTrace();
+                 } catch (IllegalAccessException e) {
+                     e.printStackTrace();
+                 } catch (InvocationTargetException e) {
+                     e.printStackTrace();
+                 } finally {
+                     if (onComplete != null) {
+                         onComplete.run();
+                     }
+                 }
+             }
+         });
 
     }
 }
