@@ -63,7 +63,7 @@ public class RNInstabugCrashReportingModuleTest {
     /********Crashes*********/
 
     @Test
-    public void givenTrue$SetNDKCrashesEnabledShouldCallNativeApiWithEnable() {
+    public void testSetNDKCrashesEnabledGivenTrue() {
         // when
         rnModule.setNDKCrashesEnabled(true);
 
@@ -72,7 +72,7 @@ public class RNInstabugCrashReportingModuleTest {
     }
 
     @Test
-    public void givenTrue$SetNDKCrashesEnabledShouldCallNativeApiWithDisabled() {
+    public void testSetNDKCrashesEnabledGivenFalse() {
         // when
         rnModule.setNDKCrashesEnabled(false);
 
