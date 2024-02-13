@@ -102,64 +102,6 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
 
     }
 
-    @ReactMethod
-    public void sendNativeFatalCrash() {
-        throw new IllegalStateException("Unhandled IllegalStateException from Instabug Test App");
-    }
-
-    @ReactMethod
-    public void sendANR() {
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @ReactMethod
-    public void sendFatalHang() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @ReactMethod
-    public void sendOOM() {
-        oomCrash();
-    }
-
-    private void oomCrash() {
-        new Thread(() -> {
-            List<String> stringList = new ArrayList<>();
-            for (int i = 0; i < 1_000_000; i++) {
-                stringList.add(getRandomString(10_000));
-            }
-        }).start();
-    }
-
-    private String getRandomString(int length) {
-        List<Character> charset = new ArrayList<>();
-        for (char ch = 'a'; ch <= 'z'; ch++) {
-            charset.add(ch);
-        }
-        for (char ch = 'A'; ch <= 'Z'; ch++) {
-            charset.add(ch);
-        }
-        for (char ch = '0'; ch <= '9'; ch++) {
-            charset.add(ch);
-        }
-
-        StringBuilder randomString = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            char randomChar = charset.get(random.nextInt(charset.size()));
-            randomString.append(randomChar);
-        }
-
-        return randomString.toString();
-    }
 
     private void sendJSCrashByReflection(final JSONObject exceptionObject, final boolean isHandled, @Nullable final Runnable onComplete) {
         MainThreadHandler.runOnMainThread(new Runnable() {

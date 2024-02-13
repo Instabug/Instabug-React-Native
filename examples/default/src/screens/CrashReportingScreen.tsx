@@ -6,8 +6,8 @@ import { CrashReporting } from 'instabug-reactnative';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
-import { NativeCrashReporting } from '../../../../src/native/NativeCrashReporting';
 import { PlatformListTile } from '../components/PlatformListTie';
+import { NativeExampleCrashReporting } from '../native/NativeCrashReporting';
 
 export const CrashReportingScreen: React.FC = () => {
   function throwHandledException(error: Error) {
@@ -72,7 +72,7 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Handled Native Exception"
-            onPress={() => NativeCrashReporting.sendNativeNonFatal()}
+            onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
           />
         </Section>
         <Section title={'Fatal Crashes'}>
@@ -104,20 +104,20 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Unhandled Native Exception"
-            onPress={() => NativeCrashReporting.sendNativeFatalCrash()}
+            onPress={() => NativeExampleCrashReporting.sendNativeFatalCrash()}
           />
           <ListTile
             title="Send Native Fatal Hang"
-            onPress={() => NativeCrashReporting.sendFatalHang()}
+            onPress={() => NativeExampleCrashReporting.sendFatalHang()}
           />
           <PlatformListTile
             title="Send Native ANR"
-            onPress={() => NativeCrashReporting.sendANR()}
+            onPress={() => NativeExampleCrashReporting.sendANR()}
             platform={'android'}
           />
           <ListTile
             title="Throw Unhandled Native OOM Exception"
-            onPress={() => NativeCrashReporting.sendOOM()}
+            onPress={() => NativeExampleCrashReporting.sendOOM()}
           />
         </Section>
       </ScrollView>

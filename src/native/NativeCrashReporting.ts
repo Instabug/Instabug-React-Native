@@ -16,11 +16,6 @@ export interface CrashReportingNativeModule extends NativeModule {
   setEnabled(isEnabled: boolean): void;
   sendJSCrash(data: CrashData | string): Promise<void>;
   sendHandledJSCrash(data: CrashData | string): Promise<void>;
-  sendNativeNonFatal(): Promise<void>;
-  sendNativeFatalCrash(): Promise<void>;
-  sendFatalHang(): Promise<void>;
-  sendANR(): Promise<void>;
-  sendOOM(): Promise<void>;
 }
 
 export const NativeCrashReporting = NativeModules.IBGCrashReporting;
