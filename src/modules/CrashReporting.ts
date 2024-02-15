@@ -18,7 +18,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param error Error object to be sent to Instabug's servers
  */
 export const reportError = (error: ExtendedError) => {
-  InstabugUtils.sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
+ return InstabugUtils.sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
 };
 
 /**
