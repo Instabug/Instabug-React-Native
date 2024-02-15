@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...dev)
+
+### Changed
+
+- Bump Instabug Android SDK to v12.7.1 ([#1134](https://github.com/Instabug/Instabug-React-Native/pull/1134)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.7.1).
+
 ## [12.7.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.6.0...v12.7.0) (February 10, 2024)
 
 ### Added
