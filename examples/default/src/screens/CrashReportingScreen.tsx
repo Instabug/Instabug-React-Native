@@ -6,7 +6,7 @@ import { CrashReporting } from 'instabug-reactnative';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
-import { PlatformListTile } from '../components/PlatformListTie';
+import { PlatformListTile } from '../components/PlatformListTile';
 import { NativeExampleCrashReporting } from '../native/NativeCrashReporting';
 
 export const CrashReportingScreen: React.FC = () => {
