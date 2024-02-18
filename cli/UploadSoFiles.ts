@@ -10,6 +10,10 @@ interface UploadSoFilesOptions {
   name: string;
   api_key: string;
 }
+/**
+ * This script uploads .so files to the specified endpoint used in NDK crash reporting.
+ * Usage: node upload-so-files.js --arch <arch> --file <path> --api_key <key> --token <token> --name <name>
+ */
 
 export const UploadSoFilesCommand = new Command();
 
@@ -44,6 +48,10 @@ UploadSoFilesCommand.name('upload-so-files')
 
 const UploadSoFiles = async (opts: UploadSoFilesOptions) => {
   const fileName = opts.file;
+  if (fileName == null) {
+    console.error('Failed to upload So Files: invalid file path');
+    process.exit(1);
+  }
   const fileBlob = fs.readFileSync(opts.file);
 
   const form = new FormData();
@@ -63,5 +71,6 @@ const UploadSoFiles = async (opts: UploadSoFilesOptions) => {
     console.log(`Successfully uploaded So Files for version: ${opts.name} with arch ${opts.arch}`);
   } catch (err) {
     console.error('Failed to upload So Files:', axios.isAxiosError(err) ? err.response?.data : err);
+    process.exit(1);
   }
 };
