@@ -1,5 +1,13 @@
 # Changelog
 
+
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...dev)
+
+### Added
+
+- Add support for enable NDK crashes on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132))
+
+
 ## [12.7.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.6.0...v12.7.0) (February 10, 2024)
 
 ### Added
