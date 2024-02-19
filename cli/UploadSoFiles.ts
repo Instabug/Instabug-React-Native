@@ -74,9 +74,9 @@ const UploadSoFiles = async (opts: UploadSoFilesOptions) => {
   form.append('arch', opts.arch);
 
   console.log('Uploading So files...');
-
+  const uploadEndpoint = 'https://api.instabug.com/api/web/public/so_files';
   try {
-    await axios.post('https://api.instabug.com/api/web/public/so_files', form, {
+    await axios.post(uploadEndpoint, form, {
       headers: form.getHeaders(),
     });
 
