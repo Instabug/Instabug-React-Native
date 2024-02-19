@@ -29,6 +29,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     public RNInstabugAPMModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
     }
+
+    @Deprecated
     HashMap<String, ExecutionTrace> traces = new HashMap<String, ExecutionTrace>();
 
     @Nonnull
@@ -123,8 +125,12 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Starts an execution trace
+     *
      * @param name string name of the trace.
+     *
+     * @deprecated see {@link #startFlow(String)}
      */
+    @Deprecated(since = "Use `startFlow` instead.")
     @ReactMethod
     public void startExecutionTrace(final String name, final String id, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -148,10 +154,14 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Adds a new attribute to trace
-     * @param id String id of the trace.
+     *
+     * @param id    String id of the trace.
      * @param key   attribute key
      * @param value attribute value. Null to remove attribute
+     *
+     * @deprecated see {@link #setFlowAttribute}
      */
+    @Deprecated(since = "Use `setFlowAttribute` instead")
     @ReactMethod
     public void setExecutionTraceAttribute(final String id, final String key, final String value) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -168,8 +178,12 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Ends a trace
+     *
      * @param id string id of the trace.
+     *
+     * @deprecated see {@link #endFlow}
      */
+    @Deprecated(since = "Use `endFlow` instead")
     @ReactMethod
     public void endExecutionTrace(final String id) {
         MainThreadHandler.runOnMainThread(new Runnable() {
