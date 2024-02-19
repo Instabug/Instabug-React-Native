@@ -52,6 +52,23 @@ const UploadSoFiles = async (opts: UploadSoFilesOptions) => {
     console.error('Failed to upload So Files: invalid file path');
     process.exit(1);
   }
+
+  if (fs.existsSync(fileName) === false) {
+    console.error('Failed to upload So Files: File not found');
+    process.exit(1);
+  }
+
+  if (fs.existsSync(fileName) === false) {
+    console.error('Failed to upload So Files: File not found');
+    process.exit(1);
+  }
+  var fileExt = fileName.split('.').pop();
+
+  if (fileExt !== 'zip') {
+    console.error('Failed to upload So Files: You can only upload ZIP files');
+    process.exit(1);
+  }
+
   const fileBlob = fs.readFileSync(opts.file);
 
   const form = new FormData();
