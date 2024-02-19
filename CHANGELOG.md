@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...dev)
+
+### Deprecated
+
+- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end()` and `Trace.setAttribute`  in favor of the new app flow APIs `APM.startFlow`, `APM.endFlow` and `APM.setTraceAttribute` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
 
 ### Added
