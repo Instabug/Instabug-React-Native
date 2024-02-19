@@ -89,6 +89,10 @@
 
 - Bump Instabug Android SDK to v12.8.0 ([#1149](https://github.com/Instabug/Instabug-React-Native/pull/1149)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.8.0).
 
+### Deprecated
+
+- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end()` and `Trace.setAttribute`  in favor of the new app flow APIs `APM.startFlow`, `APM.endFlow` and `APM.setTraceAttribute` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
 ### Changed
