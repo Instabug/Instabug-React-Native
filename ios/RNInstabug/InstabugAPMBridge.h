@@ -21,6 +21,9 @@
 - (void)setExecutionTraceAttribute:(NSString *)id:(NSString *)key
                                   :(NSString *)value DEPRECATED_MSG_ATTRIBUTE("Please use APM.setTraceAttribute instead.");
 - (void)endExecutionTrace:(NSString *)id  DEPRECATED_MSG_ATTRIBUTE("Please use APM.endFlow instead.");
+- (void)startFlow:(NSString *)name;
+- (void)endFlow:(NSString *)name;
+- (void)setFlowAttribute:(NSString *)name :(NSString *)key :(NSString *_Nullable)value;
 - (void)startUITrace:(NSString *)name;
 - (void)endUITrace;
 

@@ -4,6 +4,7 @@ package com.instabug.reactlibrary;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -124,6 +125,84 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Starts an AppFlow with the specified name.
+     * <br/>
+     * On starting two flows with the same name the older flow will end with force abandon end reason.
+     * AppFlow name cannot exceed 150 characters otherwise it's truncated,
+     * leading and trailing whitespaces are also ignored.
+     *
+     * @param name AppFlow name. It can not be empty string or null.
+     *             Starts a new AppFlow, if APM is enabled, feature is enabled
+     *             and Instabug SDK is initialised.
+     */
+    @ReactMethod
+    public void startFlow(@NonNull final String name) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.startFlow(name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets custom attributes for AppFlow with a given name.
+     * <br/>
+     * Setting an attribute value to null will remove its corresponding key if it already exists.
+     * <br/>
+     * Attribute key name cannot exceed 30 characters.
+     * Leading and trailing whitespaces are also ignored.
+     * Does not accept empty strings or null.
+     * <br/>
+     * Attribute value name cannot exceed 60 characters,
+     * leading and trailing whitespaces are also ignored.
+     * Does not accept empty strings.
+     * <br/>
+     * If a trace is ended, attributes will not be added and existing ones will not be updated.
+     * <br/>
+     *
+     * @param name  AppFlow name. It can not be empty string or null
+     * @param key   AppFlow attribute value. It can not be empty string or null
+     * @param value AppFlow attribute key. It can not be empty string. Null to remove attribute
+     */
+    @ReactMethod
+    public void setFlowAttribute(@NonNull final String name, @NonNull final String key, final String value) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.setFlowAttribute(name, key, value);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Ends AppFlow with a given name.
+     *
+     * @param name AppFlow name to be ended. It can not be empty string or null
+     */
+    @ReactMethod
+    public void endFlow(@NonNull final String name) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.endFlow(name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Starts an execution trace
      *
      * @param name string name of the trace.
@@ -234,7 +313,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-    *  Send Apm network log by Reflection 
+    *  Send Apm network log by Reflection
     */
     @ReactMethod
     public void networkLog(String networkData) throws JSONException {
@@ -256,8 +335,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             final Integer statusCode = (Integer) jsonObject.get("responseCode");
             final long requestDuration = ((Number) jsonObject.get("duration")).longValue();
             final long requestStartTime = ((Number) jsonObject.get("startTime")).longValue() * 1000;
-            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString(); 
-            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString(); 
+            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString();
+            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString();
             final String errorMessage;
             if(errorDomain.equals("")) {
                 errorMessage = null;
@@ -268,9 +347,9 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             String gqlQueryName = null;
             if(jsonObject.has("gqlQueryName")){
                 gqlQueryName = (String) jsonObject.get("gqlQueryName");
-            } 
+            }
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
-            
+
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
                 if (method != null) {
