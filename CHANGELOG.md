@@ -7,6 +7,10 @@
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
 
+### Deprecated
+
+- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end()` and `Trace.setAttribute`  in favor of the new app flow APIs `APM.startFlow`, `APM.endFlow` and `APM.setTraceAttribute` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
 ### Changed
