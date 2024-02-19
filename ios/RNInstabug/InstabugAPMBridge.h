@@ -17,10 +17,10 @@
 - (void)setAutoUITraceEnabled:(BOOL)isEnabled;
 - (void)startExecutionTrace:(NSString *)name :(NSString *)id
                            :(RCTPromiseResolveBlock)resolve
-                           :(RCTPromiseRejectBlock)reject;
+                           :(RCTPromiseRejectBlock)reject DEPRECATED_MSG_ATTRIBUTE("Please use APM.startFlow instead.");
 - (void)setExecutionTraceAttribute:(NSString *)id:(NSString *)key
-                                  :(NSString *)value;
-- (void)endExecutionTrace:(NSString *)id;
+                                  :(NSString *)value DEPRECATED_MSG_ATTRIBUTE("Please use APM.setTraceAttribute instead.");
+- (void)endExecutionTrace:(NSString *)id  DEPRECATED_MSG_ATTRIBUTE("Please use APM.endFlow instead.");
 - (void)startUITrace:(NSString *)name;
 - (void)endUITrace;
 
