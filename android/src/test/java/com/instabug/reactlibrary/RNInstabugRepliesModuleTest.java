@@ -10,6 +10,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
+import com.instabug.reactlibrary.utils.InstabugUtil;
 import com.instabug.reactlibrary.utils.MapUtil;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -42,6 +43,7 @@ public class RNInstabugRepliesModuleTest {
     private MockedStatic<Looper> mockLooper;
     private MockedStatic <MainThreadHandler> mockMainThreadHandler;
     private MockedStatic <Replies> mockReplies;
+    private MockedStatic <InstabugUtil> mockInstabugUtil;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -49,6 +51,7 @@ public class RNInstabugRepliesModuleTest {
         mockReplies = mockStatic(Replies.class);
         mockLooper = mockStatic(Looper.class);
         mockMainThreadHandler = mockStatic(MainThreadHandler.class);
+        mockInstabugUtil = mockStatic(InstabugUtil.class);
 
         // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
@@ -71,6 +74,7 @@ public class RNInstabugRepliesModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockReplies.close();
+        mockInstabugUtil.close();
     }
 
     /********Replies*********/
