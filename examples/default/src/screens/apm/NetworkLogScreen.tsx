@@ -67,9 +67,7 @@ export const NetworkLogScreen: React.FC<
               Response Body:{' '}
             </Heading>
             <Container>
-              <Text style={{ marginEnd: 16, marginRight: 16 }} fontSize="sm">
-                {JSON.stringify(route.params.responseBody) ?? ''}
-              </Text>
+              <Text fontSize="sm">{JSON.stringify(route.params.responseBody) ?? ''}</Text>
             </Container>
           </HStack>
 
