@@ -209,7 +209,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      *
      * @deprecated see {@link #startFlow(String)}
      */
-    @Deprecated(since = "Use `startFlow` instead.")
+    @Deprecated()
     @ReactMethod
     public void startExecutionTrace(final String name, final String id, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -240,7 +240,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      *
      * @deprecated see {@link #setFlowAttribute}
      */
-    @Deprecated(since = "Use `setFlowAttribute` instead")
+    @Deprecated()
     @ReactMethod
     public void setExecutionTraceAttribute(final String id, final String key, final String value) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -262,7 +262,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      *
      * @deprecated see {@link #endFlow}
      */
-    @Deprecated(since = "Use `endFlow` instead")
+    @Deprecated()
     @ReactMethod
     public void endExecutionTrace(final String id) {
         MainThreadHandler.runOnMainThread(new Runnable() {
