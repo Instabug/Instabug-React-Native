@@ -15,6 +15,10 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import { APMScreen } from '../screens/apm/APMScreen';
+import { TracesScreen } from '../screens/apm/TracesScreen';
+import { NetworkScreen } from '../screens/apm/NetworkScreen';
+import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
@@ -32,6 +36,12 @@ export type HomeStackParamList = {
   SectionList: undefined;
   Gestures: undefined;
   SessionReplay: undefined;
+
+  // APM //
+  APM: undefined;
+  NetworkTraces: undefined;
+  ExecutionTraces: undefined;
+  AppFlows: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -94,6 +104,10 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Section List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
+      <HomeStack.Screen name="APM" component={APMScreen} />
+      <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
+      <HomeStack.Screen name="ExecutionTraces" component={TracesScreen} />
+      <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
     </HomeStack.Navigator>
   );
 };

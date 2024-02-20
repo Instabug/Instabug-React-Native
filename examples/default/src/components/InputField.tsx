@@ -1,36 +1,26 @@
 import React, { forwardRef } from 'react';
 
-import { KeyboardTypeOptions, StyleSheet, TextInput } from 'react-native';
+import { KeyboardTypeOptions, StyleProp, StyleSheet, TextInput, ViewStyle } from 'react-native';
 
 interface InputFieldProps {
   placeholder?: string;
   value?: string;
+  style?: StyleProp<ViewStyle>;
   onChangeText?: (text: string) => void;
   keyboardType?: KeyboardTypeOptions;
+  selectTextOnFocus?: boolean | undefined;
 }
 
-export const InputField = forwardRef<TextInput, InputFieldProps>(
-  ({ placeholder, value, onChangeText, keyboardType, ...restProps }, ref) => {
-    return (
-      <TextInput
-        ref={ref}
-        placeholder={placeholder}
-        style={styles.textInput}
-        keyboardType={keyboardType}
-        value={value}
-        onChangeText={onChangeText}
-        {...restProps}
-      />
-    );
-  },
-);
+export const InputField = forwardRef<TextInput, InputFieldProps>(({ style, ...restProps }, ref) => {
+  return <TextInput ref={ref} style={[styles.textInput, style]} {...restProps} />;
+});
 
 const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingVertical: 16,
+    paddingVertical: 10,
     paddingHorizontal: 24,
     fontSize: 16,
     borderRadius: 5,
