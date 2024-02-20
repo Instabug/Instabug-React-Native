@@ -12,7 +12,8 @@
     return dispatch_get_main_queue();
 }
 
-+ (BOOL)requiresMainQueueSetup {
++ (BOOL)requiresMainQueueSetup
+{
     return NO;
 }
 
@@ -22,23 +23,19 @@
 
 RCT_EXPORT_MODULE(IBGSessionReplay)
 
-RCT_EXPORT_METHOD(setEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
     IBGSessionReplay.enabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(setNetworkLogsEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setNetworkLogsEnabled:(BOOL)isEnabled) {
     IBGSessionReplay.networkLogsEnabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(setInstabugLogsEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setInstabugLogsEnabled:(BOOL)isEnabled) {
     IBGSessionReplay.IBGLogsEnabled = isEnabled;
 }
 
-RCT_EXPORT_METHOD(setUserStepsEnabled:
-    (BOOL) isEnabled) {
+RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isEnabled) {
     IBGSessionReplay.userStepsEnabled = isEnabled;
 }
 

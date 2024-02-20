@@ -44,8 +44,8 @@ public class RNInstabugSessionReplayModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic<SessionReplay> mockSessionReplay;
+    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic <SessionReplay> mockSessionReplay;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -56,7 +56,7 @@ public class RNInstabugSessionReplayModuleTest {
 
         // Mock Looper class
         Looper mockMainThreadLooper = Mockito.mock(Looper.class);
-        when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
+        Mockito.when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
 
         // Override runOnMainThread
         Answer<Boolean> handlerPostAnswer = new Answer<Boolean>() {
@@ -69,7 +69,6 @@ public class RNInstabugSessionReplayModuleTest {
         Mockito.doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
         MainThreadHandler.runOnMainThread(any(Runnable.class));
     }
-
     @After
     public void tearDown() {
         // Remove static mocks

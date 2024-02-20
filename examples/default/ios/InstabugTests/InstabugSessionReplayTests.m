@@ -7,8 +7,8 @@
 
 @interface InstabugSessionReplayTests : XCTestCase
 
-@property(nonatomic, strong) id mSessionReplay;
-@property(nonatomic, strong) InstabugSessionReplayBridge *bridge;
+@property (nonatomic, strong) id mSessionReplay;
+@property (nonatomic, strong) InstabugSessionReplayBridge *bridge;
 
 @end
 
@@ -21,35 +21,35 @@
 }
 
 - (void)testSetEnabled {
-    BOOL enabled = NO;
+  BOOL enabled = NO;
 
-    [self.bridge setEnabled:enabled];
+  [self.bridge setEnabled:enabled];
 
-    OCMVerify([self.mSessionReplay setEnabled:enabled]);
+  OCMVerify([self.mSessionReplay setEnabled:enabled]);
 }
 
 - (void)testSetInstabugLogsEnabled {
-    BOOL enabled = NO;
+  BOOL enabled = NO;
 
-    [self.bridge setInstabugLogsEnabled:enabled];
+  [self.bridge setInstabugLogsEnabled:enabled];
 
-    OCMVerify([self.mSessionReplay setIBGLogsEnabled:enabled]);
+  OCMVerify([self.mSessionReplay setIBGLogsEnabled:enabled]);
 }
 
 - (void)testSetNetworkLogsEnabled {
-    BOOL enabled = NO;
+  BOOL enabled = NO;
 
-    [self.bridge setNetworkLogsEnabled:enabled];
+  [self.bridge setNetworkLogsEnabled:enabled];
 
-    OCMVerify([self.mSessionReplay setNetworkLogsEnabled:enabled]);
+  OCMVerify([self.mSessionReplay setNetworkLogsEnabled:enabled]);
 }
 
 - (void)testSetUserStepsEnabled {
-    BOOL enabled = NO;
+  BOOL enabled = NO;
 
-    [self.bridge setUserStepsEnabled:enabled];
+  [self.bridge setUserStepsEnabled:enabled];
 
-    OCMVerify([self.mSessionReplay setUserStepsEnabled:enabled]);
+  OCMVerify([self.mSessionReplay setUserStepsEnabled:enabled]);
 }
 
 - (void)testGetSessionReplayLink {
