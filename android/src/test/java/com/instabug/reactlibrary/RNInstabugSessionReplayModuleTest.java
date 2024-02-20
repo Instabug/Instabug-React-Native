@@ -1,19 +1,27 @@
 package com.instabug.reactlibrary;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import android.os.Handler;
 import android.os.Looper;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
+import com.instabug.chat.Replies;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.featuresrequest.FeatureRequests;
 import com.instabug.library.Feature;
+import com.instabug.library.OnSessionReplayLinkReady;
 import com.instabug.library.sessionreplay.SessionReplay;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -36,8 +44,8 @@ public class RNInstabugSessionReplayModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic <SessionReplay> mockSessionReplay;
+    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic<SessionReplay> mockSessionReplay;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -48,7 +56,7 @@ public class RNInstabugSessionReplayModuleTest {
 
         // Mock Looper class
         Looper mockMainThreadLooper = Mockito.mock(Looper.class);
-        Mockito.when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
+        when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
 
         // Override runOnMainThread
         Answer<Boolean> handlerPostAnswer = new Answer<Boolean>() {
@@ -61,6 +69,7 @@ public class RNInstabugSessionReplayModuleTest {
         Mockito.doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
         MainThreadHandler.runOnMainThread(any(Runnable.class));
     }
+
     @After
     public void tearDown() {
         // Remove static mocks
@@ -94,6 +103,29 @@ public class RNInstabugSessionReplayModuleTest {
 
         mockSessionReplay.verify(() -> SessionReplay.setIBGLogsEnabled(true));
         mockSessionReplay.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void testGetSessionReplayLink() {
+        Promise promise = mock(Promise.class);
+        String link="instabug link";
+
+        mockSessionReplay.when(() -> SessionReplay.getSessionReplayLink(any())).thenAnswer(
+                invocation -> {
+                    OnSessionReplayLinkReady callback = (OnSessionReplayLinkReady) invocation.getArguments()[0];
+                    callback.onSessionReplayLinkReady(link);
+                    return callback;
+                });
+        sessionReplayModule.getSessionReplayLink(promise);
+
+
+        mockSessionReplay.verify(() -> SessionReplay.getSessionReplayLink(any()));
+        mockSessionReplay.verifyNoMoreInteractions();
+
+
+        verify(promise, timeout(1000)).resolve(link);
+
+
     }
 
     @Test

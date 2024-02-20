@@ -29,4 +29,10 @@ describe('Session Replay Module', () => {
     expect(NativeSessionReplay.setUserStepsEnabled).toBeCalledTimes(1);
     expect(NativeSessionReplay.setUserStepsEnabled).toBeCalledWith(true);
   });
+
+  it('should call the native method getSessionReplayLink', () => {
+    SessionReplay.getSessionReplayLink();
+
+    expect(NativeSessionReplay.getSessionReplayLink).toBeCalledTimes(1);
+  });
 });

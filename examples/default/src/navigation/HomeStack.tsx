@@ -15,6 +15,7 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -30,6 +31,7 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  SessionReplay: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -55,6 +57,12 @@ export const HomeStackNavigator: React.FC = () => {
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
+      <HomeStack.Screen
+        name="SessionReplay"
+        component={SessionReplayScreen}
+        options={{ title: 'Session Replay' }}
+      />
+
       <HomeStack.Screen
         name="UserSteps"
         component={UserStepsScreen}

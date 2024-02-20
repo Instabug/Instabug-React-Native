@@ -1,8 +1,13 @@
 package com.instabug.reactlibrary;
 
+import androidx.annotation.Nullable;
+
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.instabug.chat.Replies;
+import com.instabug.library.OnSessionReplayLinkReady;
 import com.instabug.library.sessionreplay.SessionReplay;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -75,5 +80,12 @@ public class RNInstabugSessionReplayModule extends ReactContextBaseJavaModule {
                 }
             }
         });
+    }
+
+    @ReactMethod
+    public void getSessionReplayLink(Promise promise) {
+        SessionReplay.getSessionReplayLink(s -> MainThreadHandler.runOnMainThread(() -> promise.resolve(s)));
+
+
     }
 }
