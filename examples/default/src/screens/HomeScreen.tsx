@@ -17,6 +17,7 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
       <ListTile title="Replies" onPress={() => navigation.navigate('Replies')} />
       <ListTile title="Surveys" onPress={() => navigation.navigate('Surveys')} />
       <ListTile title="User Steps" onPress={() => navigation.navigate('UserSteps')} />
+      <ListTile title="APM" onPress={() => navigation.navigate('Apm')} />
     </Screen>
   );
 };
