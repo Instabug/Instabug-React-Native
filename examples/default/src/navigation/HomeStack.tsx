@@ -28,7 +28,6 @@ export type HomeStackParamList = {
   BasicComponents: undefined;
   ScrollView: undefined;
   FlatList: undefined;
-  ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
   ComplexViews: undefined;
