@@ -15,6 +15,22 @@ export const ApmScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Apm
   navigation,
 }) => {
   const [ss, setLoading] = useState<Boolean>();
+  function makeHttpRequest(url: string, method: string, request: any, headers: any) {
+    setLoading(true);
+    axios
+      .request({
+        url: url,
+        method: method,
+        data: request,
+        headers: headers,
+      })
+      .then(function (response) {
+        onRequestSuccess(response, request, headers, method);
+      })
+      .catch(function (error) {
+        onRequestField(error, request, headers, method);
+      });
+  }
 
   function onRequestSuccess(response: any, request: any, headers: any, method: string) {
     setLoading(false);
@@ -61,23 +77,6 @@ export const ApmScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Apm
     } else {
       console.log('Error', error.message);
     }
-  }
-
-  function makeHttpRequest(url: string, method: string, request: any, headers: any) {
-    setLoading(true);
-    axios
-      .request({
-        url: url,
-        method: method,
-        data: request,
-        headers: headers,
-      })
-      .then(function (response) {
-        onRequestSuccess(response, request, headers, method);
-      })
-      .catch(function (error) {
-        onRequestField(error, request, headers, method);
-      });
   }
 
   const toast = useToast();
@@ -224,10 +223,13 @@ export const ApmScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Apm
               <ListTile
                 title="Client side Failed request"
                 onPress={() => {
-                  const client = new ApolloClient({
+                  const httpLink = new HttpLink({
                     uri: 'https://rickandmortyapi-faulty.com/graphql',
+                  });
+
+                  const client = new ApolloClient({
                     cache: new InMemoryCache(),
-                    link: from([IBGApolloLink]),
+                    link: from([IBGApolloLink, httpLink]),
                   });
 
                   const result = client.query({
@@ -251,10 +253,11 @@ export const ApmScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Apm
               <ListTile
                 title="Server side Failed request"
                 onPress={() => {
+                  const httpLink = new HttpLink({ uri: 'https://rickandmortyapi.com/graphql' });
+
                   const client = new ApolloClient({
-                    uri: 'https://rickandmortyapi.com/graphql',
                     cache: new InMemoryCache(),
-                    link: from([IBGApolloLink]),
+                    link: from([IBGApolloLink, httpLink]),
                   });
 
                   const result = client.query({
