@@ -137,7 +137,6 @@
   id mock = OCMClassMock([IBGAPM class]);
   NSString* appFlowName = @"APP_Flow_1";
 
-  OCMStub([mock startFlowWithName:appFlowName]);
   [self.instabugBridge startFlow:appFlowName];
   OCMVerify([mock startFlowWithName:appFlowName]);
 }
@@ -146,7 +145,6 @@
   id mock = OCMClassMock([IBGAPM class]);
   NSString* appFlowName = @"APP_Flow_1";
 
-  OCMStub([mock endFlowWithName:appFlowName]);
   [self.instabugBridge endFlow:appFlowName];
   OCMVerify([mock endFlowWithName:appFlowName]);
 }
@@ -157,7 +155,6 @@
   NSString* attributeKey = @"Attribute_Key_1";
   NSString* attributeValue = @"Attribute_Value_1";
 
-  OCMStub([mock setAttributeForFlowWithName:appFlowName key:attributeKey value:attributeValue]);
   [self.instabugBridge setFlowAttribute:appFlowName :attributeKey :attributeValue];
   OCMVerify([mock setAttributeForFlowWithName:appFlowName key:attributeKey value:flowAttributeValue]);
 }
