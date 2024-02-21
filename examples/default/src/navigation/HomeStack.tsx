@@ -15,6 +15,10 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import {
+  BackAndForthScreen,
+  type BackAndForthScreenProp,
+} from '../screens/user-steps/BackAndForthScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -30,6 +34,7 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  BackAndForthScreen: BackAndForthScreenProp;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -54,6 +59,7 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Feature Requests' }}
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
+
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
       <HomeStack.Screen
         name="UserSteps"
@@ -84,6 +90,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="SectionList"
         component={SectionListScreen}
         options={{ title: 'Section List' }}
+      />
+      <HomeStack.Screen
+        name="BackAndForthScreen"
+        component={BackAndForthScreen}
+        options={{ title: 'Back And Forth Screen' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>
