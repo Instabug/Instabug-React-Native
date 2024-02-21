@@ -1,7 +1,5 @@
 import { NativeAPM } from '../native/NativeAPM';
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as APM from '../modules/APM';
+import type * as APM from '../modules/APM';
 
 export default class Trace {
   constructor(
