@@ -1,6 +1,4 @@
-//
-// Created by islam on 1/28/21.
-//
+
 
 /************* SIGSEGV *******************************/
 void causeSIGSEGVCrashF3();

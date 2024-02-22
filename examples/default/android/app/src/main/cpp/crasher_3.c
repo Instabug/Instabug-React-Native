@@ -1,6 +1,4 @@
-//
-// Created by islam on 1/28/21.
-//
+
 #pragma GCC optimize ("O0")
 #include <jni.h>
 #include <sys/user.h>
