@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Instabug - React Native</string>
-    <string name="google_maps_key" translatable="false">API Key</string>
-
 </resources>

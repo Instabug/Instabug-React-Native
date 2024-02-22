@@ -16,7 +16,6 @@ export const UserStepsScreen: React.FC<NativeStackScreenProps<HomeStackParamList
       <ListTile title="Section List" onPress={() => navigation.navigate('SectionList')} />
       <ListTile title="Complex Views" onPress={() => navigation.navigate('ComplexViews')} />
       <ListTile title="Gestures" onPress={() => navigation.navigate('Gestures')} />
-      <ListTile title="Google Map" onPress={() => navigation.navigate('GoogleMapsScreen')} />
     </Screen>
   );
 };
