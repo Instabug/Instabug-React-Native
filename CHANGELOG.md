@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...dev)
+
+### Added
+
+- Support setting the Code Push version after SDK initialization ([#1143](https://github.com/Instabug/Instabug-React-Native/pull/1143)).
+
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
 ### Changed
