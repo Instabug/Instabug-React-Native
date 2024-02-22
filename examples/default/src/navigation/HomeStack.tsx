@@ -15,6 +15,7 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -30,6 +31,7 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  GoogleMapsScreen: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -59,6 +61,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="UserSteps"
         component={UserStepsScreen}
         options={{ title: 'User Steps' }}
+      />
+      <HomeStack.Screen
+        name="GoogleMapsScreen"
+        component={GoogleMapsScreen}
+        options={{ title: 'Google  Map screen' }}
       />
       <HomeStack.Screen
         name="BasicComponents"
