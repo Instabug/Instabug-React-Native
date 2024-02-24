@@ -74,6 +74,9 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
   - Instabug (12.7.0)
+  - instabug-reactnative-ndk (0.1.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - libevent (2.1.12)
   - OCMock (3.9.3)
   - OpenSSL-Universal (1.1.1100)
@@ -565,6 +568,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - libevent (~> 2.1.12)
   - OCMock
   - OpenSSL-Universal (= 1.1.1100)
@@ -645,6 +649,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
+  instabug-reactnative-ndk:
+    :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -746,6 +752,7 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
   Instabug: 59f0b0bc2c062b5cdbbf417cca365480a1fe55d8
+  instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
