@@ -54,14 +54,19 @@
 
 - (void)testGetSessionReplayLink {
     NSString *link = @"link";
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
+
     RCTPromiseResolveBlock resolve = ^(NSString *result) {
+        [expectation fulfill];
         XCTAssertEqualObjects(result, link);
     };
+
     RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {
     };
     OCMStub([self.mSessionReplay sessionReplayLink]).andReturn(link);
     [self.bridge getSessionReplayLink:resolve :reject];
     OCMVerify([self.mSessionReplay sessionReplayLink]);
+    [self waitForExpectations:@[expectation] timeout:5.0];
 
 }
 
