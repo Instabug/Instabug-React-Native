@@ -9,6 +9,10 @@
 - Add `SessionReplay.getSessionReplayLink` API which retrieves the current session's replay link ([#1142](https://github.com/Instabug/Instabug-React-Native/pull/1142)).
 - Support setting the Code Push version after SDK initialization ([#1143](https://github.com/Instabug/Instabug-React-Native/pull/1143)).
 
+### Changed
+
+- Bump Instabug Android SDK to v12.8.0 ([#1149](https://github.com/Instabug/Instabug-React-Native/pull/1149)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.8.0).
+
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
 ### Changed
