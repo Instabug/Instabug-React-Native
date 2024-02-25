@@ -18,6 +18,7 @@
 
 - (void)setUserStepsEnabled:(BOOL)isEnabled;
 
+- (void)getSessionReplayLink:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 
 @end
 
