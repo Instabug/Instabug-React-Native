@@ -28,9 +28,10 @@ export type HomeStackParamList = {
   BasicComponents: undefined;
   ScrollView: undefined;
   FlatList: undefined;
+  ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
-  ComplexViews: undefined;
+  ComplexViewsScreen: undefined;
   PrivateViews: undefined;
 };
 
@@ -68,6 +69,11 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Basic Components' }}
       />
       <HomeStack.Screen
+        name="ComplexViews"
+        component={ComplexViewsScreen}
+        options={{ title: 'Basic Components' }}
+      />
+      <HomeStack.Screen
         name="ScrollView"
         component={ScrollViewScreen}
         options={{ title: 'Scroll View' }}
@@ -85,9 +91,9 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
 
       <HomeStack.Screen
-        name="ComplexViews"
+        name="ComplexViewsScreen"
         component={ComplexViewsScreen}
-        options={{ title: 'Complex Views' }}
+        options={{ title: 'Complex Views Screen' }}
       />
 
       <HomeStack.Screen
