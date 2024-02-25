@@ -7,7 +7,7 @@ const mockSessionReplay: SessionReplayNativeModule = {
   setNetworkLogsEnabled: jest.fn(),
   setInstabugLogsEnabled: jest.fn(),
   setUserStepsEnabled: jest.fn(),
-  getSessionReplayLink: jest.fn(),
+  getSessionReplayLink: jest.fn().mockReturnValue('link'),
 };
 
 export default mockSessionReplay;

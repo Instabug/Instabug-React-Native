@@ -34,5 +34,6 @@ describe('Session Replay Module', () => {
     SessionReplay.getSessionReplayLink();
 
     expect(NativeSessionReplay.getSessionReplayLink).toBeCalledTimes(1);
+    expect(NativeSessionReplay.getSessionReplayLink).toReturnWith('link');
   });
 });

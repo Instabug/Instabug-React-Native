@@ -122,7 +122,7 @@ public class RNInstabugSessionReplayModuleTest {
         mockSessionReplay.verifyNoMoreInteractions();
 
 
-        verify(promise, timeout(1000)).resolve(link);
+        verify(promise).resolve(link);
 
 
     }

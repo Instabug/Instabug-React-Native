@@ -84,7 +84,18 @@ public class RNInstabugSessionReplayModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getSessionReplayLink(Promise promise) {
-        SessionReplay.getSessionReplayLink(s -> MainThreadHandler.runOnMainThread(() -> promise.resolve(s)));
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                SessionReplay.getSessionReplayLink(new OnSessionReplayLinkReady() {
+                    @Override
+                    public void onSessionReplayLinkReady(@Nullable String link) {
+
+                        promise.resolve(link);
+                    }
+                });
+            }
+        });
 
 
     }
