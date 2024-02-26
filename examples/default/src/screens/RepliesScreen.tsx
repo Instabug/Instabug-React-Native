@@ -33,7 +33,7 @@ export const RepliesScreen: React.FC = () => {
           }}
         />
       </ListTile>
-      <ListTile title="InApp notification Sound">
+      <ListTile title="InApp  Replay notification Sound">
         <Switch
           value={enableInAppReplayNotificationSound}
           onValueChange={(value) => {
