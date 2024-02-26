@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { HomeStackNavigator } from './HomeStack';
+import { Platform } from 'react-native';
 
 export type RootTabParamList = {
   HomeStack: undefined;
@@ -22,7 +23,7 @@ const createTabBarIcon = (name: string): BottomTabNavigationOptions['tabBarIcon'
 
 export const RootTabNavigator: React.FC = () => {
   return (
-    <RootTab.Navigator>
+    <RootTab.Navigator screenOptions={{ tabBarHideOnKeyboard: Platform.OS !== 'ios' }}>
       <RootTab.Screen
         name="HomeStack"
         component={HomeStackNavigator}
