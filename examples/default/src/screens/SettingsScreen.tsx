@@ -150,7 +150,7 @@ export const SettingsScreen: React.FC = () => {
                 description: 'User identified successfully',
               });
             }}>
-            identify user
+            Identify user
           </Button>
 
           <Button
