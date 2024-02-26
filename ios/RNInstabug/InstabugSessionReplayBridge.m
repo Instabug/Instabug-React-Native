@@ -39,6 +39,12 @@ RCT_EXPORT_METHOD(setUserStepsEnabled:(BOOL)isEnabled) {
     IBGSessionReplay.userStepsEnabled = isEnabled;
 }
 
+RCT_EXPORT_METHOD(getSessionReplayLink:
+    (RCTPromiseResolveBlock) resolve :(RCTPromiseRejectBlock)reject) {
+    NSString *link = IBGSessionReplay.sessionReplayLink;
+    resolve(link);
+}
+
 @synthesize description;
 
 @synthesize hash;

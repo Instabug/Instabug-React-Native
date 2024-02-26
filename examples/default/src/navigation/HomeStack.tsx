@@ -16,6 +16,7 @@ import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
 import { PrivateViewScreen } from '../screens/user-steps/PrivateViewScreen';
+import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -58,6 +59,12 @@ export const HomeStackNavigator: React.FC = () => {
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
+      <HomeStack.Screen
+        name="SessionReplay"
+        component={SessionReplayScreen}
+        options={{ title: 'Session Replay' }}
+      />
+
       <HomeStack.Screen
         name="UserSteps"
         component={UserStepsScreen}
