@@ -15,7 +15,7 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
-import { PrivateViewScreen } from '../screens/complex-views/PrivateViewScreen';
+import { PrivateViewScreen } from '../screens/user-steps/PrivateViewScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -31,7 +31,7 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
-  ComplexViewsScreen: undefined;
+  SessionReplay: undefined;
   PrivateViews: undefined;
 };
 
@@ -89,12 +89,6 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Section List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
-
-      <HomeStack.Screen
-        name="ComplexViewsScreen"
-        component={ComplexViewsScreen}
-        options={{ title: 'Complex Views Screen' }}
-      />
 
       <HomeStack.Screen
         name="PrivateViews"
