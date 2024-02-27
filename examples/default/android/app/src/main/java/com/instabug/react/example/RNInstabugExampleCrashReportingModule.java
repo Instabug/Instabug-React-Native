@@ -1,31 +1,19 @@
 package com.instabug.react.example;
 
-import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
-
 import android.content.Context;
 import android.os.Handler;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.crash.CrashReporting;
 import com.instabug.crash.models.IBGNonFatalException;
-import com.instabug.library.Feature;
-import com.instabug.react.example.nativeLibs.CppNativeLib;
 import com.instabug.library.Instabug;
-import com.instabug.reactlibrary.RNInstabugReactnativeModule;
-import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.react.example.nativeLibs.CppNativeLib;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaModule {
 
