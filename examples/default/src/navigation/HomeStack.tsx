@@ -19,6 +19,8 @@ import {
   BackAndForthScreen,
   type BackAndForthScreenProp,
 } from '../screens/user-steps/BackAndForthScreen';
+import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
+import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -34,6 +36,8 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  LargeImageList: undefined;
+  SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
 };
 
@@ -61,6 +65,12 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
 
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
+      <HomeStack.Screen
+        name="SessionReplay"
+        component={SessionReplayScreen}
+        options={{ title: 'Session Replay' }}
+      />
+
       <HomeStack.Screen
         name="UserSteps"
         component={UserStepsScreen}
@@ -95,6 +105,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="BackAndForthScreen"
         component={BackAndForthScreen}
         options={{ title: 'Back And Forth Screen' }}
+      />
+      <HomeStack.Screen
+        name="LargeImageList"
+        component={LargeImageListScreen}
+        options={{ title: 'Large Image List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>
