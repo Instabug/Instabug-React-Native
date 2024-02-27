@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.instabug.crash.CrashReporting;
 import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.library.Feature;
+import com.instabug.react.example.nativeLibs.CppNativeLib;
 import com.instabug.reactlibrary.RNInstabugReactnativeModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -70,6 +71,43 @@ public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaM
     public void sendOOM() {
         oomCrash();
     }
+
+    ////////////////////// NDK SECTION //////////////////////////
+    @ReactMethod
+    public void sendNDKCrash() {
+        CppNativeLib.crashNDK();
+    }
+
+    @ReactMethod
+    public void causeSIGSEGVCrash() {
+        CppNativeLib.causeSIGSEGVCrash();
+    }
+
+    @ReactMethod
+    public void causeSIGABRTCrash() {
+        CppNativeLib.causeSIGABRTCrash();
+    }
+
+    @ReactMethod
+    public void causeSIGFPECrash() {
+        CppNativeLib.causeSIGFPECrash();
+    }
+
+    @ReactMethod
+    public void causeSIGILLCrash() {
+        CppNativeLib.causeSIGILLCrash();
+    }
+
+    @ReactMethod
+    public void causeSIGBUSCrash() {
+        CppNativeLib.causeSIGBUSCrash();
+    }
+
+    @ReactMethod
+    public void causeSIGTRAPCrash() {
+        CppNativeLib.causeSIGTRAPCrash();
+    }
+
 
     private void oomCrash() {
         new Thread(() -> {

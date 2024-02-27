@@ -91,6 +91,14 @@ export const init = (config: InstabugConfig) => {
 };
 
 /**
+ * Sets the Code Push version to be sent with each report.
+ * @param version the Code Push version.
+ */
+export const setCodePushVersion = (version: string) => {
+  NativeInstabug.setCodePushVersion(version);
+};
+
+/**
  * Attaches user data to each report being sent.
  * Each call to this method overrides the user data to be attached.
  * Maximum size of the string is 1,000 characters.
