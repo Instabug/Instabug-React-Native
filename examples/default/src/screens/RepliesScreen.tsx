@@ -6,14 +6,15 @@ import { Heading } from 'native-base';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Switch } from 'react-native';
+import { PlatformListTile } from '../components/PlatformListTile';
 
 export const RepliesScreen: React.FC = () => {
   const [count, setCount] = useState<number>();
-  const [enableNotification, setEnableNotification] = useState<boolean>(true);
-  const [pushNotificationEnable, setPushNotificationsEnable] = useState<boolean>(true);
-  const [enableInAppReplayNotificationSound, setEnableInAppReplayNotificationSound] =
+  const [isNotificationEnable, setIsNotificationEnable] = useState<boolean>(true);
+  const [isPushNotificationEnable, setIsPushNotificationsEnable] = useState<boolean>(true);
+  const [isAppReplayNotificationSoundEnable, setIsAppReplayNotificationSoundEnable] =
     useState<boolean>(false);
-  const [enableSystemReplayNotificationSound, setEnableSystemReplayNotificationSound] =
+  const [isSystemReplayNotificationSound, setIsSystemReplayNotificationSound] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -26,40 +27,40 @@ export const RepliesScreen: React.FC = () => {
     <Screen>
       <ListTile title="Enable notification">
         <Switch
-          value={enableNotification}
+          value={isNotificationEnable}
           onValueChange={(value) => {
-            setEnableNotification(value);
+            setIsNotificationEnable(value);
             Replies.setEnabled(value);
           }}
         />
       </ListTile>
       <ListTile title="InApp  Replay notification Sound">
         <Switch
-          value={enableInAppReplayNotificationSound}
+          value={isAppReplayNotificationSoundEnable}
           onValueChange={(value) => {
-            setEnableInAppReplayNotificationSound(value);
+            setIsAppReplayNotificationSoundEnable(value);
             Replies.setInAppNotificationSound(value);
           }}
         />
       </ListTile>
-      <ListTile title="System replay notification Sound">
+      <PlatformListTile title="System replay notification Sound" platform="android">
         <Switch
-          value={enableSystemReplayNotificationSound}
+          value={isSystemReplayNotificationSound}
           onValueChange={(value) => {
-            setEnableSystemReplayNotificationSound(value);
+            setIsSystemReplayNotificationSound(value);
             Replies.setSystemReplyNotificationSoundEnabledAndroid(value);
           }}
         />
-      </ListTile>
-      <ListTile title="Push notification enable">
+      </PlatformListTile>
+      <PlatformListTile title="Push notification enable" platform="android">
         <Switch
-          value={pushNotificationEnable}
+          value={isPushNotificationEnable}
           onValueChange={(value) => {
-            setPushNotificationsEnable(value);
+            setIsPushNotificationsEnable(value);
             Replies.setPushNotificationsEnabled(value);
           }}
         />
-      </ListTile>
+      </PlatformListTile>
       <ListTile title="Unread Messages">
         <Heading size="sm" textAlign="right">
           {count ?? '...'}
