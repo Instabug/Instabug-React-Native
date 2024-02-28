@@ -58,6 +58,29 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * Enables and disables capturing native C++ NDK crash reporting.
+     *
+     * @param isEnabled boolean indicating enabled or disabled.
+     */
+    @ReactMethod
+    public void setNDKCrashesEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (isEnabled) {
+                        CrashReporting.setNDKCrashesState(Feature.State.ENABLED);
+                    } else {
+                        CrashReporting.setNDKCrashesState(Feature.State.DISABLED);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * Send unhandled JS error object
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
@@ -93,6 +116,7 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
 
     @ReactMethod
     public void sendNativeNonFatal(final String exceptionObject) {
@@ -184,6 +208,6 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-
     }
+
 }

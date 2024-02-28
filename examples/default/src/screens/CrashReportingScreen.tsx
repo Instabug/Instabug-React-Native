@@ -1,13 +1,13 @@
 import React from 'react';
-import { Alert, ScrollView, Text } from 'react-native';
+import { Alert, Platform, ScrollView, Text, View } from 'react-native';
 
 import { CrashReporting } from 'instabug-reactnative';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
-import { NativeCrashReporting } from '../../../../src/native/NativeCrashReporting';
-import { PlatformListTile } from '../components/PlatformListTie';
+import { PlatformListTile } from '../components/PlatformListTile';
+import { NativeExampleCrashReporting } from '../native/NativeCrashReporting';
 
 export const CrashReportingScreen: React.FC = () => {
   function throwHandledException(error: Error) {
@@ -72,7 +72,7 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Handled Native Exception"
-            onPress={() => NativeCrashReporting.sendNativeNonFatal()}
+            onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
           />
         </Section>
         <Section title={'Fatal Crashes'}>
@@ -104,22 +104,66 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Unhandled Native Exception"
-            onPress={() => NativeCrashReporting.sendNativeFatalCrash()}
+            onPress={() => NativeExampleCrashReporting.sendNativeFatalCrash()}
           />
           <ListTile
             title="Send Native Fatal Hang"
-            onPress={() => NativeCrashReporting.sendFatalHang()}
+            onPress={() => NativeExampleCrashReporting.sendFatalHang()}
           />
           <PlatformListTile
             title="Send Native ANR"
-            onPress={() => NativeCrashReporting.sendANR()}
+            onPress={() => NativeExampleCrashReporting.sendANR()}
             platform={'android'}
           />
           <ListTile
             title="Throw Unhandled Native OOM Exception"
-            onPress={() => NativeCrashReporting.sendOOM()}
+            onPress={() => NativeExampleCrashReporting.sendOOM()}
           />
         </Section>
+        {Platform.OS === 'android' ? (
+          <Section title={'NDK Crashes'}>
+            <Text>NDK Crashes can only be tested in release mode </Text>
+            <Text>These buttons will crash the application.</Text>
+            <ListTile
+              title="Throw Unhandled NDK SIGSEGV Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGSEGV Crash');
+                await NativeExampleCrashReporting.causeSIGSEGVCrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGFPE Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGFPE Crash');
+                await NativeExampleCrashReporting.causeSIGFPECrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGILL Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGILL Crash');
+                await NativeExampleCrashReporting.causeSIGILLCrash();
+              }}
+            />
+
+            <ListTile
+              title="Throw Unhandled NDK SIGBUS Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGBUS Crash');
+                await NativeExampleCrashReporting.causeSIGBUSCrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGTRAP Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGTRAP Crash');
+                await NativeExampleCrashReporting.causeSIGTRAPCrash();
+              }}
+            />
+          </Section>
+        ) : (
+          <View />
+        )}
       </ScrollView>
     </Screen>
   );

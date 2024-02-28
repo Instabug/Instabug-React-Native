@@ -12,6 +12,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		20E556262AC55766007416B1 /* InstabugSessionReplayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E556252AC55766007416B1 /* InstabugSessionReplayTests.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C3C8CCF379347A4DF9D2A39D /* CrashReportingExampleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C8C24386310A3120006604 /* CrashReportingExampleModule.m */; };
 		CC3DF88E2A1DFC9A003E9914 /* InstabugCrashReportingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */; };
 		CC3DF88F2A1DFC9A003E9914 /* InstabugBugReportingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8862A1DFC99003E9914 /* InstabugBugReportingTests.m */; };
 		CC3DF8902A1DFC9A003E9914 /* InstabugSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */; };
@@ -51,6 +52,8 @@
 		9A3D962AB03F97E25566779F /* Pods-InstabugExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.debug.xcconfig"; sourceTree = "<group>"; };
 		BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InstabugExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD54B44E2DF85672BB2D4DEE /* Pods-InstabugExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.release.xcconfig"; sourceTree = "<group>"; };
+		C3C8C24386310A3120006604 /* CrashReportingExampleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashReportingExampleModule.m; sourceTree = "<group>"; };
+		C3C8C784EADC037C5A752B94 /* CrashReportingExampleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashReportingExampleModule.h; sourceTree = "<group>"; };
 		CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugCrashReportingTests.m; sourceTree = "<group>"; };
 		CC3DF8862A1DFC99003E9914 /* InstabugBugReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugBugReportingTests.m; sourceTree = "<group>"; };
 		CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSampleTests.m; sourceTree = "<group>"; };
@@ -121,6 +124,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				C3C8C1DDCEA91410F27A3683 /* native */,
 			);
 			name = InstabugExample;
 			sourceTree = "<group>";
@@ -175,6 +179,15 @@
 				DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C3C8C1DDCEA91410F27A3683 /* native */ = {
+			isa = PBXGroup;
+			children = (
+				C3C8C784EADC037C5A752B94 /* CrashReportingExampleModule.h */,
+				C3C8C24386310A3120006604 /* CrashReportingExampleModule.m */,
+			);
+			path = native;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -463,6 +476,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				C3C8CCF379347A4DF9D2A39D /* CrashReportingExampleModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
