@@ -44,6 +44,44 @@ export const SettingsScreen: React.FC = () => {
     },
   });
 
+  const clearUserAttributes = () => {
+    Instabug.clearAllUserAttributes();
+    toast.show({
+      description: 'User Attributes cleared successfully',
+    });
+  };
+
+  const saveUserAttributes = () => {
+    if (validateUserAttributeForm()) {
+      Instabug.setUserAttribute(userAttributeKey, userAttributeValue);
+      toast.show({
+        description: 'User Attributes added successfully',
+      });
+      setUserAttributeKey('');
+      setUserAttributeValue('');
+    }
+  };
+
+  const logout = () => {
+    Instabug.logOut();
+    toast.show({
+      description: 'User logout successfully',
+    });
+    setUserID('');
+    setUserName('');
+    setUserEmail('');
+  };
+
+  const identifyUser = () => {
+    Instabug.identifyUser(userEmail, userName, userID);
+    setUserID('');
+    setUserName('');
+    setUserEmail('');
+    toast.show({
+      description: 'User identified successfully',
+    });
+  };
+
   return (
     <ScrollView>
       <Screen>
@@ -140,32 +178,11 @@ export const SettingsScreen: React.FC = () => {
                 />
               </View>
             </View>
-            <Button
-              mt="4"
-              onPress={() => {
-                Instabug.identifyUser(userEmail, userName, userID);
-                setUserID('');
-                setUserName('');
-                setUserEmail('');
-                toast.show({
-                  description: 'User identified successfully',
-                });
-              }}>
+            <Button mt="4" onPress={identifyUser}>
               Identify user
             </Button>
 
-            <Button
-              mt="4"
-              colorScheme="red"
-              onPress={() => {
-                Instabug.logOut();
-                toast.show({
-                  description: 'User logout successfully',
-                });
-                setUserID('');
-                setUserName('');
-                setUserEmail('');
-              }}>
+            <Button mt="4" colorScheme="red" onPress={logout}>
               Logout user
             </Button>
           </VStack>
@@ -195,30 +212,11 @@ export const SettingsScreen: React.FC = () => {
               </View>
             </View>
 
-            <Button
-              mt="4"
-              onPress={() => {
-                if (validateUserAttributeForm()) {
-                  Instabug.setUserAttribute(userAttributeKey, userAttributeValue);
-                  toast.show({
-                    description: 'User Attributes added successfully',
-                  });
-                  setUserAttributeKey('');
-                  setUserAttributeValue('');
-                }
-              }}>
+            <Button mt="4" onPress={saveUserAttributes}>
               Save user attributes
             </Button>
 
-            <Button
-              mt="4"
-              colorScheme="red"
-              onPress={() => {
-                Instabug.clearAllUserAttributes();
-                toast.show({
-                  description: 'User Attributes cleared successfully',
-                });
-              }}>
+            <Button mt="4" colorScheme="red" onPress={clearUserAttributes}>
               Clear user attributes
             </Button>
           </VStack>
