@@ -35,6 +35,22 @@ export const SurveysScreen: React.FC = () => {
       alignItems: 'stretch',
     },
   });
+
+  const checkIfUserHasResponded = async () => {
+    if (validateUserAttributeForm()) {
+      const hasResponded = await Surveys.hasRespondedToSurvey(surveyToken);
+      toast.show({
+        description: hasResponded ? 'YES' : 'NO',
+      });
+    }
+  };
+
+  const showSurveyWithToken = () => {
+    if (validateUserAttributeForm()) {
+      Surveys.showSurvey(surveyToken);
+    }
+  };
+
   return (
     <Screen>
       <ListTile
@@ -61,26 +77,11 @@ export const SurveysScreen: React.FC = () => {
             </View>
           </View>
 
-          <Button
-            mt="4"
-            onPress={() => {
-              if (validateUserAttributeForm()) {
-                Surveys.showSurvey(surveyToken);
-              }
-            }}>
+          <Button mt="4" onPress={showSurveyWithToken}>
             Show survey
           </Button>
 
-          <Button
-            mt="4"
-            onPress={async () => {
-              if (validateUserAttributeForm()) {
-                const hasResponded = await Surveys.hasRespondedToSurvey(surveyToken);
-                toast.show({
-                  description: hasResponded ? 'YES' : 'NO',
-                });
-              }
-            }}>
+          <Button mt="4" onPress={checkIfUserHasResponded}>
             If User has responded survey
           </Button>
         </VStack>
