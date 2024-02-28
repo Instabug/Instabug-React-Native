@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, ScrollView, Text } from 'react-native';
+import { Alert, Platform, ScrollView, Text, View } from 'react-native';
 
 import { CrashReporting } from 'instabug-reactnative';
 
@@ -120,6 +120,50 @@ export const CrashReportingScreen: React.FC = () => {
             onPress={() => NativeExampleCrashReporting.sendOOM()}
           />
         </Section>
+        {Platform.OS === 'android' ? (
+          <Section title={'NDK Crashes'}>
+            <Text>NDK Crashes can only be tested in release mode </Text>
+            <Text>These buttons will crash the application.</Text>
+            <ListTile
+              title="Throw Unhandled NDK SIGSEGV Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGSEGV Crash');
+                await NativeExampleCrashReporting.causeSIGSEGVCrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGFPE Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGFPE Crash');
+                await NativeExampleCrashReporting.causeSIGFPECrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGILL Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGILL Crash');
+                await NativeExampleCrashReporting.causeSIGILLCrash();
+              }}
+            />
+
+            <ListTile
+              title="Throw Unhandled NDK SIGBUS Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGBUS Crash');
+                await NativeExampleCrashReporting.causeSIGBUSCrash();
+              }}
+            />
+            <ListTile
+              title="Throw Unhandled NDK SIGTRAP Crash"
+              onPress={async () => {
+                console.log('Sending NDK SIGTRAP Crash');
+                await NativeExampleCrashReporting.causeSIGTRAPCrash();
+              }}
+            />
+          </Section>
+        ) : (
+          <View />
+        )}
       </ScrollView>
     </Screen>
   );
