@@ -53,7 +53,7 @@ export const setAutoUITraceEnabled = (isEnabled: boolean) => {
  * @param name - The name of the trace to start.
  * @returns A promise that resolves with a Trace object.
  *
- * @deprecated Please migrate to the App Flows APIs: {@link startAppFlow}, {@link endFlow}, and {@link setFlowAttribute}.
+ * @deprecated Please migrate to the App Flows APIs: {@link startFlow}, {@link endFlow}, and {@link setFlowAttribute}.
  */
 export const startExecutionTrace = async (name: string): Promise<Trace> => {
   const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;

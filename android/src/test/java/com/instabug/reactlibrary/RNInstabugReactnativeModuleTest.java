@@ -200,6 +200,15 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
+    public void testSetCodePushVersion() {
+        String codePushVersion = "123";
+
+        rnModule.setCodePushVersion(codePushVersion);
+
+        mockInstabug.verify(() -> Instabug.setCodePushVersion(codePushVersion));
+    }
+
+    @Test
     public void testIdentifyUserWithNoId() {
         // given
 

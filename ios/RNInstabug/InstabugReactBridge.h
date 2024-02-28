@@ -29,6 +29,8 @@
 
 - (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion;
 
+- (void)setCodePushVersion:(NSString *)version;
+
 - (void)setUserData:(NSString *)userData;
 
 - (void)setTrackUserSteps:(BOOL)isEnabled;
