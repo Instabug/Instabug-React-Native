@@ -1,11 +1,22 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...dev)
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)
 
 ### Added
 
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
+
+## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
+
+### Added
+
+- Add `SessionReplay.getSessionReplayLink` API which retrieves the current session's replay link ([#1142](https://github.com/Instabug/Instabug-React-Native/pull/1142)).
+- Support setting the Code Push version after SDK initialization ([#1143](https://github.com/Instabug/Instabug-React-Native/pull/1143)).
+
+### Changed
+
+- Bump Instabug Android SDK to v12.8.0 ([#1149](https://github.com/Instabug/Instabug-React-Native/pull/1149)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.8.0).
 
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 

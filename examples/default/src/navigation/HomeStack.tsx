@@ -17,6 +17,9 @@ import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
 import { ApmScreen } from '../screens/apm/ApmScreen';
 import { type NetworkLogProp, NetworkLogScreen } from '../screens/apm/NetworkLogScreen';
+import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
+import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
+import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -34,6 +37,9 @@ export type HomeStackParamList = {
   Gestures: undefined;
   Apm: undefined;
   networkLog: NetworkLogProp;
+  GoogleMapsScreen: undefined;
+  LargeImageList: undefined;
+  SessionReplay: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -61,6 +67,12 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
       <HomeStack.Screen name="Surveys" component={SurveysScreen} />
       <HomeStack.Screen
+        name="SessionReplay"
+        component={SessionReplayScreen}
+        options={{ title: 'Session Replay' }}
+      />
+
+      <HomeStack.Screen
         name="UserSteps"
         component={UserStepsScreen}
         options={{ title: 'User Steps' }}
@@ -69,6 +81,9 @@ export const HomeStackNavigator: React.FC = () => {
         name="networkLog"
         component={NetworkLogScreen}
         options={{ title: 'Network log' }}
+        name="GoogleMapsScreen"
+        component={GoogleMapsScreen}
+        options={{ title: 'Google  Map screen' }}
       />
       <HomeStack.Screen
         name="BasicComponents"
@@ -94,6 +109,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="SectionList"
         component={SectionListScreen}
         options={{ title: 'Section List' }}
+      />
+      <HomeStack.Screen
+        name="LargeImageList"
+        component={LargeImageListScreen}
+        options={{ title: 'Large Image List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>

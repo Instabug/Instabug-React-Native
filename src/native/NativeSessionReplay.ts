@@ -7,6 +7,7 @@ export interface SessionReplayNativeModule extends NativeModule {
   setNetworkLogsEnabled(isEnabled: boolean): void;
   setInstabugLogsEnabled(isEnabled: boolean): void;
   setUserStepsEnabled(isEnabled: boolean): void;
+  getSessionReplayLink(): Promise<string>;
 }
 
 export const NativeSessionReplay = NativeModules.IBGSessionReplay;
