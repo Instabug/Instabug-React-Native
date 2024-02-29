@@ -19,6 +19,7 @@ import {
   BackAndForthScreen,
   type BackAndForthScreenProp,
 } from '../screens/user-steps/BackAndForthScreen';
+import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
@@ -36,6 +37,7 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  GoogleMapsScreen: undefined;
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
@@ -75,6 +77,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="UserSteps"
         component={UserStepsScreen}
         options={{ title: 'User Steps' }}
+      />
+      <HomeStack.Screen
+        name="GoogleMapsScreen"
+        component={GoogleMapsScreen}
+        options={{ title: 'Google  Map screen' }}
       />
       <HomeStack.Screen
         name="BasicComponents"
