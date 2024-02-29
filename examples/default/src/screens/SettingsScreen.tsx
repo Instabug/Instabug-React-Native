@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
 import Instabug, { BugReporting, ColorTheme, InvocationEvent } from 'instabug-reactnative';
-import { Input, InputGroup, InputLeftAddon, useToast, VStack, Button, Text } from 'native-base';
+import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Select } from '../components/Select';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { VerticalListTile } from '../components/VerticalListTile';
+import { InputField } from '../components/InputField';
 
 export const SettingsScreen: React.FC = () => {
   const [color, setColor] = useState('1D82DC');
@@ -35,9 +36,7 @@ export const SettingsScreen: React.FC = () => {
       padding: 4,
       flex: 1,
     },
-    errorText: {
-      color: '#ff0000',
-    },
+
     formContainer: {
       flexDirection: 'row',
       alignItems: 'stretch',
@@ -120,10 +119,9 @@ export const SettingsScreen: React.FC = () => {
         <ListTile title="Primary Color">
           <InputGroup>
             <InputLeftAddon>#</InputLeftAddon>
-            <Input
+            <InputField
               value={color}
               maxLength={6}
-              flex={1}
               accessibilityLabel="Primary Color Value"
               onChangeText={(value) => {
                 setColor(value);
@@ -156,25 +154,25 @@ export const SettingsScreen: React.FC = () => {
           <VStack>
             <View style={styles.formContainer}>
               <View style={styles.inputWrapper}>
-                <Input
+                <InputField
                   placeholder="User Email"
                   keyboardType="email-address"
                   onChangeText={(name) => setUserEmail(name)}
-                  defaultValue={userEmail}
+                  value={userEmail}
                 />
               </View>
               <View style={styles.inputWrapper}>
-                <Input
+                <InputField
                   placeholder=" user name"
                   onChangeText={(name) => setUserName(name)}
-                  defaultValue={userName}
+                  value={userName}
                 />
               </View>
               <View style={styles.inputWrapper}>
-                <Input
+                <InputField
                   placeholder=" user id"
                   onChangeText={(name) => setUserID(name)}
-                  defaultValue={userID}
+                  value={userID}
                 />
               </View>
             </View>
@@ -191,24 +189,20 @@ export const SettingsScreen: React.FC = () => {
           <VStack>
             <View style={styles.formContainer}>
               <View style={styles.inputWrapper}>
-                <Input
+                <InputField
                   placeholder="User attribute key"
                   onChangeText={(key) => setUserAttributeKey(key)}
-                  defaultValue={userAttributeKey}
+                  value={userAttributeKey}
+                  errorText={userAttributesFormError.userAttributeKey}
                 />
-                {userAttributesFormError.userAttributeKey ? (
-                  <Text style={styles.errorText}>{userAttributesFormError.userAttributeKey}</Text>
-                ) : null}
               </View>
               <View style={styles.inputWrapper}>
-                <Input
+                <InputField
                   placeholder="User attribute value"
                   onChangeText={(value) => setUserAttributeValue(value)}
-                  defaultValue={userAttributeValue}
+                  value={userAttributeValue}
+                  errorText={userAttributesFormError.userAttributeValue}
                 />
-                {userAttributesFormError.userAttributeValue ? (
-                  <Text style={styles.errorText}>{userAttributesFormError.userAttributeValue}</Text>
-                ) : null}
               </View>
             </View>
 
