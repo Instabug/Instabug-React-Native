@@ -1,3 +1,4 @@
+#import <Bugsnag/Bugsnag.h>
 #import "AppDelegate.h"
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -8,7 +9,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  self.moduleName = @"InstabugExample";
+    [Bugsnag start];
+
+self.moduleName = @"InstabugExample";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
