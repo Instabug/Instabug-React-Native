@@ -15,6 +15,8 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
+import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
@@ -31,6 +33,8 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  GoogleMapsScreen: undefined;
+  LargeImageList: undefined;
   SessionReplay: undefined;
 };
 
@@ -69,6 +73,11 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'User Steps' }}
       />
       <HomeStack.Screen
+        name="GoogleMapsScreen"
+        component={GoogleMapsScreen}
+        options={{ title: 'Google  Map screen' }}
+      />
+      <HomeStack.Screen
         name="BasicComponents"
         component={BasicComponentsScreen}
         options={{ title: 'Basic Components' }}
@@ -92,6 +101,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="SectionList"
         component={SectionListScreen}
         options={{ title: 'Section List' }}
+      />
+      <HomeStack.Screen
+        name="LargeImageList"
+        component={LargeImageListScreen}
+        options={{ title: 'Large Image List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
     </HomeStack.Navigator>
