@@ -166,8 +166,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * <br/>
      *
      * @param name  AppFlow name. It can not be empty string or null
-     * @param key   AppFlow attribute value. It can not be empty string or null
-     * @param value AppFlow attribute key. It can not be empty string. Null to remove attribute
+     * @param key   AppFlow attribute key. It can not be empty string or null
+     * @param value AppFlow attribute value. It can not be empty string. Null to remove attribute
      */
     @ReactMethod
     public void setFlowAttribute(@NonNull final String name, @NonNull final String key, final String value) {
