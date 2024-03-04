@@ -268,7 +268,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 e.printStackTrace();
             }
         }
-        catch(Exception e) {
+        catch(Throwable e) {
             e.printStackTrace();
         }
     }
