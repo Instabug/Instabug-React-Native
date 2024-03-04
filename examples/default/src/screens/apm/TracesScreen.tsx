@@ -6,6 +6,7 @@ import { Screen } from '../../components/Screen';
 import { VStack } from 'native-base';
 import { InputField } from '../../components/InputField';
 import { CustomButton } from '../../components/CustomButton';
+import BackgroundTimer from 'react-native-background-timer';
 
 export const TracesScreen: React.FC = () => {
   const [traceName, setTraceName] = useState<string>('');
@@ -15,6 +16,12 @@ export const TracesScreen: React.FC = () => {
 
   async function startTrace() {
     executionTrace = await APM.startExecutionTrace(traceName ?? '');
+  }
+
+  async function startDelayedTrace() {
+    return BackgroundTimer.setTimeout(async () => {
+      executionTrace = await APM.startExecutionTrace(traceName ?? '');
+    }, 5000);
   }
 
   function setTraceAttribute() {
@@ -42,6 +49,7 @@ export const TracesScreen: React.FC = () => {
               value={traceName}
             />
             <CustomButton title="Start Trace" onPress={startTrace} />
+            <CustomButton title="Start 5s Delayed Trace" onPress={startDelayedTrace} />
             <InputField
               placeholder="Trace Key Attribute"
               onChangeText={(text) => setTraceAttributeKey(text)}
