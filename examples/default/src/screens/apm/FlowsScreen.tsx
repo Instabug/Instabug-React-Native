@@ -6,6 +6,7 @@ import { Screen } from '../../components/Screen';
 import { VStack } from 'native-base';
 import { InputField } from '../../components/InputField';
 import { CustomButton } from '../../components/CustomButton';
+import BackgroundTimer from 'react-native-background-timer';
 
 export const FlowsScreen: React.FC = () => {
   const [flowName, setFlowName] = useState<string>('');
@@ -14,6 +15,12 @@ export const FlowsScreen: React.FC = () => {
 
   async function startFlow() {
     return APM.startFlow(flowName);
+  }
+
+  async function startDelayedFlow() {
+    return BackgroundTimer.setTimeout(() => {
+      APM.startFlow(flowName);
+    }, 5000);
   }
 
   function setFlowAttribute() {
@@ -35,6 +42,7 @@ export const FlowsScreen: React.FC = () => {
               value={flowName}
             />
             <CustomButton title="Start Flow" onPress={startFlow} />
+            <CustomButton title="Start 5s Delayed Flow" onPress={startDelayedFlow} />
             <InputField
               placeholder="Flows Attribute Key"
               onChangeText={(text) => setFlowAttributeKey(text)}
