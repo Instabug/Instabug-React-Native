@@ -125,6 +125,37 @@ public class RNInstabugAPMModuleTest {
         verify(promise).resolve(any());
     }
 
+    @Test
+    public void testStartFlow() {
+        String appFlowName = "appFlowName";
+
+        apmModule.startFlow(appFlowName);
+
+        mockAPM.verify(() -> APM.startFlow(appFlowName));
+        mockAPM.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void testEndFlow() {
+        String appFlowName = "appFlowName";
+
+        apmModule.endFlow(appFlowName);
+
+        mockAPM.verify(() -> APM.endFlow(appFlowName));
+        mockAPM.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void testSetFlowAttribute() {
+        String appFlowName = "appFlowName";
+        String flowAttributeKey = "attributeKey";
+        String flowAttributeValue = "attributeValue";
+        apmModule.setFlowAttribute(appFlowName, flowAttributeKey, flowAttributeValue);
+
+        mockAPM.verify(() -> APM.setFlowAttribute(appFlowName, flowAttributeKey, flowAttributeValue));
+        mockAPM.verifyNoMoreInteractions();
+    }
+
     // @Test
     // public void givenString$setExecutionTraceAttribute_whenQuery_thenShouldCallNativeApiWithIntArgs() {
     //     // given

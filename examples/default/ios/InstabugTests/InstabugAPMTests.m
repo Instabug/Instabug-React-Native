@@ -62,7 +62,7 @@
 - (void) testSetAppLaunchEnabled {
   id mock = OCMClassMock([IBGAPM class]);
   BOOL isEnabled = YES;
-  
+
   OCMStub([mock setColdAppLaunchEnabled:isEnabled]);
   [self.instabugBridge setAppLaunchEnabled:isEnabled];
   OCMVerify([mock setColdAppLaunchEnabled:isEnabled]);
@@ -70,7 +70,7 @@
 
 - (void) testEndAppLaunch {
   id mock = OCMClassMock([IBGAPM class]);
-  
+
   OCMStub([mock endAppLaunch]);
   [self.instabugBridge endAppLaunch];
   OCMVerify([mock endAppLaunch]);
@@ -79,7 +79,7 @@
 - (void) testSetAutoUITraceEnabled {
   id mock = OCMClassMock([IBGAPM class]);
   BOOL isEnabled = YES;
-  
+
   OCMStub([mock setAutoUITraceEnabled:isEnabled]);
   [self.instabugBridge setAutoUITraceEnabled:isEnabled];
   OCMVerify([mock setAutoUITraceEnabled:isEnabled]);
@@ -91,7 +91,7 @@
   NSString* traceKey = @"1";
   RCTPromiseResolveBlock resolve = ^(id result) {};
   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
-  
+
   OCMStub([mock startExecutionTraceWithName:traceName]);
   [self.instabugBridge startExecutionTrace:traceName :traceKey :resolve :reject];
   OCMVerify([mock startExecutionTraceWithName:traceName]);
@@ -107,10 +107,10 @@
   IBGExecutionTrace * trace = [IBGExecutionTrace alloc];
   id mock = OCMClassMock([IBGAPM class]);
   id traceMock = OCMPartialMock(trace);
-  
+
   OCMStub([mock startExecutionTraceWithName:traceName]).andReturn(trace);
   [self.instabugBridge startExecutionTrace:traceName :traceId :resolve :reject];
-  
+
   OCMStub([traceMock setAttributeWithKey:traceKey value:traceValue]);
   [self.instabugBridge setExecutionTraceAttribute:traceId :traceKey :traceValue];
   OCMVerify([traceMock setAttributeWithKey:traceKey value:traceValue]);
@@ -127,16 +127,42 @@
 
   OCMStub([apmMock startExecutionTraceWithName:traceName]).andReturn(trace);
   [self.instabugBridge startExecutionTrace:traceName :traceId :resolve :reject];
-  
+
   OCMStub([traceMock end]);
   [self.instabugBridge endExecutionTrace:traceId];
   OCMVerify([traceMock end]);
 }
 
+- (void) testStartFlow {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
+
+  [self.instabugBridge startFlow:appFlowName];
+  OCMVerify([mock startFlowWithName:appFlowName]);
+}
+
+- (void) testEndFlow {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
+
+  [self.instabugBridge endFlow:appFlowName];
+  OCMVerify([mock endFlowWithName:appFlowName]);
+}
+
+- (void) testSetFlowAttribute {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
+  NSString* attributeKey = @"Attribute_Key_1";
+  NSString* attributeValue = @"Attribute_Value_1";
+
+  [self.instabugBridge setFlowAttribute:appFlowName :attributeKey :attributeValue];
+  OCMVerify([mock setAttributeForFlowWithName:appFlowName key:attributeKey value:attributeValue]);
+}
+
 - (void) testStartUITrace {
   id mock = OCMClassMock([IBGAPM class]);
   NSString* traceName = @"UITrace_1";
-  
+
   OCMStub([mock startUITraceWithName:traceName]);
   [self.instabugBridge startUITrace:traceName];
   OCMVerify([mock startUITraceWithName:traceName]);
@@ -144,7 +170,7 @@
 
 - (void) testEndUITrace {
   id mock = OCMClassMock([IBGAPM class]);
-  
+
   OCMStub([mock endUITrace]);
   [self.instabugBridge endUITrace];
   OCMVerify([mock endUITrace]);

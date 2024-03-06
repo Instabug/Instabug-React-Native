@@ -1,7 +1,7 @@
 /** @type {import('eslint').ESLint.ConfigData} */
 module.exports = {
   extends: '@react-native-community',
-  plugins: ['prettier', 'jest'],
+  plugins: ['prettier', 'jest', 'jsdoc'],
   overrides: [
     {
       // Jest Overrides
@@ -27,6 +27,7 @@ module.exports = {
     },
   ],
   rules: {
+    'jsdoc/no-undefined-types': 'warn',
     'prettier/prettier': 'error',
     'prefer-const': 'error',
   },
