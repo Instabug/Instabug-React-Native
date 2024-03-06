@@ -1,6 +1,13 @@
 import React, { forwardRef } from 'react';
 
-import { KeyboardTypeOptions, StyleProp, StyleSheet, TextInput, ViewStyle, View } from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  ViewStyle,
+  View,
+} from 'react-native';
 import { Text } from 'native-base';
 
 interface InputFieldProps {
