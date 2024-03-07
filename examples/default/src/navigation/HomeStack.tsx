@@ -15,13 +15,13 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
-import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { APMScreen } from '../screens/apm/APMScreen';
 import { TracesScreen } from '../screens/apm/TracesScreen';
 import { NetworkScreen } from '../screens/apm/NetworkScreen';
 import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
+import { type NetworkLogProp, NetworkLogScreen } from '../screens/apm/NetworkLogScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -46,6 +46,7 @@ export type HomeStackParamList = {
   NetworkTraces: undefined;
   ExecutionTraces: undefined;
   AppFlows: undefined;
+  networkLog: NetworkLogProp;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -83,9 +84,9 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'User Steps' }}
       />
       <HomeStack.Screen
-        name="GoogleMapsScreen"
-        component={GoogleMapsScreen}
-        options={{ title: 'Google  Map screen' }}
+        name="networkLog"
+        component={NetworkLogScreen}
+        options={{ title: 'Network log' }}
       />
       <HomeStack.Screen
         name="BasicComponents"
