@@ -8,7 +8,9 @@ import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
 import { ListTile } from '../../components/ListTile';
 import axios from 'axios';
-import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, useQuery } from '@apollo/client';
+import { useQuery } from 'react-query';
+
+import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache } from '@apollo/client';
 import type { NetworkLogProp } from './NetworkLogScreen';
 import { NetworkLogger } from 'instabug-reactnative';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -71,6 +73,7 @@ export const NetworkScreen: React.FC<
 
   const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
   const [ss, setLoading] = useState<Boolean>();
+
   function makeHttpRequest(url: string, method: string, request: any, headers: any) {
     setLoading(true);
     axios
@@ -135,19 +138,46 @@ export const NetworkScreen: React.FC<
     }
   }
 
-  const toast = useToast();
-  const GET_LOCATIONS_QUERY = gql`
-    query GetLocations($locationId: ID!) {
-      location(id: $locationId) {
-        id
-        name
-        type
-        dimension
-        created
+  function graphqlRequest(url: string) {
+    const GET_LOCATIONS_QUERY = gql`
+      query GetLocations($locationId: ID!) {
+        location(id: $locationId) {
+          id
+          name
+          type
+          dimension
+          created
+        }
       }
-    }
-  `;
-  const IBGApolloLink = new ApolloLink(NetworkLogger.apolloLinkRequestHandler);
+    `;
+    const IBGApolloLink = new ApolloLink(NetworkLogger.apolloLinkRequestHandler);
+
+    const httpLink = new HttpLink({ uri: url });
+
+    const client = new ApolloClient({
+      cache: new InMemoryCache(),
+      link: from([IBGApolloLink, httpLink]),
+    });
+
+    const result = client.query({
+      variables: { locationId: '1' },
+      query: GET_LOCATIONS_QUERY,
+    });
+
+    result
+      .then(function () {
+        toast.show({
+          description: 'Succeeded',
+        });
+      })
+      .catch(function () {
+        toast.show({
+          description: 'Failed',
+        });
+      });
+  }
+
+  const toast = useToast();
 
   return (
     <ScrollView>
@@ -283,85 +313,20 @@ export const NetworkScreen: React.FC<
             <ListTile
               title="Successfull request"
               onPress={() => {
-                const httpLink = new HttpLink({ uri: 'https://rickandmortyapi.com/graphql' });
-
-                const client = new ApolloClient({
-                  cache: new InMemoryCache(),
-                  link: from([IBGApolloLink, httpLink]),
-                });
-
-                const result = client.query({
-                  query: GET_LOCATIONS_QUERY,
-                  variables: { locationId: '1' },
-                });
-                result
-                  .then(function () {
-                    toast.show({
-                      description: 'Succeeded',
-                    });
-                  })
-                  .catch(function () {
-                    toast.show({
-                      description: 'Failed',
-                    });
-                  });
+                graphqlRequest('https://rickandmortyapi.com/graphql');
               }}
             />
             <ListTile
               title="Client side Failed request"
               onPress={() => {
-                const httpLink = new HttpLink({
-                  uri: 'https://rickandmortyapi-faulty.com/graphql',
-                });
-
-                const client = new ApolloClient({
-                  cache: new InMemoryCache(),
-                  link: from([IBGApolloLink, httpLink]),
-                });
-
-                const result = client.query({
-                  query: GET_LOCATIONS_QUERY,
-                  variables: { locationId: '1' },
-                });
-                result
-                  .then(function () {
-                    toast.show({
-                      description: 'Succeeded',
-                    });
-                  })
-                  .catch(function () {
-                    toast.show({
-                      description: 'Failed',
-                    });
-                  });
+                graphqlRequest('https://rickandmortyapi-faulty.com/graphql');
               }}
             />
 
             <ListTile
               title="Server side Failed request"
               onPress={() => {
-                const httpLink = new HttpLink({ uri: 'https://rickandmortyapi.com/graphql' });
-
-                const client = new ApolloClient({
-                  cache: new InMemoryCache(),
-                  link: from([IBGApolloLink, httpLink]),
-                });
-
-                const result = client.query({
-                  query: GET_LOCATIONS_QUERY,
-                  variables: { locationId: 'M' },
-                });
-                result
-                  .then(function () {
-                    toast.show({
-                      description: 'Succeeded',
-                    });
-                  })
-                  .catch(function () {
-                    toast.show({
-                      description: 'Failed',
-                    });
-                  });
+                graphqlRequest('https://rickandmortyapi.com/graphql');
               }}
             />
           </Section>

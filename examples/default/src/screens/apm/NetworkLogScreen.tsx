@@ -24,7 +24,7 @@ export const NetworkLogScreen: React.FC<
       <ScrollView>
         <VStack space={4} alignItems="stretch">
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               EndPoint:{' '}
             </Heading>
             <Text fontSize="sm">{route.params.requestEndPoint ?? ''}</Text>
@@ -45,25 +45,25 @@ export const NetworkLogScreen: React.FC<
           </HStack>
 
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               Request Body:{' '}
             </Heading>
             <Container>
-              <Text textAlign="match-parent" fontSize="sm">
+              <Text textAlign="left" fontSize="sm">
                 {JSON.stringify(route.params.requestBody) ?? ''}
               </Text>
             </Container>
           </HStack>
 
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               Request Headers:{' '}
             </Heading>
             <Text fontSize="sm">{route.params.requestHeaders ?? ''}</Text>
           </HStack>
 
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               Response Body:{' '}
             </Heading>
             <Container>
@@ -72,14 +72,14 @@ export const NetworkLogScreen: React.FC<
           </HStack>
 
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               Response Headers:{' '}
             </Heading>
             <Text fontSize="sm">{route.params.responseHeaders ?? ''}</Text>
           </HStack>
 
           <HStack>
-            <Heading size="sm" textAlign="match-parent">
+            <Heading size="sm" textAlign="left">
               Response Error:{' '}
             </Heading>
             <Text fontSize="sm">{route.params.errorMessage ?? ''}</Text>
