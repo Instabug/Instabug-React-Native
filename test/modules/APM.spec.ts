@@ -103,6 +103,39 @@ describe('APM Module', () => {
     });
   });
 
+  it('should call the native method startFlow', () => {
+    const appFlowName = 'flowName';
+
+    APM.startFlow(appFlowName);
+
+    expect(NativeAPM.startFlow).toBeCalledTimes(1);
+    expect(NativeAPM.startFlow).toBeCalledWith(appFlowName);
+  });
+
+  it('should call the native method setFlowAttributes', () => {
+    const appFlowName = 'flowName';
+    const flowAttributeKey = 'attributeKey';
+    const flowAttributeValue = 'attributeValue';
+
+    APM.setFlowAttribute(appFlowName, flowAttributeKey, flowAttributeValue);
+
+    expect(NativeAPM.setFlowAttribute).toBeCalledTimes(1);
+    expect(NativeAPM.setFlowAttribute).toBeCalledWith(
+      appFlowName,
+      flowAttributeKey,
+      flowAttributeValue,
+    );
+  });
+
+  it('should call the native method endFlow', () => {
+    const appFlowName = 'flowName';
+
+    APM.endFlow(appFlowName);
+
+    expect(NativeAPM.endFlow).toBeCalledTimes(1);
+    expect(NativeAPM.endFlow).toBeCalledWith(appFlowName);
+  });
+
   it('should call the native method startUITrace', () => {
     APM.startUITrace('uiTrace');
 

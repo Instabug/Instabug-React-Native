@@ -1,13 +1,22 @@
 import React, { forwardRef } from 'react';
 
-import { KeyboardTypeOptions, StyleSheet, TextInput, View } from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  ViewStyle,
+  View,
+} from 'react-native';
 import { Text } from 'native-base';
 
 interface InputFieldProps {
   placeholder?: string;
   value?: string;
+  style?: StyleProp<ViewStyle>;
   onChangeText?: (text: string) => void;
   keyboardType?: KeyboardTypeOptions;
+  selectTextOnFocus?: boolean | undefined;
   errorText?: string;
   maxLength?: number;
   accessibilityLabel?: string;
@@ -19,6 +28,7 @@ export const InputField = forwardRef<TextInput, InputFieldProps>(
     {
       placeholder,
       value,
+      style,
       onChangeText,
       accessibilityLabel,
       maxLength,
@@ -33,7 +43,7 @@ export const InputField = forwardRef<TextInput, InputFieldProps>(
         <TextInput
           ref={ref}
           placeholder={placeholder}
-          style={styles.textInput}
+          style={[styles.textInput, style]}
           maxLength={maxLength}
           accessibilityLabel={accessibilityLabel}
           keyboardType={keyboardType}
@@ -52,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingVertical: 16,
+    paddingVertical: 10,
     paddingHorizontal: 24,
     fontSize: 16,
     borderRadius: 5,
