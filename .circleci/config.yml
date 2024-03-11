@@ -405,7 +405,6 @@ workflows:
       - e2e_android
       - hold_generate_snapshot:
           type: approval
-          requires: *release_dependencies
       - generate_snapshot:
           requires:
             - hold_generate_snapshot
