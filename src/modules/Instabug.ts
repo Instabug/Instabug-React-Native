@@ -64,7 +64,9 @@ export const init = (config: InstabugConfig) => {
   captureUnhandledRejections();
 
   // Default networkInterceptionMode to JavaScript
-  config.networkInterceptionMode ??= NetworkInterceptionMode.javascript;
+  if (!config.networkInterceptionMode) {
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
+  }
 
   if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
     NetworkLogger.setEnabled(true);
