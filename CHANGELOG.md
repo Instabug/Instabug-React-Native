@@ -6,7 +6,6 @@
 
 - Fix resolve syntax error (??) in old TypeScript versions ([#1166](https://github.com/Instabug/Instabug-React-Native/pull/1166)).
 
-
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
 
 ### Added
