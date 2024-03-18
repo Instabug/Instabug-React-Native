@@ -64,7 +64,7 @@ export const init = (config: InstabugConfig) => {
   captureUnhandledRejections();
 
   // Default networkInterceptionMode to JavaScript
-  if (!config.networkInterceptionMode) {
+  if (config.networkInterceptionMode == null) {
     config.networkInterceptionMode = NetworkInterceptionMode.javascript;
   }
 
