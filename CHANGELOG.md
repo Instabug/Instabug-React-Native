@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev)
 
 ### Added
 
