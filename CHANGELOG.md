@@ -7,6 +7,10 @@
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
 
+### Changed
+
+- Bump Instabug iOS SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.9.0).
+
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
 
 ### Added
