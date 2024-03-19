@@ -8,6 +8,7 @@
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
 
 ### Changed
+
 - Bump Instabug Android SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.9.0).
 
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
