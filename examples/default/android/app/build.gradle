@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+//apply plugin: "instabug-apm"
 
 import com.android.build.OutputFile
 
@@ -163,6 +164,13 @@ android {
             version '3.22.1'
         }
     }
+//    instabug {
+//        apm {
+//            networkEnabled  = false
+//            debugEnabled = false
+//            // fragmentSpansEnabled = true
+//        }
+//    }
 }
 
 dependencies {
@@ -173,19 +181,47 @@ dependencies {
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+
+
+        debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+        if (hermesEnabled.toBoolean()) {
+            implementation("com.facebook.react:hermes-android")
+        } else {
+            implementation jscFlavor
+        }
+        implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+        // Detox
+        implementation "androidx.annotation:annotation:1.1.0"
+        androidTestImplementation('com.wix:detox:+') { transitive = true }
+        androidTestImplementation 'junit:junit:4.12'
     }
 
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
-    if (hermesEnabled.toBoolean()) {
-        implementation("com.facebook.react:hermes-android")
-    } else {
-        implementation jscFlavor
+    apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+    applyNativeModulesAppBuildGradle(project)
+
+    def keyPropertiesFile = rootProject.file("key.properties")
+    def keyProperties = new Properties()
+    keyProperties.load(new FileInputStream(keyPropertiesFile))
+    rootProject.allprojects {
+        repositories {
+            maven {
+                credentials {
+                    username keyProperties.getProperty("DREAM11_USERNAME")
+                    password keyProperties.getProperty("DREAM11_PASSWORD")
+                }
+                url "https://mvn.instabug.com/nexus/repository/dream-11"
+            }
+            maven {
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+            }
+            maven {
+                url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+                credentials {
+                    username keyProperties.getProperty("INSTABUG_USERNAME")
+                    password keyProperties.getProperty("INSTABUG_PASSWORD")
+                }
+            }
+        }
     }
-    // Detox
-    implementation "androidx.annotation:annotation:1.1.0"
-    androidTestImplementation('com.wix:detox:+') { transitive = true }
-    androidTestImplementation 'junit:junit:4.12'
 }
-
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

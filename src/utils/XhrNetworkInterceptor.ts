@@ -165,6 +165,7 @@ export default {
             }
 
             if (cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER]) {
+              console.log(cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER]);
               cloneNetwork.gqlQueryName =
                 cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER];
               delete cloneNetwork.requestHeaders[InstabugConstants.GRAPHQL_HEADER];

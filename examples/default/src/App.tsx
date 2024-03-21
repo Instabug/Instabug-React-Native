@@ -22,7 +22,7 @@ const queryClient = new QueryClient();
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
-      token: 'deb1910a7342814af4e4c9210c786f35',
+      token: '315f28620a2a59c3d9d170b2462f926e',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });

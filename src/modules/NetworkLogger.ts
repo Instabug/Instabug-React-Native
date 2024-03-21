@@ -32,6 +32,10 @@ export const setEnabled = (isEnabled: boolean) => {
 
           if (Platform.OS === 'android') {
             NativeInstabug.networkLog(JSON.stringify(network));
+            console.log(network.gqlQueryName);
+            console.log(network.gqlQueryName);
+            console.log(network.requestHeaders);
+            console.log(network.responseHeaders);
             NativeAPM.networkLog(JSON.stringify(network));
           } else {
             NativeInstabug.networkLog(network);

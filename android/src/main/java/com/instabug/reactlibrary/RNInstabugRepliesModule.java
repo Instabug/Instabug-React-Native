@@ -10,7 +10,7 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.instabug.chat.Replies;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
-import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.reactlibrary.utils.MainThreadHandler;;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
