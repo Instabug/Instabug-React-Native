@@ -482,11 +482,11 @@ workflows:
             branches:
               only: master
       - hold_publish_new_namespace:
-        requires: *release_dependencies
-        type: approval
-        filters:
-          branches:
-            only: master
+          requires: *release_dependencies
+          type: approval
+          filters:
+            branches:
+              only: master
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
