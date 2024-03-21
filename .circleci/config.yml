@@ -478,9 +478,6 @@ workflows:
       - hold_release_injazat:
           requires: *release_dependencies
           type: approval
-          filters:
-            branches:
-              only: master
       - hold_publish_new_namespace:
           requires: *release_dependencies
           type: approval
@@ -511,9 +508,6 @@ workflows:
       - release_injazat:
           requires:
             - hold_release_injazat
-          filters:
-            branches:
-              only: master
       - release_d11:
           requires:
             - hold_release_d11
