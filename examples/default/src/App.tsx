@@ -7,6 +7,7 @@ import Instabug, {
   CrashReporting,
   InvocationEvent,
   LogLevel,
+  NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -22,11 +23,19 @@ const queryClient = new QueryClient();
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
-      token: 'deb1910a7342814af4e4c9210c786f35',
+      token: '0fcc87b8bf731164828cc411eccc802a',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
+    // Instabug.setAppLaunchEnabled(false);
+    // Instabug.setScreenLoadingEnabled(false);
     CrashReporting.setNDKCrashesEnabled(true);
+
+    NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+      networkData.gqlQueryName = 'countries';
+      console.log(networkData.gqlQueryName);
+      return networkData;
+    });
 
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
@@ -34,6 +43,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
+    // <InstabugPerformance config={isAppLaunchEnabled: true, isScreenLoadingEnabled: true}>
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
         <QueryClientProvider client={queryClient}>
@@ -43,6 +53,7 @@ export const App: React.FC = () => {
         </QueryClientProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
+    // </InstabugPerformance>
   );
 };
 

@@ -28,6 +28,9 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
+
+  sendOkHttpRequest(): void;
+  sendApolloGraphQlRequest(): void;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

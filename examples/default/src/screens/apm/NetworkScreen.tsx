@@ -7,6 +7,8 @@ import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
 import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
+import { ListTile } from "../../components/ListTile";
+import { NativeAPM } from "../../../../../src/native/NativeAPM";
 
 export const NetworkScreen: React.FC = () => {
   const [endpointUrl, setEndpointUrl] = useState('');
@@ -58,6 +60,8 @@ export const NetworkScreen: React.FC = () => {
     return request<{ country: { emoji: string; name: string } }>(
       'https://countries.trevorblades.com/graphql',
       document,
+      {},
+      {},
     );
   };
 
@@ -75,6 +79,14 @@ export const NetworkScreen: React.FC = () => {
               value={endpointUrl}
             />
             <CustomButton onPress={sendRequestToUrl} title="Send Request To Url" />
+            <ListTile
+              title={'Send Native OK-HTTP Request'}
+              onPress={() => NativeAPM.sendOkHttpRequest()}
+            />
+            <ListTile
+              title={'Send Native Apollo GraphQL'}
+              onPress={() => NativeAPM.sendApolloGraphQlRequest()}
+            />
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}

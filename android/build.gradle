@@ -74,6 +74,8 @@ android {
 dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'com.facebook.react:react-native:+'
+    implementation 'com.instabug.library:instabug-apm-okhttp-interceptor:12.2.0'
+    implementation 'com.instabug.library:instabug-with-okhttp-interceptor:12.8.0'
 
     testImplementation "org.mockito:mockito-inline:3.12.1"
     testImplementation "org.mockito:mockito-android:3.4.0"

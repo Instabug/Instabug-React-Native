@@ -1,6 +1,7 @@
 /** @type {import('eslint').ESLint.ConfigData} */
 module.exports = {
   extends: '@react-native-community',
+  plugins: ['prettier', 'jest'],
   plugins: ['prettier', 'jest', 'jsdoc'],
   overrides: [
     {
@@ -32,3 +33,4 @@ module.exports = {
     'prefer-const': 'error',
   },
 };
+
