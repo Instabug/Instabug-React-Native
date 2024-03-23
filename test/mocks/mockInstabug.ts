@@ -64,6 +64,7 @@ const mockInstabug: InstabugNativeModule = {
   addFileAttachmentWithURLToReport: jest.fn(),
   addFileAttachmentWithDataToReport: jest.fn(),
   setNetworkLoggingEnabled: jest.fn(),
+  willRedirectToAppStore:  jest.fn(),
 };
 
 export default mockInstabug;

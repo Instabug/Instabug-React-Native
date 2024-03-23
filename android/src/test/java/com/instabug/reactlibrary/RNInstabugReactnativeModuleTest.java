@@ -576,4 +576,16 @@ public class RNInstabugReactnativeModuleTest {
         verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
     }
+
+    @Test
+    public void given$willRedirectToStore_whenQuery_thenShouldCallNativeApi() {
+        // given
+
+        // when
+        rnModule.willRedirectToAppStore();
+
+        // then
+        verify(Instabug.class,times(1));
+        Instabug.willRedirectToStore();
+    }
 }
