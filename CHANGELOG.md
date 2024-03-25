@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)
+
+### Fixed
+
+- Remove the use of the nullish coalescing assignment operator (`??=`) causing a syntax error with older TypeScript versions ([#1166](https://github.com/Instabug/Instabug-React-Native/pull/1166)), closes [#1161
+  ](https://github.com/Instabug/Instabug-React-Native/issues/1161).
+
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
 
 ### Added
