@@ -769,4 +769,22 @@ describe('Instabug Module', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
   });
+
+  it('onNetworkDiagnosticsHandler should be called with appropriate arguments', () => {
+    const callback = jest.fn();
+    const data = {
+      date: 'date',
+      totalRequestCount: 1,
+      failureCount: 1,
+    };
+
+    Instabug.onNetworkDiagnosticsHandler(callback);
+
+    emitter.emit(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER, data);
+
+    expect(NativeInstabug.setOnNetworkDiagnosticsHandler).toBeCalledTimes(1);
+    expect(emitter.listenerCount(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER)).toBe(1);
+    expect(callback).toBeCalledTimes(1);
+    expect(callback).toBeCalledWith(data.date, data.totalRequestCount, data.failureCount);
+  });
 });
