@@ -550,7 +550,7 @@ export const clearAllExperiments = () => {
 };
 
 export type NetworkDiagnosticsHandler = (
-  date: String,
+  date: string,
   totalRequestCount: number,
   failureCount: number,
 ) => void;
