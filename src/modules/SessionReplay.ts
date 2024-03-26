@@ -63,3 +63,15 @@ export const setInstabugLogsEnabled = (isEnabled: boolean) => {
 export const setUserStepsEnabled = (isEnabled: boolean) => {
   NativeSessionReplay.setUserStepsEnabled(isEnabled);
 };
+
+/**
+ * Retrieves current session's replay link.
+ *
+ * @example
+ * ```ts
+ * SessionReplay.getSessionReplayLink();
+ * ```
+ */
+export const getSessionReplayLink = async (): Promise<string> => {
+  return NativeSessionReplay.getSessionReplayLink();
+};
