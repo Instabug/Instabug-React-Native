@@ -4,12 +4,13 @@
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">api.instabug.com</domain>
+        <domain includeSubdomains="true">st001012dream11.instabug.com</domain>
         <domain includeSubdomains="true">api-apm.instabug.com</domain>
     </domain-config>
     <base-config>
         <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
+            <certificates src="system"/>
+            <certificates src="user"/>
         </trust-anchors>
     </base-config>
 </network-security-config>

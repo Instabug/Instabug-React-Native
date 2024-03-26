@@ -12,7 +12,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
-#import <Instabug/IBGSurveys.h>
+
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
 #import "ArgsRegistry.h"
@@ -114,5 +114,6 @@
 - (void)addExperiments:(NSArray *)experiments;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
+- (void)setOnNetworkDiagnosticsHandler;
 
 @end

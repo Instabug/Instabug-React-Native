@@ -103,6 +103,10 @@ export async function sendCrashReport(
 ) {
   const jsStackTrace = getStackTrace(error);
 
+  console.error(error);
+  console.warn(error.stack);
+  console.log(jsStackTrace);
+
   const jsonObject: CrashData = {
     message: error.name + ' - ' + error.message,
     e_message: error.message,
