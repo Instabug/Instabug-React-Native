@@ -27,7 +27,7 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 
-- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel codePushVersion:(NSString *)codePushVersion;
+- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion;
 
 - (void)setUserData:(NSString *)userData;
 
@@ -49,7 +49,7 @@
 
 - (void)setString:(NSString *)value toKey:(NSString *)key;
 
-- (void)identifyUser:(NSString *)email name:(NSString *)name;
+- (void)identifyUser:(NSString *)email name:(NSString *)name userId:(nullable NSString *)userId;
 
 - (void)logOut;
 
@@ -112,5 +112,6 @@
 - (void)addExperiments:(NSArray *)experiments;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
+- (void)setOnNetworkDiagnosticsHandler;
 
 @end

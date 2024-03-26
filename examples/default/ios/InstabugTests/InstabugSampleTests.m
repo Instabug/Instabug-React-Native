@@ -13,6 +13,7 @@
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
 #import "RNInstabug.h"
+#import "Instabug+CP.h"
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -45,7 +46,7 @@
 
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
-  self.instabugBridge = [[InstabugReactBridge alloc] init];
+  self.instabugBridge = OCMPartialMock([[InstabugReactBridge alloc] init]);
   self.mRNInstabug = OCMClassMock([RNInstabug class]);
 }
 
@@ -70,14 +71,15 @@
   NSString *appToken = @"app_token";
   NSString *codePushVersion = @"1.0.0(1)";
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
+  BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
   
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel codePushVersion:codePushVersion];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 
-  OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel]);
+  OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
 
 - (void)testSetUserData {
@@ -188,8 +190,19 @@
   NSString *name = @"this is my name";
 
   OCMStub([mock identifyUserWithEmail:email name:name]);
-  [self.instabugBridge identifyUser:email name:name];
-  OCMVerify([mock identifyUserWithEmail:email name:name]);
+  [self.instabugBridge identifyUser:email name:name userId:nil];
+  OCMVerify([mock identifyUserWithID:nil email:email name:name]);
+}
+
+- (void)testIdentifyUserWithID {
+  id mock = OCMClassMock([Instabug class]);
+  NSString *email = @"em@il.com";
+  NSString *name = @"this is my name";
+  NSString *userId = @"this is my id";
+
+  OCMStub([mock identifyUserWithID:userId email:email name:name]);
+  [self.instabugBridge identifyUser:email name:name userId:userId];
+  OCMVerify([mock identifyUserWithID:userId email:email name:name]);
 }
 
 - (void)testLogOut {
@@ -406,6 +419,27 @@
   OCMStub([mock clearAllExperiments]);
   [self.instabugBridge clearAllExperiments];
   OCMVerify([mock clearAllExperiments]);
+}
+
+- (void)testSetOnNetworkDiagnosticsHandler {
+  id mInstabug = OCMClassMock([Instabug class]);
+  NSString* date = @"1/2/2024";
+  NSInteger totalRequestCount = 10;
+  NSInteger failureCount = 8;
+  
+  NSDictionary *expected = @{
+      @"date": date,
+      @"totalRequestCount": @(totalRequestCount),
+      @"failureCount": @(failureCount)
+  };
+  
+  OCMStub([mInstabug setWillSendNetworkDiagnosticsHandler:([OCMArg invokeBlockWithArgs:date, OCMOCK_VALUE(totalRequestCount), OCMOCK_VALUE(failureCount), nil])]);
+
+  OCMStub([self.instabugBridge sendEventWithName:[OCMArg any] body:[OCMArg any]]);
+  
+  [self.instabugBridge setOnNetworkDiagnosticsHandler];
+
+  OCMVerify([self.instabugBridge sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:expected]);
 }
 
 @end

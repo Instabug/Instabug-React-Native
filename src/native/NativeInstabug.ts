@@ -23,6 +23,7 @@ export interface InstabugNativeModule extends NativeModule {
     token: string,
     invocationEvents: InvocationEvent[],
     debugLogsLevel: LogLevel,
+    useNativeNetworkInterception: boolean,
     codePushVersion?: string,
   ): void;
   show(): void;
@@ -62,7 +63,7 @@ export interface InstabugNativeModule extends NativeModule {
   clearLogs(): void;
 
   // User APIs //
-  identifyUser(email: string, name: string): void;
+  identifyUser(email: string, name: string, id?: string): void;
   logOut(): void;
   logUserEvent(name: string): void;
   setUserData(data: string): void;
@@ -103,12 +104,16 @@ export interface InstabugNativeModule extends NativeModule {
   logInfoToReport(log: string): void;
   addFileAttachmentWithURLToReport(url: string, filename?: string): void;
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
+
+  // Callbacks //
+  setOnNetworkDiagnosticsHandler(): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  NETWORK_DIAGNOSTICS_HANDLER = 'IBGNetworkDiagnosticsHandler',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

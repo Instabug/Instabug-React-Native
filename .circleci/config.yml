@@ -424,9 +424,6 @@ workflows:
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
-          filters:
-            branches:
-              only: master
       - publish:
           requires:
             - hold_publish
@@ -442,6 +439,3 @@ workflows:
       - release_d11:
           requires:
             - hold_release_d11
-          filters:
-            branches:
-              only: master

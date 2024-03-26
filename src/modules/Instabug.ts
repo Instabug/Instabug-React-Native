@@ -12,6 +12,7 @@ import {
   ColorTheme,
   Locale,
   LogLevel,
+  NetworkInterceptionMode,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -61,12 +62,19 @@ function reportCurrentViewForAndroid(screenName: string | null) {
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
-  NetworkLogger.setEnabled(true);
+
+  // Default networkInterceptionMode to JavaScript
+  config.networkInterceptionMode ??= NetworkInterceptionMode.javascript;
+
+  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    NetworkLogger.setEnabled(true);
+  }
 
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
     config.debugLogsLevel ?? LogLevel.error,
+    config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
   );
 
@@ -196,15 +204,16 @@ export const setString = (key: StringKey, string: string) => {
 };
 
 /**
- * Sets the default value of the user's email and hides the email field from the reporting UI
+ * Sets the default value of the user's email and ID and hides the email field from the reporting UI
  * and set the user's name to be included with all reports.
  * It also reset the chats on device to that email and removes user attributes,
  * user data and completed surveys.
  * @param email Email address to be set as the user's email.
  * @param name Name of the user to be set.
+ * @param [id] ID of the user to be set.
  */
-export const identifyUser = (email: string, name: string) => {
-  NativeInstabug.identifyUser(email, name);
+export const identifyUser = (email: string, name: string, id?: string) => {
+  NativeInstabug.identifyUser(email, name, id);
 };
 
 /**
@@ -538,6 +547,24 @@ export const removeExperiments = (experiments: string[]) => {
  */
 export const clearAllExperiments = () => {
   NativeInstabug.clearAllExperiments();
+};
+
+export type NetworkDiagnosticsHandler = (
+  date: String,
+  totalRequestCount: number,
+  failureCount: number,
+) => void;
+
+export const onNetworkDiagnosticsHandler = (handler?: NetworkDiagnosticsHandler) => {
+  emitter.addListener(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER, (data) => {
+    const { date, totalRequestCount, failureCount } = data;
+
+    if (handler) {
+      handler(date, totalRequestCount, failureCount);
+    }
+  });
+
+  NativeInstabug.setOnNetworkDiagnosticsHandler();
 };
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {

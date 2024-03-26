@@ -40,6 +40,19 @@
   OCMVerify([self.mIBGNetworkLogger setEnabled:YES]);
 }
 
+- (void)testInitWithNativeNetworkInterception {
+  NSString *token = @"app-token";
+  IBGInvocationEvent invocationEvents = IBGInvocationEventFloatingButton | IBGInvocationEventShake;
+  BOOL useNativeNetworkInterception = YES;
+
+  [RNInstabug initWithToken:token invocationEvents:invocationEvents useNativeNetworkInterception:useNativeNetworkInterception];
+
+  OCMVerify([self.mInstabug startWithToken:token invocationEvents:invocationEvents]);
+  OCMVerify([self.mInstabug setCurrentPlatform:IBGPlatformReactNative]);
+  OCMVerify(never(), [self.mIBGNetworkLogger disableAutomaticCapturingOfNetworkLogs]);
+  OCMVerify([self.mIBGNetworkLogger setEnabled:YES]);
+}
+
 - (void)testInitWithLogsLevel {
   NSString *token = @"app-token";
   IBGInvocationEvent invocationEvents = IBGInvocationEventFloatingButton | IBGInvocationEventShake;

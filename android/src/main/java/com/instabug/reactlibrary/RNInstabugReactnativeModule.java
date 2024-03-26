@@ -7,6 +7,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.annotation.UiThread;
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -17,8 +20,6 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.NativeViewHierarchyManager;
-import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
@@ -27,21 +28,25 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
+import com.instabug.library.core.InstabugCore;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
+import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import com.instabug.reactlibrary.utils.RNTouchedViewExtractor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,11 +132,14 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final String token,
             final ReadableArray invocationEventValues,
             final String logLevel,
+            final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
+                final RNTouchedViewExtractor rnTouchedViewExtractor = new RNTouchedViewExtractor();
+                InstabugCore.setTouchedViewExtractorExtension(rnTouchedViewExtractor);
                 final ArrayList<String> keys = ArrayUtil.parseReadableArrayOfStrings(invocationEventValues);
                 final ArrayList<InstabugInvocationEvent> parsedInvocationEvents = ArgsRegistry.invocationEvents.getAll(keys);
                 final InstabugInvocationEvent[] invocationEvents = parsedInvocationEvents.toArray(new InstabugInvocationEvent[0]);
@@ -294,16 +302,22 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Set the user identity.
      * Instabug will pre-fill the user email in reports.
      *
-     * @param userName  Username.
      * @param userEmail User's default email
+     * @param userName  Username.
+     * @param userId User's ID
      */
     @ReactMethod
-    public void identifyUser(final String userEmail, final String userName) {
+    public void identifyUser(
+            final String userEmail,
+            final String userName,
+            @Nullable final String userId
+    ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Instabug.identifyUser(userName, userEmail);
+                    // The arguments get re-ordered here to match the API signature.
+                    Instabug.identifyUser(userName, userEmail, userId);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -893,24 +907,32 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         networkLog.insert();
     }
 
+    @UiThread
+    @Nullable
+    private View resolveReactView(final int reactTag) {
+        final ReactApplicationContext reactContext = getReactApplicationContext();
+        final UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
+
+        if (uiManagerModule == null) {
+            return null;
+        }
+
+        return uiManagerModule.resolveView(reactTag);
+    }
+
 
     @ReactMethod
     public void addPrivateView(final int reactTag) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-                uiManagerModule.prependUIBlock(new UIBlock() {
-                    @Override
-                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        try {
-                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
-                            Instabug.addPrivateViews(view);
-                        } catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    final View view = resolveReactView(reactTag);
+
+                    Instabug.addPrivateViews(view);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -920,18 +942,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-                uiManagerModule.prependUIBlock(new UIBlock() {
-                    @Override
-                    public void execute(NativeViewHierarchyManager nativeViewHierarchyManager) {
-                        try {
-                            final View view = nativeViewHierarchyManager.resolveView(reactTag);
-                            Instabug.removePrivateViews(view);
-                        } catch(Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                try {
+                    final View view = resolveReactView(reactTag);
+
+                    Instabug.removePrivateViews(view);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -1022,6 +1039,39 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Instabug.clearAllExperiments();
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setOnNetworkDiagnosticsHandler() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "setNetworkDiagnosticsCallback", NetworkDiagnosticsCallback.class);
+
+                    if (method != null) {
+                        method.invoke(null, new NetworkDiagnosticsCallback() {
+                            @Override
+                            public void onReady(@NonNull String date, int totalRequestCount, int failureCount) {
+                                try {
+                                    WritableMap params = Arguments.createMap();
+                                    params.putString("date", date);
+                                    params.putInt("totalRequestCount", totalRequestCount);
+                                    params.putInt("failureCount", failureCount);
+
+                                    sendEvent(Constants.IBG_NETWORK_DIAGNOSTICS_HANDLER, params);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                } catch (ClassNotFoundException | IllegalAccessException |
+                         InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }

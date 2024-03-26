@@ -1,4 +1,5 @@
 import '../mocks/mockInstabugUtils';
+import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
 
@@ -7,12 +8,14 @@ import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
   Locale,
   LogLevel,
+  NetworkInterceptionMode,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -239,13 +242,40 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
     };
+    const usesNativeNetworkInterception = false;
+
     Instabug.init(instabugConfig);
 
+    expect(NetworkLogger.setEnabled).toBeCalledWith(true);
     expect(NativeInstabug.init).toBeCalledTimes(1);
     expect(NativeInstabug.init).toBeCalledWith(
       instabugConfig.token,
       instabugConfig.invocationEvents,
       instabugConfig.debugLogsLevel,
+      usesNativeNetworkInterception,
+      instabugConfig.codePushVersion,
+    );
+  });
+
+  it('init should disable JavaScript interceptor when using native interception mode', () => {
+    const instabugConfig = {
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
+      networkInterceptionMode: NetworkInterceptionMode.native,
+      codePushVersion: '1.1.0',
+    };
+
+    Instabug.init(instabugConfig);
+
+    expect(NetworkLogger.setEnabled).not.toBeCalled();
+    expect(NativeInstabug.init).toBeCalledTimes(1);
+    expect(NativeInstabug.init).toBeCalledWith(
+      instabugConfig.token,
+      instabugConfig.invocationEvents,
+      instabugConfig.debugLogsLevel,
+      // usesNativeNetworkInterception should be true when using native interception mode
+      true,
       instabugConfig.codePushVersion,
     );
   });
@@ -409,7 +439,17 @@ describe('Instabug Module', () => {
     Instabug.identifyUser(email, name);
 
     expect(NativeInstabug.identifyUser).toBeCalledTimes(1);
-    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name);
+    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name, undefined);
+  });
+
+  it('identifyUser when id is defined should call the native method identifyUser', () => {
+    const email = 'foo@instabug.com';
+    const name = 'Instabug';
+    const id = 'instabug-id';
+    Instabug.identifyUser(email, name, id);
+
+    expect(NativeInstabug.identifyUser).toBeCalledTimes(1);
+    expect(NativeInstabug.identifyUser).toBeCalledWith(email, name, id);
   });
 
   it('should call the native method logOut', () => {
@@ -719,5 +759,23 @@ describe('Instabug Module', () => {
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
+  });
+
+  it('onNetworkDiagnosticsHandler should be called with appropriate arguments', () => {
+    const callback = jest.fn();
+    const data = {
+      date: 'date',
+      totalRequestCount: 1,
+      failureCount: 1,
+    };
+
+    Instabug.onNetworkDiagnosticsHandler(callback);
+
+    emitter.emit(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER, data);
+
+    expect(NativeInstabug.setOnNetworkDiagnosticsHandler).toBeCalledTimes(1);
+    expect(emitter.listenerCount(NativeEvents.NETWORK_DIAGNOSTICS_HANDLER)).toBe(1);
+    expect(callback).toBeCalledTimes(1);
+    expect(callback).toBeCalledWith(data.date, data.totalRequestCount, data.failureCount);
   });
 });

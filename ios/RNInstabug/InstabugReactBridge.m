@@ -15,6 +15,7 @@
 #import <os/log.h>
 #import <React/RCTUIManager.h>
 #import "RNInstabug.h"
+#import "Util/Instabug+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -23,7 +24,10 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[
+        @"IBGpreSendingHandler",
+        @"IBGNetworkDiagnosticsHandler"
+    ];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -40,6 +44,7 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)isEnabled) {
 RCT_EXPORT_METHOD(init:(NSString *)token
           invocationEvents:(NSArray *)invocationEventsArray
           debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
+          useNativeNetworkInterception:(BOOL)useNativeNetworkInterception
           codePushVersion:(NSString *)codePushVersion) {
     IBGInvocationEvent invocationEvents = 0;
 
@@ -51,7 +56,8 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
     [RNInstabug initWithToken:token
              invocationEvents:invocationEvents
-               debugLogsLevel:sdkDebugLogsLevel];
+               debugLogsLevel:sdkDebugLogsLevel
+ useNativeNetworkInterception:useNativeNetworkInterception];
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
@@ -191,8 +197,8 @@ RCT_EXPORT_METHOD(clearFileAttachments) {
     [Instabug clearFileAttachments];
 }
 
-RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name) {
-    [Instabug identifyUserWithEmail:email name:name];
+RCT_EXPORT_METHOD(identifyUser:(NSString *)email name:(NSString *)name userId:(nullable NSString *)userId) {
+    [Instabug identifyUserWithID:userId email:email name:name];
 }
 
 RCT_EXPORT_METHOD(logOut) {
@@ -374,6 +380,18 @@ RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
 
 RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
+}
+
+RCT_EXPORT_METHOD(setOnNetworkDiagnosticsHandler) {
+    [Instabug setWillSendNetworkDiagnosticsHandler:^(NSString *date, NSInteger totalRequestCount, NSInteger failureCount) {
+        NSDictionary *params = @{
+            @"date": date,
+            @"totalRequestCount": @(totalRequestCount),
+            @"failureCount": @(failureCount)
+        };
+
+        [self sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:params];
+    }];
 }
 
 - (NSDictionary *)constantsToExport {
