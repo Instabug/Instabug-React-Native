@@ -6,6 +6,7 @@ const mockCrashReporting: CrashReportingNativeModule = {
   setEnabled: jest.fn(),
   sendHandledJSCrash: jest.fn(),
   sendJSCrash: jest.fn(),
+  setNDKCrashesEnabled: jest.fn(),
 };
 
 export default mockCrashReporting;
