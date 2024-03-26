@@ -1,6 +1,6 @@
 # Distribution
-dist/
-bin/
+#dist/
+#bin/
 
 # NodeJS
 node_modules/
