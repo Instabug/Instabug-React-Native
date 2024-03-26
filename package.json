@@ -1,5 +1,5 @@
 {
-  "name": "instabug-reactnative",
+  "name": "@instabug/react-native-injazat",
   "description": "React Native plugin for integrating the Instabug SDK",
   "version": "12.8.0",
   "author": "Instabug (https://instabug.com)",
