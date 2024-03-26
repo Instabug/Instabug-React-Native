@@ -60,6 +60,10 @@ RCT_EXPORT_METHOD(init:(NSString *)token
  useNativeNetworkInterception:useNativeNetworkInterception];
 }
 
+RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
+    [Instabug setCodePushVersion:version];
+}
+
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
     [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];

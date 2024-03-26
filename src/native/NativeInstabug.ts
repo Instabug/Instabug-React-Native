@@ -29,6 +29,7 @@ export interface InstabugNativeModule extends NativeModule {
   show(): void;
 
   // Misc APIs //
+  setCodePushVersion(version: string): void;
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
 

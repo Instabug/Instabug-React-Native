@@ -82,6 +82,15 @@
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
 
+- (void)testSetCodePushVersion {
+  id mock = OCMClassMock([Instabug class]);
+  NSString *codePushVersion = @"123";
+  
+  [self.instabugBridge setCodePushVersion:codePushVersion];
+  
+  OCMVerify([mock setCodePushVersion:codePushVersion]);
+}
+
 - (void)testSetUserData {
   id mock = OCMClassMock([Instabug class]);
   NSString *userData = @"user_data";
