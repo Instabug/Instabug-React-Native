@@ -257,6 +257,15 @@ describe('Instabug Module', () => {
     );
   });
 
+  it('setCodePushVersion should call native method setCodePushVersion', () => {
+    const codePushVersion = '123';
+
+    Instabug.setCodePushVersion(codePushVersion);
+
+    expect(NativeInstabug.setCodePushVersion).toBeCalledTimes(1);
+    expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
+  });
+
   it('init should disable JavaScript interceptor when using native interception mode', () => {
     const instabugConfig = {
       token: 'some-token',
