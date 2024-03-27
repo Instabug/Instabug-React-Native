@@ -1,9 +1,9 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.0
+  android: circleci/android@2.5.0
   advanced-checkout: vsco/advanced-checkout@1.1.0
-  node: circleci/node@5.1.0
+  node: circleci/node@5.2.0
 
 references:
   release_dependencies: &release_dependencies
@@ -113,7 +113,7 @@ jobs:
   test_android:
     executor:
       name: android/android-machine
-      tag: '2022.03.1'
+      tag: default
     working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
@@ -227,7 +227,7 @@ jobs:
   e2e_android:
     executor:
       name: android/android-machine
-      tag: 2022.03.1
+      tag: default
       resource-class: large
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
