@@ -26,7 +26,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: default
+          node-version: 'v20.11.1'
       - node/install-packages:
           pkg-manager: yarn
           # Network concurrency is set to 1 for installation from GitHub to work.
