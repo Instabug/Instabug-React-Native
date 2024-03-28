@@ -220,7 +220,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-    *  Send Apm network log by Reflection 
+    *  Send Apm network log by Reflection
     */
     @ReactMethod
     public void networkLog(String networkData) throws JSONException {
@@ -242,8 +242,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             final Integer statusCode = (Integer) jsonObject.get("responseCode");
             final long requestDuration = ((Number) jsonObject.get("duration")).longValue();
             final long requestStartTime = ((Number) jsonObject.get("startTime")).longValue() * 1000;
-            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString(); 
-            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString(); 
+            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString();
+            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString();
             final String errorMessage;
             if(errorDomain.equals("")) {
                 errorMessage = null;
@@ -254,9 +254,9 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             String gqlQueryName = null;
             if(jsonObject.has("gqlQueryName")){
                 gqlQueryName = (String) jsonObject.get("gqlQueryName");
-            } 
+            }
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
-            
+
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
                 if (method != null) {
@@ -264,15 +264,11 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 } else {
                     Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
                 }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
-        catch(Exception e) {
+        catch(Throwable e) {
             e.printStackTrace();
         }
     }
