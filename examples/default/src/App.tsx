@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import Instabug, { APM, InvocationEvent, LogLevel, ReproStepsMode } from 'instabug-reactnative';
+
 import Instabug, {
   CrashReporting,
   InvocationEvent,
@@ -22,6 +24,7 @@ export const App: React.FC = () => {
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
+    APM.setEnabled(true);
     CrashReporting.setNDKCrashesEnabled(true);
 
     Instabug.setReproStepsConfig({

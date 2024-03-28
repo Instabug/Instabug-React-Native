@@ -15,6 +15,8 @@ import { FlatListScreen } from '../screens/user-steps/FlatListScreen';
 import { ComplexViewsScreen } from '../screens/user-steps/ComplexViewsScreen';
 import { SectionListScreen } from '../screens/user-steps/SectionListScreen';
 import { GesturesScreen } from '../screens/user-steps/GesturesScreen';
+import { ApmScreen } from '../screens/apm/ApmScreen';
+import { type NetworkLogProp, NetworkLogScreen } from '../screens/apm/NetworkLogScreen';
 import {
   BackAndForthScreen,
   type BackAndForthScreenProp,
@@ -37,6 +39,8 @@ export type HomeStackParamList = {
   ComplexViews: undefined;
   SectionList: undefined;
   Gestures: undefined;
+  Apm: undefined;
+  networkLog: NetworkLogProp;
   GoogleMapsScreen: undefined;
   LargeImageList: undefined;
   SessionReplay: undefined;
@@ -49,6 +53,7 @@ export const HomeStackNavigator: React.FC = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Apm" component={ApmScreen} options={{ title: 'APM' }} />
       <HomeStack.Screen
         name="BugReporting"
         component={BugReportingScreen}
@@ -79,6 +84,9 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'User Steps' }}
       />
       <HomeStack.Screen
+        name="networkLog"
+        component={NetworkLogScreen}
+        options={{ title: 'Network log' }}
         name="GoogleMapsScreen"
         component={GoogleMapsScreen}
         options={{ title: 'Google  Map screen' }}

@@ -10,10 +10,13 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.5",
     "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "axios": "^1.6.7",
+    "graphql": "^16.8.1",
     "instabug-reactnative": "link:../..",
     "native-base": "^3.4.28",
     "react": "18.2.0",
