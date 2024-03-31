@@ -119,7 +119,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-yarn
+#      - node/install-yarn
       - install_node_modules
       - android/run-tests:
           working-directory: android
@@ -233,7 +233,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-yarn
+#      - node/install-yarn
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
