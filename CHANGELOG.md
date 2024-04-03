@@ -10,7 +10,7 @@
 
 ### Deprecated
 
-- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setFlowAttribute` in favor of the new app flow APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Changed
 
