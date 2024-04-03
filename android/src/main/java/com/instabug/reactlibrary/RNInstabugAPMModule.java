@@ -357,15 +357,11 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 } else {
                     Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
                 }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
-        catch(Exception e) {
+        catch(Throwable e) {
             e.printStackTrace();
         }
     }
