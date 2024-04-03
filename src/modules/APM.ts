@@ -109,7 +109,7 @@ export const endFlow = (name: string) => {
  * @param [value] - The value of the attribute. It cannot be an empty string. Use null to remove the attribute.
  */
 
-export const setFlowAttribute = (name: string, key: string, value?: string) => {
+export const setFlowAttribute = (name: string, key: string, value?: string | null) => {
   NativeAPM.setFlowAttribute(name, key, value);
 };
 
