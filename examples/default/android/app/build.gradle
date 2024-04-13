@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: "instabug-apm"
 
 import com.android.build.OutputFile
 
@@ -156,11 +157,20 @@ android {
 
         }
     }
+    instabug {
+        apm {
+            networkEnabled = true
+            debugEnabled = false
+            // fragmentSpansEnabled = true
+        }
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation 'com.instabug.library:instabug-apm-okhttp-interceptor:12.2.0'
+    implementation 'com.instabug.library:instabug-with-okhttp-interceptor:12.2.0'
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
