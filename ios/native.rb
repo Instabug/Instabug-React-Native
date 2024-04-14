@@ -1,4 +1,4 @@
-$instabug = { :version => '12.9.0' }
+$instabug = { :version => '12.9.2' }
 
 def use_instabug! (spec = nil)
   version = $instabug[:version]
@@ -6,7 +6,7 @@ def use_instabug! (spec = nil)
   if (!spec)
     pod 'Instabug', version
   else
-    spec.dependency 'Instabug', version
+    spec.dependency 'Instabug'
   end
 
   $instabug
