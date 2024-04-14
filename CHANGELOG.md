@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
+
+### Added
+
+- Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
+- Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
+
+### Changed
+
+- Bump Instabug Android SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.9.0).
+- Bump Instabug iOS SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.9.0).
 
 ### Fixed
 
