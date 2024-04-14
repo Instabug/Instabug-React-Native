@@ -21,7 +21,7 @@ export interface ApmNativeModule extends NativeModule {
   // App Flows APIs //
   startFlow(name: string): void;
   endFlow(name: string): void;
-  setFlowAttribute(name: string, key: string, value?: string): void;
+  setFlowAttribute(name: string, key: string, value?: string | null): void;
 
   // UI Traces APIs //
   setAutoUITraceEnabled(isEnabled: boolean): void;
