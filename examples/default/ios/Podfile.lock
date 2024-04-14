@@ -97,7 +97,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (12.7.1)
+  - Instabug (12.9.2)
   - instabug-reactnative-ndk (0.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -536,7 +536,7 @@ PODS:
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNInstabug (12.9.0):
-    - Instabug (= 12.7.1)
+    - Instabug
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -606,7 +606,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/fix-app-flows-defects/12.7.1/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/feature-app-flow/12.9.2/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - libevent (~> 2.1.12)
   - OCMock
@@ -695,7 +695,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/fix-app-flows-defects/12.7.1/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/feature-app-flow/12.9.2/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -810,7 +810,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: cdeb7f16fcf8f10c6f4da7ac8fdb67a67eaf78a3
+  Instabug: ec894f6efb54c736b58a8c61f25e6f01631c41f7
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
@@ -855,7 +855,7 @@ SPEC CHECKSUMS:
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: 620175f228d29f6ec394a598502cf501bd9beace
+  RNInstabug: 72d292b472202eb121e3bdfd5d18d4374ed1f833
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
@@ -864,6 +864,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 607c478c6c78e10ae2ef00fc07beb818d72cd8f7
+PODFILE CHECKSUM: 41fca103b48ef76c281ecf04ce7a6864f9c2572e
 
 COCOAPODS: 1.15.2

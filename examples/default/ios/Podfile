@@ -24,7 +24,7 @@ end
 
 target 'InstabugExample' do
   config = use_native_modules!
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/fix-app-flows-defects/12.7.1/Instabug.podspec'
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-app-flow/12.9.2/Instabug.podspec'
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   # Flags change depending on the env values.
