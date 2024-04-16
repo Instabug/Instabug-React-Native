@@ -82,7 +82,7 @@
 
 - (void)show;
 
-- (void) willRedirectToAppStore;
+- (void) willRedirectToStore;
 
 
 /*

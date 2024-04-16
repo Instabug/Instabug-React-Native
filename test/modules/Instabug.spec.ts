@@ -770,8 +770,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
   });
 
-  it('should call the native willRedirectToAppStore method', () => {
-    Instabug.willRedirectToAppStore();
-    expect(NativeInstabug.willRedirectToAppStore).toBeCalledTimes(1);
+  it('should call the native willRedirectToStore method', () => {
+    Instabug.willRedirectToStore();
+    expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
   });
 });

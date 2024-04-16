@@ -382,7 +382,7 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
 }
 
-RCT_EXPORT_METHOD(willRedirectToAppStore){
+RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
 

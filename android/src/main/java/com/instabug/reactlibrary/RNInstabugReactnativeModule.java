@@ -1057,7 +1057,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void willRedirectToAppStore() {
+    public void willRedirectToStore() {
         MainThreadHandler.runOnMainThread(() -> {
             try {
                 Instabug.willRedirectToStore();

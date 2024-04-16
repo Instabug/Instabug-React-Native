@@ -340,13 +340,11 @@
 }
 
 
-- (void)testWillRedirectToAppStore {
+- (void)testWillRedirectToStore {
 
     id mock = OCMClassMock([Instabug class]);
-    
-  
-    OCMStub([mock willRedirectToAppStore]);
-    [self.instabugBridge willRedirectToAppStore];
+
+    [self.instabugBridge willRedirectToStore];
 
     OCMVerify([mock willRedirectToAppStore]);
 
