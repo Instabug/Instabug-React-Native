@@ -560,10 +560,9 @@ export const clearAllExperiments = () => {
 /**
  * This API has to be call when using custom app rating prompt
  */
-  export const willRedirectToAppStore = () => {
-    NativeInstabug.willRedirectToAppStore();
-  }
- 
+export const willRedirectToAppStore = () => {
+  NativeInstabug.willRedirectToAppStore();
+};
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
