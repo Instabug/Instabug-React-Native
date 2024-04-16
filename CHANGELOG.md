@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
 
 ### Added
 
@@ -11,6 +11,11 @@
 
 - Bump Instabug Android SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.9.0).
 - Bump Instabug iOS SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.9.0).
+
+### Fixed
+
+- Remove the use of the nullish coalescing assignment operator (`??=`) causing a syntax error with older TypeScript versions ([#1166](https://github.com/Instabug/Instabug-React-Native/pull/1166)), closes [#1161
+  ](https://github.com/Instabug/Instabug-React-Native/issues/1161).
 
 ## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
 
