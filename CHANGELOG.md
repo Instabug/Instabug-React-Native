@@ -4,7 +4,7 @@
 
 ### Added
 
-- Adds custom app rating api ([#1186](https://github.com/Instabug/Instabug-React-Native/pull/1186))
+- Add `Instabug.willRedirectToStore` API for use in custom app rating prompts ([#1186](https://github.com/Instabug/Instabug-React-Native/pull/1186)).
 
 ## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
 
