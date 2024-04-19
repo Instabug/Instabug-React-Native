@@ -1056,6 +1056,20 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    @ReactMethod
+    public void willRedirectToStore() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.willRedirectToStore();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     /**
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the

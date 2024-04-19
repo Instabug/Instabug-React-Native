@@ -576,4 +576,13 @@ public class RNInstabugReactnativeModuleTest {
         verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
     }
+
+    @Test
+    public void testWillRedirectToStore() {
+        // when
+        rnModule.willRedirectToStore();
+
+        // then
+        mockInstabug.verify(() -> Instabug.willRedirectToStore());
+    }
 }

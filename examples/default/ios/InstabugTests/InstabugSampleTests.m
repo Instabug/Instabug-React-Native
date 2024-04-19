@@ -340,6 +340,19 @@
 }
 
 
+- (void)testWillRedirectToStore {
+
+    id mock = OCMClassMock([Instabug class]);
+
+    [self.instabugBridge willRedirectToStore];
+
+    OCMVerify([mock willRedirectToAppStore]);
+
+    [mock stopMocking];
+}
+
+
+
 /*
  +------------------------------------------------------------------------+
  |                              Log Module                                |
