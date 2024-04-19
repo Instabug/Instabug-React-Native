@@ -559,6 +559,13 @@ export const clearAllExperiments = () => {
   NativeInstabug.clearAllExperiments();
 };
 
+/**
+ * This API has to be call when using custom app rating prompt
+ */
+export const willRedirectToStore = () => {
+  NativeInstabug.willRedirectToStore();
+};
+
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
     _lastScreen = event.componentName;
