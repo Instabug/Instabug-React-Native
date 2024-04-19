@@ -13,6 +13,13 @@ module.exports = {
       },
     },
     {
+      // Node Scripts Overrides
+      files: ['scripts/**'],
+      env: {
+        node: true,
+      },
+    },
+    {
       // Detox Overrides
       files: ['examples/default/e2e/**.js'],
       env: {
