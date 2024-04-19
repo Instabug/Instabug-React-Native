@@ -4,6 +4,7 @@ package com.instabug.reactlibrary;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -29,6 +30,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     public RNInstabugAPMModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
     }
+
+    @Deprecated
     HashMap<String, ExecutionTrace> traces = new HashMap<String, ExecutionTrace>();
 
     @Nonnull
@@ -122,9 +125,91 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Starts an execution trace
-     * @param name string name of the trace.
+     * Starts an AppFlow with the specified name.
+     * <br/>
+     * On starting two flows with the same name the older flow will end with force abandon end reason.
+     * AppFlow name cannot exceed 150 characters otherwise it's truncated,
+     * leading and trailing whitespaces are also ignored.
+     *
+     * @param name AppFlow name. It can not be empty string or null.
+     *             Starts a new AppFlow, if APM is enabled, feature is enabled
+     *             and Instabug SDK is initialised.
      */
+    @ReactMethod
+    public void startFlow(@NonNull final String name) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.startFlow(name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Sets custom attributes for AppFlow with a given name.
+     * <br/>
+     * Setting an attribute value to null will remove its corresponding key if it already exists.
+     * <br/>
+     * Attribute key name cannot exceed 30 characters.
+     * Leading and trailing whitespaces are also ignored.
+     * Does not accept empty strings or null.
+     * <br/>
+     * Attribute value name cannot exceed 60 characters,
+     * leading and trailing whitespaces are also ignored.
+     * Does not accept empty strings.
+     * <br/>
+     * If a trace is ended, attributes will not be added and existing ones will not be updated.
+     * <br/>
+     *
+     * @param name  AppFlow name. It can not be empty string or null
+     * @param key   AppFlow attribute key. It can not be empty string or null
+     * @param value AppFlow attribute value. It can not be empty string. Null to remove attribute
+     */
+    @ReactMethod
+    public void setFlowAttribute(@NonNull final String name, @NonNull final String key, final String value) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.setFlowAttribute(name, key, value);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Ends AppFlow with a given name.
+     *
+     * @param name AppFlow name to be ended. It can not be empty string or null
+     */
+    @ReactMethod
+    public void endFlow(@NonNull final String name) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    APM.endFlow(name);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Starts an execution trace
+     *
+     * @param name string name of the trace.
+     *
+     * @deprecated see {@link #startFlow(String)}
+     */
+    @Deprecated
     @ReactMethod
     public void startExecutionTrace(final String name, final String id, final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -148,10 +233,14 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Adds a new attribute to trace
-     * @param id String id of the trace.
+     *
+     * @param id    String id of the trace.
      * @param key   attribute key
      * @param value attribute value. Null to remove attribute
+     *
+     * @deprecated see {@link #setFlowAttribute}
      */
+    @Deprecated
     @ReactMethod
     public void setExecutionTraceAttribute(final String id, final String key, final String value) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -168,8 +257,12 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Ends a trace
+     *
      * @param id string id of the trace.
+     *
+     * @deprecated see {@link #endFlow}
      */
+    @Deprecated
     @ReactMethod
     public void endExecutionTrace(final String id) {
         MainThreadHandler.runOnMainThread(new Runnable() {
