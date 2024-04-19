@@ -363,10 +363,9 @@ jobs:
           working_directory: project
           command: Escape react-native publish
   publish_new_namespace:
-    macos:
-      xcode: 13.4.1
-    resource_class: macos.m1.medium.gen1
-    working_directory: '~'
+    working_directory: ~/project
+    executor:
+      name: node/default
     steps:
       - advanced-checkout/shallow-checkout
       - find_and_replace:
