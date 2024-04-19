@@ -1,10 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev)
+## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev)(April 19, 2024)
 
 ### Added
 
 - Add `Instabug.willRedirectToStore` API for use in custom app rating prompts ([#1186](https://github.com/Instabug/Instabug-React-Native/pull/1186)).
+- Add support for App Flows APIs `APM.startFlow`, `APM.setFlowAttribute` and `APM.endFlow` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Changed
 
@@ -17,7 +18,6 @@
 
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
-- Add support for App Flows APIs `APM.startFlow`, `APM.setFlowAttribute` and `APM.endFlow` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Deprecated
 
