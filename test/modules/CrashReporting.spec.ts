@@ -4,6 +4,7 @@ import * as CrashReporting from '../../src/modules/CrashReporting';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import { Platform } from 'react-native';
+import { NonFatalErrorType } from '../../src';
 
 describe('CrashReporting Module', () => {
   it('should call the native method setEnabled', () => {
@@ -15,11 +16,17 @@ describe('CrashReporting Module', () => {
 
   it('should call the native method sendCrashReporting with JSON object and sendHandledJsCrash as a callback', () => {
     const error = new TypeError('Invalid type');
-    CrashReporting.reportError(error);
+    const userAttribute: Map<string, string> | null = null;
+    const fingerPrint = 'fingerprint';
+    const level = NonFatalErrorType.critical;
+    CrashReporting.reportError(error, userAttribute, fingerPrint, level);
 
-    expect(InstabugUtils.sendCrashReport).toBeCalledTimes(1);
-    expect(InstabugUtils.sendCrashReport).toBeCalledWith(
+    expect(InstabugUtils.sendNonFatalCrashReport).toBeCalledTimes(1);
+    expect(InstabugUtils.sendNonFatalCrashReport).toBeCalledWith(
       error,
+      userAttribute,
+      fingerPrint,
+      level,
       NativeCrashReporting.sendHandledJSCrash,
     );
   });

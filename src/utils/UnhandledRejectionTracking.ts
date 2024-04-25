@@ -76,7 +76,7 @@ function _onUnhandled(id: number, rejection: unknown) {
   }
 
   if (rejection instanceof Error) {
-    sendCrashReport(rejection, NativeCrashReporting.sendHandledJSCrash);
+    sendCrashReport(rejection, NativeCrashReporting.sendJSCrash);
   }
 }
 

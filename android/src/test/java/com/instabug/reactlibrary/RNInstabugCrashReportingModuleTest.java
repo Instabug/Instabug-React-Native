@@ -1,16 +1,23 @@
 package com.instabug.reactlibrary;
 
+import static com.instabug.crash.CrashReporting.getFingerprintObject;
+import static com.instabug.reactlibrary.util.GlobalMocks.reflected;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import android.os.Looper;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.instabug.crash.CrashReporting;
+import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.util.GlobalMocks;
+import com.instabug.reactlibrary.util.MockReflected;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +25,9 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RNInstabugCrashReportingModuleTest {
@@ -67,7 +77,7 @@ public class RNInstabugCrashReportingModuleTest {
         // when
         rnModule.setNDKCrashesEnabled(true);
 
-//then
+        //then
         mockCrashReporting.verify(() -> CrashReporting.setNDKCrashesState(Feature.State.ENABLED));
     }
 
@@ -78,6 +88,19 @@ public class RNInstabugCrashReportingModuleTest {
 
         //then
         mockCrashReporting.verify(() -> CrashReporting.setNDKCrashesState(Feature.State.DISABLED));
+    }
+
+    @Test
+    public void testSendNonFatalError() {
+        String jsonCrash = "{}";
+        boolean isHandled = true;
+        String fingerPrint = "test";
+        String level = ArgsRegistry.nonFatalExceptionLevel.keySet().iterator().next();
+        JSONObject finger = getFingerprintObject(fingerPrint);
+        IBGNonFatalException.Level lev = ArgsRegistry.nonFatalExceptionLevel.get(level);
+        rnModule.sendHandledJSCrash(jsonCrash, null, fingerPrint, level);
+
+        mockCrashReporting.verify(() -> MockReflected.crashReportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
     }
 
     @Test

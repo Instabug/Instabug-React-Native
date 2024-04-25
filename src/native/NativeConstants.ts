@@ -7,11 +7,11 @@ export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeWelcomeMessageMode &
   NativeReportType &
   NativeDismissType &
-  NativeDismissType &
   NativeActionType &
   NativeExtendedBugReportMode &
   NativeReproStepsMode &
   NativeLocale &
+  NativeNonFatalErrorType &
   NativeStringKey;
 
 interface NativeSdkDebugLogsLevel {
@@ -88,6 +88,13 @@ interface NativeReproStepsMode {
   reproStepsEnabledWithNoScreenshots: any;
   reproStepsEnabled: any;
   reproStepsDisabled: any;
+}
+
+interface NativeNonFatalErrorType {
+  nonFatalErrorTypeInfo: any;
+  nonFatalErrorTypeError: any;
+  nonFatalErrorTypeWarning: any;
+  nonFatalErrorTypeCritical: any;
 }
 
 interface NativeLocale {

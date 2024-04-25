@@ -9,6 +9,7 @@ import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import type { CrashData } from '../native/NativeCrashReporting';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import { NonFatalErrorType } from './Enums';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -99,7 +100,12 @@ export const stringifyIfNotString = (input: unknown) => {
  */
 export async function sendCrashReport(
   error: ExtendedError,
-  remoteSenderCallback: (json: CrashData | string) => Promise<void>,
+  remoteSenderCallback: (
+    data: CrashData | string,
+    userAttributes: Object | null,
+    fingerprint: string | null,
+    nonFatalExceptionLevel: NonFatalErrorType,
+  ) => Promise<void>,
 ) {
   const jsStackTrace = getStackTrace(error);
 
@@ -113,10 +119,59 @@ export async function sendCrashReport(
   };
 
   if (Platform.OS === 'android') {
-    return remoteSenderCallback(JSON.stringify(jsonObject));
+    return remoteSenderCallback(JSON.stringify(jsonObject), null, null, NonFatalErrorType.error);
   }
 
-  return remoteSenderCallback(jsonObject);
+  return remoteSenderCallback(jsonObject, null, null, NonFatalErrorType.error);
+}
+
+/**
+ * Sends crash report to Instabug's servers based on @param sendFunction
+ *
+ * @param error Error object to be sent to Instabug's servers
+ * @param userAttributes (Optional) extra user attributes attached to the crash
+ * @param fingerprint (Optional) key used to customize how crashes are grouped together
+ * @param nonFatalErrorType different severity levels for errors
+ * @param remoteSenderCallback Function to send the crash report to Instabug's servers
+ *
+ * @example
+ * `sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);`
+ * or
+ * `sendCrashReport(error, NativeCrashReporting.sendJSCrash);`
+ *
+ */
+export async function sendNonFatalCrashReport(
+  error: ExtendedError,
+  userAttributes: Object | null,
+  fingerprint: string | null,
+  nonFatalErrorType: NonFatalErrorType = NonFatalErrorType.error,
+  remoteSenderCallback: (
+    json: CrashData | string,
+    userAttributes: Object | null,
+    fingerprint: string | null,
+    levelType: NonFatalErrorType,
+  ) => Promise<void>,
+) {
+  const jsStackTrace = getStackTrace(error);
+  const jsonObject: CrashData = {
+    message: error.name + ' - ' + error.message,
+    e_message: error.message,
+    e_name: error.name,
+    os: Platform.OS,
+    platform: 'react_native',
+    exception: jsStackTrace,
+  };
+
+  if (Platform.OS === 'android') {
+    return remoteSenderCallback(
+      JSON.stringify(jsonObject),
+      userAttributes,
+      fingerprint,
+      nonFatalErrorType,
+    );
+  }
+
+  return remoteSenderCallback(jsonObject, userAttributes, fingerprint, nonFatalErrorType);
 }
 
 export default {
@@ -125,6 +180,7 @@ export default {
   getActiveRouteName,
   getFullRoute,
   getStackTrace,
+  sendNonFatalCrashReport,
   stringifyIfNotString,
   sendCrashReport,
 };
