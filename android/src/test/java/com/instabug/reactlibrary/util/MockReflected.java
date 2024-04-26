@@ -22,6 +22,6 @@ public class MockReflected {
      * Instabug.util.InstabugDeprecationLogger.setBaseUrl
      */
     public static void setBaseUrl(String baseUrl) {}
-    public static void crashReportException(JSONObject exception, boolean isHandled, Map<String,String> userAttributes, JSONObject fingerPrint, IBGNonFatalException.Level level) {}
+    public static void reportException(JSONObject exception, boolean isHandled, Map<String,String> userAttributes, JSONObject fingerPrint, IBGNonFatalException.Level level) {}
 
 }

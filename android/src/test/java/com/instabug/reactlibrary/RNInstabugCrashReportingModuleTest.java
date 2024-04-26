@@ -48,6 +48,7 @@ public class RNInstabugCrashReportingModuleTest {
         // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
         Mockito.when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
+        GlobalMocks.setUp();
 
 
         // Override runOnMainThread
@@ -68,6 +69,8 @@ public class RNInstabugCrashReportingModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockCrashReporting.close();
+        GlobalMocks.close();
+
     }
 
     /********Crashes*********/
@@ -100,7 +103,7 @@ public class RNInstabugCrashReportingModuleTest {
         IBGNonFatalException.Level lev = ArgsRegistry.nonFatalExceptionLevel.get(level);
         rnModule.sendHandledJSCrash(jsonCrash, null, fingerPrint, level);
 
-        mockCrashReporting.verify(() -> MockReflected.crashReportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
+        mockCrashReporting.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
     }
 
     @Test
