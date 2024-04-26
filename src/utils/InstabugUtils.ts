@@ -100,12 +100,7 @@ export const stringifyIfNotString = (input: unknown) => {
  */
 export async function sendCrashReport(
   error: ExtendedError,
-  remoteSenderCallback: (
-    data: CrashData | string,
-    userAttributes: Object | null,
-    fingerprint: string | null,
-    nonFatalExceptionLevel: NonFatalErrorType,
-  ) => Promise<void>,
+  remoteSenderCallback: (data: CrashData | string) => Promise<void>,
 ) {
   const jsStackTrace = getStackTrace(error);
 
@@ -119,10 +114,10 @@ export async function sendCrashReport(
   };
 
   if (Platform.OS === 'android') {
-    return remoteSenderCallback(JSON.stringify(jsonObject), null, null, NonFatalErrorType.error);
+    return remoteSenderCallback(JSON.stringify(jsonObject));
   }
 
-  return remoteSenderCallback(jsonObject, null, null, NonFatalErrorType.error);
+  return remoteSenderCallback(jsonObject);
 }
 
 /**

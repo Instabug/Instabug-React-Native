@@ -50,7 +50,7 @@ it('reports unhandled Promise rejections in release mode', () => {
 
   captureUnhandledRejections();
 
-  expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledTimes(1);
+  expect(NativeCrashReporting.sendJSCrash).toBeCalledTimes(1);
 
   mockDev.mockRestore();
   consoleWarnSpy.mockRestore();
