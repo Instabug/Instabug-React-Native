@@ -102,8 +102,7 @@ public class RNInstabugCrashReportingModuleTest {
         JSONObject finger = getFingerprintObject(fingerPrint);
         IBGNonFatalException.Level lev = ArgsRegistry.nonFatalExceptionLevel.get(level);
         rnModule.sendHandledJSCrash(jsonCrash, null, fingerPrint, level);
-
-        mockCrashReporting.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
+        reflected.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
     }
 
     @Test

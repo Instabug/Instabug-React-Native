@@ -42,6 +42,7 @@ public class GlobalMocks {
                 .when(() -> InstabugUtil.getMethod(Class.forName("com.instabug.library.util.InstabugDeprecationLogger"), "setBaseUrl", String.class))
                 .thenReturn(mSetBaseUrl);
 
+        // reportException mock
         Method mCrashReportException = MockReflected.class.getDeclaredMethod("reportException", JSONObject.class, boolean.class, java.util.Map.class, JSONObject.class, IBGNonFatalException.Level.class);
         mCrashReportException.setAccessible(true);
         reflection
