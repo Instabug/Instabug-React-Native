@@ -22,9 +22,9 @@ public class MockReflected {
      * Instabug.util.InstabugDeprecationLogger.setBaseUrl
      */
     public static void setBaseUrl(String baseUrl) {}
-      /**
-         * CrashReporting.reportException
-         */
+    /**
+     * CrashReporting.reportException
+     */
     public static void reportException(JSONObject exception, boolean isHandled, Map userAttributes, JSONObject fingerPrint, IBGNonFatalException.Level level) {}
 
 }

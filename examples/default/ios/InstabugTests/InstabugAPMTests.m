@@ -133,7 +133,31 @@
   OCMVerify([traceMock end]);
 }
 
+- (void) testStartFlow {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
 
+  [self.instabugBridge startFlow:appFlowName];
+  OCMVerify([mock startFlowWithName:appFlowName]);
+}
+
+- (void) testEndFlow {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
+
+  [self.instabugBridge endFlow:appFlowName];
+  OCMVerify([mock endFlowWithName:appFlowName]);
+}
+
+- (void) testSetFlowAttribute {
+  id mock = OCMClassMock([IBGAPM class]);
+  NSString* appFlowName = @"APP_Flow_1";
+  NSString* attributeKey = @"Attribute_Key_1";
+  NSString* attributeValue = @"Attribute_Value_1";
+
+  [self.instabugBridge setFlowAttribute:appFlowName :attributeKey :attributeValue];
+  OCMVerify([mock setAttributeForFlowWithName:appFlowName key:attributeKey value:attributeValue]);
+}
 
 - (void) testStartUITrace {
   id mock = OCMClassMock([IBGAPM class]);

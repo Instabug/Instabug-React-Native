@@ -63,8 +63,8 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * Send unhandled JS error object
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
-     * @param promise         This makes sure that the RN side crashes the app only after the Android SDK
-     *                        finishes processing/handling the crash.
+     * @param promise This makes sure that the RN side crashes the app only after the Android SDK
+     *                finishes processing/handling the crash.
      */
     @ReactMethod
     public void sendJSCrash(final String exceptionObject, final Promise promise) {

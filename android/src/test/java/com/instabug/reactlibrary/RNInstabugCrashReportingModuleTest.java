@@ -80,7 +80,7 @@ public class RNInstabugCrashReportingModuleTest {
         // when
         rnModule.setNDKCrashesEnabled(true);
 
-        //then
+//then
         mockCrashReporting.verify(() -> CrashReporting.setNDKCrashesState(Feature.State.ENABLED));
     }
 

@@ -100,7 +100,7 @@ export const stringifyIfNotString = (input: unknown) => {
  */
 export async function sendCrashReport(
   error: ExtendedError,
-  remoteSenderCallback: (data: CrashData | string) => Promise<void>,
+  remoteSenderCallback: (json: CrashData | string) => Promise<void>,
 ) {
   const jsStackTrace = getStackTrace(error);
 

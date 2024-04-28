@@ -88,6 +88,18 @@ RCT_EXPORT_METHOD(endExecutionTrace:(NSString *)id) {
     }
 }
 
+RCT_EXPORT_METHOD(startFlow: (NSString *)name) {
+    [IBGAPM startFlowWithName:name];
+}
+
+RCT_EXPORT_METHOD(endFlow: (NSString *)name) {
+    [IBGAPM endFlowWithName:name];
+}
+
+
+RCT_EXPORT_METHOD(setFlowAttribute:(NSString *)name :(NSString *)key :(NSString *_Nullable)value) {
+    [IBGAPM setAttributeForFlowWithName:name key:key value:value];
+}
 
 RCT_EXPORT_METHOD(startUITrace:(NSString *)name) {
     [IBGAPM startUITraceWithName:name];
