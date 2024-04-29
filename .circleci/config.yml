@@ -323,7 +323,7 @@ jobs:
       - find_and_replace:
           files: android/native.gradle
           search: com.instabug.library:instabug
-          replace: 'com.instabug.library-dream11:instabug:'
+          replace: 'com.instabug.library-dream11:instabug'
       - run:
           name: give exec permssion to d11 script
           command: chmod +x ./scripts/dream-11-delete-unused-features.sh
