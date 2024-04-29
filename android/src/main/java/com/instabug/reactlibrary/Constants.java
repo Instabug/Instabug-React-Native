@@ -3,6 +3,7 @@ package com.instabug.reactlibrary;
 final class Constants {
     final static String IBG_PRE_INVOCATION_HANDLER = "IBGpreInvocationHandler";
     final static String IBG_POST_INVOCATION_HANDLER = "IBGpostInvocationHandler";
+    final static String IBG_NETWORK_DIAGNOSTICS_HANDLER = "IBGNetworkDiagnosticsHandler";
 
     final static String IBG_ON_SHOW_SURVEY_HANDLER = "IBGWillShowSurvey";
     final static String IBG_ON_DISMISS_SURVEY_HANDLER = "IBGDidDismissSurvey";
