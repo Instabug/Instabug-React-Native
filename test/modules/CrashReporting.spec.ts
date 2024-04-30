@@ -14,7 +14,7 @@ describe('CrashReporting Module', () => {
     expect(NativeCrashReporting.setEnabled).toBeCalledWith(true);
   });
 
-  it('should call the native method sendCrashReporting with JSON object and sendHandledJsCrash as a callback', async () => {
+  it('should call the native method sendHandledJSCrash with error, fingerprint and level', async () => {
     const error = new TypeError('Invalid type');
     const fingerPrint = 'fingerprint';
     const level = NonFatalErrorLevel.critical;
