@@ -63,8 +63,8 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * Send unhandled JS error object
      *
      * @param exceptionObject Exception object to be sent to Instabug's servers
-     * @param promise This makes sure that the RN side crashes the app only after the Android SDK
-     *                finishes processing/handling the crash.
+     * @param promise         This makes sure that the RN side crashes the app only after the Android SDK
+     *                        finishes processing/handling the crash.
      */
     @ReactMethod
     public void sendJSCrash(final String exceptionObject, final Promise promise) {
@@ -87,10 +87,10 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * @param exceptionObject Exception object to be sent to Instabug's servers
      * @param userAttributes  (Optional) extra user attributes attached to the crash
      * @param fingerprint     (Optional) key used to customize how crashes are grouped together
-     * @param levelType       different severity levels for errors
+     * @param level       different severity levels for errors
      */
     @ReactMethod
-    public void sendHandledJSCrash(final String exceptionObject, @Nullable ReadableMap userAttributes, @Nullable String fingerprint, @Nullable String levelType) {
+    public void sendHandledJSCrash(final String exceptionObject, @Nullable ReadableMap userAttributes, @Nullable String fingerprint, @Nullable String level) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
             MainThreadHandler.runOnMainThread(new Runnable() {
@@ -100,8 +100,11 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
                         Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class,
                                 Map.class, JSONObject.class, IBGNonFatalException.Level.class);
                         if (method != null) {
-                            IBGNonFatalException.Level nonFatalExceptionLevelType = ArgsRegistry.nonFatalExceptionLevel.getOrDefault(levelType, IBGNonFatalException.Level.ERROR);
-                            method.invoke(null, jsonObject, true, userAttributes == null ? null : userAttributes.toHashMap(), fingerprint == null ? null : CrashReporting.getFingerprintObject(fingerprint), nonFatalExceptionLevelType);
+                            IBGNonFatalException.Level nonFatalExceptionLevel = ArgsRegistry.nonFatalExceptionLevel.getOrDefault(level, IBGNonFatalException.Level.ERROR);
+                            Map<String, Object> userAttributesMap = userAttributes == null ? null : userAttributes.toHashMap();
+                            JSONObject fingerprintObj = fingerprint == null ? null : CrashReporting.getFingerprintObject(fingerprint);
+
+                            method.invoke(null, jsonObject, true, userAttributesMap, fingerprintObj, nonFatalExceptionLevel);
 
                             RNInstabugReactnativeModule.clearCurrentReport();
                         }

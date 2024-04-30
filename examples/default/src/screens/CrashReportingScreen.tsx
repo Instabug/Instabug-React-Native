@@ -90,7 +90,9 @@ export const CrashReportingScreen: React.FC = () => {
           userAttributes: userAttributes,
           fingerprint: fingerprint,
           level: crashLevelValue,
-        }).then(() => Alert.alert(`Crash report for ${crashNameValue} is Sent!`));
+        }).then(() => {
+          Alert.alert(`Crash report for ${crashNameValue} is Sent!`);
+        });
       }
     }
   }
@@ -122,51 +124,6 @@ export const CrashReportingScreen: React.FC = () => {
           <ListTile
             title="Throw Handled Native Exception"
             onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
-          />
-        </Section>
-        <Section title={'Fatal Crashes'}>
-          <Text>Fatal Crashes can only be tested in release mode </Text>
-          <Text>These buttons will crash the application.</Text>
-          <ListTile
-            title="Reject Unhandled Promise"
-            onPress={() => throwUnhandledException(Error(), true)}
-          />
-          <ListTile
-            title="Throw Unhandled Fatal Exception"
-            onPress={() => throwUnhandledException(Error())}
-          />
-          <ListTile
-            title="Throw Unhandled Syntax Exception"
-            onPress={() => throwUnhandledException(new SyntaxError())}
-          />
-          <ListTile
-            title="Throw Unhandled Range Exception"
-            onPress={() => throwUnhandledException(new RangeError())}
-          />
-          <ListTile
-            title="Throw Unhandled Reference Exception"
-            onPress={() => throwUnhandledException(new ReferenceError())}
-          />
-          <ListTile
-            title="Throw Unhandled URIError Exception"
-            onPress={() => throwUnhandledException(new URIError())}
-          />
-          <ListTile
-            title="Throw Unhandled Native Exception"
-            onPress={() => NativeExampleCrashReporting.sendNativeFatalCrash()}
-          />
-          <ListTile
-            title="Send Native Fatal Hang"
-            onPress={() => NativeExampleCrashReporting.sendFatalHang()}
-          />
-          <PlatformListTile
-            title="Send Native ANR"
-            onPress={() => NativeExampleCrashReporting.sendANR()}
-            platform={'android'}
-          />
-          <ListTile
-            title="Throw Unhandled Native OOM Exception"
-            onPress={() => NativeExampleCrashReporting.sendOOM()}
           />
           <VerticalListTile title="Throw Handeld crash">
             <VStack>
@@ -233,6 +190,51 @@ export const CrashReportingScreen: React.FC = () => {
               </Button>
             </VStack>
           </VerticalListTile>
+        </Section>
+        <Section title={'Fatal Crashes'}>
+          <Text>Fatal Crashes can only be tested in release mode </Text>
+          <Text>These buttons will crash the application.</Text>
+          <ListTile
+            title="Reject Unhandled Promise"
+            onPress={() => throwUnhandledException(Error(), true)}
+          />
+          <ListTile
+            title="Throw Unhandled Fatal Exception"
+            onPress={() => throwUnhandledException(Error())}
+          />
+          <ListTile
+            title="Throw Unhandled Syntax Exception"
+            onPress={() => throwUnhandledException(new SyntaxError())}
+          />
+          <ListTile
+            title="Throw Unhandled Range Exception"
+            onPress={() => throwUnhandledException(new RangeError())}
+          />
+          <ListTile
+            title="Throw Unhandled Reference Exception"
+            onPress={() => throwUnhandledException(new ReferenceError())}
+          />
+          <ListTile
+            title="Throw Unhandled URIError Exception"
+            onPress={() => throwUnhandledException(new URIError())}
+          />
+          <ListTile
+            title="Throw Unhandled Native Exception"
+            onPress={() => NativeExampleCrashReporting.sendNativeFatalCrash()}
+          />
+          <ListTile
+            title="Send Native Fatal Hang"
+            onPress={() => NativeExampleCrashReporting.sendFatalHang()}
+          />
+          <PlatformListTile
+            title="Send Native ANR"
+            onPress={() => NativeExampleCrashReporting.sendANR()}
+            platform={'android'}
+          />
+          <ListTile
+            title="Throw Unhandled Native OOM Exception"
+            onPress={() => NativeExampleCrashReporting.sendOOM()}
+          />
         </Section>
         {Platform.OS === 'android' ? (
           <Section title={'NDK Crashes'}>

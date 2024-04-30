@@ -3,7 +3,7 @@ import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseEr
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
 import { Platform } from 'react-native';
-import type { NonFatalOptions } from '../models/InstabugConfig';
+import type { NonFatalOptions } from '../models/NonFatalOptions';
 
 /**
  * Enables and disables everything related to crash reporting including intercepting
@@ -19,7 +19,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param error Error object to be sent to Instabug's servers
  * @param nonFatalOptions extra config for the non-fatal error sent with Error Object
  */
-export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptions) => {
+export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptions = {}) => {
   return InstabugUtils.sendCrashReport(error, (data) =>
     NativeCrashReporting.sendHandledJSCrash(
       data,

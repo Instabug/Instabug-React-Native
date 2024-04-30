@@ -16,15 +16,15 @@ describe('CrashReporting Module', () => {
 
   it('should call the native method sendHandledJSCrash with error, fingerprint and level', async () => {
     const error = new TypeError('Invalid type');
-    const fingerPrint = 'fingerprint';
+    const fingerprint = 'fingerprint';
     const level = NonFatalErrorLevel.critical;
 
-    await CrashReporting.reportError(error, { fingerprint: fingerPrint, level });
+    await CrashReporting.reportError(error, { fingerprint, level });
     const crashData = getCrashDataFromError(error);
     expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(
       crashData,
       undefined,
-      fingerPrint,
+      fingerprint,
       level,
     );
   });
