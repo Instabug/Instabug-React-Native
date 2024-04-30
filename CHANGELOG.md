@@ -6,7 +6,7 @@
 
 - Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportError` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
 
-## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev) (April 19, 2024)
+## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...v13.0.0) (April 19, 2024)
 
 ### Added
 
@@ -18,7 +18,7 @@
 - Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
 - Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
 
-## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...v12.9.0) (April 2, 2024)
 
 ### Added
 
