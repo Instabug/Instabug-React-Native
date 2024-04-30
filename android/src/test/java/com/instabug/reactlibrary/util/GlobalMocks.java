@@ -1,6 +1,5 @@
 package com.instabug.reactlibrary.util;
 
-import static com.facebook.react.bridge.ReadableType.Map;
 import static org.mockito.Mockito.mockStatic;
 
 import android.util.Log;
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 import org.mockito.MockedStatic;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 public class GlobalMocks {
     public static MockedStatic<Log> log;

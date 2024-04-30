@@ -2,14 +2,15 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.crash.CrashReporting.getFingerprintObject;
 import static com.instabug.reactlibrary.util.GlobalMocks.reflected;
+import static org.mockito.AdditionalMatchers.cmpEq;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import android.os.Looper;
 
-import com.facebook.react.bridge.ReadableMap;
 import com.instabug.crash.CrashReporting;
 import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.library.Feature;
@@ -17,6 +18,7 @@ import com.instabug.reactlibrary.util.GlobalMocks;
 import com.instabug.reactlibrary.util.MockReflected;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -99,10 +101,10 @@ public class RNInstabugCrashReportingModuleTest {
         boolean isHandled = true;
         String fingerPrint = "test";
         String level = ArgsRegistry.nonFatalExceptionLevel.keySet().iterator().next();
-        JSONObject finger = getFingerprintObject(fingerPrint);
-        IBGNonFatalException.Level lev = ArgsRegistry.nonFatalExceptionLevel.get(level);
+        JSONObject expectedFingerprint = getFingerprintObject(fingerPrint);
+        IBGNonFatalException.Level expectedLevel = ArgsRegistry.nonFatalExceptionLevel.get(level);
         rnModule.sendHandledJSCrash(jsonCrash, null, fingerPrint, level);
-        reflected.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(finger), eq(lev)));
+        reflected.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(expectedFingerprint), eq(expectedLevel)));
     }
 
     @Test

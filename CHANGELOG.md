@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.0...dev)
+
+### Added
+
+- Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportHandledCrash` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
+
 ## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev) (April 19, 2024)
 
 ### Added
