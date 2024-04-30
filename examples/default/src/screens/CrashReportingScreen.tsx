@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { CrashReporting, NonFatalErrorType } from 'instabug-reactnative';
+import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
@@ -13,6 +13,18 @@ import { Button, VStack } from 'native-base';
 import { InputField } from '../components/InputField';
 import { Select } from '../components/Select';
 
+const styles = StyleSheet.create({
+  inputWrapper: {
+    padding: 4,
+    flex: 1,
+  },
+
+  formContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+});
+
 export const CrashReportingScreen: React.FC = () => {
   function throwHandledException(error: Error) {
     try {
@@ -23,7 +35,7 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     } catch (err) {
       if (err instanceof Error) {
-        CrashReporting.reportError(err, null, null, NonFatalErrorType.critical).then(() =>
+        CrashReporting.reportError(err, { level: NonFatalErrorLevel.critical }).then(() =>
           Alert.alert(`Crash report for ${error.name} is Sent!`),
         );
       }
@@ -50,44 +62,35 @@ export const CrashReportingScreen: React.FC = () => {
     }
   }
 
-  const styles = StyleSheet.create({
-    inputWrapper: {
-      padding: 4,
-      flex: 1,
-    },
-
-    formContainer: {
-      flexDirection: 'row',
-      alignItems: 'stretch',
-    },
-  });
   const [userAttributeKey, setUserAttributeKey] = useState('');
   const [userAttributeValue, setUserAttributeValue] = useState('');
   const [crashNameValue, setCrashNameValue] = useState('');
   const [crashFingerprint, setCrashFingerprint] = useState('');
-  const [crashLevelValue, setCrashLevelValue] = useState<NonFatalErrorType>(
-    NonFatalErrorType.error,
+  const [crashLevelValue, setCrashLevelValue] = useState<NonFatalErrorLevel>(
+    NonFatalErrorLevel.error,
   );
 
   function sendCrash() {
     try {
-      const error = Error(crashNameValue);
-      if (!error.message) {
-        const appName = 'Instabug Test App';
-        error.message = `Handled ${crashNameValue} From ${appName}`;
-      }
+      const error = new Error(crashNameValue);
+
       throw error;
     } catch (err) {
       if (err instanceof Error) {
         const attrMap: { [k: string]: string } = {};
         attrMap[userAttributeKey] = userAttributeValue;
 
-        CrashReporting.reportError(
-          err,
-          userAttributeValue.length === 0 || userAttributeKey.length === 0 ? null : attrMap,
-          crashFingerprint.length === 0 ? null : crashFingerprint,
-          crashLevelValue,
-        ).then(() => Alert.alert(`Crash report for ${crashNameValue} is Sent!`));
+        const userAttributes: Record<string, string> = {};
+        if (userAttributeKey && userAttributeValue) {
+          userAttributes[userAttributeKey] = userAttributeValue;
+        }
+        const fingerprint = crashFingerprint.length === 0 ? undefined : crashFingerprint;
+
+        CrashReporting.reportError(err, {
+          userAttributes: userAttributes,
+          fingerprint: fingerprint,
+          level: crashLevelValue,
+        }).then(() => Alert.alert(`Crash report for ${crashNameValue} is Sent!`));
       }
     }
   }
@@ -196,20 +199,20 @@ export const CrashReportingScreen: React.FC = () => {
                   items={[
                     {
                       label: 'Error',
-                      value: NonFatalErrorType.error,
+                      value: NonFatalErrorLevel.error,
                       isInitial: true,
                     },
                     {
                       label: 'Info',
-                      value: NonFatalErrorType.info,
+                      value: NonFatalErrorLevel.info,
                     },
                     {
                       label: 'Critical',
-                      value: NonFatalErrorType.critical,
+                      value: NonFatalErrorLevel.critical,
                     },
                     {
                       label: 'Warning',
-                      value: NonFatalErrorType.warning,
+                      value: NonFatalErrorLevel.warning,
                     },
                   ]}
                   onValueChange={(value) => {

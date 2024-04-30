@@ -1,4 +1,9 @@
-import type { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../utils/Enums';
+import type {
+  InvocationEvent,
+  LogLevel,
+  NetworkInterceptionMode,
+  NonFatalErrorLevel,
+} from '../utils/Enums';
 
 export interface InstabugConfig {
   /**
@@ -29,4 +34,19 @@ export interface InstabugConfig {
    * @default NetworkInterceptionMode.javascript
    */
   networkInterceptionMode?: NetworkInterceptionMode;
+}
+
+export interface NonFatalOptions {
+  /**
+   * An Optional extra user attributes attached to the crash
+   * */
+  userAttributes?: Record<string, string>;
+  /**
+   * An Optional key used to customize how crashes are grouped together
+   * */
+  fingerprint?: string;
+  /**
+   * An Optional different severity levels for errors
+   * */
+  level?: NonFatalErrorLevel;
 }

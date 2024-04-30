@@ -90,7 +90,7 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
      * @param levelType       different severity levels for errors
      */
     @ReactMethod
-    public void sendHandledJSCrash(final String exceptionObject, @androidx.annotation.Nullable ReadableMap userAttributes, @androidx.annotation.Nullable String fingerprint, String levelType) {
+    public void sendHandledJSCrash(final String exceptionObject, @Nullable ReadableMap userAttributes, @Nullable String fingerprint, @Nullable String levelType) {
         try {
             JSONObject jsonObject = new JSONObject(exceptionObject);
             MainThreadHandler.runOnMainThread(new Runnable() {
