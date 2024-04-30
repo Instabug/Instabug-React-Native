@@ -126,11 +126,11 @@ export enum ReproStepsMode {
 /**
  * The non fatal error level.
  */
-export enum NonFatalErrorType {
-  error = constants.nonFatalErrorTypeError,
-  critical = constants.nonFatalErrorTypeCritical,
-  info = constants.nonFatalErrorTypeInfo,
-  warning = constants.nonFatalErrorTypeWarning,
+export enum NonFatalErrorLevel {
+  error = constants.nonFatalErrorLevelError,
+  critical = constants.nonFatalErrorLevelCritical,
+  info = constants.nonFatalErrorLevelInfo,
+  warning = constants.nonFatalErrorLevelWarning,
 }
 
 /**

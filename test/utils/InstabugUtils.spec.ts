@@ -5,11 +5,8 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
-import { InvocationEvent, NonFatalErrorType } from '../../src';
-import InstabugUtils, {
-  getStackTrace,
-  sendNonFatalCrashReport,
-} from '../../src/utils/InstabugUtils';
+import { InvocationEvent, NonFatalErrorLevel } from '../../src';
+import InstabugUtils, { getStackTrace, sendCrashReport } from '../../src/utils/InstabugUtils';
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -188,7 +185,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendNonFatalCrashReport(errorMock, null, null, NonFatalErrorType.error, remoteSenderCallback);
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
 
     const expectedMap = {
       message: 'TypeError - Invalid type',
@@ -204,7 +203,7 @@ describe('Instabug Utils', () => {
       expectedJsonObject,
       null,
       null,
-      NonFatalErrorType.error,
+      NonFatalErrorLevel.error,
     );
   });
 
@@ -214,8 +213,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendNonFatalCrashReport(errorMock, null, null, NonFatalErrorType.error, remoteSenderCallback);
-
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
     const expectedMap = {
       message: 'TypeError - Invalid type',
       e_message: 'Invalid type',
@@ -229,7 +229,7 @@ describe('Instabug Utils', () => {
       expectedMap,
       null,
       null,
-      NonFatalErrorType.error,
+      NonFatalErrorLevel.error,
     );
   });
 });
