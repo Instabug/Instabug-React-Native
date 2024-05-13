@@ -117,7 +117,7 @@ jobs:
   test_android:
     executor:
       name: android/android-machine
-      tag: default
+      tag: 2024.04.1
     working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
@@ -231,7 +231,7 @@ jobs:
   e2e_android:
     executor:
       name: android/android-machine
-      tag: default
+      tag: 2024.04.1
       resource-class: large
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
