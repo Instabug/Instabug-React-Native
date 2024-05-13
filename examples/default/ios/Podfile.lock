@@ -531,7 +531,7 @@ PODS:
   - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNInstabug (13.0.0):
+  - RNInstabug (13.0.1):
     - Instabug (= 13.0.3)
     - React-Core
   - RNReanimated (3.5.4):
@@ -841,7 +841,7 @@ SPEC CHECKSUMS:
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: bf6f3488d7bb66fdf17c9a7a3ac9560c662d84c6
+  RNInstabug: 8b41a4879cd508c97fd62986a9dfb60f46a284b1
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
