@@ -216,6 +216,15 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
+    public void testSetCodePushVersion() {
+        String codePushVersion = "123";
+
+        rnModule.setCodePushVersion(codePushVersion);
+
+        mockInstabug.verify(() -> Instabug.setCodePushVersion(codePushVersion));
+    }
+
+    @Test
     public void testIdentifyUserWithNoId() {
         // given
 
@@ -571,6 +580,15 @@ public class RNInstabugReactnativeModuleTest {
         // then
         verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
+    }
+
+    @Test
+    public void testWillRedirectToStore() {
+        // when
+        rnModule.willRedirectToStore();
+
+        // then
+        mockInstabug.verify(() -> Instabug.willRedirectToStore());
     }
 
     @Test

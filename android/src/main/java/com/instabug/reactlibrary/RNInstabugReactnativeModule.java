@@ -163,6 +163,20 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    @ReactMethod
+    public void setCodePushVersion(@Nullable String version) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setCodePushVersion(version);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     /**
      * Adds tag(s) to issues before sending them
@@ -1038,6 +1052,20 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     Instabug.clearAllExperiments();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void willRedirectToStore() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.willRedirectToStore();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

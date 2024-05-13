@@ -257,6 +257,15 @@ describe('Instabug Module', () => {
     );
   });
 
+  it('setCodePushVersion should call native method setCodePushVersion', () => {
+    const codePushVersion = '123';
+
+    Instabug.setCodePushVersion(codePushVersion);
+
+    expect(NativeInstabug.setCodePushVersion).toBeCalledTimes(1);
+    expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
+  });
+
   it('init should disable JavaScript interceptor when using native interception mode', () => {
     const instabugConfig = {
       token: 'some-token',
@@ -759,6 +768,11 @@ describe('Instabug Module', () => {
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
+  });
+
+  it('should call the native willRedirectToStore method', () => {
+    Instabug.willRedirectToStore();
+    expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
   });
 
   it('onNetworkDiagnosticsHandler should be called with appropriate arguments', () => {

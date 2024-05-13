@@ -1,5 +1,49 @@
 # Changelog
 
+## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev) (April 19, 2024)
+
+### Added
+
+- Add `Instabug.willRedirectToStore` API for use in custom app rating prompts ([#1186](https://github.com/Instabug/Instabug-React-Native/pull/1186)).
+- Add support for App Flows APIs `APM.startFlow`, `APM.setFlowAttribute` and `APM.endFlow` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
+### Changed
+
+- Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
+- Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
+
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
+
+### Added
+
+- Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
+- Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
+
+### Deprecated
+
+- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
+### Changed
+
+- Bump Instabug Android SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.9.0).
+- Bump Instabug iOS SDK to v12.9.0 ([#1168](https://github.com/Instabug/Instabug-React-Native/pull/1168)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/12.9.0).
+
+### Fixed
+
+- Remove the use of the nullish coalescing assignment operator (`??=`) causing a syntax error with older TypeScript versions ([#1166](https://github.com/Instabug/Instabug-React-Native/pull/1166)), closes [#1161
+  ](https://github.com/Instabug/Instabug-React-Native/issues/1161).
+
+## [12.8.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.1...v12.8.0) (February 25, 2024)
+
+### Added
+
+- Add `SessionReplay.getSessionReplayLink` API which retrieves the current session's replay link ([#1142](https://github.com/Instabug/Instabug-React-Native/pull/1142)).
+- Support setting the Code Push version after SDK initialization ([#1143](https://github.com/Instabug/Instabug-React-Native/pull/1143)).
+
+### Changed
+
+- Bump Instabug Android SDK to v12.8.0 ([#1149](https://github.com/Instabug/Instabug-React-Native/pull/1149)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.8.0).
+
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
 ### Changed

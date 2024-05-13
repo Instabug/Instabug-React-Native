@@ -29,6 +29,7 @@ export interface InstabugNativeModule extends NativeModule {
   show(): void;
 
   // Misc APIs //
+  setCodePushVersion(version: string): void;
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
 
@@ -104,6 +105,7 @@ export interface InstabugNativeModule extends NativeModule {
   logInfoToReport(log: string): void;
   addFileAttachmentWithURLToReport(url: string, filename?: string): void;
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
+  willRedirectToStore(): void;
 
   // Callbacks //
   setOnNetworkDiagnosticsHandler(): void;
