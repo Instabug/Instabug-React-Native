@@ -1,6 +1,18 @@
 #!/bin/sh
 
 main() {
+  # Read environment variables from ios/.xcode.env if it exists
+  env_path="$PODS_ROOT/../.xcode.env"
+  if [ -f "$env_path" ]; then
+      source "$env_path"
+  fi
+
+  # Read environment variables from ios/.xcode.env.local if it exists
+  local_env_path="${ENV_PATH}.local"
+  if [ -f "$local_env_path" ]; then
+      source "$local_env_path"
+  fi
+
   if [[ "$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE" = true ]]; then
     echo "[Info] \`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\` was set to true, skipping sourcemaps upload..."
     exit 0
