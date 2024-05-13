@@ -1,6 +1,14 @@
 # Changelog
 
-## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...dev) (April 19, 2024)
+## [13.0.4](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.0...v13.0.4) (May 14, 2024)
+
+### Changed
+
+- Support reading environment variables from `ios/.xcode.env` and `ios/.xcode.env.local` files when present in the iOS source maps upload script ([#1200](https://github.com/Instabug/Instabug-React-Native/pull/1200)).
+- Bump Instabug Android SDK to v13.0.3 ([#1206](https://github.com/Instabug/Instabug-React-Native/pull/1206)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.3).
+- Bump Instabug iOS SDK to v13.0.3 ([#1208](https://github.com/Instabug/Instabug-React-Native/pull/1208)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.3).
+
+## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...v13.0.0) (April 19, 2024)
 
 ### Added
 
@@ -12,7 +20,7 @@
 - Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
 - Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
 
-## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...dev)(April 2, 2024)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...v12.9.0) (April 2, 2024)
 
 ### Added
 
