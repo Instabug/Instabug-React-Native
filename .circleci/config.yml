@@ -1,9 +1,9 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.0
+  android: circleci/android@2.5.0
   advanced-checkout: vsco/advanced-checkout@1.1.0
-  node: circleci/node@5.1.0
+  node: circleci/node@5.2.0
 
 references:
   release_dependencies: &release_dependencies
@@ -26,7 +26,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: 'v18.17.0'
+          node-version: 'v20.11.1'
       - node/install-packages:
           pkg-manager: yarn
           # Network concurrency is set to 1 for installation from GitHub to work.
@@ -50,16 +50,20 @@ commands:
           key: v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
           paths:
             - << parameters.working_directory >>/Pods
-  search_and_replace:
+  find_and_replace:
     parameters:
-      file:
+      files:
+        description: A space-separated list of files to search and replace in.
         type: string
-      replace-pattern:
+      search:
+        type: string
+      replace:
         type: string
     steps:
       - run:
-          name: Search and Replace in << parameters.file >>
-          command: sed -i '<< parameters.replace-pattern >>' << parameters.file >>
+          name: Find and Replace in << parameters.files >>
+          command: node ~/project/scripts/replace.js << parameters.search >> << parameters.replace >> << parameters.files >>
+
   notify_github:
     parameters:
       data:
@@ -113,13 +117,13 @@ jobs:
   test_android:
     executor:
       name: android/android-machine
-      tag: '2022.03.1'
+      tag: '2024.01.1'
     working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-yarn
+      #      - node/install-yarn
       - install_node_modules
       - android/run-tests:
           working-directory: android
@@ -227,13 +231,13 @@ jobs:
   e2e_android:
     executor:
       name: android/android-machine
-      tag: 2022.03.1
+      tag: '2024.01.1'
       resource-class: large
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - node/install-yarn
+      #      - node/install-yarn
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
@@ -258,8 +262,14 @@ jobs:
           working_directory: examples/default
           command: detox test -c android.emu.release
 
-  # Automate the enterprise NN sdk changes
-  release_nn:
+  release_custom_package:
+    parameters:
+      npm_package:
+        type: string
+      android_package:
+        type: string
+      api_endpoint:
+        type: string
     working_directory: ~/project
     executor:
       name: node/default
@@ -269,24 +279,28 @@ jobs:
       - run:
           name: Remove README.md file
           command: rm README.md
-      - search_and_replace:
-          file: package.json
-          replace-pattern: 's/instabug-reactnative/@instabug\/react-native-nn/g'
-      - search_and_replace:
-          file: cli/UploadSourcemaps.ts
-          replace-pattern: 's/api.instabug.com\/api\/sdk/st001009nn.instabug.com\/api\/sdk/g'
-      - search_and_replace:
-          file: android/native.gradle
-          replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-nn:instabug:/g'
+      - find_and_replace:
+          files: package.json android/sourcemaps.gradle ios/sourcemaps.sh
+          search: instabug-reactnative
+          replace: << parameters.npm_package >>
+      - find_and_replace:
+          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          search: api.instabug.com
+          replace: << parameters.api_endpoint >>
+      - find_and_replace:
+          files: android/native.gradle
+          search: 'com.instabug.library:instabug:'
+          replace: 'com.instabug.library-<< parameters.android_package >>:instabug:'
       - run:
           name: Build the SDK
           command: yarn build
       - run:
-          name: Authorize with npm
+          name: Authorize with NPM
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Publish new enterprise version
           command: npm publish
+
   # Automate the enterprise D11 sdk changes
   release_d11:
     working_directory: ~/project
@@ -298,15 +312,18 @@ jobs:
       - run:
           name: Remove README.md file
           command: rm README.md
-      - search_and_replace:
-          file: package.json
-          replace-pattern: 's/instabug-reactnative/@instabug\/instabug-reactnative-dream11/g'
-      - search_and_replace:
-          file: cli/UploadSourcemaps.ts
-          replace-pattern: 's/api.instabug.com\/api\/sdk/st001012dream11.instabug.com\/api\/sdk/g'
-      - search_and_replace:
-          file: android/native.gradle
-          replace-pattern: 's/com\.instabug\.library:instabug:/com.instabug.library-dream11:instabug:/g'
+      - find_and_replace:
+          files: package.json ios/sourcemaps.sh android/sourcemaps.gradle
+          search: instabug-reactnative
+          replace: '@instabug/instabug-reactnative-dream11'
+      - find_and_replace:
+          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          search: api.instabug.com
+          replace: st001012dream11.instabug.com
+      - find_and_replace:
+          files: android/native.gradle
+          search: com.instabug.library:instabug
+          replace: 'com.instabug.library-dream11:instabug'
       - run:
           name: give exec permssion to d11 script
           command: chmod +x ./scripts/dream-11-delete-unused-features.sh
@@ -330,6 +347,31 @@ jobs:
     working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
+      - run: git clone git@github.com:Instabug/Escape.git
+      - run:
+          working_directory: Escape
+          command: swift build -c release
+      - run:
+          working_directory: Escape/.build/release
+          command: cp -f Escape /usr/local/bin/escape
+      - install_node_modules:
+          app-dir: project
+      - run:
+          working_directory: project
+          command: yarn build
+      - run:
+          working_directory: project
+          command: Escape react-native publish
+  publish_new_namespace:
+    working_directory: ~/project
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - find_and_replace:
+          files: package.json
+          search: instabug-reactnative
+          replace: '@instabug/react-native'
       - run: git clone git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
@@ -415,7 +457,7 @@ workflows:
           filters:
             branches:
               only: master
-      - hold_release_nn:
+      - hold_publish_new_namespace:
           requires: *release_dependencies
           type: approval
           filters:
@@ -424,18 +466,56 @@ workflows:
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: dream11
       - publish:
           requires:
             - hold_publish
           filters:
             branches:
               only: master
-      - release_nn:
+      - publish_new_namespace:
+          requires:
+            - hold_publish_new_namespace
+          filters:
+            branches:
+              only: master
+      - hold_release_nn:
+          requires: *release_dependencies
+          type: approval
+          filters:
+            branches:
+              only: master
+      - release_custom_package:
+          name: release_nn
           requires:
             - hold_release_nn
           filters:
             branches:
               only: master
+          npm_package: '@instabug/react-native-nn'
+          android_package: nn
+          api_endpoint: st001009nn.instabug.com
+      - hold_release_injazat:
+          requires: *release_dependencies
+          type: approval
+          filters:
+            branches:
+              only: master
+      - release_custom_package:
+          name: release_injazat
+          requires:
+            - hold_release_injazat
+          filters:
+            branches:
+              only: master
+          npm_package: '@instabug/react-native-injazat'
+          android_package: injazat
+          api_endpoint: st001013mec1.instabug.com
       - release_d11:
           requires:
             - hold_release_d11
+          filters:
+            branches:
+              only: dream11

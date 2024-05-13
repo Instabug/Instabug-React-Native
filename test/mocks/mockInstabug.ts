@@ -13,6 +13,7 @@ const mockInstabug: InstabugNativeModule = {
   removeListeners: jest.fn(),
   setEnabled: jest.fn(),
   init: jest.fn(),
+  setCodePushVersion: jest.fn(),
   setUserData: jest.fn(),
   setTrackUserSteps: jest.fn(),
   setIBGLogPrintsToConsole: jest.fn(),
@@ -64,6 +65,7 @@ const mockInstabug: InstabugNativeModule = {
   addFileAttachmentWithDataToReport: jest.fn(),
   setNetworkLoggingEnabled: jest.fn(),
   setOnNetworkDiagnosticsHandler: jest.fn(),
+  willRedirectToStore: jest.fn(),
 };
 
 export default mockInstabug;

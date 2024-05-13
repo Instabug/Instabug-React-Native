@@ -64,7 +64,9 @@ export const init = (config: InstabugConfig) => {
   captureUnhandledRejections();
 
   // Default networkInterceptionMode to JavaScript
-  config.networkInterceptionMode ??= NetworkInterceptionMode.javascript;
+  if (config.networkInterceptionMode == null) {
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
+  }
 
   if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
     NetworkLogger.setEnabled(true);
@@ -88,6 +90,14 @@ export const init = (config: InstabugConfig) => {
       _currentScreen = null;
     }
   }, 1000);
+};
+
+/**
+ * Sets the Code Push version to be sent with each report.
+ * @param version the Code Push version.
+ */
+export const setCodePushVersion = (version: string) => {
+  NativeInstabug.setCodePushVersion(version);
 };
 
 /**
@@ -565,6 +575,13 @@ export const onNetworkDiagnosticsHandler = (handler?: NetworkDiagnosticsHandler)
   });
 
   NativeInstabug.setOnNetworkDiagnosticsHandler();
+};
+
+/**
+ * This API has to be call when using custom app rating prompt
+ */
+export const willRedirectToStore = () => {
+  NativeInstabug.willRedirectToStore();
 };
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
