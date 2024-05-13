@@ -1,5 +1,5 @@
 {
-  "name": "instabug-reactnative",
+  "name": "@instabug/instabug-reactnative-dream11",
   "description": "React Native plugin for integrating the Instabug SDK",
   "version": "13.0.4",
   "author": "Instabug (https://instabug.com)",

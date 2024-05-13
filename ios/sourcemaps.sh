@@ -31,7 +31,7 @@ main() {
   local source_map_file=$(generate_sourcemaps | tail -n 1)
 
   local js_project_dir="$PROJECT_DIR/.."
-  local instabug_dir=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
+  local instabug_dir=$(dirname $(node -p "require.resolve('@instabug/instabug-reactnative-dream11/package.json')"))
   local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)
   local app_token=$(resolve_var "App Token" "INSTABUG_APP_TOKEN" "$inferred_token" | tail -n 1)
 

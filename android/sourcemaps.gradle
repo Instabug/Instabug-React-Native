@@ -47,7 +47,7 @@ Task createUploadSourcemapsTask(String flavor) {
                 }
 
                 def jsProjectDir = rootDir.parentFile
-                def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
+                def instabugDir = new File(['node', '-p', 'require.resolve("@instabug/instabug-reactnative-dream11/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
 
                 def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
                 def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
