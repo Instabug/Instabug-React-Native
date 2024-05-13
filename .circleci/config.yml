@@ -466,6 +466,9 @@ workflows:
       - hold_release_d11:
           requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: dream11
       - publish:
           requires:
             - hold_publish
@@ -481,23 +484,38 @@ workflows:
       - hold_release_nn:
           requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_nn
           requires:
             - hold_release_nn
+          filters:
+            branches:
+              only: master
           npm_package: '@instabug/react-native-nn'
           android_package: nn
           api_endpoint: st001009nn.instabug.com
       - hold_release_injazat:
           requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_injazat
           requires:
             - hold_release_injazat
+          filters:
+            branches:
+              only: master
           npm_package: '@instabug/react-native-injazat'
           android_package: injazat
           api_endpoint: st001013mec1.instabug.com
       - release_d11:
           requires:
             - hold_release_d11
+          filters:
+            branches:
+              only: dream11
