@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.0...dev)
+
+### Changed
+
+- Support reading environment variables from `ios/.xcode.env` and `ios/.xcode.env.local` files when present in the iOS source maps upload script ([#1200](https://github.com/Instabug/Instabug-React-Native/pull/1200)).
+
 ## [13.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.9.0...v13.0.0) (April 19, 2024)
 
 ### Added
