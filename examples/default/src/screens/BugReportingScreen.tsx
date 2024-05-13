@@ -1,6 +1,10 @@
 import React from 'react';
 
-import Instabug, { BugReporting, InvocationOption, ReportType } from 'instabug-reactnative';
+import Instabug, {
+  BugReporting,
+  InvocationOption,
+  ReportType,
+} from '@instabug/instabug-reactnative-dream11';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';

@@ -647,7 +647,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNInstabug (from `../node_modules/instabug-reactnative`)
+  - "RNInstabug (from `../node_modules/@instabug/instabug-reactnative-dream11`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -769,7 +769,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNInstabug:
-    :path: "../node_modules/instabug-reactnative"
+    :path: "../node_modules/@instabug/instabug-reactnative-dream11"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SessionReplay } from 'instabug-reactnative';
+import { SessionReplay } from '@instabug/instabug-reactnative-dream11';
 import { useToast } from 'native-base';
 
 import { ListTile } from '../components/ListTile';

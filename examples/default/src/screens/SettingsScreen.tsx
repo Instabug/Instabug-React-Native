@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-import Instabug, { BugReporting, ColorTheme, InvocationEvent } from 'instabug-reactnative';
+import Instabug, {
+  BugReporting,
+  ColorTheme,
+  InvocationEvent,
+} from '@instabug/instabug-reactnative-dream11';
 import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
 
 import { ListTile } from '../components/ListTile';

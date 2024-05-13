@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Platform, ScrollView, Text, View } from 'react-native';
 
-import { CrashReporting } from 'instabug-reactnative';
+import { CrashReporting } from '@instabug/instabug-reactnative-dream11';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';

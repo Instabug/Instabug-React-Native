@@ -1315,6 +1315,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@instabug/instabug-reactnative-dream11@link:../..":
+  version "0.0.0"
+  uid ""
+
 "@internationalized/date@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@internationalized/date/-/date-3.3.0.tgz#90386d4b4e707f28507d1a1b3cc0e162ad5ee038"
@@ -4467,10 +4471,6 @@ inline-style-prefixer@^6.0.1:
 "instabug-reactnative-ndk@github:https://github.com/Instabug/Instabug-React-Native-NDK":
   version "0.1.0"
   resolved "https://codeload.github.com/Instabug/Instabug-React-Native-NDK/tar.gz/3b0bac281253133852d32f52aa50cc805dd0b570"
-
-"instabug-reactnative@link:../..":
-  version "0.0.0"
-  uid ""
 
 intl-messageformat@^10.1.0:
   version "10.5.0"

@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Center, HStack, ScrollView, VStack } from 'native-base';
-import Instabug from 'instabug-reactnative';
+import Instabug from '@instabug/instabug-reactnative-dream11';
 
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';

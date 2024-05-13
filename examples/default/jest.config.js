@@ -11,7 +11,7 @@ module.exports = {
       '|react-native-splash-screen' +
       '|react-native-screens' +
       '|react-native-reanimated' +
-      '|instabug-reactnative' +
+      '|@instabug/instabug-reactnative-dream11' +
       ')/)',
   ],
 };

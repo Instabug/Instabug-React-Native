@@ -8,7 +8,7 @@ import Instabug, {
   InvocationEvent,
   LogLevel,
   ReproStepsMode,
-} from 'instabug-reactnative';
+} from '@instabug/instabug-reactnative-dream11';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';

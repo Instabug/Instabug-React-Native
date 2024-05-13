@@ -13,9 +13,7 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
     <Screen>
       <ListTile title="Bug Reporting" onPress={() => navigation.navigate('BugReporting')} />
       <ListTile title="Crash Reporting" onPress={() => navigation.navigate('CrashReporting')} />
-      <ListTile title="Feature Requests" onPress={() => navigation.navigate('FeatureRequests')} />
       <ListTile title="Replies" onPress={() => navigation.navigate('Replies')} />
-      <ListTile title="Surveys" onPress={() => navigation.navigate('Surveys')} />
       <ListTile title="User Steps" onPress={() => navigation.navigate('UserSteps')} />
       <ListTile title="Session Replay" onPress={() => navigation.navigate('SessionReplay')} />
     </Screen>

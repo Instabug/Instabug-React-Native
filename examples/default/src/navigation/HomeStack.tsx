@@ -4,10 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { BugReportingScreen } from '../screens/BugReportingScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
-import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
-import { SurveysScreen } from '../screens/SurveysScreen';
 import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
 import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
 import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
@@ -27,9 +25,7 @@ export type HomeStackParamList = {
   Home: undefined;
   BugReporting: undefined;
   CrashReporting: undefined;
-  FeatureRequests: undefined;
   Replies: undefined;
-  Surveys: undefined;
   UserSteps: undefined;
   BasicComponents: undefined;
   ScrollView: undefined;
@@ -59,14 +55,8 @@ export const HomeStackNavigator: React.FC = () => {
         component={CrashReportingScreen}
         options={{ title: 'Crash Reporting' }}
       />
-      <HomeStack.Screen
-        name="FeatureRequests"
-        component={FeatureRequestsScreen}
-        options={{ title: 'Feature Requests' }}
-      />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
 
-      <HomeStack.Screen name="Surveys" component={SurveysScreen} />
       <HomeStack.Screen
         name="SessionReplay"
         component={SessionReplayScreen}

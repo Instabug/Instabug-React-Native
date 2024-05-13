@@ -14,7 +14,7 @@
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "instabug-reactnative": "link:../..",
+    "@instabug/instabug-reactnative-dream11": "link:../..",
     "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-native": "0.72.3",
