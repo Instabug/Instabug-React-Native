@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { APM, Trace } from 'instabug-reactnative';
+import { APM, Trace } from '@instabug/instabug-reactnative-dream11';
 import { ScrollView } from 'react-native';
 import { Section } from '../../components/Section';
 import { Screen } from '../../components/Screen';
