@@ -15,6 +15,10 @@ import { RootTabNavigator } from './navigation/RootTab';
 import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
@@ -32,9 +36,11 @@ export const App: React.FC = () => {
   return (
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
-        <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
-          <RootTabNavigator />
-        </NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
+            <RootTabNavigator />
+          </NavigationContainer>
+        </QueryClientProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
   );

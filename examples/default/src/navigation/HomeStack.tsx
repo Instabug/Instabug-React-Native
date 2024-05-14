@@ -19,6 +19,10 @@ import {
 } from '../screens/user-steps/BackAndForthScreen';
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
+import { APMScreen } from '../screens/apm/APMScreen';
+import { TracesScreen } from '../screens/apm/TracesScreen';
+import { NetworkScreen } from '../screens/apm/NetworkScreen';
+import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 
 export type HomeStackParamList = {
@@ -37,6 +41,12 @@ export type HomeStackParamList = {
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
+
+  // APM //
+  APM: undefined;
+  NetworkTraces: undefined;
+  ExecutionTraces: undefined;
+  AppFlows: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -56,7 +66,6 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Crash Reporting' }}
       />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
-
       <HomeStack.Screen
         name="SessionReplay"
         component={SessionReplayScreen}
@@ -109,6 +118,10 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Large Image List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
+      <HomeStack.Screen name="APM" component={APMScreen} />
+      <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
+      <HomeStack.Screen name="ExecutionTraces" component={TracesScreen} />
+      <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
     </HomeStack.Navigator>
   );
 };
