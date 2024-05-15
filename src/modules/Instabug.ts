@@ -79,6 +79,11 @@ export const init = (config: InstabugConfig) => {
     config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
   );
+  console.log(
+    `network interception mode is ${
+      config.networkInterceptionMode === NetworkInterceptionMode.native ? 'Native' : 'Javascript'
+    }`,
+  );
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;

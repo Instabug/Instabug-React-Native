@@ -20,8 +20,10 @@ let _requestFilterExpression = 'false';
  */
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
+    console.log('Network log is Enabled');
     xhr.enableInterception();
     xhr.setOnDoneCallback(async (network) => {
+      console.log('Network log for url: ' + network.url);
       // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       if (!predicate(network)) {
@@ -43,6 +45,7 @@ export const setEnabled = (isEnabled: boolean) => {
     });
   } else {
     xhr.disableInterception();
+    console.log('network log is disabled');
   }
 };
 

@@ -70,9 +70,13 @@ const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
   console.log('Uploading Source map file...');
 
   try {
-    const response = await axios.post('https://api.instabug.com/api/sdk/v3/symbols_files', form, {
-      headers: form.getHeaders(),
-    });
+    const response = await axios.post(
+      'https://st001013mec1.instabug.com/api/sdk/v3/symbols_files',
+      form,
+      {
+        headers: form.getHeaders(),
+      },
+    );
 
     const appVersion = version.codepush
       ? `${version.name} (${version.code})+codepush:${version.codepush}`
