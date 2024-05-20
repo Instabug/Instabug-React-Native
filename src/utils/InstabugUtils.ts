@@ -126,6 +126,33 @@ export async function sendCrashReport(
 
   return remoteSenderCallback(jsonObject);
 }
+/**
+ * Generate random 32 bit unsigned integer Hexadecimal (8 chars) lower case letters
+ * Should not return all zeros
+ */
+export const generateTracePartialId=()=> {
+  let hexString;
+  do {
+      let randomNumber = Math.floor(Math.random() * Math.pow(2, 32));
+      hexString = randomNumber.toString(16).toLocaleLowerCase(); 
+      while (hexString.length < 8) {
+          hexString = '0' + hexString;
+      }
+  } while (hexString === '00000000'); 
+  
+  return hexString;
+}
+/**
+ * Generate W3C header 
+ * @param networkStartTime 
+ * @returns w3c header
+ */
+export const generateW3CHeader=(networkStartTime:number)=>{
+  const hexaDigitsTimestamp=(Math.floor(networkStartTime.valueOf()/1000)).toString(16).toLowerCase();
+  const partialId=generateTracePartialId();
+  
+  return `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`
+}
 
 export function isContentTypeNotAllowed(contentType: string) {
   const allowed = [
@@ -204,4 +231,6 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  generateTracePartialId,
+  generateW3CHeader
 };

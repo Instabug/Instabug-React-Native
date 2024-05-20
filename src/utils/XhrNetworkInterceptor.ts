@@ -1,5 +1,5 @@
 import InstabugConstants from './InstabugConstants';
-import { stringifyIfNotString } from './InstabugUtils';
+import { stringifyIfNotString, generateW3CHeader } from './InstabugUtils';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
 export type NetworkDataCallback = (data: NetworkData) => void;
@@ -212,6 +212,7 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
+      const w3cHeader = generateW3CHeader(cloneNetwork.startTime);
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;
