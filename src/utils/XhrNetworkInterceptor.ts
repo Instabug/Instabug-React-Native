@@ -207,7 +207,8 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      const w3cHeader=generateW3CHeader(cloneNetwork.startTime) 
+      const w3cHeader = generateW3CHeader(cloneNetwork.startTime);
+      console.log(w3cHeader);
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;
