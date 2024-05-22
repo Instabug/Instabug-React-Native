@@ -143,7 +143,7 @@ export const generateTracePartialId = () => {
   return hexString;
 };
 /**
- * Generate W3C header
+ * Generate W3C header in the format of {version}-{trace-id}-{parent-id}-{trace-flag}
  * @param networkStartTime
  * @returns w3c header
  */
@@ -152,8 +152,10 @@ export const generateW3CHeader = (networkStartTime: number) => {
     .toString(16)
     .toLowerCase();
   const partialId = generateTracePartialId();
+  const traceId = `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`;
+  const parentId = `4942472d${partialId}`;
 
-  return `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`;
+  return `00-${traceId}-${parentId}-01`;
 };
 
 export function isContentTypeNotAllowed(contentType: string) {
