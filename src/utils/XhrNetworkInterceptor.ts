@@ -207,8 +207,9 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      const w3cHeader = generateW3CHeader(cloneNetwork.startTime);
-      console.log(w3cHeader);
+      const traceparent = generateW3CHeader(cloneNetwork.startTime);
+      const tracestate = 'instabug=4942472d';
+      console.log(traceparent, tracestate);
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

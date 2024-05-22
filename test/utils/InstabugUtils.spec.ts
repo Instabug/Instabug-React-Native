@@ -255,7 +255,7 @@ describe('Instabug Utils', () => {
     const mockedPartialId = '80000000';
     const date = 1716210104248;
     const unixTimestamp = '664b49b8';
-    const expectedHeader = `${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}`;
+    const expectedHeader = `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`;
     const generatedHeader = generateW3CHeader(date);
 
     expect(generatedHeader).toBe(expectedHeader);
@@ -270,7 +270,7 @@ describe('Instabug Utils', () => {
     const mockedPartialId = '19999999';
     const date = 1716222912145;
     const unixTimestamp = '664b7bc0';
-    const expectedHeader = `${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}`;
+    const expectedHeader = `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`;
     const generatedHeader = generateW3CHeader(date);
 
     expect(generatedHeader).toBe(expectedHeader);
