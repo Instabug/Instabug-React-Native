@@ -247,7 +247,7 @@ describe('Instabug Utils', () => {
     mockMathRandom.mockRestore();
   });
 
-  it('generateW3CHeader should return timestampidtimestampid format header', () => {
+  it('generateW3CHeader should return {version}-{trace-id}-{parent-id}-{trace-flag} format header', () => {
     const mockMathRandom = jest.spyOn(global.Math, 'random');
 
     mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0.5).mockReturnValueOnce(1);
