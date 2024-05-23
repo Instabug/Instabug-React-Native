@@ -1,4 +1,5 @@
 # Changelog
+
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...dev)
 
 ### Added
