@@ -62,10 +62,10 @@ final class ArgsRegistry {
     }
 
     public static ArgsMap<IBGNonFatalException.Level> nonFatalExceptionLevel = new ArgsMap<IBGNonFatalException.Level>() {{
-        put("nonFatalErrorTypeCritical", IBGNonFatalException.Level.CRITICAL);
-        put("nonFatalErrorTypeError", IBGNonFatalException.Level.ERROR);
-        put("nonFatalErrorTypeWarning", IBGNonFatalException.Level.WARNING);
-        put("nonFatalErrorTypeInfo", IBGNonFatalException.Level.INFO);
+        put("nonFatalErrorLevelCritical", IBGNonFatalException.Level.CRITICAL);
+        put("nonFatalErrorLevelError", IBGNonFatalException.Level.ERROR);
+        put("nonFatalErrorLevelWarning", IBGNonFatalException.Level.WARNING);
+        put("nonFatalErrorLevelInfo", IBGNonFatalException.Level.INFO);
     }};
 
     static ArgsMap<InstabugInvocationEvent> invocationEvents = new ArgsMap<InstabugInvocationEvent>() {{

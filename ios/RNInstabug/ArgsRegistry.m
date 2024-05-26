@@ -153,10 +153,10 @@
 
 + (ArgsDictionary *)nonFatalExceptionLevel {
     return @{
-        @"nonFatalErrorTypeInfo" : @(IBGNonFatalLevelInfo),
-        @"nonFatalErrorTypeError" : @(IBGNonFatalLevelError),
-        @"nonFatalErrorTypeWarning" : @(IBGNonFatalLevelWarning),
-        @"nonFatalErrorTypeCritical" : @(IBGNonFatalLevelCritical)
+        @"nonFatalErrorLevelInfo" : @(IBGNonFatalLevelInfo),
+        @"nonFatalErrorLevelError" : @(IBGNonFatalLevelError),
+        @"nonFatalErrorLevelWarning" : @(IBGNonFatalLevelWarning),
+        @"nonFatalErrorLevelCritical" : @(IBGNonFatalLevelCritical)
 
 
     };
