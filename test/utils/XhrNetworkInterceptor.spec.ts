@@ -313,7 +313,7 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);
-      expect(network.requestHeaders['tracestate']).toBe('instabug=4942472d');
+      expect(network.requestHeaders.tracestate).toBe('instabug=4942472d');
       expect(network.requestHeaders).toHaveProperty('traceparent');
       done();
     });
@@ -335,7 +335,7 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);
-      expect(network.requestHeaders['tracestate']).toBe('instabug=4942472d');
+      expect(network.requestHeaders.tracestate).toBe('instabug=4942472d');
       expect(network.requestHeaders).toHaveProperty('traceparent');
       done();
     });
@@ -442,7 +442,7 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      network.requestHeaders['traceparent'] = 'caught traceparent header';
+      network.requestHeaders.traceparent = 'caught traceparent header';
       injectHeaders(network, featureFlags);
       expect(network.w3cc).toEqual(true);
       expect(network.partialId).toBe(null);
@@ -465,7 +465,7 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      network.requestHeaders['traceparent'] = 'caught traceparent header';
+      network.requestHeaders.traceparent = 'caught traceparent header';
       injectHeaders(network, featureFlags);
       expect(network.w3cc).toBe(true);
       expect(network.partialId).toBe(null);
@@ -488,7 +488,7 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      network.requestHeaders['traceparent'] = 'caught traceparent header';
+      network.requestHeaders.traceparent = 'caught traceparent header';
       injectHeaders(network, featureFlags);
       expect(network.w3cc).toBe(true);
       expect(network.partialId).toBe(null);

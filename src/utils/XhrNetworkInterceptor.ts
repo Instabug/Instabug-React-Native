@@ -67,41 +67,41 @@ const _reset = () => {
 };
 
 export const injectHeaders = (
-  network: NetworkData,
-  MockedFeatureFlags: {
+  networkData: NetworkData,
+  mockedFeatureFlags: {
     w3c_external_trace_id_enabled: boolean;
     w3c_generated_header: boolean;
     w3c_caught_header: boolean;
   },
 ) => {
   const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } =
-    MockedFeatureFlags;
+    mockedFeatureFlags;
 
   if (!w3c_external_trace_id_enabled) {
     return;
   }
-  const headerFound = network.requestHeaders.traceparent != null;
-  network.w3cc = headerFound;
+  const headerFound = networkData.requestHeaders.traceparent != null;
+  networkData.w3cc = headerFound;
   headerFound
-    ? IdentifyCaughtHeader(network, w3c_caught_header)
-    : injectGeneratedData(network, w3c_generated_header);
+    ? IdentifyCaughtHeader(networkData, w3c_caught_header)
+    : injectGeneratedData(networkData, w3c_generated_header);
 };
 
-const IdentifyCaughtHeader = (network: NetworkData, w3c_caught_header: boolean) => {
-  w3c_caught_header && (network.wceti = network.requestHeaders.traceparent);
+const IdentifyCaughtHeader = (networkData: NetworkData, w3c_caught_header: boolean) => {
+  w3c_caught_header && (networkData.wceti = networkData.requestHeaders.traceparent);
 };
 
-const injectGeneratedData = (network: NetworkData, w3c_generated_header: boolean) => {
-  const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(network.startTime);
+const injectGeneratedData = (networkData: NetworkData, w3c_generated_header: boolean) => {
+  const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
 
   if (w3c_generated_header) {
-    network.wgeti = w3cHeader;
-    network.requestHeaders['traceparent'] = w3cHeader;
-    network.requestHeaders['tracestate'] = 'instabug=4942472d';
+    networkData.wgeti = w3cHeader;
+    networkData.requestHeaders.traceparent = w3cHeader;
+    networkData.requestHeaders.tracestate = 'instabug=4942472d';
   }
 
-  network.partialId = partialId;
-  network.etst = timestampInSeconds;
+  networkData.partialId = partialId;
+  networkData.etst = timestampInSeconds;
 };
 
 export default {
