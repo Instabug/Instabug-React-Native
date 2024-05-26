@@ -359,10 +359,14 @@ describe('reportNetworkLog', () => {
     const mockedPartialId = '80000000';
     const date = 1716210104248;
     const unixTimestamp = '664b49b8';
-    const expectedHeader = `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`;
+    const expectedHeader = {
+      timestampInSeconds: Math.floor(1716210104248 / 1000),
+      partialId: mockedPartialId,
+      w3cHeader: `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`,
+    };
     const generatedHeader = generateW3CHeader(date);
 
-    expect(generatedHeader).toBe(expectedHeader);
+    expect(generatedHeader).toMatchObject(expectedHeader);
 
     mockMathRandom.mockRestore();
   });
@@ -374,10 +378,15 @@ describe('reportNetworkLog', () => {
     const mockedPartialId = '19999999';
     const date = 1716222912145;
     const unixTimestamp = '664b7bc0';
-    const expectedHeader = `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`;
+    const expectedHeader = {
+      timestampInSeconds: Math.floor(1716222912145 / 1000),
+      partialId: mockedPartialId,
+      w3cHeader: `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`,
+    };
+
     const generatedHeader = generateW3CHeader(date);
 
-    expect(generatedHeader).toBe(expectedHeader);
+    expect(generatedHeader).toMatchObject(expectedHeader);
 
     mockMathRandom.mockRestore();
   });
