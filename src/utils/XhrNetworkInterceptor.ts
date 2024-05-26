@@ -1,4 +1,4 @@
-import InstabugConstants from './InstabugConstants';
+import InstabugConstants, { MockedFeatureFlags } from './InstabugConstants';
 import { generateW3CHeader } from './InstabugUtils';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
@@ -22,6 +22,11 @@ export interface NetworkData {
   gqlQueryName?: string;
   serverErrorMessage: string;
   requestContentType: string;
+  w3cc: boolean | null;
+  partialId: string | null;
+  etst: number | null;
+  wgeti: string | null;
+  wceti: string | null;
 }
 
 const XMLHttpRequest = global.XMLHttpRequest;
@@ -53,7 +58,50 @@ const _reset = () => {
     gqlQueryName: '',
     serverErrorMessage: '',
     requestContentType: '',
+    w3cc: null,
+    partialId: null,
+    etst: null,
+    wgeti: null,
+    wceti: null,
   };
+};
+
+export const injectHeaders = (
+  network: NetworkData,
+  MockedFeatureFlags: {
+    w3c_external_trace_id_enabled: boolean;
+    w3c_generated_header: boolean;
+    w3c_caught_header: boolean;
+  },
+) => {
+  const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } =
+    MockedFeatureFlags;
+
+  if (!w3c_external_trace_id_enabled) {
+    return;
+  }
+  const headerFound = network.requestHeaders.traceparent != null;
+  network.w3cc = headerFound;
+  headerFound
+    ? IdentifyCaughtHeader(network, w3c_caught_header)
+    : injectGeneratedData(network, w3c_generated_header);
+};
+
+const IdentifyCaughtHeader = (network: NetworkData, w3c_caught_header: boolean) => {
+  w3c_caught_header && (network.wceti = network.requestHeaders.traceparent);
+};
+
+const injectGeneratedData = (network: NetworkData, w3c_generated_header: boolean) => {
+  const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(network.startTime);
+
+  if (w3c_generated_header) {
+    network.wgeti = w3cHeader;
+    network.requestHeaders['traceparent'] = w3cHeader;
+    network.requestHeaders['tracestate'] = 'instabug=4942472d';
+  }
+
+  network.partialId = partialId;
+  network.etst = timestampInSeconds;
 };
 
 export default {
@@ -207,9 +255,7 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      const traceparent = generateW3CHeader(cloneNetwork.startTime);
-      const tracestate = 'instabug=4942472d';
-      console.log(traceparent, tracestate);
+      injectHeaders(cloneNetwork, MockedFeatureFlags);
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

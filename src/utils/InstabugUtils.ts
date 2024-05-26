@@ -140,14 +140,17 @@ export const generateTracePartialId = () => {
  * @returns w3c header
  */
 export const generateW3CHeader = (networkStartTime: number) => {
-  const hexaDigitsTimestamp = Math.floor(networkStartTime.valueOf() / 1000)
-    .toString(16)
-    .toLowerCase();
+  const timestampInSeconds = Math.floor(networkStartTime.valueOf() / 1000);
+  const hexaDigitsTimestamp = timestampInSeconds.toString(16).toLowerCase();
   const partialId = generateTracePartialId();
   const traceId = `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`;
   const parentId = `4942472d${partialId}`;
 
-  return `00-${traceId}-${parentId}-01`;
+  return {
+    timestampInSeconds,
+    partialId,
+    w3cHeader: `00-${traceId}-${parentId}-01`,
+  };
 };
 
 export default {
