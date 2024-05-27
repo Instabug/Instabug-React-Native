@@ -21,6 +21,7 @@
 		CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */; };
 		CC3DF8942A1DFC9A003E9914 /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */; };
 		CC3DF8952A1DFC9A003E9914 /* IBGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */; };
+		CC487A9C2C71FCFC0021F680 /* Instabug.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC487A9B2C71FCFC0021F680 /* Instabug.plist */; };
 		CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF1E4082B022CF20024802D /* RNInstabugTests.m */; };
 		CD36F4707EA1F435D2CC7A15 /* libPods-InstabugExample-InstabugTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7A6E02D40E0CEEA833CC4 /* libPods-InstabugExample-InstabugTests.a */; };
 		F7BF47401EF3A435254C97BB /* libPods-InstabugExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */; };
@@ -52,6 +53,7 @@
 		9A3D962AB03F97E25566779F /* Pods-InstabugExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.debug.xcconfig"; sourceTree = "<group>"; };
 		BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InstabugExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD54B44E2DF85672BB2D4DEE /* Pods-InstabugExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.release.xcconfig"; sourceTree = "<group>"; };
+		BE3328762BDACE030078249A /* IBGCrashReporting+CP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IBGCrashReporting+CP.h"; sourceTree = "<group>"; };
 		C3C8C24386310A3120006604 /* CrashReportingExampleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashReportingExampleModule.m; sourceTree = "<group>"; };
 		C3C8C784EADC037C5A752B94 /* CrashReportingExampleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashReportingExampleModule.h; sourceTree = "<group>"; };
 		CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugCrashReportingTests.m; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 		CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
 		CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
+		CC487A9B2C71FCFC0021F680 /* Instabug.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = Instabug.plist; path = InstabugExample/Instabug.plist; sourceTree = "<group>"; };
 		CCF1E4082B022CF20024802D /* RNInstabugTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInstabugTests.m; sourceTree = "<group>"; };
 		DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample-InstabugTests.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample-InstabugTests/Pods-InstabugExample-InstabugTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -91,6 +94,7 @@
 		00E356EF1AD99517003FC87E /* InstabugTests */ = {
 			isa = PBXGroup;
 			children = (
+				BE3328752BDACE030078249A /* Util */,
 				CC3DF8892A1DFC99003E9914 /* IBGConstants.h */,
 				CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */,
 				CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */,
@@ -118,6 +122,7 @@
 		13B07FAE1A68108700A75B9A /* InstabugExample */ = {
 			isa = PBXGroup;
 			children = (
+				CC487A9B2C71FCFC0021F680 /* Instabug.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -179,6 +184,14 @@
 				DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BE3328752BDACE030078249A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BE3328762BDACE030078249A /* IBGCrashReporting+CP.h */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		C3C8C1DDCEA91410F27A3683 /* native */ = {
@@ -286,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				CC487A9C2C71FCFC0021F680 /* Instabug.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,7 +426,7 @@
 			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\nmain() {\n  # Read environment variables from ios/.xcode.env if it exists\n  env_path=\"$PODS_ROOT/../.xcode.env\"\n  if [ -f \"$env_path\" ]; then\n      source \"$env_path\"\n  fi\n\n  # Read environment variables from ios/.xcode.env.local if it exists\n  local_env_path=\"${ENV_PATH}.local\"\n  if [ -f \"$local_env_path\" ]; then\n      source \"$local_env_path\"\n  fi\n\n  if [[ \"$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\" = true ]]; then\n    echo \"[Info] \\`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\\` was set to true, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ \"$CONFIGURATION\" = \"Debug\" ]]; then\n    echo \"[Info] Building in debug mode, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ -z \"$INFOPLIST_FILE\" ]] || [[ -z \"$PROJECT_DIR\" ]]; then\n    echo \"[Error] Instabug sourcemaps script must be invoked by Xcode\"\n    exit 0\n  fi\n\n  local source_map_file=$(generate_sourcemaps | tail -n 1)\n\n  local js_project_dir=\"$PROJECT_DIR/..\"\n  local instabug_dir=$(dirname $(node -p \"require.resolve('instabug-reactnative/package.json')\"))\n  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)\n  local app_token=$(resolve_var \"App Token\" \"INSTABUG_APP_TOKEN\" \"$inferred_token\" | tail -n 1)\n\n  local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_name=$(resolve_var \"Version Name\" \"INSTABUG_APP_VERSION_NAME\" \"$inferred_name\" | tail -n 1)\n\n  local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_code=$(resolve_var \"Version Code\" \"INSTABUG_APP_VERSION_CODE\" \"$inferred_code\" | tail -n 1)\n\n  node $instabug_dir/bin/index.js upload-sourcemaps \\\n      --platform ios \\\n      --file $source_map_file \\\n      --token $app_token \\\n      --name $version_name \\\n      --code $version_code\n}\n\ngenerate_sourcemaps() {\n  local react_native_dir=$(dirname $(node -p \"require.resolve('react-native/package.json')\"))\n\n  # Fixes an issue with react-native prior to v0.67.0\n  # For more info: https://github.com/facebook/react-native/issues/32168\n  export RN_DIR=$react_native_dir \n\n  # Used withing `react-native-xcode.sh` to generate sourcemap file\n  export SOURCEMAP_FILE=\"$(pwd)/main.jsbundle.map\";\n\n  source \"$react_native_dir/scripts/react-native-xcode.sh\"\n\n  if [[ ! -f \"$SOURCEMAP_FILE\" ]]; then\n    echo \"[Error] Unable to find source map file at: $SOURCEMAP_FILE\"\n    exit 0\n  fi\n\n  echo $SOURCEMAP_FILE\n}\n\nresolve_var() {\n  local name=$1\n  local env_key=$2\n  local default_value=$3\n\n  local env_value=\"${!env_key}\"\n\n  if [[ -n \"$env_value\" ]] && [[ \"$env_value\" != default_value ]]; then\n    echo \"[Warning] Environment variable \\`$env_key\\` might have incorrect value, make sure this was intentional:\"\n    echo \"   Environment Value: $env_value\"\n    echo \"   Default Value: $default_value\"\n  fi\n\n  local value=\"${env_value:-$default_value}\"\n\n  if [[ -z \"$value\" ]]; then\n    echo \"[Error] Unable to find $name! Set the environment variable \\`$env_key\\` and try again.\"\n    exit 0\n  fi\n\n  echo $value\n}\n\nmain \"$@\"; exit\n";
+			shellScript = "#!/bin/sh\n\nmain() {\n  # Read environment variables from ios/.xcode.env if it exists\n  env_path=\"$PODS_ROOT/../.xcode.env\"\n  if [ -f \"$env_path\" ]; then\n      source \"$env_path\"\n  fi\n\n  # Read environment variables from ios/.xcode.env.local if it exists\n  local_env_path=\"${ENV_PATH}.local\"\n  if [ -f \"$local_env_path\" ]; then\n      source \"$local_env_path\"\n  fi\n\n  if [[ \"$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\" = true ]]; then\n    echo \"[Info] \\`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\\` was set to true, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ \"$CONFIGURATION\" = \"Debug\" ]]; then\n    echo \"[Info] Building in debug mode, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ -z \"$INFOPLIST_FILE\" ]] || [[ -z \"$PROJECT_DIR\" ]]; then\n    echo \"[Error] Instabug sourcemaps script must be invoked by Xcode\"\n    exit 0\n  fi\n\n  local source_map_file=$(generate_sourcemaps | tail -n 1)\n\n  local js_project_dir=\"$PROJECT_DIR/..\"\n  local instabug_dir=$(dirname $(node -p \"require.resolve('instabug-reactnative/package.json')\"))\n  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)\n  local app_token=$(resolve_var \"App Token\" \"INSTABUG_APP_TOKEN\" \"$inferred_token\" | tail -n 1)\n\n  local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_name=$(resolve_var \"Version Name\" \"INSTABUG_APP_VERSION_NAME\" \"$inferred_name\" | tail -n 1)\n\n  local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_code=$(resolve_var \"Version Code\" \"INSTABUG_APP_VERSION_CODE\" \"$inferred_code\" | tail -n 1)\n\n  node $instabug_dir/bin/index.js upload-sourcemaps \\\n      --platform ios \\\n      --file $source_map_file \\\n      --token $app_token \\\n      --name $version_name \\\n      --code $version_code\n}\n\ngenerate_sourcemaps() {\n  local react_native_dir=$(dirname $(node -p \"require.resolve('react-native/package.json')\"))\n\n  # Fixes an issue with react-native prior to v0.67.0\n  # For more info: https://github.com/facebook/react-native/issues/32168\n  export RN_DIR=$react_native_dir\n\n  # Used withing `react-native-xcode.sh` to generate sourcemap file\n  export SOURCEMAP_FILE=\"$(pwd)/main.jsbundle.map\";\n\n  source \"$react_native_dir/scripts/react-native-xcode.sh\"\n\n  if [[ ! -f \"$SOURCEMAP_FILE\" ]]; then\n    echo \"[Error] Unable to find source map file at: $SOURCEMAP_FILE\"\n    exit 0\n  fi\n\n  echo $SOURCEMAP_FILE\n}\n\nresolve_var() {\n  local name=$1\n  local env_key=$2\n  local default_value=$3\n\n  local env_value=\"${!env_key}\"\n\n  if [[ -n \"$env_value\" ]] &&  [[ -n \"$default_value\" ]]  && [[ \"$env_value\" != default_value ]]; then\n    echo \"[Warning] Environment variable \\`$env_key\\` might have incorrect value, make sure this was intentional:\"\n    echo \"   Environment Value: $env_value\"\n    echo \"   Default Value: $default_value\"\n  fi\n\n  local value=\"${env_value:-$default_value}\"\n\n  if [[ -z \"$value\" ]]; then\n    echo \"[Error] Unable to find $name! Set the environment variable \\`$env_key\\` and try again.\"\n    exit 0\n  fi\n\n  echo $value\n}\n\nmain \"$@\"; exit\n";
 		};
 		B77A7BA143DBD17E8AAFD0B4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

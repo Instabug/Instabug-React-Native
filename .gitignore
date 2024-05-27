@@ -1,6 +1,8 @@
 # Distribution
 dist/
 bin/
+upload/*
+!upload/package.json
 
 # NodeJS
 node_modules/
