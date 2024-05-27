@@ -4,6 +4,7 @@ import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
 import { Platform } from 'react-native';
 import type { NonFatalOptions } from '../models/NonFatalOptions';
+import { NonFatalErrorLevel } from '../utils/Enums';
 
 /**
  * Enables and disables everything related to crash reporting including intercepting
@@ -20,12 +21,16 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param nonFatalOptions extra config for the non-fatal error sent with Error Object
  */
 export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptions = {}) => {
+  let level = NonFatalErrorLevel.error;
+  if (nonFatalOptions.level != null) {
+    level = nonFatalOptions.level;
+  }
   return InstabugUtils.sendCrashReport(error, (data) =>
     NativeCrashReporting.sendHandledJSCrash(
       data,
       nonFatalOptions.userAttributes,
       nonFatalOptions.fingerprint,
-      nonFatalOptions.level,
+      level,
     ),
   );
 };
