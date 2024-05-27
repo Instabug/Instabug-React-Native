@@ -62,10 +62,11 @@ describe('APM Module', () => {
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
     mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce(null);
+    const name = 'trace';
+    const promise = APM.startExecutionTrace(name);
+    const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;
 
-    const promise = APM.startExecutionTrace('trace');
-
-    await expect(promise).rejects.toThrowError(/trace "trace" wasn't created/i);
+    await expect(promise).rejects.toEqual(TRACE_NOT_STARTED_APM_NOT_ENABLED);
   });
 
   it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {

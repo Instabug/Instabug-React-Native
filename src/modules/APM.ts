@@ -63,6 +63,7 @@ export const startExecutionTrace = async (name: string): Promise<Trace> => {
 
   if (!id) {
     console.error(TRACE_NOT_STARTED_APM_NOT_ENABLED);
+    return Promise.reject(TRACE_NOT_STARTED_APM_NOT_ENABLED);
   }
 
   return new Trace(id, name);
