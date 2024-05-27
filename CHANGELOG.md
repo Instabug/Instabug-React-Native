@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...dev)
+
+### Fixed
+
+- Replace Thrown Errors with Logs ([#1220](https://github.com/Instabug/Instabug-React-Native/pull/1220))
+
 ## [13.0.5](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...v13.0.5) (May 18, 2024)
 
 ### Changed
