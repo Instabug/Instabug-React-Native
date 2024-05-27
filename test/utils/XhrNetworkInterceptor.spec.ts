@@ -313,7 +313,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);
-      expect(network.requestHeaders.tracestate).toBe('instabug=4942472d');
       expect(network.requestHeaders).toHaveProperty('traceparent');
       done();
     });
@@ -335,7 +334,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);
-      expect(network.requestHeaders.tracestate).toBe('instabug=4942472d');
       expect(network.requestHeaders).toHaveProperty('traceparent');
       done();
     });
@@ -359,7 +357,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe(null);
       expect(network.requestHeaders).not.toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
 
       done();
     });
@@ -382,7 +379,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe(null);
       expect(network.requestHeaders).not.toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
 
       done();
     });
@@ -405,7 +401,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe(null);
       expect(network.requestHeaders).not.toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -427,7 +422,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe(null);
       expect(network.requestHeaders).not.toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -449,7 +443,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.etst).toBe(null);
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -473,7 +466,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe('caught traceparent header');
       expect(network.requestHeaders).toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -496,7 +488,6 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.wgeti).toBe(null);
       expect(network.wceti).toBe('caught traceparent header');
       expect(network.requestHeaders).toHaveProperty('traceparent');
-      expect(network.requestHeaders).not.toHaveProperty('tracestate');
       done();
     });
     FakeRequest.mockResponse(request);

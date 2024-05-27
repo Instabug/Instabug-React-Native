@@ -97,7 +97,6 @@ const injectGeneratedData = (networkData: NetworkData, w3c_generated_header: boo
   if (w3c_generated_header) {
     networkData.wgeti = w3cHeader;
     networkData.requestHeaders.traceparent = w3cHeader;
-    networkData.requestHeaders.tracestate = 'instabug=4942472d';
   }
 
   networkData.partialId = partialId;
