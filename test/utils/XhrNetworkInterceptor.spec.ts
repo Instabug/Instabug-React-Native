@@ -4,7 +4,7 @@ import nock from 'nock';
 import waitForExpect from 'wait-for-expect';
 
 import InstabugConstants from '../../src/utils/InstabugConstants';
-import Interceptor from '../../src/utils/XhrNetworkInterceptor';
+import Interceptor, { injectHeaders } from '../../src/utils/XhrNetworkInterceptor';
 
 const url = 'http://api.instabug.com';
 const method = 'GET';
@@ -290,6 +290,208 @@ describe('Network Interceptor', () => {
     FakeRequest.setRequestHeaders(headers);
     FakeRequest.mockResponse(request, 200, JSON.stringify(responseBody));
     FakeRequest.setResponseType('json');
+    FakeRequest.send();
+  });
+});
+
+describe('Network Interceptor W3C Headers', () => {
+  beforeEach(() => {
+    nock.cleanAll();
+  });
+
+  it('should attach generated header if all flags are enabled on no header found', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: true,
+      w3c_generated_header: true,
+      w3c_caught_header: true,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(false);
+      expect(network.partialId).toHaveLength(8);
+      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
+      expect(network.wgeti).toHaveLength(55);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should attach generated header if key flag & generated header flags are enabled on no header found', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: true,
+      w3c_generated_header: true,
+      w3c_caught_header: false,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(false);
+      expect(network.partialId).toHaveLength(8);
+      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
+      expect(network.wgeti).toHaveLength(55);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+
+  it('should not attach headers when key flag is disabled & generated, caught header flags are enabled', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: false,
+      w3c_generated_header: true,
+      w3c_caught_header: true,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(null);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should not attach headers when all feature flags are disabled', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: false,
+      w3c_generated_header: false,
+      w3c_caught_header: false,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(null);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should not attach headers when key & caught header flags are disabled and generated header flag is enabled', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: false,
+      w3c_generated_header: true,
+      w3c_caught_header: false,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(null);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should not attach headers when key & generated header flags are disabled and caught header flag is enabled', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: false,
+      w3c_generated_header: false,
+      w3c_caught_header: true,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(null);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe(null);
+      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should not attach headers when key flag is enabled & generated, caught header flags are disabled on header found', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: true,
+      w3c_generated_header: false,
+      w3c_caught_header: false,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      network.requestHeaders.traceparent = 'caught traceparent header';
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toEqual(true);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe(null);
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+
+  it('should attach caught header if all flags are enabled ', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: true,
+      w3c_generated_header: true,
+      w3c_caught_header: true,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      network.requestHeaders.traceparent = 'caught traceparent header';
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(true);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe('caught traceparent header');
+      expect(network.requestHeaders).toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
+    FakeRequest.send();
+  });
+  it('should attach caught header if key & caught header flags are enabled and generated header flag is disabled', (done) => {
+    const featureFlags = {
+      w3c_external_trace_id_enabled: true,
+      w3c_generated_header: false,
+      w3c_caught_header: true,
+    };
+    Interceptor.enableInterception();
+    Interceptor.setOnDoneCallback((network) => {
+      network.requestHeaders.traceparent = 'caught traceparent header';
+      injectHeaders(network, featureFlags);
+      expect(network.w3cc).toBe(true);
+      expect(network.partialId).toBe(null);
+      expect(network.etst).toBe(null);
+      expect(network.wgeti).toBe(null);
+      expect(network.wceti).toBe('caught traceparent header');
+      expect(network.requestHeaders).toHaveProperty('traceparent');
+      done();
+    });
+    FakeRequest.mockResponse(request);
+    FakeRequest.open(method, url);
     FakeRequest.send();
   });
 });

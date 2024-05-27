@@ -118,6 +118,40 @@ export async function sendCrashReport(
 
   return remoteSenderCallback(jsonObject);
 }
+/**
+ * Generate random 32 bit unsigned integer Hexadecimal (8 chars) lower case letters
+ * Should not return all zeros
+ */
+export const generateTracePartialId = () => {
+  let hexString;
+  do {
+    const randomNumber = Math.floor(Math.random() * Math.pow(2, 32));
+    hexString = randomNumber.toString(16).toLocaleLowerCase();
+    while (hexString.length < 8) {
+      hexString = '0' + hexString;
+    }
+  } while (hexString === '00000000');
+
+  return hexString;
+};
+/**
+ * Generate W3C header in the format of {version}-{trace-id}-{parent-id}-{trace-flag}
+ * @param networkStartTime
+ * @returns w3c header
+ */
+export const generateW3CHeader = (networkStartTime: number) => {
+  const timestampInSeconds = Math.floor(networkStartTime.valueOf() / 1000);
+  const hexaDigitsTimestamp = timestampInSeconds.toString(16).toLowerCase();
+  const partialId = generateTracePartialId();
+  const traceId = `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`;
+  const parentId = `4942472d${partialId}`;
+
+  return {
+    timestampInSeconds,
+    partialId,
+    w3cHeader: `00-${traceId}-${parentId}-01`,
+  };
+};
 
 export default {
   parseErrorStack,
@@ -127,4 +161,6 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  generateTracePartialId,
+  generateW3CHeader,
 };
