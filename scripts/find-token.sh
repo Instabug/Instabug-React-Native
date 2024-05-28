@@ -35,8 +35,7 @@ ENV_APP_TOKEN=$(
     sed 's/ //g' |
     grep -o "=[0-9a-zA-Z]*" |
     cut -d "=" -f 2
-
-     )
+)
 
 if [ ! -z "${ENV_APP_TOKEN}" ]; then
     echo $ENV_APP_TOKEN
