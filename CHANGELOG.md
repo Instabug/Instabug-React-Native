@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...dev)
+
+### Added
+
+- support reading `INSTABUG_APP_TOKEN` variable from env files in automatic sourcemap files uploading ([#1222](https://github.com/Instabug/Instabug-React-Native/pull/1222))
+
 ## [13.0.5](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...v13.0.5) (May 18, 2024)
 
 ### Changed
