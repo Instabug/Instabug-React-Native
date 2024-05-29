@@ -382,6 +382,39 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
 }
 
+RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
+    NSMutableArray<IBGFeatureFlag *> *featureFlags = [NSMutableArray array];
+    for(id key in featureFlagsMap){
+        NSString* variant =((NSString * )[featureFlagsMap objectForKey:key]);
+        if ([variant length]==0) {
+            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key]];
+        }
+        else{
+            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key variant:variant]];
+
+        }
+    }
+
+    [Instabug addFeatureFlags:featureFlags];
+}
+
+RCT_EXPORT_METHOD(removeFeatureFlags:(NSArray *)featureFlags) {
+    NSMutableArray<IBGFeatureFlag *> *features = [NSMutableArray array];
+    for(id item in featureFlags){
+            [features addObject:[[IBGFeatureFlag alloc] initWithName:item]];
+        }
+
+    @try {
+    [Instabug removeFeatureFlags:features];
+   } @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+     }
+}
+
+RCT_EXPORT_METHOD(removeAllFeatureFlags) {
+    [Instabug removeAllFeatureFlags];
+}
+
 RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
