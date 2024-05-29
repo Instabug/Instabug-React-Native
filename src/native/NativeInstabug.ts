@@ -106,12 +106,16 @@ export interface InstabugNativeModule extends NativeModule {
   addFileAttachmentWithURLToReport(url: string, filename?: string): void;
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
   willRedirectToStore(): void;
+
+  // Callbacks //
+  setOnNetworkDiagnosticsHandler(): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  NETWORK_DIAGNOSTICS_HANDLER = 'IBGNetworkDiagnosticsHandler',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

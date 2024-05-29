@@ -13,6 +13,7 @@
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
 #import "RNInstabug.h"
+#import "Instabug+CP.h"
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -45,7 +46,7 @@
 
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
-  self.instabugBridge = [[InstabugReactBridge alloc] init];
+  self.instabugBridge = OCMPartialMock([[InstabugReactBridge alloc] init]);
   self.mRNInstabug = OCMClassMock([RNInstabug class]);
 }
 
@@ -440,6 +441,27 @@
   OCMStub([mock clearAllExperiments]);
   [self.instabugBridge clearAllExperiments];
   OCMVerify([mock clearAllExperiments]);
+}
+
+- (void)testSetOnNetworkDiagnosticsHandler {
+  id mInstabug = OCMClassMock([Instabug class]);
+  NSString* date = @"1/2/2024";
+  NSInteger totalRequestCount = 10;
+  NSInteger failureCount = 8;
+  
+  NSDictionary *expected = @{
+      @"date": date,
+      @"totalRequestCount": @(totalRequestCount),
+      @"failureCount": @(failureCount)
+  };
+  
+  OCMStub([mInstabug setWillSendNetworkDiagnosticsHandler:([OCMArg invokeBlockWithArgs:date, OCMOCK_VALUE(totalRequestCount), OCMOCK_VALUE(failureCount), nil])]);
+
+  OCMStub([self.instabugBridge sendEventWithName:[OCMArg any] body:[OCMArg any]]);
+  
+  [self.instabugBridge setOnNetworkDiagnosticsHandler];
+
+  OCMVerify([self.instabugBridge sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:expected]);
 }
 
 @end
