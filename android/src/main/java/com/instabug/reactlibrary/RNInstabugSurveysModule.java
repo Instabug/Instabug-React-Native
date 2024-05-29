@@ -108,6 +108,20 @@ public class RNInstabugSurveysModule extends EventEmitterModule {
         });
     }
 
+    @ReactMethod
+    public void switchTheUpdatingThread() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Surveys.switchTheUpdatingThread();
+                } catch (java.lang.Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+    }
+
     /**
      * Show any valid survey if exist
      *

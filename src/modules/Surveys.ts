@@ -28,6 +28,9 @@ export const showSurveyIfAvailable = () => {
   NativeSurveys.showSurveysIfAvailable();
 };
 
+export const switchTheUpdatingThread = () => {
+  NativeSurveys.switchTheUpdatingThread();
+};
 /**
  * Returns an array containing the available surveys.
  */

@@ -16,6 +16,7 @@ export const SurveysScreen: React.FC = () => {
         title="Show Custom Survey"
         onPress={() => Surveys.showSurvey('6ZaEI4nVdjg19r5uekS5nw')}
       />
+      <ListTile title="Show Custom Survey" onPress={() => Surveys.switchTheUpdatingThread()} />
     </Screen>
   );
 };

@@ -14,7 +14,7 @@ export interface SurveysNativeModule extends NativeModule {
   showSurveysIfAvailable(): void;
   getAvailableSurveys(): Promise<Survey[]>;
   hasRespondedToSurvey(surveyToken: string): Promise<boolean>;
-
+  switchTheUpdatingThread(): void;
   // Misc APIs //
   setShouldShowWelcomeScreen(shouldShowWelcomeScreen: boolean): void;
   setAppStoreURL(appStoreURL: string): void;
