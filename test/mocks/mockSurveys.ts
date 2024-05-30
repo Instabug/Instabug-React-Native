@@ -13,6 +13,7 @@ const mockSurveys: SurveysNativeModule = {
   showSurvey: jest.fn(),
   hasRespondedToSurvey: jest.fn(),
   setShouldShowWelcomeScreen: jest.fn(),
+  switchTheUpdatingThread: jest.fn(),
 };
 
 export default mockSurveys;
