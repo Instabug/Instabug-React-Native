@@ -48,7 +48,6 @@ target 'InstabugExample' do
   target 'InstabugTests' do
     inherit! :complete
     pod 'OCMock'
-    pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-crash-reporting-support-non-fatal/12.7.1/Instabug.podspec'
 
     # Pods for testing
   end
