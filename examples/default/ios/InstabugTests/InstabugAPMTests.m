@@ -13,6 +13,7 @@
 #import <Instabug/IBGAPM.h>
 #import "Instabug/Instabug.h"
 #import "IBGConstants.h"
+#import "RNInstabug/IBGAPM+PrivateAPIs.h"
 
 @interface InstabugAPMTests : XCTestCase
 @property (nonatomic, retain) InstabugAPMBridge *instabugBridge;
@@ -175,5 +176,63 @@
   [self.instabugBridge endUITrace];
   OCMVerify([mock endUITrace]);
 }
+
+- (void) testGetw3ExternalTraceIDEnabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    NSNumber *expectedValue = @(YES);
+    
+    OCMStub([mock w3ExternalTraceIDEnabled]).andReturn([expectedValue boolValue]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
+    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
+        XCTAssertEqualObjects(result, expectedValue);
+        [expectation fulfill];
+    };
+    
+    [self.instabugBridge getw3ExternalTraceIDEnabled:resolve :nil];
+    
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    
+    OCMVerify([mock w3ExternalTraceIDEnabled]);
+}
+
+- (void) testGetw3ExternalGeneratedHeaderEnabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    NSNumber *expectedValue = @(YES);
+    
+    OCMStub([mock w3ExternalGeneratedHeaderEnabled]).andReturn([expectedValue boolValue]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
+    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
+        XCTAssertEqualObjects(result, expectedValue);
+        [expectation fulfill];
+    };
+    
+    [self.instabugBridge getw3ExternalGeneratedHeaderEnabled:resolve :nil];
+    
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    
+    OCMVerify([mock w3ExternalGeneratedHeaderEnabled]);
+}
+
+- (void) testGetW3CaughtHeaderEnabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    NSNumber *expectedValue = @(YES);
+    
+    OCMStub([mock w3CaughtHeaderEnabled]).andReturn([expectedValue boolValue]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
+    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
+        XCTAssertEqualObjects(result, expectedValue);
+        [expectation fulfill];
+    };
+    
+    [self.instabugBridge getW3CaughtHeaderEnabled:resolve :nil];
+    
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    
+    OCMVerify([mock w3CaughtHeaderEnabled]);
+}
+
 
 @end

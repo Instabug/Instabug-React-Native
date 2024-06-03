@@ -134,3 +134,27 @@ export const endUITrace = () => {
 export const _ibgSleep = () => {
   NativeAPM.ibgSleep();
 };
+
+/**
+ * Returns weather W3C key flag is enabled
+ */
+export const _getw3ExternalTraceIDEnabled = async (): Promise<boolean> => {
+  const isw3ExternalTraceIDEnabled = await NativeAPM.getw3ExternalTraceIDEnabled();
+  return isw3ExternalTraceIDEnabled;
+};
+
+/**
+ * Returns weather we should generate W3C header
+ */
+export const _getw3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> => {
+  const isExternalGeneratedHeaderEnabled = await NativeAPM.getw3ExternalGeneratedHeaderEnabled();
+  return isExternalGeneratedHeaderEnabled;
+};
+
+/**
+ * Returns weather W3C was caught
+ */
+export const _getW3CaughtHeaderEnabled = async (): Promise<boolean> => {
+  const isW3CaughtHeaderEnabled = await NativeAPM.getW3CaughtHeaderEnabled();
+  return isW3CaughtHeaderEnabled;
+};

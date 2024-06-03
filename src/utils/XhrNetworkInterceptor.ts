@@ -1,5 +1,6 @@
 import InstabugConstants from './InstabugConstants';
 import { stringifyIfNotString, generateW3CHeader } from './InstabugUtils';
+import * as NativeAPM from '../modules/APM';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
 export type NetworkDataCallback = (data: NetworkData) => void;
@@ -65,22 +66,36 @@ const _reset = () => {
     wceti: null,
   };
 };
+const getFeatureFlags = async (networkData: NetworkData) => {
+  const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
+    await Promise.all([
+      NativeAPM._getw3ExternalTraceIDEnabled(),
+      NativeAPM._getw3ExternalGeneratedHeaderEnabled(),
+      NativeAPM._getW3CaughtHeaderEnabled(),
+    ]);
+  injectHeaders(networkData, {
+    w3c_external_trace_id_enabled,
+    w3c_generated_header,
+    w3c_caught_header,
+  });
+};
 
-export const injectHeaders = (
+export const injectHeaders = async (
   networkData: NetworkData,
-  mockedFeatureFlags: {
+  featureFlags: {
     w3c_external_trace_id_enabled: boolean;
     w3c_generated_header: boolean;
     w3c_caught_header: boolean;
   },
 ) => {
-  const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } =
-    mockedFeatureFlags;
+  const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } = featureFlags;
 
   if (!w3c_external_trace_id_enabled) {
     return;
   }
+
   const headerFound = networkData.requestHeaders.traceparent != null;
+
   networkData.w3cc = headerFound;
   headerFound
     ? IdentifyCaughtHeader(networkData, w3c_caught_header)
@@ -259,10 +274,7 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      const w3cHeader = generateW3CHeader(cloneNetwork.startTime);
-      const traceparent = generateW3CHeader(cloneNetwork.startTime);
-      const tracestate = 'instabug=4942472d';
-      console.log(traceparent, tracestate);
+      getFeatureFlags(cloneNetwork);
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

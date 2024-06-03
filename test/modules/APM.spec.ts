@@ -156,4 +156,40 @@ describe('APM Module', () => {
     expect(NativeAPM.ibgSleep).toBeCalledTimes(1);
     expect(NativeAPM.ibgSleep).toBeCalledWith();
   });
+
+  it('should call the native method _getw3ExternalTraceIDEnabled', async () => {
+    const expected = true;
+
+    mocked(NativeAPM).getw3ExternalTraceIDEnabled.mockResolvedValueOnce(expected);
+
+    const actual = await NativeAPM.getw3ExternalTraceIDEnabled();
+
+    expect(actual).toBe(expected);
+    expect(NativeAPM.getw3ExternalTraceIDEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.getw3ExternalTraceIDEnabled).toBeCalledWith();
+  });
+
+  it('should call the native method _getw3ExternalGeneratedHeaderEnabled', async () => {
+    const expected = true;
+
+    mocked(NativeAPM).getw3ExternalGeneratedHeaderEnabled.mockResolvedValueOnce(expected);
+
+    const actual = await NativeAPM.getw3ExternalGeneratedHeaderEnabled();
+
+    expect(actual).toBe(expected);
+    expect(NativeAPM.getw3ExternalGeneratedHeaderEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.getw3ExternalGeneratedHeaderEnabled).toBeCalledWith();
+  });
+
+  it('should call the native method _getW3CaughtHeaderEnabled', async () => {
+    const expected = true;
+
+    mocked(NativeAPM).getW3CaughtHeaderEnabled.mockResolvedValueOnce(expected);
+
+    const actual = await NativeAPM.getW3CaughtHeaderEnabled();
+
+    expect(actual).toBe(expected);
+    expect(NativeAPM.getW3CaughtHeaderEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.getW3CaughtHeaderEnabled).toBeCalledWith();
+  });
 });
