@@ -52,6 +52,7 @@ Task createUploadSourcemapsTask(String flavor) {
                 def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
                 def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
+                println "appToken22: ${appToken}"
 
                 def projectConfig = appProject.android.defaultConfig
                 def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
@@ -90,15 +91,17 @@ boolean isUploadSourcemapsEnabled() {
 String resolveVar(String name, String envKey, String defaultValue) {
     def env = System.getenv()
     def envValue = env.get(envKey)
+    def projectEnv = project.findProperty(envKey)
 
-    if (envValue != null && envValue != defaultValue) {
+
+    if (envValue != null) {
         project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
                 "make sure this was intentional:\n" +
                 "   Environment Value: ${envValue}\n" +
                 "   Default Value: ${defaultValue}"
     }
 
-    def value = envValue ?: defaultValue
+    def value = envValue ?:  projectEnv ?: defaultValue
 
     if (value == null) {
         throw new InvalidUserDataException("Unable to find ${name}! " +

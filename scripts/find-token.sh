@@ -33,12 +33,26 @@ fi
 ENV_APP_TOKEN=$(
     grep "INSTABUG_APP_TOKEN" -r -A 1 -m 1 --exclude-dir={node_modules,ios,android} --include=\*.env ./ |
     sed 's/ //g' |
-    grep -o "=[0-9a-zA-Z]*" |
+    grep -o "[\"\'][0-9a-zA-Z]*[\"\']" |
     cut -d "=" -f 2
 )
 
 if [ ! -z "${ENV_APP_TOKEN}" ]; then
     echo $ENV_APP_TOKEN
+    exit 0
+fi
+
+CONSTASTS_APP_TOKEN=$(
+    grep "INSTABUG_APP_TOKEN" -r -A 1 -m 1 --exclude-dir={node_modules,ios,android} --include=\*.{js,ts,jsx,tsx} ./ |
+    sed 's/ //g' |
+    grep -o "=[\"\'][0-9a-zA-Z]*[\"\']" |
+    cut -d "=" -f 2 |
+    cut -d "\"" -f 2 |
+    cut -d "'" -f 2
+)
+
+if [ ! -z "${CONSTASTS_APP_TOKEN}" ]; then
+    echo $CONSTASTS_APP_TOKEN
     exit 0
 fi
 
