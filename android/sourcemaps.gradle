@@ -38,8 +38,8 @@ Task createUploadSourcemapsTask(String flavor) {
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def flavorPath = flavor + (flavor.empty ? '' : '/')
-                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}release/index.android.bundle.map"
+                def flavorPath = flavor
+                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}${(flavor.empty ? 'release' : 'Release')}/index.android.bundle.map"
                 def sourceMapFile = new File(appDir, sourceMapDest)
 
                 if (!sourceMapFile.exists()) {
@@ -52,7 +52,6 @@ Task createUploadSourcemapsTask(String flavor) {
                 def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
                 def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
-                println "appToken22: ${appToken}"
 
                 def projectConfig = appProject.android.defaultConfig
                 def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
@@ -93,8 +92,7 @@ String resolveVar(String name, String envKey, String defaultValue) {
     def envValue = env.get(envKey)
     def projectEnv = project.findProperty(envKey)
 
-
-    if (envValue != null) {
+    if (envValue != null &&  defaultValue!=null && envValue != defaultValue) {
         project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
                 "make sure this was intentional:\n" +
                 "   Environment Value: ${envValue}\n" +

@@ -54,7 +54,7 @@ generate_sourcemaps() {
 
   # Fixes an issue with react-native prior to v0.67.0
   # For more info: https://github.com/facebook/react-native/issues/32168
-  export RN_DIR=$react_native_dir 
+  export RN_DIR=$react_native_dir
 
   # Used withing `react-native-xcode.sh` to generate sourcemap file
   export SOURCEMAP_FILE="$(pwd)/main.jsbundle.map";
@@ -76,7 +76,7 @@ resolve_var() {
 
   local env_value="${!env_key}"
 
-  if [[ -n "$env_value" ]] && [[ "$env_value" != default_value ]]; then
+  if [[ -n "$env_value" ]] && [[ -n "$default_value" ]] && [[ "$env_value" != default_value ]]; then
     echo "[Warning] Environment variable \`$env_key\` might have incorrect value, make sure this was intentional:"
     echo "   Environment Value: $env_value"
     echo "   Default Value: $default_value"
