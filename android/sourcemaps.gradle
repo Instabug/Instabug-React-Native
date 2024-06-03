@@ -38,8 +38,8 @@ Task createUploadSourcemapsTask(String flavor) {
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def flavorPath = flavor + (flavor.empty ? '' : '/')
-                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}release/index.android.bundle.map"
+                def flavorPath = flavor
+                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}${(flavor.empty ? 'release' : 'Release')}/index.android.bundle.map"
                 def sourceMapFile = new File(appDir, sourceMapDest)
 
                 if (!sourceMapFile.exists()) {
@@ -90,15 +90,16 @@ boolean isUploadSourcemapsEnabled() {
 String resolveVar(String name, String envKey, String defaultValue) {
     def env = System.getenv()
     def envValue = env.get(envKey)
+    def projectEnv = project.findProperty(envKey)
 
-    if (envValue != null && envValue != defaultValue) {
+    if (envValue != null &&  defaultValue!=null && envValue != defaultValue) {
         project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
                 "make sure this was intentional:\n" +
                 "   Environment Value: ${envValue}\n" +
                 "   Default Value: ${defaultValue}"
     }
 
-    def value = envValue ?: defaultValue
+    def value = envValue ?:  projectEnv ?: defaultValue
 
     if (value == null) {
         throw new InvalidUserDataException("Unable to find ${name}! " +
