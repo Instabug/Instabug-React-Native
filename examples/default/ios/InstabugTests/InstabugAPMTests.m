@@ -189,7 +189,7 @@
         [expectation fulfill];
     };
     
-    [self.instabugBridge getw3ExternalTraceIDEnabled:resolve :nil];
+    [self.instabugBridge isW3ExternalTraceIDEnabled:resolve :nil];
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
@@ -208,7 +208,7 @@
         [expectation fulfill];
     };
     
-    [self.instabugBridge getw3ExternalGeneratedHeaderEnabled:resolve :nil];
+    [self.instabugBridge isW3ExternalGeneratedHeaderEnabled:resolve :nil];
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
@@ -227,7 +227,7 @@
         [expectation fulfill];
     };
     
-    [self.instabugBridge getW3CaughtHeaderEnabled:resolve :nil];
+    [self.instabugBridge isW3CaughtHeaderEnabled:resolve :nil];
     
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
     
