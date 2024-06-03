@@ -26,9 +26,9 @@
 - (void)setFlowAttribute:(NSString *)name :(NSString *)key :(NSString *_Nullable)value;
 - (void)startUITrace:(NSString *)name;
 - (void)endUITrace;
-- (void)getw3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
-- (void)getw3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
-- (void)getW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 extern NSMutableDictionary *traces;
 
 @end

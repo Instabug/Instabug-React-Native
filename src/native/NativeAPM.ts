@@ -30,9 +30,9 @@ export interface ApmNativeModule extends NativeModule {
   ibgSleep(): void;
 
   // W3C Feature Flags
-  getw3ExternalTraceIDEnabled(): Promise<boolean>;
-  getw3ExternalGeneratedHeaderEnabled(): Promise<boolean>;
-  getW3CaughtHeaderEnabled(): Promise<boolean>;
+  isW3ExternalTraceIDEnabled(): Promise<boolean>;
+  isW3ExternalGeneratedHeaderEnabled(): Promise<boolean>;
+  isW3CaughtHeaderEnabled(): Promise<boolean>;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

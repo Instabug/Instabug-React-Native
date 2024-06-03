@@ -120,13 +120,13 @@ RCT_EXPORT_METHOD(endUITrace) {
     return IBGAPM.w3CaughtHeaderEnabled; 
 }
 
-RCT_EXPORT_METHOD(getw3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve(@(InstabugAPMBridge.w3ExternalTraceIDEnabled));
 }
-RCT_EXPORT_METHOD(getw3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve(@(InstabugAPMBridge.w3ExternalGeneratedHeaderEnabled));
 }
-RCT_EXPORT_METHOD(getW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve(@(InstabugAPMBridge.w3CaughtHeaderEnabled));
 }
 

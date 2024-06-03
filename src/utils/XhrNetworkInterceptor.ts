@@ -69,9 +69,9 @@ const _reset = () => {
 const getFeatureFlags = async (networkData: NetworkData) => {
   const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
     await Promise.all([
-      NativeAPM._getw3ExternalTraceIDEnabled(),
-      NativeAPM._getw3ExternalGeneratedHeaderEnabled(),
-      NativeAPM._getW3CaughtHeaderEnabled(),
+      NativeAPM._isW3ExternalTraceIDEnabled(),
+      NativeAPM._isW3ExternalGeneratedHeaderEnabled(),
+      NativeAPM._isW3CaughtHeaderEnabled(),
     ]);
   injectHeaders(networkData, {
     w3c_external_trace_id_enabled,

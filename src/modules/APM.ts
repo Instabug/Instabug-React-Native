@@ -138,23 +138,23 @@ export const _ibgSleep = () => {
 /**
  * Returns weather W3C key flag is enabled
  */
-export const _getw3ExternalTraceIDEnabled = async (): Promise<boolean> => {
-  const isw3ExternalTraceIDEnabled = await NativeAPM.getw3ExternalTraceIDEnabled();
+export const _isW3ExternalTraceIDEnabled = async (): Promise<boolean> => {
+  const isw3ExternalTraceIDEnabled = await NativeAPM.isW3ExternalTraceIDEnabled();
   return isw3ExternalTraceIDEnabled;
 };
 
 /**
  * Returns weather we should generate W3C header
  */
-export const _getw3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> => {
-  const isExternalGeneratedHeaderEnabled = await NativeAPM.getw3ExternalGeneratedHeaderEnabled();
+export const _isW3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> => {
+  const isExternalGeneratedHeaderEnabled = await NativeAPM.isW3ExternalGeneratedHeaderEnabled();
   return isExternalGeneratedHeaderEnabled;
 };
 
 /**
  * Returns weather W3C was caught
  */
-export const _getW3CaughtHeaderEnabled = async (): Promise<boolean> => {
-  const isW3CaughtHeaderEnabled = await NativeAPM.getW3CaughtHeaderEnabled();
+export const _isW3CaughtHeaderEnabled = async (): Promise<boolean> => {
+  const isW3CaughtHeaderEnabled = await NativeAPM.isW3CaughtHeaderEnabled();
   return isW3CaughtHeaderEnabled;
 };
