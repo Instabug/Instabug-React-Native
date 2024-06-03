@@ -177,7 +177,7 @@
   OCMVerify([mock endUITrace]);
 }
 
-- (void) testGetw3ExternalTraceIDEnabled {
+- (void) testIsW3ExternalTraceIDEnabled {
     id mock = OCMClassMock([IBGAPM class]);
     NSNumber *expectedValue = @(YES);
     
@@ -196,7 +196,7 @@
     OCMVerify([mock w3ExternalTraceIDEnabled]);
 }
 
-- (void) testGetw3ExternalGeneratedHeaderEnabled {
+- (void) testIsW3ExternalGeneratedHeaderEnabled {
     id mock = OCMClassMock([IBGAPM class]);
     NSNumber *expectedValue = @(YES);
     
@@ -215,7 +215,7 @@
     OCMVerify([mock w3ExternalGeneratedHeaderEnabled]);
 }
 
-- (void) testGetW3CaughtHeaderEnabled {
+- (void) testIsW3CaughtHeaderEnabled {
     id mock = OCMClassMock([IBGAPM class]);
     NSNumber *expectedValue = @(YES);
     
