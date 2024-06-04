@@ -310,6 +310,13 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
 
     NSString* gqlQueryName = nil;
     NSString* serverErrorMessage = nil;
+    
+    NSNumber *isW3cCaughted = (networkData[@"w3cc"] != [NSNull null]) ? networkData[@"w3cc"] : nil;
+    NSNumber * partialID = (networkData[@"partialId"] != [NSNull null]) ? networkData[@"partialId"] : nil;
+    NSNumber * timestamp = (networkData[@"etst"] != [NSNull null]) ? networkData[@"etst"] : nil;
+    NSString * generatedW3CTraceparent = (networkData[@"wgeti"] != [NSNull null]) ? networkData[@"wgeti"] : nil;
+    NSString * caughtedW3CTraceparent = (networkData[@"wceti"] != [NSNull null]) ? networkData[@"wceti"] : nil;
+    
     if (networkData[@"gqlQueryName"] != [NSNull null]) {
         gqlQueryName = networkData[@"gqlQueryName"];
     }
@@ -317,7 +324,7 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
         serverErrorMessage = networkData[@"serverErrorMessage"];
     }
 
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:");
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:isW3cCaughted:partialID:timestamp:generatedW3CTraceparent:caughtedW3CTraceparent:");
 
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
@@ -340,6 +347,11 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
         [inv setArgument:&(duration) atIndex:15];
         [inv setArgument:&(gqlQueryName) atIndex:16];
         [inv setArgument:&(serverErrorMessage) atIndex:17];
+        [inv setArgument:&(isW3cCaughted) atIndex:18];
+        [inv setArgument:&(partialID) atIndex:19];
+        [inv setArgument:&(timestamp) atIndex:20];
+        [inv setArgument:&(generatedW3CTraceparent) atIndex:21];
+        [inv setArgument:&(caughtedW3CTraceparent) atIndex:22];
 
         [inv invoke];
     }
