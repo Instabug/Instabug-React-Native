@@ -442,4 +442,37 @@
   OCMVerify([mock clearAllExperiments]);
 }
 
+- (void)testAddFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSDictionary *featureFlagsMap = @{ @"key13" : @"value1", @"key2" : @"value2"};
+  
+  OCMStub([mock addFeatureFlags :[OCMArg any]]);
+  [self.instabugBridge addFeatureFlags:featureFlagsMap];
+  OCMVerify([mock addFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+    NSArray<IBGFeatureFlag *> *featureFlags = value;
+    NSString* firstFeatureFlagName = [featureFlags objectAtIndex:0 ].name;
+    NSString* firstFeatureFlagKey = [[featureFlagsMap allKeys] objectAtIndex:0] ;
+    if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+      return YES;
+    }
+    return  NO;
+  }]]);
+}
+
+- (void)testRemoveFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *experiments = @[@"exp1", @"exp2"];
+
+  OCMStub([mock removeFeatureFlags:experiments]);
+  [self.instabugBridge removeFeatureFlags:experiments];
+  OCMVerify([mock removeFeatureFlags:experiments]);
+}
+
+- (void)testRemoveAllFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  OCMStub([mock removeAllFeatureFlags]);
+  [self.instabugBridge removeAllFeatureFlags];
+  OCMVerify([mock removeAllFeatureFlags]);
+}
+
 @end

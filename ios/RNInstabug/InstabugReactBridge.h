@@ -116,5 +116,7 @@
 - (void)addExperiments:(NSArray *)experiments;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
-
+- (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
+- (void)removeFeatureFlags:(NSArray *)featureFlags;
+- (void)removeAllFeatureFlags;
 @end
