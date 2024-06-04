@@ -14,6 +14,20 @@ export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
 };
 
+export const getCrashDataFromError = (error: Error) => {
+  const jsStackTrace = getStackTrace(error);
+
+  const jsonObject: CrashData = {
+    message: error.name + ' - ' + error.message,
+    e_message: error.message,
+    e_name: error.name,
+    os: Platform.OS,
+    platform: 'react_native',
+    exception: jsStackTrace,
+  };
+  return jsonObject;
+};
+
 export const getActiveRouteName = (navigationState: NavigationStateV4): string | null => {
   if (!navigationState) {
     return null;
@@ -101,16 +115,7 @@ export async function sendCrashReport(
   error: ExtendedError,
   remoteSenderCallback: (json: CrashData | string) => Promise<void>,
 ) {
-  const jsStackTrace = getStackTrace(error);
-
-  const jsonObject: CrashData = {
-    message: error.name + ' - ' + error.message,
-    e_message: error.message,
-    e_name: error.name,
-    os: Platform.OS,
-    platform: 'react_native',
-    exception: jsStackTrace,
-  };
+  const jsonObject = getCrashDataFromError(error);
 
   if (Platform.OS === 'android') {
     return remoteSenderCallback(JSON.stringify(jsonObject));

@@ -11,7 +11,6 @@
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
 
 @implementation InstabugBugReportingBridge

@@ -52,6 +52,7 @@
 		9A3D962AB03F97E25566779F /* Pods-InstabugExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.debug.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.debug.xcconfig"; sourceTree = "<group>"; };
 		BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-InstabugExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD54B44E2DF85672BB2D4DEE /* Pods-InstabugExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample/Pods-InstabugExample.release.xcconfig"; sourceTree = "<group>"; };
+		BE3328762BDACE030078249A /* IBGCrashReporting+CP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IBGCrashReporting+CP.h"; sourceTree = "<group>"; };
 		C3C8C24386310A3120006604 /* CrashReportingExampleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashReportingExampleModule.m; sourceTree = "<group>"; };
 		C3C8C784EADC037C5A752B94 /* CrashReportingExampleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashReportingExampleModule.h; sourceTree = "<group>"; };
 		CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugCrashReportingTests.m; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		00E356EF1AD99517003FC87E /* InstabugTests */ = {
 			isa = PBXGroup;
 			children = (
+				BE3328752BDACE030078249A /* Util */,
 				CC3DF8892A1DFC99003E9914 /* IBGConstants.h */,
 				CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */,
 				CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */,
@@ -179,6 +181,14 @@
 				DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		BE3328752BDACE030078249A /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BE3328762BDACE030078249A /* IBGCrashReporting+CP.h */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		C3C8C1DDCEA91410F27A3683 /* native */ = {
