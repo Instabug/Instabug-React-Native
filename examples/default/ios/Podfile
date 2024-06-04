@@ -48,7 +48,6 @@ target 'InstabugExample' do
   target 'InstabugTests' do
     inherit! :complete
     pod 'OCMock'
-
     # Pods for testing
   end
 
