@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...dev)
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...dev)
+
+### Changed
+
+- Bump Instabug iOS SDK to v13.1.0 ([#1227](https://github.com/Instabug/Instabug-React-Native/pull/1227)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.1.0).
+- Bump Instabug android SDK to v13.1.1 ([#1228](https://github.com/Instabug/Instabug-React-Native/pull/1228)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.1.0).
 
 ### Added
 
