@@ -72,7 +72,7 @@
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
-  
+
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
@@ -84,9 +84,9 @@
 - (void)testSetCodePushVersion {
   id mock = OCMClassMock([Instabug class]);
   NSString *codePushVersion = @"123";
-  
+
   [self.instabugBridge setCodePushVersion:codePushVersion];
-  
+
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 }
 
@@ -445,7 +445,7 @@
 - (void)testAddFeatureFlags {
   id mock = OCMClassMock([Instabug class]);
   NSDictionary *featureFlagsMap = @{ @"key13" : @"value1", @"key2" : @"value2"};
-  
+
   OCMStub([mock addFeatureFlags :[OCMArg any]]);
   [self.instabugBridge addFeatureFlags:featureFlagsMap];
   OCMVerify([mock addFeatureFlags: [OCMArg checkWithBlock:^(id value) {
@@ -461,11 +461,17 @@
 
 - (void)testRemoveFeatureFlags {
   id mock = OCMClassMock([Instabug class]);
-  NSArray *experiments = @[@"exp1", @"exp2"];
-
-  OCMStub([mock removeFeatureFlags:experiments]);
-  [self.instabugBridge removeFeatureFlags:experiments];
-  OCMVerify([mock removeFeatureFlags:experiments]);
+  NSArray *featureFlags = @[@"exp1", @"exp2"];
+  [self.instabugBridge removeFeatureFlags:featureFlags];
+     OCMVerify([mock removeFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+        NSArray<IBGFeatureFlag *> *featureFlagsObJ = value;
+        NSString* firstFeatureFlagName = [featureFlagsObJ objectAtIndex:0 ].name;
+        NSString* firstFeatureFlagKey = [featureFlags firstObject] ;
+        if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+          return YES;
+        }
+        return  NO;
+      }]]);
 }
 
 - (void)testRemoveAllFeatureFlags {
