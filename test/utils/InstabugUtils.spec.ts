@@ -230,7 +230,7 @@ describe('Instabug Utils', () => {
 
     mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0).mockReturnValueOnce(0.5);
 
-    const hexString = generateTracePartialId();
+    const hexString = generateTracePartialId().hexStringPartialId;
 
     expect(hexString).not.toBe('00000000');
 
@@ -240,9 +240,12 @@ describe('Instabug Utils', () => {
   it('generateTracePartialId should return 8 chars long generated hex string', () => {
     const mockMathRandom = jest.spyOn(global.Math, 'random');
     mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0.5).mockReturnValueOnce(0.5);
-    const hexString = generateTracePartialId();
+    // const hexString = generateTracePartialId().hexStringPartialId;
+    const expectedPartialId = { hexStringPartialId: '7fffffff', numberPartilId: 2147483647 };
+    const generatedPartialId = generateTracePartialId();
 
-    expect(hexString).toHaveLength(8);
+    expect(expectedPartialId).toMatchObject(generatedPartialId);
+    expect(generatedPartialId.hexStringPartialId).toHaveLength(8);
 
     mockMathRandom.mockRestore();
   });
@@ -252,13 +255,15 @@ describe('Instabug Utils', () => {
 
     mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0.5).mockReturnValueOnce(1);
 
-    const mockedPartialId = '80000000';
+    const mockedHexStringPartialId = '7fffffff';
+    const mockedNumberPartialId = 2147483647;
+
     const date = 1716210104248;
     const unixTimestamp = '664b49b8';
     const expectedHeader = {
       timestampInSeconds: Math.floor(1716210104248 / 1000),
-      partialId: mockedPartialId,
-      w3cHeader: `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`,
+      partialId: mockedNumberPartialId,
+      w3cHeader: `00-${unixTimestamp}${mockedHexStringPartialId}${unixTimestamp}${mockedHexStringPartialId}-4942472d${mockedHexStringPartialId}-01`,
     };
     const generatedHeader = generateW3CHeader(date);
 
@@ -271,13 +276,15 @@ describe('Instabug Utils', () => {
 
     mockMathRandom.mockReturnValueOnce(0.1).mockReturnValueOnce(0.2).mockReturnValueOnce(0.3);
 
-    const mockedPartialId = '19999999';
+    const mockedHexStringPartialId = '19999999';
+    const mockedNumberPartialId = 429496729;
+
     const date = 1716222912145;
     const unixTimestamp = '664b7bc0';
     const expectedHeader = {
       timestampInSeconds: Math.floor(1716222912145 / 1000),
-      partialId: mockedPartialId,
-      w3cHeader: `00-${unixTimestamp}${mockedPartialId}${unixTimestamp}${mockedPartialId}-4942472d${mockedPartialId}-01`,
+      partialId: mockedNumberPartialId,
+      w3cHeader: `00-${unixTimestamp}${mockedHexStringPartialId}${unixTimestamp}${mockedHexStringPartialId}-4942472d${mockedHexStringPartialId}-01`,
     };
 
     const generatedHeader = generateW3CHeader(date);
