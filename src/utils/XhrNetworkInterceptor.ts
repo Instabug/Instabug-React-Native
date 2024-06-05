@@ -24,7 +24,7 @@ export interface NetworkData {
   serverErrorMessage: string;
   requestContentType: string;
   w3cc: boolean | null;
-  partialId: string | null;
+  partialId: number | null;
   etst: number | null;
   wgeti: string | null;
   wceti: string | null;
