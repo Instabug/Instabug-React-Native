@@ -311,12 +311,13 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
     NSString* gqlQueryName = nil;
     NSString* serverErrorMessage = nil;
     
-    NSNumber *isW3cCaughted = (networkData[@"w3cc"] != [NSNull null]) ? networkData[@"w3cc"] : nil;
+    NSNumber *isW3cCaughted = (networkData[@"w3cc"] != [NSNull null]) ? [[NSNumber alloc] initWithBool:networkData[@"w3cc"]] : nil;
+    
     NSNumber * partialID = (networkData[@"partialId"] != [NSNull null]) ? networkData[@"partialId"] : nil;
     NSNumber * timestamp = (networkData[@"etst"] != [NSNull null]) ? networkData[@"etst"] : nil;
     NSString * generatedW3CTraceparent = (networkData[@"wgeti"] != [NSNull null]) ? networkData[@"wgeti"] : nil;
     NSString * caughtedW3CTraceparent = (networkData[@"wceti"] != [NSNull null]) ? networkData[@"wceti"] : nil;
-    
+
     if (networkData[@"gqlQueryName"] != [NSNull null]) {
         gqlQueryName = networkData[@"gqlQueryName"];
     }
