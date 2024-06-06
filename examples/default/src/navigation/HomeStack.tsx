@@ -22,7 +22,7 @@ import {
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
-import { ApmScreen } from '../screens/APMscreen';
+import { ApmScreen } from '../screens/ApmScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
