@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...dev)
 
+### Fixed
+
+- Reading INSTABUG_APP_TOKEN from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232))
+
 ### Changed
 
 - Bump Instabug iOS SDK to v13.1.0 ([#1227](https://github.com/Instabug/Instabug-React-Native/pull/1227)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.1.0).
