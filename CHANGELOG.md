@@ -1,5 +1,20 @@
 # Changelog
 
+## [13.1.1](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...dev) (JUN 6, 2024)
+
+### Fixed
+
+- Reading INSTABUG_APP_TOKEN from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232))
+
+### Changed
+
+- Bump Instabug iOS SDK to v13.1.0 ([#1227](https://github.com/Instabug/Instabug-React-Native/pull/1227)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.1.0).
+- Bump Instabug android SDK to v13.1.1 ([#1228](https://github.com/Instabug/Instabug-React-Native/pull/1228)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.1.0).
+
+### Added
+
+- Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportError` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
+
 ## [13.0.5](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...v13.0.5) (May 18, 2024)
 
 ### Changed
@@ -26,7 +41,7 @@
 - Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
 - Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
 
-## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...v12.9.0) (April 2, 2024)
+## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...12.9.0)(April 2, 2024)
 
 ### Added
 
