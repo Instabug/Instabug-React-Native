@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- reading INSTABUG_APP_TOKEN from system environment and there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232))
+- Reading INSTABUG_APP_TOKEN from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232))
 
 ### Changed
 
