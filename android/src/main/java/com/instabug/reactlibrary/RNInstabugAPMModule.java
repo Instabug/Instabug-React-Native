@@ -5,14 +5,23 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
+import com.instabug.apm.configuration.cp.APMFeature;
 import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
+import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
+import com.instabug.apm.configuration.cp.FeaturesChangeListener;
+import com.instabug.apm.configuration.cp.APMFeaturesAvailability;
+import com.instabug.chat.Replies;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.apm.InternalAPM;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -350,10 +359,18 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             }
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
 
+            APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
+                    new APMCPNetworkLog.W3CExternalTraceAttributes(
+                            jsonObject.optBoolean("w3cc"),
+                            jsonObject.optLong("partialId"),
+                            jsonObject.optLong("etst"),
+                            jsonObject.optString("wgeti"),
+                            jsonObject.optString("wceti"));
+
             try {
-                Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
+                Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class,APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
-                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage);
+                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage,w3cExternalTraceAttributes);
                 } else {
                     Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
                 }
@@ -365,4 +382,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
+
 }
