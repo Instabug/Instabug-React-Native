@@ -1,6 +1,7 @@
 import tracking, { RejectionTrackingOptions } from 'promise/setimmediate/rejection-tracking';
 import { sendCrashReport } from './InstabugUtils';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import { NonFatalErrorLevel } from './Enums';
 
 export interface HermesInternalType {
   enablePromiseRejectionTracker?: (options?: RejectionTrackingOptions) => void;
@@ -76,7 +77,9 @@ function _onUnhandled(id: number, rejection: unknown) {
   }
 
   if (rejection instanceof Error) {
-    sendCrashReport(rejection, NativeCrashReporting.sendHandledJSCrash);
+    sendCrashReport(rejection, (error) =>
+      NativeCrashReporting.sendHandledJSCrash(error, null, null, NonFatalErrorLevel.error),
+    );
   }
 }
 

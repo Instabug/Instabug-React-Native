@@ -5,7 +5,7 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
-import { InvocationEvent } from '../../src/utils/Enums';
+import { InvocationEvent, NonFatalErrorLevel } from '../../src';
 import InstabugUtils, { getStackTrace, sendCrashReport } from '../../src/utils/InstabugUtils';
 
 describe('Test global error handler', () => {
@@ -185,7 +185,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, remoteSenderCallback);
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
 
     const expectedMap = {
       message: 'TypeError - Invalid type',
@@ -197,7 +199,12 @@ describe('Instabug Utils', () => {
     };
     const expectedJsonObject = JSON.stringify(expectedMap);
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
-    expect(remoteSenderCallback).toHaveBeenCalledWith(expectedJsonObject);
+    expect(remoteSenderCallback).toHaveBeenCalledWith(
+      expectedJsonObject,
+      null,
+      null,
+      NonFatalErrorLevel.error,
+    );
   });
 
   it('should call remoteSenderCallback with the correct JSON object on iOS', () => {
@@ -206,8 +213,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, remoteSenderCallback);
-
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
     const expectedMap = {
       message: 'TypeError - Invalid type',
       e_message: 'Invalid type',
@@ -217,6 +225,11 @@ describe('Instabug Utils', () => {
       exception: jsStackTrace,
     };
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
-    expect(remoteSenderCallback).toHaveBeenCalledWith(expectedMap);
+    expect(remoteSenderCallback).toHaveBeenCalledWith(
+      expectedMap,
+      null,
+      null,
+      NonFatalErrorLevel.error,
+    );
   });
 });

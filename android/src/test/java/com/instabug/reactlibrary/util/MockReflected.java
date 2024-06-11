@@ -1,5 +1,11 @@
 package com.instabug.reactlibrary.util;
 
+import com.instabug.crash.models.IBGNonFatalException;
+
+import org.json.JSONObject;
+
+import java.util.Map;
+
 /**
  * Includes fake implementations of methods called by reflection.
  * Used to verify whether or not a private methods was called.
@@ -16,4 +22,9 @@ public class MockReflected {
      * Instabug.util.InstabugDeprecationLogger.setBaseUrl
      */
     public static void setBaseUrl(String baseUrl) {}
+    /**
+     * CrashReporting.reportException
+     */
+    public static void reportException(JSONObject exception, boolean isHandled, Map userAttributes, JSONObject fingerPrint, IBGNonFatalException.Level level) {}
+
 }

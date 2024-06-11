@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.instabug.bug.BugReporting;
 import com.instabug.bug.invocation.Option;
+import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.featuresrequest.ActionType;
 import com.instabug.library.InstabugColorTheme;
 import com.instabug.library.InstabugCustomTextPlaceHolder.Key;
@@ -54,10 +55,18 @@ final class ArgsRegistry {
             putAll(extendedBugReportStates);
             putAll(reproModes);
             putAll(sdkLogLevels);
+            putAll(nonFatalExceptionLevel);
             putAll(locales);
             putAll(placeholders);
         }};
     }
+
+    public static ArgsMap<IBGNonFatalException.Level> nonFatalExceptionLevel = new ArgsMap<IBGNonFatalException.Level>() {{
+        put("nonFatalErrorLevelCritical", IBGNonFatalException.Level.CRITICAL);
+        put("nonFatalErrorLevelError", IBGNonFatalException.Level.ERROR);
+        put("nonFatalErrorLevelWarning", IBGNonFatalException.Level.WARNING);
+        put("nonFatalErrorLevelInfo", IBGNonFatalException.Level.INFO);
+    }};
 
     static ArgsMap<InstabugInvocationEvent> invocationEvents = new ArgsMap<InstabugInvocationEvent>() {{
         put("invocationEventNone", InstabugInvocationEvent.NONE);

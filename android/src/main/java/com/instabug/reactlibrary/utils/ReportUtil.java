@@ -64,18 +64,4 @@ public class ReportUtil {
         return report;
     }
 
-    public static WritableArray parseConsoleLogs(ArrayList<a> consoleLogs) {
-        WritableArray writableArray = new WritableNativeArray();
-
-        for(int i = 0; i < consoleLogs.size(); i++) {
-            try {
-                writableArray.pushString(consoleLogs.get(i).toJson());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return writableArray;
-    }
 }

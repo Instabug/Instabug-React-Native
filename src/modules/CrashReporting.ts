@@ -3,6 +3,8 @@ import type { ExtendedError } from 'react-native/Libraries/Core/Devtools/parseEr
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import InstabugUtils from '../utils/InstabugUtils';
 import { Platform } from 'react-native';
+import type { NonFatalOptions } from '../models/NonFatalOptions';
+import { NonFatalErrorLevel } from '../utils/Enums';
 
 /**
  * Enables and disables everything related to crash reporting including intercepting
@@ -16,9 +18,21 @@ export const setEnabled = (isEnabled: boolean) => {
 /**
  * Send handled JS error object
  * @param error Error object to be sent to Instabug's servers
+ * @param nonFatalOptions extra config for the non-fatal error sent with Error Object
  */
-export const reportError = (error: ExtendedError) => {
-  return InstabugUtils.sendCrashReport(error, NativeCrashReporting.sendHandledJSCrash);
+export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptions = {}) => {
+  let level = NonFatalErrorLevel.error;
+  if (nonFatalOptions.level != null) {
+    level = nonFatalOptions.level;
+  }
+  return InstabugUtils.sendCrashReport(error, (data) =>
+    NativeCrashReporting.sendHandledJSCrash(
+      data,
+      nonFatalOptions.userAttributes,
+      nonFatalOptions.fingerprint,
+      level,
+    ),
+  );
 };
 
 /**

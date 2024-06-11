@@ -91,7 +91,7 @@ String resolveVar(String name, String envKey, String defaultValue) {
     def env = System.getenv()
     def envValue = env.get(envKey)
 
-    if (envValue != null && envValue != defaultValue) {
+    if (envValue != null && defaultValue !=null && envValue != defaultValue) {
         project.logger.warn "Environment variable `${envKey}` might have incorrect value, " +
                 "make sure this was intentional:\n" +
                 "   Environment Value: ${envValue}\n" +

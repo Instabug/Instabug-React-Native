@@ -18,6 +18,7 @@
     [all addEntriesFromDictionary:ArgsRegistry.extendedBugReportStates];
     [all addEntriesFromDictionary:ArgsRegistry.reproStates];
     [all addEntriesFromDictionary:ArgsRegistry.locales];
+    [all addEntriesFromDictionary:ArgsRegistry.nonFatalExceptionLevel];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
 
     return all;
@@ -147,6 +148,17 @@
         @"localeSpanish": @(IBGLocaleSpanish),
         @"localeSwedish": @(IBGLocaleSwedish),
         @"localeTurkish": @(IBGLocaleTurkish),
+    };
+}
+
++ (ArgsDictionary *)nonFatalExceptionLevel {
+    return @{
+        @"nonFatalErrorLevelInfo" : @(IBGNonFatalLevelInfo),
+        @"nonFatalErrorLevelError" : @(IBGNonFatalLevelError),
+        @"nonFatalErrorLevelWarning" : @(IBGNonFatalLevelWarning),
+        @"nonFatalErrorLevelCritical" : @(IBGNonFatalLevelCritical)
+
+
     };
 }
 
