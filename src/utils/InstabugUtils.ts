@@ -123,16 +123,15 @@ export async function sendCrashReport(
  * Should not return all zeros
  */
 export const generateTracePartialId = () => {
-  let hexString;
+  let randomNumber: number;
+  let hexString: string;
+
   do {
-    const randomNumber = Math.floor(Math.random() * Math.pow(2, 32));
-    hexString = randomNumber.toString(16).toLocaleLowerCase();
-    while (hexString.length < 8) {
-      hexString = '0' + hexString;
-    }
+    randomNumber = Math.floor(Math.random() * 0xffffffff);
+    hexString = randomNumber.toString(16).padStart(8, '0');
   } while (hexString === '00000000');
 
-  return hexString;
+  return { numberPartilId: randomNumber, hexStringPartialId: hexString.toLowerCase() };
 };
 /**
  * Generate W3C header in the format of {version}-{trace-id}-{parent-id}-{trace-flag}
@@ -140,15 +139,16 @@ export const generateTracePartialId = () => {
  * @returns w3c header
  */
 export const generateW3CHeader = (networkStartTime: number) => {
+  const { hexStringPartialId, numberPartilId } = generateTracePartialId();
+
   const timestampInSeconds = Math.floor(networkStartTime.valueOf() / 1000);
   const hexaDigitsTimestamp = timestampInSeconds.toString(16).toLowerCase();
-  const partialId = generateTracePartialId();
-  const traceId = `${hexaDigitsTimestamp}${partialId}${hexaDigitsTimestamp}${partialId}`;
-  const parentId = `4942472d${partialId}`;
+  const traceId = `${hexaDigitsTimestamp}${hexStringPartialId}${hexaDigitsTimestamp}${hexStringPartialId}`;
+  const parentId = `4942472d${hexStringPartialId}`;
 
   return {
     timestampInSeconds,
-    partialId,
+    partialId: numberPartilId,
     w3cHeader: `00-${traceId}-${parentId}-01`,
   };
 };

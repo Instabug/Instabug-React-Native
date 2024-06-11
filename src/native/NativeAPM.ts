@@ -28,6 +28,11 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
+
+  // W3C Feature Flags
+  isW3ExternalTraceIDEnabled(): Promise<boolean>;
+  isW3ExternalGeneratedHeaderEnabled(): Promise<boolean>;
+  isW3CaughtHeaderEnabled(): Promise<boolean>;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

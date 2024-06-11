@@ -26,6 +26,7 @@ target 'InstabugExample' do
   config = use_native_modules!
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-add-w3c-header-base-cp/13.1.0/Instabug.podspec'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

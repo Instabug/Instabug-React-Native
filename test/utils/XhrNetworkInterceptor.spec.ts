@@ -309,7 +309,7 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.setOnDoneCallback((network) => {
       injectHeaders(network, featureFlags);
       expect(network.w3cc).toBe(false);
-      expect(network.partialId).toHaveLength(8);
+      expect(network.partialId).not.toBe(null);
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);
@@ -330,7 +330,7 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.setOnDoneCallback((network) => {
       injectHeaders(network, featureFlags);
       expect(network.w3cc).toBe(false);
-      expect(network.partialId).toHaveLength(8);
+      expect(network.partialId).not.toBe(null);
       expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
       expect(network.wgeti).toHaveLength(55);
       expect(network.wceti).toBe(null);

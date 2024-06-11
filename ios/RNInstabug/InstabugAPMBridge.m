@@ -8,6 +8,7 @@
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
+#import "Util/IBGAPM+PrivateAPIs.h"
 
 @implementation InstabugAPMBridge
 
@@ -108,6 +109,27 @@ RCT_EXPORT_METHOD(startUITrace:(NSString *)name) {
 RCT_EXPORT_METHOD(endUITrace) {
     [IBGAPM endUITrace];
 }
+
++ (BOOL)w3ExternalTraceIDEnabled {
+    return IBGAPM.w3ExternalTraceIDEnabled;
+}
++ (BOOL)w3ExternalGeneratedHeaderEnabled {
+    return IBGAPM.w3ExternalGeneratedHeaderEnabled;
+}
++ (BOOL)w3CaughtHeaderEnabled {
+    return IBGAPM.w3CaughtHeaderEnabled; 
+}
+
+RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(InstabugAPMBridge.w3ExternalTraceIDEnabled));
+}
+RCT_EXPORT_METHOD(isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(InstabugAPMBridge.w3ExternalGeneratedHeaderEnabled));
+}
+RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(InstabugAPMBridge.w3CaughtHeaderEnabled));
+}
+
 
 
 @synthesize description;

@@ -97,7 +97,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (13.0.5)
+  - Instabug (13.1.0)
   - instabug-reactnative-ndk (0.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -532,7 +532,7 @@ PODS:
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNInstabug (13.0.5):
-    - Instabug (= 13.0.5)
+    - Instabug
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -602,6 +602,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.182.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/feature-add-w3c-header-base-cp/13.1.0/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - libevent (~> 2.1.12)
   - OCMock
@@ -667,7 +668,6 @@ SPEC REPOS:
     - fmt
     - Google-Maps-iOS-Utils
     - GoogleMaps
-    - Instabug
     - libevent
     - OCMock
     - OpenSSL-Universal
@@ -688,6 +688,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
+  Instabug:
+    :podspec: https://ios-releases.instabug.com/custom/feature-add-w3c-header-base-cp/13.1.0/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -798,7 +800,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: 54e81af4202faf8ed1e26e47f8816d6c42245d1e
+  Instabug: 0095861b71aeadc1f5356d078ca44ccc5b32d0d3
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
@@ -841,7 +843,7 @@ SPEC CHECKSUMS:
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: 5284a7dc148edd3184a6510e9bae0f9f5ef8b254
+  RNInstabug: 046d004bd5b3e92d31a5faaf4defe7803f57a7db
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
@@ -850,6 +852,6 @@ SPEC CHECKSUMS:
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ad82a989387dcdb1ce80667f16b998a2644cf0b2
+PODFILE CHECKSUM: 1a4743c72496ad79c39b937de7cb9598ccf0bb2a
 
 COCOAPODS: 1.12.0

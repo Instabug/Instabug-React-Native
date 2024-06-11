@@ -22,6 +22,7 @@ import {
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
+import { ApmScreen } from '../screens/ApmScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -41,6 +42,7 @@ export type HomeStackParamList = {
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
+  APM: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -72,6 +74,7 @@ export const HomeStackNavigator: React.FC = () => {
         component={SessionReplayScreen}
         options={{ title: 'Session Replay' }}
       />
+      <HomeStack.Screen name="APM" component={ApmScreen} options={{ title: 'APM' }} />
 
       <HomeStack.Screen
         name="UserSteps"
