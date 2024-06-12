@@ -378,6 +378,7 @@ export const setReproStepsConfig = (config: ReproConfig) => {
 export const setUserAttribute = (key: string, value: string) => {
   if (!key || typeof key !== 'string' || typeof value !== 'string') {
     console.error('Invalid param, Expected String');
+    return;
   }
   NativeInstabug.setUserAttribute(key, value);
 };
@@ -401,6 +402,7 @@ export const getUserAttribute = async (key: string): Promise<string | null> => {
 export const removeUserAttribute = (key: string) => {
   if (!key || typeof key !== 'string') {
     console.error('Invalid param, Expected String');
+    return;
   }
   NativeInstabug.removeUserAttribute(key);
 };
