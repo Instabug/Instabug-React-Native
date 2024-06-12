@@ -62,7 +62,8 @@ export const startExecutionTrace = async (name: string): Promise<Trace> => {
   const id = await NativeAPM.startExecutionTrace(name, timestamp);
 
   if (!id) {
-    throw new Error(TRACE_NOT_STARTED_APM_NOT_ENABLED);
+    console.error(TRACE_NOT_STARTED_APM_NOT_ENABLED);
+    return Promise.reject(TRACE_NOT_STARTED_APM_NOT_ENABLED);
   }
 
   return new Trace(id, name);
