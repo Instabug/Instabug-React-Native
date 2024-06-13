@@ -1,6 +1,6 @@
 import * as NativeAPM from '../modules/APM';
 
-export let FeatureFlags = {
+export const FeatureFlags = {
   isW3ExternalTraceID: () => NativeAPM._isW3ExternalTraceIDEnabled(),
   isW3ExternalGeneratedHeader: () => NativeAPM._isW3ExternalGeneratedHeaderEnabled(),
   isW3CaughtHeader: () => NativeAPM._isW3CaughtHeaderEnabled(),
