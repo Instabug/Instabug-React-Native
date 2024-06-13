@@ -417,7 +417,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                         public void invoke(@NonNull APMFeaturesAvailability apmFeaturesAvailability) {
                             WritableMap params = Arguments.createMap();
                             params.putBoolean("isW3ExternalTraceIDEnabled", apmFeaturesAvailability.isW3CExternalTraceIdAvailable());
-                            params.putBoolean("isW3ExternalGeneratedHeaderEnabled", apmFeaturesAvailability.getShouldAttachGeneratedHeader()); // Example boolean value
+                            params.putBoolean("isW3ExternalGeneratedHeaderEnabled", apmFeaturesAvailability.getShouldAttachGeneratedHeader());
                             params.putBoolean("isW3CaughtHeaderEnabled", apmFeaturesAvailability.getShouldAttachCapturedHeader());
 
                             sendEvent(Constants.IBGAPM_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
