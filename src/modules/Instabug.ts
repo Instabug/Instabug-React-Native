@@ -349,11 +349,16 @@ export const clearLogs = () => {
  * @example
  * ```js
  * Instabug.setReproStepsConfig({
- *   bug: ReproStepsMode.enabled,
- *   crash: ReproStepsMode.disabled,
- *   sessionReplay: ReproStepsMode.enabled,
- *
- * });
+ *    bug: ReproStepsMode.enabledWithNoScreenshots,
+ *    allCrashes: ReproStepsMode.enabledWithNoScreenshots,
+ *    anr: ReproStepsMode.enabledWithNoScreenshots,
+ *    appHangs: ReproStepsMode.enabledWithNoScreenshots,
+ *    sessionReplay: ReproStepsMode.enabledWithNoScreenshots,
+ *    fatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+ *    nonFatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+ *    forceRestart: ReproStepsMode.enabledWithNoScreenshots,
+ *    outOfMemory: ReproStepsMode.enabled,
+ *     });
  * ```
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
