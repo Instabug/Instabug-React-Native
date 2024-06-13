@@ -599,12 +599,39 @@ describe('Instabug Module', () => {
     const crash = ReproStepsMode.enabled;
     const sessionReplay = ReproStepsMode.enabledWithNoScreenshots;
     const all = ReproStepsMode.enabledWithNoScreenshots;
-    const config = { all, bug, crash, sessionReplay };
+    const anr = ReproStepsMode.enabledWithNoScreenshots;
+    const appHangs = ReproStepsMode.enabledWithNoScreenshots;
+    const fatalCrash = ReproStepsMode.enabledWithNoScreenshots;
+    const nonFatalCrash = ReproStepsMode.enabledWithNoScreenshots;
+    const forceRestart = ReproStepsMode.enabledWithNoScreenshots;
+    const outOfMemory = ReproStepsMode.enabledWithNoScreenshots;
+    const config = {
+      all,
+      bug,
+      crash,
+      sessionReplay,
+      anr,
+      appHangs,
+      fatalCrash,
+      nonFatalCrash,
+      forceRestart,
+      outOfMemory,
+    };
 
     Instabug.setReproStepsConfig(config);
 
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(all, all, all);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
+      all,
+      all,
+      all,
+      all,
+      all,
+      all,
+      all,
+      all,
+      all,
+    );
   });
 
   it('setReproStepsConfig should use defaults for `bug`, `crash`, and `sessionReplay`', () => {
