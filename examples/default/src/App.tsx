@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import Instabug, {
-  CrashReporting,
   InvocationEvent,
   LogLevel,
   ReproStepsMode,
@@ -26,10 +25,9 @@ export const App: React.FC = () => {
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
-    CrashReporting.setNDKCrashesEnabled(true);
 
     Instabug.setReproStepsConfig({
-      outOfMemory: ReproStepsMode.enabled,
+      all: ReproStepsMode.enabled,
     });
   }, []);
 
