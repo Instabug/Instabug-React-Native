@@ -1,6 +1,7 @@
 import InstabugConstants from './InstabugConstants';
 import { stringifyIfNotString, generateW3CHeader } from './InstabugUtils';
-import * as NativeAPM from '../modules/APM';
+
+import { FeatureFlags } from '../utils/FeatureFlags';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
 export type NetworkDataCallback = (data: NetworkData) => void;
@@ -69,10 +70,11 @@ const _reset = () => {
 const getFeatureFlags = async (networkData: NetworkData) => {
   const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
     await Promise.all([
-      NativeAPM._isW3ExternalTraceIDEnabled(),
-      NativeAPM._isW3ExternalGeneratedHeaderEnabled(),
-      NativeAPM._isW3CaughtHeaderEnabled(),
+      FeatureFlags.isW3ExternalTraceID(),
+      FeatureFlags.isW3ExternalGeneratedHeader(),
+      FeatureFlags.isW3CaughtHeader(),
     ]);
+
   injectHeaders(networkData, {
     w3c_external_trace_id_enabled,
     w3c_generated_header,
