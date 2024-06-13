@@ -8,7 +8,6 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
-
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGAPM.h>
 #import <asl.h>
@@ -64,10 +63,16 @@ RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
     [Instabug setCodePushVersion:version];
 }
 
-RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
+RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode  :(IBGUserStepsMode) anr :(IBGUserStepsMode)appHangsMode :(IBGUserStepsMode)fatalCrashMode :(IBGUserStepsMode)nonFatalCrashMode :(IBGUserStepsMode)forceRestartMode : (IBGUserStepsMode) oomMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
-    [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
-   [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
+    [Instabug setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode];
+    [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
+    [Instabug setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode];
+    [Instabug setReproStepsFor:IBGIssueTypeFatal withMode:fatalCrashMode];
+    [Instabug setReproStepsFor:IBGIssueTypeNonFatal withMode:nonFatalCrashMode];
+    [Instabug setReproStepsFor:IBGIssueTypeForceRestart withMode:forceRestartMode];
+    [Instabug setReproStepsFor:IBGIssueTypeOutOfMemory withMode:oomMode];
+
 }
 
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {

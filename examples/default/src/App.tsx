@@ -29,7 +29,7 @@ export const App: React.FC = () => {
     CrashReporting.setNDKCrashesEnabled(true);
 
     Instabug.setReproStepsConfig({
-      all: ReproStepsMode.enabled,
+      outOfMemory: ReproStepsMode.enabled,
     });
   }, []);
 

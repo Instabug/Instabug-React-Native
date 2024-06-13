@@ -73,7 +73,7 @@
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
-  
+
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
@@ -85,9 +85,9 @@
 - (void)testSetCodePushVersion {
   id mock = OCMClassMock([Instabug class]);
   NSString *codePushVersion = @"123";
-  
+
   [self.instabugBridge setCodePushVersion:codePushVersion];
-  
+
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 }
 
@@ -236,12 +236,24 @@
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
   IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
   IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode appHangsMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashFatalMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashNonFatalMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode oomMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode forceRestartMode = IBGUserStepsModeEnabledWithNoScreenshots;
 
-  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
+
+  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode :nil :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeFatal withMode:crashFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeNonFatal withMode:crashNonFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeForceRestart withMode:forceRestartMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeOutOfMemory withMode:oomMode]);
+
 }
 
 - (void)testSetUserAttribute {
@@ -448,17 +460,17 @@
   NSString* date = @"1/2/2024";
   NSInteger totalRequestCount = 10;
   NSInteger failureCount = 8;
-  
+
   NSDictionary *expected = @{
       @"date": date,
       @"totalRequestCount": @(totalRequestCount),
       @"failureCount": @(failureCount)
   };
-  
+
   OCMStub([mInstabug setWillSendNetworkDiagnosticsHandler:([OCMArg invokeBlockWithArgs:date, OCMOCK_VALUE(totalRequestCount), OCMOCK_VALUE(failureCount), nil])]);
 
   OCMStub([self.instabugBridge sendEventWithName:[OCMArg any] body:[OCMArg any]]);
-  
+
   [self.instabugBridge setOnNetworkDiagnosticsHandler];
 
   OCMVerify([self.instabugBridge sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:expected]);

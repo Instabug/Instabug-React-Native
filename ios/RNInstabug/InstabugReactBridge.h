@@ -12,7 +12,6 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
-
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
 #import "ArgsRegistry.h"
@@ -59,7 +58,7 @@
 
 - (void)logVerbose:(NSString *)log;
 
-- (void)setReproStepsConfig:(IBGUserStepsMode)bugMode:(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode;
+- (void)setReproStepsConfig: (IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode  :(IBGUserStepsMode)anr :(IBGUserStepsMode)appHangsMode :(IBGUserStepsMode)fatalCrashMode :(IBGUserStepsMode)nonFatalCrashMode :(IBGUserStepsMode)forceRestartMode : (IBGUserStepsMode) oomMode;
 
 - (void)setUserAttribute:(NSString *)key withValue:(NSString *)value;
 

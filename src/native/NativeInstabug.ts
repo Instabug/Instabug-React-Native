@@ -48,6 +48,12 @@ export interface InstabugNativeModule extends NativeModule {
     bugMode: ReproStepsMode,
     crashMode: ReproStepsMode,
     sessionReplay: ReproStepsMode,
+    anr: ReproStepsMode,
+    appHangs: ReproStepsMode,
+    fatalCrashes: ReproStepsMode,
+    nonFatalCrashes: ReproStepsMode,
+    forceRestart: ReproStepsMode,
+    oom: ReproStepsMode,
   ): void;
   setTrackUserSteps(isEnabled: boolean): void;
   reportScreenChange(firstScreen: string): void;
