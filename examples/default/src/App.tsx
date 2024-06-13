@@ -18,6 +18,14 @@ export const App: React.FC = () => {
       debugLogsLevel: LogLevel.verbose,
     });
     Instabug.setReproStepsConfig({
+      bug: ReproStepsMode.enabledWithNoScreenshots,
+      allCrashes: ReproStepsMode.enabledWithNoScreenshots,
+      anr: ReproStepsMode.enabledWithNoScreenshots,
+      appHangs: ReproStepsMode.enabledWithNoScreenshots,
+      sessionReplay: ReproStepsMode.enabledWithNoScreenshots,
+      fatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+      nonFatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+      forceRestart: ReproStepsMode.enabledWithNoScreenshots,
       outOfMemory: ReproStepsMode.enabled,
     });
   }, []);
