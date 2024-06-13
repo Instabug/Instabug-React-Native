@@ -634,7 +634,7 @@ describe('Instabug Module', () => {
     );
   });
 
-  it('setReproStepsConfig should use defaults for `bug`, `crash`, and `sessionReplay`', () => {
+  it('setReproStepsConfig should use defaults for `bug`, `crash`, `sessionReplay`, `appHangs`,`fatalCrash`,`nonFatalCrash`,`forceRestart`, and `outOfMemory`', () => {
     Platform.OS = 'android';
 
     const config = {};
@@ -646,6 +646,12 @@ describe('Instabug Module', () => {
       ReproStepsMode.enabled,
       ReproStepsMode.enabledWithNoScreenshots,
       ReproStepsMode.enabled,
+      ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabledWithNoScreenshots,
+      ReproStepsMode.enabledWithNoScreenshots,
     );
   });
 
