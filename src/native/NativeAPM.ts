@@ -1,4 +1,5 @@
 import type { NativeModule } from 'react-native';
+import { NativeEventEmitter } from 'react-native';
 
 import { NativeModules } from './NativePackage';
 
@@ -33,6 +34,21 @@ export interface ApmNativeModule extends NativeModule {
   isW3ExternalTraceIDEnabled(): Promise<boolean>;
   isW3ExternalGeneratedHeaderEnabled(): Promise<boolean>;
   isW3CaughtHeaderEnabled(): Promise<boolean>;
+
+  // W3C Feature Flags Listener for Android
+  registerW3CFlagsChangeListener(
+    handler: (payload: {
+      isW3ExternalTraceIDEnabled: boolean;
+      isW3ExternalGeneratedHeaderEnabled: boolean;
+      isW3CaughtHeaderEnabled: boolean;
+    }) => void,
+  ): void;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;
+
+export enum NativeEvents {
+  ON_W3C_FLAGS_CHANE = 'IBGAPMOnNewW3CFlagsUpdateReceivedCallback',
+}
+
+export const emitter = new NativeEventEmitter(NativeAPM);
