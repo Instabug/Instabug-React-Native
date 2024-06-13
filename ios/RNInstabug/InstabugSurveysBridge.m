@@ -7,7 +7,6 @@
 //
 
 #import "InstabugSurveysBridge.h"
-#import <Instabug/IBGSurveys.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>

@@ -555,14 +555,41 @@ describe('Instabug Module', () => {
     Platform.OS = 'android';
 
     const bug = ReproStepsMode.disabled;
-    const crash = ReproStepsMode.enabled;
+    const allCrashes = ReproStepsMode.enabled;
     const sessionReplay = ReproStepsMode.enabledWithNoScreenshots;
-    const config = { bug, crash, sessionReplay };
+    const anr = ReproStepsMode.enabledWithNoScreenshots;
+    const appHangs = ReproStepsMode.enabledWithNoScreenshots;
+    const fatalCrash = ReproStepsMode.enabledWithNoScreenshots;
+    const nonFatalCrash = ReproStepsMode.enabledWithNoScreenshots;
+    const forceRestart = ReproStepsMode.enabledWithNoScreenshots;
+    const outOfMemory = ReproStepsMode.enabledWithNoScreenshots;
+
+    const config = {
+      bug,
+      allCrashes,
+      sessionReplay,
+      anr,
+      appHangs,
+      fatalCrash,
+      nonFatalCrash,
+      forceRestart,
+      outOfMemory,
+    };
 
     Instabug.setReproStepsConfig(config);
 
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
-    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(bug, crash, sessionReplay);
+    expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
+      bug,
+      allCrashes,
+      sessionReplay,
+      anr,
+      appHangs,
+      fatalCrash,
+      nonFatalCrash,
+      forceRestart,
+      outOfMemory,
+    );
   });
 
   it('setReproStepsConfig should prioritize `all` over `bug`, `crash`, and `sessionReplay`', () => {

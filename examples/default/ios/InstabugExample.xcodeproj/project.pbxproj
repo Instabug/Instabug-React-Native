@@ -16,9 +16,7 @@
 		CC3DF88E2A1DFC9A003E9914 /* InstabugCrashReportingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */; };
 		CC3DF88F2A1DFC9A003E9914 /* InstabugBugReportingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8862A1DFC99003E9914 /* InstabugBugReportingTests.m */; };
 		CC3DF8902A1DFC9A003E9914 /* InstabugSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */; };
-		CC3DF8912A1DFC9A003E9914 /* InstabugFeatureRequestsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF8882A1DFC99003E9914 /* InstabugFeatureRequestsTests.m */; };
 		CC3DF8922A1DFC9A003E9914 /* InstabugRepliesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88A2A1DFC99003E9914 /* InstabugRepliesTests.m */; };
-		CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */; };
 		CC3DF8942A1DFC9A003E9914 /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */; };
 		CC3DF8952A1DFC9A003E9914 /* IBGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */; };
 		CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF1E4082B022CF20024802D /* RNInstabugTests.m */; };
@@ -57,10 +55,8 @@
 		CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugCrashReportingTests.m; sourceTree = "<group>"; };
 		CC3DF8862A1DFC99003E9914 /* InstabugBugReportingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugBugReportingTests.m; sourceTree = "<group>"; };
 		CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSampleTests.m; sourceTree = "<group>"; };
-		CC3DF8882A1DFC99003E9914 /* InstabugFeatureRequestsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugFeatureRequestsTests.m; sourceTree = "<group>"; };
 		CC3DF8892A1DFC99003E9914 /* IBGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IBGConstants.h; sourceTree = "<group>"; };
 		CC3DF88A2A1DFC99003E9914 /* InstabugRepliesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugRepliesTests.m; sourceTree = "<group>"; };
-		CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
 		CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
 		CCF1E4082B022CF20024802D /* RNInstabugTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInstabugTests.m; sourceTree = "<group>"; };
@@ -96,11 +92,9 @@
 				CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */,
 				CC3DF8862A1DFC99003E9914 /* InstabugBugReportingTests.m */,
 				CC3DF8852A1DFC99003E9914 /* InstabugCrashReportingTests.m */,
-				CC3DF8882A1DFC99003E9914 /* InstabugFeatureRequestsTests.m */,
 				CC3DF88A2A1DFC99003E9914 /* InstabugRepliesTests.m */,
 				20E556252AC55766007416B1 /* InstabugSessionReplayTests.m */,
 				CC3DF8872A1DFC99003E9914 /* InstabugSampleTests.m */,
-				CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 				CCF1E4082B022CF20024802D /* RNInstabugTests.m */,
 			);
@@ -459,8 +453,6 @@
 			files = (
 				CC3DF8952A1DFC9A003E9914 /* IBGConstants.m in Sources */,
 				CC3DF8902A1DFC9A003E9914 /* InstabugSampleTests.m in Sources */,
-				CC3DF8912A1DFC9A003E9914 /* InstabugFeatureRequestsTests.m in Sources */,
-				CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */,
 				20E556262AC55766007416B1 /* InstabugSessionReplayTests.m in Sources */,
 				CC3DF88F2A1DFC9A003E9914 /* InstabugBugReportingTests.m in Sources */,
 				CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */,

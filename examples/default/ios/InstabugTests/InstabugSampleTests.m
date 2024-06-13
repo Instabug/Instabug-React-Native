@@ -8,7 +8,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "Instabug/Instabug.h"
-#import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
@@ -236,12 +235,24 @@
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
   IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
   IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
-
-  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
+  IBGUserStepsMode appHangsMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashFatalMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashNonFatalMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode oomMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode forceRestartMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  
+  
+  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode :nil :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeFatal withMode:crashFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeNonFatal withMode:crashNonFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeForceRestart withMode:forceRestartMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeOutOfMemory withMode:oomMode]);
+
 }
 
 - (void)testSetUserAttribute {

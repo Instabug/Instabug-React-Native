@@ -352,21 +352,44 @@ export const clearLogs = () => {
  *   bug: ReproStepsMode.enabled,
  *   crash: ReproStepsMode.disabled,
  *   sessionReplay: ReproStepsMode.enabled,
+ *
  * });
  * ```
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
-  let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let crash = config.allCrashes ?? ReproStepsMode.enabledWithNoScreenshots;
   let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
+  let anr = config.anr ?? ReproStepsMode.enabledWithNoScreenshots;
+  let apphangs = config.appHangs ?? ReproStepsMode.enabledWithNoScreenshots;
+  let fatalCrash = config.fatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let nonFatalCrash = config.nonFatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let forceRestart = config.forceRestart ?? ReproStepsMode.enabledWithNoScreenshots;
+  let oom = config.outOfMemory ?? ReproStepsMode.enabledWithNoScreenshots;
 
   if (config.all != null) {
     bug = config.all;
     crash = config.all;
     sessionReplay = config.all;
+    anr = config.all;
+    apphangs = config.all;
+    fatalCrash = config.all;
+    nonFatalCrash = config.all;
+    forceRestart = config.all;
+    oom = config.all;
   }
 
-  NativeInstabug.setReproStepsConfig(bug, crash, sessionReplay);
+  NativeInstabug.setReproStepsConfig(
+    bug,
+    crash,
+    sessionReplay,
+    anr,
+    apphangs,
+    fatalCrash,
+    nonFatalCrash,
+    forceRestart,
+    oom,
+  );
 };
 
 /**

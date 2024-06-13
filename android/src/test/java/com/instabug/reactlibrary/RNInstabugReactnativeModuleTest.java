@@ -299,7 +299,14 @@ public class RNInstabugReactnativeModuleTest {
     public void givenArg$setReproStepsConfig_whenQuery_thenShouldCallNativeApiWithArg() {
         String bug = "reproStepsEnabled";
         String crash = "reproStepsDisabled";
+        String anr = "reproStepsEnabled";
+        String apphangs = "reproStepsEnabled";
+        String crashNonFatal = "reproStepsDisabled";
+        String crashFatal = "reproStepsEnabled";
+        String forceRestart = "reproStepsDisabled";
+
         String sessionReplay = "reproStepsEnabled";
+
 
         ReproConfigurations config = mock(ReproConfigurations.class);
         MockedConstruction<ReproConfigurations.Builder> mReproConfigurationsBuilder = mockConstruction(ReproConfigurations.Builder.class, (mock, context) -> {
@@ -307,13 +314,19 @@ public class RNInstabugReactnativeModuleTest {
             when(mock.build()).thenReturn(config);
         });
 
-        rnModule.setReproStepsConfig(bug, crash, sessionReplay);
+        rnModule.setReproStepsConfig(bug, crash, sessionReplay,anr,apphangs,crashFatal,crashNonFatal,forceRestart,null);
 
         ReproConfigurations.Builder builder = mReproConfigurationsBuilder.constructed().get(0);
 
         verify(builder).setIssueMode(IssueType.Bug, ReproMode.EnableWithScreenshots);
-        verify(builder).setIssueMode(IssueType.Crash, ReproMode.Disable);
+        verify(builder).setIssueMode(IssueType.AllCrashes, ReproMode.Disable);
         verify(builder).setIssueMode(IssueType.SessionReplay, ReproMode.EnableWithScreenshots);
+        verify(builder).setIssueMode(IssueType.ANR, ReproMode.EnableWithScreenshots);
+        verify(builder).setIssueMode(IssueType.AppHang, ReproMode.EnableWithScreenshots);
+        verify(builder).setIssueMode(IssueType.Fatal, ReproMode.EnableWithScreenshots);
+        verify(builder).setIssueMode(IssueType.NonFatal, ReproMode.Disable);
+        verify(builder).setIssueMode(IssueType.ForceRestart, ReproMode.Disable);
+
         verify(builder).build();
 
         mockInstabug.verify(() -> Instabug.setReproConfigurations(config));

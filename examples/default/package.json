@@ -25,8 +25,7 @@
     "react-native-safe-area-context": "^4.5.3",
     "react-native-screens": "^3.20.0",
     "react-native-svg": "^13.9.0",
-    "react-native-vector-icons": "^10.0.0",
-    "instabug-reactnative-ndk": "github:https://github.com/Instabug/Instabug-React-Native-NDK"
+    "react-native-vector-icons": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

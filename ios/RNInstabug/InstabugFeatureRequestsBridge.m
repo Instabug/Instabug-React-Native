@@ -7,7 +7,6 @@
 //
 
 #import "InstabugFeatureRequestsBridge.h"
-#import <Instabug/IBGFeatureRequests.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
