@@ -364,7 +364,7 @@ export const clearLogs = () => {
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
   let crash = config.allCrashes ?? ReproStepsMode.enabledWithNoScreenshots;
-  let sessionReplay = config.sessionReplay ?? crash;
+  let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
   let anr = config.anr ?? crash;
   let apphangs = config.appHangs ?? crash;
   let fatalCrash = config.fatalCrash ?? crash;
@@ -382,6 +382,15 @@ export const setReproStepsConfig = (config: ReproConfig) => {
     nonFatalCrash = config.all;
     forceRestart = config.all;
     oom = config.all;
+  }
+
+  if (config.allCrashes != null) {
+    anr = config.allCrashes;
+    apphangs = config.allCrashes;
+    fatalCrash = config.allCrashes;
+    nonFatalCrash = config.allCrashes;
+    forceRestart = config.allCrashes;
+    oom = config.allCrashes;
   }
 
   NativeInstabug.setReproStepsConfig(
