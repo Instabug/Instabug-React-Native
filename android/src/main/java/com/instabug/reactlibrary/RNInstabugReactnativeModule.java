@@ -808,7 +808,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
-                    final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
                     final Integer resolvedSessionReplayMode = ArgsRegistry.reproModes.get(sessionReplayMode);
                     final Integer resolvedAnrMode = ArgsRegistry.reproModes.get(anr);
                     final Integer resolvedAppHangsMode = ArgsRegistry.reproModes.get(appHang);
@@ -816,17 +815,18 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     final Integer resolvedNonFatalCrashesMode = ArgsRegistry.reproModes.get(nonFatal);
                     final Integer resolvedForceRestartStartMode = ArgsRegistry.reproModes.get(forceRestart);
 
-                    final ReproConfigurations config = new ReproConfigurations.Builder()
+                    final ReproConfigurations.Builder config = new ReproConfigurations.Builder()
                             .setIssueMode(IssueType.Bug, resolvedBugMode)
-                            .setIssueMode(IssueType.AllCrashes, resolvedCrashMode)
                             .setIssueMode(IssueType.ANR, resolvedAnrMode)
                             .setIssueMode(IssueType.AppHang, resolvedAppHangsMode)
                             .setIssueMode(IssueType.Fatal, resolvedFatalCrashesMode)
                             .setIssueMode(IssueType.NonFatal, resolvedNonFatalCrashesMode)
                             .setIssueMode(IssueType.ForceRestart, resolvedForceRestartStartMode)
-                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode).build();
+                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode);
 
-                    Instabug.setReproConfigurations(config);
+
+
+                    Instabug.setReproConfigurations(config.build());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
