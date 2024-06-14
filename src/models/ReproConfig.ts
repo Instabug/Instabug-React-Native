@@ -68,7 +68,7 @@ export interface ReproConfig {
   /**
    * Repro steps mode for Bug Reporting, Crash Reporting, and Session Replay.
    *
-   * When this is set, `bug`, `crash`, and `sessionReplay` will be ignored.
+   * When this is set, `bug`, `crash`, `sessionReplay`,  `appHangs`,`fatalCrash`,`nonFatalCrash`,`forceRestart`, and `outOfMemory`  will be ignored.
    */
   all?: ReproStepsMode;
 }
