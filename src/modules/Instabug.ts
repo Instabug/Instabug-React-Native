@@ -365,12 +365,12 @@ export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
   let crash = config.allCrashes ?? ReproStepsMode.enabledWithNoScreenshots;
   let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
-  let anr = config.anr ?? ReproStepsMode.enabledWithNoScreenshots;
-  let apphangs = config.appHangs ?? ReproStepsMode.enabledWithNoScreenshots;
-  let fatalCrash = config.fatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let nonFatalCrash = config.nonFatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let forceRestart = config.forceRestart ?? ReproStepsMode.enabledWithNoScreenshots;
-  let oom = config.outOfMemory ?? ReproStepsMode.enabledWithNoScreenshots;
+  let anr = config.anr ?? crash;
+  let apphangs = config.appHangs ?? crash;
+  let fatalCrash = config.fatalCrash ?? crash;
+  let nonFatalCrash = config.nonFatalCrash ?? crash;
+  let forceRestart = config.forceRestart ?? crash;
+  let oom = config.outOfMemory ?? crash;
 
   if (config.all != null) {
     bug = config.all;
