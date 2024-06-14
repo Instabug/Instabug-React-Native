@@ -27,7 +27,7 @@ export const App: React.FC = () => {
     });
 
     Instabug.setReproStepsConfig({
-      all: ReproStepsMode.enabled,
+      anr: ReproStepsMode.enabled,
     });
   }, []);
 

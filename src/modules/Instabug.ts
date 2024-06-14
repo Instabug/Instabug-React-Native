@@ -363,18 +363,16 @@ export const clearLogs = () => {
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
-  let crash = config.allCrashes;
   let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
-  let anr = config.anr ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let apphangs = config.appHangs ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let fatalCrash = config.fatalCrash ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let nonFatalCrash = config.nonFatalCrash ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let forceRestart = config.forceRestart ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
-  let oom = config.outOfMemory ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let anr = config.anr ?? ReproStepsMode.enabledWithNoScreenshots;
+  let apphangs = config.appHangs ?? ReproStepsMode.enabledWithNoScreenshots;
+  let fatalCrash = config.fatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let nonFatalCrash = config.nonFatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let forceRestart = config.forceRestart ?? ReproStepsMode.enabledWithNoScreenshots;
+  let oom = config.outOfMemory ?? ReproStepsMode.enabledWithNoScreenshots;
 
   if (config.all != null) {
     bug = config.all;
-    crash = config.all;
     sessionReplay = config.all;
     anr = config.all;
     apphangs = config.all;
