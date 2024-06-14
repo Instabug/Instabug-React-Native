@@ -15,11 +15,12 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.UIManager;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -922,13 +923,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     @Nullable
     private View resolveReactView(final int reactTag) {
         final ReactApplicationContext reactContext = getReactApplicationContext();
-        final UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
+        final UIManager uiManager = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag);
 
-        if (uiManagerModule == null) {
+        if (uiManager == null) {
             return null;
         }
 
-        return uiManagerModule.resolveView(reactTag);
+        return uiManager.resolveView(reactTag);
     }
 
 
