@@ -555,7 +555,6 @@ describe('Instabug Module', () => {
     Platform.OS = 'android';
 
     const bug = ReproStepsMode.disabled;
-    const allCrashes = ReproStepsMode.enabled;
     const sessionReplay = ReproStepsMode.enabledWithNoScreenshots;
     const anr = ReproStepsMode.enabledWithNoScreenshots;
     const appHangs = ReproStepsMode.enabledWithNoScreenshots;
@@ -566,7 +565,6 @@ describe('Instabug Module', () => {
 
     const config = {
       bug,
-      allCrashes,
       sessionReplay,
       anr,
       appHangs,
@@ -581,7 +579,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
     expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
       bug,
-      allCrashes,
       sessionReplay,
       anr,
       appHangs,
@@ -630,7 +627,6 @@ describe('Instabug Module', () => {
       all,
       all,
       all,
-      all,
     );
   });
 
@@ -644,7 +640,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setReproStepsConfig).toBeCalledTimes(1);
     expect(NativeInstabug.setReproStepsConfig).toBeCalledWith(
       ReproStepsMode.enabled,
-      ReproStepsMode.enabledWithNoScreenshots,
       ReproStepsMode.enabled,
       ReproStepsMode.enabledWithNoScreenshots,
       ReproStepsMode.enabledWithNoScreenshots,
