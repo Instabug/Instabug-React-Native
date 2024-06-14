@@ -102,6 +102,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Enables or disables Instabug functionality.
+     *
      * @param isEnabled A boolean to enable/disable Instabug.
      */
     @ReactMethod
@@ -739,15 +740,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();
-        for(int i = 0; i < hashMap.size(); i++) {
+        for (int i = 0; i < hashMap.size(); i++) {
             Object key = hashMap.keySet().toArray()[i];
             Object value = hashMap.get(key);
-            writableMap.putString((String) key,(String) value);
+            writableMap.putString((String) key, (String) value);
         }
         return writableMap;
     }
 
-    private static JSONObject objectToJSONObject(Object object){
+    private static JSONObject objectToJSONObject(Object object) {
         Object json = null;
         JSONObject jsonObject = null;
         try {
@@ -764,13 +765,12 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     private WritableArray convertArrayListToWritableArray(List arrayList) {
         WritableArray writableArray = new WritableNativeArray();
 
-        for(int i = 0; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             Object object = arrayList.get(i);
 
-            if(object instanceof String) {
+            if (object instanceof String) {
                 writableArray.pushString((String) object);
-            }
-            else {
+            } else {
                 JSONObject jsonObject = objectToJSONObject(object);
                 writableArray.pushMap((WritableMap) jsonObject);
             }
@@ -799,16 +799,14 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setReproStepsConfig(final String bugMode, final String crashMode, final String sessionReplayMode,
-                                    final String anr, final String appHang, final String fatal, final String nonFatal, final String forceRestart,String oom
-
+    public void setReproStepsConfig(final String bugMode, final String sessionReplayMode,
+                                    final String anr, final String appHang, final String fatal, final String nonFatal, final String forceRestart, String oom
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
-                    final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
                     final Integer resolvedSessionReplayMode = ArgsRegistry.reproModes.get(sessionReplayMode);
                     final Integer resolvedAnrMode = ArgsRegistry.reproModes.get(anr);
                     final Integer resolvedAppHangsMode = ArgsRegistry.reproModes.get(appHang);
@@ -816,17 +814,18 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     final Integer resolvedNonFatalCrashesMode = ArgsRegistry.reproModes.get(nonFatal);
                     final Integer resolvedForceRestartStartMode = ArgsRegistry.reproModes.get(forceRestart);
 
-                    final ReproConfigurations config = new ReproConfigurations.Builder()
+                    final ReproConfigurations.Builder config = new ReproConfigurations.Builder()
                             .setIssueMode(IssueType.Bug, resolvedBugMode)
-                            .setIssueMode(IssueType.AllCrashes, resolvedCrashMode)
                             .setIssueMode(IssueType.ANR, resolvedAnrMode)
                             .setIssueMode(IssueType.AppHang, resolvedAppHangsMode)
                             .setIssueMode(IssueType.Fatal, resolvedFatalCrashesMode)
                             .setIssueMode(IssueType.NonFatal, resolvedNonFatalCrashesMode)
                             .setIssueMode(IssueType.ForceRestart, resolvedForceRestartStartMode)
-                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode).build();
+                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode);
 
-                    Instabug.setReproConfigurations(config);
+
+
+                    Instabug.setReproConfigurations(config.build());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1123,7 +1122,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the
      * constant with its actual value from the {@link ArgsRegistry} maps.
-     *
+     * <p>
      * This is a workaround, because RN cannot resolve enums in the constants map.
      */
     @Override

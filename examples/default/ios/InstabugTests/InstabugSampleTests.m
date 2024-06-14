@@ -234,7 +234,6 @@
 - (void)testSetReproStepsConfig {
   id mock = OCMClassMock([Instabug class]);
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
-  IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
   IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
   IBGUserStepsMode appHangsMode = IBGUserStepsModeEnabledWithNoScreenshots;
   IBGUserStepsMode crashFatalMode = IBGUserStepsModeEnabledWithNoScreenshots;
@@ -243,10 +242,9 @@
   IBGUserStepsMode forceRestartMode = IBGUserStepsModeEnabledWithNoScreenshots;
 
 
-  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode :nil :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
+  [self.instabugBridge setReproStepsConfig:bugMode :sessionReplayMode :nil :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
   OCMVerify([mock setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode]);
   OCMVerify([mock setReproStepsFor:IBGIssueTypeFatal withMode:crashFatalMode]);

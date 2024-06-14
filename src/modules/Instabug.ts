@@ -363,14 +363,14 @@ export const clearLogs = () => {
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
-  let crash = config.allCrashes ?? ReproStepsMode.enabledWithNoScreenshots;
+  let crash = config.allCrashes;
   let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
-  let anr = config.anr ?? crash;
-  let apphangs = config.appHangs ?? crash;
-  let fatalCrash = config.fatalCrash ?? crash;
-  let nonFatalCrash = config.nonFatalCrash ?? crash;
-  let forceRestart = config.forceRestart ?? crash;
-  let oom = config.outOfMemory ?? crash;
+  let anr = config.anr ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let apphangs = config.appHangs ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let fatalCrash = config.fatalCrash ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let nonFatalCrash = config.nonFatalCrash ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let forceRestart = config.forceRestart ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let oom = config.outOfMemory ?? crash ?? ReproStepsMode.enabledWithNoScreenshots;
 
   if (config.all != null) {
     bug = config.all;
@@ -395,7 +395,6 @@ export const setReproStepsConfig = (config: ReproConfig) => {
 
   NativeInstabug.setReproStepsConfig(
     bug,
-    crash,
     sessionReplay,
     anr,
     apphangs,

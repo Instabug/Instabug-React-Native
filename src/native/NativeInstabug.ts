@@ -46,7 +46,6 @@ export interface InstabugNativeModule extends NativeModule {
   // Repro Steps APIs //
   setReproStepsConfig(
     bugMode: ReproStepsMode,
-    crashMode: ReproStepsMode,
     sessionReplay: ReproStepsMode,
     anr: ReproStepsMode,
     appHangs: ReproStepsMode,

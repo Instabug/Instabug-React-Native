@@ -298,7 +298,6 @@ public class RNInstabugReactnativeModuleTest {
     @Test
     public void givenArg$setReproStepsConfig_whenQuery_thenShouldCallNativeApiWithArg() {
         String bug = "reproStepsEnabled";
-        String crash = "reproStepsDisabled";
         String anr = "reproStepsEnabled";
         String apphangs = "reproStepsEnabled";
         String crashNonFatal = "reproStepsDisabled";
@@ -314,12 +313,11 @@ public class RNInstabugReactnativeModuleTest {
             when(mock.build()).thenReturn(config);
         });
 
-        rnModule.setReproStepsConfig(bug, crash, sessionReplay,anr,apphangs,crashFatal,crashNonFatal,forceRestart,null);
+        rnModule.setReproStepsConfig(bug, sessionReplay,anr,apphangs,crashFatal,crashNonFatal,forceRestart,null);
 
         ReproConfigurations.Builder builder = mReproConfigurationsBuilder.constructed().get(0);
 
         verify(builder).setIssueMode(IssueType.Bug, ReproMode.EnableWithScreenshots);
-        verify(builder).setIssueMode(IssueType.AllCrashes, ReproMode.Disable);
         verify(builder).setIssueMode(IssueType.SessionReplay, ReproMode.EnableWithScreenshots);
         verify(builder).setIssueMode(IssueType.ANR, ReproMode.EnableWithScreenshots);
         verify(builder).setIssueMode(IssueType.AppHang, ReproMode.EnableWithScreenshots);
