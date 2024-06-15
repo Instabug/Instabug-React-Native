@@ -391,7 +391,6 @@ export const setReproStepsConfig = (config: ReproConfig) => {
 
   NativeInstabug.setReproStepsConfig(
     bug,
-    crash,
     sessionReplay,
     anr,
     apphangs,
