@@ -303,13 +303,13 @@
   v11.10.1 ([#964](https://github.com/Instabug/Instabug-React-Native/pull/964)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/11.10.1).
 - Return a `Promise` from the below APIs ([#948](https://github.com/Instabug/Instabug-React-Native/pull/948)):
 
-    - `Instabug.getTags`
-    - `Instabug.getUserAttribute`
-    - `Instabug.getAllUserAttributes`
-    - `Replies.hasChats`
-    - `Replies.getUnreadRepliesCount`
-    - `Surveys.getAvailableSurveys`
-    - `Surveys.hasRespondedToSurvey`
+  - `Instabug.getTags`
+  - `Instabug.getUserAttribute`
+  - `Instabug.getAllUserAttributes`
+  - `Replies.hasChats`
+  - `Replies.getUnreadRepliesCount`
+  - `Surveys.getAvailableSurveys`
+  - `Surveys.hasRespondedToSurvey`
 
   You should not pass it a callback but use the returned `Promise` as follows:
 
