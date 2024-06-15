@@ -799,7 +799,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setReproStepsConfig(final String bugMode, final String crashMode, final String sessionReplayMode,
+    public void setReproStepsConfig(final String bugMode, final String sessionReplayMode,
                                     final String anr, final String appHang, final String fatal, final String nonFatal, final String forceRestart,String oom
 
     ) {
