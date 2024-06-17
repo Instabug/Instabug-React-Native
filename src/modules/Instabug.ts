@@ -387,6 +387,13 @@ export const setReproStepsConfig = (config: ReproConfig) => {
     nonFatalCrash = config.allCrashes;
     forceRestart = config.allCrashes;
     oom = config.allCrashes;
+  } else if (config.crash != null) {
+    anr = config.crash;
+    apphangs = config.crash;
+    fatalCrash = config.crash;
+    nonFatalCrash = config.crash;
+    forceRestart = config.crash;
+    oom = config.crash;
   }
 
   NativeInstabug.setReproStepsConfig(

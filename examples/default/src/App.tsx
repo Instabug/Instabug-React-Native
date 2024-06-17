@@ -18,6 +18,7 @@ export const App: React.FC = () => {
       debugLogsLevel: LogLevel.verbose,
     });
     Instabug.setReproStepsConfig({
+      all: ReproStepsMode.enabled,
       bug: ReproStepsMode.enabledWithNoScreenshots,
       allCrashes: ReproStepsMode.enabledWithNoScreenshots,
       anr: ReproStepsMode.enabledWithNoScreenshots,

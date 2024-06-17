@@ -1,11 +1,10 @@
 # Changelog
 
-## [13.0.6](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...v13.0.5) (JUN 15, 2024)
+## [13.0.6](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...v13.0.6) (JUN 17, 2024)
 
 ### Changed
 
-- support sending screenshot for `ANR`, `appHangs`,`fatal-Crash`,`non-Fatal-Crash`,`force-Restart`,
-  and `out-of-Memory` crash types using `Instabug.setReproStepsConfig` API.
+- Support controlling repro steps for ANRs, app hangs, fatal crashes, non-fatal crashes, force restarts, and out-of-memory crash types separately using the `Instabug.setReproStepsConfig` API.
 - Bump Instabug Android SDK to v13.0.6 . [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.6).
 - Bump Instabug iOS SDK to v13.0.6 . [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.6).
 
