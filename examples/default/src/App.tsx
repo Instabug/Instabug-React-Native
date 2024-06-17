@@ -3,12 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import Instabug, {
-  CrashReporting,
-  InvocationEvent,
-  LogLevel,
-  ReproStepsMode,
-} from 'instabug-reactnative';
+import Instabug, { InvocationEvent, LogLevel, ReproStepsMode } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -22,10 +17,17 @@ export const App: React.FC = () => {
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
-    CrashReporting.setNDKCrashesEnabled(true);
-
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
+      bug: ReproStepsMode.enabledWithNoScreenshots,
+      allCrashes: ReproStepsMode.enabledWithNoScreenshots,
+      anr: ReproStepsMode.enabledWithNoScreenshots,
+      appHangs: ReproStepsMode.enabledWithNoScreenshots,
+      sessionReplay: ReproStepsMode.enabledWithNoScreenshots,
+      fatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+      nonFatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+      forceRestart: ReproStepsMode.enabledWithNoScreenshots,
+      outOfMemory: ReproStepsMode.enabled,
     });
   }, []);
 

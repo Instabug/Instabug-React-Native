@@ -349,24 +349,63 @@ export const clearLogs = () => {
  * @example
  * ```js
  * Instabug.setReproStepsConfig({
- *   bug: ReproStepsMode.enabled,
- *   crash: ReproStepsMode.disabled,
- *   sessionReplay: ReproStepsMode.enabled,
- * });
+ *    bug: ReproStepsMode.enabledWithNoScreenshots,
+ *    allCrashes: ReproStepsMode.enabledWithNoScreenshots,
+ *    anr: ReproStepsMode.enabledWithNoScreenshots,
+ *    appHangs: ReproStepsMode.enabledWithNoScreenshots,
+ *    sessionReplay: ReproStepsMode.enabledWithNoScreenshots,
+ *    fatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+ *    nonFatalCrash: ReproStepsMode.enabledWithNoScreenshots,
+ *    forceRestart: ReproStepsMode.enabledWithNoScreenshots,
+ *    outOfMemory: ReproStepsMode.enabled,
+ *     });
  * ```
  */
 export const setReproStepsConfig = (config: ReproConfig) => {
   let bug = config.bug ?? ReproStepsMode.enabled;
-  let crash = config.crash ?? ReproStepsMode.enabledWithNoScreenshots;
   let sessionReplay = config.sessionReplay ?? ReproStepsMode.enabled;
+  let anr = config.anr ?? ReproStepsMode.enabledWithNoScreenshots;
+  let apphangs = config.appHangs ?? ReproStepsMode.enabledWithNoScreenshots;
+  let fatalCrash = config.fatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let nonFatalCrash = config.nonFatalCrash ?? ReproStepsMode.enabledWithNoScreenshots;
+  let forceRestart = config.forceRestart ?? ReproStepsMode.enabledWithNoScreenshots;
+  let oom = config.outOfMemory ?? ReproStepsMode.enabledWithNoScreenshots;
 
   if (config.all != null) {
     bug = config.all;
-    crash = config.all;
     sessionReplay = config.all;
+    anr = config.all;
+    apphangs = config.all;
+    fatalCrash = config.all;
+    nonFatalCrash = config.all;
+    forceRestart = config.all;
+    oom = config.all;
+  } else if (config.allCrashes != null) {
+    anr = config.allCrashes;
+    apphangs = config.allCrashes;
+    fatalCrash = config.allCrashes;
+    nonFatalCrash = config.allCrashes;
+    forceRestart = config.allCrashes;
+    oom = config.allCrashes;
+  } else if (config.crash != null) {
+    anr = config.crash;
+    apphangs = config.crash;
+    fatalCrash = config.crash;
+    nonFatalCrash = config.crash;
+    forceRestart = config.crash;
+    oom = config.crash;
   }
 
-  NativeInstabug.setReproStepsConfig(bug, crash, sessionReplay);
+  NativeInstabug.setReproStepsConfig(
+    bug,
+    sessionReplay,
+    anr,
+    apphangs,
+    fatalCrash,
+    nonFatalCrash,
+    forceRestart,
+    oom,
+  );
 };
 
 /**

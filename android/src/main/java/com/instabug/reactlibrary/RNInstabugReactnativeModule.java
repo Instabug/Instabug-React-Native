@@ -41,6 +41,7 @@ import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import com.instabug.reactlibrary.utils.RNTouchedViewExtractor;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -798,22 +799,34 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setReproStepsConfig(final String bugMode, final String crashMode, final String sessionReplayMode) {
+    public void setReproStepsConfig(final String bugMode, final String sessionReplayMode,
+                                    final String anr, final String appHang, final String fatal, final String nonFatal, final String forceRestart,String oom
+
+    ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     final Integer resolvedBugMode = ArgsRegistry.reproModes.get(bugMode);
-                    final Integer resolvedCrashMode = ArgsRegistry.reproModes.get(crashMode);
                     final Integer resolvedSessionReplayMode = ArgsRegistry.reproModes.get(sessionReplayMode);
+                    final Integer resolvedAnrMode = ArgsRegistry.reproModes.get(anr);
+                    final Integer resolvedAppHangsMode = ArgsRegistry.reproModes.get(appHang);
+                    final Integer resolvedFatalCrashesMode = ArgsRegistry.reproModes.get(fatal);
+                    final Integer resolvedNonFatalCrashesMode = ArgsRegistry.reproModes.get(nonFatal);
+                    final Integer resolvedForceRestartStartMode = ArgsRegistry.reproModes.get(forceRestart);
 
-                    final ReproConfigurations config = new ReproConfigurations.Builder()
+                    final ReproConfigurations.Builder config = new ReproConfigurations.Builder()
                             .setIssueMode(IssueType.Bug, resolvedBugMode)
-                            .setIssueMode(IssueType.Crash, resolvedCrashMode)
-                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode)
-                            .build();
+                            .setIssueMode(IssueType.ANR, resolvedAnrMode)
+                            .setIssueMode(IssueType.AppHang, resolvedAppHangsMode)
+                            .setIssueMode(IssueType.Fatal, resolvedFatalCrashesMode)
+                            .setIssueMode(IssueType.NonFatal, resolvedNonFatalCrashesMode)
+                            .setIssueMode(IssueType.ForceRestart, resolvedForceRestartStartMode)
+                            .setIssueMode(IssueType.SessionReplay, resolvedSessionReplayMode);
 
-                    Instabug.setReproConfigurations(config);
+
+
+                    Instabug.setReproConfigurations(config.build());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
