@@ -464,7 +464,12 @@ workflows:
             branches:
               only: master
       - hold_release_d11:
-          requires: *release_dependencies
+          # edit to publish 13.0.6 version ,,since 13.0.6 version is for dream11 only and we don't have public version for it
+          requires:
+            - lint
+            - test_module
+            - validate_shell_files
+            - sync_generated_files
           type: approval
           filters:
             branches:
