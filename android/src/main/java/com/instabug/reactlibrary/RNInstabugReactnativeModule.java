@@ -161,7 +161,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    public void setCodePushVersion(@Nullable String version) {
+    public void setCodePushVersion(@Nullable final String version) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
