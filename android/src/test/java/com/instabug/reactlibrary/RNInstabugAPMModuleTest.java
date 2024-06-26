@@ -207,7 +207,7 @@ public class RNInstabugAPMModuleTest {
         APM.endUITrace();
     }
     @Test
-    public void givenCallback$isW3ExternalTraceIDEnabled_whenQuery_thenShouldCallNativeApiAndResolvePromise(){
+    public void testW3CExternalTraceIDFlag(){
         Promise promise = mock(Promise.class);
         InternalAPM internalAPM = mock(InternalAPM.class);
         apmModule.isW3ExternalTraceIDEnabled(promise);
@@ -215,7 +215,7 @@ public class RNInstabugAPMModuleTest {
        verify(promise).resolve(expected);
     }
     @Test
-    public void givenCallback$isW3ExternalGeneratedHeaderEnabled_whenQuery_thenShouldCallNativeApiAndResolvePromise(){
+    public void testW3CExternalGeneratedHeaderFlag(){
         Promise promise = mock(Promise.class);
         InternalAPM internalAPM = mock(InternalAPM.class);
         apmModule.isW3ExternalGeneratedHeaderEnabled(promise);
@@ -223,7 +223,7 @@ public class RNInstabugAPMModuleTest {
         verify(promise).resolve(expected);
     }
     @Test
-    public void givenCallback$isW3CaughtHeaderEnabled_whenQuery_thenShouldCallNativeApiAndResolvePromise(){
+    public void testW3CCaughtHeaderFlag(){
         Promise promise = mock(Promise.class);
        InternalAPM internalAPM = mock(InternalAPM.class);
         apmModule.isW3CaughtHeaderEnabled(promise);
