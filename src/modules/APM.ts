@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import Trace from '../models/Trace';
-import { NativeAPM } from '../native/NativeAPM';
+import { NativeAPM, NativeEvents, emitter } from '../native/NativeAPM';
 import { NativeInstabug } from '../native/NativeInstabug';
 
 /**
@@ -157,4 +157,21 @@ export const _isW3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> =>
 export const _isW3CaughtHeaderEnabled = async (): Promise<boolean> => {
   const isW3CaughtHeaderEnabled = await NativeAPM.isW3CaughtHeaderEnabled();
   return isW3CaughtHeaderEnabled;
+};
+
+/**
+ * Sets listener to W3ExternalTraceID flag changes
+ * @param handler A callback that gets the update value of the flag
+ */
+export const _registerW3CFlagsChangeListener = (
+  handler: (payload: {
+    isW3ExternalTraceIDEnabled: boolean;
+    isW3ExternalGeneratedHeaderEnabled: boolean;
+    isW3CaughtHeaderEnabled: boolean;
+  }) => void,
+) => {
+  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
+    handler(payload);
+  });
+  NativeAPM.registerW3CFlagsChangeListener(handler);
 };

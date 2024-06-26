@@ -192,4 +192,10 @@ describe('APM Module', () => {
     expect(NativeAPM.isW3CaughtHeaderEnabled).toBeCalledTimes(1);
     expect(NativeAPM.isW3CaughtHeaderEnabled).toBeCalledWith();
   });
+
+  it('should register W3C flag listener', async () => {
+    APM._registerW3CFlagsChangeListener(() => {});
+
+    expect(NativeAPM.registerW3CFlagsChangeListener).toBeCalledTimes(1);
+  });
 });
