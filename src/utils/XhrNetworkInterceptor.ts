@@ -75,7 +75,7 @@ const getFeatureFlags = async (networkData: NetworkData) => {
       FeatureFlags.isW3CaughtHeader(),
     ]);
 
-  injectHeaders(networkData, {
+  return injectHeaders(networkData, {
     w3c_external_trace_id_enabled,
     w3c_generated_header,
     w3c_caught_header,
@@ -99,25 +99,32 @@ export const injectHeaders = async (
   const headerFound = networkData.requestHeaders.traceparent != null;
 
   networkData.w3cc = headerFound;
-  headerFound
+  const injectionMethodology = headerFound
     ? IdentifyCaughtHeader(networkData, w3c_caught_header)
     : injectGeneratedData(networkData, w3c_generated_header);
+  return injectionMethodology;
 };
 
-const IdentifyCaughtHeader = (networkData: NetworkData, w3c_caught_header: boolean) => {
-  w3c_caught_header && (networkData.wceti = networkData.requestHeaders.traceparent);
+const IdentifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header: boolean) => {
+  if (w3c_caught_header) {
+    networkData.wceti = networkData.requestHeaders.traceparent;
+    return networkData.requestHeaders.traceparent;
+  } else {
+    return;
+  }
 };
 
-const injectGeneratedData = (networkData: NetworkData, w3c_generated_header: boolean) => {
+const injectGeneratedData = async (networkData: NetworkData, w3c_generated_header: boolean) => {
   const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
+  networkData.partialId = partialId;
+  networkData.etst = timestampInSeconds;
 
   if (w3c_generated_header) {
     networkData.wgeti = w3cHeader;
-    networkData.requestHeaders.traceparent = w3cHeader;
+    return w3cHeader;
+  } else {
+    return;
   }
-
-  networkData.partialId = partialId;
-  networkData.etst = timestampInSeconds;
 };
 
 export default {
@@ -149,7 +156,7 @@ export default {
       originalXHRSetRequestHeader.apply(this, [header, value]);
     };
 
-    XMLHttpRequest.prototype.send = function (data) {
+    XMLHttpRequest.prototype.send = async function (data) {
       const cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
 
@@ -271,7 +278,9 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      getFeatureFlags(cloneNetwork);
+      const traceparent = await getFeatureFlags(cloneNetwork);
+      traceparent && this.setRequestHeader('Traceparent', traceparent);
+
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

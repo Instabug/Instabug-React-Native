@@ -307,15 +307,16 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(false);
-      expect(network.partialId).not.toBe(null);
-      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.wgeti).toHaveLength(55);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).toHaveProperty('traceparent');
-      done();
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toEqual(network.wgeti);
+        expect(network.w3cc).toBe(false);
+        expect(network.partialId).not.toBe(null);
+        expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
+        expect(network.wgeti).toHaveLength(55);
+        expect(network.wceti).toBe(null);
+      });
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -326,17 +327,19 @@ describe('Network Interceptor W3C Headers', () => {
       w3c_generated_header: true,
       w3c_caught_header: false,
     };
+
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(false);
-      expect(network.partialId).not.toBe(null);
-      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.wgeti).toHaveLength(55);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).toHaveProperty('traceparent');
-      done();
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toEqual(network.wgeti);
+        expect(network.w3cc).toBe(false);
+        expect(network.partialId).not.toBe(null);
+        expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
+        expect(network.wgeti).toHaveLength(55);
+        expect(network.wceti).toBe(null);
+      });
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -350,16 +353,16 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
-
-      done();
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toBeUndefined();
+        expect(network.w3cc).toBe(null);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe(null);
+      });
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -372,13 +375,14 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toBeUndefined();
+        expect(network.w3cc).toBe(null);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe(null);
+      });
 
       done();
     });
@@ -394,13 +398,15 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toBeUndefined();
+        expect(network.w3cc).toBe(null);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe(null);
+      });
+
       done();
     });
     FakeRequest.mockResponse(request);
@@ -415,13 +421,14 @@ describe('Network Interceptor W3C Headers', () => {
     };
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toBeUndefined();
+        expect(network.w3cc).toBe(null);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe(null);
+      });
       done();
     });
     FakeRequest.mockResponse(request);
@@ -437,12 +444,14 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toEqual(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toBeUndefined();
+        expect(network.w3cc).toEqual(true);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe(null);
+      });
       done();
     });
     FakeRequest.mockResponse(request);
@@ -459,13 +468,15 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe('caught traceparent header');
-      expect(network.requestHeaders).toHaveProperty('traceparent');
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toEqual(network.requestHeaders.traceparent);
+        expect(network.w3cc).toBe(true);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe('caught traceparent header');
+      });
+
       done();
     });
     FakeRequest.mockResponse(request);
@@ -481,13 +492,15 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback((network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
+      injectHeaders(network, featureFlags).then((res) => {
+        expect(res).toEqual(network.requestHeaders.traceparent);
+        expect(network.partialId).toBe(null);
+        expect(network.etst).toBe(null);
+        expect(network.wgeti).toBe(null);
+        expect(network.wceti).toBe('caught traceparent header');
+      });
       expect(network.w3cc).toBe(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe('caught traceparent header');
-      expect(network.requestHeaders).toHaveProperty('traceparent');
+
       done();
     });
     FakeRequest.mockResponse(request);
