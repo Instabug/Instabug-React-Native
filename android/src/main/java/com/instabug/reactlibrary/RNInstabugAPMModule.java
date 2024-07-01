@@ -369,13 +369,57 @@ public class RNInstabugAPMModule extends EventEmitterModule {
             }
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
 
+
+            Boolean w3cc=null;
+            Long partialId=null;
+            Long etst=null;
+            String wgeti=null;
+            String wceti=null;
+
+            try{
+                w3cc=jsonObject.getBoolean("w3cc");
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            };
+            try{
+                partialId=jsonObject.getLong("partialId");
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            };
+            try{
+                etst=jsonObject.getLong("etst");
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            };
+            try{
+
+                wgeti=jsonObject.getString("wgeti");
+                if (wgeti=="null"){
+                    wgeti=null;
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            };
+
+            try{
+                wceti=jsonObject.getString("wceti");
+
+                if (wceti=="null"){
+                    wceti=null;
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            };
             APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
                     new APMCPNetworkLog.W3CExternalTraceAttributes(
-                            jsonObject.optBoolean("w3cc"),
-                            jsonObject.optLong("partialId"),
-                            jsonObject.optLong("etst"),
-                            jsonObject.optString("wgeti"),
-                            jsonObject.optString("wceti"));
+                            w3cc,partialId,etst,wgeti,wceti
+
+                    );
 
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class,APMCPNetworkLog.W3CExternalTraceAttributes.class);
