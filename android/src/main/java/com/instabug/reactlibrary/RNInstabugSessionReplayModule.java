@@ -83,7 +83,7 @@ public class RNInstabugSessionReplayModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getSessionReplayLink(Promise promise) {
+    public void getSessionReplayLink(final Promise promise) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
