@@ -40,7 +40,14 @@ export interface InstabugNativeModule extends NativeModule {
   setString(string: string, key: StringKey): void;
 
   // Network APIs //
-  networkLog(network: NetworkData | string): void;
+  networkLog(
+    network: NetworkData | string,
+    isW3cHeaderFound?: boolean | null,
+    partialId?: number | null,
+    networkStartTimeInSeconds?: number | null,
+    W3CgeneratedHeader?: string | null,
+    W3CCaughtHeader?: string | null,
+  ): void;
   setNetworkLoggingEnabled(isEnabled: boolean): void;
 
   // Repro Steps APIs //

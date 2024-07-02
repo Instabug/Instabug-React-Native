@@ -8,7 +8,14 @@ export interface ApmNativeModule extends NativeModule {
   setEnabled(isEnabled: boolean): void;
 
   // Network APIs //
-  networkLog(data: string): void;
+  networkLog(
+    data: string,
+    isW3cHeaderFound?: boolean | null,
+    partialId?: number | null,
+    networkStartTimeInSeconds?: number | null,
+    W3CgeneratedHeader?: string | null,
+    W3CCaughtHeader?: string | null,
+  ): void;
 
   // App Launches APIs //
   setAppLaunchEnabled(isEnabled: boolean): void;
