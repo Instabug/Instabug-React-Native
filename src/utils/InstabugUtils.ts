@@ -8,7 +8,10 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import type { CrashData } from '../native/NativeCrashReporting';
+import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import { NativeInstabug } from '../native/NativeInstabug';
+import { NativeAPM } from '../native/NativeAPM';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -122,6 +125,75 @@ export async function sendCrashReport(
   }
 
   return remoteSenderCallback(jsonObject);
+}
+
+export function isContentTypeNotAllowed(contentType: string) {
+  const allowed = [
+    'application/protobuf',
+    'application/json',
+    'application/xml',
+    'text/xml',
+    'text/html',
+    'text/plain',
+  ];
+
+  return allowed.every((type) => !contentType.includes(type));
+}
+
+export function reportNetworkLog(network: NetworkData) {
+  if (Platform.OS === 'android') {
+    const requestHeaders = JSON.stringify(network.requestHeaders);
+    const responseHeaders = JSON.stringify(network.responseHeaders);
+
+    NativeInstabug.networkLogAndroid(
+      network.url,
+      network.requestBody,
+      network.responseBody,
+      network.method,
+      network.responseCode,
+      requestHeaders,
+      responseHeaders,
+      network.duration,
+    );
+
+    NativeAPM.networkLogAndroid(
+      network.startTime,
+      network.duration,
+      requestHeaders,
+      network.requestBody,
+      network.requestBodySize,
+      network.method,
+      network.url,
+      network.requestContentType,
+      responseHeaders,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.contentType,
+      network.errorDomain,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
+  } else {
+    NativeInstabug.networkLogIOS(
+      network.url,
+      network.method,
+      network.requestBody,
+      network.requestBodySize,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.requestHeaders,
+      network.responseHeaders,
+      network.contentType,
+      network.errorDomain,
+      network.errorCode,
+      network.startTime,
+      network.duration,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
+  }
 }
 
 export default {

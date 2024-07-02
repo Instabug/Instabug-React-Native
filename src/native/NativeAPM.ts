@@ -7,7 +7,24 @@ export interface ApmNativeModule extends NativeModule {
   setEnabled(isEnabled: boolean): void;
 
   // Network APIs //
-  networkLog(data: string): void;
+  networkLogAndroid(
+    requestStartTime: number,
+    requestDuration: number,
+    requestHeaders: string,
+    requestBody: string,
+    requestBodySize: number,
+    requestMethod: string,
+    requestUrl: string,
+    requestContentType: string,
+    responseHeaders: string,
+    responseBody: string | null,
+    responseBodySize: number,
+    statusCode: number,
+    responseContentType: string,
+    errorDomain: string,
+    gqlQueryName?: string,
+    serverErrorMessage?: string,
+  ): void;
 
   // App Launches APIs //
   setAppLaunchEnabled(isEnabled: boolean): void;

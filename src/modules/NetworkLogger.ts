@@ -1,11 +1,8 @@
-import { Platform } from 'react-native';
-
 import type { RequestHandler } from '@apollo/client';
 
-import { NativeAPM } from '../native/NativeAPM';
-import { NativeInstabug } from '../native/NativeInstabug';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
+import { reportNetworkLog } from '../utils/InstabugUtils';
 
 export type { NetworkData };
 
@@ -30,12 +27,7 @@ export const setEnabled = (isEnabled: boolean) => {
             network = await _networkDataObfuscationHandler(network);
           }
 
-          if (Platform.OS === 'android') {
-            NativeInstabug.networkLog(JSON.stringify(network));
-            NativeAPM.networkLog(JSON.stringify(network));
-          } else {
-            NativeInstabug.networkLog(network);
-          }
+          reportNetworkLog(network);
         } catch (e) {
           console.error(e);
         }
