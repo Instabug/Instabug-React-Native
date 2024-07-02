@@ -283,7 +283,12 @@ RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
     }
 }
 
-RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
+RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData isW3cCaughted:(nonnull NSNumber  *)isW3cCaughted partialID:(nonnull NSNumber  *) partialID timestamp:(nonnull NSNumber  *) timestamp generatedW3CTraceparent:(nullable NSString  *) generatedW3CTraceparent caughtedW3CTraceparent:(nullable NSString  *) caughtedW3CTraceparent){
+    
+    if ([partialID isEqualToNumber:@0]) {
+        partialID=nil;
+        timestamp=nil;
+    }
     NSString* url = networkData[@"url"];
     NSString* method = networkData[@"method"];
     NSString* requestBody = networkData[@"requestBody"];
@@ -310,12 +315,6 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
 
     NSString* gqlQueryName = nil;
     NSString* serverErrorMessage = nil;
-    NSNumber *isW3cCaughted = (networkData[@"w3cc"] != [NSNull null]) ? networkData[@"w3cc"] : nil;
-    NSNumber * partialID = (networkData[@"partialId"] != [NSNull null]) ? networkData[@"partialId"] : nil;
-    NSNumber * timestamp = (networkData[@"etst"] != [NSNull null]) ? networkData[@"etst"] : nil;
-    NSString * generatedW3CTraceparent = (networkData[@"wgeti"] != [NSNull null]) ? networkData[@"wgeti"] : nil;
-    NSString * caughtedW3CTraceparent = (networkData[@"wceti"] != [NSNull null]) ? networkData[@"wceti"] : nil;
-
     if (networkData[@"gqlQueryName"] != [NSNull null]) {
         gqlQueryName = networkData[@"gqlQueryName"];
     }
