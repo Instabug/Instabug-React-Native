@@ -24,11 +24,11 @@ export interface NetworkData {
   gqlQueryName?: string;
   serverErrorMessage: string;
   requestContentType: string;
-  w3cc: boolean | null;
+  isW3cHeaderFound: boolean | null;
   partialId: number | null;
-  etst: number | null;
-  wgeti: string | null;
-  wceti: string | null;
+  networkStartTimeInSeconds: number | null;
+  W3CgeneratedHeader: string | null;
+  W3CCaughtHeader: string | null;
 }
 
 const XMLHttpRequest = global.XMLHttpRequest;
@@ -60,11 +60,11 @@ const _reset = () => {
     gqlQueryName: '',
     serverErrorMessage: '',
     requestContentType: '',
-    w3cc: null,
+    isW3cHeaderFound: null,
     partialId: null,
-    etst: null,
-    wgeti: null,
-    wceti: null,
+    networkStartTimeInSeconds: null,
+    W3CgeneratedHeader: null,
+    W3CCaughtHeader: null,
   };
 };
 const getFeatureFlags = async (networkData: NetworkData) => {
@@ -98,7 +98,7 @@ export const injectHeaders = async (
 
   const headerFound = networkData.requestHeaders.traceparent != null;
 
-  networkData.w3cc = headerFound;
+  networkData.isW3cHeaderFound = headerFound;
   const injectionMethodology = headerFound
     ? IdentifyCaughtHeader(networkData, w3c_caught_header)
     : injectGeneratedData(networkData, w3c_generated_header);
@@ -107,7 +107,7 @@ export const injectHeaders = async (
 
 const IdentifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header: boolean) => {
   if (w3c_caught_header) {
-    networkData.wceti = networkData.requestHeaders.traceparent;
+    networkData.W3CCaughtHeader = networkData.requestHeaders.traceparent;
     return networkData.requestHeaders.traceparent;
   } else {
     return;
@@ -117,10 +117,10 @@ const IdentifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header:
 const injectGeneratedData = async (networkData: NetworkData, w3c_generated_header: boolean) => {
   const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
   networkData.partialId = partialId;
-  networkData.etst = timestampInSeconds;
+  networkData.networkStartTimeInSeconds = timestampInSeconds;
 
   if (w3c_generated_header) {
-    networkData.wgeti = w3cHeader;
+    networkData.W3CgeneratedHeader = w3cHeader;
     return w3cHeader;
   } else {
     return;
