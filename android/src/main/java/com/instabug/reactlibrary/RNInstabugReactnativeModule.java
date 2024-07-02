@@ -906,19 +906,29 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                                   final String requestHeaders,
                                   final String responseHeaders,
                                   final double duration) {
-        String date = String.valueOf(System.currentTimeMillis());
+        try {
+            final String date = String.valueOf(System.currentTimeMillis());
 
-        NetworkLog networkLog = new NetworkLog();
-        networkLog.setDate(date);
-        networkLog.setUrl(url);
-        networkLog.setRequest(requestBody);
-        networkLog.setResponse(responseBody);
-        networkLog.setMethod(method);
-        networkLog.setResponseCode((int) responseCode);
-        networkLog.setRequestHeaders(requestHeaders);
-        networkLog.setResponseHeaders(responseHeaders);
-        networkLog.setTotalDuration((long) duration);
-        networkLog.insert();
+            NetworkLog networkLog = new NetworkLog();
+            networkLog.setDate(date);
+            networkLog.setUrl(url);
+            networkLog.setMethod(method);
+            networkLog.setResponseCode((int) responseCode);
+            networkLog.setTotalDuration((long) duration);
+
+            try {
+                networkLog.setRequest(requestBody);
+                networkLog.setResponse(responseBody);
+                networkLog.setRequestHeaders(requestHeaders);
+                networkLog.setResponseHeaders(responseHeaders);
+            } catch (OutOfMemoryError | Exception exception) {
+                Log.d(TAG, "Error: " + exception.getMessage() + "while trying to set network log contents (request body, response body, request headers, and response headers).");
+            }
+
+            networkLog.insert();
+        } catch (OutOfMemoryError | Exception exception) {
+            Log.d(TAG, "Error: " + exception.getMessage() + "while trying to insert a network log");
+        }
     }
 
     @UiThread
