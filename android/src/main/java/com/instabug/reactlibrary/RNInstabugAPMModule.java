@@ -334,7 +334,8 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
         try {
             APMNetworkLogger networkLogger = new APMNetworkLogger();
 
-            final String errorMessage = errorDomain.isEmpty() ? null : errorDomain;
+            final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
+            final String errorMessage = hasError ? errorDomain : null;
 
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
