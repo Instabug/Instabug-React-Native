@@ -374,11 +374,11 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.setOnDoneCallback(async (network) => {
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toBeUndefined();
-      expect(network.isW3cHeaderFound).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
+      expect(network.W3CCaughtHeader).toBe('');
 
       done();
     });
@@ -396,11 +396,11 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.setOnDoneCallback(async (network) => {
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toBeUndefined();
-      expect(network.isW3cHeaderFound).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
+      expect(network.W3CCaughtHeader).toBe('');
 
       done();
     });
@@ -418,11 +418,11 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.setOnDoneCallback(async (network) => {
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toBeUndefined();
-      expect(network.isW3cHeaderFound).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
+      expect(network.W3CCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -441,10 +441,10 @@ describe('Network Interceptor W3C Headers', () => {
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toBeUndefined();
       expect(network.isW3cHeaderFound).toEqual(true);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
+      expect(network.W3CCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -464,9 +464,9 @@ describe('Network Interceptor W3C Headers', () => {
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toEqual(network.requestHeaders.traceparent);
       expect(network.isW3cHeaderFound).toBe(true);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
       expect(network.W3CCaughtHeader).toBe('caught traceparent header');
 
       done();
@@ -486,9 +486,9 @@ describe('Network Interceptor W3C Headers', () => {
       network.requestHeaders.traceparent = 'caught traceparent header';
       const W3Cheader = await injectHeaders(network, featureFlags);
       expect(W3Cheader).toEqual(network.requestHeaders.traceparent);
-      expect(network.partialId).toBe(null);
-      expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.W3CgeneratedHeader).toBe('');
       expect(network.W3CCaughtHeader).toBe('caught traceparent header');
       expect(network.isW3cHeaderFound).toBe(true);
 
