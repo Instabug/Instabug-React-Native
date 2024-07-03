@@ -2,7 +2,7 @@ import type { RequestHandler } from '@apollo/client';
 
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import { reportNetworkLog } from '../utils/InstabugUtils';
+import { reportNetworkLog, isContentTypeNotAllowed } from '../utils/InstabugUtils';
 
 export type { NetworkData };
 
@@ -25,6 +25,20 @@ export const setEnabled = (isEnabled: boolean) => {
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
+          }
+
+          if (isContentTypeNotAllowed(network.requestContentType)) {
+            network.requestBody = `Body is omitted because content type ${network.requestContentType} isn't supported`;
+            console.warn(
+              `IBG-RN: The request body for the network request with URL ${network.url} has been omitted because the content type ${network.requestContentType} isn't supported.`,
+            );
+          }
+
+          if (isContentTypeNotAllowed(network.contentType)) {
+            network.responseBody = `Body is omitted because content type ${network.contentType} isn't supported`;
+            console.warn(
+              `IBG-RN: The response body for the network request with URL ${network.url} has been omitted because the content type ${network.contentType} isn't supported.`,
+            );
           }
 
           reportNetworkLog(network);
