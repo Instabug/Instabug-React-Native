@@ -1,33 +1,37 @@
 import '../mocks/mockXhrNetworkInterceptor';
-
-import { Platform } from 'react-native';
+import '../mocks/mockInstabugUtils';
 
 import waitForExpect from 'wait-for-expect';
 
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeAPM } from '../../src/native/NativeAPM';
-import { NativeInstabug } from '../../src/native/NativeInstabug';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
+import { reportNetworkLog } from '../../src/utils/InstabugUtils';
 
-const clone = (obj: any) => {
+const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
 
 describe('NetworkLogger Module', () => {
-  const network = {
+  const network: NetworkLogger.NetworkData = {
     url: 'https://api.instabug.com',
     requestBody: '',
-    requestHeaders: { 'Content-type': 'application/json' },
+    requestHeaders: { 'content-type': 'application/json' },
     method: 'GET',
     responseBody: '',
     responseCode: 200,
-    responseHeaders: '',
+    responseHeaders: { 'content-type': 'application/json' },
     contentType: 'application/json',
     duration: 0,
+    requestBodySize: 0,
+    responseBodySize: 0,
+    errorDomain: '',
+    errorCode: 0,
+    startTime: 0,
+    serverErrorMessage: '',
+    requestContentType: 'application/json',
   };
 
   beforeEach(() => {
-    // @ts-ignore
     NetworkLogger.setNetworkDataObfuscationHandler(null);
   });
 
@@ -52,52 +56,27 @@ describe('NetworkLogger Module', () => {
     expect(Interceptor.disableInterception).toBeCalledTimes(1);
   });
 
-  it('should send log network when Platform is ios', () => {
-    Platform.OS = 'ios';
+  it('should report the network log', () => {
     Interceptor.setOnDoneCallback = jest
       .fn()
       .mockImplementation((callback) => callback(clone(network)));
+
     NetworkLogger.setEnabled(true);
 
-    expect(NativeInstabug.networkLog).toBeCalledTimes(1);
-    expect(NativeInstabug.networkLog).toBeCalledWith(network);
+    expect(reportNetworkLog).toBeCalledTimes(1);
+    expect(reportNetworkLog).toBeCalledWith(network);
   });
 
   it('should send log network when Platform is android', () => {
-    Platform.OS = 'android';
     Interceptor.setOnDoneCallback = jest
       .fn()
       .mockImplementation((callback) => callback(clone(network)));
     NetworkLogger.setEnabled(true);
 
-    expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(network));
-    expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(network));
-  });
-
-  it('should not break if it fails to stringify to JSON on network log if platform is android', () => {
-    Platform.OS = 'android';
-
-    // Avoid the console.error to clutter the test log
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    // Make a circular object, this should make JSON.stringify fail
-    const networkResult = clone(network);
-    networkResult.responseBody = {};
-    networkResult.responseBody.result = { body: networkResult.responseBody };
-
-    Interceptor.setOnDoneCallback = jest
-      .fn()
-      .mockImplementation((callback) => callback(networkResult));
-
-    expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
-    expect(NativeInstabug.networkLog).not.toBeCalled();
-    expect(NativeAPM.networkLog).not.toBeCalled();
-
-    consoleSpy.mockRestore();
+    expect(reportNetworkLog).toBeCalledWith(network);
   });
 
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
-    Platform.OS = 'ios';
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback = jest
       .fn()
@@ -111,12 +90,11 @@ describe('NetworkLogger Module', () => {
     await waitForExpect(() => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;
-      expect(NativeInstabug.networkLog).toBeCalledWith(newData);
+      expect(reportNetworkLog).toBeCalledWith(newData);
     });
   });
 
   it('should send log network when setNetworkDataObfuscationHandler is set and Platform is android', async () => {
-    Platform.OS = 'android';
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback = jest
       .fn()
@@ -130,14 +108,11 @@ describe('NetworkLogger Module', () => {
     await waitForExpect(() => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;
-      expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
-      expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
+      expect(reportNetworkLog).toBeCalledWith(newData);
     });
   });
 
   it('should not break if network data obfuscation fails when platform is android', async () => {
-    Platform.OS = 'android';
-
     // Avoid the console.error to clutter the test log
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -152,8 +127,7 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setNetworkDataObfuscationHandler(handler);
 
     expect(() => NetworkLogger.setEnabled(true)).not.toThrow();
-    expect(NativeInstabug.networkLog).not.toBeCalled();
-    expect(NativeAPM.networkLog).not.toBeCalled();
+    expect(reportNetworkLog).not.toBeCalled();
 
     consoleSpy.mockRestore();
   });
@@ -164,12 +138,11 @@ describe('NetworkLogger Module', () => {
       .mockImplementation((callback) => callback(clone(network)));
 
     NetworkLogger.setRequestFilterExpression(
-      "network.requestHeaders['Content-type'] === 'application/json'",
+      "network.requestHeaders['content-type'] === 'application/json'",
     );
     NetworkLogger.setEnabled(true);
 
-    expect(NativeInstabug.networkLog).not.toBeCalled();
-    expect(NativeAPM.networkLog).not.toBeCalled();
+    expect(reportNetworkLog).not.toBeCalled();
   });
 
   it('should test that operationSetContext at apollo handler called', async () => {
