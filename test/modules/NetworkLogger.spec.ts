@@ -67,16 +67,7 @@ describe('NetworkLogger Module', () => {
     expect(reportNetworkLog).toBeCalledWith(network);
   });
 
-  it('should send log network when Platform is android', () => {
-    Interceptor.setOnDoneCallback = jest
-      .fn()
-      .mockImplementation((callback) => callback(clone(network)));
-    NetworkLogger.setEnabled(true);
-
-    expect(reportNetworkLog).toBeCalledWith(network);
-  });
-
-  it('should send log network when setNetworkDataObfuscationHandler is set and Platform is ios', async () => {
+  it('should send log network when setNetworkDataObfuscationHandler is set', async () => {
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback = jest
       .fn()
@@ -94,25 +85,7 @@ describe('NetworkLogger Module', () => {
     });
   });
 
-  it('should send log network when setNetworkDataObfuscationHandler is set and Platform is android', async () => {
-    const randomString = '28930q938jqhd';
-    Interceptor.setOnDoneCallback = jest
-      .fn()
-      .mockImplementation((callback) => callback(clone(network)));
-    NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
-      networkData.requestHeaders.token = randomString;
-      return Promise.resolve(networkData);
-    });
-    NetworkLogger.setEnabled(true);
-
-    await waitForExpect(() => {
-      const newData = clone(network);
-      newData.requestHeaders.token = randomString;
-      expect(reportNetworkLog).toBeCalledWith(newData);
-    });
-  });
-
-  it('should not break if network data obfuscation fails when platform is android', async () => {
+  it('should not break if network data obfuscation fails', async () => {
     // Avoid the console.error to clutter the test log
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
