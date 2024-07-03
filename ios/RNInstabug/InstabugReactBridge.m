@@ -289,6 +289,9 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData isW3cCaughted:(nonnull
         partialID=nil;
         timestamp=nil;
     }
+    if([generatedW3CTraceparent isEqualToString:@""]){generatedW3CTraceparent=nil;}
+    if([caughtedW3CTraceparent isEqualToString:@""]){caughtedW3CTraceparent=nil;}
+
     NSString* url = networkData[@"url"];
     NSString* method = networkData[@"method"];
     NSString* requestBody = networkData[@"requestBody"];

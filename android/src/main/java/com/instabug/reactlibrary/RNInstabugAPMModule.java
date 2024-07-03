@@ -341,14 +341,22 @@ public class RNInstabugAPMModule extends EventEmitterModule {
 
             Long NetworkStartTime = null;
             Long PartialId=null;
+            String GeneratedHeader=null;
+            String CapturedHeader=null;
 
             if (partialId.doubleValue() != 0.0){
                 NetworkStartTime = networkStartTimeInSeconds.longValue();
                 PartialId = partialId.longValue();
             }
-            
+            if (!W3CGeneratedHeader.isEmpty()){
+                GeneratedHeader=W3CGeneratedHeader;
+            }
+            if (!W3CCaughtHeader.isEmpty()){
+                CapturedHeader=W3CCaughtHeader;
+            }
+
             APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
-                    new APMCPNetworkLog.W3CExternalTraceAttributes(isW3cHeaderFound,PartialId,NetworkStartTime,W3CGeneratedHeader,W3CCaughtHeader
+                    new APMCPNetworkLog.W3CExternalTraceAttributes(isW3cHeaderFound,PartialId,NetworkStartTime,GeneratedHeader,CapturedHeader
                     );
                     
             JSONObject jsonObject = new JSONObject(networkData);
