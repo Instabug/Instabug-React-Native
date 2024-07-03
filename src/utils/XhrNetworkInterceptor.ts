@@ -24,9 +24,9 @@ export interface NetworkData {
   gqlQueryName?: string;
   serverErrorMessage: string;
   requestContentType: string;
-  isW3cHeaderFound: boolean | null;
-  partialId: number | null;
-  networkStartTimeInSeconds: number | null;
+  isW3cHeaderFound: boolean;
+  partialId: number;
+  networkStartTimeInSeconds: number;
   W3CgeneratedHeader: string | null;
   W3CCaughtHeader: string | null;
 }
@@ -60,11 +60,11 @@ const _reset = () => {
     gqlQueryName: '',
     serverErrorMessage: '',
     requestContentType: '',
-    isW3cHeaderFound: null,
-    partialId: null,
-    networkStartTimeInSeconds: null,
-    W3CgeneratedHeader: null,
-    W3CCaughtHeader: null,
+    isW3cHeaderFound: false,
+    partialId: 0,
+    networkStartTimeInSeconds: 0,
+    W3CgeneratedHeader: '',
+    W3CCaughtHeader: '',
   };
 };
 const getFeatureFlags = async (networkData: NetworkData) => {
@@ -280,7 +280,6 @@ export default {
       cloneNetwork.startTime = Date.now();
       const traceparent = await getFeatureFlags(cloneNetwork);
       traceparent && this.setRequestHeader('Traceparent', traceparent);
-
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

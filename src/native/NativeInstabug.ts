@@ -42,9 +42,9 @@ export interface InstabugNativeModule extends NativeModule {
   // Network APIs //
   networkLog(
     network: NetworkData | string,
-    isW3cHeaderFound?: boolean | null,
-    partialId?: number | null,
-    networkStartTimeInSeconds?: number | null,
+    isW3cHeaderFound?: boolean,
+    partialId?: number,
+    networkStartTimeInSeconds?: number,
     W3CgeneratedHeader?: string | null,
     W3CCaughtHeader?: string | null,
   ): void;
