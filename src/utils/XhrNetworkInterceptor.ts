@@ -67,6 +67,7 @@ const _reset = () => {
     W3CCaughtHeader: '',
   };
 };
+
 const getFeatureFlags = async (networkData: NetworkData) => {
   const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
     await Promise.all([
