@@ -27,8 +27,8 @@ describe('NetworkLogger Module', () => {
     isW3cHeaderFound: false,
     partialId: '',
     networkStartTimeInSeconds: 0,
-    W3CgeneratedHeader: '',
-    W3CCaughtHeader: '',
+    w3cGeneratedHeader: '',
+    w3cCaughtHeader: '',
   };
 
   beforeEach(() => {
@@ -70,8 +70,8 @@ describe('NetworkLogger Module', () => {
       network.isW3cHeaderFound,
       network.partialId,
       network.networkStartTimeInSeconds,
-      network.W3CgeneratedHeader,
-      network.W3CCaughtHeader,
+      network.w3cGeneratedHeader,
+      network.w3cCaughtHeader,
     );
   });
 
@@ -88,8 +88,8 @@ describe('NetworkLogger Module', () => {
       network.isW3cHeaderFound,
       network.partialId,
       network.networkStartTimeInSeconds,
-      network.W3CgeneratedHeader,
-      network.W3CCaughtHeader,
+      network.w3cGeneratedHeader,
+      network.w3cCaughtHeader,
     );
   });
 
@@ -135,8 +135,8 @@ describe('NetworkLogger Module', () => {
         newData.isW3cHeaderFound,
         newData.partialId,
         newData.networkStartTimeInSeconds,
-        newData.W3CgeneratedHeader,
-        newData.W3CCaughtHeader,
+        newData.w3cGeneratedHeader,
+        newData.w3cCaughtHeader,
       );
     });
   });
@@ -162,8 +162,8 @@ describe('NetworkLogger Module', () => {
         network.isW3cHeaderFound,
         network.partialId,
         network.networkStartTimeInSeconds,
-        network.W3CgeneratedHeader,
-        network.W3CCaughtHeader,
+        network.w3cGeneratedHeader,
+        network.w3cCaughtHeader,
       );
     });
   });

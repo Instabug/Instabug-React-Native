@@ -283,14 +283,23 @@ RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
     }
 }
 
-RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData isW3cCaughted:(nonnull NSNumber  *)isW3cCaughted partialID:(nonnull NSNumber  *) partialID timestamp:(nonnull NSNumber  *) timestamp generatedW3CTraceparent:(nullable NSString  *) generatedW3CTraceparent caughtedW3CTraceparent:(nullable NSString  *) caughtedW3CTraceparent){
+RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData
+     isW3cCaught:(nonnull NSNumber  *)isW3cCaught 
+     partialID:(nonnull NSNumber  *) partialID 
+     timestamp:(nonnull NSNumber  *) timestamp 
+     generatedW3CTraceparent:(nullable NSString  *) generatedW3CTraceparent 
+     caughtW3CTraceparent:(nullable NSString  *) caughtW3CTraceparent){
     
     if ([partialID isEqualToNumber:@0]) {
         partialID=nil;
         timestamp=nil;
     }
-    if([generatedW3CTraceparent isEqualToString:@""]){generatedW3CTraceparent=nil;}
-    if([caughtedW3CTraceparent isEqualToString:@""]){caughtedW3CTraceparent=nil;}
+    
+    if([generatedW3CTraceparent isEqualToString:@""])
+    {generatedW3CTraceparent=nil;}
+    
+    if([caughtW3CTraceparent isEqualToString:@""])
+    {caughtW3CTraceparent=nil;}
 
     NSString* url = networkData[@"url"];
     NSString* method = networkData[@"method"];
@@ -325,7 +334,7 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData isW3cCaughted:(nonnull
         serverErrorMessage = networkData[@"serverErrorMessage"];
     }
 
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:isW3cCaughted:partialID:timestamp:generatedW3CTraceparent:caughtedW3CTraceparent:");
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:isW3cCaught:partialID:timestamp:generatedW3CTraceparent:caughtW3CTraceparent:");
 
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
@@ -348,11 +357,11 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData isW3cCaughted:(nonnull
         [inv setArgument:&(duration) atIndex:15];
         [inv setArgument:&(gqlQueryName) atIndex:16];
         [inv setArgument:&(serverErrorMessage) atIndex:17];
-        [inv setArgument:&(isW3cCaughted) atIndex:18];
+        [inv setArgument:&(isW3cCaught) atIndex:18];
         [inv setArgument:&(partialID) atIndex:19];
         [inv setArgument:&(timestamp) atIndex:20];
         [inv setArgument:&(generatedW3CTraceparent) atIndex:21];
-        [inv setArgument:&(caughtedW3CTraceparent) atIndex:22];
+        [inv setArgument:&(caughtW3CTraceparent) atIndex:22];
 
         [inv invoke];
     }

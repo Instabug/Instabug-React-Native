@@ -308,12 +308,12 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback(async (network) => {
       const W3Cheader = await injectHeaders(network, featureFlags);
-      expect(W3Cheader).toEqual(network.W3CgeneratedHeader);
+      expect(W3Cheader).toEqual(network.w3cGeneratedHeader);
       expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).not.toBe(null);
       expect(network.networkStartTimeInSeconds).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.W3CgeneratedHeader).toHaveLength(55);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.w3cGeneratedHeader).toHaveLength(55);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
     done();
     FakeRequest.mockResponse(request);
@@ -330,12 +330,12 @@ describe('Network Interceptor W3C Headers', () => {
     Interceptor.enableInterception();
     Interceptor.setOnDoneCallback(async (network) => {
       const W3Cheader = await injectHeaders(network, featureFlags);
-      expect(W3Cheader).toEqual(network.W3CgeneratedHeader);
+      expect(W3Cheader).toEqual(network.w3cGeneratedHeader);
       expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).not.toBe(null);
       expect(network.networkStartTimeInSeconds).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.W3CgeneratedHeader).toHaveLength(55);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.w3cGeneratedHeader).toHaveLength(55);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
     done();
     FakeRequest.mockResponse(request);
@@ -356,8 +356,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toBe(null);
       expect(network.partialId).toBe(null);
       expect(network.networkStartTimeInSeconds).toBe(null);
-      expect(network.W3CgeneratedHeader).toBe(null);
-      expect(network.W3CCaughtHeader).toBe(null);
+      expect(network.w3cGeneratedHeader).toBe(null);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
     done();
     FakeRequest.mockResponse(request);
@@ -377,8 +377,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
 
       done();
     });
@@ -399,8 +399,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
 
       done();
     });
@@ -421,8 +421,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -443,8 +443,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toEqual(true);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -466,8 +466,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(network.isW3cHeaderFound).toBe(true);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('caught traceparent header');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('caught traceparent header');
 
       done();
     });
@@ -488,8 +488,8 @@ describe('Network Interceptor W3C Headers', () => {
       expect(W3Cheader).toEqual(network.requestHeaders.traceparent);
       expect(network.partialId).toBe(0);
       expect(network.networkStartTimeInSeconds).toBe(0);
-      expect(network.W3CgeneratedHeader).toBe('');
-      expect(network.W3CCaughtHeader).toBe('caught traceparent header');
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('caught traceparent header');
       expect(network.isW3cHeaderFound).toBe(true);
 
       done();

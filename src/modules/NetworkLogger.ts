@@ -37,8 +37,8 @@ export const setEnabled = (isEnabled: boolean) => {
               network.isW3cHeaderFound,
               network.partialId,
               network.networkStartTimeInSeconds,
-              network.W3CgeneratedHeader,
-              network.W3CCaughtHeader,
+              network.w3cGeneratedHeader,
+              network.w3cCaughtHeader,
             );
           } else {
             NativeInstabug.networkLog(
@@ -46,8 +46,8 @@ export const setEnabled = (isEnabled: boolean) => {
               network.isW3cHeaderFound,
               network.partialId,
               network.networkStartTimeInSeconds,
-              network.W3CgeneratedHeader,
-              network.W3CCaughtHeader,
+              network.w3cGeneratedHeader,
+              network.w3cCaughtHeader,
             );
           }
         } catch (e) {

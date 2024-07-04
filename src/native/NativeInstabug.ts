@@ -45,8 +45,8 @@ export interface InstabugNativeModule extends NativeModule {
     isW3cHeaderFound?: boolean,
     partialId?: number,
     networkStartTimeInSeconds?: number,
-    W3CgeneratedHeader?: string,
-    W3CCaughtHeader?: string,
+    w3cGeneratedHeader?: string,
+    w3cCaughtHeader?: string,
   ): void;
   setNetworkLoggingEnabled(isEnabled: boolean): void;
 

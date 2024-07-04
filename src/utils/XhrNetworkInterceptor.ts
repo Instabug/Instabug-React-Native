@@ -27,8 +27,8 @@ export interface NetworkData {
   isW3cHeaderFound: boolean;
   partialId: number;
   networkStartTimeInSeconds: number;
-  W3CgeneratedHeader: string;
-  W3CCaughtHeader: string;
+  w3cGeneratedHeader: string;
+  w3cCaughtHeader: string;
 }
 
 const XMLHttpRequest = global.XMLHttpRequest;
@@ -63,8 +63,8 @@ const _reset = () => {
     isW3cHeaderFound: false,
     partialId: 0,
     networkStartTimeInSeconds: 0,
-    W3CgeneratedHeader: '',
-    W3CCaughtHeader: '',
+    w3cGeneratedHeader: '',
+    w3cCaughtHeader: '',
   };
 };
 
@@ -101,18 +101,17 @@ export const injectHeaders = async (
 
   networkData.isW3cHeaderFound = headerFound;
   const injectionMethodology = headerFound
-    ? IdentifyCaughtHeader(networkData, w3c_caught_header)
+    ? identifyCaughtHeader(networkData, w3c_caught_header)
     : injectGeneratedData(networkData, w3c_generated_header);
   return injectionMethodology;
 };
 
-const IdentifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header: boolean) => {
+const identifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header: boolean) => {
   if (w3c_caught_header) {
-    networkData.W3CCaughtHeader = networkData.requestHeaders.traceparent;
+    networkData.w3cCaughtHeader = networkData.requestHeaders.traceparent;
     return networkData.requestHeaders.traceparent;
-  } else {
-    return;
   }
+  return;
 };
 
 const injectGeneratedData = async (networkData: NetworkData, w3c_generated_header: boolean) => {
@@ -121,7 +120,7 @@ const injectGeneratedData = async (networkData: NetworkData, w3c_generated_heade
   networkData.networkStartTimeInSeconds = timestampInSeconds;
 
   if (w3c_generated_header) {
-    networkData.W3CgeneratedHeader = w3cHeader;
+    networkData.w3cGeneratedHeader = w3cHeader;
     return w3cHeader;
   } else {
     return;

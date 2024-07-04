@@ -13,8 +13,8 @@ export interface ApmNativeModule extends NativeModule {
     isW3cHeaderFound: boolean,
     partialId: number,
     networkStartTimeInSeconds: number,
-    W3CgeneratedHeader: string,
-    W3CCaughtHeader: string,
+    w3cGeneratedHeader: string,
+    w3cCaughtHeader: string,
   ): void;
 
   // App Launches APIs //
