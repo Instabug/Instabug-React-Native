@@ -122,9 +122,8 @@ const injectGeneratedData = async (networkData: NetworkData, w3c_generated_heade
   if (w3c_generated_header) {
     networkData.w3cGeneratedHeader = w3cHeader;
     return w3cHeader;
-  } else {
-    return;
   }
+  return;
 };
 
 export default {
