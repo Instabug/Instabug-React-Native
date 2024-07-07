@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...dev)
 
+### Changed
+
+- Bump Instabug Android SDK to v13.2.0 ([#1245](https://github.com/Instabug/Instabug-React-Native/pull/1245)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v13.2.0).
+
 ### Fixed
 
 - Change parameters used inside inner classes to `final` in Android code to maintain compatibility with Java 7 and earlier ([#1239](https://github.com/Instabug/Instabug-React-Native/pull/1239)).
