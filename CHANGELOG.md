@@ -7,29 +7,24 @@
 - Bump Instabug Android SDK to v13.2.0 ([#1245](https://github.com/Instabug/Instabug-React-Native/pull/1245)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v13.2.0).
 - Bump Instabug iOS SDK to v13.2.0 ([#1246](https://github.com/Instabug/Instabug-React-Native/pull/1246)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.2.0).
 
-### Changed
-
-- Bump Instabug Android SDK to v13.2.0 ([#1245](https://github.com/Instabug/Instabug-React-Native/pull/1245)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v13.2.0).
-- Bump Instabug iOS SDK to v13.2.0 ([#1246](https://github.com/Instabug/Instabug-React-Native/pull/1246)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.2.0).
-
 ### Fixed
 
 - Change parameters used inside inner classes to `final` in Android code to maintain compatibility with Java 7 and earlier ([#1239](https://github.com/Instabug/Instabug-React-Native/pull/1239)).
 
-## [13.1.1](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...dev) (JUN 6, 2024)
+## [13.1.1](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...v13.1.1) (June 6, 2024)
 
-### Fixed
+### Added
 
-- Reading INSTABUG_APP_TOKEN from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232))
+- Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportError` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
 
 ### Changed
 
 - Bump Instabug iOS SDK to v13.1.0 ([#1227](https://github.com/Instabug/Instabug-React-Native/pull/1227)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.1.0).
 - Bump Instabug android SDK to v13.1.1 ([#1228](https://github.com/Instabug/Instabug-React-Native/pull/1228)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.1.0).
 
-### Added
+### Fixed
 
-- Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportError` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
+- Read `INSTABUG_APP_TOKEN` from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232)).
 
 ## [13.0.5](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.4...v13.0.5) (May 18, 2024)
 
