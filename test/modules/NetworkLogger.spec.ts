@@ -24,6 +24,11 @@ describe('NetworkLogger Module', () => {
     responseHeaders: '',
     contentType: 'application/json',
     duration: 0,
+    isW3cHeaderFound: false,
+    partialId: '',
+    networkStartTimeInSeconds: 0,
+    w3cGeneratedHeader: '',
+    w3cCaughtHeader: '',
   };
 
   beforeEach(() => {
@@ -60,7 +65,14 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).toBeCalledTimes(1);
-    expect(NativeInstabug.networkLog).toBeCalledWith(network);
+    expect(NativeInstabug.networkLog).toBeCalledWith(
+      network,
+      network.isW3cHeaderFound,
+      network.partialId,
+      network.networkStartTimeInSeconds,
+      network.w3cGeneratedHeader,
+      network.w3cCaughtHeader,
+    );
   });
 
   it('should send log network when Platform is android', () => {
@@ -71,7 +83,14 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(network));
-    expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(network));
+    expect(NativeAPM.networkLog).toBeCalledWith(
+      JSON.stringify(network),
+      network.isW3cHeaderFound,
+      network.partialId,
+      network.networkStartTimeInSeconds,
+      network.w3cGeneratedHeader,
+      network.w3cCaughtHeader,
+    );
   });
 
   it('should not break if it fails to stringify to JSON on network log if platform is android', () => {
@@ -111,7 +130,14 @@ describe('NetworkLogger Module', () => {
     await waitForExpect(() => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;
-      expect(NativeInstabug.networkLog).toBeCalledWith(newData);
+      expect(NativeInstabug.networkLog).toBeCalledWith(
+        newData,
+        newData.isW3cHeaderFound,
+        newData.partialId,
+        newData.networkStartTimeInSeconds,
+        newData.w3cGeneratedHeader,
+        newData.w3cCaughtHeader,
+      );
     });
   });
 
@@ -131,7 +157,14 @@ describe('NetworkLogger Module', () => {
       const newData = clone(network);
       newData.requestHeaders.token = randomString;
       expect(NativeInstabug.networkLog).toBeCalledWith(JSON.stringify(newData));
-      expect(NativeAPM.networkLog).toBeCalledWith(JSON.stringify(newData));
+      expect(NativeAPM.networkLog).toBeCalledWith(
+        JSON.stringify(newData),
+        network.isW3cHeaderFound,
+        network.partialId,
+        network.networkStartTimeInSeconds,
+        network.w3cGeneratedHeader,
+        network.w3cCaughtHeader,
+      );
     });
   });
 

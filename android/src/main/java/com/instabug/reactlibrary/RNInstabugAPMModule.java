@@ -335,9 +335,30 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     *  Send Apm network log by Reflection
     */
     @ReactMethod
-    public void networkLog(String networkData) throws JSONException {
+    public void networkLog(String networkData, Boolean isW3cHeaderFound,Double partialId,Double networkStartTimeInSeconds,String W3CGeneratedHeader,String W3CCaughtHeader) throws JSONException {
         try{
             APMNetworkLogger apmNetworkLogger = new APMNetworkLogger();
+
+            Long NetworkStartTime = null;
+            Long PartialId=null;
+            String GeneratedHeader=null;
+            String CapturedHeader=null;
+
+            if (partialId.doubleValue() != 0.0){
+                NetworkStartTime = networkStartTimeInSeconds.longValue();
+                PartialId = partialId.longValue();
+            }
+            if (!W3CGeneratedHeader.isEmpty()){
+                GeneratedHeader=W3CGeneratedHeader;
+            }
+            if (!W3CCaughtHeader.isEmpty()){
+                CapturedHeader=W3CCaughtHeader;
+            }
+
+            APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
+                    new APMCPNetworkLog.W3CExternalTraceAttributes(isW3cHeaderFound,PartialId,NetworkStartTime,GeneratedHeader,CapturedHeader
+                    );
+                    
             JSONObject jsonObject = new JSONObject(networkData);
             final String requestUrl = (String) jsonObject.get("url");
             final String requestBody = (String) jsonObject.get("requestBody");
@@ -368,19 +389,11 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                 gqlQueryName = (String) jsonObject.get("gqlQueryName");
             }
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
-
-            APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
-                    new APMCPNetworkLog.W3CExternalTraceAttributes(
-                            jsonObject.optBoolean("w3cc"),
-                            jsonObject.optLong("partialId"),
-                            jsonObject.optLong("etst"),
-                            jsonObject.optString("wgeti"),
-                            jsonObject.optString("wceti"));
-
+  
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class,APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
-                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage,w3cExternalTraceAttributes);
+                        method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage,w3cExternalTraceAttributes);
                 } else {
                     Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
                 }

@@ -301,42 +301,43 @@ describe('Network Interceptor W3C Headers', () => {
 
   it('should attach generated header if all flags are enabled on no header found', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: true,
-      w3c_generated_header: true,
-      w3c_caught_header: true,
+      isW3cExternalTraceIDEnabled: true,
+      isW3cExternalGeneratedHeaderEnabled: true,
+      isW3cCaughtHeaderEnabled: true,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(false);
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toEqual(network.w3cGeneratedHeader);
+      expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).not.toBe(null);
-      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.wgeti).toHaveLength(55);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).toHaveProperty('traceparent');
-      done();
+      expect(network.networkStartTimeInSeconds).toEqual(Math.floor(network.startTime / 1000));
+      expect(network.w3cGeneratedHeader).toHaveLength(55);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
   });
   it('should attach generated header if key flag & generated header flags are enabled on no header found', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: true,
-      w3c_generated_header: true,
-      w3c_caught_header: false,
+      isW3cExternalTraceIDEnabled: true,
+      isW3cExternalGeneratedHeaderEnabled: true,
+      isW3cCaughtHeaderEnabled: false,
     };
+
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(false);
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toEqual(network.w3cGeneratedHeader);
+      expect(network.isW3cHeaderFound).toBe(false);
       expect(network.partialId).not.toBe(null);
-      expect(network.etst).toEqual(Math.floor(network.startTime / 1000));
-      expect(network.wgeti).toHaveLength(55);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).toHaveProperty('traceparent');
-      done();
+      expect(network.networkStartTimeInSeconds).toEqual(Math.floor(network.startTime / 1000));
+      expect(network.w3cGeneratedHeader).toHaveLength(55);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
@@ -344,41 +345,40 @@ describe('Network Interceptor W3C Headers', () => {
 
   it('should not attach headers when key flag is disabled & generated, caught header flags are enabled', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: false,
-      w3c_generated_header: true,
-      w3c_caught_header: true,
+      isW3cExternalTraceIDEnabled: false,
+      isW3cExternalGeneratedHeaderEnabled: true,
+      isW3cCaughtHeaderEnabled: true,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toBeUndefined();
+      expect(network.isW3cHeaderFound).toBe(null);
       expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
-
-      done();
+      expect(network.networkStartTimeInSeconds).toBe(null);
+      expect(network.w3cGeneratedHeader).toBe(null);
+      expect(network.w3cCaughtHeader).toBe(null);
     });
+    done();
     FakeRequest.mockResponse(request);
     FakeRequest.open(method, url);
     FakeRequest.send();
   });
   it('should not attach headers when all feature flags are disabled', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: false,
-      w3c_generated_header: false,
-      w3c_caught_header: false,
+      isW3cExternalTraceIDEnabled: false,
+      isW3cExternalGeneratedHeaderEnabled: false,
+      isW3cCaughtHeaderEnabled: false,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toBeUndefined();
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
 
       done();
     });
@@ -388,19 +388,20 @@ describe('Network Interceptor W3C Headers', () => {
   });
   it('should not attach headers when key & caught header flags are disabled and generated header flag is enabled', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: false,
-      w3c_generated_header: true,
-      w3c_caught_header: false,
+      isW3cExternalTraceIDEnabled: false,
+      isW3cExternalGeneratedHeaderEnabled: true,
+      isW3cCaughtHeaderEnabled: false,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toBeUndefined();
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
+
       done();
     });
     FakeRequest.mockResponse(request);
@@ -409,19 +410,19 @@ describe('Network Interceptor W3C Headers', () => {
   });
   it('should not attach headers when key & generated header flags are disabled and caught header flag is enabled', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: false,
-      w3c_generated_header: false,
-      w3c_caught_header: true,
+      isW3cExternalTraceIDEnabled: false,
+      isW3cExternalGeneratedHeaderEnabled: false,
+      isW3cCaughtHeaderEnabled: true,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(null);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
-      expect(network.requestHeaders).not.toHaveProperty('traceparent');
+    Interceptor.setOnDoneCallback(async (network) => {
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toBeUndefined();
+      expect(network.isW3cHeaderFound).toBe(false);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -430,19 +431,20 @@ describe('Network Interceptor W3C Headers', () => {
   });
   it('should not attach headers when key flag is enabled & generated, caught header flags are disabled on header found', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: true,
-      w3c_generated_header: false,
-      w3c_caught_header: false,
+      isW3cExternalTraceIDEnabled: true,
+      isW3cExternalGeneratedHeaderEnabled: false,
+      isW3cCaughtHeaderEnabled: false,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
+    Interceptor.setOnDoneCallback(async (network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toEqual(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe(null);
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toBeUndefined();
+      expect(network.isW3cHeaderFound).toEqual(true);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('');
       done();
     });
     FakeRequest.mockResponse(request);
@@ -452,20 +454,21 @@ describe('Network Interceptor W3C Headers', () => {
 
   it('should attach caught header if all flags are enabled ', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: true,
-      w3c_generated_header: true,
-      w3c_caught_header: true,
+      isW3cExternalTraceIDEnabled: true,
+      isW3cExternalGeneratedHeaderEnabled: true,
+      isW3cCaughtHeaderEnabled: true,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
+    Interceptor.setOnDoneCallback(async (network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe('caught traceparent header');
-      expect(network.requestHeaders).toHaveProperty('traceparent');
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toEqual(network.requestHeaders.traceparent);
+      expect(network.isW3cHeaderFound).toBe(true);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('caught traceparent header');
+
       done();
     });
     FakeRequest.mockResponse(request);
@@ -474,20 +477,21 @@ describe('Network Interceptor W3C Headers', () => {
   });
   it('should attach caught header if key & caught header flags are enabled and generated header flag is disabled', (done) => {
     const featureFlags = {
-      w3c_external_trace_id_enabled: true,
-      w3c_generated_header: false,
-      w3c_caught_header: true,
+      isW3cExternalTraceIDEnabled: true,
+      isW3cExternalGeneratedHeaderEnabled: false,
+      isW3cCaughtHeaderEnabled: true,
     };
     Interceptor.enableInterception();
-    Interceptor.setOnDoneCallback((network) => {
+    Interceptor.setOnDoneCallback(async (network) => {
       network.requestHeaders.traceparent = 'caught traceparent header';
-      injectHeaders(network, featureFlags);
-      expect(network.w3cc).toBe(true);
-      expect(network.partialId).toBe(null);
-      expect(network.etst).toBe(null);
-      expect(network.wgeti).toBe(null);
-      expect(network.wceti).toBe('caught traceparent header');
-      expect(network.requestHeaders).toHaveProperty('traceparent');
+      const W3Cheader = await injectHeaders(network, featureFlags);
+      expect(W3Cheader).toEqual(network.requestHeaders.traceparent);
+      expect(network.partialId).toBe(0);
+      expect(network.networkStartTimeInSeconds).toBe(0);
+      expect(network.w3cGeneratedHeader).toBe('');
+      expect(network.w3cCaughtHeader).toBe('caught traceparent header');
+      expect(network.isW3cHeaderFound).toBe(true);
+
       done();
     });
     FakeRequest.mockResponse(request);

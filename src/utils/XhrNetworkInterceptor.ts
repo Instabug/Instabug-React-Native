@@ -24,11 +24,11 @@ export interface NetworkData {
   gqlQueryName?: string;
   serverErrorMessage: string;
   requestContentType: string;
-  w3cc: boolean | null;
-  partialId: number | null;
-  etst: number | null;
-  wgeti: string | null;
-  wceti: string | null;
+  isW3cHeaderFound: boolean;
+  partialId: number;
+  networkStartTimeInSeconds: number;
+  w3cGeneratedHeader: string;
+  w3cCaughtHeader: string;
 }
 
 const XMLHttpRequest = global.XMLHttpRequest;
@@ -60,64 +60,83 @@ const _reset = () => {
     gqlQueryName: '',
     serverErrorMessage: '',
     requestContentType: '',
-    w3cc: null,
-    partialId: null,
-    etst: null,
-    wgeti: null,
-    wceti: null,
+    isW3cHeaderFound: false,
+    partialId: 0,
+    networkStartTimeInSeconds: 0,
+    w3cGeneratedHeader: '',
+    w3cCaughtHeader: '',
   };
 };
-const getFeatureFlags = async (networkData: NetworkData) => {
-  const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
-    await Promise.all([
-      FeatureFlags.isW3ExternalTraceID(),
-      FeatureFlags.isW3ExternalGeneratedHeader(),
-      FeatureFlags.isW3CaughtHeader(),
-    ]);
 
-  injectHeaders(networkData, {
-    w3c_external_trace_id_enabled,
-    w3c_generated_header,
-    w3c_caught_header,
+const getFeatureFlags = async (networkData: NetworkData) => {
+  const [
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
+  ] = await Promise.all([
+    FeatureFlags.isW3ExternalTraceID(),
+    FeatureFlags.isW3ExternalGeneratedHeader(),
+    FeatureFlags.isW3CaughtHeader(),
+  ]);
+
+  return injectHeaders(networkData, {
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
   });
 };
 
 export const injectHeaders = async (
   networkData: NetworkData,
   featureFlags: {
-    w3c_external_trace_id_enabled: boolean;
-    w3c_generated_header: boolean;
-    w3c_caught_header: boolean;
+    isW3cExternalTraceIDEnabled: boolean;
+    isW3cExternalGeneratedHeaderEnabled: boolean;
+    isW3cCaughtHeaderEnabled: boolean;
   },
 ) => {
-  const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } = featureFlags;
+  const {
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
+  } = featureFlags;
 
-  if (!w3c_external_trace_id_enabled) {
+  if (!isW3cExternalTraceIDEnabled) {
     return;
   }
 
   const headerFound = networkData.requestHeaders.traceparent != null;
 
-  networkData.w3cc = headerFound;
-  headerFound
-    ? IdentifyCaughtHeader(networkData, w3c_caught_header)
-    : injectGeneratedData(networkData, w3c_generated_header);
+  networkData.isW3cHeaderFound = headerFound;
+  const injectionMethodology = headerFound
+    ? identifyCaughtHeader(networkData, isW3cCaughtHeaderEnabled)
+    : injectGeneratedData(networkData, isW3cExternalGeneratedHeaderEnabled);
+  return injectionMethodology;
 };
 
-const IdentifyCaughtHeader = (networkData: NetworkData, w3c_caught_header: boolean) => {
-  w3c_caught_header && (networkData.wceti = networkData.requestHeaders.traceparent);
-};
-
-const injectGeneratedData = (networkData: NetworkData, w3c_generated_header: boolean) => {
-  const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
-
-  if (w3c_generated_header) {
-    networkData.wgeti = w3cHeader;
-    networkData.requestHeaders.traceparent = w3cHeader;
+const identifyCaughtHeader = async (
+  networkData: NetworkData,
+  isW3cCaughtHeaderEnabled: boolean,
+) => {
+  if (isW3cCaughtHeaderEnabled) {
+    networkData.w3cCaughtHeader = networkData.requestHeaders.traceparent;
+    return networkData.requestHeaders.traceparent;
   }
+  return;
+};
 
+const injectGeneratedData = async (
+  networkData: NetworkData,
+  isW3cExternalGeneratedHeaderEnabled: boolean,
+) => {
+  const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
   networkData.partialId = partialId;
-  networkData.etst = timestampInSeconds;
+  networkData.networkStartTimeInSeconds = timestampInSeconds;
+
+  if (isW3cExternalGeneratedHeaderEnabled) {
+    networkData.w3cGeneratedHeader = w3cHeader;
+    return w3cHeader;
+  }
+  return;
 };
 
 export default {
@@ -149,7 +168,7 @@ export default {
       originalXHRSetRequestHeader.apply(this, [header, value]);
     };
 
-    XMLHttpRequest.prototype.send = function (data) {
+    XMLHttpRequest.prototype.send = async function (data) {
       const cloneNetwork = JSON.parse(JSON.stringify(network));
       cloneNetwork.requestBody = data ? data : '';
 
@@ -271,7 +290,10 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      getFeatureFlags(cloneNetwork);
+      const traceparent = await getFeatureFlags(cloneNetwork);
+      if (traceparent) {
+        this.setRequestHeader('Traceparent', traceparent);
+      }
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

@@ -32,9 +32,23 @@ export const setEnabled = (isEnabled: boolean) => {
 
           if (Platform.OS === 'android') {
             NativeInstabug.networkLog(JSON.stringify(network));
-            NativeAPM.networkLog(JSON.stringify(network));
+            NativeAPM.networkLog(
+              JSON.stringify(network),
+              network.isW3cHeaderFound,
+              network.partialId,
+              network.networkStartTimeInSeconds,
+              network.w3cGeneratedHeader,
+              network.w3cCaughtHeader,
+            );
           } else {
-            NativeInstabug.networkLog(network);
+            NativeInstabug.networkLog(
+              network,
+              network.isW3cHeaderFound,
+              network.partialId,
+              network.networkStartTimeInSeconds,
+              network.w3cGeneratedHeader,
+              network.w3cCaughtHeader,
+            );
           }
         } catch (e) {
           console.error(e);
