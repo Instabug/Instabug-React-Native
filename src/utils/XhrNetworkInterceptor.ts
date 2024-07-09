@@ -69,31 +69,38 @@ const _reset = () => {
 };
 
 const getFeatureFlags = async (networkData: NetworkData) => {
-  const [w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header] =
-    await Promise.all([
-      FeatureFlags.isW3ExternalTraceID(),
-      FeatureFlags.isW3ExternalGeneratedHeader(),
-      FeatureFlags.isW3CaughtHeader(),
-    ]);
+  const [
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
+  ] = await Promise.all([
+    FeatureFlags.isW3ExternalTraceID(),
+    FeatureFlags.isW3ExternalGeneratedHeader(),
+    FeatureFlags.isW3CaughtHeader(),
+  ]);
 
   return injectHeaders(networkData, {
-    w3c_external_trace_id_enabled,
-    w3c_generated_header,
-    w3c_caught_header,
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
   });
 };
 
 export const injectHeaders = async (
   networkData: NetworkData,
   featureFlags: {
-    w3c_external_trace_id_enabled: boolean;
-    w3c_generated_header: boolean;
-    w3c_caught_header: boolean;
+    isW3cExternalTraceIDEnabled: boolean;
+    isW3cExternalGeneratedHeaderEnabled: boolean;
+    isW3cCaughtHeaderEnabled: boolean;
   },
 ) => {
-  const { w3c_external_trace_id_enabled, w3c_generated_header, w3c_caught_header } = featureFlags;
+  const {
+    isW3cExternalTraceIDEnabled,
+    isW3cExternalGeneratedHeaderEnabled,
+    isW3cCaughtHeaderEnabled,
+  } = featureFlags;
 
-  if (!w3c_external_trace_id_enabled) {
+  if (!isW3cExternalTraceIDEnabled) {
     return;
   }
 
@@ -101,25 +108,31 @@ export const injectHeaders = async (
 
   networkData.isW3cHeaderFound = headerFound;
   const injectionMethodology = headerFound
-    ? identifyCaughtHeader(networkData, w3c_caught_header)
-    : injectGeneratedData(networkData, w3c_generated_header);
+    ? identifyCaughtHeader(networkData, isW3cCaughtHeaderEnabled)
+    : injectGeneratedData(networkData, isW3cExternalGeneratedHeaderEnabled);
   return injectionMethodology;
 };
 
-const identifyCaughtHeader = async (networkData: NetworkData, w3c_caught_header: boolean) => {
-  if (w3c_caught_header) {
+const identifyCaughtHeader = async (
+  networkData: NetworkData,
+  isW3cCaughtHeaderEnabled: boolean,
+) => {
+  if (isW3cCaughtHeaderEnabled) {
     networkData.w3cCaughtHeader = networkData.requestHeaders.traceparent;
     return networkData.requestHeaders.traceparent;
   }
   return;
 };
 
-const injectGeneratedData = async (networkData: NetworkData, w3c_generated_header: boolean) => {
+const injectGeneratedData = async (
+  networkData: NetworkData,
+  isW3cExternalGeneratedHeaderEnabled: boolean,
+) => {
   const { timestampInSeconds, partialId, w3cHeader } = generateW3CHeader(networkData.startTime);
   networkData.partialId = partialId;
   networkData.networkStartTimeInSeconds = timestampInSeconds;
 
-  if (w3c_generated_header) {
+  if (isW3cExternalGeneratedHeaderEnabled) {
     networkData.w3cGeneratedHeader = w3cHeader;
     return w3cHeader;
   }
@@ -278,7 +291,9 @@ export default {
 
       cloneNetwork.startTime = Date.now();
       const traceparent = await getFeatureFlags(cloneNetwork);
-      traceparent && this.setRequestHeader('Traceparent', traceparent);
+      if (traceparent) {
+        this.setRequestHeader('Traceparent', traceparent);
+      }
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;
