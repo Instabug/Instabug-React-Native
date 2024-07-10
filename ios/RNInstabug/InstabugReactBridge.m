@@ -334,7 +334,7 @@ RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData
         serverErrorMessage = networkData[@"serverErrorMessage"];
     }
 
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:isW3cCaught:partialID:timestamp:generatedW3CTraceparent:caughtW3CTraceparent:");
+    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:isW3cCaughted:partialID:timestamp:generatedW3CTraceparent:caughtedW3CTraceparent:");
 
     if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
         NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
