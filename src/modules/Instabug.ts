@@ -541,7 +541,7 @@ export const reportScreenChange = (screenName: string) => {
  * Add experiments to next report.
  * @param experiments An array of experiments to add to the next report.
  *
- * @deprecated Please migrate to the new FeatureRequests APIs: {@link addFeatureFlags}.
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link addFeatureFlags}.
  */
 export const addExperiments = (experiments: string[]) => {
   NativeInstabug.addExperiments(experiments);
@@ -551,7 +551,7 @@ export const addExperiments = (experiments: string[]) => {
  * Remove experiments from next report.
  * @param experiments An array of experiments to remove from the next report.
  *
- * @deprecated Please migrate to the new FeatureRequests APIs: {@link removeFeatureFlags}.
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link removeFeatureFlags}.
  */
 export const removeExperiments = (experiments: string[]) => {
   NativeInstabug.removeExperiments(experiments);
@@ -560,7 +560,7 @@ export const removeExperiments = (experiments: string[]) => {
 /**
  * Clear all experiments
  *
- * @deprecated Please migrate to the new FeatureRequests APIs: {@link removeAllFeatureFlags}.
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link removeAllFeatureFlags}.
  */
 export const clearAllExperiments = () => {
   NativeInstabug.clearAllExperiments();
@@ -568,7 +568,7 @@ export const clearAllExperiments = () => {
 
 /**
  * Add feature flags to the next report.
- * @param featureFlags An array of featureFlags to add to the next report.
+ * @param featureFlags An array of feature flags to add to the next report.
  */
 export const addFeatureFlags = (featureFlags: FeatureFlag[]) => {
   const flags: Record<string, string | undefined> = {};
