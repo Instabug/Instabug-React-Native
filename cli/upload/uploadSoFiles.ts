@@ -1,52 +1,16 @@
 import axios from 'axios';
-import { Command, Option } from 'commander';
 import FormData from 'form-data';
 import fs from 'fs';
 
-interface UploadSoFilesOptions {
+export interface UploadSoFilesOptions {
   arch: 'x86' | 'x86_64' | 'arm64-v8a' | 'armeabi-v7a';
   file: string;
   token: string;
   name: string;
   api_key: string;
 }
-/**
- * This script uploads .so files to the specified endpoint used in NDK crash reporting.
- * Usage: node upload-so-files.js --arch <arch> --file <path> --api_key <key> --token <token> --name <name>
- */
 
-export const UploadSoFilesCommand = new Command();
-
-UploadSoFilesCommand.name('upload-so-files')
-  .addOption(
-    new Option('-arch, --arch <value>', 'arch')
-      .choices(['x86', 'x86_64', 'arm64-v8a', 'armeabi-v7a'])
-      .makeOptionMandatory(),
-  )
-  .addOption(
-    new Option(
-      '-f, --file <path>',
-      'The path of the symbol files in Zip format',
-    ).makeOptionMandatory(),
-  )
-  .addOption(new Option('--api_key <value>', 'Your App key').makeOptionMandatory())
-  .addOption(
-    new Option('-t, --token <value>', 'Your App Token')
-      .env('INSTABUG_APP_TOKEN')
-      .makeOptionMandatory(),
-  )
-  .addOption(
-    new Option('-n, --name <value>', 'The app version name')
-      .env('INSTABUG_APP_VERSION_NAME')
-      .makeOptionMandatory(),
-  )
-  .action(function (this: Command) {
-    const options = this.opts<UploadSoFilesOptions>();
-    UploadSoFiles(options);
-  })
-  .showHelpAfterError();
-
-const UploadSoFiles = async (opts: UploadSoFilesOptions) => {
+export const uploadSoFiles = async (opts: UploadSoFilesOptions) => {
   const fileName = opts.file;
   if (fileName == null) {
     console.error('Failed to upload So Files: invalid file path');
