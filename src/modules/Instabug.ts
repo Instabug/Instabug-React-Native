@@ -567,7 +567,7 @@ export const clearAllExperiments = () => {
 };
 
 /**
- * Add featureFlags to next report.
+ * Add feature flags to the next report.
  * @param featureFlags An array of featureFlags to add to the next report.
  */
 export const addFeatureFlags = (featureFlags: IBGFeatureRequest[]) => {
@@ -581,30 +581,30 @@ export const addFeatureFlags = (featureFlags: IBGFeatureRequest[]) => {
 };
 
 /**
- * Add featureFlag to next report.
+ * Add a feature flag to the to next report.
  */
 export const addFeatureFlag = (featureFlag: IBGFeatureRequest) => {
   addFeatureFlags([featureFlag]);
 };
 
 /**
- * Remove featureFlags from next report.
- * @param featureFlags An array of featureFlags to remove from the next report.
+ * Remove feature flags from the next report.
+ * @param featureFlags An array of  feature flags to remove from the next report.
  */
 export const removeFeatureFlags = (featureFlags: string[]) => {
   NativeInstabug.removeFeatureFlags(featureFlags);
 };
 
 /**
- * Remove featureFlags from next report.
- * @param name the name of featureFlag to remove from the next report.
+ * Remove a feature flag from the next report.
+ * @param name the name of the feature flag to remove from the next report.
  */
 export const removeFeatureFlag = (name: string) => {
   removeFeatureFlags([name]);
 };
 
 /**
- * Clear all featureFlags
+ * Clear all feature flags
  */
 export const removeAllFeatureFlags = () => {
   NativeInstabug.removeAllFeatureFlags();
