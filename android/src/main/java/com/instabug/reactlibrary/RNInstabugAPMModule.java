@@ -343,6 +343,37 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
             final String errorMessage = hasError ? errorDomain : null;
 
+            Boolean isW3cHeaderFound=false;
+            Long partialId=null;
+            Long networkStartTimeInSeconds=null;
+            String w3cGeneratedHeader=null;
+            String w3cCaughtHeader=null;
+            try {
+                if (!jsonObject.isNull("isW3cHeaderFound")) {
+                    isW3cHeaderFound = jsonObject.getBoolean("isW3cHeaderFound");
+                }
+
+                if (!jsonObject.isNull("partialId")) {
+                    partialId = jsonObject.getLong("partialId");
+                    networkStartTimeInSeconds = jsonObject.getLong("networkStartTimeInSeconds");
+                }
+
+                if (!jsonObject.isNull("w3cGeneratedHeader")) {
+                    w3cGeneratedHeader = jsonObject.getString("w3cGeneratedHeader");
+                    if ("null".equals(w3cGeneratedHeader)) {
+                        w3cGeneratedHeader = null;
+                    }
+                }
+
+                if (!jsonObject.isNull("w3cCaughtHeader")) {
+                    w3cCaughtHeader = jsonObject.getString("w3cCaughtHeader");
+                    if ("null".equals(w3cCaughtHeader)) {
+                        w3cCaughtHeader = null;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
                     new APMCPNetworkLog.W3CExternalTraceAttributes(
                             w3cAttributes.getProperty("isW3cHeaderFound")!=null? Boolean.parseBoolean(w3cAttributes.getProperty("isW3cHeaderFound")):false,
