@@ -301,11 +301,11 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                    gqlQueryName:(NSString * _Nullable)gqlQueryName
              serverErrorMessage:(NSString * _Nullable)serverErrorMessage
      w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes){
-        NSNumber *isW3cCaughted = (w3cExternalTraceAttributes[@"w3cc"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cc"] : nil;
+        NSNumber *isW3cCaught = (w3cExternalTraceAttributes[@"isW3cHeaderFound"] != [NSNull null]) ? w3cExternalTraceAttributes[@"isW3cHeaderFound"] : nil;
         NSNumber * partialID = (w3cExternalTraceAttributes[@"partialId"] != [NSNull null]) ? w3cExternalTraceAttributes[@"partialId"] : nil;
-        NSNumber * timestamp = (w3cExternalTraceAttributes[@"etst"] != [NSNull null]) ? w3cExternalTraceAttributes[@"etst"] : nil;
-        NSString * generatedW3CTraceparent = (w3cExternalTraceAttributes[@"wgeti"] != [NSNull null]) ? w3cExternalTraceAttributes[@"wgeti"] : nil;
-        NSString * caughtedW3CTraceparent = (w3cExternalTraceAttributes[@"wceti"] != [NSNull null]) ? w3cExternalTraceAttributes[@"wceti"] : nil;
+        NSNumber * timestamp = (w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] != [NSNull null]) ? w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] : nil;
+        NSString * generatedW3CTraceparent = (w3cExternalTraceAttributes[@"w3cGeneratedHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cGeneratedHeader"] : nil;
+        NSString * caughtW3CTraceparent = (w3cExternalTraceAttributes[@"w3cCaughtHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cCaughtHeader"] : nil;
     
         [IBGNetworkLogger addNetworkLogWithUrl:url
                                     method:method
@@ -323,11 +323,11 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
                         serverErrorMessage:serverErrorMessage
-                             isW3cCaughted:isW3cCaughted
+                             isW3cCaughted:isW3cCaught
                                  partialID:partialID
                                  timestamp:timestamp
                    generatedW3CTraceparent:generatedW3CTraceparent
-                    caughtedW3CTraceparent:caughtedW3CTraceparent
+                    caughtedW3CTraceparent:caughtW3CTraceparent
     ];
  }
 
