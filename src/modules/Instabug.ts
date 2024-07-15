@@ -21,7 +21,7 @@ import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
-import type { IBGFeatureRequest } from '../models/IBGFeatureRequest';
+import type { FeatureFlag } from '../models/FeatureFlag';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -570,7 +570,7 @@ export const clearAllExperiments = () => {
  * Add feature flags to the next report.
  * @param featureFlags An array of featureFlags to add to the next report.
  */
-export const addFeatureFlags = (featureFlags: IBGFeatureRequest[]) => {
+export const addFeatureFlags = (featureFlags: FeatureFlag[]) => {
   const flags: Record<string, string | undefined> = {};
 
   for (const item of featureFlags) {
@@ -583,7 +583,7 @@ export const addFeatureFlags = (featureFlags: IBGFeatureRequest[]) => {
 /**
  * Add a feature flag to the to next report.
  */
-export const addFeatureFlag = (featureFlag: IBGFeatureRequest) => {
+export const addFeatureFlag = (featureFlag: FeatureFlag) => {
   addFeatureFlags([featureFlag]);
 };
 

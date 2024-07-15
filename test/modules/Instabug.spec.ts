@@ -21,7 +21,7 @@ import {
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
-import type { IBGFeatureRequest } from '../../src/models/IBGFeatureRequest';
+import type { FeatureFlag } from '../../src/models/FeatureFlag';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -772,7 +772,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call native addFeatureFlags method', () => {
-    const featureFlags: Array<IBGFeatureRequest> = [
+    const featureFlags: Array<FeatureFlag> = [
       {
         name: 'key1',
         variant: 'variant1',
@@ -792,7 +792,7 @@ describe('Instabug Module', () => {
   });
 
   it('should call native addFeatureFlag method', () => {
-    const featureFlag: IBGFeatureRequest = {
+    const featureFlag: FeatureFlag = {
       name: 'key1',
       variant: 'variant2',
     };

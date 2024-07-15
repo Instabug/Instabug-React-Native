@@ -5,7 +5,6 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-import Instabug from 'instabug-reactnative';
 
 export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Home'>> = ({
   navigation,
