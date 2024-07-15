@@ -4,11 +4,11 @@
 
 ## Added
 
-- Add support for Feature Flags APIs `Instabug.addFeatureFlags`, `Instabug.removeFeatureFlags` and `Instabug.clearAllFeatureFlags` ([#1230](https://github.com/Instabug/Instabug-Flutter/pull/1230)).
+- Add support for Feature Flags APIs `Instabug.addFeatureFlags`, `Instabug.removeFeatureFlags` and `Instabug.clearAllFeatureFlags` ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
 
 ### Deprecated
 
-- Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-Flutter/pull/1230)).
+- Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
 
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
 

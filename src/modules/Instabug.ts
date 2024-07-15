@@ -571,12 +571,8 @@ export const clearAllExperiments = () => {
  * @param featureFlags An array of feature flags to add to the next report.
  */
 export const addFeatureFlags = (featureFlags: FeatureFlag[]) => {
-  const flags: Record<string, string | undefined> = {};
-
-  for (const item of featureFlags) {
-    flags[item.name] = item.variant ? item.variant : '';
-  }
-
+  const entries = featureFlags.map((item) => [item.name, item.variant || '']);
+  const flags = Object.fromEntries(entries);
   NativeInstabug.addFeatureFlags(flags);
 };
 
