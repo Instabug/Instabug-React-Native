@@ -27,14 +27,24 @@ export const setEnabled = (isEnabled: boolean) => {
             network = await _networkDataObfuscationHandler(network);
           }
 
-          if (isContentTypeNotAllowed(network.requestContentType)) {
+          if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
+            network.requestBody = InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE;
+            console.warn('IBG-RN:', InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE);
+          }
+
+          if (network.responseBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
+            network.responseBody = InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE;
+            console.warn('IBG-RN:', InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE);
+          }
+
+          if (network.requestBody && isContentTypeNotAllowed(network.requestContentType)) {
             network.requestBody = `Body is omitted because content type ${network.requestContentType} isn't supported`;
             console.warn(
               `IBG-RN: The request body for the network request with URL ${network.url} has been omitted because the content type ${network.requestContentType} isn't supported.`,
             );
           }
 
-          if (isContentTypeNotAllowed(network.contentType)) {
+          if (network.responseBody && isContentTypeNotAllowed(network.contentType)) {
             network.responseBody = `Body is omitted because content type ${network.contentType} isn't supported`;
             console.warn(
               `IBG-RN: The response body for the network request with URL ${network.url} has been omitted because the content type ${network.contentType} isn't supported.`,
