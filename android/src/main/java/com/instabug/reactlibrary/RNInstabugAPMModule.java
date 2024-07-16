@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
+import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONException;
@@ -351,9 +352,28 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
 
             try {
-                Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
+                Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class, APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
-                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage);
+                    method.invoke(
+                        apmNetworkLogger,
+                        requestStartTime,
+                        requestDuration,
+                        requestHeaders,
+                        requestBody,
+                        requestBodySize,
+                        requestMethod,
+                        requestUrl,
+                        requestContentType,
+                        responseHeaders,
+                        responseBody,
+                        responseBodySize,
+                        statusCode,
+                        responseContentType,
+                        errorMessage,
+                        gqlQueryName,
+                        serverErrorMessage,
+                        null
+                    );
                 } else {
                     Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
                 }
