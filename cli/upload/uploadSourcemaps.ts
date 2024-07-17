@@ -9,9 +9,22 @@ export interface UploadSourcemapsOptions {
   name: string;
   code: string;
   label?: string;
+
+  /**
+   * Disables logging to the console and prevents process exit on error.
+   *
+   * @default false
+   * */
+  silent?: boolean;
 }
 
-export const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
+/**
+ * Uploads JavaScript sourcemaps to Instabug.
+ *
+ * @param opts Options for the sourcemaps upload process.
+ * @returns A promise that resolves to a boolean indicating whether the upload was successful.
+ */
+export const uploadSourcemaps = async (opts: UploadSourcemapsOptions): Promise<boolean> => {
   const fileName = `${opts.platform}-sourcemap.json`;
   const fileBlob = fs.readFileSync(opts.file);
 
@@ -28,7 +41,9 @@ export const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
   form.append('platform', 'react_native');
   form.append('os', opts.platform);
 
-  console.log('Uploading Source map file...');
+  if (!opts.silent) {
+    console.log('Uploading Source map file...');
+  }
 
   try {
     const response = await axios.post('https://api.instabug.com/api/sdk/v3/symbols_files', form, {
@@ -39,12 +54,20 @@ export const uploadSourcemaps = async (opts: UploadSourcemapsOptions) => {
       ? `${version.name} (${version.code})+codepush:${version.codepush}`
       : `${version.name} (${version.code})`;
 
-    console.log(`Successfully uploaded Source maps for version: ${appVersion}`);
-    console.log(response.data);
+    if (!opts.silent) {
+      console.log(`Successfully uploaded Source maps for version: ${appVersion}`);
+      console.log(response.data);
+    }
+
+    return true;
   } catch (err) {
-    console.error(
-      'Failed to upload source maps:',
-      axios.isAxiosError(err) ? err.response?.data : err,
-    );
+    if (!opts.silent) {
+      console.error(
+        'Failed to upload source maps:',
+        axios.isAxiosError(err) ? err.response?.data : err,
+      );
+    }
+
+    return false;
   }
 };
