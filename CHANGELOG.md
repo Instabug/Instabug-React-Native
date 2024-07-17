@@ -1,32 +1,5 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...dev)
-
-### Added
-
-- Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
-
-## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
-
-### Added
-
-- Add support for Feature Flags APIs `Instabug.addFeatureFlags`, `Instabug.removeFeatureFlags` and `Instabug.clearAllFeatureFlags` ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
-- Export `uploadSourcemaps` and `uploadSoFiles` utilities in the `instabug-reactnative/upload` sub-package for usage in custom Node.js upload scripts ([#1252](https://github.com/Instabug/Instabug-React-Native/pull/1252)).
-
-### Changed
-
-- Bump Instabug Android SDK to v13.3.0 ([#1261](https://github.com/Instabug/Instabug-React-Native/pull/1261)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v13.3.0).
-- Bump Instabug iOS SDK to v13.3.0 ([#1262](https://github.com/Instabug/Instabug-React-Native/pull/1262)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.3.0).
-
-### Deprecated
-
-- Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
-
-### Fixed
-
-- Fix APM network logging on Android ([#1253](https://github.com/Instabug/Instabug-React-Native/pull/1253)).
-- Fix an OOM (out-of-memory) crash while saving network logs on Android ([#1244](https://github.com/Instabug/Instabug-React-Native/pull/1244)).
-
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
 
 ### Changed
@@ -79,19 +52,7 @@
 - Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
 - Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
 
-<<<<<<< HEAD
-
-## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...v12.9.0) (April 2, 2024)
-
-=======
-
-### Deprecated
-
-- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
-
 ## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...12.9.0)(April 2, 2024)
-
-> > > > > > > origin/dev
 
 ### Added
 
@@ -102,6 +63,10 @@
 ### Deprecated
 
 - Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setFlowAttribute` in favor of the new app flow APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
+### Deprecated
+
+- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Changed
 

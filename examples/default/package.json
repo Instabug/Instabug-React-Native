@@ -17,7 +17,6 @@
     "@react-navigation/native-stack": "^6.9.12",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
-    "axios": "^1.7.2",
     "instabug-reactnative": "link:../..",
     "instabug-reactnative-ndk": "github:https://github.com/Instabug/Instabug-React-Native-NDK",
     "native-base": "^3.4.28",
