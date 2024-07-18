@@ -5,7 +5,8 @@ import waitForExpect from 'wait-for-expect';
 
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
-import { reportNetworkLog } from '../../src/utils/InstabugUtils';
+import { isContentTypeNotAllowed, reportNetworkLog } from '../../src/utils/InstabugUtils';
+import InstabugConstants from '../../src/utils/InstabugConstants';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
@@ -33,6 +34,7 @@ describe('NetworkLogger Module', () => {
 
   beforeEach(() => {
     NetworkLogger.setNetworkDataObfuscationHandler(null);
+    NetworkLogger.setRequestFilterExpression('false');
   });
 
   it('should set onProgressCallback with callback', () => {
@@ -145,5 +147,133 @@ describe('NetworkLogger Module', () => {
     expect(operation.setContext).toBeCalled();
 
     consoleSpy.mockRestore();
+  });
+
+  it('should omit request body if its content type is not allowed', () => {
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
+
+    const networkData = {
+      ...network,
+      requestBody: 'some request body',
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith({
+      ...networkData,
+      requestBody: expect.stringContaining('omitted'),
+    });
+
+    expect(consoleWarn).toBeCalledTimes(1);
+
+    consoleWarn.mockRestore();
+  });
+
+  it('should omit response body if its content type is not allowed', () => {
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
+
+    const networkData = {
+      ...network,
+      responseBody: 'some response body',
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith({
+      ...networkData,
+      responseBody: expect.stringContaining('omitted'),
+    });
+
+    expect(consoleWarn).toBeCalledTimes(1);
+
+    consoleWarn.mockRestore();
+  });
+
+  it('should omit request body if its size exceeds the maximum allowed size', () => {
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+
+    const networkData = {
+      ...network,
+      requestBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith({
+      ...networkData,
+      requestBody: InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE,
+    });
+
+    expect(consoleWarn).toBeCalledTimes(1);
+
+    consoleWarn.mockRestore();
+  });
+
+  it('should not omit request body if its size does not exceed the maximum allowed size', () => {
+    const networkData = {
+      ...network,
+      requestBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES,
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
+  });
+
+  it('should omit response body if its size exceeds the maximum allowed size', () => {
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+
+    const networkData = {
+      ...network,
+      responseBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith({
+      ...networkData,
+      responseBody: InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE,
+    });
+
+    expect(consoleWarn).toBeCalledTimes(1);
+
+    consoleWarn.mockRestore();
+  });
+
+  it('should not omit response body if its size does not exceed the maximum allowed size', () => {
+    const networkData = {
+      ...network,
+      responseBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES,
+    };
+
+    Interceptor.setOnDoneCallback = jest
+      .fn()
+      .mockImplementation((callback) => callback(networkData));
+
+    NetworkLogger.setEnabled(true);
+
+    expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
   });
 });
