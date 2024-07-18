@@ -5,6 +5,7 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.UiThread;
@@ -34,6 +35,7 @@ import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.util.InstabugSDKLogger;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -60,7 +62,7 @@ import javax.annotation.Nullable;
  */
 public class RNInstabugReactnativeModule extends EventEmitterModule {
 
-    private static final String TAG = RNInstabugReactnativeModule.class.getSimpleName();
+    private static final String TAG = "IBG-RN-Core";
 
     private InstabugCustomTextPlaceHolder placeHolders;
     private static Report currentReport;
@@ -895,27 +897,38 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Extracts HTTP connection properties. Request method, Headers, Date, Url and Response code
-     *
-     * @param jsonObject the JSON object containing all HTTP connection properties
-     * @throws JSONException
-     */
     @ReactMethod
-    public void networkLog(String jsonObject) throws JSONException {
-        NetworkLog networkLog = new NetworkLog();
-        String date = System.currentTimeMillis()+"";
-        networkLog.setDate(date);
-        JSONObject newJSONObject = new JSONObject(jsonObject);
-        networkLog.setUrl(newJSONObject.getString("url"));
-        networkLog.setRequest(newJSONObject.getString("requestBody"));
-        networkLog.setResponse(newJSONObject.getString("responseBody"));
-        networkLog.setMethod(newJSONObject.getString("method"));
-        networkLog.setResponseCode(newJSONObject.getInt("responseCode"));
-        networkLog.setRequestHeaders(newJSONObject.getString("requestHeaders"));
-        networkLog.setResponseHeaders(newJSONObject.getString("responseHeaders"));
-        networkLog.setTotalDuration(newJSONObject.getLong("duration"));
-        networkLog.insert();
+    public void networkLogAndroid(final String url,
+                                  final String requestBody,
+                                  final String responseBody,
+                                  final String method,
+                                  final double responseCode,
+                                  final String requestHeaders,
+                                  final String responseHeaders,
+                                  final double duration) {
+        try {
+            final String date = String.valueOf(System.currentTimeMillis());
+
+            NetworkLog networkLog = new NetworkLog();
+            networkLog.setDate(date);
+            networkLog.setUrl(url);
+            networkLog.setMethod(method);
+            networkLog.setResponseCode((int) responseCode);
+            networkLog.setTotalDuration((long) duration);
+
+            try {
+                networkLog.setRequest(requestBody);
+                networkLog.setResponse(responseBody);
+                networkLog.setRequestHeaders(requestHeaders);
+                networkLog.setResponseHeaders(responseHeaders);
+            } catch (OutOfMemoryError | Exception exception) {
+                Log.d(TAG, "Error: " + exception.getMessage() + "while trying to set network log contents (request body, response body, request headers, and response headers).");
+            }
+
+            networkLog.insert();
+        } catch (OutOfMemoryError | Exception exception) {
+            Log.d(TAG, "Error: " + exception.getMessage() + "while trying to insert a network log");
+        }
     }
 
     @UiThread

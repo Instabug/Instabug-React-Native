@@ -5,6 +5,8 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -312,56 +314,58 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
         });
     }
 
-    /**
-    *  Send Apm network log by Reflection
-    */
     @ReactMethod
-    public void networkLog(String networkData) throws JSONException {
-        try{
-            APMNetworkLogger apmNetworkLogger = new APMNetworkLogger();
-            JSONObject jsonObject = new JSONObject(networkData);
-            final String requestUrl = (String) jsonObject.get("url");
-            final String requestBody = (String) jsonObject.get("requestBody");
-            final String responseBody = (String) jsonObject.get("responseBody");
-            final String requestMethod = (String) jsonObject.get("method");
-            //--------------------------------------------
-            final String requestContentType = (String) jsonObject.get("requestContentType");
-            final String responseContentType = (String) jsonObject.get("contentType");
-            //--------------------------------------------
-            final long requestBodySize = ((Number) jsonObject.get("requestBodySize")).longValue();
-            final long responseBodySize = ((Number) jsonObject.get("responseBodySize")).longValue();
-            //--------------------------------------------
-            final String errorDomain = (String) jsonObject.get("errorDomain");
-            final Integer statusCode = (Integer) jsonObject.get("responseCode");
-            final long requestDuration = ((Number) jsonObject.get("duration")).longValue();
-            final long requestStartTime = ((Number) jsonObject.get("startTime")).longValue() * 1000;
-            final String requestHeaders = (String) jsonObject.get("requestHeaders").toString();
-            final String responseHeaders = (String) jsonObject.get("responseHeaders").toString();
-            final String errorMessage;
-            if(errorDomain.equals("")) {
-                errorMessage = null;
-            } else {
-                errorMessage = errorDomain;
-            }
-            //--------------------------------------------
-            String gqlQueryName = null;
-            if(jsonObject.has("gqlQueryName")){
-                gqlQueryName = (String) jsonObject.get("gqlQueryName");
-            }
-            final String serverErrorMessage = (String) jsonObject.get("serverErrorMessage");
+    private void networkLogAndroid(final double requestStartTime,
+                                   final double requestDuration,
+                                   final String requestHeaders,
+                                   final String requestBody,
+                                   final double requestBodySize,
+                                   final String requestMethod,
+                                   final String requestUrl,
+                                   final String requestContentType,
+                                   final String responseHeaders,
+                                   final String responseBody,
+                                   final double responseBodySize,
+                                   final double statusCode,
+                                   final String responseContentType,
+                                   @Nullable final String errorDomain,
+                                   @Nullable final String gqlQueryName,
+                                   @Nullable final String serverErrorMessage) {
+        try {
+            APMNetworkLogger networkLogger = new APMNetworkLogger();
+
+            final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
+            final String errorMessage = hasError ? errorDomain : null;
 
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class);
                 if (method != null) {
-                    method.invoke(apmNetworkLogger, requestStartTime, requestDuration, requestHeaders, requestBody, requestBodySize, requestMethod, requestUrl, requestContentType, responseHeaders, responseBody, responseBodySize, statusCode, responseContentType, errorMessage, gqlQueryName, serverErrorMessage);
+                    method.invoke(
+                        networkLogger,
+                        requestStartTime,
+                        requestDuration,
+                        requestHeaders,
+                        requestBody,
+                        requestBodySize,
+                        requestMethod,
+                        requestUrl,
+                        requestContentType,
+                        responseHeaders,
+                        responseBody,
+                        responseBodySize,
+                        statusCode,
+                        responseContentType,
+                        errorMessage,
+                        gqlQueryName,
+                        serverErrorMessage
+                    );
                 } else {
-                    Log.e("IB-CP-Bridge", "apmNetworkLogByReflection was not found by reflection");
+                    Log.e("IB-CP-Bridge", "APMNetworkLogger.log was not found by reflection");
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        }
-        catch(Throwable e) {
+        } catch(Throwable e) {
             e.printStackTrace();
         }
     }
