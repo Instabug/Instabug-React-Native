@@ -2,13 +2,8 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...dev)
 
-### Added
-
-- Export `uploadSourcemaps` and `uploadSoFiles` utilities in the `instabug-reactnative/upload` sub-package for usage in custom Node.js upload scripts ([#1252](https://github.com/Instabug/Instabug-React-Native/pull/1252)).
-
 ### Fixed
 
-- Fix APM network logging on Android ([#1253](https://github.com/Instabug/Instabug-React-Native/pull/1253)).
 - Fix an OOM (out-of-memory) crash while saving network logs on Android ([#1244](https://github.com/Instabug/Instabug-React-Native/pull/1244)).
 
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
