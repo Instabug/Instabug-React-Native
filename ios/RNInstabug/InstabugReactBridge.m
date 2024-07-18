@@ -8,6 +8,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
+#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGAPM.h>
 #import <asl.h>
@@ -298,14 +299,7 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                       startTime:(double)startTime
                        duration:(double)duration
                    gqlQueryName:(NSString * _Nullable)gqlQueryName
-                  serverErrorMessage:(NSString * _Nullable)serverErrorMessage
-     w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes){
-        NSNumber *isW3cCaught = (w3cExternalTraceAttributes[@"isW3cHeaderFound"] != [NSNull null]) ? w3cExternalTraceAttributes[@"isW3cHeaderFound"] : nil;
-        NSNumber * partialID = (w3cExternalTraceAttributes[@"partialId"] != [NSNull null]) ? w3cExternalTraceAttributes[@"partialId"] : nil;
-        NSNumber * timestamp = (w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] != [NSNull null]) ? w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] : nil;
-        NSString * generatedW3CTraceparent = (w3cExternalTraceAttributes[@"w3cGeneratedHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cGeneratedHeader"] : nil;
-        NSString * caughtW3CTraceparent = (w3cExternalTraceAttributes[@"w3cCaughtHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cCaughtHeader"] : nil;
-   
+             serverErrorMessage:(NSString * _Nullable)serverErrorMessage) {
     [IBGNetworkLogger addNetworkLogWithUrl:url
                                     method:method
                                requestBody:requestBody
@@ -321,14 +315,8 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  startTime:startTime * 1000
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage
-                             isW3cCaughted:isW3cCaught
-                                 partialID:partialID
-                                 timestamp:timestamp
-                   generatedW3CTraceparent:generatedW3CTraceparent
-                    caughtedW3CTraceparent:caughtW3CTraceparent
-    ];
- }
+                        serverErrorMessage:serverErrorMessage];
+}
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
@@ -367,52 +355,9 @@ RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
 }
 
-RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
-    NSMutableArray<IBGFeatureFlag *> *featureFlags = [NSMutableArray array];
-    for(id key in featureFlagsMap){
-        NSString* variant =[featureFlagsMap objectForKey:key];
-        if ([variant length]==0) {
-            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key]];
-        } else{
-            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key variant:variant]];
-        }
-    }
-    
-    [Instabug addFeatureFlags:featureFlags];
-}
-
-RCT_EXPORT_METHOD(removeFeatureFlags:(NSArray *)featureFlags) {
-    NSMutableArray<IBGFeatureFlag *> *features = [NSMutableArray array];
-    for(id item in featureFlags){
-        [features addObject:[[IBGFeatureFlag alloc] initWithName:item]];
-    }
-    
-    @try {
-        [Instabug removeFeatureFlags:features];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"%@", exception);
-    }
-}
-
-RCT_EXPORT_METHOD(removeAllFeatureFlags) {
-    [Instabug removeAllFeatureFlags];
-}
-
 RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
-
-RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
-    resolve(@(IBGNetworkLogger.w3ExternalTraceIDEnabled));
-}
-RCT_EXPORT_METHOD(isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
-    resolve(@(IBGNetworkLogger.w3ExternalGeneratedHeaderEnabled));
-}
-RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
-    resolve(@(IBGNetworkLogger.w3CaughtHeaderEnabled));
-}
-
 
 - (NSDictionary *)constantsToExport {
     return ArgsRegistry.getAll;

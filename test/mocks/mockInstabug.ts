@@ -54,9 +54,6 @@ const mockInstabug: InstabugNativeModule = {
   clearAllExperiments: jest.fn(),
   networkLogIOS: jest.fn(),
   networkLogAndroid: jest.fn(),
-  addFeatureFlags: jest.fn(),
-  removeFeatureFlags: jest.fn(),
-  removeAllFeatureFlags: jest.fn(),
   appendTagToReport: jest.fn(),
   appendConsoleLogToReport: jest.fn(),
   setUserAttributeToReport: jest.fn(),
@@ -69,10 +66,6 @@ const mockInstabug: InstabugNativeModule = {
   addFileAttachmentWithDataToReport: jest.fn(),
   setNetworkLoggingEnabled: jest.fn(),
   willRedirectToStore: jest.fn(),
-  isW3ExternalTraceIDEnabled: jest.fn(),
-  isW3ExternalGeneratedHeaderEnabled: jest.fn(),
-  isW3CaughtHeaderEnabled: jest.fn(),
-  registerW3CFlagsChangeListener: jest.fn(),
 };
 
 export default mockInstabug;

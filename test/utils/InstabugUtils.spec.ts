@@ -10,8 +10,6 @@ import InstabugUtils, {
   getStackTrace,
   reportNetworkLog,
   sendCrashReport,
-  generateTracePartialId,
-  generateW3CHeader,
 } from '../../src/utils/InstabugUtils';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 import { NativeAPM } from '../../src/native/NativeAPM';
@@ -260,11 +258,6 @@ describe('reportNetworkLog', () => {
     errorDomain: 'errorDomain',
     serverErrorMessage: 'serverErrorMessage',
     requestContentType: 'requestContentType',
-    isW3cHeaderFound: null,
-    partialId: null,
-    networkStartTimeInSeconds: null,
-    w3cGeneratedHeader: null,
-    w3cCaughtHeader: null,
   };
 
   it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
@@ -303,13 +296,6 @@ describe('reportNetworkLog', () => {
       network.responseCode,
       network.contentType,
       network.errorDomain,
-      {
-        isW3cHeaderFound: null,
-        partialId: null,
-        networkStartTimeInSeconds: null,
-        w3cGeneratedHeader: null,
-        w3cCaughtHeader: null,
-      },
       network.gqlQueryName,
       network.serverErrorMessage,
     );
@@ -338,82 +324,6 @@ describe('reportNetworkLog', () => {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
-      {
-        isW3cHeaderFound: null,
-        partialId: null,
-        networkStartTimeInSeconds: null,
-        w3cGeneratedHeader: null,
-        w3cCaughtHeader: null,
-      },
     );
-  });
-
-  it('generateTracePartialId should generate a non-zero hex string', () => {
-    const mockMathRandom = jest.spyOn(global.Math, 'random');
-
-    mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0).mockReturnValueOnce(0.5);
-
-    const hexString = generateTracePartialId().hexStringPartialId;
-
-    expect(hexString).not.toBe('00000000');
-
-    mockMathRandom.mockRestore();
-  });
-
-  it('generateTracePartialId should return 8 chars long generated hex string', () => {
-    const mockMathRandom = jest.spyOn(global.Math, 'random');
-    mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0.5).mockReturnValueOnce(0.5);
-    // const hexString = generateTracePartialId().hexStringPartialId;
-    const expectedPartialId = { hexStringPartialId: '7fffffff', numberPartilId: 2147483647 };
-    const generatedPartialId = generateTracePartialId();
-
-    expect(expectedPartialId).toMatchObject(generatedPartialId);
-    expect(generatedPartialId.hexStringPartialId).toHaveLength(8);
-
-    mockMathRandom.mockRestore();
-  });
-
-  it('generateW3CHeader should return {version}-{trace-id}-{parent-id}-{trace-flag} format header', () => {
-    const mockMathRandom = jest.spyOn(global.Math, 'random');
-
-    mockMathRandom.mockReturnValueOnce(0).mockReturnValueOnce(0.5).mockReturnValueOnce(1);
-
-    const mockedHexStringPartialId = '7fffffff';
-    const mockedNumberPartialId = 2147483647;
-
-    const date = 1716210104248;
-    const unixTimestamp = '664b49b8';
-    const expectedHeader = {
-      timestampInSeconds: Math.floor(1716210104248 / 1000),
-      partialId: mockedNumberPartialId,
-      w3cHeader: `00-${unixTimestamp}${mockedHexStringPartialId}${unixTimestamp}${mockedHexStringPartialId}-4942472d${mockedHexStringPartialId}-01`,
-    };
-    const generatedHeader = generateW3CHeader(date);
-
-    expect(generatedHeader).toMatchObject(expectedHeader);
-
-    mockMathRandom.mockRestore();
-  });
-  it('generateW3CHeader should correctly floor the timestamp', () => {
-    const mockMathRandom = jest.spyOn(global.Math, 'random');
-
-    mockMathRandom.mockReturnValueOnce(0.1).mockReturnValueOnce(0.2).mockReturnValueOnce(0.3);
-
-    const mockedHexStringPartialId = '19999999';
-    const mockedNumberPartialId = 429496729;
-
-    const date = 1716222912145;
-    const unixTimestamp = '664b7bc0';
-    const expectedHeader = {
-      timestampInSeconds: Math.floor(1716222912145 / 1000),
-      partialId: mockedNumberPartialId,
-      w3cHeader: `00-${unixTimestamp}${mockedHexStringPartialId}${unixTimestamp}${mockedHexStringPartialId}-4942472d${mockedHexStringPartialId}-01`,
-    };
-
-    const generatedHeader = generateW3CHeader(date);
-
-    expect(generatedHeader).toMatchObject(expectedHeader);
-
-    mockMathRandom.mockRestore();
   });
 });
