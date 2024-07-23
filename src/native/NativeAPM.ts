@@ -1,6 +1,6 @@
-import type { NativeModule } from 'react-native';
-import { NativeEventEmitter } from 'react-native';
+import type { NativeModule, NativeEventEmitter } from 'react-native';
 
+import type { W3cExternalTraceAttributes } from '../utils/Types';
 import { NativeModules } from './NativePackage';
 
 export interface ApmNativeModule extends NativeModule {
@@ -23,6 +23,7 @@ export interface ApmNativeModule extends NativeModule {
     statusCode: number,
     responseContentType: string,
     errorDomain: string,
+    W3cExternalTraceAttributes: W3cExternalTraceAttributes,
     gqlQueryName?: string,
     serverErrorMessage?: string,
   ): void;

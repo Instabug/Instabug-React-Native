@@ -205,6 +205,13 @@ export function reportNetworkLog(network: NetworkData) {
       network.responseCode,
       network.contentType,
       network.errorDomain,
+      {
+        isW3cHeaderFound: network.isW3cHeaderFound,
+        partialId: network.partialId,
+        networkStartTimeInSeconds: network.networkStartTimeInSeconds,
+        w3cGeneratedHeader: network.w3cGeneratedHeader,
+        w3cCaughtHeader: network.w3cCaughtHeader,
+      },
       network.gqlQueryName,
       network.serverErrorMessage,
     );
@@ -226,6 +233,13 @@ export function reportNetworkLog(network: NetworkData) {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
+      {
+        isW3cHeaderFound: network.isW3cHeaderFound,
+        partialId: network.partialId,
+        networkStartTimeInSeconds: network.networkStartTimeInSeconds,
+        w3cGeneratedHeader: network.w3cGeneratedHeader,
+        w3cCaughtHeader: network.w3cCaughtHeader,
+      },
     );
   }
 }
