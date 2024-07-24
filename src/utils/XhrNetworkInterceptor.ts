@@ -160,12 +160,6 @@ export default {
                 }
               }
               // @ts-ignore
-              const _response = this._response;
-              cloneNetwork.requestBody =
-                typeof _response === 'string' ? _response : JSON.stringify(_response);
-              cloneNetwork.responseBody = null;
-
-              // @ts-ignore
             } else if (this._timedOut) {
               cloneNetwork.errorCode = 0;
               cloneNetwork.errorDomain = 'TimeOutError';
