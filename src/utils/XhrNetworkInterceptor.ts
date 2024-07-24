@@ -148,11 +148,27 @@ export default {
               cloneNetwork.errorCode = 0;
               cloneNetwork.errorDomain = 'ClientError';
 
+              // detect error message when the make xhr requests like using axios
+              // @ts-ignore
+              if (this._response != null && this._response.toString().length > 0) {
+                if (typeof this.response === 'string' || this.response instanceof String) {
+                  // @ts-ignore
+                  cloneNetwork.errorDomain = this._response;
+                } else {
+                  // @ts-ignore
+                  cloneNetwork.errorDomain = JSON.stringify(this._response);
+                }
+              }
               // @ts-ignore
               const _response = this._response;
               cloneNetwork.requestBody =
                 typeof _response === 'string' ? _response : JSON.stringify(_response);
               cloneNetwork.responseBody = null;
+
+              // @ts-ignore
+            } else if (this._timedOut) {
+              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorDomain = 'TimeOutError';
             }
 
             if (this.response) {
