@@ -7,6 +7,10 @@
 - Fix APM network logging on Android ([#1253](https://github.com/Instabug/Instabug-React-Native/pull/1253)).
 - Fix an OOM (out-of-memory) crash while saving network logs on Android ([#1244](https://github.com/Instabug/Instabug-React-Native/pull/1244)).
 
+### Added
+
+- Add support for capturing client error message in network interceptor([#1256](https://github.com/Instabug/Instabug-React-Native/pull/1256)).
+
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
 
 ### Changed
