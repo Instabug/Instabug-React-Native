@@ -5,6 +5,7 @@ import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
+import { NativeAPM } from '../../../../../src/native/NativeAPM';
 
 export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM'>> = ({
   navigation,
@@ -19,6 +20,8 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
   };
   return (
     <Screen>
+      <ListTile title="Enable APM" onPress={() => NativeAPM.setEnabled(true)} />
+      <ListTile title="Disable APM" onPress={() => NativeAPM.setEnabled(false)} />
       <ListTile
         title="Simulate Network Request With Header"
         onPress={() => simulateNetworkRequest()}
