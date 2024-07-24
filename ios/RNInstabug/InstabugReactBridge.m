@@ -315,7 +315,7 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                           responseBodySize:responseBodySize
                               responseCode:responseCode
                             requestHeaders:requestHeaders
-                            responseHeaders:responseHeaders
+                           responseHeaders:responseHeaders
                                contentType:contentType
                                errorDomain:errorDomain
                                  errorCode:errorCode
