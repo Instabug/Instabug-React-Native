@@ -194,8 +194,10 @@ describe('APM Module', () => {
   });
 
   it('should register W3C flag listener', async () => {
-    APM._registerW3CFlagsChangeListener(() => {});
+    const callback = jest.fn();
+    APM._registerW3CFlagsChangeListener(callback);
 
     expect(NativeAPM.registerW3CFlagsChangeListener).toBeCalledTimes(1);
+    expect(NativeAPM.registerW3CFlagsChangeListener).toBeCalledWith(callback);
   });
 });
