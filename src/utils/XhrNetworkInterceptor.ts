@@ -1,4 +1,5 @@
 import InstabugConstants from './InstabugConstants';
+import { stringifyIfNotString } from './InstabugUtils';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
 export type NetworkDataCallback = (data: NetworkData) => void;
@@ -80,7 +81,12 @@ export default {
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
-      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
+      // According to the HTTP RFC, headers are case-insensitive, so we convert
+      // them to lower-case to make accessing headers predictable.
+      // This avoid issues like failing to get the Content-Type header for a request
+      // because the header is set as 'Content-Type' instead of 'content-type'.
+      const key = header.toLowerCase();
+      network.requestHeaders[key] = stringifyIfNotString(value);
       originalXHRSetRequestHeader.apply(this, [header, value]);
     };
 
