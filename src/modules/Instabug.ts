@@ -569,44 +569,6 @@ export const willRedirectToStore = () => {
   NativeInstabug.willRedirectToStore();
 };
 
-/**
- * Returns weather W3C key flag is enabled
- */
-export const _isW3ExternalTraceIDEnabled = async (): Promise<boolean> => {
-  return await NativeInstabug.isW3ExternalTraceIDEnabled();
-};
-
-/**
- * Returns weather we should generate W3C header
- */
-export const _isW3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> => {
-  return await NativeInstabug.isW3ExternalGeneratedHeaderEnabled();
-};
-
-/**
- * Returns weather W3C was caught
- */
-export const _isW3CaughtHeaderEnabled = async (): Promise<boolean> => {
-  return await NativeInstabug.isW3CaughtHeaderEnabled();
-};
-
-/**
- * Sets listener to W3ExternalTraceID flag changes
- * @param handler A callback that gets the update value of the flag
- */
-export const _registerW3CFlagsChangeListener = (
-  handler: (payload: {
-    isW3ExternalTraceIDEnabled: boolean;
-    isW3ExternalGeneratedHeaderEnabled: boolean;
-    isW3CaughtHeaderEnabled: boolean;
-  }) => void,
-) => {
-  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
-    handler(payload);
-  });
-  NativeInstabug.registerW3CFlagsChangeListener(handler);
-};
-
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
     _lastScreen = event.componentName;

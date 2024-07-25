@@ -9,7 +9,7 @@ import waitForExpect from 'wait-for-expect';
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
+import { NativeEvents, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -21,6 +21,7 @@ import {
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
