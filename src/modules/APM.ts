@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import Trace from '../models/Trace';
-import { NativeAPM, NativeEvents, emitter } from '../native/NativeAPM';
+import { NativeAPM } from '../native/NativeAPM';
 import { NativeInstabug } from '../native/NativeInstabug';
 
 /**
@@ -133,45 +133,4 @@ export const endUITrace = () => {
  */
 export const _ibgSleep = () => {
   NativeAPM.ibgSleep();
-};
-
-/**
- * Returns weather W3C key flag is enabled
- */
-export const _isW3ExternalTraceIDEnabled = async (): Promise<boolean> => {
-  const isw3ExternalTraceIDEnabled = await NativeAPM.isW3ExternalTraceIDEnabled();
-  return isw3ExternalTraceIDEnabled;
-};
-
-/**
- * Returns weather we should generate W3C header
- */
-export const _isW3ExternalGeneratedHeaderEnabled = async (): Promise<boolean> => {
-  const isExternalGeneratedHeaderEnabled = await NativeAPM.isW3ExternalGeneratedHeaderEnabled();
-  return isExternalGeneratedHeaderEnabled;
-};
-
-/**
- * Returns weather W3C was caught
- */
-export const _isW3CaughtHeaderEnabled = async (): Promise<boolean> => {
-  const isW3CaughtHeaderEnabled = await NativeAPM.isW3CaughtHeaderEnabled();
-  return isW3CaughtHeaderEnabled;
-};
-
-/**
- * Sets listener to W3ExternalTraceID flag changes
- * @param handler A callback that gets the update value of the flag
- */
-export const _registerW3CFlagsChangeListener = (
-  handler: (payload: {
-    isW3ExternalTraceIDEnabled: boolean;
-    isW3ExternalGeneratedHeaderEnabled: boolean;
-    isW3CaughtHeaderEnabled: boolean;
-  }) => void,
-) => {
-  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
-    handler(payload);
-  });
-  NativeAPM.registerW3CFlagsChangeListener(handler);
 };

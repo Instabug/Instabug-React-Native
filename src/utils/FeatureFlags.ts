@@ -1,13 +1,13 @@
-import * as NativeAPM from '../modules/APM';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 export const FeatureFlags = {
-  isW3ExternalTraceID: () => NativeAPM._isW3ExternalTraceIDEnabled(),
-  isW3ExternalGeneratedHeader: () => NativeAPM._isW3ExternalGeneratedHeaderEnabled(),
-  isW3CaughtHeader: () => NativeAPM._isW3CaughtHeaderEnabled(),
+  isW3ExternalTraceID: () => NativeInstabug.isW3ExternalTraceIDEnabled(),
+  isW3ExternalGeneratedHeader: () => NativeInstabug.isW3ExternalGeneratedHeaderEnabled(),
+  isW3CaughtHeader: () => NativeInstabug.isW3CaughtHeaderEnabled(),
 };
 
 export const registerW3CFlagsListener = () => {
-  NativeAPM._registerW3CFlagsChangeListener(
+  NativeInstabug.registerW3CFlagsChangeListener(
     (res: {
       isW3ExternalTraceIDEnabled: boolean;
       isW3ExternalGeneratedHeaderEnabled: boolean;
