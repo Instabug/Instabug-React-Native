@@ -38,7 +38,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (13.2.0)
+  - Instabug (13.1.0)
   - instabug-reactnative-ndk (0.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -346,9 +346,9 @@ PODS:
     - glog
   - react-native-background-timer (2.4.1):
     - React-Core
-  - react-native-config (1.5.1):
-    - react-native-config/App (= 1.5.1)
-  - react-native-config/App (1.5.1):
+  - react-native-config (1.5.2):
+    - react-native-config/App (= 1.5.2)
+  - react-native-config/App (1.5.2):
     - React-Core
   - react-native-google-maps (1.10.3):
     - Google-Maps-iOS-Utils (= 4.2.2)
@@ -356,9 +356,10 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-safe-area-context (4.7.1):
+  - react-native-safe-area-context (4.10.8):
     - React-Core
-  - react-native-slider (4.4.3):
+  - react-native-slider (4.5.2):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-NativeModulesApple (0.72.3):
     - hermes-engine
@@ -472,47 +473,24 @@ PODS:
     - React-perflogger (= 0.72.3)
   - RNCClipboard (1.5.1):
     - React-Core
-  - RNGestureHandler (2.13.4):
+  - RNGestureHandler (2.17.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNInstabug (13.2.0):
-    - Instabug (= 13.2.0)
+    - Instabug
     - React-Core
-  - RNReanimated (3.5.4):
-    - DoubleConversion
-    - FBLazyVector
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-callinvoker
+  - RNReanimated (3.14.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-hermes
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTAppDelegate
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
     - ReactCommon/turbomodule/core
-    - Yoga
-  - RNScreens (3.24.0):
+  - RNScreens (3.32.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-RCTImage
-  - RNSVG (13.10.0):
+  - RNSVG (13.14.1):
     - React-Core
-  - RNVectorIcons (10.0.0):
+  - RNVectorIcons (10.1.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
@@ -706,7 +684,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: aee76898789d17c55b36c7fbaa697e443effe3b1
+  Instabug: 0095861b71aeadc1f5356d078ca44ccc5b32d0d3
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
@@ -726,11 +704,11 @@ SPEC CHECKSUMS:
   React-jsinspector: b511447170f561157547bc0bef3f169663860be7
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
-  react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
+  react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
   react-native-google-maps: 1bcc1f9f13f798fcf230db7fe476f3566d0bc0a3
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
-  react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
+  react-native-safe-area-context: b7daa1a8df36095a032dff095a1ea8963cb48371
+  react-native-slider: 593253eb5fbc6ea519290e812bd477fc6abafd5a
   React-NativeModulesApple: c57f3efe0df288a6532b726ad2d0322a9bf38472
   React-perflogger: 6bd153e776e6beed54c56b0847e1220a3ff92ba5
   React-RCTActionSheet: c0b62af44e610e69d9a2049a682f5dba4e9dff17
@@ -749,15 +727,15 @@ SPEC CHECKSUMS:
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
-  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: 6fa68cd181533f83154df2ebba000d0c47ca7ba3
-  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
-  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
-  RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
-  RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
+  RNGestureHandler: bbb8e17b10afdafc5cc5746e8f60772236e7e2ca
+  RNInstabug: e515e490416a20b604e27bdbbebf5316ff3a2012
+  RNReanimated: 158b2f80fdb043ab5a645ba047209badbd7eb9a9
+  RNScreens: 0bd9eec783bed1032e02a4db9976dae1664a5c7b
+  RNSVG: af3907ac5d4fa26a862b75a16d8f15bc74f2ceda
+  RNVectorIcons: bfb663f3f7b37340cd90120151b720641523dc84
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 
 PODFILE CHECKSUM: 08bf47efd2faf96320ceaf855e2e82598bc7d1ae
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.12.0
