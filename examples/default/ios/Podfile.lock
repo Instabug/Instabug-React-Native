@@ -38,7 +38,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (13.1.0)
+  - Instabug (13.2.0)
   - instabug-reactnative-ndk (0.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
