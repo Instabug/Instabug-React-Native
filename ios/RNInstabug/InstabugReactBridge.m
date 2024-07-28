@@ -372,6 +372,17 @@ RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
 
+RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3ExternalTraceIDEnabled));
+}
+RCT_EXPORT_METHOD(isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3ExternalGeneratedHeaderEnabled));
+}
+RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3CaughtHeaderEnabled));
+}
+
+
 - (NSDictionary *)constantsToExport {
     return ArgsRegistry.getAll;
 }

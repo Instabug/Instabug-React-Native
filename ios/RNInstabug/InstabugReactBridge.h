@@ -106,7 +106,9 @@
  */
 
 - (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
-
+- (void)isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 - (void)networkLogIOS:(NSString * _Nonnull)url
               method:(NSString * _Nonnull)method
          requestBody:(NSString * _Nonnull)requestBody
