@@ -10,6 +10,6 @@ final class Constants {
     final static String IBG_ON_NEW_MESSAGE_HANDLER = "IBGonNewMessageHandler";
     final static String IBG_ON_NEW_REPLY_RECEIVED_CALLBACK = "IBGOnNewReplyReceivedCallback";
 
-    final static String IBGAPM_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK = "IBGAPMOnNewW3CFlagsUpdateReceivedCallback";
+    final static String IBGCore_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK = "IBGCoreOnNewW3CFlagsUpdateReceivedCallback";
 
 }

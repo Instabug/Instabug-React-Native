@@ -158,7 +158,7 @@ export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
-  ON_W3C_FLAGS_CHANE = 'IBGAPMOnNewW3CFlagsUpdateReceivedCallback',
+  ON_W3C_FLAGS_CHANE = 'IBGCoreOnNewW3CFlagsUpdateReceivedCallback',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);
