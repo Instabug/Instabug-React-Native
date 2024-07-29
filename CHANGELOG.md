@@ -9,7 +9,7 @@
 
 ### Added
 
-- Add support for capturing client error message in network interceptor([#1256](https://github.com/Instabug/Instabug-React-Native/pull/1256)).
+- Enhance the network interceptor to capture some client error messages([#1256](https://github.com/Instabug/Instabug-React-Native/pull/1256)).
 
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
 
