@@ -151,13 +151,8 @@ export default {
               // detect error message when the make xhr requests like using axios
               // @ts-ignore
               if (this._response != null && this._response.toString().length > 0) {
-                if (typeof this.response === 'string' || this.response instanceof String) {
-                  // @ts-ignore
-                  cloneNetwork.errorDomain = this._response;
-                } else {
-                  // @ts-ignore
-                  cloneNetwork.errorDomain = JSON.stringify(this._response);
-                }
+                // @ts-ignore
+                cloneNetwork.errorDomain = stringifyIfNotString(this._response);
               }
               // @ts-ignore
             } else if (this._timedOut) {
