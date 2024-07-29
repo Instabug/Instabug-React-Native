@@ -10,6 +10,11 @@
 
 - Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
 
+### Fixed
+
+- Fix APM network logging on Android ([#1253](https://github.com/Instabug/Instabug-React-Native/pull/1253)).
+- Fix an OOM (out-of-memory) crash while saving network logs on Android ([#1244](https://github.com/Instabug/Instabug-React-Native/pull/1244)).
+
 ## [13.2.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.1.1...v13.2.0) (July 7, 2024)
 
 ### Changed
@@ -68,6 +73,11 @@
 
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
+- Add support for App Flows APIs `APM.startFlow`, `APM.setFlowAttribute` and `APM.endFlow` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
+### Deprecated
+
+- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setFlowAttribute` in favor of the new app flow APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Deprecated
 
@@ -93,6 +103,10 @@
 ### Changed
 
 - Bump Instabug Android SDK to v12.8.0 ([#1149](https://github.com/Instabug/Instabug-React-Native/pull/1149)). [See release notes](https://github.com/Instabug/android/releases/tag/v12.8.0).
+
+### Deprecated
+
+- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ## [12.7.1](https://github.com/Instabug/Instabug-React-Native/compare/v12.7.0...v12.7.1) (February 15, 2024)
 
