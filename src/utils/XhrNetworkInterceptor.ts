@@ -148,14 +148,11 @@ export default {
               cloneNetwork.errorCode = 0;
               cloneNetwork.errorDomain = 'ClientError';
 
-              // detect error message when the make xhr requests like using axios
-              // @ts-ignore
-              if (this._response != null && this._response.toString().length > 0) {
-                // @ts-ignore
-                cloneNetwork.errorDomain = stringifyIfNotString(this._response);
-              }
               // @ts-ignore
               const _response = this._response;
+              if (_response != null && _response.toString().length > 0) {
+                cloneNetwork.errorDomain = stringifyIfNotString(_response);
+              }
               cloneNetwork.requestBody =
                 typeof _response === 'string' ? _response : JSON.stringify(_response);
               cloneNetwork.responseBody = null;
