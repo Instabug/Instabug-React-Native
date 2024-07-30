@@ -150,12 +150,10 @@ export default {
 
               // @ts-ignore
               const _response = this._response;
+              // detect error message when the make xhr requests like using axios
               if (_response != null && _response.toString().length > 0) {
-                cloneNetwork.errorDomain = stringifyIfNotString(_response);
+                cloneNetwork.errorDomain = typeof _response === 'string' ? _response : '';
               }
-              cloneNetwork.requestBody =
-                typeof _response === 'string' ? _response : JSON.stringify(_response);
-              cloneNetwork.responseBody = null;
 
               // @ts-ignore
             } else if (this._timedOut) {
@@ -170,6 +168,9 @@ export default {
               } else if (['text', '', 'json'].includes(this.responseType)) {
                 cloneNetwork.responseBody = JSON.stringify(this.response);
               }
+            } else {
+              cloneNetwork.responseBody = '';
+              cloneNetwork.contentType = 'text/plain';
             }
 
             cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;
