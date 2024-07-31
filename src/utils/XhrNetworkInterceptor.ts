@@ -150,9 +150,9 @@ export default {
 
               // @ts-ignore
               const _response = this._response;
-              // detect error message when the make xhr requests like using axios
-              if (_response != null && _response.toString().length > 0) {
-                cloneNetwork.errorDomain = typeof _response === 'string' ? _response : '';
+              // Detect a more descriptive error message.
+              if (typeof _response === 'string' && _response.length > 0) {
+                cloneNetwork.errorDomain = _response;
               }
 
               // @ts-ignore
