@@ -8,6 +8,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
+import { registerW3CFlagsListener } from '../utils/FeatureFlags';
 import {
   ColorTheme,
   Locale,
@@ -62,6 +63,8 @@ function reportCurrentViewForAndroid(screenName: string | null) {
 export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
+
+  Platform.OS === 'android' && registerW3CFlagsListener();
 
   // Default networkInterceptionMode to JavaScript
   if (config.networkInterceptionMode == null) {

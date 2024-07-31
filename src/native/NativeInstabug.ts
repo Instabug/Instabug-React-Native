@@ -11,6 +11,7 @@ import type {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import type { NativeConstants } from './NativeConstants';
+import type { W3cExternalTraceAttributes } from '../utils/Types';
 import { NativeModules } from './NativePackage';
 
 export interface InstabugNativeModule extends NativeModule {
@@ -67,6 +68,7 @@ export interface InstabugNativeModule extends NativeModule {
     duration: number,
     gqlQueryName: string | undefined,
     serverErrorMessage: string | undefined,
+    W3cExternalTraceAttributes: W3cExternalTraceAttributes,
   ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;

@@ -299,8 +299,15 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                       startTime:(double)startTime
                        duration:(double)duration
                    gqlQueryName:(NSString * _Nullable)gqlQueryName
-             serverErrorMessage:(NSString * _Nullable)serverErrorMessage) {
-    [IBGNetworkLogger addNetworkLogWithUrl:url
+             serverErrorMessage:(NSString * _Nullable)serverErrorMessage
+     w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes){
+        NSNumber *isW3cCaught = (w3cExternalTraceAttributes[@"isW3cHeaderFound"] != [NSNull null]) ? w3cExternalTraceAttributes[@"isW3cHeaderFound"] : nil;
+        NSNumber * partialID = (w3cExternalTraceAttributes[@"partialId"] != [NSNull null]) ? w3cExternalTraceAttributes[@"partialId"] : nil;
+        NSNumber * timestamp = (w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] != [NSNull null]) ? w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] : nil;
+        NSString * generatedW3CTraceparent = (w3cExternalTraceAttributes[@"w3cGeneratedHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cGeneratedHeader"] : nil;
+        NSString * caughtW3CTraceparent = (w3cExternalTraceAttributes[@"w3cCaughtHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cCaughtHeader"] : nil;
+    
+        [IBGNetworkLogger addNetworkLogWithUrl:url
                                     method:method
                                requestBody:requestBody
                            requestBodySize:requestBodySize
@@ -315,8 +322,14 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  startTime:startTime * 1000
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage];
-}
+                        serverErrorMessage:serverErrorMessage
+                             isW3cCaughted:isW3cCaught
+                                 partialID:partialID
+                                 timestamp:timestamp
+                   generatedW3CTraceparent:generatedW3CTraceparent
+                    caughtedW3CTraceparent:caughtW3CTraceparent
+    ];
+ }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];

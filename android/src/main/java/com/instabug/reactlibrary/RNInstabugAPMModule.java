@@ -7,15 +7,25 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.instabug.apm.APM;
+import com.instabug.apm.configuration.cp.APMFeature;
+import com.instabug.apm.configuration.cp.APMFeaturesAvailability;
 import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.apm.InternalAPM;
+import com.instabug.apm.configuration.cp.FeaturesChangeListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,12 +33,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.annotation.Nonnull;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
-public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
+public class RNInstabugAPMModule extends EventEmitterModule {
 
     public RNInstabugAPMModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
@@ -314,6 +325,104 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             }
         });
     }
+    /**
+     * Register a listener for W3C flags value change
+     */
+    @ReactMethod
+    public void registerW3CFlagsChangeListener(final Callback handler){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InternalAPM._registerCPFeaturesChangeListener(new FeaturesChangeListener() {
+                        @Override
+                        public void invoke(@NonNull APMFeaturesAvailability apmFeaturesAvailability) {
+                            WritableMap params = Arguments.createMap();
+                            params.putBoolean("isW3ExternalTraceIDEnabled", apmFeaturesAvailability.isW3CExternalTraceIdAvailable());
+                            params.putBoolean("isW3ExternalGeneratedHeaderEnabled", apmFeaturesAvailability.getShouldAttachGeneratedHeader());
+                            params.putBoolean("isW3CaughtHeaderEnabled", apmFeaturesAvailability.getShouldAttachCapturedHeader());
+
+                            sendEvent(Constants.IBGAPM_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+    }
+
+
+    /**
+     *  Get first time Value of W3ExternalTraceID flag
+     */
+    @ReactMethod
+    public void isW3ExternalTraceIDEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalAPM._isFeatureEnabledCP(APMFeature.W3C_EXTERNAL_TRACE_ID, " "));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(null);
+                }
+
+            }
+
+        });
+    }
+
+
+    /**
+     *  Get first time Value of W3ExternalGeneratedHeader flag
+     */
+    @ReactMethod
+    public void isW3ExternalGeneratedHeaderEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalAPM._isFeatureEnabledCP(APMFeature.W3C_GENERATED_HEADER_ATTACHING, " "));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(null);
+                }
+
+            }
+
+        });
+    }
+
+    /**
+     *  Get first time Value of W3CaughtHeader flag
+     */
+    @ReactMethod
+    public void isW3CaughtHeaderEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalAPM._isFeatureEnabledCP(APMFeature.W3C_CAPTURED_HEADER_ATTACHING,""));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(null);
+                }
+
+            }
+
+        });
+    }
 
     @ReactMethod
     private void networkLogAndroid(final double requestStartTime,
@@ -330,6 +439,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                                    final double statusCode,
                                    final String responseContentType,
                                    @Nullable final String errorDomain,
+                                   @Nullable final ReadableMap w3cAttributes,
                                    @Nullable final String gqlQueryName,
                                    @Nullable final String serverErrorMessage) {
         try {
@@ -337,6 +447,33 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
             final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
             final String errorMessage = hasError ? errorDomain : null;
+
+            Boolean isW3cHeaderFound=false;
+            Long partialId=null;
+            Long networkStartTimeInSeconds=null;
+
+
+            try {
+                if (w3cAttributes.hasKey("isW3cHeaderFound")) {
+                    isW3cHeaderFound = w3cAttributes.getBoolean("isW3cHeaderFound");
+                }
+
+                if (w3cAttributes.hasKey("partialId")) {
+                    partialId =(long) w3cAttributes.getDouble("partialId");
+                    networkStartTimeInSeconds = (long) w3cAttributes.getDouble("networkStartTimeInSeconds");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
+                    new APMCPNetworkLog.W3CExternalTraceAttributes(
+                            isW3cHeaderFound,
+                            partialId,
+                            networkStartTimeInSeconds,
+                            w3cAttributes.getString("w3cGeneratedHeader"),
+                            w3cAttributes.getString("w3cCaughtHeader")
+                    );
 
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class, APMCPNetworkLog.W3CExternalTraceAttributes.class);
@@ -359,8 +496,9 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                                 errorMessage,
                                 gqlQueryName,
                                 serverErrorMessage,
-                                null
+                                w3cExternalTraceAttributes
                         );
+
                 } else {
                     Log.e("IB-CP-Bridge", "APMNetworkLogger.log was not found by reflection");
                 }
@@ -371,4 +509,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
     }
+
+
 }

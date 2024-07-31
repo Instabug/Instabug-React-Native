@@ -20,7 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
                    startTime:(int64_t)startTime
                     duration:(int64_t) duration
                 gqlQueryName:(NSString * _Nullable)gqlQueryName
-          serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
+          serverErrorMessage:(NSString * _Nullable)serverErrorMessage
+               isW3cCaughted:(NSNumber * _Nullable)isW3cCaughted
+                   partialID:(NSNumber * _Nullable)partialID
+                   timestamp:(NSNumber * _Nullable)timestamp
+     generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
+      caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
 
 @end
 
