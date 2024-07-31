@@ -4,7 +4,7 @@
 
 ### Added
 
-- Enhance the network interceptor to capture some client error messages ([#1256](https://github.com/Instabug/Instabug-React-Native/pull/1256)).
+- Export `uploadSourcemaps` and `uploadSoFiles` utilities in the `instabug-reactnative/upload` sub-package for usage in custom Node.js upload scripts ([#1252](https://github.com/Instabug/Instabug-React-Native/pull/1252)).
 
 ### Fixed
 

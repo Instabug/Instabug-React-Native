@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 
-import { uploadSourcemapsCommand } from './UploadSourcemaps';
-import { UploadSoFilesCommand } from './UploadSoFiles';
+import { uploadSourcemapsCommand } from './commands/UploadSourcemaps';
+import { UploadSoFilesCommand } from './commands/UploadSoFiles';
 
 const program = new Command();
 
