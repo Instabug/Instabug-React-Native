@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["cli/upload/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "lib": ["dom"],
+    "outDir": "upload",
+    "module": "esnext"
+  }
+}
