@@ -152,7 +152,7 @@ export default {
               const _response = this._response;
               // Detect a more descriptive error message.
               if (typeof _response === 'string' && _response.length > 0) {
-                cloneNetwork.errorDomain = _response;
+                cloneNetwork.errorDomain = _response.replaceAll(' ', '-');
               }
 
               // @ts-ignore
