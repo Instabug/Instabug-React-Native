@@ -343,7 +343,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                 if (method != null) {
                         method.invoke(
                                 networkLogger,
-                                (long) requestStartTime*1000,
+                                (long) requestStartTime * 1000,
                                 (long) requestDuration,
                                 requestHeaders,
                                 requestBody,
