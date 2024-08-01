@@ -9,7 +9,7 @@ import waitForExpect from 'wait-for-expect';
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
+import { NativeEvents, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -21,6 +21,7 @@ import {
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -773,5 +774,22 @@ describe('Instabug Module', () => {
   it('should call the native willRedirectToStore method', () => {
     Instabug.willRedirectToStore();
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
+  });
+
+  it('should register W3C flag listener', async () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+
+    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
+    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledWith(callback);
+  });
+
+  it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANE);
+
+    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANE)).toBe(1);
+    expect(callback).toHaveBeenCalled();
   });
 });

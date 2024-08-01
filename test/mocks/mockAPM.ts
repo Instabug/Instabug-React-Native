@@ -17,10 +17,6 @@ const mockAPM: ApmNativeModule = {
   endAppLaunch: jest.fn(),
   ibgSleep: jest.fn(),
   networkLogAndroid: jest.fn(),
-  isW3ExternalTraceIDEnabled: jest.fn(),
-  isW3ExternalGeneratedHeaderEnabled: jest.fn(),
-  isW3CaughtHeaderEnabled: jest.fn(),
-  registerW3CFlagsChangeListener: jest.fn(),
 };
 
 export default mockAPM;

@@ -1,5 +1,5 @@
 import type React from 'react';
-import { Platform, findNodeHandle, processColor } from 'react-native';
+import { findNodeHandle, Platform, processColor } from 'react-native';
 
 import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
@@ -7,7 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
 import { registerW3CFlagsListener } from '../utils/FeatureFlags';
 import {
   ColorTheme,
@@ -579,4 +579,21 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     NativeInstabug.reportScreenChange(event.componentName);
     _lastScreen = event.componentName;
   }
+};
+
+/**
+ * Sets listener to W3ExternalTraceID flag changes
+ * @param handler A callback that gets the update value of the flag
+ */
+export const _registerW3CFlagsChangeListener = (
+  handler: (payload: {
+    isW3ExternalTraceIDEnabled: boolean;
+    isW3ExternalGeneratedHeaderEnabled: boolean;
+    isW3CaughtHeaderEnabled: boolean;
+  }) => void,
+) => {
+  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
+    handler(payload);
+  });
+  NativeInstabug.registerW3CFlagsChangeListener(handler);
 };
