@@ -1107,7 +1107,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                             params.putBoolean("isW3ExternalGeneratedHeaderEnabled", featuresState.isAttachingGeneratedHeaderEnabled());
                             params.putBoolean("isW3CaughtHeaderEnabled", featuresState.isAttachingCapturedHeaderEnabled());
 
-                            sendEvent(Constants.IBGCore_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
+                            sendEvent(Constants.IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
                         }
                     });
                 }

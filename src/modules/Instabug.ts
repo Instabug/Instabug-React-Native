@@ -580,3 +580,20 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     _lastScreen = event.componentName;
   }
 };
+
+/**
+ * Sets listener to W3ExternalTraceID flag changes
+ * @param handler A callback that gets the update value of the flag
+ */
+export const _registerW3CFlagsChangeListener = (
+  handler: (payload: {
+    isW3ExternalTraceIDEnabled: boolean;
+    isW3ExternalGeneratedHeaderEnabled: boolean;
+    isW3CaughtHeaderEnabled: boolean;
+  }) => void,
+) => {
+  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
+    handler(payload);
+  });
+  NativeInstabug.registerW3CFlagsChangeListener(handler);
+};
