@@ -73,7 +73,7 @@
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
-  
+
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
@@ -85,9 +85,9 @@
 - (void)testSetCodePushVersion {
   id mock = OCMClassMock([Instabug class]);
   NSString *codePushVersion = @"123";
-  
+
   [self.instabugBridge setCodePushVersion:codePushVersion];
-  
+
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 }
 
@@ -496,6 +496,45 @@
   OCMStub([mock clearAllExperiments]);
   [self.instabugBridge clearAllExperiments];
   OCMVerify([mock clearAllExperiments]);
+}
+
+- (void)testAddFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSDictionary *featureFlagsMap = @{ @"key13" : @"value1", @"key2" : @"value2"};
+
+  OCMStub([mock addFeatureFlags :[OCMArg any]]);
+  [self.instabugBridge addFeatureFlags:featureFlagsMap];
+  OCMVerify([mock addFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+    NSArray<IBGFeatureFlag *> *featureFlags = value;
+    NSString* firstFeatureFlagName = [featureFlags objectAtIndex:0 ].name;
+    NSString* firstFeatureFlagKey = [[featureFlagsMap allKeys] objectAtIndex:0] ;
+    if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+      return YES;
+    }
+    return  NO;
+  }]]);
+}
+
+- (void)testRemoveFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *featureFlags = @[@"exp1", @"exp2"];
+  [self.instabugBridge removeFeatureFlags:featureFlags];
+     OCMVerify([mock removeFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+        NSArray<IBGFeatureFlag *> *featureFlagsObJ = value;
+        NSString* firstFeatureFlagName = [featureFlagsObJ objectAtIndex:0 ].name;
+        NSString* firstFeatureFlagKey = [featureFlags firstObject] ;
+        if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+          return YES;
+        }
+        return  NO;
+      }]]);
+}
+
+- (void)testRemoveAllFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  OCMStub([mock removeAllFeatureFlags]);
+  [self.instabugBridge removeAllFeatureFlags];
+  OCMVerify([mock removeAllFeatureFlags]);
 }
 
 @end

@@ -21,6 +21,7 @@ import {
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
+import type { FeatureFlag } from '../../src/models/FeatureFlag';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -768,6 +769,57 @@ describe('Instabug Module', () => {
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
+  });
+
+  it('should call native addFeatureFlags method', () => {
+    const featureFlags: Array<FeatureFlag> = [
+      {
+        name: 'key1',
+        variant: 'variant1',
+      },
+      {
+        name: 'key2',
+        variant: 'variant2',
+      },
+    ];
+    const expected: Record<string, string | undefined> = {};
+    expected.key1 = 'variant1';
+    expected.key2 = 'variant2';
+
+    Instabug.addFeatureFlags(featureFlags);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledWith(expected);
+  });
+
+  it('should call native addFeatureFlag method', () => {
+    const featureFlag: FeatureFlag = {
+      name: 'key1',
+      variant: 'variant2',
+    };
+    const expected: Record<string, string | undefined> = {};
+    expected.key1 = 'variant2';
+
+    Instabug.addFeatureFlag(featureFlag);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledWith(expected);
+  });
+  it('should call native removeFeatureFlags method', () => {
+    const featureFlags = ['exp1', 'exp2'];
+    Instabug.removeFeatureFlags(featureFlags);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledWith(featureFlags);
+  });
+
+  it('should call native removeFeatureFlag method', () => {
+    const featureFlag = 'exp1';
+    Instabug.removeFeatureFlag(featureFlag);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledWith([featureFlag]);
+  });
+
+  it('should call native removeAllFeatureFlags method', () => {
+    Instabug.removeAllFeatureFlags();
+    expect(NativeInstabug.removeAllFeatureFlags).toBeCalledTimes(1);
   });
 
   it('should call the native willRedirectToStore method', () => {
