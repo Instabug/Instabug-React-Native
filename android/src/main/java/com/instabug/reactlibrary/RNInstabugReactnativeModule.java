@@ -16,6 +16,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
@@ -29,6 +30,7 @@ import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.core.InstabugCore;
+import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
@@ -41,6 +43,7 @@ import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import com.instabug.reactlibrary.utils.RNTouchedViewExtractor;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -50,6 +53,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1023,6 +1027,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    /**
+     * @deprecated see {@link #addFeatureFlags(ReadableArray)}
+     */
     @ReactMethod
     public void addExperiments(final ReadableArray experiments) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -1039,6 +1046,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    /**
+     * @deprecated see {@link #removeFeatureFlags(ReadableArray)}
+     */
     @ReactMethod
     public void removeExperiments(final ReadableArray experiments) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -1055,6 +1065,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
+    /**
+     * @deprecated see {@link #removeAllFeatureFlags()}
+     */
     @ReactMethod
     public void clearAllExperiments() {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -1062,6 +1075,59 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     Instabug.clearAllExperiments();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void addFeatureFlags(final ReadableMap featureFlagsMap) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Iterator<Map.Entry<String, Object>> iterator = featureFlagsMap.getEntryIterator();
+                    ArrayList<IBGFeatureFlag> featureFlags = new ArrayList<>();
+                    while (iterator.hasNext()) {
+                        Map.Entry<String, Object> item = iterator.next();
+                        String variant = (String) item.getValue();
+                        String name = item.getKey();
+                        featureFlags.add(new IBGFeatureFlag(name, variant.isEmpty() ? null : variant));
+                    }
+                    if (!featureFlags.isEmpty()) {
+                        Instabug.addFeatureFlags(featureFlags);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removeFeatureFlags(final ReadableArray featureFlags) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                   ArrayList<String> stringArray = ArrayUtil.parseReadableArrayOfStrings(featureFlags);
+                    Instabug.removeFeatureFlag(stringArray);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void removeAllFeatureFlags() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.removeAllFeatureFlags();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
