@@ -12,6 +12,7 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
+#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
 #import "ArgsRegistry.h"
@@ -105,26 +106,6 @@
  */
 
 - (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
-- (void)isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
-- (void)isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
-- (void)isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
-- (void)networkLogIOS:(NSString * _Nonnull)url
-              method:(NSString * _Nonnull)method
-         requestBody:(NSString * _Nonnull)requestBody
-     requestBodySize:(double)requestBodySize
-        responseBody:(NSString * _Nonnull)responseBody
-    responseBodySize:(double)responseBodySize
-        responseCode:(double)responseCode
-      requestHeaders:(NSDictionary * _Nonnull)requestHeaders
-     responseHeaders:(NSDictionary * _Nonnull)responseHeaders
-         contentType:(NSString * _Nonnull)contentType
-         errorDomain:(NSString * _Nullable)errorDomain
-           errorCode:(double)errorCode
-           startTime:(double)startTime
-            duration:(double)duration
-        gqlQueryName:(NSString * _Nullable)gqlQueryName
-  serverErrorMessage:(NSString * _Nullable)serverErrorMessage
-w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 
 - (void)networkLogIOS:(NSString * _Nonnull)url
                method:(NSString * _Nonnull)method
@@ -152,7 +133,6 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)addExperiments:(NSArray *)experiments;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
-
 - (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
 - (void)removeFeatureFlags:(NSArray *)featureFlags;
 - (void)removeAllFeatureFlags;

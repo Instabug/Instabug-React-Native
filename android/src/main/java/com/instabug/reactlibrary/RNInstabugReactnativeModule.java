@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,8 +22,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.instabug.apm.InternalAPM;
-import com.instabug.apm.configuration.cp.APMFeature;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -33,10 +30,6 @@ import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.core.InstabugCore;
-import com.instabug.library.internal.crossplatform.CoreFeature;
-import com.instabug.library.internal.crossplatform.CoreFeaturesState;
-import com.instabug.library.internal.crossplatform.FeaturesStateListener;
-import com.instabug.library.internal.crossplatform.InternalCore;
 import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
@@ -1035,7 +1028,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * @deprecated see @link #addFeatureFlags(ReadableArray)
+     * @deprecated see {@link #addFeatureFlags(ReadableArray)}
      */
     @ReactMethod
     public void addExperiments(final ReadableArray experiments) {
@@ -1155,105 +1148,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-    /**
-     * Register a listener for W3C flags value change
-     */
-    @ReactMethod
-    public void registerW3CFlagsChangeListener(){
-
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InternalCore.INSTANCE._setFeaturesStateListener(new FeaturesStateListener() {
-                        @Override
-                        public void invoke(@NonNull CoreFeaturesState featuresState) {
-                            WritableMap params = Arguments.createMap();
-                            params.putBoolean("isW3ExternalTraceIDEnabled", featuresState.isW3CExternalTraceIdEnabled());
-                            params.putBoolean("isW3ExternalGeneratedHeaderEnabled", featuresState.isAttachingGeneratedHeaderEnabled());
-                            params.putBoolean("isW3CaughtHeaderEnabled", featuresState.isAttachingCapturedHeaderEnabled());
-
-                            sendEvent(Constants.IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
-                        }
-                    });
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        });
-    }
-
-
-    /**
-     *  Get first time Value of W3ExternalTraceID flag
-     */
-    @ReactMethod
-    public void isW3ExternalTraceIDEnabled(Promise promise){
-
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_EXTERNAL_TRACE_ID));
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(null);
-                }
-
-            }
-
-        });
-    }
-
-
-    /**
-     *  Get first time Value of W3ExternalGeneratedHeader flag
-     */
-    @ReactMethod
-    public void isW3ExternalGeneratedHeaderEnabled(Promise promise){
-
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_GENERATED_HEADER));
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(null);
-                }
-
-            }
-
-        });
-    }
-
-    /**
-     *  Get first time Value of W3CaughtHeader flag
-     */
-    @ReactMethod
-    public void isW3CaughtHeaderEnabled(Promise promise){
-
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER));
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(null);
-                }
-
-            }
-
-        });
-    }
-
 
     /**
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.

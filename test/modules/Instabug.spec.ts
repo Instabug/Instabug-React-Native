@@ -2,7 +2,6 @@ import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
-import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -10,7 +9,7 @@ import waitForExpect from 'wait-for-expect';
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeEvents, emitter } from '../../src/native/NativeInstabug';
+import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -22,7 +21,6 @@ import {
   WelcomeMessageMode,
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
-import { NativeInstabug } from '../../src/native/NativeInstabug';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
 
 describe('Instabug Module', () => {
@@ -236,42 +234,6 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.reportScreenChange).toBeCalledWith('ScreenName');
 
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
-  });
-
-  it('setNavigationListener should call the onStateChange on a screen change', async () => {
-    const mockedState = { routes: [{ name: 'ScreenName' }], index: 0 };
-
-    const mockNavigationContainerRef = {
-      current: null,
-      navigate: jest.fn(),
-      reset: jest.fn(),
-      goBack: jest.fn(),
-      dispatch: jest.fn(),
-      getRootState: () => mockedState,
-      canGoBack: jest.fn(),
-
-      addListener: jest.fn((event, callback) => {
-        expect(event).toBe('state');
-        callback(mockedState);
-        return jest.fn();
-      }),
-      removeListener: jest.fn(),
-    } as unknown as NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>;
-
-    const onStateChangeMock = jest.fn();
-
-    jest.spyOn(Instabug, 'onStateChange').mockImplementation(onStateChangeMock);
-
-    Instabug.setNavigationListener(mockNavigationContainerRef);
-
-    expect(mockNavigationContainerRef.addListener).toBeCalledTimes(1);
-    expect(mockNavigationContainerRef.addListener).toHaveBeenCalledWith(
-      'state',
-      expect.any(Function),
-    );
-
-    expect(onStateChangeMock).toBeCalledTimes(1);
-    expect(onStateChangeMock).toHaveBeenCalledWith(mockNavigationContainerRef.getRootState());
   });
 
   it('should call the native method init', () => {
@@ -863,21 +825,5 @@ describe('Instabug Module', () => {
   it('should call the native willRedirectToStore method', () => {
     Instabug.willRedirectToStore();
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
-  });
-
-  it('should register W3C flag listener', async () => {
-    const callback = jest.fn();
-    Instabug._registerW3CFlagsChangeListener(callback);
-
-    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
-  });
-
-  it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
-    const callback = jest.fn();
-    Instabug._registerW3CFlagsChangeListener(callback);
-    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANGE);
-
-    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
-    expect(callback).toHaveBeenCalled();
   });
 });
