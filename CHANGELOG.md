@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...dev)
+## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
 
 ### Added
 
