@@ -73,21 +73,16 @@
 - Bump Instabug iOS SDK to v13.0.0 ([#1189](https://github.com/Instabug/Instabug-React-Native/pull/1189)). [See release notes](https://github.com/instabug/instabug-ios/releases/tag/13.0.0).
 - Bump Instabug Android SDK to v13.0.0 ([#1188](https://github.com/Instabug/Instabug-React-Native/pull/1188)). [See release notes](https://github.com/Instabug/android/releases/tag/v13.0.0).
 
+### Deprecated
+
+- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
+
 ## [12.9.0](https://github.com/Instabug/Instabug-React-Native/compare/v12.8.0...12.9.0)(April 2, 2024)
 
 ### Added
 
 - Adds symbol files upload script ([#1137](https://github.com/Instabug/Instabug-React-Native/pull/1137))
 - Support enabling NDK crash capturing on Android ([#1132](https://github.com/Instabug/Instabug-React-Native/pull/1132)).
-- Add support for App Flows APIs `APM.startFlow`, `APM.setFlowAttribute` and `APM.endFlow` ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
-
-### Deprecated
-
-- Deprecate execution traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setFlowAttribute` in favor of the new app flow APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
-
-### Deprecated
-
-- Deprecate Execution Traces APIs `APM.startExecutionTrace`, `Trace.end` and `Trace.setAttribute` in favor of the new App Flows APIs ([#1138](https://github.com/Instabug/Instabug-React-Native/pull/1138)).
 
 ### Changed
 
