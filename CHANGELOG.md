@@ -7,6 +7,10 @@
 - Add support for Feature Flags APIs `Instabug.addFeatureFlags`, `Instabug.removeFeatureFlags` and `Instabug.clearAllFeatureFlags` ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
 - Export `uploadSourcemaps` and `uploadSoFiles` utilities in the `instabug-reactnative/upload` sub-package for usage in custom Node.js upload scripts ([#1252](https://github.com/Instabug/Instabug-React-Native/pull/1252)).
 
+### Changed
+
+- Bump Instabug Android SDK to v13.3.0 ([#1261](https://github.com/Instabug/Instabug-React-Native/pull/1261)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v13.3.0).
+
 ### Deprecated
 
 - Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
