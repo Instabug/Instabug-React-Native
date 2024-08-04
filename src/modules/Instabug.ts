@@ -21,6 +21,7 @@ import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
+import type { FeatureFlag } from '../models/FeatureFlag';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -539,6 +540,8 @@ export const reportScreenChange = (screenName: string) => {
 /**
  * Add experiments to next report.
  * @param experiments An array of experiments to add to the next report.
+ *
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link addFeatureFlags}.
  */
 export const addExperiments = (experiments: string[]) => {
   NativeInstabug.addExperiments(experiments);
@@ -547,6 +550,8 @@ export const addExperiments = (experiments: string[]) => {
 /**
  * Remove experiments from next report.
  * @param experiments An array of experiments to remove from the next report.
+ *
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link removeFeatureFlags}.
  */
 export const removeExperiments = (experiments: string[]) => {
   NativeInstabug.removeExperiments(experiments);
@@ -554,9 +559,51 @@ export const removeExperiments = (experiments: string[]) => {
 
 /**
  * Clear all experiments
+ *
+ * @deprecated Please migrate to the new Feature Flags APIs: {@link removeAllFeatureFlags}.
  */
 export const clearAllExperiments = () => {
   NativeInstabug.clearAllExperiments();
+};
+
+/**
+ * Add feature flags to the next report.
+ * @param featureFlags An array of feature flags to add to the next report.
+ */
+export const addFeatureFlags = (featureFlags: FeatureFlag[]) => {
+  const entries = featureFlags.map((item) => [item.name, item.variant || '']);
+  const flags = Object.fromEntries(entries);
+  NativeInstabug.addFeatureFlags(flags);
+};
+
+/**
+ * Add a feature flag to the to next report.
+ */
+export const addFeatureFlag = (featureFlag: FeatureFlag) => {
+  addFeatureFlags([featureFlag]);
+};
+
+/**
+ * Remove feature flags from the next report.
+ * @param featureFlags An array of  feature flags to remove from the next report.
+ */
+export const removeFeatureFlags = (featureFlags: string[]) => {
+  NativeInstabug.removeFeatureFlags(featureFlags);
+};
+
+/**
+ * Remove a feature flag from the next report.
+ * @param name the name of the feature flag to remove from the next report.
+ */
+export const removeFeatureFlag = (name: string) => {
+  removeFeatureFlags([name]);
+};
+
+/**
+ * Clear all feature flags
+ */
+export const removeAllFeatureFlags = () => {
+  NativeInstabug.removeAllFeatureFlags();
 };
 
 /**
