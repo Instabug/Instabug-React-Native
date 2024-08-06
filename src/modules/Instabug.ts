@@ -1,5 +1,5 @@
 import type React from 'react';
-import { Platform, findNodeHandle, processColor } from 'react-native';
+import { findNodeHandle, Platform, processColor } from 'react-native';
 
 import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
@@ -7,7 +7,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
 import {
   ColorTheme,
   Locale,
@@ -22,6 +22,7 @@ import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
+import NetworkSnapshot from '../models/NetworkSnapshot';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -69,9 +70,12 @@ export const init = (config: InstabugConfig) => {
     config.networkInterceptionMode = NetworkInterceptionMode.javascript;
   }
 
-  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
-    NetworkLogger.setEnabled(true);
-  }
+  //todo: need to check for APM flag
+  NetworkLogger.setEnabled(true);
+
+  // if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+  //   NetworkLogger.setEnabled(true);
+  // }
 
   NativeInstabug.init(
     config.token,
@@ -486,6 +490,29 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   });
 
   NativeInstabug.setPreSendingHandler(handler);
+};
+
+export const registerNetworkLogsListener = (
+  handler?: (networkSnapshot: NetworkSnapshot) => void,
+) => {
+  if (emitter.listenerCount(NativeEvents.NETWORK_LOGGER_HANDLER) === 0) {
+    logDebug('IBGNetworkLogger: NetworkLogsListener attached');
+    emitter.addListener(NativeEvents.NETWORK_LOGGER_HANDLER, (networkSnapshot) => {
+      const { url, requestHeader, requestBody, responseHeader, response, responseCode } =
+        networkSnapshot;
+      const networkSnapshotObj = new NetworkSnapshot(
+        url,
+        requestHeader,
+        requestBody,
+        responseHeader,
+        response,
+        responseCode,
+      );
+      handler && handler(networkSnapshotObj);
+    });
+
+    NativeInstabug.registerNetworkLogsListener(handler);
+  }
 };
 
 export const onNavigationStateChange = (

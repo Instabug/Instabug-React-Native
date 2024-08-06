@@ -75,7 +75,7 @@ export const NetworkScreen: React.FC = () => {
               value={endpointUrl}
             />
             <CustomButton onPress={sendRequestToUrl} title="Send Request To Url" />
-            <CustomButton onPress={() => refetch} title="Reload GraphQL" />
+            <CustomButton onPress={() => refetch()} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}

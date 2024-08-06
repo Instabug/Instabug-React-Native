@@ -318,6 +318,20 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                         serverErrorMessage:serverErrorMessage];
 }
 
+RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
+    [IBGNetworkLogger setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
+                NSMutableURLRequest *mRequest = [request mutableCopy];
+                mRequest.URL = [NSURL URLWithString: url];
+                return mRequest;
+            }];
+}
+RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:expression];
+    NSPredicate *responsePredicate = [NSPredicate predicateWithFormat:expression];
+    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:responsePredicate];
+}
+
+
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
     UIView* view = [self.bridge.uiManager viewForReactTag:reactTag];
     view.instabug_privateView = true;

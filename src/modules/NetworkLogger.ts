@@ -2,7 +2,10 @@ import type { RequestHandler } from '@apollo/client';
 
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import { reportNetworkLog, isContentTypeNotAllowed } from '../utils/InstabugUtils';
+import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
+import { Platform } from 'react-native';
+import { logDebug, registerNetworkLogsListener } from './Instabug';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 export type { NetworkData };
 
@@ -25,6 +28,18 @@ export const setEnabled = (isEnabled: boolean) => {
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
+            if (Platform.OS === 'android') {
+              //todo: check if need to unregister
+              registerNetworkLogsListener((networkSnapshot) => {
+                logDebug(`IBGNetworkLogger: new Snapshot dispatched ${networkSnapshot}`);
+                networkSnapshot.url = network.url;
+                NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+                logDebug(`IBGNetworkLogger: Android obfuscated to ${networkSnapshot}`);
+              });
+            } else {
+              NativeInstabug.setRequestObfuscationHandlerIOS(network.url);
+              logDebug(`IBGNetworkLogger: iOS obfuscated to ${network}`);
+            }
           }
 
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
@@ -78,6 +93,10 @@ export const setNetworkDataObfuscationHandler = (
  */
 export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
+  //todo: need optimization (challenge: developer will need to write [expression] in Obj C)
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(expression);
+  }
 };
 
 /**

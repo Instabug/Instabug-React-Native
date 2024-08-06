@@ -12,6 +12,7 @@ import type {
 } from '../utils/Enums';
 import type { NativeConstants } from './NativeConstants';
 import { NativeModules } from './NativePackage';
+import type NetworkSnapshot from '../models/NetworkSnapshot';
 
 export interface InstabugNativeModule extends NativeModule {
   getConstants(): NativeConstants;
@@ -70,6 +71,10 @@ export interface InstabugNativeModule extends NativeModule {
   ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;
+  registerNetworkLogsListener(handler?: (networkSnapshot: NetworkSnapshot) => void): void;
+  updateNetworkLogSnapshot(networkData: string): void;
+  setRequestObfuscationHandlerIOS(networkUrl: string): void;
+  setNetworkLoggingRequestFilterPredicateIOS(expression: string): void;
 
   // Repro Steps APIs //
   setReproStepsConfig(
@@ -146,6 +151,7 @@ export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  NETWORK_LOGGER_HANDLER = 'IBGNetworkLoggerHandler',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);
