@@ -150,9 +150,15 @@ export default {
 
               // @ts-ignore
               const _response = this._response;
-              cloneNetwork.requestBody =
-                typeof _response === 'string' ? _response : JSON.stringify(_response);
-              cloneNetwork.responseBody = null;
+              // Detect a more descriptive error message.
+              if (typeof _response === 'string' && _response.length > 0) {
+                cloneNetwork.errorDomain = _response.replaceAll(' ', '-');
+              }
+
+              // @ts-ignore
+            } else if (this._timedOut) {
+              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorDomain = 'TimeOutError';
             }
 
             if (this.response) {
@@ -162,6 +168,9 @@ export default {
               } else if (['text', '', 'json'].includes(this.responseType)) {
                 cloneNetwork.responseBody = JSON.stringify(this.response);
               }
+            } else {
+              cloneNetwork.responseBody = '';
+              cloneNetwork.contentType = 'text/plain';
             }
 
             cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;

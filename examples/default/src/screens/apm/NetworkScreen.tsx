@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
 import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
+import axios from 'axios';
 
 export const NetworkScreen: React.FC = () => {
   const [endpointUrl, setEndpointUrl] = useState('');
@@ -36,6 +37,32 @@ export const NetworkScreen: React.FC = () => {
 
       // Format the JSON response for better logging
       const formattedData = JSON.stringify(data, null, 2);
+
+      // Log the formatted response
+      console.log('Response:', formattedData);
+    } catch (error) {
+      // Handle errors appropriately
+      console.error('Error:', error);
+    }
+  }
+
+  async function sendRequestToUrlUsingAxios() {
+    let urlToSend = '';
+
+    if (endpointUrl.trim() !== '') {
+      urlToSend = endpointUrl;
+      console.log('Sending request to: ', endpointUrl);
+    } else {
+      // Use json placeholder URL as a default if endpointUrl is empty
+      console.log('sending request to default json placeholder');
+      urlToSend = defaultRequestUrl;
+    }
+
+    try {
+      // Perform the request using the urlToSend
+      const response = await axios.get(urlToSend);
+      // Format the JSON response for better logging
+      const formattedData = JSON.stringify(response.data, null, 2);
 
       // Log the formatted response
       console.log('Response:', formattedData);
@@ -75,6 +102,11 @@ export const NetworkScreen: React.FC = () => {
               value={endpointUrl}
             />
             <CustomButton onPress={sendRequestToUrl} title="Send Request To Url" />
+            <CustomButton
+              onPress={sendRequestToUrlUsingAxios}
+              title="Send Request To Url Using Axios"
+            />
+
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}
