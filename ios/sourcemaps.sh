@@ -48,14 +48,18 @@ main() {
   echo "$version_code"
   echo "$source_map_file"
 
-  if [ -z "$source_map_file" ]; then
+ if [[ ! -f "$source_map_file" ]]; then
+    echo "[Error] Unable to find source map file at: $source_map_file"
+    exit 0
+  fi
+
   node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
       --file $source_map_file \
       --token $app_token \
       --name $version_name \
       --code $version_code
-  fi
+
 }
 
 generate_sourcemaps() {
