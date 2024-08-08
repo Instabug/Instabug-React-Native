@@ -48,12 +48,14 @@ main() {
   echo "$version_code"
   echo "$source_map_file"
 
+  if [ -z "$source_map_file" ]; then
   node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
       --file $source_map_file \
       --token $app_token \
       --name $version_name \
       --code $version_code
+  fi
 }
 
 generate_sourcemaps() {
