@@ -238,20 +238,39 @@ describe('Instabug Module', () => {
   });
 
   it('setNavigationListener should call the onStateChange on a screen change', async () => {
+    const moakedState = { routes: [{ name: 'ScreenName' }], index: 0 };
+
     const mockNavigationContainerRef = {
       current: null,
       navigate: jest.fn(),
       reset: jest.fn(),
       goBack: jest.fn(),
       dispatch: jest.fn(),
-      getRootState: jest.fn(),
+      getRootState: () => moakedState,
       canGoBack: jest.fn(),
-      addListener: jest.fn(),
+
+      addListener: jest.fn((event, callback) => {
+        expect(event).toBe('state');
+        callback(moakedState);
+        return jest.fn();
+      }),
       removeListener: jest.fn(),
     } as unknown as NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>;
 
+    const onStateChangeMock = jest.fn();
+
+    jest.spyOn(Instabug, 'onStateChange').mockImplementation(onStateChangeMock);
+
     Instabug.setNavigationListener(mockNavigationContainerRef);
+
     expect(mockNavigationContainerRef.addListener).toBeCalledTimes(1);
+    expect(mockNavigationContainerRef.addListener).toHaveBeenCalledWith(
+      'state',
+      expect.any(Function),
+    );
+
+    expect(onStateChangeMock).toBeCalledTimes(1);
+    expect(onStateChangeMock).toHaveBeenCalledWith(mockNavigationContainerRef.getRootState());
   });
 
   it('should call the native method init', () => {
