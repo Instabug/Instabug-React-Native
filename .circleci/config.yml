@@ -64,6 +64,44 @@ commands:
           name: Find and Replace in << parameters.files >>
           command: node ~/project/scripts/replace.js << parameters.search >> << parameters.replace >> << parameters.files >>
 
+  prepare_custom_package:
+    parameters:
+      npm_package:
+        type: string
+      android_package:
+        type: string
+      api_endpoint:
+        type: string
+    steps:
+      - run:
+          name: Remove README.md file
+          command: rm README.md
+      - find_and_replace:
+          files: package.json android/sourcemaps.gradle ios/sourcemaps.sh
+          search: instabug-reactnative
+          replace: << parameters.npm_package >>
+      - find_and_replace:
+          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          search: api.instabug.com
+          replace: << parameters.api_endpoint >>
+      - find_and_replace:
+          files: android/native.gradle
+          search: 'com.instabug.library:instabug:'
+          replace: 'com.instabug.library-<< parameters.android_package >>:instabug:'
+
+  prepare_dream11:
+    steps:
+      - prepare_custom_package:
+          npm_package: '@instabug/instabug-reactnative-dream11'
+          android_package: dream11
+          api_endpoint: st001012dream11.instabug.com
+      - run:
+          name: Give execute permission to Dream11 script
+          command: chmod +x ./scripts/dream-11-delete-unused-features.sh
+      - run:
+          name: Remove unused features
+          command: ./scripts/dream-11-delete-unused-features.sh
+
   notify_github:
     parameters:
       data:
@@ -101,11 +139,16 @@ jobs:
           command: yarn lint:ci
 
   test_module:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules
+      - steps: << parameters.prepare_steps >>
       - run:
           name: Run Tests
           command: yarn test
@@ -115,6 +158,10 @@ jobs:
             - lcov.info
 
   test_android:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -123,8 +170,8 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      #      - node/install-yarn
       - install_node_modules
+      - steps: << parameters.prepare_steps >>
       - android/run-tests:
           working-directory: android
           test-command: ./gradlew test
@@ -164,6 +211,10 @@ jobs:
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -175,6 +226,7 @@ jobs:
       - install_node_modules
       - install_pods:
           working_directory: ios
+      - steps: << parameters.prepare_steps >>
       - run:
           name: Build and run tests
           working_directory: ios
@@ -196,6 +248,10 @@ jobs:
             - xcode.json
 
   e2e_ios:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -204,6 +260,7 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules
+      - steps: << parameters.prepare_steps >>
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -229,6 +286,10 @@ jobs:
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -237,8 +298,8 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      #      - node/install-yarn
       - install_node_modules
+      - steps: << parameters.prepare_steps >>
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -519,3 +580,37 @@ workflows:
           filters:
             branches:
               only: dream11
+
+      # Custom prepare tests
+      - hold_test_dream11:
+          type: approval
+      - test_module:
+          name: test_module_dream11
+          prepare_steps:
+            - prepare_dream11
+          requires:
+            - hold_test_dream11
+      - test_android:
+          name: test_android_dream11
+          prepare_steps:
+            - prepare_dream11
+          requires:
+            - hold_test_dream11
+      - test_ios:
+          name: test_ios_dream11
+          prepare_steps:
+            - prepare_dream11
+          requires:
+            - hold_test_dream11
+      - e2e_android:
+          name: e2e_android_dream11
+          prepare_steps:
+            - prepare_dream11
+          requires:
+            - hold_test_dream11
+      - e2e_ios:
+          name: e2e_ios_dream11
+          prepare_steps:
+            - prepare_dream11
+          requires:
+            - hold_test_dream11
