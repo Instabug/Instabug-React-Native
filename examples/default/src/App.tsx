@@ -35,7 +35,9 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    Instabug.setNavigationListener(navigationRef);
+    const unregisterListener = Instabug.setNavigationListener(navigationRef);
+
+    return unregisterListener;
   }, [navigationRef]);
 
   return (
