@@ -6,10 +6,14 @@ for feature in "${deletedFeaturesFilesInJavaScript[@]}"; do
 	echo "$feature"
 
 	rm -f src/modules/"$feature".ts
+	rm -f src/native/Native"$feature".ts
 	rm -f test/mocks/mock"$feature".ts
+	rm -f test/modules/"$feature".spec.ts
 
 	node scripts/replace.js --pattern "import.+$feature';" "" src/index.ts
 	node scripts/replace.js --pattern "$feature," "" src/index.ts
+	node scripts/replace.js --pattern ".*$feature.*" "" src/native/NativePackage.ts
+	node scripts/replace.js --pattern ".*$feature.*" "" test/mocks/mockNativeModules.ts
 done
 
 npx eslint src/index.ts --fix
