@@ -237,7 +237,7 @@ describe('Instabug Module', () => {
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
   });
 
-  it('setNavigationListener should call the onStateChange on a screen change', async () => {
+it('setNavigationListener should call the onStateChange on a screen change', async () => {
     const moakedState = { routes: [{ name: 'ScreenName' }], index: 0 };
 
     const mockNavigationContainerRef = {
