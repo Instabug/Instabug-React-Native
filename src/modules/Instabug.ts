@@ -544,7 +544,7 @@ export const onStateChange = (state?: NavigationStateV5) => {
 export const setNavigationListener = (
   navigationRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
 ) => {
-  navigationRef.addListener('state', () => {
+  return navigationRef.addListener('state', () => {
     onStateChange(navigationRef.getRootState());
   });
 };
