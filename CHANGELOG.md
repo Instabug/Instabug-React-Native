@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...dev)
+
+### Added
+
+- Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
+
 ## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
 
 ### Added
