@@ -238,7 +238,7 @@ describe('Instabug Module', () => {
   });
 
   it('setNavigationListener should call the onStateChange on a screen change', async () => {
-    const moakedState = { routes: [{ name: 'ScreenName' }], index: 0 };
+    const mockedState = { routes: [{ name: 'ScreenName' }], index: 0 };
 
     const mockNavigationContainerRef = {
       current: null,
@@ -246,12 +246,12 @@ describe('Instabug Module', () => {
       reset: jest.fn(),
       goBack: jest.fn(),
       dispatch: jest.fn(),
-      getRootState: () => moakedState,
+      getRootState: () => mockedState,
       canGoBack: jest.fn(),
 
       addListener: jest.fn((event, callback) => {
         expect(event).toBe('state');
-        callback(moakedState);
+        callback(mockedState);
         return jest.fn();
       }),
       removeListener: jest.fn(),
