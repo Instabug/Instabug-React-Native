@@ -81,7 +81,7 @@ commands:
           search: instabug-reactnative
           replace: << parameters.npm_package >>
       - find_and_replace:
-          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          files: cli/upload/uploadSourcemaps.ts cli/upload/uploadSoFiles.ts
           search: api.instabug.com
           replace: << parameters.api_endpoint >>
       - find_and_replace:
@@ -345,7 +345,7 @@ jobs:
           search: instabug-reactnative
           replace: << parameters.npm_package >>
       - find_and_replace:
-          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          files: cli/upload/uploadSourcemaps.ts cli/upload/uploadSoFiles.ts
           search: api.instabug.com
           replace: << parameters.api_endpoint >>
       - find_and_replace:
@@ -378,7 +378,7 @@ jobs:
           search: instabug-reactnative
           replace: '@instabug/instabug-reactnative-dream11'
       - find_and_replace:
-          files: cli/UploadSourcemaps.ts cli/UploadSoFiles.ts
+          files: cli/upload/uploadSourcemaps.ts cli/upload/uploadSoFiles.ts
           search: api.instabug.com
           replace: st001012dream11.instabug.com
       - find_and_replace:
