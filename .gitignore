@@ -1,6 +1,4 @@
 # Distribution
-dist/
-bin/
 upload/*
 !upload/package.json
 
