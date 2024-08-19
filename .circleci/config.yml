@@ -106,6 +106,7 @@ commands:
         type: string
         default: ~/project
     steps:
+      - install_node_modules
       - prepare_custom_package:
           npm_package: '@instabug/instabug-reactnative-dream11'
           android_package: dream11
