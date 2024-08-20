@@ -1093,7 +1093,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Register a listener for W3C flags value change
      */
     @ReactMethod
-    public void registerW3CFlagsChangeListener(final Callback handler){
+    public void registerW3CFlagsChangeListener(){
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
