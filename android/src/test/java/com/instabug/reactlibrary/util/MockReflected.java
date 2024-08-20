@@ -7,6 +7,11 @@ import android.graphics.Bitmap;
 import com.instabug.library.networkDiagnostics.model.NetworkDiagnosticsCallback;
 
 import java.lang.reflect.Method;
+import com.instabug.crash.models.IBGNonFatalException;
+
+import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Includes fake implementations of methods called by reflection.
@@ -39,4 +44,9 @@ public class MockReflected {
      * com.instabug.library.Instabug.reportScreenChange
      */
     public static void reportScreenChange(Bitmap screenshot, String screen) {}
+    /**
+     * CrashReporting.reportException
+     */
+    public static void reportException(JSONObject exception, boolean isHandled, Map userAttributes, JSONObject fingerPrint, IBGNonFatalException.Level level) {}
+
 }

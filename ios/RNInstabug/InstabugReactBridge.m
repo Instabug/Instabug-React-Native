@@ -15,6 +15,7 @@
 #import <React/RCTUIManager.h>
 #import "RNInstabug.h"
 #import "Util/Instabug+CP.h"
+#import "Util/IBGNetworkLogger+CP.h"
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
@@ -291,66 +292,38 @@ RCT_EXPORT_METHOD(setNetworkLoggingEnabled:(BOOL)isEnabled) {
     }
 }
 
-RCT_EXPORT_METHOD(networkLog:(NSDictionary *) networkData) {
-    NSString* url = networkData[@"url"];
-    NSString* method = networkData[@"method"];
-    NSString* requestBody = networkData[@"requestBody"];
-    int64_t requestBodySize = [networkData[@"requestBodySize"] integerValue];
-    NSString* responseBody = nil;
-    if (networkData[@"responseBody"] != [NSNull null]) {
-        responseBody = networkData[@"responseBody"];
-    }
-    int64_t responseBodySize = [networkData[@"responseBodySize"] integerValue];
-    int32_t responseCode = [networkData[@"responseCode"] integerValue];
-    NSDictionary* requestHeaders = @{};
-    if([networkData[@"requestHeaders"] isKindOfClass:[NSDictionary class]]){
-        requestHeaders = networkData[@"requestHeaders"];
-    }
-    NSDictionary* responseHeaders = @{};
-    if([networkData[@"responseHeaders"] isKindOfClass:[NSDictionary class]]){
-        responseHeaders = networkData[@"responseHeaders"];
-    }
-    NSString* contentType = networkData[@"contentType"];
-    NSString* errorDomain = networkData[@"errorDomain"];
-    int32_t errorCode = [networkData[@"errorCode"] integerValue];
-    int64_t startTime = [networkData[@"startTime"] integerValue] * 1000;
-    int64_t duration = [networkData[@"duration"] doubleValue] * 1000;
-
-    NSString* gqlQueryName = nil;
-    NSString* serverErrorMessage = nil;
-    if (networkData[@"gqlQueryName"] != [NSNull null]) {
-        gqlQueryName = networkData[@"gqlQueryName"];
-    }
-    if (networkData[@"serverErrorMessage"] != [NSNull null]) {
-        serverErrorMessage = networkData[@"serverErrorMessage"];
-    }
-
-    SEL networkLogSEL = NSSelectorFromString(@"addNetworkLogWithUrl:method:requestBody:requestBodySize:responseBody:responseBodySize:responseCode:requestHeaders:responseHeaders:contentType:errorDomain:errorCode:startTime:duration:gqlQueryName:serverErrorMessage:");
-
-    if([[IBGNetworkLogger class] respondsToSelector:networkLogSEL]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[[IBGNetworkLogger class] methodSignatureForSelector:networkLogSEL]];
-        [inv setSelector:networkLogSEL];
-        [inv setTarget:[IBGNetworkLogger class]];
-
-        [inv setArgument:&(url) atIndex:2];
-        [inv setArgument:&(method) atIndex:3];
-        [inv setArgument:&(requestBody) atIndex:4];
-        [inv setArgument:&(requestBodySize) atIndex:5];
-        [inv setArgument:&(responseBody) atIndex:6];
-        [inv setArgument:&(responseBodySize) atIndex:7];
-        [inv setArgument:&(responseCode) atIndex:8];
-        [inv setArgument:&(requestHeaders) atIndex:9];
-        [inv setArgument:&(responseHeaders) atIndex:10];
-        [inv setArgument:&(contentType) atIndex:11];
-        [inv setArgument:&(errorDomain) atIndex:12];
-        [inv setArgument:&(errorCode) atIndex:13];
-        [inv setArgument:&(startTime) atIndex:14];
-        [inv setArgument:&(duration) atIndex:15];
-        [inv setArgument:&(gqlQueryName) atIndex:16];
-        [inv setArgument:&(serverErrorMessage) atIndex:17];
-
-        [inv invoke];
-    }
+RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
+                         method:(NSString * _Nonnull)method
+                    requestBody:(NSString * _Nonnull)requestBody
+                requestBodySize:(double)requestBodySize
+                   responseBody:(NSString * _Nonnull)responseBody
+               responseBodySize:(double)responseBodySize
+                   responseCode:(double)responseCode
+                 requestHeaders:(NSDictionary * _Nonnull)requestHeaders
+                responseHeaders:(NSDictionary * _Nonnull)responseHeaders
+                    contentType:(NSString * _Nonnull)contentType
+                    errorDomain:(NSString * _Nullable)errorDomain
+                      errorCode:(double)errorCode
+                      startTime:(double)startTime
+                       duration:(double)duration
+                   gqlQueryName:(NSString * _Nullable)gqlQueryName
+             serverErrorMessage:(NSString * _Nullable)serverErrorMessage) {
+    [IBGNetworkLogger addNetworkLogWithUrl:url
+                                    method:method
+                               requestBody:requestBody
+                           requestBodySize:requestBodySize
+                              responseBody:responseBody
+                          responseBodySize:responseBodySize
+                              responseCode:responseCode
+                            requestHeaders:requestHeaders
+                           responseHeaders:responseHeaders
+                               contentType:contentType
+                               errorDomain:errorDomain
+                                 errorCode:errorCode
+                                 startTime:startTime * 1000
+                                  duration:duration * 1000
+                              gqlQueryName:gqlQueryName
+                        serverErrorMessage:serverErrorMessage];
 }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
@@ -388,6 +361,38 @@ RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
 
 RCT_EXPORT_METHOD(clearAllExperiments) {
     [Instabug clearAllExperiments];
+}
+
+RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
+    NSMutableArray<IBGFeatureFlag *> *featureFlags = [NSMutableArray array];
+    for(id key in featureFlagsMap){
+        NSString* variant =[featureFlagsMap objectForKey:key];
+        if ([variant length]==0) {
+            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key]];
+        } else{
+            [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key variant:variant]];
+        }
+    }
+    
+    [Instabug addFeatureFlags:featureFlags];
+}
+
+RCT_EXPORT_METHOD(removeFeatureFlags:(NSArray *)featureFlags) {
+    NSMutableArray<IBGFeatureFlag *> *features = [NSMutableArray array];
+    for(id item in featureFlags){
+        [features addObject:[[IBGFeatureFlag alloc] initWithName:item]];
+    }
+    
+    @try {
+        [Instabug removeFeatureFlags:features];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+}
+
+RCT_EXPORT_METHOD(removeAllFeatureFlags) {
+    [Instabug removeAllFeatureFlags];
 }
 
 RCT_EXPORT_METHOD(willRedirectToStore){
