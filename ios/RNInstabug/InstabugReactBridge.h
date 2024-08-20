@@ -58,7 +58,7 @@
 
 - (void)logVerbose:(NSString *)log;
 
-- (void)setReproStepsConfig: (IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode  :(IBGUserStepsMode)anr :(IBGUserStepsMode)appHangsMode :(IBGUserStepsMode)fatalCrashMode :(IBGUserStepsMode)nonFatalCrashMode :(IBGUserStepsMode)forceRestartMode : (IBGUserStepsMode) oomMode;
+- (void)setReproStepsConfig: (IBGUserStepsMode)bugMode :(IBGUserStepsMode)sessionReplayMode  :(IBGUserStepsMode) anr :(IBGUserStepsMode)appHangsMode :(IBGUserStepsMode)fatalCrashMode :(IBGUserStepsMode)nonFatalCrashMode :(IBGUserStepsMode)forceRestartMode : (IBGUserStepsMode) oomMode ;
 
 - (void)setUserAttribute:(NSString *)key withValue:(NSString *)value;
 
