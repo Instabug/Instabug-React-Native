@@ -28,7 +28,6 @@ allprojects {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
 
-
         maven {
             credentials {
                 username System.getenv("DREAM11_MAVEN_USERNAME")
