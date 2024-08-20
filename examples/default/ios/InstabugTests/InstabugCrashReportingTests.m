@@ -31,17 +31,20 @@
   NSString *fingerPrint = @"fingerprint";
   RCTPromiseResolveBlock resolve = ^(id result) {};
   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
-  NSDictionary *userAttributes = @{ @"key" : @"value",  };
+  NSDictionary *userAttributes = @{ @"key": @"value" };
   IBGNonFatalLevel ibgNonFatalLevel = IBGNonFatalLevelInfo;
 
-  
-  [self.bridge sendHandledJSCrash:jsonCrash userAttributes:userAttributes  fingerprint:fingerPrint nonFatalExceptionLevel:ibgNonFatalLevel resolver:resolve rejecter:reject];
+  [self.bridge sendHandledJSCrash:jsonCrash
+                   userAttributes:userAttributes
+                      fingerprint:fingerPrint
+           nonFatalExceptionLevel:ibgNonFatalLevel
+                         resolver:resolve
+                         rejecter:reject];
     
     OCMVerify([self.mCrashReporting cp_reportNonFatalCrashWithStackTrace:jsonCrash
-           level:IBGNonFatalLevelInfo
-         groupingString:fingerPrint
-        userAttributes:userAttributes
-              ]);
+                                                                   level:IBGNonFatalLevelInfo
+                                                          groupingString:fingerPrint
+                                                          userAttributes:userAttributes]);
 }
 
 @end

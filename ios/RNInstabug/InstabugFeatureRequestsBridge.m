@@ -12,6 +12,7 @@
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
+#import <Instabug/IBGFeatureRequests.h>
 
 @implementation InstabugFeatureRequestsBridge
 

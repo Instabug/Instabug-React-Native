@@ -64,7 +64,15 @@ RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
     [Instabug setCodePushVersion:version];
 }
 
-RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)sessionReplayMode  :(IBGUserStepsMode) anr :(IBGUserStepsMode)appHangsMode :(IBGUserStepsMode)fatalCrashMode :(IBGUserStepsMode)nonFatalCrashMode :(IBGUserStepsMode)forceRestartMode : (IBGUserStepsMode) oomMode ) {
+RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode
+                      :(IBGUserStepsMode)crashMode
+                      :(IBGUserStepsMode)sessionReplayMode
+                      :(IBGUserStepsMode)anr
+                      :(IBGUserStepsMode)appHangsMode
+                      :(IBGUserStepsMode)fatalCrashMode
+                      :(IBGUserStepsMode)nonFatalCrashMode
+                      :(IBGUserStepsMode)forceRestartMode
+                      :(IBGUserStepsMode)oomMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
     [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
     [Instabug setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode];
