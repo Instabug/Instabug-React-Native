@@ -17,6 +17,12 @@ references:
     - e2e_ios
     - e2e_android
 
+  dream11_prepare_config: &dream11_prepare_config
+    prepare_steps:
+      - prepare_dream11
+    requires:
+      - hold_test_dream11
+
 commands:
   install_node_modules:
     parameters:
@@ -36,15 +42,28 @@ commands:
     parameters:
       working_directory:
         type: string
+      deployment:
+        type: boolean
+        default: false
     steps:
       - restore_cache:
           name: Restore Pods Cache
           keys:
             - v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
-      - run:
-          name: Install Pods
-          working_directory: << parameters.working_directory >>
-          command: pod install --deployment
+      - when:
+          condition: << parameters.deployment >>
+          steps:
+            - run:
+                name: Install Pods
+                working_directory: << parameters.working_directory >>
+                command: pod install --deployment
+      - unless:
+          condition: << parameters.deployment >>
+          steps:
+            - run:
+                name: Install Pods
+                working_directory: << parameters.working_directory >>
+                command: pod install
       - save_cache:
           name: Save Pods Cache
           key: v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
@@ -120,6 +139,11 @@ commands:
           name: Remove unused features
           command: ./scripts/dream-11-delete-unused-features.sh
           working_directory: << parameters.working_directory >>
+      # Remove the NDK package to avoid dependency conflicts on Android.
+      - run:
+          name: Remove the NDK package
+          command: yarn remove instabug-reactnative-ndk
+          working_directory: << parameters.working_directory >>/examples/default
 
   notify_github:
     parameters:
@@ -158,10 +182,15 @@ jobs:
           command: yarn lint:ci
 
   test_module:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
+      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - run:
           name: Run Tests
@@ -172,6 +201,10 @@ jobs:
             - lcov.info
 
   test_android:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -180,7 +213,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      #      - node/install-yarn
+      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - android/run-tests:
           working-directory: android
@@ -217,10 +250,15 @@ jobs:
           app-dir: examples/default
       - install_pods:
           working_directory: examples/default/ios
+          deployment: true
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -229,6 +267,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
+      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - install_pods:
           working_directory: ios
@@ -253,6 +292,10 @@ jobs:
             - xcode.json
 
   e2e_ios:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -260,6 +303,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
+      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
@@ -276,6 +320,11 @@ jobs:
           name: Rebuild Detox.framework Cache
           working_directory: examples/default
           command: detox clean-framework-cache && detox build-framework-cache
+      # This is a workaround until the iOS SDK is updated to prioritize the custom
+      # Instabug.plist over the internal Config.plist.
+      - run:
+          name: Customize API Endpoints
+          command: ./scripts/customize-ios-endpoints.sh
       - run:
           name: Detox - Build Release App
           working_directory: examples/default
@@ -286,6 +335,10 @@ jobs:
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
+    parameters:
+      prepare_steps:
+        type: steps
+        default: []
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -294,7 +347,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      #      - node/install-yarn
+      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
@@ -515,8 +568,33 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
 
+      # Dream11 tests
+      - hold_test_dream11:
+          type: approval
+      - test_module:
+          name: test_module_dream11
+          <<: *dream11_prepare_config
+      - test_android:
+          name: test_android_dream11
+          <<: *dream11_prepare_config
+      - test_ios:
+          name: test_ios_dream11
+          <<: *dream11_prepare_config
+      - e2e_android:
+          name: e2e_android_dream11
+          <<: *dream11_prepare_config
+      - e2e_ios:
+          name: e2e_ios_dream11
+          <<: *dream11_prepare_config
+
+      # Dream11 release
       - hold_release_dream11:
-          requires: *release_dependencies
+          requires:
+            - test_module_dream11
+            - test_android_dream11
+            - test_ios_dream11
+            - e2e_android_dream11
+            - e2e_ios_dream11
           type: approval
           filters:
             branches:
