@@ -3,7 +3,15 @@ apply plugin: 'com.android.library'
 apply from: './jacoco.gradle'
 apply from: './native.gradle'
 apply from: './sourcemaps.gradle'
-
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+}
 String getExtOrDefault(String name) {
     def defaultPropertyKey = 'InstabugReactNative_' + name
     if (rootProject.ext.has(name)) {
