@@ -21,6 +21,7 @@
 		CC3DF8932A1DFC9A003E9914 /* InstabugSurveysTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */; };
 		CC3DF8942A1DFC9A003E9914 /* InstabugAPMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */; };
 		CC3DF8952A1DFC9A003E9914 /* IBGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */; };
+		CC487A9C2C71FCFC0021F680 /* Instabug.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC487A9B2C71FCFC0021F680 /* Instabug.plist */; };
 		CCF1E4092B022CF20024802D /* RNInstabugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF1E4082B022CF20024802D /* RNInstabugTests.m */; };
 		CD36F4707EA1F435D2CC7A15 /* libPods-InstabugExample-InstabugTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF7A6E02D40E0CEEA833CC4 /* libPods-InstabugExample-InstabugTests.a */; };
 		F7BF47401EF3A435254C97BB /* libPods-InstabugExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAED0D0441A708AE2390E153 /* libPods-InstabugExample.a */; };
@@ -64,6 +65,7 @@
 		CC3DF88B2A1DFC99003E9914 /* InstabugSurveysTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugSurveysTests.m; sourceTree = "<group>"; };
 		CC3DF88C2A1DFC99003E9914 /* InstabugAPMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugAPMTests.m; sourceTree = "<group>"; };
 		CC3DF88D2A1DFC9A003E9914 /* IBGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBGConstants.m; sourceTree = "<group>"; };
+		CC487A9B2C71FCFC0021F680 /* Instabug.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = Instabug.plist; path = InstabugExample/Instabug.plist; sourceTree = "<group>"; };
 		CCF1E4082B022CF20024802D /* RNInstabugTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNInstabugTests.m; sourceTree = "<group>"; };
 		DBCB1B1D023646D84146C91E /* Pods-InstabugExample-InstabugTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstabugExample-InstabugTests.release.xcconfig"; path = "Target Support Files/Pods-InstabugExample-InstabugTests/Pods-InstabugExample-InstabugTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -120,6 +122,7 @@
 		13B07FAE1A68108700A75B9A /* InstabugExample */ = {
 			isa = PBXGroup;
 			children = (
+				CC487A9B2C71FCFC0021F680 /* Instabug.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				CC487A9C2C71FCFC0021F680 /* Instabug.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
