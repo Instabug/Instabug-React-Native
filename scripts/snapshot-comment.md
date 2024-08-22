@@ -5,11 +5,11 @@ Your snapshot has been generated! :rocket:
 You can install the snapshot through NPM:
 
 ```sh
-npm install https://github.com/Instabug/Instabug-React-Native\#{BRANCH}
+npm install instabug-reactnative@{VERSION}
 ```
 
 or Yarn:
 
 ```sh
-yarn add https://github.com/Instabug/Instabug-React-Native\#{BRANCH}
+yarn add instabug-reactnative@{VERSION}
 ```
