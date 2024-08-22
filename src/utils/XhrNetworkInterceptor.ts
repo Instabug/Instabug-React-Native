@@ -72,7 +72,8 @@ export default {
     originalXHROpen = XMLHttpRequest.prototype.open;
     originalXHRSend = XMLHttpRequest.prototype.send;
     originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-
+    // An error code that signifies an issue with the RN client.
+    const clientErrorCode = 9876;
     XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
       network.url = url;
@@ -145,7 +146,7 @@ export default {
 
             // @ts-ignore
             if (this._hasError) {
-              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorCode = clientErrorCode;
               cloneNetwork.errorDomain = 'ClientError';
 
               // @ts-ignore
@@ -157,7 +158,7 @@ export default {
 
               // @ts-ignore
             } else if (this._timedOut) {
-              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorCode = clientErrorCode;
               cloneNetwork.errorDomain = 'TimeOutError';
             }
 
