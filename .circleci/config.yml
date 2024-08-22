@@ -469,35 +469,22 @@ jobs:
       - run: yarn build
       - run: yarn remove @instabug/danger-plugin-coverage
       - run:
-          name: Remove build files from .gitignore
-          command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
-      - run:
-          name: Get snapshot branch name
+          name: Get snapshot version
           command: |
-            source scripts/snapshot-branch.sh
-            echo "export SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$BASH_ENV"
+            source scripts/snapshot-version.sh
+            echo "export SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> "$BASH_ENV"
       - run:
-          name: Setup Git
-          command: |
-            git config --global user.name "Instabug-CP-CI"
-            git config --global user.email github-ci+cp@instabug.com
-      - run:
-          name: Create snapshot branch
-          command: git checkout -b $SNAPSHOT_BRANCH
-      - run:
-          name: Commit changes
-          command: |
-            git add .
-            git commit -m "chore: add generate files"
-      - run:
-          name: Push snapshot
-          command: git push --force origin $SNAPSHOT_BRANCH
+          name: Authorize with NPM
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run: npm version $SNAPSHOT_VERSION --no-git-tag-version
+      - run: npm publish --tag snapshot
       - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
-      - run:
-          name: Replace snapshot branch in comment template
-          command: sed -i "s|{BRANCH}|$SNAPSHOT_BRANCH|g" scripts/snapshot-comment.md
+      - find_and_replace:
+          files: scripts/snapshot-comment.md
+          search: '{VERSION}'
+          replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
 
