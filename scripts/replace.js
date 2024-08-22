@@ -10,10 +10,25 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseArgs } = require('util');
 
-const [search, replace, ...files] = process.argv.slice(2);
+const { values, positionals } = parseArgs({
+  allowPositionals: true,
+  options: {
+    pattern: {
+      type: 'boolean',
+      default: false,
+      short: 'p',
+    },
+  },
+});
 
-if (!search || !replace || !files.length) {
+const [search, replace, ...files] = positionals;
+
+/** Whether to replace the search string as a regular expression or as a literal string. */
+const isPattern = values.pattern;
+
+if (search == null || replace == null || !files.length) {
   // The path of the script relative to the directory where the user ran the
   // script to be used in the error message demonstrating the usage.
   const scriptPath = path.relative(process.cwd(), __filename);
@@ -21,7 +36,7 @@ if (!search || !replace || !files.length) {
   console.error('Missing arguments.');
   console.table({ search, replace, files });
 
-  console.error(`Usage: node ${scriptPath} <search> <replace> <files...>`);
+  console.error(`Usage: node ${scriptPath} [-p | --pattern] <search> <replace> <files...>`);
   process.exit(1);
 }
 
@@ -31,7 +46,8 @@ for (const file of files) {
 
     const fileContent = fs.readFileSync(filePath, 'utf8');
 
-    const newContent = fileContent.replaceAll(search, replace);
+    const searchPattern = isPattern ? new RegExp(search, 'gm') : search;
+    const newContent = fileContent.replaceAll(searchPattern, replace);
 
     fs.writeFileSync(filePath, newContent);
   } catch (error) {
