@@ -17,12 +17,6 @@ references:
     - e2e_ios
     - e2e_android
 
-  dream11_prepare_config: &dream11_prepare_config
-    prepare_steps:
-      - prepare_dream11
-    requires:
-      - hold_test_dream11
-
 commands:
   install_node_modules:
     parameters:
@@ -42,28 +36,15 @@ commands:
     parameters:
       working_directory:
         type: string
-      deployment:
-        type: boolean
-        default: false
     steps:
       - restore_cache:
           name: Restore Pods Cache
           keys:
             - v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
-      - when:
-          condition: << parameters.deployment >>
-          steps:
-            - run:
-                name: Install Pods
-                working_directory: << parameters.working_directory >>
-                command: pod install --deployment
-      - unless:
-          condition: << parameters.deployment >>
-          steps:
-            - run:
-                name: Install Pods
-                working_directory: << parameters.working_directory >>
-                command: pod install
+      - run:
+          name: Install Pods
+          working_directory: << parameters.working_directory >>
+          command: pod install --deployment
       - save_cache:
           name: Save Pods Cache
           key: v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
@@ -139,11 +120,6 @@ commands:
           name: Remove unused features
           command: ./scripts/dream-11-delete-unused-features.sh
           working_directory: << parameters.working_directory >>
-      # Remove the NDK package to avoid dependency conflicts on Android.
-      - run:
-          name: Remove the NDK package
-          command: yarn remove instabug-reactnative-ndk
-          working_directory: << parameters.working_directory >>/examples/default
 
   notify_github:
     parameters:
@@ -182,38 +158,20 @@ jobs:
           command: yarn lint:ci
 
   test_module:
-    parameters:
-      prepare_steps:
-        type: steps
-        default: []
-      collect_coverage:
-        type: boolean
-        default: false
     executor:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - run:
           name: Run Tests
           command: yarn test
-      - when:
-          condition: << parameters.collect_coverage >>
-          steps:
-            - persist_to_workspace:
-                root: coverage
-                paths:
-                  - lcov.info
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - lcov.info
 
   test_android:
-    parameters:
-      prepare_steps:
-        type: steps
-        default: []
-      collect_coverage:
-        type: boolean
-        default: false
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -222,18 +180,15 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - steps: << parameters.prepare_steps >>
+      #      - node/install-yarn
       - install_node_modules
       - android/run-tests:
           working-directory: android
           test-command: ./gradlew test
-      - when:
-          condition: << parameters.collect_coverage >>
-          steps:
-            - persist_to_workspace:
-                root: ~/project/android/build/reports/jacoco/jacocoTestReport
-                paths:
-                  - jacocoTestReport.xml
+      - persist_to_workspace:
+          root: ~/project/android/build/reports/jacoco/jacocoTestReport
+          paths:
+            - jacocoTestReport.xml
 
   validate_shell_files:
     machine:
@@ -262,18 +217,10 @@ jobs:
           app-dir: examples/default
       - install_pods:
           working_directory: examples/default/ios
-          deployment: true
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
 
   test_ios:
-    parameters:
-      prepare_steps:
-        type: steps
-        default: []
-      collect_coverage:
-        type: boolean
-        default: false
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -282,7 +229,6 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - install_pods:
           working_directory: ios
@@ -297,23 +243,16 @@ jobs:
                 -sdk iphonesimulator \
                 -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
                 test | xcpretty
-      - when:
-          condition: << parameters.collect_coverage >>
-          steps:
-            - run:
-                name: Convert xcresult into JSON report
-                working_directory: ios/coverage
-                command: xcrun xccov view --report --json result.xcresult > xcode.json
-            - persist_to_workspace:
-                root: ios/coverage
-                paths:
-                  - xcode.json
+      - run:
+          name: Convert xcresult into JSON report
+          working_directory: ios/coverage
+          command: xcrun xccov view --report --json result.xcresult > xcode.json
+      - persist_to_workspace:
+          root: ios/coverage
+          paths:
+            - xcode.json
 
   e2e_ios:
-    parameters:
-      prepare_steps:
-        type: steps
-        default: []
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -321,7 +260,6 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - steps: << parameters.prepare_steps >>
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
@@ -338,11 +276,6 @@ jobs:
           name: Rebuild Detox.framework Cache
           working_directory: examples/default
           command: detox clean-framework-cache && detox build-framework-cache
-      # This is a workaround until the iOS SDK is updated to prioritize the custom
-      # Instabug.plist over the internal Config.plist.
-      - run:
-          name: Customize API Endpoints
-          command: ./scripts/customize-ios-endpoints.sh
       - run:
           name: Detox - Build Release App
           working_directory: examples/default
@@ -353,10 +286,6 @@ jobs:
           command: detox test --configuration ios.sim.release --cleanup
 
   e2e_android:
-    parameters:
-      prepare_steps:
-        type: steps
-        default: []
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -365,7 +294,7 @@ jobs:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
       - advanced-checkout/shallow-checkout
-      - steps: << parameters.prepare_steps >>
+      #      - node/install-yarn
       - install_node_modules
       - node/install-packages:
           pkg-manager: yarn
@@ -469,22 +398,35 @@ jobs:
       - run: yarn build
       - run: yarn remove @instabug/danger-plugin-coverage
       - run:
-          name: Get snapshot version
-          command: |
-            source scripts/snapshot-version.sh
-            echo "export SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> "$BASH_ENV"
+          name: Remove build files from .gitignore
+          command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
       - run:
-          name: Authorize with NPM
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run: npm version $SNAPSHOT_VERSION --no-git-tag-version
-      - run: npm publish --tag snapshot
+          name: Get snapshot branch name
+          command: |
+            source scripts/snapshot-branch.sh
+            echo "export SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$BASH_ENV"
+      - run:
+          name: Setup Git
+          command: |
+            git config --global user.name "Instabug-CP-CI"
+            git config --global user.email github-ci+cp@instabug.com
+      - run:
+          name: Create snapshot branch
+          command: git checkout -b $SNAPSHOT_BRANCH
+      - run:
+          name: Commit changes
+          command: |
+            git add .
+            git commit -m "chore: add generate files"
+      - run:
+          name: Push snapshot
+          command: git push --force origin $SNAPSHOT_BRANCH
       - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
-      - find_and_replace:
-          files: scripts/snapshot-comment.md
-          search: '{VERSION}'
-          replace: $SNAPSHOT_VERSION
+      - run:
+          name: Replace snapshot branch in comment template
+          command: sed -i "s|{BRANCH}|$SNAPSHOT_BRANCH|g" scripts/snapshot-comment.md
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
 
@@ -497,14 +439,11 @@ workflows:
             - test_android
             - test_ios
       - lint
-      - test_module:
-          collect_coverage: true
-      - test_android:
-          collect_coverage: true
-      - test_ios:
-          collect_coverage: true
+      - test_module
+      - test_android
       - validate_shell_files
       - sync_generated_files
+      - test_ios
       - e2e_ios
       - e2e_android
       - hold_generate_snapshot:
@@ -576,33 +515,8 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
 
-      # Dream11 tests
-      - hold_test_dream11:
-          type: approval
-      - test_module:
-          name: test_module_dream11
-          <<: *dream11_prepare_config
-      - test_android:
-          name: test_android_dream11
-          <<: *dream11_prepare_config
-      - test_ios:
-          name: test_ios_dream11
-          <<: *dream11_prepare_config
-      - e2e_android:
-          name: e2e_android_dream11
-          <<: *dream11_prepare_config
-      - e2e_ios:
-          name: e2e_ios_dream11
-          <<: *dream11_prepare_config
-
-      # Dream11 release
       - hold_release_dream11:
-          requires:
-            - test_module_dream11
-            - test_android_dream11
-            - test_ios_dream11
-            - e2e_android_dream11
-            - e2e_ios_dream11
+          requires: *release_dependencies
           type: approval
           filters:
             branches:
