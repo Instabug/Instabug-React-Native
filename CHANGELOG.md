@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...dev)
 
+### Added
+
+- Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
+
 ### Fixed
 
 - Fix Omitted non-error objects when logging errors to ensure only error objects are supported.([#1279](https://github.com/Instabug/Instabug-React-Native/pull/1279)).
