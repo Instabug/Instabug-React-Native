@@ -21,18 +21,25 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param nonFatalOptions extra config for the non-fatal error sent with Error Object
  */
 export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptions = {}) => {
-  let level = NonFatalErrorLevel.error;
-  if (nonFatalOptions.level != null) {
-    level = nonFatalOptions.level;
+  if (error instanceof Error) {
+    let level = NonFatalErrorLevel.error;
+    if (nonFatalOptions.level != null) {
+      level = nonFatalOptions.level;
+    }
+    return InstabugUtils.sendCrashReport(error, (data) =>
+      NativeCrashReporting.sendHandledJSCrash(
+        data,
+        nonFatalOptions.userAttributes,
+        nonFatalOptions.fingerprint,
+        level,
+      ),
+    );
+  } else {
+    console.log(
+      `IBG-RN: The error ${error} has been omitted because only error object is supported.`,
+    );
+    return;
   }
-  return InstabugUtils.sendCrashReport(error, (data) =>
-    NativeCrashReporting.sendHandledJSCrash(
-      data,
-      nonFatalOptions.userAttributes,
-      nonFatalOptions.fingerprint,
-      level,
-    ),
-  );
 };
 
 /**
