@@ -7,8 +7,17 @@ import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
 import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ListTile } from '../../components/ListTile';
 
-export const NetworkScreen: React.FC = () => {
+
+
+
+  export const NetworkScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>> = ({
+    navigation,
+  }) => {
+
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
   const defaultRequestUrl = 'https://jsonplaceholder.typicode.com/posts/1';
@@ -96,6 +105,9 @@ export const NetworkScreen: React.FC = () => {
             ))}
           </HStack>
         </Section>
+        <ListTile title="HttpUrlConnection" onPress={() => navigation.navigate('HttpScreen')} />
+
+      
       </Screen>
     </ScrollView>
   );

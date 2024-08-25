@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Instabug, { BugReporting, ColorTheme, InvocationEvent } from 'instabug-reactnative';
+import Instabug, { BugReporting, ColorTheme, InvocationEvent,Locale,ReproStepsMode} from 'instabug-reactnative';
 import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
 
 import { ListTile } from '../components/ListTile';
@@ -193,6 +193,18 @@ export const SettingsScreen: React.FC = () => {
             onValueChange={Instabug.setColorTheme}
           />
         </ListTile>
+        <ListTile title="Change Locale to Arabic" onPress={() => {Instabug.setLocale(Locale.arabic)}} />
+        <ListTile title="Disable Repro Steps" onPress={() => {
+            Instabug.setReproStepsConfig({
+              all: ReproStepsMode.disabled,
+              });
+            }} />
+        <ListTile title="Add Experiments" onPress={() => {
+          Instabug.addExperiments(['exp1','exp2']);;
+          }} />
+        <ListTile title="Remove Experiments" onPress={() => {
+          Instabug.removeExperiments(['exp1','exp2']);;
+          }} />
 
         <VerticalListTile title="User Identification">
           <VStack>
