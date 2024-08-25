@@ -7,7 +7,6 @@ import { Screen } from '../../components/Screen';
 
 
 
-
 export const HttpScreen: React.FC = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [loadingGet, setLoading] = useState(false);
