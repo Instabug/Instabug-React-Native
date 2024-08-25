@@ -1,12 +1,7 @@
 import React from 'react';
-
 import {useState } from 'react';
-import {Text,Switch,ToastAndroid,Platform, ActivityIndicator,Alert,View } from 'react-native';
-import Instabug, { BugReporting,APM, InvocationOption, ReportType } from 'instabug-reactnative';
-
+import {Text,Switch,ToastAndroid,Platform, ActivityIndicator,Alert } from 'react-native';
 import { ListTile } from '../../components/ListTile';
-import axios from 'axios';
-
 import { Screen } from '../../components/Screen';
 
 
@@ -19,27 +14,15 @@ export const HttpScreen: React.FC = () => {
   const [loadingPost, setLoading2] = useState(false);
   const [loadingDelete, setLoading3] = useState(false);
   const [loadingPut, setLoading4] = useState(false);
+  const [loadingPatch, setLoading5] = useState(false);
+  const [loadingDownloadImage, setLoading6] = useState(false);
+
   const [isSecureConnection, setIsSecureConnection] = useState(false);
 
   const [loading, setLoadingP] = useState(false);
 
-
-
-  const toggleSwitch = (value: boolean) => {
-    setIsEnabled(value);
-
-    // Update APM state here
-    APM.setEnabled(value); 
-
-    // Show Toast message
-    Alert.alert("Set APM enabled to " + value);
-  };
-
-
   const makeGetCall = async () => {
-    // setIsSecureConnection(!isSecureConnection);
     setLoading(true);
-    // const url = `http${isSecureConnection ? 's' : ''}://httpbin.org/anything`;
     const url = `https://httpbin.org/anything`;
     try {
       const response = await fetch(url, {
@@ -73,10 +56,9 @@ export const HttpScreen: React.FC = () => {
     }
   };
 
+
   const makePostCall = async () => {
-    // setIsSecureConnection(!isSecureConnection);
     setLoading2(true);
-    // const url = `http${isSecureConnection ? 's' : ''}://httpbin.org/anything`;
     const url = `https://httpbin.org/post`;
     // Create the body for the POST request
     const requestBody = {
@@ -117,11 +99,8 @@ export const HttpScreen: React.FC = () => {
 
 
   const makeDeleteCall = async () => {
-    // setIsSecureConnection(!isSecureConnection);
     setLoading3(true);
-    // const url = `http${isSecureConnection ? 's' : ''}://httpbin.org/anything`;
     const url = `https://httpbin.org/delete`;
-    // Create the body for the POST request
     try {
       const response = await fetch(url, {
         method: 'DELETE',
@@ -135,7 +114,6 @@ export const HttpScreen: React.FC = () => {
       
       setLoading3(false);
 
-      // Show success message
       if (Platform.OS === 'android') {
         ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
       } else {
@@ -145,7 +123,6 @@ export const HttpScreen: React.FC = () => {
       console.error('Error:', error);
       setLoading3(false);
 
-      // Show error message
       if (Platform.OS === 'android') {
         ToastAndroid.show('Failed', ToastAndroid.SHORT);
       } else {
@@ -155,15 +132,11 @@ export const HttpScreen: React.FC = () => {
   };
 
   const makePutCall = async () => {
-    // setIsSecureConnection(!isSecureConnection);
     setLoading4(true);
-    // const url = `http${isSecureConnection ? 's' : ''}://httpbin.org/anything`;
     const url = `https://httpbin.org/put`;
-    // Create the body for the POST request
       const requestBody = {
         name: 'Islam'
       };
-    // Create the body for the POST request
     try {
       const response = await fetch(url, {
         method: 'PUT',
@@ -178,7 +151,6 @@ export const HttpScreen: React.FC = () => {
       
       setLoading4(false);
 
-      // Show success message
       if (Platform.OS === 'android') {
         ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
       } else {
@@ -188,7 +160,41 @@ export const HttpScreen: React.FC = () => {
       console.error('Error:', error);
       setLoading4(false);
 
-      // Show error message
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Failed', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Error', 'Failed');
+      }
+    }
+  };
+  
+  const makePatchCall = async () => {
+
+      setLoading5(true);
+      const url = 'https://httpbin.org/patch'; 
+  
+      const jsonInputString = JSON.stringify({ name: 'Islam' });
+  
+      try {
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonInputString,
+        });
+  
+        setLoading5(false);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Success', 'Succeeded');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading5(false);
+
       if (Platform.OS === 'android') {
         ToastAndroid.show('Failed', ToastAndroid.SHORT);
       } else {
@@ -197,6 +203,38 @@ export const HttpScreen: React.FC = () => {
     }
   };
 
+  const makeDownloadImageCall = async () => {
+    setLoading6(true);
+    const url = `https://httpbin.org/image/jpeg`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'image/jpeg',
+        },
+      });
+
+      const responseBody = await response.blob();
+      console.log('Response:', responseBody);
+      
+      setLoading6(false);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Success', 'Succeeded');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading6(false);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Failed', ToastAndroid.SHORT);
+      } else {
+        Alert.alert('Error', 'Failed');
+      }
+    }
+  };
 
 
 
@@ -215,6 +253,13 @@ export const HttpScreen: React.FC = () => {
 
       <ListTile title="PUT" onPress={makePutCall} />
       {loadingPut && <ActivityIndicator size="large" color="#0000ff" />}
+
+      <ListTile title="PATCH" onPress={makePatchCall} />
+      {loadingPatch && <ActivityIndicator size="large" color="#0000ff" />}
+
+
+      <ListTile title="Download Image" onPress={makeDownloadImageCall} />
+      {loadingDownloadImage && <ActivityIndicator size="large" color="#0000ff" />}
 
 
 
