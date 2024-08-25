@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Text, View,Switch,ToastAndroid } from 'react-native';
 
 import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
 });
+
 
 export const CrashReportingScreen: React.FC = () => {
   function throwHandledException(error: Error) {
@@ -61,6 +62,7 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     }
   }
+  const [isEnabled, setIsEnabled] = useState(false);
 
   const [userAttributeKey, setUserAttributeKey] = useState('');
   const [userAttributeValue, setUserAttributeValue] = useState('');
@@ -69,6 +71,21 @@ export const CrashReportingScreen: React.FC = () => {
   const [crashLevelValue, setCrashLevelValue] = useState<NonFatalErrorLevel>(
     NonFatalErrorLevel.error,
   );
+
+  const toggleSwitch = (value: boolean) => {
+    setIsEnabled(value);
+  
+    // Update APM state here
+    CrashReporting.setEnabled(value);
+    // Show Toast message
+  
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('Crash Reporting set to ' + value, ToastAndroid.SHORT);
+    } else {
+      Alert.alert('Crash Reporting set to ' + value);
+    }
+    
+  }
 
   function sendCrash() {
     try {
@@ -99,6 +116,11 @@ export const CrashReportingScreen: React.FC = () => {
 
   return (
     <Screen>
+        <Text>Crash Reporting Enabled:</Text>
+            <Switch
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
       <ScrollView>
         <Section title="Non-Fatals">
           <ListTile
