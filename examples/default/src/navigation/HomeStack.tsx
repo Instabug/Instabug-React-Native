@@ -29,8 +29,6 @@ import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 import { LegacyModeScreen } from '../screens/LegacyModeScreen';
 import { HttpScreen } from '../screens/apm/HttpScreen';
 
-
-
 export type HomeStackParamList = {
   Home: undefined;
   BugReporting: undefined;
@@ -49,9 +47,8 @@ export type HomeStackParamList = {
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
-  LegacyMode:undefined;
-  HttpScreen:undefined;
-
+  LegacyMode: undefined;
+  HttpScreen: undefined;
 
   // APM //
   APM: undefined;
@@ -144,11 +141,7 @@ export const HomeStackNavigator: React.FC = () => {
         component={LegacyModeScreen}
         options={{ title: 'LegacyMode' }}
       />
-      <HomeStack.Screen
-        name="HttpScreen"
-        component={HttpScreen}
-        options={{ title: 'HTTP' }}
-      />
+      <HomeStack.Screen name="HttpScreen" component={HttpScreen} options={{ title: 'HTTP' }} />
     </HomeStack.Navigator>
   );
 };
