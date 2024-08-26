@@ -1,11 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
-import { Text, Switch, ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
+import {  ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
 
 export const HttpScreen: React.FC = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
   const [loadingGet, setLoading] = useState(false);
   const [loadingPost, setLoading2] = useState(false);
   const [loadingDelete, setLoading3] = useState(false);
@@ -13,9 +12,6 @@ export const HttpScreen: React.FC = () => {
   const [loadingPatch, setLoading5] = useState(false);
   const [loadingDownloadImage, setLoading6] = useState(false);
 
-  const [isSecureConnection, setIsSecureConnection] = useState(false);
-
-  const [loading, setLoadingP] = useState(false);
 
   const makeGetCall = async () => {
     setLoading(true);
