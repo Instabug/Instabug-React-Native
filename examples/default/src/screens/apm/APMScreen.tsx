@@ -1,25 +1,21 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
-import React,{useState}  from 'react';
+import React, { useState } from 'react';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
-import { Text,Switch,Alert,ToastAndroid,Platform } from 'react-native';
+import { Text, Switch, Alert, ToastAndroid, Platform } from 'react-native';
 import { APM } from 'instabug-reactnative';
-
-
-
 
 export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM'>> = ({
   navigation,
 }) => {
-
   const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = (value: boolean) => {
     setIsEnabled(value);
 
     // Update APM state here
-    APM.setEnabled(value); 
+    APM.setEnabled(value);
 
     // Show Toast message
 
@@ -28,18 +24,13 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
     } else {
       Alert.alert('Set APM enabled to ' + value);
     }
-    
   };
-
 
   return (
     <Screen>
       <Text>Enable APM:</Text>
-      <Switch
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-       {/* <Text>Enable Cold Launch:</Text>
+      <Switch onValueChange={toggleSwitch} value={isEnabled} />
+      {/* <Text>Enable Cold Launch:</Text>
       <Switch
         onValueChange={toggleSwitch2}
         value={isEnabled2}

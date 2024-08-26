@@ -12,13 +12,9 @@ import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ListTile } from '../../components/ListTile';
 
-
-
-
-  export const NetworkScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>> = ({
-    navigation,
-  }) => {
-
+export const NetworkScreen: React.FC<
+  NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
+> = ({ navigation }) => {
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
   const defaultRequestUrl = 'https://jsonplaceholder.typicode.com/posts/1';
@@ -138,8 +134,6 @@ import { ListTile } from '../../components/ListTile';
           </HStack>
         </Section>
         <ListTile title="HttpUrlConnection" onPress={() => navigation.navigate('HttpScreen')} />
-
-      
       </Screen>
     </ScrollView>
   );

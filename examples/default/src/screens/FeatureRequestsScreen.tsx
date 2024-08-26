@@ -1,15 +1,14 @@
-import React,{useState}  from 'react';
+import React, { useState } from 'react';
 
-import { FeatureRequests,ActionType } from 'instabug-reactnative';
+import { FeatureRequests, ActionType } from 'instabug-reactnative';
 
 import { ListTile } from '../components/ListTile';
-import { Text,Switch,Alert,ToastAndroid,Platform } from 'react-native';
+import { Text, Switch, Alert, ToastAndroid, Platform } from 'react-native';
 
 import { Screen } from '../components/Screen';
 
 export const FeatureRequestsScreen: React.FC = () => {
   const [isEnabled, setIsEnabled] = useState(false);
-
 
   const toggleSwitch = (value: boolean) => {
     setIsEnabled(value);
@@ -23,15 +22,11 @@ export const FeatureRequestsScreen: React.FC = () => {
     } else {
       Alert.alert('Email field required set to ' + value);
     }
-    
   };
   return (
     <Screen>
       <Text>Email field Required:</Text>
-      <Switch
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
+      <Switch onValueChange={toggleSwitch} value={isEnabled} />
       <ListTile title="Show" onPress={() => FeatureRequests.show()} />
     </Screen>
   );
