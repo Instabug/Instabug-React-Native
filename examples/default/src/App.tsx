@@ -8,6 +8,7 @@ import Instabug, {
   InvocationEvent,
   LogLevel,
   ReproStepsMode,
+  SessionReplay,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
@@ -20,8 +21,26 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
+  const shouldSyncSession = (data: {
+    appVersion: string;
+    OS: string;
+    device: string;
+    sessionDurationInSeconds: number;
+  }) => {
+    if (data.sessionDurationInSeconds > 20) {
+      return true;
+    }
+    if (data.OS == 'OS Level 34') {
+      return true;
+    }
+    return false;
+  };
+
   const navigationRef = useNavigationContainerRef();
+
   useEffect(() => {
+    SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
+
     Instabug.init({
       token: 'deb1910a7342814af4e4c9210c786f35',
       invocationEvents: [InvocationEvent.floatingButton],
