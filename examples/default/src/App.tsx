@@ -30,7 +30,7 @@ export const App: React.FC = () => {
     if (data.sessionDurationInSeconds > 20) {
       return true;
     }
-    if (data.OS == 'OS Level 34') {
+    if (data.OS === 'OS Level 34') {
       return true;
     }
     return false;

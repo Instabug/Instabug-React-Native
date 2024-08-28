@@ -78,7 +78,7 @@ export const getSessionReplayLink = async (): Promise<string> => {
 
 /**
  * Set a callback for weather this session should sync
- * 
+ *
  * @param handler
 
  * @example
@@ -101,7 +101,7 @@ export const setSyncCallback = async (
   }) => boolean,
 ): Promise<void> => {
   emitter.addListener(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, (payload) => {
-    if (typeof handler(payload) != 'boolean') {
+    if (typeof handler(payload) !== 'boolean') {
       console.warn('setSyncCallback expects boolean value');
     }
 
