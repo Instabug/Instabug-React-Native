@@ -1,28 +1,26 @@
 package com.instabug.reactlibrary;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.os.Handler;
 import android.os.Looper;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableArray;
-import com.instabug.chat.Replies;
-import com.instabug.featuresrequest.ActionType;
-import com.instabug.featuresrequest.FeatureRequests;
-import com.instabug.library.Feature;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.OnSessionReplayLinkReady;
+import com.instabug.library.SessionSyncListener;
 import com.instabug.library.sessionreplay.SessionReplay;
+import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
@@ -33,6 +31,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -44,8 +43,8 @@ public class RNInstabugSessionReplayModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic <SessionReplay> mockSessionReplay;
+    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic<SessionReplay> mockSessionReplay;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -107,7 +106,7 @@ public class RNInstabugSessionReplayModuleTest {
     @Test
     public void testGetSessionReplayLink() {
         Promise promise = mock(Promise.class);
-        String link="instabug link";
+        String link = "instabug link";
 
         mockSessionReplay.when(() -> SessionReplay.getSessionReplayLink(any())).thenAnswer(
                 invocation -> {
@@ -136,5 +135,51 @@ public class RNInstabugSessionReplayModuleTest {
         mockSessionReplay.verifyNoMoreInteractions();
     }
 
+    @Test
+
+    public void testSetSyncCallback() throws Exception  {
+        MockedStatic mockArgument = mockStatic(Arguments.class);
+        RNInstabugSessionReplayModule SRModule = spy(new RNInstabugSessionReplayModule(mock(ReactApplicationContext.class)));
+
+        CountDownLatch latch =new CountDownLatch(1);
+        SRModule.latch=latch;
+
+        when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
+
+        mockSessionReplay.when(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)))
+                .thenAnswer(new Answer<Void>() {
+                    @Override
+                    public Void answer(InvocationOnMock invocation) {
+                        ((SessionSyncListener) invocation.getArguments()[0]).onSessionReadyToSync(new SessionMetadata("device","android","1.0",20));
+                        return null;
+                    }
+                });
+
+        Thread thread= new Thread (() ->{
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            SRModule.evaluateSync(true);
+        });
+        thread.start();
+
+        SRModule.setSyncCallback();
+
+        WritableMap params = Arguments.createMap();
+        params.putString("appVersion","1.0");
+        params.putString("OS","android");
+        params.putString("device","device");
+        params.putDouble("sessionDurationInSeconds",20);
+
+       assertEquals(SRModule.shouldSync,true);
+       assertTrue("Latch should be zero after evaluateSync is called", SRModule.latch.getCount() == 0);
+
+       verify(SRModule).sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, params);
+       mockSessionReplay.verify(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)));
+
+        mockArgument.close();
+    }
 
 }
