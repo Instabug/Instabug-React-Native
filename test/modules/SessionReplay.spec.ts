@@ -1,5 +1,5 @@
 import * as SessionReplay from '../../src/modules/SessionReplay';
-import { NativeSessionReplay } from '../../src/native/NativeSessionReplay';
+import { NativeSessionReplay, emitter, NativeEvents } from '../../src/native/NativeSessionReplay';
 
 describe('Session Replay Module', () => {
   it('should call the native method setEnabled', () => {
@@ -35,5 +35,16 @@ describe('Session Replay Module', () => {
 
     expect(NativeSessionReplay.getSessionReplayLink).toBeCalledTimes(1);
     expect(NativeSessionReplay.getSessionReplayLink).toReturnWith('link');
+  });
+
+  it('should call the native method setSyncCallback', () => {
+    const callback = jest.fn().mockReturnValue(true);
+
+    SessionReplay.setSyncCallback(callback);
+    emitter.emit(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION);
+
+    expect(NativeSessionReplay.setSyncCallback).toBeCalledTimes(1);
+    expect(emitter.listenerCount(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION)).toBe(1);
+    expect(NativeSessionReplay.evaluateSync).toBeCalledTimes(1);
   });
 });
