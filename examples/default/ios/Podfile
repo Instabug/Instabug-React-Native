@@ -15,7 +15,9 @@ target 'InstabugExample' do
   config = use_native_modules!
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/fix-add_delegate_default_imp/13.2.0/Instabug.podspec'
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/poc-graphql-new-header/13.3.14/Instabug.podspec'
+#   pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/poc-graphql-new-header/13.3.0/Instabug.podspec'
+#   pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/fix-add_delegate_default_imp/13.3.0/Instabug.podspec'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

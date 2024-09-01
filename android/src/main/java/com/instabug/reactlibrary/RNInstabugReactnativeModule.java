@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,6 +25,9 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.APM;
+import com.instabug.apm.InternalAPM;
+import com.instabug.apm.sanitization.OnCompleteCallback;
+import com.instabug.apm.sanitization.VoidSanitizer;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -42,6 +46,7 @@ import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.util.InstabugSDKLogger;
+import com.instabug.library.util.threading.PoolProvider;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -61,6 +66,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -75,7 +81,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private static final String TAG = "IBG-RN-Core";
 
-    private InstabugCustomTextPlaceHolder placeHolders;
+    private final InstabugCustomTextPlaceHolder placeHolders;
     private static Report currentReport;
     private final ReactApplicationContext reactContext;
 
@@ -1174,56 +1180,76 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         return constants;
     }
 
-    private NetworkLogSnapshot networkSnapshot;
-    private final Executor executor = Executors.newSingleThreadExecutor();
-    private CountDownLatch latch;
+    //    private volatile NetworkLogSnapshot networkSnapshot;
+    //    private final Executor executor = Executors.newSingleThreadExecutor();
+//    private CountDownLatch latch;
 
+    private final ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>>();
     @ReactMethod
-    public void registerNetworkLogsListener(Callback callback) {
-        executor.execute(new Runnable() {
+    public void registerNetworkLogsListener(Callback reactNativeCallback) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
 
-                NetworkLogListener networkLogListener = new NetworkLogListener() {
-                    @androidx.annotation.Nullable
+                InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
                     @Override
-                    public NetworkLogSnapshot onNetworkLogCaptured(@NonNull NetworkLogSnapshot networkLogSnapshot) {
-                        networkSnapshot = networkLogSnapshot;
+                    public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
+                        Log.w("Andrew" , String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
 
+                        final int id = networkLogSnapshot.hashCode();
+                        callbackMap.put(id, onCompleteCallback);
                         WritableMap networkSnapshotParams = Arguments.createMap();
+                        networkSnapshotParams.putInt("id", id);
                         networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
-//                        final Map<String, Object> requestHeaders = networkLogSnapshot.getRequestHeaders();
-//                        if (requestHeaders != null) {
-//                            reportParam.putMap("requestHeaders", convertFromMapToWriteableMap(requestHeaders));
-//                        }
-//                        reportParam.putString("requestBody", networkLogSnapshot.getRequestBody());
-//                        final Map<String, Object> responseHeaders = networkLogSnapshot.getResponseHeaders();
-//                        if (responseHeaders != null) {
-//                            reportParam.putMap("responseHeaders", convertFromMapToWriteableMap(responseHeaders));
-//                        }
-//                        reportParam.putString("response", networkLogSnapshot.getResponse());
                         networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
                         sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
-
-                        latch = new CountDownLatch(1);
-                        try {
-                            latch.await();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        return networkSnapshot;
                     }
-                };
+                });
 
-                APM.registerNetworkLogsListener(networkLogListener);
+//                NetworkLogListener networkLogListener = new NetworkLogListener() {
+//                    @androidx.annotation.Nullable
+//                    @Override
+//                    public NetworkLogSnapshot onNetworkLogCaptured(@NonNull NetworkLogSnapshot networkLogSnapshot) {
+//                        networkSnapshot = networkLogSnapshot;
+//
+//                        WritableMap networkSnapshotParams = Arguments.createMap();
+//                        networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
+////                        final Map<String, Object> requestHeaders = networkLogSnapshot.getRequestHeaders();
+////                        if (requestHeaders != null) {
+////                            reportParam.putMap("requestHeaders", convertFromMapToWriteableMap(requestHeaders));
+////                        }
+////                        reportParam.putString("requestBody", networkLogSnapshot.getRequestBody());
+////                        final Map<String, Object> responseHeaders = networkLogSnapshot.getResponseHeaders();
+////                        if (responseHeaders != null) {
+////                            reportParam.putMap("responseHeaders", convertFromMapToWriteableMap(responseHeaders));
+////                        }
+////                        reportParam.putString("response", networkLogSnapshot.getResponse());
+//                        networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
+//                        sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
+//                        Log.w("APM_Andrew", " inside callback " + Thread.currentThread().getName());
+//
+//                        latch = new CountDownLatch(1);
+//                        try {
+//                            latch.await();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        return networkSnapshot;
+//                    }
+//                };
+//
+//                APM.registerNetworkLogsListener(networkLogListener);
             }
         });
     }
 
+    @SuppressLint("RestrictedApi")
     @ReactMethod
     protected void updateNetworkLogSnapshot(String jsonString) throws JSONException {
         JSONObject newJSONObject = new JSONObject(jsonString);
-        networkSnapshot = new NetworkLogSnapshot(
+
+        final Integer ID = newJSONObject.optInt("id");
+        final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
                 newJSONObject.optString("url"),
                 null,
                 null,
@@ -1231,9 +1257,23 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 null,
                 newJSONObject.optInt("responseCode")
         );
+        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
 
-        if (latch != null) {
-            latch.countDown();
+        final boolean hasCallBack = callback != null;
+//        Log.w("Andrew" , "snapshot" +  newJSONObject.optString("url") + "callback " + hasCallBack);
+        if (callback != null) {
+            PoolProvider.postOrderedIOTask("network_log_thread_executor", new Runnable() {
+                @Override
+                public void run() {
+                    callback.onComplete(modifiedSnapshot);
+                }
+            });
+            callbackMap.remove(ID);
         }
+
+
+//        if (latch != null) {
+//            latch.countDown();
+//        }
     }
 }

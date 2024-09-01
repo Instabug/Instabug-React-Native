@@ -1,4 +1,7 @@
 const InstabugConstants = {
+  //using this header with native capturing will fill the need
+  GRAPHQL_NATIVE_HEADER: 'X-APOLLO-OPERATION-NAME',
+  // GRAPHQL_NATIVE_HEADER: 'x-apollo-operation-name',
   GRAPHQL_HEADER: 'ibg-graphql-header',
 
   // TODO: dyanmically get the max size from the native SDK and update the error message to reflect the dynamic size.

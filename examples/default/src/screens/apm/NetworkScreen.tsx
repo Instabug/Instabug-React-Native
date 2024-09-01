@@ -3,15 +3,18 @@ import { Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from '
 import { Section } from '../../components/Section';
 import { Screen } from '../../components/Screen';
 import { ClipboardTextInput } from '../../components/ClipboardTextInput';
-import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
-import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
+import { gql, useQuery } from '@apollo/client';
+// import { useQuery } from 'react-query';
+// import { gql, request } from 'graphql-request';
+// import { NativeInstabug } from '../../../../../src/native/NativeInstabug';
 
 export const NetworkScreen: React.FC = () => {
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
   const defaultRequestUrl = 'https://jsonplaceholder.typicode.com/posts/1';
+  const defaultRequestBaseUrl = 'https://jsonplaceholder.typicode.com/posts/';
   const imageUrls = [
     'https://fastly.picsum.photos/id/57/200/300.jpg?hmac=l908G1qVr4r7dP947-tak2mY8Vvic_vEYzCXUCKKskY',
     'https://fastly.picsum.photos/id/619/200/300.jpg?hmac=WqBGwlGjuY9RCdpzRaG9G-rc9Fi7TGUINX_-klAL2kA',
@@ -45,23 +48,72 @@ export const NetworkScreen: React.FC = () => {
     }
   }
 
-  const fetchGraphQlData = async () => {
-    const document = gql`
-      query {
-        country(code: "EG") {
-          emoji
-          name
-        }
+  function generateUrls(count: number = 10) {
+    const urls = [];
+    for (let i = 1; i <= count; i++) {
+      urls.push(defaultRequestBaseUrl + i);
+    }
+    return urls;
+  }
+
+  async function makeSequentialApiCalls(urls: string[]): Promise<any[]> {
+    // const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
+    const results: any[] = [];
+
+    try {
+      for (let i = 0; i < urls.length; i++) {
+        await fetch(urls[i]);
+        results.push(results[i]);
       }
-    `;
+      return results;
+    } catch (error) {
+      console.error('Error making parallel API calls:', error);
+      throw error;
+    }
+  }
+  async function makeParallelApiCalls(urls: string[]): Promise<any[]> {
+    const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
 
-    return request<{ country: { emoji: string; name: string } }>(
-      'https://countries.trevorblades.com/graphql',
-      document,
-    );
-  };
+    try {
+      const results = await Promise.all(fetchPromises);
+      // console.log(results);
+      return results;
+    } catch (error) {
+      console.error('Error making parallel API calls:', error);
+      throw error;
+    }
+  }
 
-  const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
+  // function changeObfuscation() {
+  //   NativeInstabug.setRequestObfuscationHandlerIOS('newAndrew');
+  // }
+
+  const document = gql`
+    query andrewQueryName {
+      country(code: "EG") {
+        emoji
+        name
+      }
+    }
+  `;
+
+  // const fetchGraphQlData = async () => {
+  //   const document = gql`
+  //     query {
+  //       country(code: "EG") {
+  //         emoji
+  //         name
+  //       }
+  //     }
+  //   `;
+  //
+  //   return request<{ country: { emoji: string; name: string } }>(
+  //     'https://countries.trevorblades.com/graphql',
+  //     document,
+  //   );
+  // };
+  // const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
+  const { loading, error, data, refetch } = useQuery(document);
 
   return (
     <ScrollView>
@@ -75,11 +127,24 @@ export const NetworkScreen: React.FC = () => {
               value={endpointUrl}
             />
             <CustomButton onPress={sendRequestToUrl} title="Send Request To Url" />
+            <CustomButton
+              onPress={() => {
+                // changeObfuscation();
+                makeParallelApiCalls(generateUrls());
+              }}
+              title="Send Parallel Requests"
+            />
+            <CustomButton
+              onPress={() => {
+                makeSequentialApiCalls(generateUrls());
+              }}
+              title="Send Sequantail Requests"
+            />
             <CustomButton onPress={() => refetch()} title="Reload GraphQL" />
             <View>
-              {isLoading && <Text>Loading...</Text>}
-              {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}
-              {isError && <Text>Error!</Text>}
+              {loading && <Text>Loading...</Text>}
+              {!loading && !error && <Text>GraphQL Data: {data.country.emoji}</Text>}
+              {error && <Text>Error!</Text>}
             </View>
           </VStack>
         </Section>

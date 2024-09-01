@@ -73,8 +73,11 @@ export interface InstabugNativeModule extends NativeModule {
   setNetworkLoggingEnabled(isEnabled: boolean): void;
   registerNetworkLogsListener(handler?: (networkSnapshot: NetworkSnapshot) => void): void;
   updateNetworkLogSnapshot(networkData: string): void;
-  setRequestObfuscationHandlerIOS(networkUrl: string): void;
-  setNetworkLoggingRequestFilterPredicateIOS(expression: string): void;
+  // setRequestObfuscationHandlerIOS(
+  //   obfuscationHandler: (data: Map<string, any>) => Map<string, any>,
+  // ): void;
+  setNetworkLoggingRequestFilterPredicateIOS(expression: string, args: any[]): void;
+  setNetworkLoggingRequestFilterPredicateIOS(predicateValue: boolean): void;
 
   // Repro Steps APIs //
   setReproStepsConfig(

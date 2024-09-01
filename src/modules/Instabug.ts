@@ -498,16 +498,18 @@ export const registerNetworkLogsListener = (
   if (emitter.listenerCount(NativeEvents.NETWORK_LOGGER_HANDLER) === 0) {
     logDebug('IBGNetworkLogger: NetworkLogsListener attached');
     emitter.addListener(NativeEvents.NETWORK_LOGGER_HANDLER, (networkSnapshot) => {
-      const { url, requestHeader, requestBody, responseHeader, response, responseCode } =
+      const { url, requestHeader, requestBody, responseHeader, response, responseCode, id } =
         networkSnapshot;
       const networkSnapshotObj = new NetworkSnapshot(
         url,
+        id,
         requestHeader,
         requestBody,
         responseHeader,
         response,
         responseCode,
       );
+      console.log(`RN-APM: ${networkSnapshotObj.id}, ${networkSnapshotObj.url}`);
       handler && handler(networkSnapshotObj);
     });
 

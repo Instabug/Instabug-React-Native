@@ -24,7 +24,7 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[@"IBGpreSendingHandler" , @"IBGNetworkLoggerHandler"];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -319,12 +319,37 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
 }
 
 RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
-    [IBGNetworkLogger setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
+    [IBGNetworkLogger   setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
                 NSMutableURLRequest *mRequest = [request mutableCopy];
                 mRequest.URL = [NSURL URLWithString: url];
                 return mRequest;
             }];
 }
+
+
+RCT_EXPORT_METHOD(registerNetworkLogsListener:(RCTResponseSenderBlock)callBack){
+
+    [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
+        
+        //need to add id here
+        NSDictionary *dict = @{ @"url" : request.URL, @"requestBody" : request.HTTPBody, @"requestHeader" : request.allHTTPHeaderFields };
+        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        
+    } ];
+}
+
+RCT_EXPORT_METHOD(updateNetworkLogSnapshot: (NSDictionary * _Nonnull)dict){
+    NSMutableURLRequest * request = [NSMutableURLRequest alloc];
+    request.URL = dict[@"url"];
+    request.HTTPBody = dict[@"requestBody"];
+    request.allHTTPHeaderFields = dict[@"requestHeader"];
+    //need to extract the id here
+ 
+    //completion here
+    
+//  ex: completionHandler(request);
+}
+
 RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
     NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:expression];
     NSPredicate *responsePredicate = [NSPredicate predicateWithFormat:expression];

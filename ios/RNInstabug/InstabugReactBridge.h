@@ -125,6 +125,7 @@
    serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
 
 - (void) setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url;
+- (void) registerNetworkLogsListener:(RCTResponseSenderBlock _Nullable )callBack;
 
 - (void) setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression;
 

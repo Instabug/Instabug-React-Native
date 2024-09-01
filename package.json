@@ -35,7 +35,9 @@
     "build:cli": "npx rollup -c rollup.config.js --bundleConfigAsCjs",
     "example": "yarn --cwd examples/default",
     "pods": "cd examples/default && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "bootstrap": "yarn example && yarn && yarn pods",
+    "clean:android": "cd android && ./gradlew clean && cd ../",
+    "clean:ios": "cd ios && xcodebuild clean && cd ../"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
