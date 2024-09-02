@@ -115,9 +115,8 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
 
     }
-
-     boolean shouldSync = false;
-     CountDownLatch latch;
+    private boolean shouldSync = false;
+    private CountDownLatch latch;
     @ReactMethod
     public void setSyncCallback() {
         MainThreadHandler.runOnMainThread(new Runnable() {
