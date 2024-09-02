@@ -4,6 +4,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
@@ -34,6 +35,7 @@ import org.mockito.stubbing.Answer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class RNInstabugSessionReplayModuleTest {
@@ -141,8 +143,8 @@ public class RNInstabugSessionReplayModuleTest {
         MockedStatic mockArgument = mockStatic(Arguments.class);
         RNInstabugSessionReplayModule SRModule = spy(new RNInstabugSessionReplayModule(mock(ReactApplicationContext.class)));
 
-        CountDownLatch latch =new CountDownLatch(1);
-        SRModule.latch=latch;
+        AtomicBoolean result = new AtomicBoolean(false);
+        boolean shouldSync=true;
 
         when(Arguments.createMap()).thenReturn(new JavaOnlyMap());
 
@@ -150,22 +152,13 @@ public class RNInstabugSessionReplayModuleTest {
                 .thenAnswer(new Answer<Void>() {
                     @Override
                     public Void answer(InvocationOnMock invocation) {
-                        ((SessionSyncListener) invocation.getArguments()[0]).onSessionReadyToSync(new SessionMetadata("device","android","1.0",20));
+                        SessionSyncListener listener = (SessionSyncListener) invocation.getArguments()[0];
+                        SessionMetadata metadata = new SessionMetadata("device", "android", "1.0", 20);
+                         boolean shouldSync=listener.onSessionReadyToSync(metadata);
+                        result.set(shouldSync);
                         return null;
                     }
                 });
-
-        Thread thread= new Thread (() ->{
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            SRModule.evaluateSync(true);
-        });
-        thread.start();
-
-        SRModule.setSyncCallback();
 
         WritableMap params = Arguments.createMap();
         params.putString("appVersion","1.0");
@@ -173,9 +166,21 @@ public class RNInstabugSessionReplayModuleTest {
         params.putString("device","device");
         params.putDouble("sessionDurationInSeconds",20);
 
-       assertEquals(SRModule.shouldSync,true);
-       assertTrue("Latch should be zero after evaluateSync is called", SRModule.latch.getCount() == 0);
+        Thread thread= new Thread (() ->{
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
+            SRModule.evaluateSync(shouldSync);
+        });
+        
+        thread.start();
+
+        SRModule.setSyncCallback();
+
+        assertEquals(shouldSync,result.get());
        verify(SRModule).sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, params);
        mockSessionReplay.verify(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)));
 
