@@ -116,7 +116,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     }
 
-    volatile boolean shouldSync = false;
+     boolean shouldSync = false;
      CountDownLatch latch;
     @ReactMethod
     public void setSyncCallback() {
