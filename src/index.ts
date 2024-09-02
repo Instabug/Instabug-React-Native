@@ -14,6 +14,7 @@ import * as Replies from './modules/Replies';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
 import * as SessionReplay from './modules/SessionReplay';
+import type { sessionData } from './modules/SessionReplay';
 
 export * from './utils/Enums';
 export {
@@ -28,6 +29,6 @@ export {
   Replies,
   Surveys,
 };
-export type { InstabugConfig, Survey, NetworkData, NetworkDataObfuscationHandler };
+export type { InstabugConfig, Survey, NetworkData, NetworkDataObfuscationHandler, sessionData };
 
 export default Instabug;

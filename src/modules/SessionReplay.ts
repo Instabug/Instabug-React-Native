@@ -1,5 +1,11 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
 
+export interface sessionData {
+  appVersion: string;
+  OS: string;
+  device: string;
+  sessionDurationInSeconds: number;
+}
 /**
  * Enables or disables Session Replay for your Instabug integration.
  *
@@ -93,16 +99,16 @@ export const getSessionReplayLink = async (): Promise<string> => {
  * ```
  */
 export const setSyncCallback = async (
-  handler: (payload: {
-    appVersion: string;
-    OS: string;
-    device: string;
-    sessionDurationInSeconds: number;
-  }) => boolean,
+  handler: (payload: sessionData) => boolean,
 ): Promise<void> => {
   emitter.addListener(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, (payload) => {
-    if (typeof handler(payload) !== 'boolean') {
-      console.warn('setSyncCallback expects boolean value');
+    const result = handler(payload);
+    const shouldSync = Boolean(result);
+
+    if (typeof result !== 'boolean') {
+      console.warn(
+        `IBG-RN: The callback passed to SessionReplay.setSyncCallback was expected to return a boolean but returned "${result}". The value has been cast to boolean, proceeding with ${shouldSync}.`,
+      );
     }
 
     NativeSessionReplay.evaluateSync(Boolean(handler(payload)));
