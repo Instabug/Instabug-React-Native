@@ -10,6 +10,7 @@ import Instabug, {
   ReproStepsMode,
   SessionReplay,
 } from 'instabug-reactnative';
+import type { sessionData } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -21,12 +22,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
-  const shouldSyncSession = (data: {
-    appVersion: string;
-    OS: string;
-    device: string;
-    sessionDurationInSeconds: number;
-  }) => {
+  const shouldSyncSession = (data: sessionData) => {
     if (data.sessionDurationInSeconds > 20) {
       return true;
     }
