@@ -82,5 +82,8 @@
     "typescript": "^4.8.4",
     "wait-for-expect": "^3.0.2",
     "xhr2": "^0.2.1"
+  },
+  "dependencies": {
+    "instabug-reactnative": "^13.3.0"
   }
 }

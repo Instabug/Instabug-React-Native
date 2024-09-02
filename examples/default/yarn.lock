@@ -4711,6 +4711,10 @@ inline-style-prefixer@^6.0.1:
   version "0.1.0"
   resolved "https://codeload.github.com/Instabug/Instabug-React-Native-NDK/tar.gz/3b0bac281253133852d32f52aa50cc805dd0b570"
 
+instabug-reactnative@^13.3.0:
+  version "0.0.0"
+  uid ""
+
 "instabug-reactnative@link:../..":
   version "0.0.0"
   uid ""

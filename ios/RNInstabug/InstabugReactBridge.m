@@ -16,9 +16,21 @@
 #import <React/RCTUIManager.h>
 #import "RNInstabug.h"
 #import "Util/IBGNetworkLogger+CP.h"
+#import "CPNetworkLoggingObserver.h"
+#import "CPNetworkLoggingObserverDelegateImp.h"
+
+typedef void (^IBGURLRequestObfuscationHandler)(NSURLRequest * _Nonnull request);
 
 @interface Instabug (PrivateWillSendAPI)
 + (void)setWillSendReportHandler_private:(void(^)(IBGReport *report, void(^reportCompletionHandler)(IBGReport *)))willSendReportHandler_private;
+
+@end
+
+@interface InstabugReactBridge ()
+
+@property IBGURLRequestObfuscationHandler completion;
+//@property NSDictionary<NSString *, IBGURLRequestObfuscationHandler> *dictionary;
+
 @end
 
 @implementation InstabugReactBridge
@@ -330,7 +342,7 @@ RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
 RCT_EXPORT_METHOD(registerNetworkLogsListener:(RCTResponseSenderBlock)callBack){
 
     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
-        
+        self.completion = completionHandler;
         //need to add id here
         NSDictionary *dict = @{ @"url" : request.URL, @"requestBody" : request.HTTPBody, @"requestHeader" : request.allHTTPHeaderFields };
         [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
@@ -347,7 +359,8 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot: (NSDictionary * _Nonnull)dict){
  
     //completion here
     
-//  ex: completionHandler(request);
+    self.completion(request);
+//    [[CPNetworkLoggingObserver sharedInstance] didObfuscateRequest:request];
 }
 
 RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){

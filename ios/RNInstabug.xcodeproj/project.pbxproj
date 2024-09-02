@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */; };
 		24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */; };
+		860C9EC22C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.m in Sources */ = {isa = PBXBuildFile; fileRef = 860C9EC02C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.m */; };
 		BAD36E1A22F0763A007F5E74 /* InstabugBugReportingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */; };
 		BAD36E2222F19248007F5E74 /* InstabugSurveysBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2122F19248007F5E74 /* InstabugSurveysBridge.m */; };
 		BAD36E2522F19265007F5E74 /* InstabugRepliesBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD36E2422F19265007F5E74 /* InstabugRepliesBridge.m */; };
@@ -35,6 +36,8 @@
 		24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstabugReactBridge.m; sourceTree = "<group>"; };
 		24DF11FB1DA3A2F30056F77C /* RCTConvert+InstabugEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+InstabugEnums.h"; sourceTree = "<group>"; };
 		24DF11FC1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+InstabugEnums.m"; sourceTree = "<group>"; };
+		860C9EC02C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPNetworkLoggingObserverDelegateImp.m; sourceTree = "<group>"; };
+		860C9EC12C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPNetworkLoggingObserverDelegateImp.h; sourceTree = "<group>"; };
 		BAD36E1822F075DD007F5E74 /* InstabugBugReportingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugBugReportingBridge.h; sourceTree = "<group>"; };
 		BAD36E1922F0763A007F5E74 /* InstabugBugReportingBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstabugBugReportingBridge.m; sourceTree = "<group>"; };
 		BAD36E2022F19230007F5E74 /* InstabugSurveysBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstabugSurveysBridge.h; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 		24DF11EF1DA3A2B90056F77C /* RNInstabug */ = {
 			isa = PBXGroup;
 			children = (
+				860C9EC12C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.h */,
+				860C9EC02C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.m */,
 				24DF11F91DA3A2F30056F77C /* InstabugReactBridge.h */,
 				24DF11FA1DA3A2F30056F77C /* InstabugReactBridge.m */,
 				24DF11FB1DA3A2F30056F77C /* RCTConvert+InstabugEnums.h */,
@@ -169,6 +174,7 @@
 				BAD36E2522F19265007F5E74 /* InstabugRepliesBridge.m in Sources */,
 				BAD36E2822F19283007F5E74 /* InstabugChatsBridge.m in Sources */,
 				BAD36E2B22F192CB007F5E74 /* InstabugFeatureRequestsBridge.m in Sources */,
+				860C9EC22C85BD5D005940DF /* CPNetworkLoggingObserverDelegateImp.m in Sources */,
 				24DF11FE1DA3A2F30056F77C /* RCTConvert+InstabugEnums.m in Sources */,
 				24DF11FD1DA3A2F30056F77C /* InstabugReactBridge.m in Sources */,
 			);

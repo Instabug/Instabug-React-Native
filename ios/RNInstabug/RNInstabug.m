@@ -3,6 +3,7 @@
 #import "RNInstabug.h"
 #import "Util/IBGNetworkLogger+CP.h"
 #import "Util/Instabug+CP.h"
+#import "CPNetworkLoggingObserverDelegateImp.h"
 
 @implementation RNInstabug
 
@@ -39,6 +40,8 @@ useNativeNetworkInterception:(BOOL)useNativeNetworkInterception {
 
     // Temporarily disabling APM hot launches
     IBGAPM.hotAppLaunchEnabled = NO;
+    
+//    [CPNetworkLoggingObserver sharedInstance].delegate = [[CPNetworkLoggingObserverDelegateImp alloc] init];
 }
 
 + (void)initWithToken:(NSString *)token invocationEvents:(IBGInvocationEvent)invocationEvents {
