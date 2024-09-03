@@ -1195,10 +1195,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
                     @Override
                     public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-                        Log.w("Andrew", String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
-
+//                        Log.w("Andrew", String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
+                        Log.w("HelloWorld", "[AND][RN] sanitize: " + Thread.currentThread().getName());
                         final int id = networkLogSnapshot.hashCode();
                         callbackMap.put(id, onCompleteCallback);
+                        Log.w("HelloWorld", "[AND][RN] size after adding: " + callbackMap.size());
+                        Log.w("HelloWorld", "[AND][RN] item added id: "  + id);
+
                         WritableMap networkSnapshotParams = Arguments.createMap();
                         networkSnapshotParams.putInt("id", id);
                         networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
@@ -1258,19 +1261,20 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 null,
                 newJSONObject.optInt("responseCode")
         );
+        Log.w("HelloWorld", "[AND][RN] updateNetworkLogSnapshot: " + Thread.currentThread().getName());
 
-        PoolProvider.postOrderedIOTask("network_log_thread_executor", new Runnable() {
-            @Override
-            public void run() {
-                final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
 
-                if (callback != null) {
-                    callback.onComplete(modifiedSnapshot);
-                }
+        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
+        Log.w("HelloWorld", "[AND][RN] item retrieved " + callback + " ID " + ID);
 
-                callbackMap.remove(ID);
-            }
-        });
+
+        if (callback != null) {
+            callback.onComplete(modifiedSnapshot);
+        }
+
+        Log.w("HelloWorld", "[AND][RN] size before removal: " + callbackMap.size());
+        callbackMap.remove(ID);
+
 
     }
 }

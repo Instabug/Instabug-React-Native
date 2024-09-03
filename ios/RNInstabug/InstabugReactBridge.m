@@ -340,25 +340,59 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
 
 RCT_EXPORT_METHOD(registerNetworkLogsListener){
     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
-        self.completion = completionHandler;
-        //need to add id here
-//        NSDictionary *dict = @{ @"url" : request.URL, @"requestBody" : request.HTTPBody, @"requestHeader" : request.allHTTPHeaderFields };
-        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:@{}];
-        completionHandler(request);
-        
-    } ];
+           self.completion = completionHandler;
+           
+           // Ensure the URL, HTTP body, and headers are in the correct format
+           NSString *urlString = request.URL.absoluteString ?: @"";
+           NSString *bodyString = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
+           NSDictionary *headerDict = request.allHTTPHeaderFields ?: @{};
+           
+           // Create the dictionary to send
+           NSDictionary *dict = @{ @"url" : urlString, @"requestBody" : bodyString, @"requestHeader" : headerDict };
+           
+           // Send the event
+           [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+           
+           // Call the completion handler
+           completionHandler(request);
+       }];
 }
 
 RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString){
-    NSMutableURLRequest * request = [NSMutableURLRequest alloc];
-    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    
-//    request.URL = [[NSURL alloc] initWithString:dict[@"url"]];
-//    request.HTTPBody  = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding]; ;
-//    request.allHTTPHeaderFields = dict[@"requestHeader"];
-    
-    self.completion(request);
+    // Properly initialize the NSMutableURLRequest
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        
+        // Convert jsonString to NSData
+        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        // Parse the JSON into a dictionary
+        NSError *error = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        // Check for JSON parsing errors
+        if (error) {
+            NSLog(@"Failed to parse JSON: %@", error);
+            return;
+        }
+
+        // Set the URL, HTTP body, and headers
+        request.URL = [NSURL URLWithString:dict[@"url"]];
+        request.HTTPBody = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding];
+        
+        // Ensure requestHeader is a dictionary
+        if ([dict[@"requestHeader"] isKindOfClass:[NSDictionary class]]) {
+            request.allHTTPHeaderFields = dict[@"requestHeader"];
+        } else {
+            NSLog(@"Invalid requestHeader format");
+            return;
+        }
+
+        // Ensure self.completion is not nil before calling it
+        if (self.completion) {
+            self.completion(request);
+        } else {
+            NSLog(@"Completion handler is nil");
+        }
 }
 
 //RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
