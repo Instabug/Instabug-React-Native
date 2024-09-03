@@ -55,8 +55,8 @@ export const App: React.FC = () => {
       all: ReproStepsMode.enabled,
     });
     // NetworkLogger.setRequestFilterExpressionIOS(false);
-    NetworkLogger.setNetworkDataObfuscationHandlerAndroid(async (networkData) => {
-      networkData.url = `${networkData.url}/Android/obfuscated`;
+    NetworkLogger.setNetworkSnapshotObfuscationHandler(async (networkData) => {
+      networkData.url = `${networkData.url}/ios/obfuscated`;
       return networkData;
     });
 

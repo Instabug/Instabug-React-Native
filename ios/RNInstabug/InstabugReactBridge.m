@@ -29,7 +29,6 @@ typedef void (^IBGURLRequestObfuscationHandler)(NSURLRequest * _Nonnull request)
 @interface InstabugReactBridge ()
 
 @property IBGURLRequestObfuscationHandler completion;
-//@property NSDictionary<NSString *, IBGURLRequestObfuscationHandler> *dictionary;
 
 @end
 
@@ -330,44 +329,43 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                         serverErrorMessage:serverErrorMessage];
 }
 
-RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
-    [IBGNetworkLogger   setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
-                NSMutableURLRequest *mRequest = [request mutableCopy];
-                mRequest.URL = [NSURL URLWithString: url];
-                return mRequest;
-            }];
-}
+//RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
+//    [IBGNetworkLogger   setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
+//                NSMutableURLRequest *mRequest = [request mutableCopy];
+//                mRequest.URL = [NSURL URLWithString: url];
+//                return mRequest;
+//            }];
+//}
 
 
-RCT_EXPORT_METHOD(registerNetworkLogsListener:(RCTResponseSenderBlock)callBack){
-
+RCT_EXPORT_METHOD(registerNetworkLogsListener){
     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
         self.completion = completionHandler;
         //need to add id here
-        NSDictionary *dict = @{ @"url" : request.URL, @"requestBody" : request.HTTPBody, @"requestHeader" : request.allHTTPHeaderFields };
-        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+//        NSDictionary *dict = @{ @"url" : request.URL, @"requestBody" : request.HTTPBody, @"requestHeader" : request.allHTTPHeaderFields };
+        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:@{}];
+        completionHandler(request);
         
     } ];
 }
 
-RCT_EXPORT_METHOD(updateNetworkLogSnapshot: (NSDictionary * _Nonnull)dict){
+RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString){
     NSMutableURLRequest * request = [NSMutableURLRequest alloc];
-    request.URL = dict[@"url"];
-    request.HTTPBody = dict[@"requestBody"];
-    request.allHTTPHeaderFields = dict[@"requestHeader"];
-    //need to extract the id here
- 
-    //completion here
+    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+//    request.URL = [[NSURL alloc] initWithString:dict[@"url"]];
+//    request.HTTPBody  = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding]; ;
+//    request.allHTTPHeaderFields = dict[@"requestHeader"];
     
     self.completion(request);
-//    [[CPNetworkLoggingObserver sharedInstance] didObfuscateRequest:request];
 }
 
-RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:expression];
-    NSPredicate *responsePredicate = [NSPredicate predicateWithFormat:expression];
-    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:responsePredicate];
-}
+//RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
+//    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:expression];
+//    NSPredicate *responsePredicate = [NSPredicate predicateWithFormat:expression];
+//    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:responsePredicate];
+//}
 
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {

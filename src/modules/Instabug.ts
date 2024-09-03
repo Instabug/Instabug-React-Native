@@ -496,7 +496,7 @@ export const registerNetworkLogsListener = (
   handler?: (networkSnapshot: NetworkSnapshot) => void,
 ) => {
   if (emitter.listenerCount(NativeEvents.NETWORK_LOGGER_HANDLER) === 0) {
-    logDebug('IBGNetworkLogger: NetworkLogsListener attached');
+    console.log('IBG-RN: NetworkLogsListener attached');
     emitter.addListener(NativeEvents.NETWORK_LOGGER_HANDLER, (networkSnapshot) => {
       const { url, requestHeader, requestBody, responseHeader, response, responseCode, id } =
         networkSnapshot;
@@ -509,11 +509,12 @@ export const registerNetworkLogsListener = (
         response,
         responseCode,
       );
-      console.log(`RN-APM: ${networkSnapshotObj.id}, ${networkSnapshotObj.url}`);
-      handler && handler(networkSnapshotObj);
+      console.log(`IBG-RN: new native snapshot: ${networkSnapshotObj.url}`);
+      if (handler) {
+        handler(networkSnapshotObj);
+      }
     });
-
-    NativeInstabug.registerNetworkLogsListener(handler);
+    NativeInstabug.registerNetworkLogsListener();
   }
 };
 

@@ -124,10 +124,12 @@
          gqlQueryName:(NSString * _Nullable)gqlQueryName
    serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
 
-- (void) setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url;
-- (void) registerNetworkLogsListener:(RCTResponseSenderBlock _Nullable )callBack;
+- (void) registerNetworkLogsListener;
 
-- (void) setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression;
+- (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
+
+
+//- (void) setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression;
 
 /*
  +------------------------------------------------------------------------+

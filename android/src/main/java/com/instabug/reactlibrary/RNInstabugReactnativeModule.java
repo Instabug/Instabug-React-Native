@@ -1185,8 +1185,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 //    private CountDownLatch latch;
 
     private final ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>>();
+
     @ReactMethod
-    public void registerNetworkLogsListener(Callback reactNativeCallback) {
+    public void registerNetworkLogsListener() {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1194,7 +1195,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
                     @Override
                     public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-                        Log.w("Andrew" , String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
+                        Log.w("Andrew", String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
 
                         final int id = networkLogSnapshot.hashCode();
                         callbackMap.put(id, onCompleteCallback);
@@ -1257,23 +1258,19 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 null,
                 newJSONObject.optInt("responseCode")
         );
-        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
 
-        final boolean hasCallBack = callback != null;
-//        Log.w("Andrew" , "snapshot" +  newJSONObject.optString("url") + "callback " + hasCallBack);
-        if (callback != null) {
-            PoolProvider.postOrderedIOTask("network_log_thread_executor", new Runnable() {
-                @Override
-                public void run() {
+        PoolProvider.postOrderedIOTask("network_log_thread_executor", new Runnable() {
+            @Override
+            public void run() {
+                final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
+
+                if (callback != null) {
                     callback.onComplete(modifiedSnapshot);
                 }
-            });
-            callbackMap.remove(ID);
-        }
 
+                callbackMap.remove(ID);
+            }
+        });
 
-//        if (latch != null) {
-//            latch.countDown();
-//        }
     }
 }

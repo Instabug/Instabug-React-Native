@@ -3,7 +3,6 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
-import { Platform } from 'react-native';
 import { registerNetworkLogsListener } from './Instabug';
 import { NativeInstabug } from '../native/NativeInstabug';
 import type NetworkSnapshot from '../models/NetworkSnapshot';
@@ -84,23 +83,22 @@ export const setNetworkDataObfuscationHandler = (
 //   return NativeInstabug.setRequestObfuscationHandlerIOS(handler);
 // };
 
-export const setNetworkDataObfuscationHandlerAndroid = (
+export const setNetworkSnapshotObfuscationHandler = (
   handler?: NetworkSnapshotObfuscationHandler | null | undefined,
 ) => {
   _networkSnapshotObfuscationHandler = handler;
   //todo: add apm check
-  if (Platform.OS === 'android') {
-    //todo: check if need to unregister
-    registerNetworkLogsListener(async (networkSnapshot) => {
-      console.log(`IBG-RN: new networkSnapshot ${networkSnapshot.url}`);
-      if (_networkSnapshotObfuscationHandler) {
-        networkSnapshot = await _networkSnapshotObfuscationHandler(networkSnapshot);
-      }
-      console.log(`IBG-RN: networkSnapshot after obfuscation ${networkSnapshot.url}`);
+  //todo: check if need to unregister
 
-      NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
-    });
-  }
+  // if (Platform.OS === 'android') {
+  registerNetworkLogsListener(async (networkSnapshot) => {
+    console.log(`IBG-RN: new logger snapshot ${networkSnapshot.url}`);
+    if (_networkSnapshotObfuscationHandler) {
+      networkSnapshot = await _networkSnapshotObfuscationHandler(networkSnapshot);
+    }
+    NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+  });
+  // }
 };
 
 /**
@@ -111,10 +109,10 @@ export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
 };
 
-export const setRequestFilterExpressionIOS = (value: boolean) => {
-  //todo: need optimization (challenge: developer will need to write [expression] in Obj C)
-  NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
-};
+// export const setRequestFilterExpressionIOS = (value: boolean) => {
+//   //todo: need optimization (challenge: developer will need to write [expression] in Obj C)
+//   NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
+// };
 
 /**
  * Returns progress in terms of totalBytesSent and totalBytesExpectedToSend a network request.
