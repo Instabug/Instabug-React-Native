@@ -1,5 +1,6 @@
 export default class NetworkSnapshot {
   constructor(
+    public tempId: string | undefined,
     public url: string | undefined,
     public id: number | undefined,
     public requestHeaders: Record<string, any> = {},

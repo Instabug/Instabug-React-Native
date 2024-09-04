@@ -498,9 +498,10 @@ export const registerNetworkLogsListener = (
   if (emitter.listenerCount(NativeEvents.NETWORK_LOGGER_HANDLER) === 0) {
     console.log('IBG-RN: NetworkLogsListener attached');
     emitter.addListener(NativeEvents.NETWORK_LOGGER_HANDLER, (networkSnapshot) => {
-      const { url, requestHeader, requestBody, responseHeader, response, responseCode, id } =
+      const { tempId, url, requestHeader, requestBody, responseHeader, response, responseCode, id } =
         networkSnapshot;
       const networkSnapshotObj = new NetworkSnapshot(
+        tempId,
         url,
         id,
         requestHeader,
