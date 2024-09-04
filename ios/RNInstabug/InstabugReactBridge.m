@@ -354,7 +354,7 @@ RCT_EXPORT_METHOD(registerNetworkLogsListener){
            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
            
            // Call the completion handler
-           completionHandler(request);
+//           completionHandler(request);
        }];
 }
 
