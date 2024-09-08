@@ -191,7 +191,6 @@ export function reportNetworkLog(network: NetworkData) {
       network.startTime,
       network.duration,
       network.gqlQueryName,
-      network.serverErrorMessage,
     );
   }
 }

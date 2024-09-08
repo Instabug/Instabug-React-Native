@@ -297,8 +297,7 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                       errorCode:(double)errorCode
                       startTime:(double)startTime
                        duration:(double)duration
-                   gqlQueryName:(NSString * _Nullable)gqlQueryName
-             serverErrorMessage:(NSString * _Nullable)serverErrorMessage) {
+                   gqlQueryName:(NSString * _Nullable)gqlQueryName) {
     [IBGNetworkLogger addNetworkLogWithUrl:url
                                     method:method
                                requestBody:requestBody
@@ -313,8 +312,7 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  errorCode:errorCode
                                  startTime:startTime * 1000
                                   duration:duration * 1000
-                              gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage];
+                              gqlQueryName:gqlQueryName];
 }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
