@@ -323,7 +323,6 @@ describe('reportNetworkLog', () => {
       network.startTime,
       network.duration,
       network.gqlQueryName,
-      network.serverErrorMessage,
     );
   });
 });
