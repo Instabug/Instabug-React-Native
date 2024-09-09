@@ -16,8 +16,8 @@
 
 
 - (void)setUp {
-    self.mSessionReplay = OCMClassMock([IBGSessionReplay class]);
-    self.bridge = [[InstabugSessionReplayBridge alloc] init];
+  self.mSessionReplay = OCMClassMock([IBGSessionReplay class]);
+  self.bridge = [[InstabugSessionReplayBridge alloc] init];
 }
 
 - (void)testSetEnabled {
@@ -67,7 +67,34 @@
     [self.bridge getSessionReplayLink:resolve :reject];
     OCMVerify([self.mSessionReplay sessionReplayLink]);
     [self waitForExpectations:@[expectation] timeout:5.0];
-
 }
+
+- (void)testSetSyncCallback {
+      BOOL expectedValue = YES;
+      
+      XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Completion block should be called with the expected value"];
+      
+      __block BOOL actualValue = NO;
+      
+      OCMExpect([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock:^BOOL(id obj) {
+          
+          void (^completionBlock)(BOOL) = ^(BOOL boolean) {
+            actualValue = boolean;
+            [completionExpectation fulfill];
+            XCTAssertEqual(actualValue, expectedValue);
+        };
+        
+        self.bridge.sessionEvaluationCompletion = completionBlock;
+        
+          return YES;
+      }]]);
+      
+      [self.bridge setSyncCallback];
+      [self.bridge evaluateSync:expectedValue];
+            
+      [self waitForExpectationsWithTimeout:1 handler:nil];
+      OCMVerifyAll(self.mSessionReplay);
+  }
+
 
 @end
