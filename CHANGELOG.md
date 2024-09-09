@@ -6,6 +6,10 @@
 
 - Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
 
+### Changed
+
+- Bump Instabug iOS SDK to v13.4.0 ([#1283](https://github.com/Instabug/Instabug-React-Native/pull/1283)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.0).
+
 ## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
 
 ### Added
