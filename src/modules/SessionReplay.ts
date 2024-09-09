@@ -1,10 +1,19 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
 
+import type { NetworkData } from '../modules/NetworkLogger';
+
 export interface sessionData {
   appVersion: string;
   OS: string;
   device: string;
   sessionDurationInSeconds: number;
+  bugsCount: number;
+  fatalCrashCount: number;
+  oomCrashCount: number;
+  networkLogs: Array<NetworkData>;
+  launchType: string;
+  hasLinkToAppReview: boolean;
+  launchDuration: number;
 }
 /**
  * Enables or disables Session Replay for your Instabug integration.
