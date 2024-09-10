@@ -154,7 +154,7 @@ public class RNInstabugSessionReplayModuleTest {
             mockSessionReplay.when(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)))
                     .thenAnswer((invocation) -> {
                         SessionSyncListener listener = (SessionSyncListener) invocation.getArguments()[0];
-                        SessionMetadata metadata = new SessionMetadata("device", "android", "1.0", 20);
+                        SessionMetadata metadata = mock(SessionMetadata.class);
                         actual.set(listener.onSessionReadyToSync(metadata));
                         return null;
                     });
@@ -165,10 +165,6 @@ public class RNInstabugSessionReplayModuleTest {
             }).when(SRModule).sendEvent(eq(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION), any());
 
             WritableMap params = Arguments.createMap();
-            params.putString("appVersion","1.0");
-            params.putString("OS","android");
-            params.putString("device","device");
-            params.putDouble("sessionDurationInSeconds",20);
 
             SRModule.setSyncCallback();
 
