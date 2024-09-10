@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.OnSessionReplayLinkReady;
 import com.instabug.library.SessionSyncListener;
@@ -15,6 +16,8 @@ import com.instabug.library.sessionreplay.SessionReplay;
 import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import javax.annotation.Nonnull;
@@ -95,7 +98,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                     e.printStackTrace();
                 }
             }
-        });
+        });  
     }
 
     @ReactMethod
@@ -113,8 +116,25 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
             }
         });
 
-
     }
+
+    public WritableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
+        List<SessionMetadata.NetworkLog> networkLogArrayList = networkLogList;
+        
+        WritableArray networkLogs = Arguments.createArray();
+
+        for (SessionMetadata.NetworkLog log : networkLogArrayList) {
+            WritableMap networkLog = Arguments.createMap();
+            networkLog.putString("url", log.getUrl());
+            networkLog.putDouble("duration", log.getDuration());
+            networkLog.putInt("statusCode", log.getStatusCode());
+
+            networkLogs.pushMap(networkLog);
+        }
+
+        return networkLogs;
+    }
+
     private boolean shouldSync = false;
     private CountDownLatch latch;
     @ReactMethod
@@ -131,6 +151,15 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                             params.putString("OS",sessionMetadata.getOs());
                             params.putString("device",sessionMetadata.getDevice());
                             params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
+                            params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
+                            params.putDouble("launchType", sessionMetadata.getLaunchType());
+                            params.putDouble("launchDuration", sessionMetadata.getLaunchDuration());
+                            params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
+
+//                              TODO:Add rest of sessionMetadata
+//                            params.putDouble("bugsCount", ??);
+//                            params.putDouble("fatalCrashCount",??);
+//                            params.putDouble("oomCrashCount",??);
 
                             sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION,params);
 
