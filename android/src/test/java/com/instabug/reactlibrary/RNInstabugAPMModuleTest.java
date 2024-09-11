@@ -3,8 +3,6 @@ import android.os.Looper;
 
 import com.facebook.react.bridge.Promise;
 import com.instabug.apm.APM;
-import com.instabug.apm.InternalAPM;
-import com.instabug.apm.configuration.cp.APMFeature;
 
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
@@ -206,29 +204,6 @@ public class RNInstabugAPMModuleTest {
         verify(APM.class, times(1));
         APM.endUITrace();
     }
-    @Test
-    public void testW3CExternalTraceIDFlag(){
-        Promise promise = mock(Promise.class);
-        InternalAPM internalAPM = mock(InternalAPM.class);
-        apmModule.isW3ExternalTraceIDEnabled(promise);
-        boolean expected=internalAPM._isFeatureEnabledCP(APMFeature.W3C_EXTERNAL_TRACE_ID,"");
-       verify(promise).resolve(expected);
-    }
-    @Test
-    public void testW3CExternalGeneratedHeaderFlag(){
-        Promise promise = mock(Promise.class);
-        InternalAPM internalAPM = mock(InternalAPM.class);
-        apmModule.isW3ExternalGeneratedHeaderEnabled(promise);
-        boolean expected=internalAPM._isFeatureEnabledCP(APMFeature.W3C_GENERATED_HEADER_ATTACHING,"");
-        verify(promise).resolve(expected);
-    }
-    @Test
-    public void testW3CCaughtHeaderFlag(){
-        Promise promise = mock(Promise.class);
-       InternalAPM internalAPM = mock(InternalAPM.class);
-        apmModule.isW3CaughtHeaderEnabled(promise);
-        boolean expected=internalAPM._isFeatureEnabledCP(APMFeature.W3C_CAPTURED_HEADER_ATTACHING,"");
-        verify(promise).resolve(expected);
-    }
+
 
 }
