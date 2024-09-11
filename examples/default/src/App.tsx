@@ -9,6 +9,7 @@ import Instabug, {
   LogLevel,
   ReproStepsMode,
   SessionReplay,
+  LaunchType,
 } from 'instabug-reactnative';
 import type { sessionData } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -23,6 +24,9 @@ const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
   const shouldSyncSession = (data: sessionData) => {
+    if (data.launchType === LaunchType.cold) {
+      return true;
+    }
     if (data.sessionDurationInSeconds > 20) {
       return true;
     }

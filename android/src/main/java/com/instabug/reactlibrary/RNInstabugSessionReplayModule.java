@@ -152,10 +152,10 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                             params.putString("device",sessionMetadata.getDevice());
                             params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
                             params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
-                            params.putDouble("launchType", sessionMetadata.getLaunchType());
+                            params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
                             params.putDouble("launchDuration", sessionMetadata.getLaunchDuration());
                             params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
-
+                            
 //                              TODO:Add rest of sessionMetadata
 //                            params.putDouble("bugsCount", ??);
 //                            params.putDouble("fatalCrashCount",??);
