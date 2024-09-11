@@ -35,7 +35,7 @@ export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptio
       ),
     );
   } else {
-    console.log(
+    console.warn(
       `IBG-RN: The error ${error} has been omitted because only error type is supported.`,
     );
     return;
