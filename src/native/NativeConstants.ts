@@ -12,7 +12,8 @@ export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeReproStepsMode &
   NativeLocale &
   NativeNonFatalErrorLevel &
-  NativeStringKey;
+  NativeStringKey &
+  NativeLaunchType;
 
 interface NativeSdkDebugLogsLevel {
   sdkDebugLogsLevelVerbose: any;
@@ -187,4 +188,10 @@ interface NativeStringKey {
   welcomeMessageBetaWelcomeStepTitle: any;
   welcomeMessageLiveWelcomeStepContent: any;
   welcomeMessageLiveWelcomeStepTitle: any;
+}
+
+interface NativeLaunchType {
+  hot: any;
+  cold: any;
+  warm: any;
 }
