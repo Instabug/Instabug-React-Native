@@ -592,8 +592,8 @@ export const _registerW3CFlagsChangeListener = (
     isW3CaughtHeaderEnabled: boolean;
   }) => void,
 ) => {
-  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANE, (payload) => {
+  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANGE, (payload) => {
     handler(payload);
   });
-  NativeInstabug.registerW3CFlagsChangeListener(handler);
+  NativeInstabug.registerW3CFlagsChangeListener();
 };

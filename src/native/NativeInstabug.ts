@@ -145,20 +145,14 @@ export interface InstabugNativeModule extends NativeModule {
   isW3CaughtHeaderEnabled(): Promise<boolean>;
 
   // W3C Feature Flags Listener for Android
-  registerW3CFlagsChangeListener(
-    handler: (payload: {
-      isW3ExternalTraceIDEnabled: boolean;
-      isW3ExternalGeneratedHeaderEnabled: boolean;
-      isW3CaughtHeaderEnabled: boolean;
-    }) => void,
-  ): void;
+  registerW3CFlagsChangeListener(): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
-  ON_W3C_FLAGS_CHANE = 'IBGOnNewW3CFlagsUpdateReceivedCallback',
+  ON_W3C_FLAGS_CHANGE = 'IBGOnNewW3CFlagsUpdateReceivedCallback',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

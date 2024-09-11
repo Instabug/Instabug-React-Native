@@ -1,4 +1,5 @@
 import { NativeInstabug } from '../native/NativeInstabug';
+import { _registerW3CFlagsChangeListener } from '../modules/Instabug';
 
 export const FeatureFlags = {
   isW3ExternalTraceID: () => NativeInstabug.isW3ExternalTraceIDEnabled(),
@@ -7,7 +8,7 @@ export const FeatureFlags = {
 };
 
 export const registerW3CFlagsListener = () => {
-  NativeInstabug.registerW3CFlagsChangeListener(
+  _registerW3CFlagsChangeListener(
     (res: {
       isW3ExternalTraceIDEnabled: boolean;
       isW3ExternalGeneratedHeaderEnabled: boolean;
