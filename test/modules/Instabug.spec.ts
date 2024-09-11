@@ -787,9 +787,9 @@ describe('Instabug Module', () => {
   it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
     const callback = jest.fn();
     Instabug._registerW3CFlagsChangeListener(callback);
-    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANE);
+    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANGE);
 
-    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANE)).toBe(1);
+    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
     expect(callback).toHaveBeenCalled();
   });
 });
