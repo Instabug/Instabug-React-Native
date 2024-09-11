@@ -18,6 +18,8 @@ import com.instabug.library.InstabugCustomTextPlaceHolder;
 import com.instabug.library.IssueType;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
+import com.instabug.library.internal.crossplatform.CoreFeature;
+import com.instabug.library.internal.crossplatform.InternalCore;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -584,5 +586,29 @@ public class RNInstabugReactnativeModuleTest {
 
         // then
         mockInstabug.verify(() -> Instabug.willRedirectToStore());
+    }
+    @Test
+    public void testW3CExternalTraceIDFlag(){
+        Promise promise = mock(Promise.class);
+        InternalCore internalAPM = mock(InternalCore.class);
+        rnModule.isW3ExternalTraceIDEnabled(promise);
+        boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_EXTERNAL_TRACE_ID);
+        verify(promise).resolve(expected);
+    }
+    @Test
+    public void testW3CExternalGeneratedHeaderFlag(){
+        Promise promise = mock(Promise.class);
+        InternalCore internalAPM = mock(InternalCore.class);
+        rnModule.isW3ExternalGeneratedHeaderEnabled(promise);
+        boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_ATTACHING_GENERATED_HEADER);
+        verify(promise).resolve(expected);
+    }
+    @Test
+    public void testW3CCaughtHeaderFlag(){
+        Promise promise = mock(Promise.class);
+        InternalCore internalAPM = mock(InternalCore.class);
+        rnModule.isW3CaughtHeaderEnabled(promise);
+        boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER);
+        verify(promise).resolve(expected);
     }
 }
