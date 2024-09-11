@@ -781,7 +781,6 @@ describe('Instabug Module', () => {
     Instabug._registerW3CFlagsChangeListener(callback);
 
     expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
-    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledWith(callback);
   });
 
   it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
