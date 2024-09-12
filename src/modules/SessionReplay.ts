@@ -1,5 +1,5 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
-import { LaunchType } from '../utils/Enums';
+import type { LaunchType } from '../utils/Enums';
 export interface networkLog {
   url: string;
   duration: number;
