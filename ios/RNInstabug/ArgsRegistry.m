@@ -20,6 +20,7 @@
     [all addEntriesFromDictionary:ArgsRegistry.locales];
     [all addEntriesFromDictionary:ArgsRegistry.nonFatalExceptionLevel];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
+    [all addEntriesFromDictionary:ArgsRegistry.launchType];
 
     return all;
 }
@@ -238,6 +239,13 @@
         @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
         @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,
         @"insufficientContentMessage" : kIBGInsufficientContentMessageStringName,
+    };
+}
+
++ (ArgsDictionary *) launchType {
+    return @{
+        @"hot": @(LaunchTypeHot),
+        @"cold": @(LaunchTypeCold),
     };
 }
 
