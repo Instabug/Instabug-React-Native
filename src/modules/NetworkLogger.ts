@@ -2,13 +2,30 @@ import type { RequestHandler } from '@apollo/client';
 
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import { reportNetworkLog, isContentTypeNotAllowed } from '../utils/InstabugUtils';
+import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
+import { NativeModules } from 'react-native';
 
 export type { NetworkData };
 
 export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<NetworkData>;
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
+
+const filterURL = (url: string) => {
+  const urlWithoutPrototcol = url.split('://');
+  if (urlWithoutPrototcol.length > 1) {
+    return urlWithoutPrototcol[1].split('/')[0];
+  }
+  return urlWithoutPrototcol[0].split('/')[0];
+};
+const getDevServerURL = () => {
+  const { scriptURL } = NativeModules.SourceCode;
+  if (scriptURL) {
+    const url = new URL(scriptURL);
+    return filterURL(url + '');
+  }
+  return null;
+};
 
 /**
  * Sets whether network logs should be sent with bug reports.
@@ -25,6 +42,11 @@ export const setEnabled = (isEnabled: boolean) => {
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
+          }
+          if (__DEV__) {
+            const devServerURL = getDevServerURL();
+            console.log('Dev Server URL:', devServerURL);
+            console.log('NETWORK Server URL:', filterURL(network.url));
           }
 
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
