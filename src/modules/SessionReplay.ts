@@ -102,12 +102,11 @@ export const getSessionReplayLink = async (): Promise<string> => {
 
  * @example
  * ```ts
- * SessionReplay.setSyncCallback((payload)=>{
- *    if(payload.device == "Xiaomi M2007J3SY" &&
- *         payload.os == "OS Level 33" &&
- *         payload.appVersion == "3.1.4 (4)" ||
- *         payload.sessionDurationInSeconds > 20 )
- *    {return true}
+ * SessionReplay.setSyncCallback((metadata) => {
+ *    return metadata.device == "Xiaomi M2007J3SY" &&
+ *         metadata.os == "OS Level 33" &&
+ *         metadata.appVersion == "3.1.4 (4)" ||
+ *         metadata.sessionDurationInSeconds > 20;
  * });
  * ```
  */
