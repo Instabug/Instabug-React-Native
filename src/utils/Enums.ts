@@ -240,4 +240,5 @@ export enum LaunchType {
    *  android only
    */
   warm = constants.warm,
+  unKnown = constants.unKnown,
 }

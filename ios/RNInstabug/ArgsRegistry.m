@@ -246,6 +246,7 @@
     return @{
         @"hot": @(LaunchTypeHot),
         @"cold": @(LaunchTypeCold),
+        @"unKnown":@(LaunchTypeUnknown)
     };
 }
 
