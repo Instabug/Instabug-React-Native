@@ -1,4 +1,5 @@
-import { NativeEventEmitter, type NativeModule } from 'react-native';
+import { NativeEventEmitter } from 'react-native';
+import type { NativeModule } from 'react-native';
 
 import { NativeModules } from './NativePackage';
 
