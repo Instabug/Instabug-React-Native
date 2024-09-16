@@ -330,10 +330,10 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                                    @Nullable final String errorDomain,
                                    @Nullable final ReadableMap w3cAttributes,
                                    @Nullable final String gqlQueryName,
-                                   @Nullable final String serverErrorMessage) {
+                                   @Nullable final String serverErrorMessage
+                                   ) {
         try {
             APMNetworkLogger networkLogger = new APMNetworkLogger();
-
             final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
             final String errorMessage = hasError ? errorDomain : null;
 
@@ -363,13 +363,12 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                             w3cAttributes.getString("w3cGeneratedHeader"),
                             w3cAttributes.getString("w3cCaughtHeader")
                     );
-
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class, APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
                         method.invoke(
                                 networkLogger,
-                                (long) requestStartTime,
+                                (long) requestStartTime * 1000,
                                 (long) requestDuration,
                                 requestHeaders,
                                 requestBody,

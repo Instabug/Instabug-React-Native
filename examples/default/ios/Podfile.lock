@@ -475,7 +475,7 @@ PODS:
   - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNInstabug (13.2.0):
+  - RNInstabug (13.3.0):
     - Instabug
     - React-Core
   - RNReanimated (3.5.4):
@@ -748,7 +748,7 @@ SPEC CHECKSUMS:
   ReactCommon: 3ccb8fb14e6b3277e38c73b0ff5e4a1b8db017a9
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNInstabug: e515e490416a20b604e27bdbbebf5316ff3a2012
+  RNInstabug: 80b369d623a473c31ff3b8b8ea1d17daaca44132
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: 80584470ff1ffc7994923ea135a3e5ad825546b9
@@ -756,6 +756,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 
-PODFILE CHECKSUM: 26b8b1f0273d40b2b21568157bd5df0421935faa
+PODFILE CHECKSUM: 281036e04bd4b9e7c2cc03a503b3245d3f1dd0dd
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.15.2

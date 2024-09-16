@@ -20,6 +20,7 @@ import com.instabug.library.ReproConfigurations;
 import com.instabug.library.ReproMode;
 import com.instabug.library.internal.crossplatform.CoreFeature;
 import com.instabug.library.internal.crossplatform.InternalCore;
+import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -40,6 +41,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -569,14 +571,62 @@ public class RNInstabugReactnativeModuleTest {
 
     @Test
     public void given$clearAllExperiments_whenQuery_thenShouldCallNativeApi() {
-        // given
-
         // when
         rnModule.clearAllExperiments();
 
         // then
         verify(Instabug.class,times(1));
         Instabug.clearAllExperiments();
+    }
+
+    @Test
+    public void testAddFeatureFlags() {
+        // given
+        JavaOnlyMap map = new JavaOnlyMap();
+        map.putString("key1", "value1");
+        map.putString("key2", "value2");
+
+        // when
+        rnModule.addFeatureFlags(map);
+
+        // then
+        Iterator<Map.Entry<String, Object>> iterator = map.getEntryIterator();
+        ArrayList<IBGFeatureFlag> featureFlags = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> item = iterator.next();
+            featureFlags.add(new IBGFeatureFlag(item.getKey(), (String) item.getValue()));
+        }
+
+        mockInstabug.verify(() -> Instabug.addFeatureFlags(featureFlags));
+
+    }
+
+    @Test
+    public void testRemoveFeatureFlags() {
+        // given
+        JavaOnlyArray array = new JavaOnlyArray();
+        array.pushString("exp1");
+        array.pushString("exp2");
+
+        // when
+        rnModule.removeFeatureFlags(array);
+
+        // then
+        List<String> expectedList = new ArrayList<String>();
+        for (Object o : array.toArrayList()) {
+            expectedList.add((String) o);
+        }
+        mockInstabug.verify(() -> Instabug.removeFeatureFlag(expectedList));
+
+    }
+
+    @Test
+    public void testRemoveAllFeatureFlags() {
+        // when
+        rnModule.removeAllFeatureFlags();
+
+        // then
+        mockInstabug.verify(() -> Instabug.removeAllFeatureFlags());
     }
 
     @Test

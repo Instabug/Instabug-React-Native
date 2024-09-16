@@ -1,7 +1,7 @@
 {
   "name": "instabug-reactnative",
   "description": "React Native plugin for integrating the Instabug SDK",
-  "version": "13.2.0",
+  "version": "13.3.0",
   "author": "Instabug (https://instabug.com)",
   "repository": "github:Instabug/Instabug-React-Native",
   "homepage": "https://www.instabug.com/platforms/react-native",

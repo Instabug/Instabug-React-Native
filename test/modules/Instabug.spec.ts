@@ -2,6 +2,7 @@ import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
+import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -22,6 +23,7 @@ import {
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
+import type { FeatureFlag } from '../../src/models/FeatureFlag';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -234,6 +236,42 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.reportScreenChange).toBeCalledWith('ScreenName');
 
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
+  });
+
+  it('setNavigationListener should call the onStateChange on a screen change', async () => {
+    const mockedState = { routes: [{ name: 'ScreenName' }], index: 0 };
+
+    const mockNavigationContainerRef = {
+      current: null,
+      navigate: jest.fn(),
+      reset: jest.fn(),
+      goBack: jest.fn(),
+      dispatch: jest.fn(),
+      getRootState: () => mockedState,
+      canGoBack: jest.fn(),
+
+      addListener: jest.fn((event, callback) => {
+        expect(event).toBe('state');
+        callback(mockedState);
+        return jest.fn();
+      }),
+      removeListener: jest.fn(),
+    } as unknown as NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>;
+
+    const onStateChangeMock = jest.fn();
+
+    jest.spyOn(Instabug, 'onStateChange').mockImplementation(onStateChangeMock);
+
+    Instabug.setNavigationListener(mockNavigationContainerRef);
+
+    expect(mockNavigationContainerRef.addListener).toBeCalledTimes(1);
+    expect(mockNavigationContainerRef.addListener).toHaveBeenCalledWith(
+      'state',
+      expect.any(Function),
+    );
+
+    expect(onStateChangeMock).toBeCalledTimes(1);
+    expect(onStateChangeMock).toHaveBeenCalledWith(mockNavigationContainerRef.getRootState());
   });
 
   it('should call the native method init', () => {
@@ -769,6 +807,57 @@ describe('Instabug Module', () => {
   it('should call native clearAllExperiments method', () => {
     Instabug.clearAllExperiments();
     expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
+  });
+
+  it('should call native addFeatureFlags method', () => {
+    const featureFlags: Array<FeatureFlag> = [
+      {
+        name: 'key1',
+        variant: 'variant1',
+      },
+      {
+        name: 'key2',
+        variant: 'variant2',
+      },
+    ];
+    const expected: Record<string, string | undefined> = {};
+    expected.key1 = 'variant1';
+    expected.key2 = 'variant2';
+
+    Instabug.addFeatureFlags(featureFlags);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledWith(expected);
+  });
+
+  it('should call native addFeatureFlag method', () => {
+    const featureFlag: FeatureFlag = {
+      name: 'key1',
+      variant: 'variant2',
+    };
+    const expected: Record<string, string | undefined> = {};
+    expected.key1 = 'variant2';
+
+    Instabug.addFeatureFlag(featureFlag);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.addFeatureFlags).toBeCalledWith(expected);
+  });
+  it('should call native removeFeatureFlags method', () => {
+    const featureFlags = ['exp1', 'exp2'];
+    Instabug.removeFeatureFlags(featureFlags);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledWith(featureFlags);
+  });
+
+  it('should call native removeFeatureFlag method', () => {
+    const featureFlag = 'exp1';
+    Instabug.removeFeatureFlag(featureFlag);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledTimes(1);
+    expect(NativeInstabug.removeFeatureFlags).toBeCalledWith([featureFlag]);
+  });
+
+  it('should call native removeAllFeatureFlags method', () => {
+    Instabug.removeAllFeatureFlags();
+    expect(NativeInstabug.removeAllFeatureFlags).toBeCalledTimes(1);
   });
 
   it('should call the native willRedirectToStore method', () => {

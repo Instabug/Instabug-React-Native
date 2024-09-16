@@ -120,6 +120,12 @@ export interface InstabugNativeModule extends NativeModule {
   removeExperiments(experiments: string[]): void;
   clearAllExperiments(): void;
 
+  addFeatureFlags(featureFlags: Record<string, string | undefined>): void;
+
+  removeFeatureFlags(featureFlags: string[]): void;
+
+  removeAllFeatureFlags(): void;
+
   // Files APIs //
   setFileAttachment(filePath: string, fileName?: string): void;
 

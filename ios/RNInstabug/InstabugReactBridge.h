@@ -12,7 +12,6 @@
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGBugReporting.h>
 #import <Instabug/IBGCrashReporting.h>
-#import <Instabug/IBGSurveys.h>
 #import <Instabug/IBGLog.h>
 #import <Instabug/IBGTypes.h>
 #import "ArgsRegistry.h"
@@ -137,4 +136,7 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
 
+- (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
+- (void)removeFeatureFlags:(NSArray *)featureFlags;
+- (void)removeAllFeatureFlags;
 @end
