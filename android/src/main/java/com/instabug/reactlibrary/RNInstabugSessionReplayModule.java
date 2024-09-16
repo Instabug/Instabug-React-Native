@@ -119,7 +119,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     }
 
-    public WritableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
+    public ReadableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
         WritableMap params = Arguments.createMap();
         params.putString("appVersion",sessionMetadata.getAppVersion());
         params.putString("OS",sessionMetadata.getOs());
