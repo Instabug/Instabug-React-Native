@@ -24,9 +24,9 @@ export interface ApmNativeModule extends NativeModule {
     statusCode: number,
     responseContentType: string,
     errorDomain: string,
+    w3cExternalTraceAttributes: W3cExternalTraceAttributes,
     gqlQueryName?: string,
     serverErrorMessage?: string,
-    w3cExternalTraceAttributes?: W3cExternalTraceAttributes,
   ): void;
 
   // App Launches APIs //

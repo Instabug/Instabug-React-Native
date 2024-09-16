@@ -205,8 +205,6 @@ export function reportNetworkLog(network: NetworkData) {
       network.responseCode,
       network.contentType,
       network.errorDomain,
-      network.gqlQueryName,
-      network.serverErrorMessage,
       {
         isW3cHeaderFound: network.isW3cHeaderFound,
         partialId: network.partialId,
@@ -214,6 +212,8 @@ export function reportNetworkLog(network: NetworkData) {
         w3cGeneratedHeader: network.w3cGeneratedHeader,
         w3cCaughtHeader: network.w3cCaughtHeader,
       },
+      network.gqlQueryName,
+      network.serverErrorMessage,
     );
   } else {
     NativeInstabug.networkLogIOS(

@@ -301,8 +301,6 @@ describe('reportNetworkLog', () => {
       network.responseCode,
       network.contentType,
       network.errorDomain,
-      network.gqlQueryName,
-      network.serverErrorMessage,
       {
         isW3cHeaderFound: null,
         partialId: null,
@@ -310,6 +308,8 @@ describe('reportNetworkLog', () => {
         w3cGeneratedHeader: null,
         w3cCaughtHeader: null,
       },
+      network.gqlQueryName,
+      network.serverErrorMessage,
     );
   });
 

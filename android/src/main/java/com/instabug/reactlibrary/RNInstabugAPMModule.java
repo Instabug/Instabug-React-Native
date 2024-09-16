@@ -329,10 +329,9 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                                    final double statusCode,
                                    final String responseContentType,
                                    @Nullable final String errorDomain,
+                                   @Nullable final ReadableMap w3cAttributes,
                                    @Nullable final String gqlQueryName,
-                                   @Nullable final String serverErrorMessage,
-                                   @Nullable final ReadableMap w3cAttributes
-
+                                   @Nullable final String serverErrorMessage
                                    ) {
         try {
             APMNetworkLogger networkLogger = new APMNetworkLogger();
@@ -387,7 +386,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                                 gqlQueryName,
                                 serverErrorMessage,
                                 w3cExternalTraceAttributes
-
                         );
                 } else {
                     Log.e("IB-CP-Bridge", "APMNetworkLogger.log was not found by reflection");
