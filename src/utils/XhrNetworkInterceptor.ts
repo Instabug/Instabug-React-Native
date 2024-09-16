@@ -107,10 +107,6 @@ export const injectHeaders = async (
 
   networkData.isW3cHeaderFound = isHeaderFound;
 
-  console.log('isW3cExternalTraceIDEnabled', isW3cCaughtHeaderEnabled);
-  console.log('isW3cCaughtHeaderEnabled', isW3cCaughtHeaderEnabled);
-  console.log('isW3cExternalGeneratedHeaderEnabled', isW3cExternalGeneratedHeaderEnabled);
-
   const injectionMethodology = isHeaderFound
     ? identifyCaughtHeader(networkData, isW3cCaughtHeaderEnabled)
     : injectGeneratedData(networkData, isW3cExternalGeneratedHeaderEnabled);
