@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.OnSessionReplayLinkReady;
@@ -136,7 +137,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
         return params;
     }
 
-    public WritableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
+    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
         WritableArray networkLogs = Arguments.createArray();
 
         for (SessionMetadata.NetworkLog log : networkLogList) {
