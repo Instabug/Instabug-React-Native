@@ -303,6 +303,13 @@ describe('reportNetworkLog', () => {
       network.errorDomain,
       network.gqlQueryName,
       network.serverErrorMessage,
+      {
+        isW3cHeaderFound: null,
+        partialId: null,
+        networkStartTimeInSeconds: null,
+        w3cGeneratedHeader: null,
+        w3cCaughtHeader: null,
+      },
     );
   });
 
@@ -329,6 +336,13 @@ describe('reportNetworkLog', () => {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
+      {
+        isW3cHeaderFound: null,
+        partialId: null,
+        networkStartTimeInSeconds: null,
+        w3cGeneratedHeader: null,
+        w3cCaughtHeader: null,
+      },
     );
   });
 });
