@@ -1,17 +1,17 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
 import type { LaunchType } from '../utils/Enums';
-export interface networkLog {
+export interface NetworkLog {
   url: string;
   duration: number;
   statusCode: number;
 }
 
-export interface sessionData {
+export interface SessionMetadata {
   appVersion: string;
   OS: string;
   device: string;
   sessionDurationInSeconds: number;
-  networkLogs: Array<networkLog>;
+  networkLogs: Array<NetworkLog>;
   launchType: LaunchType;
   hasLinkToAppReview: boolean;
   launchDuration: number;
@@ -111,7 +111,7 @@ export const getSessionReplayLink = async (): Promise<string> => {
  * ```
  */
 export const setSyncCallback = async (
-  handler: (payload: sessionData) => boolean,
+  handler: (payload: SessionMetadata) => boolean,
 ): Promise<void> => {
   emitter.addListener(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, (payload) => {
     const result = handler(payload);
