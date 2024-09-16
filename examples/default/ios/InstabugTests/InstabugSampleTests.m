@@ -315,7 +315,7 @@
 
 - (void)testNetworkLogIOS {
   id mIBGNetworkLogger = OCMClassMock([IBGNetworkLogger class]);
-  
+
   NSString *url = @"https://api.instabug.com";
   NSString *method = @"GET";
   NSString *requestBody = @"requestBody";
@@ -354,13 +354,10 @@
                             duration:duration
                         gqlQueryName:gqlQueryName
                   serverErrorMessage:serverErrorMessage
-                           isW3cCaughted:nil
-                           partialID:nil
-                           timestamp:nil
-                           generatedW3CTraceparent:nil
-                           caughtedW3CTraceparent:nil
+                                      w3cExternalTraceAttributes:nil
+
                   ];
-  
+
   OCMVerify([mIBGNetworkLogger addNetworkLogWithUrl:url
                                             method:method
                                        requestBody:requestBody
@@ -376,14 +373,13 @@
                                          startTime:startTime * 1000
                                           duration:duration * 1000
                                       gqlQueryName:gqlQueryName
-                                      serverErrorMessage:serverErrorMessage
-                                      isW3cCaughted:nil
-                                          partialID:nil
-                                          timestamp:nil
-                            generatedW3CTraceparent:nil
-                             caughtedW3CTraceparent:nil
-             
-            ]);
+                                serverErrorMessage:serverErrorMessage
+                                    isW3cCaughted:nil
+                                   partialID:nil
+                                    timestamp:nil
+                                  generatedW3CTraceparent:nil
+                               caughtedW3CTraceparent:nil
+                                ]);
 }
 
 - (void)testSetFileAttachment {
@@ -515,61 +511,100 @@
   OCMVerify([mock clearAllExperiments]);
 }
 
+- (void)testAddFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSDictionary *featureFlagsMap = @{ @"key13" : @"value1", @"key2" : @"value2"};
+
+  OCMStub([mock addFeatureFlags :[OCMArg any]]);
+  [self.instabugBridge addFeatureFlags:featureFlagsMap];
+  OCMVerify([mock addFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+    NSArray<IBGFeatureFlag *> *featureFlags = value;
+    NSString* firstFeatureFlagName = [featureFlags objectAtIndex:0 ].name;
+    NSString* firstFeatureFlagKey = [[featureFlagsMap allKeys] objectAtIndex:0] ;
+    if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+      return YES;
+    }
+    return  NO;
+  }]]);
+}
+
+- (void)testRemoveFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *featureFlags = @[@"exp1", @"exp2"];
+  [self.instabugBridge removeFeatureFlags:featureFlags];
+     OCMVerify([mock removeFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+        NSArray<IBGFeatureFlag *> *featureFlagsObJ = value;
+        NSString* firstFeatureFlagName = [featureFlagsObJ objectAtIndex:0 ].name;
+        NSString* firstFeatureFlagKey = [featureFlags firstObject] ;
+        if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+          return YES;
+        }
+        return  NO;
+      }]]);
+}
+
+- (void)testRemoveAllFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  OCMStub([mock removeAllFeatureFlags]);
+  [self.instabugBridge removeAllFeatureFlags];
+  OCMVerify([mock removeAllFeatureFlags]);
+}
+
 
 - (void) testIsW3ExternalTraceIDEnabled {
     id mock = OCMClassMock([IBGNetworkLogger class]);
     NSNumber *expectedValue = @(YES);
-    
+
     OCMStub([mock w3ExternalTraceIDEnabled]).andReturn([expectedValue boolValue]);
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
     RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
         XCTAssertEqualObjects(result, expectedValue);
         [expectation fulfill];
     };
-    
+
     [self.instabugBridge isW3ExternalTraceIDEnabled:resolve :nil];
-    
+
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
-    
+
     OCMVerify([mock w3ExternalTraceIDEnabled]);
 }
 
 - (void) testIsW3ExternalGeneratedHeaderEnabled {
     id mock = OCMClassMock([IBGNetworkLogger class]);
     NSNumber *expectedValue = @(YES);
-    
+
     OCMStub([mock w3ExternalGeneratedHeaderEnabled]).andReturn([expectedValue boolValue]);
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
     RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
         XCTAssertEqualObjects(result, expectedValue);
         [expectation fulfill];
     };
-    
+
     [self.instabugBridge isW3ExternalGeneratedHeaderEnabled:resolve :nil];
-    
+
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
-    
+
     OCMVerify([mock w3ExternalGeneratedHeaderEnabled]);
 }
 
 - (void) testIsW3CaughtHeaderEnabled {
     id mock = OCMClassMock([IBGNetworkLogger class]);
     NSNumber *expectedValue = @(YES);
-    
+
     OCMStub([mock w3CaughtHeaderEnabled]).andReturn([expectedValue boolValue]);
-    
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
     RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
         XCTAssertEqualObjects(result, expectedValue);
         [expectation fulfill];
     };
-    
+
     [self.instabugBridge isW3CaughtHeaderEnabled:resolve :nil];
-    
+
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
-    
+
     OCMVerify([mock w3CaughtHeaderEnabled]);
 }
 

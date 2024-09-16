@@ -258,6 +258,11 @@ describe('reportNetworkLog', () => {
     errorDomain: 'errorDomain',
     serverErrorMessage: 'serverErrorMessage',
     requestContentType: 'requestContentType',
+    isW3cHeaderFound: null,
+    partialId: null,
+    networkStartTimeInSeconds: null,
+    w3cGeneratedHeader: null,
+    w3cCaughtHeader: null,
   };
 
   it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
