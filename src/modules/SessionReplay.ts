@@ -96,7 +96,7 @@ export const getSessionReplayLink = async (): Promise<string> => {
 };
 
 /**
- * Set a callback for weather this session should sync
+ * Set a callback for whether this session should sync
  *
  * @param handler
 
