@@ -152,7 +152,7 @@ export default {
               const _response = this._response;
               cloneNetwork.requestBody =
                 typeof _response === 'string' ? _response : JSON.stringify(_response);
-              cloneNetwork.responseBody = null;
+              cloneNetwork.responseBody = '';
             }
 
             if (this.response) {
