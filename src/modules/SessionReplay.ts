@@ -124,7 +124,7 @@ export const setSyncCallback = async (
       );
     }
 
-    NativeSessionReplay.evaluateSync(Boolean(handler(payload)));
+    NativeSessionReplay.evaluateSync(shouldSync);
   });
 
   return NativeSessionReplay.setSyncCallback();
