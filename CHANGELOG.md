@@ -5,6 +5,7 @@
 ### Added
 
 - Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
+- Enhance the network interceptor to capture more client error messages ([#1257](https://github.com/Instabug/Instabug-React-Native/pull/1257)).
 
 ### Fixed
 
