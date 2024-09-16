@@ -38,7 +38,8 @@ describe('Session Replay Module', () => {
   });
 
   it('should call the native method setSyncCallback', () => {
-    const callback = jest.fn().mockReturnValue(true);
+    const shouldSync = true;
+    const callback = jest.fn().mockReturnValue(shouldSync);
 
     SessionReplay.setSyncCallback(callback);
     emitter.emit(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION);
@@ -46,5 +47,6 @@ describe('Session Replay Module', () => {
     expect(NativeSessionReplay.setSyncCallback).toBeCalledTimes(1);
     expect(emitter.listenerCount(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION)).toBe(1);
     expect(NativeSessionReplay.evaluateSync).toBeCalledTimes(1);
+    expect(NativeSessionReplay.evaluateSync).toBeCalledWith(shouldSync);
   });
 });
