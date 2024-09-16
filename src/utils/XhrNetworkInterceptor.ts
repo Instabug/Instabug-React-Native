@@ -151,6 +151,10 @@ export default {
 
               // @ts-ignore
               const _response = this._response;
+              cloneNetwork.requestBody =
+                typeof _response === 'string' ? _response : JSON.stringify(_response);
+              cloneNetwork.responseBody = '';
+
               // Detect a more descriptive error message.
               if (typeof _response === 'string' && _response.length > 0) {
                 cloneNetwork.errorDomain = _response;
