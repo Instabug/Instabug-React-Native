@@ -99,10 +99,6 @@ export const injectHeaders = async (
     isW3cCaughtHeaderEnabled,
   } = featureFlags;
 
-  console.log('isW3cExternalTraceIDEnabled', isW3cCaughtHeaderEnabled);
-  console.log('isW3cCaughtHeaderEnabled', isW3cCaughtHeaderEnabled);
-  console.log('isW3cExternalGeneratedHeaderEnabled', isW3cExternalGeneratedHeaderEnabled);
-
   if (!isW3cExternalTraceIDEnabled) {
     return;
   }
