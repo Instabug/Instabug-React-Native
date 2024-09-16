@@ -235,7 +235,7 @@ describe('Network Interceptor', () => {
       expect(callback).toBeCalledWith(
         expect.objectContaining({
           errorDomain: 'ClientError',
-          errorCode: 0,
+          errorCode: 9876,
           responseBody: '',
         }),
       );

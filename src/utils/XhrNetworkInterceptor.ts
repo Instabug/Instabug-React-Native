@@ -72,7 +72,8 @@ export default {
     originalXHROpen = XMLHttpRequest.prototype.open;
     originalXHRSend = XMLHttpRequest.prototype.send;
     originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-
+    // An error code that signifies an issue with the RN client.
+    const clientErrorCode = 9876;
     XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
       network.url = url;
@@ -145,7 +146,7 @@ export default {
 
             // @ts-ignore
             if (this._hasError) {
-              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorCode = clientErrorCode;
               cloneNetwork.errorDomain = 'ClientError';
 
               // @ts-ignore
@@ -153,6 +154,16 @@ export default {
               cloneNetwork.requestBody =
                 typeof _response === 'string' ? _response : JSON.stringify(_response);
               cloneNetwork.responseBody = '';
+
+              // Detect a more descriptive error message.
+              if (typeof _response === 'string' && _response.length > 0) {
+                cloneNetwork.errorDomain = _response;
+              }
+
+              // @ts-ignore
+            } else if (this._timedOut) {
+              cloneNetwork.errorCode = clientErrorCode;
+              cloneNetwork.errorDomain = 'TimeOutError';
             }
 
             if (this.response) {
@@ -162,6 +173,9 @@ export default {
               } else if (['text', '', 'json'].includes(this.responseType)) {
                 cloneNetwork.responseBody = JSON.stringify(this.response);
               }
+            } else {
+              cloneNetwork.responseBody = '';
+              cloneNetwork.contentType = 'text/plain';
             }
 
             cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;
