@@ -11,7 +11,7 @@ export interface SessionMetadata {
   OS: string;
   device: string;
   sessionDurationInSeconds: number;
-  networkLogs: Array<NetworkLog>;
+  networkLogs: NetworkLog[];
   launchType: LaunchType;
   hasLinkToAppReview: boolean;
   launchDuration: number;
