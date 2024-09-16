@@ -121,7 +121,8 @@
             startTime:(double)startTime
              duration:(double)duration
          gqlQueryName:(NSString * _Nullable)gqlQueryName
-   serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
+   serverErrorMessage:(NSString * _Nullable)serverErrorMessage
+w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 
 /*
  +------------------------------------------------------------------------+

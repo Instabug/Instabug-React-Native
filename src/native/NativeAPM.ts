@@ -1,5 +1,7 @@
 import type { NativeModule } from 'react-native';
+import { NativeEventEmitter } from 'react-native';
 
+import type { W3cExternalTraceAttributes } from '../utils/Types';
 import { NativeModules } from './NativePackage';
 
 export interface ApmNativeModule extends NativeModule {
@@ -24,6 +26,7 @@ export interface ApmNativeModule extends NativeModule {
     errorDomain: string,
     gqlQueryName?: string,
     serverErrorMessage?: string,
+    w3cExternalTraceAttributes?: W3cExternalTraceAttributes,
   ): void;
 
   // App Launches APIs //
@@ -48,3 +51,5 @@ export interface ApmNativeModule extends NativeModule {
 }
 
 export const NativeAPM = NativeModules.IBGAPM;
+
+export const emitter = new NativeEventEmitter(NativeAPM);
