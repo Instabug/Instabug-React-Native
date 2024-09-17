@@ -1180,10 +1180,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         return constants;
     }
 
-    //    private volatile NetworkLogSnapshot networkSnapshot;
-    //    private final Executor executor = Executors.newSingleThreadExecutor();
-//    private CountDownLatch latch;
-
     private final ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>>();
 
     @ReactMethod
@@ -1191,67 +1187,34 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
-
                 InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
                     @Override
                     public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-//                        Log.w("Andrew", String.format("snapshot %s callback %s", networkLogSnapshot.getUrl(), onCompleteCallback != null));
-                        Log.w("HelloWorld", "[AND][RN] sanitize: " + Thread.currentThread().getName());
-                        final int id = networkLogSnapshot.hashCode();
+                        final int id = onCompleteCallback.hashCode();
                         callbackMap.put(id, onCompleteCallback);
-                        Log.w("HelloWorld", "[AND][RN] size after adding: " + callbackMap.size());
-                        Log.w("HelloWorld", "[AND][RN] item added id: "  + id);
 
                         WritableMap networkSnapshotParams = Arguments.createMap();
                         networkSnapshotParams.putInt("id", id);
                         networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
                         networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
+
                         sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
+
                     }
                 });
-
-//                NetworkLogListener networkLogListener = new NetworkLogListener() {
-//                    @androidx.annotation.Nullable
-//                    @Override
-//                    public NetworkLogSnapshot onNetworkLogCaptured(@NonNull NetworkLogSnapshot networkLogSnapshot) {
-//                        networkSnapshot = networkLogSnapshot;
-//
-//                        WritableMap networkSnapshotParams = Arguments.createMap();
-//                        networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
-////                        final Map<String, Object> requestHeaders = networkLogSnapshot.getRequestHeaders();
-////                        if (requestHeaders != null) {
-////                            reportParam.putMap("requestHeaders", convertFromMapToWriteableMap(requestHeaders));
-////                        }
-////                        reportParam.putString("requestBody", networkLogSnapshot.getRequestBody());
-////                        final Map<String, Object> responseHeaders = networkLogSnapshot.getResponseHeaders();
-////                        if (responseHeaders != null) {
-////                            reportParam.putMap("responseHeaders", convertFromMapToWriteableMap(responseHeaders));
-////                        }
-////                        reportParam.putString("response", networkLogSnapshot.getResponse());
-//                        networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
-//                        sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
-//                        Log.w("APM_Andrew", " inside callback " + Thread.currentThread().getName());
-//
-//                        latch = new CountDownLatch(1);
-//                        try {
-//                            latch.await();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        return networkSnapshot;
-//                    }
-//                };
-//
-//                APM.registerNetworkLogsListener(networkLogListener);
             }
         });
     }
 
-    @SuppressLint("RestrictedApi")
     @ReactMethod
-    protected void updateNetworkLogSnapshot(String jsonString) throws JSONException {
-        JSONObject newJSONObject = new JSONObject(jsonString);
+    protected void updateNetworkLogSnapshot(String jsonString) {
 
+        JSONObject newJSONObject = null;
+        try {
+            newJSONObject = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         final Integer ID = newJSONObject.optInt("id");
         final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
                 newJSONObject.optString("url"),
@@ -1261,20 +1224,12 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 null,
                 newJSONObject.optInt("responseCode")
         );
-        Log.w("HelloWorld", "[AND][RN] updateNetworkLogSnapshot: " + Thread.currentThread().getName());
-
 
         final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
-        Log.w("HelloWorld", "[AND][RN] item retrieved " + callback + " ID " + ID);
-
-
         if (callback != null) {
-            callback.onComplete(modifiedSnapshot);
+            callback.onComplete(null);
         }
-
-        Log.w("HelloWorld", "[AND][RN] size before removal: " + callbackMap.size());
         callbackMap.remove(ID);
-
 
     }
 }

@@ -22,7 +22,8 @@ import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
-import NetworkSnapshot from '../models/NetworkSnapshot';
+import type { NetworkData } from 'instabug-reactnative';
+import NativeFlags from '../utils/NativeFlags';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -66,17 +67,22 @@ export const init = (config: InstabugConfig) => {
   captureUnhandledRejections();
 
   // Default networkInterceptionMode to JavaScript
-  if (config.networkInterceptionMode == null) {
+  if (config.networkInterceptionMode == null || !NativeFlags.nativeInterceptionEnabled) {
     config.networkInterceptionMode = NetworkInterceptionMode.javascript;
   }
 
-  //todo: need to check for APM flag
-  NetworkLogger.setEnabled(true);
+  if (Platform.OS === 'android' && !NativeFlags.hasAPMPlugin) {
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
+  }
 
-  // if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
-  //   NetworkLogger.setEnabled(true);
-  // }
+  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    NetworkLogger.setEnabled(true);
+  }
 
+  console.log(
+    `Andrew: Native Flags ApmPlugin ${NativeFlags.hasAPMPlugin}, Native interception ${NativeFlags.nativeInterceptionEnabled}`,
+  );
+  console.log(`Andrew: interceptionMode ${config.networkInterceptionMode}`);
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
@@ -492,29 +498,46 @@ export const onReportSubmitHandler = (handler?: (report: Report) => void) => {
   NativeInstabug.setPreSendingHandler(handler);
 };
 
-export const registerNetworkLogsListener = (
-  handler?: (networkSnapshot: NetworkSnapshot) => void,
-) => {
+//todo: to be removed
+export function hasListener(listenerType: NativeEvents): boolean {
+  return emitter.listenerCount(listenerType) === 0;
+}
+
+export const registerNetworkLogsListener = (handler?: (networkSnapshot: NetworkData) => void) => {
+  console.log('Andrew: registerNetworkLogsListener called');
   if (emitter.listenerCount(NativeEvents.NETWORK_LOGGER_HANDLER) === 0) {
-    console.log('IBG-RN: NetworkLogsListener attached');
+    console.log('Andrew: new NetworkLogsListener attached');
     emitter.addListener(NativeEvents.NETWORK_LOGGER_HANDLER, (networkSnapshot) => {
-      const { tempId, url, requestHeader, requestBody, responseHeader, response, responseCode, id } =
+      const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
         networkSnapshot;
-      const networkSnapshotObj = new NetworkSnapshot(
-        tempId,
-        url,
-        id,
-        requestHeader,
-        requestBody,
-        responseHeader,
-        response,
-        responseCode,
-      );
-      console.log(`IBG-RN: new native snapshot: ${networkSnapshotObj.url}`);
+
+      console.log(`Andrew: new snapshot ${url}`);
+      const networkSnapshotObj: NetworkLogger.NetworkData = {
+        id: id,
+        url: url,
+        requestBody: requestBody,
+        requestHeaders: requestHeader,
+        method: '',
+        responseBody: response,
+        responseCode: responseCode,
+        responseHeaders: responseHeader,
+        contentType: '',
+        duration: 0,
+        requestBodySize: 0,
+        responseBodySize: 0,
+        errorDomain: '',
+        errorCode: 0,
+        startTime: 0,
+        serverErrorMessage: '',
+        requestContentType: '',
+      };
+      console.log(`Andrew registerNetworkLogsListener object ${networkSnapshotObj.url}`);
       if (handler) {
         handler(networkSnapshotObj);
       }
     });
+    //todo: find where to remove listener
+    // emitter.removeAllListeners(NativeEvents.NETWORK_LOGGER_HANDLER);
     NativeInstabug.registerNetworkLogsListener();
   }
 };

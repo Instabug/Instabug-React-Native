@@ -54,22 +54,13 @@ export const App: React.FC = () => {
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
     });
-    // NetworkLogger.setRequestFilterExpressionIOS(false);
-    NetworkLogger.setNetworkSnapshotObfuscationHandler(async (networkData) => {
-      networkData.url = `${networkData.url}/ios/obfuscated`;
+
+    NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+      networkData.url = `${networkData.url}/RN/obfuscated`;
       return networkData;
     });
 
-    // NetworkLogger.setNetworkDataObfuscationHandlerIOS((data) => {
-    //   const modifiedData: Map<string, any> = new Map<string, any>();
-    //   modifiedData.set('URL', `${data.get('URL')}/iOSS`);
-    //   return modifiedData;
-    // });
-
-    // NetworkLogger.setRequestFilterExpressionIOS(
-    //   'statusCode >= %d AND statusCode <= %d',
-    //   [500, 600],
-    // );
+    // NetworkLogger.setRequestFilterExpression('true');
   }, []);
 
   return (

@@ -11,6 +11,8 @@ import type { CrashData } from '../native/NativeCrashReporting';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
+import { NativeAPM } from '../native/NativeAPM';
+import NativeFlags from './NativeFlags';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -158,43 +160,50 @@ export function reportNetworkLog(network: NetworkData) {
     //todo: remove it in favor of native APM interceptor
     //todo: need to check if APM is Enabled
 
-    // NativeAPM.networkLogAndroid(
-    //   network.startTime,
-    //   network.duration,
-    //   requestHeaders,
-    //   network.requestBody,
-    //   network.requestBodySize,
-    //   network.method,
-    //   network.url,
-    //   network.requestContentType,
-    //   responseHeaders,
-    //   network.responseBody,
-    //   network.responseBodySize,
-    //   network.responseCode,
-    //   network.contentType,
-    //   network.errorDomain,
-    //   network.gqlQueryName,
-    //   network.serverErrorMessage,
-    // );
+    if (!NativeFlags.nativeInterceptionEnabled || !NativeFlags.hasAPMPlugin) {
+      console.log('Andrew: networkLogAndroid');
+      NativeAPM.networkLogAndroid(
+        network.startTime,
+        network.duration,
+        requestHeaders,
+        network.requestBody,
+        network.requestBodySize,
+        network.method,
+        network.url,
+        network.requestContentType,
+        responseHeaders,
+        network.responseBody,
+        network.responseBodySize,
+        network.responseCode,
+        network.contentType,
+        network.errorDomain,
+        network.gqlQueryName,
+        network.serverErrorMessage,
+      );
+    }
   } else {
-    // NativeInstabug.networkLogIOS(
-    //   network.url,
-    //   network.method,
-    //   network.requestBody,
-    //   network.requestBodySize,
-    //   network.responseBody,
-    //   network.responseBodySize,
-    //   network.responseCode,
-    //   network.requestHeaders,
-    //   network.responseHeaders,
-    //   network.contentType,
-    //   network.errorDomain,
-    //   network.errorCode,
-    //   network.startTime,
-    //   network.duration,
-    //   network.gqlQueryName,
-    //   network.serverErrorMessage,
-    // );
+    if (!NativeFlags.nativeInterceptionEnabled) {
+      console.log('Andrew: networkLogIOS');
+
+      NativeInstabug.networkLogIOS(
+        network.url,
+        network.method,
+        network.requestBody,
+        network.requestBodySize,
+        network.responseBody,
+        network.responseBodySize,
+        network.responseCode,
+        network.requestHeaders,
+        network.responseHeaders,
+        network.contentType,
+        network.errorDomain,
+        network.errorCode,
+        network.startTime,
+        network.duration,
+        network.gqlQueryName,
+        network.serverErrorMessage,
+      );
+    }
   }
 }
 

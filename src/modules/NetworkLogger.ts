@@ -3,17 +3,20 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
-import { registerNetworkLogsListener } from './Instabug';
 import { NativeInstabug } from '../native/NativeInstabug';
-import type NetworkSnapshot from '../models/NetworkSnapshot';
+import { Platform } from 'react-native';
+import { registerNetworkLogsListener } from './Instabug';
+import NativeFlags from '../utils/NativeFlags';
 
 export type { NetworkData };
 
 export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<NetworkData>;
-export type NetworkSnapshotObfuscationHandler = (data: NetworkSnapshot) => Promise<NetworkSnapshot>;
+// export type NetworkSnapshotObfuscationHandler = (data: NetworkSnapshot) => Promise<NetworkSnapshot>;
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
-let _networkSnapshotObfuscationHandler: NetworkSnapshotObfuscationHandler | null | undefined;
+// let _networkSnapshotObfuscationHandler: NetworkSnapshotObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
+let isNativeInterceptionEnabled =
+  NativeFlags.nativeInterceptionEnabled && (Platform.OS === 'ios' || NativeFlags.hasAPMPlugin);
 
 /**
  * Sets whether network logs should be sent with bug reports.
@@ -22,6 +25,8 @@ let _requestFilterExpression = 'false';
  */
 export const setEnabled = (isEnabled: boolean) => {
   if (isEnabled) {
+    console.log(`Andrew: native interception is ${isNativeInterceptionEnabled} `);
+    isNativeInterceptionEnabled = false;
     xhr.enableInterception();
     xhr.setOnDoneCallback(async (network) => {
       // eslint-disable-next-line no-new-func
@@ -75,30 +80,18 @@ export const setNetworkDataObfuscationHandler = (
   handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
   _networkDataObfuscationHandler = handler;
-};
+  if (isNativeInterceptionEnabled) {
+    registerNetworkLogsListener(async (networkSnapshot) => {
+      console.log(
+        `Andrew: new snapshot from setNetworkDataObfuscationHandler: ${networkSnapshot.url}`,
+      );
 
-// export const setNetworkDataObfuscationHandlerIOS = (
-//   handler: (data: Map<string, any>) => Map<string, any>,
-// ) => {
-//   return NativeInstabug.setRequestObfuscationHandlerIOS(handler);
-// };
-
-export const setNetworkSnapshotObfuscationHandler = (
-  handler?: NetworkSnapshotObfuscationHandler | null | undefined,
-) => {
-  _networkSnapshotObfuscationHandler = handler;
-  //todo: add apm check
-  //todo: check if need to unregister
-
-  // if (Platform.OS === 'android') {
-  registerNetworkLogsListener(async (networkSnapshot) => {
-    console.log(`IBG-RN: new logger snapshot ${networkSnapshot.url}`);
-    if (_networkSnapshotObfuscationHandler) {
-      networkSnapshot = await _networkSnapshotObfuscationHandler(networkSnapshot);
-    }
-    NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
-  });
-  // }
+      if (_networkDataObfuscationHandler) {
+        networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+      }
+      NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+    });
+  }
 };
 
 /**
@@ -107,12 +100,24 @@ export const setNetworkSnapshotObfuscationHandler = (
  */
 export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
-};
 
-// export const setRequestFilterExpressionIOS = (value: boolean) => {
-//   //todo: need optimization (challenge: developer will need to write [expression] in Obj C)
-//   NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
-// };
+  if (isNativeInterceptionEnabled) {
+    registerNetworkLogsListener(async (networkSnapshot) => {
+      console.log(`Andrew: new snapshot from setRequestFilterExpression: ${networkSnapshot.url}`);
+      // eslint-disable-next-line no-new-func
+      const predicate = Function('network', 'return ' + _requestFilterExpression);
+      const value = predicate(networkSnapshot);
+      if (Platform.OS === 'ios') {
+        NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
+      } else {
+        // set android request url to null ;
+        if (value) {
+          NativeInstabug.updateNetworkLogSnapshot('');
+        }
+      }
+    });
+  }
+};
 
 /**
  * Returns progress in terms of totalBytesSent and totalBytesExpectedToSend a network request.
@@ -127,10 +132,9 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
     operation.setContext((context: Record<string, any>) => {
       const newHeaders: Record<string, any> = context.headers ?? {};
 
-      newHeaders[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
+      console.log('Andrew: Apollo header attached ');
 
-      //todo: add it if the project has a APM plugin
-      // newHeaders[InstabugConstants.GRAPHQL_NATIVE_HEADER] = operation.operationName;
+      newHeaders[InstabugConstants.GRAPHQL_HEADER] = operation.operationName;
       return { headers: newHeaders };
     });
   } catch (e) {

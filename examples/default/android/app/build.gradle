@@ -96,6 +96,12 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+//instabug {
+//    apm {
+//        networkEnabled = true
+//    }
+//}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 

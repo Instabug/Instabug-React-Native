@@ -5,7 +5,7 @@ export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend
 export type NetworkDataCallback = (data: NetworkData) => void;
 
 export interface NetworkData {
-  tempId: string;
+  readonly id?: number;
   url: string;
   method: string;
   requestBody: string;
@@ -25,6 +25,18 @@ export interface NetworkData {
   requestContentType: string;
 }
 
+// export default class NetworkSnapshot {
+//   constructor(
+//     public url: string | undefined,
+//     public id: number | undefined,
+//     public requestHeaders: Record<string, any> = {},
+//     public requestBody: string | undefined,
+//     public responseHeaders: Record<string, any> = {},
+//     public responseCode: number,
+//     public responseBody: string | undefined,
+//   ) {}
+// }
+
 const XMLHttpRequest = global.XMLHttpRequest;
 let originalXHROpen = XMLHttpRequest.prototype.open;
 let originalXHRSend = XMLHttpRequest.prototype.send;
@@ -37,7 +49,6 @@ let network: NetworkData;
 
 const _reset = () => {
   network = {
-    tempId: '',
     url: '',
     method: '',
     requestBody: '',

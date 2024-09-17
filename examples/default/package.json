@@ -10,12 +10,12 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "@apollo/client": "^3.7.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "instabug-reactnative": "link:../..",

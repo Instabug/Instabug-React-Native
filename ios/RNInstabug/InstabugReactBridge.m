@@ -338,14 +338,6 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                         serverErrorMessage:serverErrorMessage];
 }
 
-//RCT_EXPORT_METHOD(setRequestObfuscationHandlerIOS: (NSString * _Nonnull)url){
-//    [IBGNetworkLogger   setRequestObfuscationHandler:^NSURLRequest * _Nonnull(NSURLRequest * _Nonnull request) {
-//                NSMutableURLRequest *mRequest = [request mutableCopy];
-//                mRequest.URL = [NSURL URLWithString: url];
-//                return mRequest;
-//            }];
-//}
-
 
 RCT_EXPORT_METHOD(registerNetworkLogsListener){
     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
@@ -409,9 +401,18 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
     }
 }
 
+RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (BOOL)value){
+    
+    NSPredicate *requestPredicate = [NSPredicate predicateWithValue:(value) ? YES : NO];
+    
+    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:nil];
+}
 //RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression){
 //    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:expression];
 //    NSPredicate *responsePredicate = [NSPredicate predicateWithFormat:expression];
+//    NSPredicate *x = [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+//        <#code#>
+//    }]
 //    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:responsePredicate];
 //}
 

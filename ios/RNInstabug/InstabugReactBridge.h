@@ -129,7 +129,7 @@
 - (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
 
 
-//- (void) setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull)expression;
+- (void) setNetworkLoggingRequestFilterPredicateIOS:(BOOL)value;
 
 /*
  +------------------------------------------------------------------------+
