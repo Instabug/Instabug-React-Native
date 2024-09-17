@@ -19,11 +19,13 @@
 }
 
 - (void)testSetEnabled {
+ 
+  [self.bridge setEnabled:NO];
+  XCTAssertFalse(IBGCrashReporting.enabled);
+  
   [self.bridge setEnabled:YES];
   XCTAssertTrue(IBGCrashReporting.enabled);
 
-  [self.bridge setEnabled:NO];
-  XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
 - (void)testSendNonFatalErrorJsonCrash {
