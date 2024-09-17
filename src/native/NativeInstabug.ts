@@ -11,7 +11,7 @@ import type {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import type { NativeConstants } from './NativeConstants';
-import type { W3cExternalTraceAttributes } from '../utils/Types';
+import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
 
 export interface InstabugNativeModule extends NativeModule {

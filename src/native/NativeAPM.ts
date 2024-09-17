@@ -1,7 +1,7 @@
 import type { NativeModule } from 'react-native';
 import { NativeEventEmitter } from 'react-native';
 
-import type { W3cExternalTraceAttributes } from '../utils/Types';
+import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
 
 export interface ApmNativeModule extends NativeModule {
