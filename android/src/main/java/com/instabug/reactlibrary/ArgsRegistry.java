@@ -15,6 +15,7 @@ import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
+import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ final class ArgsRegistry {
             putAll(nonFatalExceptionLevel);
             putAll(locales);
             putAll(placeholders);
+            putAll(launchType);
         }};
     }
 
@@ -238,4 +240,19 @@ final class ArgsRegistry {
         put("team", Key.CHATS_TEAM_STRING_NAME);
         put("insufficientContentMessage", Key.COMMENT_FIELD_INSUFFICIENT_CONTENT);
     }};
+
+    public static ArgsMap<String> launchType = new ArgsMap<String>() {{
+        put("cold", SessionMetadata.LaunchType.COLD);
+        put("hot",SessionMetadata.LaunchType.HOT );
+        put("warm",SessionMetadata.LaunchType.WARM );
+    }};
+    
+// Temporary workaround to be removed in future release
+// This is used for mapping native `LaunchType` values into React Native enum values.
+    public static HashMap<String,String> launchTypeReversed = new HashMap<String,String>() {{
+        put(SessionMetadata.LaunchType.COLD,"cold");
+        put(SessionMetadata.LaunchType.HOT,"hot" );
+        put(SessionMetadata.LaunchType.WARM,"warm" );
+    }};
+
 }
