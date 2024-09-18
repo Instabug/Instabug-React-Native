@@ -1,24 +1,5 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
-import type { LaunchType } from '../utils/Enums';
-export interface NetworkLog {
-  url: string;
-  duration: number;
-  statusCode: number;
-}
-
-export interface SessionMetadata {
-  appVersion: string;
-  OS: string;
-  device: string;
-  sessionDurationInSeconds: number;
-  networkLogs: NetworkLog[];
-  launchType: LaunchType;
-  hasLinkToAppReview: boolean;
-  launchDuration: number;
-  bugsCount?: number;
-  fatalCrashCount?: number;
-  oomCrashCount?: number;
-}
+import type { SessionMetadata } from '../models/SessionMetadata';
 /**
  * Enables or disables Session Replay for your Instabug integration.
  *
