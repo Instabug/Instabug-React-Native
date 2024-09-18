@@ -149,15 +149,19 @@ export const generateTracePartialId = () => {
 export const generateW3CHeader = (networkStartTime: number) => {
   const { hexStringPartialId, numberPartilId } = generateTracePartialId();
 
+  const TRACESTATE = '4942472d';
+  const VERSION = '00';
+  const TRACE_FLAG = '01';
+
   const timestampInSeconds = Math.floor(networkStartTime.valueOf() / 1000);
   const hexaDigitsTimestamp = timestampInSeconds.toString(16).toLowerCase();
   const traceId = `${hexaDigitsTimestamp}${hexStringPartialId}${hexaDigitsTimestamp}${hexStringPartialId}`;
-  const parentId = `4942472d${hexStringPartialId}`;
+  const parentId = `${TRACESTATE}${hexStringPartialId}`;
 
   return {
     timestampInSeconds,
     partialId: numberPartilId,
-    w3cHeader: `00-${traceId}-${parentId}-01`,
+    w3cHeader: `${VERSION}-${traceId}-${parentId}-${TRACE_FLAG}`,
   };
 };
 
