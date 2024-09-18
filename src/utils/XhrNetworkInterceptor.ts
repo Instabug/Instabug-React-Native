@@ -67,7 +67,7 @@ const _reset = () => {
     w3cCaughtHeader: null,
   };
 };
-const getFeatureFlags = async (networkData: NetworkData) => {
+const getTraceparentHeader = async (networkData: NetworkData) => {
   const [
     isW3cExternalTraceIDEnabled,
     isW3cExternalGeneratedHeaderEnabled,
@@ -310,7 +310,7 @@ export default {
       }
 
       cloneNetwork.startTime = Date.now();
-      const traceparent = await getFeatureFlags(cloneNetwork);
+      const traceparent = await getTraceparentHeader(cloneNetwork);
       if (traceparent) {
         this.setRequestHeader('Traceparent', traceparent);
       }
