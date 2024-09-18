@@ -68,7 +68,9 @@ export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
 
-  Platform.OS === 'android' && registerW3CFlagsListener();
+  if (Platform.OS === 'android') {
+    registerW3CFlagsListener();
+  }
 
   // Default networkInterceptionMode to JavaScript
   if (config.networkInterceptionMode == null) {
