@@ -1225,7 +1225,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                    promise.resolve(null);
+                    promise.resolve(false);
                 }
 
             }
@@ -1247,7 +1247,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                    promise.resolve(null);
+                    promise.resolve(false);
                 }
 
             }
