@@ -11,7 +11,7 @@ import Instabug, {
   SessionReplay,
   LaunchType,
 } from 'instabug-reactnative';
-import type { sessionData } from 'instabug-reactnative';
+import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -23,7 +23,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
-  const shouldSyncSession = (data: sessionData) => {
+  const shouldSyncSession = (data: SessionMetadata) => {
     if (data.launchType === LaunchType.cold) {
       return true;
     }

@@ -1,24 +1,5 @@
 import { NativeSessionReplay, NativeEvents, emitter } from '../native/NativeSessionReplay';
-import type { LaunchType } from '../utils/Enums';
-export interface networkLog {
-  url: string;
-  duration: number;
-  statusCode: number;
-}
-
-export interface sessionData {
-  appVersion: string;
-  OS: string;
-  device: string;
-  sessionDurationInSeconds: number;
-  networkLogs: Array<networkLog>;
-  launchType: LaunchType;
-  hasLinkToAppReview: boolean;
-  launchDuration: number;
-  bugsCount?: number;
-  fatalCrashCount?: number;
-  oomCrashCount?: number;
-}
+import type { SessionMetadata } from '../models/SessionMetadata';
 /**
  * Enables or disables Session Replay for your Instabug integration.
  *
@@ -96,23 +77,22 @@ export const getSessionReplayLink = async (): Promise<string> => {
 };
 
 /**
- * Set a callback for weather this session should sync
+ * Set a callback for whether this session should sync
  *
  * @param handler
 
  * @example
  * ```ts
- * SessionReplay.setSyncCallback((payload)=>{
- *    if(payload.device == "Xiaomi M2007J3SY" &&
- *         payload.os == "OS Level 33" &&
- *         payload.appVersion == "3.1.4 (4)" ||
- *         payload.sessionDurationInSeconds > 20 )
- *    {return true}
+ * SessionReplay.setSyncCallback((metadata) => {
+ *    return metadata.device == "Xiaomi M2007J3SY" &&
+ *         metadata.os == "OS Level 33" &&
+ *         metadata.appVersion == "3.1.4 (4)" ||
+ *         metadata.sessionDurationInSeconds > 20;
  * });
  * ```
  */
 export const setSyncCallback = async (
-  handler: (payload: sessionData) => boolean,
+  handler: (payload: SessionMetadata) => boolean,
 ): Promise<void> => {
   emitter.addListener(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, (payload) => {
     const result = handler(payload);
@@ -124,7 +104,7 @@ export const setSyncCallback = async (
       );
     }
 
-    NativeSessionReplay.evaluateSync(Boolean(handler(payload)));
+    NativeSessionReplay.evaluateSync(shouldSync);
   });
 
   return NativeSessionReplay.setSyncCallback();

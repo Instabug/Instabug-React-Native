@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.OnSessionReplayLinkReady;
@@ -118,12 +119,28 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     }
 
-    public WritableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
-        List<SessionMetadata.NetworkLog> networkLogArrayList = networkLogList;
-        
+    public ReadableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
+        WritableMap params = Arguments.createMap();
+        params.putString("appVersion",sessionMetadata.getAppVersion());
+        params.putString("OS",sessionMetadata.getOs());
+        params.putString("device",sessionMetadata.getDevice());
+        params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
+        params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
+        params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
+        params.putDouble("launchDuration", sessionMetadata.getLaunchDuration());
+        params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
+
+//                              TODO:Add rest of sessionMetadata
+//                            params.putDouble("bugsCount", ??);
+//                            params.putDouble("fatalCrashCount",??);
+//                            params.putDouble("oomCrashCount",??);
+        return params;
+    }
+
+    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
         WritableArray networkLogs = Arguments.createArray();
 
-        for (SessionMetadata.NetworkLog log : networkLogArrayList) {
+        for (SessionMetadata.NetworkLog log : networkLogList) {
             WritableMap networkLog = Arguments.createMap();
             networkLog.putString("url", log.getUrl());
             networkLog.putDouble("duration", log.getDuration());
@@ -135,7 +152,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
         return networkLogs;
     }
 
-    private boolean shouldSync = false;
+    private boolean shouldSync = true;
     private CountDownLatch latch;
     @ReactMethod
     public void setSyncCallback() {
@@ -146,22 +163,8 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                     SessionReplay.setSyncCallback(new SessionSyncListener() {
                         @Override
                         public boolean onSessionReadyToSync(@NonNull SessionMetadata sessionMetadata) {
-                            WritableMap params = Arguments.createMap();
-                            params.putString("appVersion",sessionMetadata.getAppVersion());
-                            params.putString("OS",sessionMetadata.getOs());
-                            params.putString("device",sessionMetadata.getDevice());
-                            params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
-                            params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
-                            params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
-                            params.putDouble("launchDuration", sessionMetadata.getLaunchDuration());
-                            params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
-                            
-//                              TODO:Add rest of sessionMetadata
-//                            params.putDouble("bugsCount", ??);
-//                            params.putDouble("fatalCrashCount",??);
-//                            params.putDouble("oomCrashCount",??);
 
-                            sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION,params);
+                            sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION,getSessionMetadataMap(sessionMetadata));
 
                             latch = new CountDownLatch(1);
 
@@ -169,6 +172,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                                 latch.await();
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
+                                return true;
                             }
 
                             return shouldSync;
