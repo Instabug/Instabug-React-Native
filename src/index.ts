@@ -14,7 +14,7 @@ import * as Replies from './modules/Replies';
 import type { Survey } from './modules/Surveys';
 import * as Surveys from './modules/Surveys';
 import * as SessionReplay from './modules/SessionReplay';
-import type { SessionMetadata } from './modules/SessionReplay';
+import type { SessionMetadata } from './models/SessionMetadata';
 
 export * from './utils/Enums';
 export {
