@@ -47,23 +47,28 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
     resolve(link);
 }
 
+- (NSDictionary *)getMetadataObjectMap:(IBGSessionMetadata *)metadataObject
+{
+    return @{
+        @"appVersion": metadataObject.appVersion,
+        @"OS": metadataObject.os,
+        @"device": metadataObject.device,
+        @"sessionDurationInSeconds": @(metadataObject.sessionDuration),
+        @"hasLinkToAppReview": @(metadataObject.hasLinkToAppReview),
+        @"launchType": @(metadataObject.launchType),
+        @"launchDuration": @(metadataObject.launchDuration),
+        @"bugsCount": @(metadataObject.bugsCount),
+        @"fatalCrashCount": @(metadataObject.fatalCrashCount),
+        @"oomCrashCount": @(metadataObject.oomCrashCount),
+        @"networkLogs": metadataObject.networkLogs
+    };
+}
+
 RCT_EXPORT_METHOD(setSyncCallback)
 {
     [IBGSessionReplay setSyncCallbackWithHandler:^(IBGSessionMetadata * _Nonnull metadataObject, SessionEvaluationCompletion  _Nonnull completion) {
         [self sendEventWithName:@"IBGSessionReplayOnSyncCallback"
-                           body:@{ @"appVersion":metadataObject.appVersion,
-                                   @"OS": metadataObject.os,
-                                   @"device": metadataObject.device,
-                                   @"sessionDurationInSeconds":@(metadataObject.sessionDuration),
-                                   @"hasLinkToAppReview":@(metadataObject.hasLinkToAppReview),
-                                   @"launchType":@(metadataObject.launchType),
-                                   @"launchDuration":@(metadataObject.launchDuration),
-                                   @"bugsCount":@(metadataObject.bugsCount),
-                                   @"fatalCrashCount":@(metadataObject.fatalCrashCount),
-                                   @"oomCrashCount":@(metadataObject.oomCrashCount),
-                                   @"networkLogs":metadataObject.networkLogs
-                                
-                                }];
+                           body:[self getMetadataObjectMap:metadataObject]];
         
         self.sessionEvaluationCompletion = completion;}];
 }
