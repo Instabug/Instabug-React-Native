@@ -172,6 +172,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                                 latch.await();
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
+                                return true;
                             }
 
                             return shouldSync;
