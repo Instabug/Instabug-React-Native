@@ -105,7 +105,9 @@
  */
 
 - (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
-
+- (void)isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 - (void)networkLogIOS:(NSString * _Nonnull)url
                method:(NSString * _Nonnull)method
           requestBody:(NSString * _Nonnull)requestBody
@@ -121,7 +123,8 @@
             startTime:(double)startTime
              duration:(double)duration
          gqlQueryName:(NSString * _Nullable)gqlQueryName
-   serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
+   serverErrorMessage:(NSString * _Nullable)serverErrorMessage
+w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 
 /*
  +------------------------------------------------------------------------+
