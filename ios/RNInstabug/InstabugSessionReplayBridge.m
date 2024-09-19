@@ -47,7 +47,8 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
     resolve(link);
 }
 
-- (NSArray<NSDictionary *> *)getNetworkLogsArray:(NSArray<IBGSessionMetadataNetworkLogs *>*) networkLogs {
+- (NSArray<NSDictionary *> *)getNetworkLogsArray:
+     (NSArray<IBGSessionMetadataNetworkLogs *>*) networkLogs {
      NSMutableArray<NSDictionary *> *networkLogsArray = [NSMutableArray array];
     
     for (IBGSessionMetadataNetworkLogs* log in networkLogs) {
@@ -57,7 +58,7 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
     return [networkLogsArray copy];
 }
 
-- (NSDictionary *)getMetadataObjectMap:(IBGSessionMetadata *)metadataObject{
+- (NSDictionary *)getMetadataObjectMap:(IBGSessionMetadata *)metadataObject {
     return @{
         @"appVersion": metadataObject.appVersion,
         @"OS": metadataObject.os,
