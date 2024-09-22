@@ -12,7 +12,7 @@ import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
 import { NativeAPM } from '../native/NativeAPM';
-import NativeFlags from './NativeFlags';
+import { NativeFlags } from './NativeFlags';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);

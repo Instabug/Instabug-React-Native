@@ -18,12 +18,13 @@ import {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import type { NetworkData } from './NetworkLogger';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
-import type { NetworkData } from 'instabug-reactnative';
-import NativeFlags from '../utils/NativeFlags';
+
+import { NativeFlags } from '../utils/NativeFlags';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;

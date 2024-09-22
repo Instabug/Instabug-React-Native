@@ -6,7 +6,7 @@ import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtil
 import { NativeInstabug } from '../native/NativeInstabug';
 import { Platform } from 'react-native';
 import { registerNetworkLogsListener } from './Instabug';
-import NativeFlags from '../utils/NativeFlags';
+import { NativeFlags } from '../utils/NativeFlags';
 
 export type { NetworkData };
 
