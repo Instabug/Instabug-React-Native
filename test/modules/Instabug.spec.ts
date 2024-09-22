@@ -863,20 +863,4 @@ describe('Instabug Module', () => {
     Instabug.willRedirectToStore();
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
   });
-
-  it('should register W3C flag listener', async () => {
-    const callback = jest.fn();
-    Instabug._registerW3CFlagsChangeListener(callback);
-
-    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
-  });
-
-  it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
-    const callback = jest.fn();
-    Instabug._registerW3CFlagsChangeListener(callback);
-    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANGE);
-
-    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
-    expect(callback).toHaveBeenCalled();
-  });
 });

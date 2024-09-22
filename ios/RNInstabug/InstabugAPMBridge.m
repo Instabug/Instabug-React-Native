@@ -8,7 +8,6 @@
 #import <os/log.h>
 #import <Instabug/IBGTypes.h>
 #import <React/RCTUIManager.h>
-#import "Util/IBGAPM+PrivateAPIs.h"
 
 @implementation InstabugAPMBridge
 
@@ -109,9 +108,6 @@ RCT_EXPORT_METHOD(startUITrace:(NSString *)name) {
 RCT_EXPORT_METHOD(endUITrace) {
     [IBGAPM endUITrace];
 }
-
-
-
 
 
 @synthesize description;
