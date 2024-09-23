@@ -38,8 +38,8 @@ Task createUploadSourcemapsTask(String flavor) {
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def flavorPath = flavor
-                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}${(flavor.empty ? 'release' : 'Release')}/index.android.bundle.map"
+                def flavorPath = flavor.empty ? 'release' : "${flavor}Release"
+                def sourceMapDest = "build/generated/sourcemaps/react/${flavorPath}/index.android.bundle.map"
                 def sourceMapFile = new File(appDir, sourceMapDest)
 
                 if (!sourceMapFile.exists()) {
