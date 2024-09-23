@@ -315,7 +315,7 @@
 
 - (void)testNetworkLogIOS {
   id mIBGNetworkLogger = OCMClassMock([IBGNetworkLogger class]);
-
+  
   NSString *url = @"https://api.instabug.com";
   NSString *method = @"GET";
   NSString *requestBody = @"requestBody";
@@ -332,12 +332,7 @@
   double duration = 150;
   NSString *gqlQueryName = nil;
   NSString *serverErrorMessage = nil;
-  NSDictionary* w3cExternalTraceAttributes = nil;
-  NSNumber *isW3cCaughted = nil;
-  NSNumber *partialID = nil;
-  NSNumber *timestamp= nil;
-  NSString *generatedW3CTraceparent= nil;
-  NSString *caughtedW3CTraceparent= nil;
+  
   [self.instabugBridge networkLogIOS:url
                               method:method
                          requestBody:requestBody
@@ -353,11 +348,8 @@
                            startTime:startTime
                             duration:duration
                         gqlQueryName:gqlQueryName
-                  serverErrorMessage:serverErrorMessage
-                 w3cExternalTraceAttributes:w3cExternalTraceAttributes
-
-                  ];
-
+                  serverErrorMessage:serverErrorMessage];
+  
   OCMVerify([mIBGNetworkLogger addNetworkLogWithUrl:url
                                             method:method
                                        requestBody:requestBody
@@ -373,13 +365,7 @@
                                          startTime:startTime * 1000
                                           duration:duration * 1000
                                       gqlQueryName:gqlQueryName
-                                serverErrorMessage:serverErrorMessage
-                                    isW3cCaughted:isW3cCaughted
-                                   partialID:partialID
-                                    timestamp:timestamp
-                                  generatedW3CTraceparent:generatedW3CTraceparent
-                               caughtedW3CTraceparent:caughtedW3CTraceparent
-                                ]);
+                                serverErrorMessage:serverErrorMessage]);
 }
 
 - (void)testSetFileAttachment {
@@ -549,64 +535,5 @@
   [self.instabugBridge removeAllFeatureFlags];
   OCMVerify([mock removeAllFeatureFlags]);
 }
-
-
-- (void) testIsW3ExternalTraceIDEnabled {
-    id mock = OCMClassMock([IBGNetworkLogger class]);
-    NSNumber *expectedValue = @(YES);
-
-    OCMStub([mock w3ExternalTraceIDEnabled]).andReturn([expectedValue boolValue]);
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
-    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
-        XCTAssertEqualObjects(result, expectedValue);
-        [expectation fulfill];
-    };
-
-    [self.instabugBridge isW3ExternalTraceIDEnabled:resolve :nil];
-
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
-
-    OCMVerify([mock w3ExternalTraceIDEnabled]);
-}
-
-- (void) testIsW3ExternalGeneratedHeaderEnabled {
-    id mock = OCMClassMock([IBGNetworkLogger class]);
-    NSNumber *expectedValue = @(YES);
-
-    OCMStub([mock w3ExternalGeneratedHeaderEnabled]).andReturn([expectedValue boolValue]);
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
-    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
-        XCTAssertEqualObjects(result, expectedValue);
-        [expectation fulfill];
-    };
-
-    [self.instabugBridge isW3ExternalGeneratedHeaderEnabled:resolve :nil];
-
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
-
-    OCMVerify([mock w3ExternalGeneratedHeaderEnabled]);
-}
-
-- (void) testIsW3CaughtHeaderEnabled {
-    id mock = OCMClassMock([IBGNetworkLogger class]);
-    NSNumber *expectedValue = @(YES);
-
-    OCMStub([mock w3CaughtHeaderEnabled]).andReturn([expectedValue boolValue]);
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Call completion handler"];
-    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
-        XCTAssertEqualObjects(result, expectedValue);
-        [expectation fulfill];
-    };
-
-    [self.instabugBridge isW3CaughtHeaderEnabled:resolve :nil];
-
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
-
-    OCMVerify([mock w3CaughtHeaderEnabled]);
-}
-
 
 @end

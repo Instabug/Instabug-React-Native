@@ -13,7 +13,6 @@
 #import <Instabug/IBGAPM.h>
 #import "Instabug/Instabug.h"
 #import "IBGConstants.h"
-#import "RNInstabug/IBGAPM+PrivateAPIs.h"
 
 @interface InstabugAPMTests : XCTestCase
 @property (nonatomic, retain) InstabugAPMBridge *instabugBridge;
@@ -176,7 +175,5 @@
   [self.instabugBridge endUITrace];
   OCMVerify([mock endUITrace]);
 }
-
-
 
 @end

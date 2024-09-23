@@ -30,11 +30,6 @@ describe('NetworkLogger Module', () => {
     startTime: 0,
     serverErrorMessage: '',
     requestContentType: 'application/json',
-    isW3cHeaderFound: null,
-    partialId: null,
-    networkStartTimeInSeconds: null,
-    w3cGeneratedHeader: null,
-    w3cCaughtHeader: null,
   };
 
   beforeEach(() => {

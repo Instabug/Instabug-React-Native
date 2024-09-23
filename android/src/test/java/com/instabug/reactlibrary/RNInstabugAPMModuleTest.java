@@ -204,6 +204,4 @@ public class RNInstabugAPMModuleTest {
         verify(APM.class, times(1));
         APM.endUITrace();
     }
-
-
 }
