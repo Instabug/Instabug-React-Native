@@ -14,7 +14,7 @@
 
 ### Fixed
 
-- Fix Correctly resolve the flavor path when uploading sourcemaps on Android. ([#1225](https://github.com/Instabug/Instabug-React-Native/pull/1225)).
+- Correctly resolve the flavor path when uploading sourcemaps on Android. ([#1225](https://github.com/Instabug/Instabug-React-Native/pull/1225)).
 
 ## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
 
