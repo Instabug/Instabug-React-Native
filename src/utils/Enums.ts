@@ -236,7 +236,7 @@ export enum StringKey {
 export enum LaunchType {
   hot = constants.hot,
   cold = constants.cold,
-  unKnown = constants.unKnown,
+  unknown = constants.unknown,
   /**
    *  android only
    */

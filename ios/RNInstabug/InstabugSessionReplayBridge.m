@@ -85,6 +85,7 @@ RCT_EXPORT_METHOD(setSyncCallback) {
 RCT_EXPORT_METHOD(evaluateSync:(BOOL)result) {
     if (self.sessionEvaluationCompletion) {
         self.sessionEvaluationCompletion(result);
+        self.sessionEvaluationCompletion = nil;
     }
 }
 
