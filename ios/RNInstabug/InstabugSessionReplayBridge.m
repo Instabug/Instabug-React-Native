@@ -76,10 +76,12 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
 
 RCT_EXPORT_METHOD(setSyncCallback) {
     [IBGSessionReplay setSyncCallbackWithHandler:^(IBGSessionMetadata * _Nonnull metadataObject, SessionEvaluationCompletion  _Nonnull completion) {
-        [self sendEventWithName:@"IBGSessionReplayOnSyncCallback"
-        body:[self getMetadataObjectMap:metadataObject]];
         
-        self.sessionEvaluationCompletion = completion;}];
+        [self sendEventWithName:@"IBGSessionReplayOnSyncCallback"
+                           body:[self getMetadataObjectMap:metadataObject]];
+        
+        self.sessionEvaluationCompletion = completion;
+    }];
 }
 
 RCT_EXPORT_METHOD(evaluateSync:(BOOL)result) {
