@@ -25,7 +25,7 @@
 
 - (void)evaluateSync:(BOOL)result;
 
-@property (nonatomic, copy) SessionEvaluationCompletion sessionEvaluationCompletion;
+@property (atomic, copy) SessionEvaluationCompletion sessionEvaluationCompletion;
 
 @end
 
