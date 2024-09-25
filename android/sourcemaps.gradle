@@ -13,12 +13,13 @@ gradle.projectsEvaluated {
         def start = name.startsWith(prefixes[0]) ? prefixes[0].length() : prefixes[1].length()
         def end = name.length() - suffix.length()
         def flavor = name.substring(start, end).uncapitalize()
+        def defaultVersion = getDefaultVersion(flavor)
 
-        task.finalizedBy createUploadSourcemapsTask(flavor)
+        task.finalizedBy createUploadSourcemapsTask(flavor, defaultVersion.name, defaultVersion.code)
     }
 }
 
-Task createUploadSourcemapsTask(String flavor) {
+Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String defaultVersionCode) {
     def name = 'uploadSourcemaps' + flavor.capitalize()
 
     // Don't recreate the task if it already exists.
@@ -47,9 +48,8 @@ Task createUploadSourcemapsTask(String flavor) {
                 def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
 
-                def projectConfig = appProject.android.defaultConfig
-                def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', "${projectConfig.versionName}")
-                def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', "${projectConfig.versionCode}")
+                def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', defaultVersionName)
+                def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', defaultVersionCode)
 
                 exec {
                     def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
@@ -98,6 +98,33 @@ File getSourceMapFile(File appDir, String flavor) {
     }
 
     return fallbackSourceMapFile
+}
+
+/**
+ * Infers the app version to use in source map upload based on the flavor.
+ * This is needed since different flavors may have different version codes and names (e.g. version suffixes).
+ *
+ * It checks the version for the flavor's variant.
+ * If no variant is found it falls back to the app's default config.
+ *
+ *
+ * @param flavor The flavor to get the app version for.
+ * @return A map containing the version code and version name.
+ */
+Map<String, String> getDefaultVersion(String flavor) {
+    def appProject = project(':app')
+    def defaultConfig = appProject.android.defaultConfig
+
+    def variants = appProject.android.applicationVariants
+
+    // uncapitalize is used to turn "Release" into "release" if the flavor is empty
+    def variantName = "${flavor}Release".uncapitalize()
+    def variant = variants.find { it.name.uncapitalize() == variantName }
+
+    def versionName = variant?.versionName ?: defaultConfig.versionName
+    def versionCode = variant?.versionCode ?: defaultConfig.versionCode
+
+    return [name: "${versionName}", code: "${versionCode}"]
 }
 
 boolean isUploadSourcemapsEnabled() {
