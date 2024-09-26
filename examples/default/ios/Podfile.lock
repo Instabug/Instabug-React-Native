@@ -43,7 +43,7 @@ PODS:
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - libevent (2.1.12)
-  - OCMock (3.9.3)
+  - OCMock (3.9.4)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -707,7 +707,7 @@ SPEC CHECKSUMS:
   Instabug: 4f26295103a330ec0236918359eef7ccaa74e2fa
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
+  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: a2faf4bad4e438ca37b2040cb8f7799baa065c18
   RCTTypeSafety: cb09f3e4747b6d18331a15eb05271de7441ca0b3
@@ -758,4 +758,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 281036e04bd4b9e7c2cc03a503b3245d3f1dd0dd
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.15.2

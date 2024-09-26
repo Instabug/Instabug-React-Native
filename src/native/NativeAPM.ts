@@ -45,6 +45,11 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
+
+  // Feature Flags //
+  isNativeInterceptionEnabled(): Promise<boolean>;
+  isAPMNetworkEnabled(): Promise<boolean>;
+  hasAPMNetworkPlugin(): Promise<boolean>;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

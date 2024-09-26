@@ -7,6 +7,7 @@ const InstabugConstants = {
     'The response body has not been logged because it exceeds the maximum size of 10 Kb',
   MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE:
     'The request body has not been logged because it exceeds the maximum size of 10 Kb',
+  IBG_APM_TAG: 'IBG-APM: ',
 };
 
 export default InstabugConstants;

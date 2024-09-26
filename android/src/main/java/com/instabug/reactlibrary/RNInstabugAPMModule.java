@@ -19,6 +19,7 @@ import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -58,6 +59,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Enables or disables APM.
+     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -76,6 +78,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Enables or disables app launch tracking.
+     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -111,6 +114,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Enables or disables auto UI tracing
+     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -209,7 +213,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * Starts an execution trace
      *
      * @param name string name of the trace.
-     *
      * @deprecated see {@link #startFlow(String)}
      */
     @Deprecated
@@ -240,7 +243,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * @param id    String id of the trace.
      * @param key   attribute key
      * @param value attribute value. Null to remove attribute
-     *
      * @deprecated see {@link #setFlowAttribute}
      */
     @Deprecated
@@ -262,7 +264,6 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
      * Ends a trace
      *
      * @param id string id of the trace.
-     *
      * @deprecated see {@link #endFlow}
      */
     @Deprecated
@@ -282,6 +283,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
 
     /**
      * Starts a UI trace
+     *
      * @param name string name of the UI trace.
      */
     @ReactMethod
@@ -341,34 +343,95 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class, APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
-                        method.invoke(
-                                networkLogger,
-                                (long) requestStartTime * 1000,
-                                (long) requestDuration,
-                                requestHeaders,
-                                requestBody,
-                                (long)  requestBodySize,
-                                requestMethod,
-                                requestUrl,
-                                requestContentType,
-                                responseHeaders,
-                                responseBody,
-                                (long)responseBodySize,
-                                (int) statusCode,
-                                responseContentType,
-                                errorMessage,
-                                gqlQueryName,
-                                serverErrorMessage,
-                                null
-                        );
+                    method.invoke(
+                            networkLogger,
+                            (long) requestStartTime * 1000,
+                            (long) requestDuration,
+                            requestHeaders,
+                            requestBody,
+                            (long) requestBodySize,
+                            requestMethod,
+                            requestUrl,
+                            requestContentType,
+                            responseHeaders,
+                            responseBody,
+                            (long) responseBodySize,
+                            (int) statusCode,
+                            responseContentType,
+                            errorMessage,
+                            gqlQueryName,
+                            serverErrorMessage,
+                            null
+                    );
                 } else {
                     Log.e("IB-CP-Bridge", "APMNetworkLogger.log was not found by reflection");
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        } catch(Throwable e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get first time Value of [cp_native_interception_enabled] flag
+     */
+    @ReactMethod
+    public void isNativeInterceptionEnabled(Promise promise) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+        });
+    }
+
+    /**
+     * Indicate if user added APM Network plugin or not
+     * [true] means user added the APM plugin
+     * [false] means not
+     */
+    @ReactMethod
+    public void hasAPMNetworkPlugin(Promise promise) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+        });
+    }
+
+    /**
+     * Indicate APM is enabled & Network logging is enabled
+     * [true] ApmEnabled && NetworkEnabled
+     * [false] otherwise
+     */
+    @ReactMethod
+    public void isAPMNetworkEnabled(Promise promise) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+        });
     }
 }
