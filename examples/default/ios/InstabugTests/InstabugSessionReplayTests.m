@@ -70,30 +70,50 @@
 }
 
 - (void)testSetSyncCallback {
-      BOOL expectedValue = YES;
-      
-      XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Completion block should be called with the expected value"];
-      
-      __block BOOL actualValue = NO;
-      
-      OCMExpect([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock:^BOOL(id obj) {
-          
-          void (^completionBlock)(BOOL) = ^(BOOL boolean) {
-            actualValue = boolean;
-            [completionExpectation fulfill];
-            XCTAssertEqual(actualValue, expectedValue);
-        };
-        
-        self.bridge.sessionEvaluationCompletion = completionBlock;
-        
-          return YES;
-      }]]);
-      
-      [self.bridge setSyncCallback];
-      [self.bridge evaluateSync:expectedValue];
-            
-      [self waitForExpectationsWithTimeout:1 handler:nil];
-      OCMVerifyAll(self.mSessionReplay);
+    id mockMetadata = OCMClassMock([IBGSessionMetadata class]);
+    id mockNetworkLog = OCMClassMock([IBGSessionMetadataNetworkLogs class]);
+    id partialMock = OCMPartialMock(self.bridge);
+
+    XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Completion block should be called with the expected value"];
+
+    BOOL expectedValue = YES;
+    __block BOOL actualValue = NO;
+
+    OCMStub([mockNetworkLog url]).andReturn(@"http://example.com");
+    OCMStub([mockNetworkLog statusCode]).andReturn(200);
+
+    OCMStub([mockMetadata device]).andReturn(@"ipohne");
+    OCMStub([mockMetadata os]).andReturn(@"ios");
+    OCMStub([mockMetadata appVersion]).andReturn(@"13.4.1");
+    OCMStub([mockMetadata sessionDuration]).andReturn(20);
+    OCMStub([mockMetadata hasLinkToAppReview]).andReturn(NO);
+    OCMStub([mockMetadata launchType]).andReturn(LaunchTypeCold);
+    OCMStub([mockMetadata launchDuration]).andReturn(20);
+    OCMStub([mockMetadata bugsCount]).andReturn(10);
+    OCMStub([mockMetadata fatalCrashCount]).andReturn(10);
+    OCMStub([mockMetadata oomCrashCount]).andReturn(10);
+    OCMStub([mockMetadata networkLogs]).andReturn(@[mockNetworkLog]);
+
+    SessionEvaluationCompletion sessionEvaluationCompletion = ^(BOOL shouldSync) {
+        actualValue = shouldSync;
+        [completionExpectation fulfill];
+    };
+                                  
+    OCMStub([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]).andDo(^(NSInvocation *invocation) {
+        [self.bridge evaluateSync:expectedValue];
+    });
+    
+    OCMStub([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock: ^BOOL(void(^handler)(IBGSessionMetadata *metadataObject, SessionEvaluationCompletion completion)) {
+        handler(mockMetadata, sessionEvaluationCompletion);
+        return YES;
+    }]]);
+    
+    [self.bridge setSyncCallback];
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+    
+    OCMVerify([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]);
+    OCMVerifyAll(self.mSessionReplay);
+    XCTAssertEqual(actualValue, expectedValue);
   }
 
 
