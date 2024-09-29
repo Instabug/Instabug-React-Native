@@ -9,7 +9,7 @@
 
 ### Changed
 
-- Bump Instabug iOS SDK to v13.4.1 ([#1285](https://github.com/Instabug/Instabug-React-Native/pull/1285)). See release notes for [13.4.0](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.0) and [13.4.1](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.1).
+- Bump Instabug iOS SDK to v13.4.2 ([#1285](https://github.com/Instabug/Instabug-React-Native/pull/1285)). See release notes for [13.4.0](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.0), [13.4.1](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.1) and [13.4.2](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.2).
 - Bump Instabug Android SDK to v13.4.1 ([#1285](https://github.com/Instabug/Instabug-React-Native/pull/1285)). See release notes for [13.4.0](https://github.com/Instabug/Instabug-Android/releases/tag/v13.4.0) and [13.4.1](https://github.com/Instabug/Instabug-Android/releases/tag/v13.4.1).
 
 ### Fixed
