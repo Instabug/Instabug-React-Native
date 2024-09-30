@@ -32,8 +32,8 @@ target 'InstabugExample' do
   target 'InstabugTests' do
     inherit! :complete
     pod 'OCMock'
-    # Pods for testing
-  end
+    pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-dynamic-sampling-callback-add-apm-delegate/13.4.0/Instabug.podspec'
+    end
 
   post_install do |installer|
     react_native_post_install(

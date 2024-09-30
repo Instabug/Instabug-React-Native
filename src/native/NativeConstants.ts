@@ -194,4 +194,5 @@ interface NativeLaunchType {
   hot: any;
   cold: any;
   warm: any;
+  unknown: any;
 }
