@@ -26,6 +26,22 @@
   XCTAssertFalse(IBGCrashReporting.enabled);
 }
 
+- (void)testSendJSCrash {
+  NSDictionary *stackTrace = @{};
+
+  XCTestExpectation *expectation = [self expectationWithDescription:@"Expected resolve to be called."];
+
+  RCTPromiseResolveBlock resolve = ^(id result) {
+    [expectation fulfill];
+  };
+  RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
+  
+  [self.bridge sendJSCrash:stackTrace resolver:resolve rejecter:reject];
+
+  [self waitForExpectations:@[expectation] timeout:1];
+  OCMVerify([self.mCrashReporting cp_reportFatalCrashWithStackTrace:stackTrace]);
+}
+
 - (void)testSendNonFatalErrorJsonCrash {
   NSDictionary<NSString *,NSString * > *jsonCrash = @{};
   NSString *fingerPrint = @"fingerprint";
