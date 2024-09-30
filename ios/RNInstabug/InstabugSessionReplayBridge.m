@@ -55,7 +55,7 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
           NSDictionary *nLog = @{@"url": log.url, @"statusCode": @(log.statusCode), @"duration": @(log.duration)};
           [networkLogsArray addObject:nLog];
     }   
-    return [networkLogsArray copy];
+    return networkLogsArray;
 }
 
 - (NSDictionary *)getMetadataObjectMap:(IBGSessionMetadata *)metadataObject {
