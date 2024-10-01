@@ -115,8 +115,6 @@ RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve
     @try {
         // Assuming you want to return YES for now, wrapped in NSNumber
         resolve(@(YES));
-      
-    
     } @catch (NSError *error) {
         reject(@"error_code", @"An error occurred", error);
     }
