@@ -126,6 +126,44 @@ export async function sendCrashReport(
 
   return remoteSenderCallback(jsonObject);
 }
+/**
+ * Generate random 32 bit unsigned integer Hexadecimal (8 chars) lower case letters
+ * Should not return all zeros
+ */
+export const generateTracePartialId = () => {
+  let randomNumber: number;
+  let hexString: string;
+
+  do {
+    randomNumber = Math.floor(Math.random() * 0xffffffff);
+    hexString = randomNumber.toString(16).padStart(8, '0');
+  } while (hexString === '00000000');
+
+  return { numberPartilId: randomNumber, hexStringPartialId: hexString.toLowerCase() };
+};
+/**
+ * Generate W3C header in the format of {version}-{trace-id}-{parent-id}-{trace-flag}
+ * @param networkStartTime
+ * @returns w3c header
+ */
+export const generateW3CHeader = (networkStartTime: number) => {
+  const { hexStringPartialId, numberPartilId } = generateTracePartialId();
+
+  const TRACESTATE = '4942472d';
+  const VERSION = '00';
+  const TRACE_FLAG = '01';
+
+  const timestampInSeconds = Math.floor(networkStartTime.valueOf() / 1000);
+  const hexaDigitsTimestamp = timestampInSeconds.toString(16).toLowerCase();
+  const traceId = `${hexaDigitsTimestamp}${hexStringPartialId}${hexaDigitsTimestamp}${hexStringPartialId}`;
+  const parentId = `${TRACESTATE}${hexStringPartialId}`;
+
+  return {
+    timestampInSeconds,
+    partialId: numberPartilId,
+    w3cHeader: `${VERSION}-${traceId}-${parentId}-${TRACE_FLAG}`,
+  };
+};
 
 export function isContentTypeNotAllowed(contentType: string) {
   const allowed = [
@@ -171,6 +209,13 @@ export function reportNetworkLog(network: NetworkData) {
       network.responseCode,
       network.contentType,
       network.errorDomain,
+      {
+        isW3cHeaderFound: network.isW3cHeaderFound,
+        partialId: network.partialId,
+        networkStartTimeInSeconds: network.networkStartTimeInSeconds,
+        w3cGeneratedHeader: network.w3cGeneratedHeader,
+        w3cCaughtHeader: network.w3cCaughtHeader,
+      },
       network.gqlQueryName,
       network.serverErrorMessage,
     );
@@ -192,6 +237,13 @@ export function reportNetworkLog(network: NetworkData) {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
+      {
+        isW3cHeaderFound: network.isW3cHeaderFound,
+        partialId: network.partialId,
+        networkStartTimeInSeconds: network.networkStartTimeInSeconds,
+        w3cGeneratedHeader: network.w3cGeneratedHeader,
+        w3cCaughtHeader: network.w3cCaughtHeader,
+      },
     );
   }
 }
@@ -204,4 +256,6 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  generateTracePartialId,
+  generateW3CHeader,
 };

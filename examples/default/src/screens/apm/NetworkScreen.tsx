@@ -8,6 +8,7 @@ import { HStack, VStack } from 'native-base';
 import { gql, request } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
+import { ListTile } from '../../components/ListTile';
 
 export const NetworkScreen: React.FC = () => {
   const [endpointUrl, setEndpointUrl] = useState('');
@@ -89,6 +90,14 @@ export const NetworkScreen: React.FC = () => {
   };
 
   const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
+  const simulateNetworkRequest = () => {
+    axios.get('https://httpbin.org/anything', {
+      headers: { traceparent: 'Caught Header Example' },
+    });
+  };
+  const simulateNetworkRequestWithoutHeader = () => {
+    axios.get('https://httpbin.org/anything');
+  };
 
   return (
     <ScrollView>
@@ -106,7 +115,14 @@ export const NetworkScreen: React.FC = () => {
               onPress={sendRequestToUrlUsingAxios}
               title="Send Request To Url Using Axios"
             />
-
+            <ListTile
+              title="Simulate Network Request With Header"
+              onPress={() => simulateNetworkRequest()}
+            />
+            <ListTile
+              title="Simulate Network Request"
+              onPress={() => simulateNetworkRequestWithoutHeader()}
+            />
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}

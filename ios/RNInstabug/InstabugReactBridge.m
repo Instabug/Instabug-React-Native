@@ -298,7 +298,14 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                       startTime:(double)startTime
                        duration:(double)duration
                    gqlQueryName:(NSString * _Nullable)gqlQueryName
-             serverErrorMessage:(NSString * _Nullable)serverErrorMessage) {
+             serverErrorMessage:(NSString * _Nullable)serverErrorMessage
+                  w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes){
+   NSNumber *isW3cCaught = (w3cExternalTraceAttributes[@"isW3cHeaderFound"] != [NSNull null]) ? w3cExternalTraceAttributes[@"isW3cHeaderFound"] : nil;
+        NSNumber * partialID = (w3cExternalTraceAttributes[@"partialId"] != [NSNull null]) ? w3cExternalTraceAttributes[@"partialId"] : nil;
+        NSNumber * timestamp = (w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] != [NSNull null]) ? w3cExternalTraceAttributes[@"networkStartTimeInSeconds"] : nil;
+        NSString * generatedW3CTraceparent = (w3cExternalTraceAttributes[@"w3cGeneratedHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cGeneratedHeader"] : nil;
+        NSString * caughtW3CTraceparent = (w3cExternalTraceAttributes[@"w3cCaughtHeader"] != [NSNull null]) ? w3cExternalTraceAttributes[@"w3cCaughtHeader"] : nil;
+
     [IBGNetworkLogger addNetworkLogWithUrl:url
                                     method:method
                                requestBody:requestBody
@@ -314,7 +321,13 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  startTime:startTime * 1000
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage];
+                        serverErrorMessage:serverErrorMessage
+                          isW3cCaughted:isW3cCaught
+                           partialID:partialID
+                            timestamp:timestamp
+                        generatedW3CTraceparent:generatedW3CTraceparent
+                        caughtedW3CTraceparent:caughtW3CTraceparent
+                        ];
 }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
@@ -364,7 +377,7 @@ RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
             [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key variant:variant]];
         }
     }
-    
+
     [Instabug addFeatureFlags:featureFlags];
 }
 
@@ -373,7 +386,7 @@ RCT_EXPORT_METHOD(removeFeatureFlags:(NSArray *)featureFlags) {
     for(id item in featureFlags){
         [features addObject:[[IBGFeatureFlag alloc] initWithName:item]];
     }
-    
+
     @try {
         [Instabug removeFeatureFlags:features];
     }
@@ -389,6 +402,17 @@ RCT_EXPORT_METHOD(removeAllFeatureFlags) {
 RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
+
+RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3ExternalTraceIDEnabled));
+}
+RCT_EXPORT_METHOD(isW3ExternalGeneratedHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3ExternalGeneratedHeaderEnabled));
+}
+RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.w3CaughtHeaderEnabled));
+}
+
 
 - (NSDictionary *)constantsToExport {
     return ArgsRegistry.getAll;

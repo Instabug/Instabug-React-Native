@@ -9,17 +9,16 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.instabug.apm.APM;
 import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
+import com.instabug.reactlibrary.utils.EventEmitterModule;
+import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import javax.annotation.Nonnull;
 
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
-public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
+public class RNInstabugAPMModule extends EventEmitterModule {
 
     public RNInstabugAPMModule(ReactApplicationContext reactApplicationContext) {
         super(reactApplicationContext);
@@ -330,14 +329,41 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                                    final double statusCode,
                                    final String responseContentType,
                                    @Nullable final String errorDomain,
+                                   @Nullable final ReadableMap w3cAttributes,
                                    @Nullable final String gqlQueryName,
-                                   @Nullable final String serverErrorMessage) {
+                                   @Nullable final String serverErrorMessage
+                                   ) {
         try {
             APMNetworkLogger networkLogger = new APMNetworkLogger();
 
             final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
             final String errorMessage = hasError ? errorDomain : null;
+   Boolean isW3cHeaderFound=false;
+            Long partialId=null;
+            Long networkStartTimeInSeconds=null;
 
+
+            try {
+                if (w3cAttributes.hasKey("isW3cHeaderFound")) {
+                    isW3cHeaderFound = w3cAttributes.getBoolean("isW3cHeaderFound");
+                }
+
+                if (w3cAttributes.hasKey("partialId")) {
+                    partialId =(long) w3cAttributes.getDouble("partialId");
+                    networkStartTimeInSeconds = (long) w3cAttributes.getDouble("networkStartTimeInSeconds");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            APMCPNetworkLog.W3CExternalTraceAttributes w3cExternalTraceAttributes =
+                    new APMCPNetworkLog.W3CExternalTraceAttributes(
+                            isW3cHeaderFound,
+                            partialId,
+                            networkStartTimeInSeconds,
+                            w3cAttributes.getString("w3cGeneratedHeader"),
+                            w3cAttributes.getString("w3cCaughtHeader")
+                    );
             try {
                 Method method = getMethod(Class.forName("com.instabug.apm.networking.APMNetworkLogger"), "log", long.class, long.class, String.class, String.class, long.class, String.class, String.class, String.class, String.class, String.class, long.class, int.class, String.class, String.class, String.class, String.class, APMCPNetworkLog.W3CExternalTraceAttributes.class);
                 if (method != null) {
@@ -359,7 +385,7 @@ public class RNInstabugAPMModule extends ReactContextBaseJavaModule {
                                 errorMessage,
                                 gqlQueryName,
                                 serverErrorMessage,
-                                null
+                                w3cExternalTraceAttributes
                         );
                 } else {
                     Log.e("IB-CP-Bridge", "APMNetworkLogger.log was not found by reflection");
