@@ -83,6 +83,19 @@ export const setNetworkDataObfuscationHandler = (
   handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
   _networkDataObfuscationHandler = handler;
+
+  // if (isNativeInterceptionEnabled) {
+  //   registerNetworkLogsListener(async (networkSnapshot) => {
+  //     console.log(
+  //       `Andrew: new snapshot from setNetworkDataObfuscationHandler: ${networkSnapshot.url}`,
+  //     );
+  //
+  //     if (_networkDataObfuscationHandler) {
+  //       networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+  //     }
+  //     NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+  //   });
+  // }
 };
 
 /**
@@ -91,6 +104,23 @@ export const setNetworkDataObfuscationHandler = (
  */
 export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
+
+  // if (isNativeInterceptionEnabled) {
+  //   registerNetworkLogsListener(async (networkSnapshot) => {
+  //     console.log(`Andrew: new snapshot from setRequestFilterExpression: ${networkSnapshot.url}`);
+  //     // eslint-disable-next-line no-new-func
+  //     const predicate = Function('network', 'return ' + _requestFilterExpression);
+  //     const value = predicate(networkSnapshot);
+  //     if (Platform.OS === 'ios') {
+  //       NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
+  //     } else {
+  //       // set android request url to null ;
+  //       if (value) {
+  //         NativeInstabug.updateNetworkLogSnapshot('');
+  //       }
+  //     }
+  //   });
+  // }
 };
 
 /**

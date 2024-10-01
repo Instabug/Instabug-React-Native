@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import type { NativeModule } from 'react-native';
 import { NativeEventEmitter } from 'react-native';
+=======
+import { NativeEventEmitter, type NativeModule } from 'react-native';
+>>>>>>> 82df0013 (chore: add request filtering & obfuscation react-native logic)
 
 import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
@@ -28,6 +32,9 @@ export interface ApmNativeModule extends NativeModule {
     gqlQueryName?: string,
     serverErrorMessage?: string,
   ): void;
+  // registerNetworkLogsListener(): void;
+  // updateNetworkLogSnapshot(networkData: string): void;
+  // setNetworkLoggingRequestFilterPredicateIOS(value: boolean): void;
 
   // App Launches APIs //
   setAppLaunchEnabled(isEnabled: boolean): void;

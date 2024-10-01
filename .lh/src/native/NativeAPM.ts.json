@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/native/NativeAPM.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1744632547161,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1744632547161,
+            "name": "Commit-0",
+            "content": "<<<<<<< HEAD\nimport type { NativeModule } from 'react-native';\nimport { NativeEventEmitter } from 'react-native';\n=======\nimport { NativeEventEmitter, type NativeModule } from 'react-native';\n>>>>>>> 82df0013 (chore: add request filtering & obfuscation react-native logic)\n\nimport type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';\nimport { NativeModules } from './NativePackage';\n\nexport interface ApmNativeModule extends NativeModule {\n  // Essential APIs //\n  setEnabled(isEnabled: boolean): void;\n\n  // Network APIs //\n  networkLogAndroid(\n    requestStartTime: number,\n    requestDuration: number,\n    requestHeaders: string,\n    requestBody: string,\n    requestBodySize: number,\n    requestMethod: string,\n    requestUrl: string,\n    requestContentType: string,\n    responseHeaders: string,\n    responseBody: string | null,\n    responseBodySize: number,\n    statusCode: number,\n    responseContentType: string,\n    errorDomain: string,\n    w3cExternalTraceAttributes: W3cExternalTraceAttributes,\n    gqlQueryName?: string,\n    serverErrorMessage?: string,\n  ): void;\n  // registerNetworkLogsListener(): void;\n  // updateNetworkLogSnapshot(networkData: string): void;\n  // setNetworkLoggingRequestFilterPredicateIOS(value: boolean): void;\n\n  // App Launches APIs //\n  setAppLaunchEnabled(isEnabled: boolean): void;\n  endAppLaunch(): void;\n\n  // Execution Traces APIs //\n  startExecutionTrace(name: string, timestamp: string): Promise<string | null>;\n  setExecutionTraceAttribute(id: string, key: string, value: string): void;\n  endExecutionTrace(id: string): void;\n\n  // App Flows APIs //\n  startFlow(name: string): void;\n  endFlow(name: string): void;\n  setFlowAttribute(name: string, key: string, value?: string | null): void;\n\n  // UI Traces APIs //\n  setAutoUITraceEnabled(isEnabled: boolean): void;\n  startUITrace(name: string): void;\n  endUITrace(): void;\n  ibgSleep(): void;\n}\n\nexport const NativeAPM = NativeModules.IBGAPM;\n\nexport const emitter = new NativeEventEmitter(NativeAPM);\n"
+        }
+    ]
+}
