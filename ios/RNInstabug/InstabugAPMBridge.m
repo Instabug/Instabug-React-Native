@@ -109,17 +109,6 @@ RCT_EXPORT_METHOD(endUITrace) {
     [IBGAPM endUITrace];
 }
 
-// Get first-time value of [cp_native_interception_enabled] flag
-RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
-    @try {
-        // Assuming you want to return YES for now, wrapped in NSNumber
-        resolve(@(YES));
-    } @catch (NSError *error) {
-        reject(@"error_code", @"An error occurred", error);
-    }
-}
-
 @synthesize description;
 
 @synthesize hash;

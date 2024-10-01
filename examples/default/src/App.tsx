@@ -8,7 +8,6 @@ import Instabug, {
   InvocationEvent,
   LogLevel,
   NetworkInterceptionMode,
-  NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -18,27 +17,11 @@ import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
 // import { QueryClient } from 'react-query';
-import {
-  ApolloClient,
-  ApolloLink,
-  ApolloProvider,
-  from,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client';
-// import { NativeInstabug } from '../../../src/native/NativeInstabug';
-//
-// const queryClient = new QueryClient();
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 //Setting up the handler
-const IBGApolloLink = new ApolloLink(NetworkLogger.apolloLinkRequestHandler);
-
-//Sample code
-const httpLink = new HttpLink({ uri: 'https://countries.trevorblades.com/graphql' });
-const apolloQueryClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: from([IBGApolloLink, httpLink]),
-});
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -51,13 +34,6 @@ export const App: React.FC = () => {
     });
     CrashReporting.setNDKCrashesEnabled(true);
 
-    // NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-    //   networkData.url = `${networkData.url}/RN/obfuscated`;
-    //   return networkData;
-    // });
-
-    // NetworkLogger.setRequestFilterExpression('true');
-
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
     });
@@ -66,13 +42,11 @@ export const App: React.FC = () => {
   return (
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
-        {/*<QueryClientProvider client={queryClient}>*/}
-        <ApolloProvider client={apolloQueryClient}>
+        <QueryClientProvider client={queryClient}>
           <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
             <RootTabNavigator />
           </NavigationContainer>
-        </ApolloProvider>
-        {/*</QueryClientProvider>*/}
+        </QueryClientProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
   );

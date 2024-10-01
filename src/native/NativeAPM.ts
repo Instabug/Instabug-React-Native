@@ -1,6 +1,5 @@
-import { NativeEventEmitter, type NativeModule } from 'react-native';
-
 import { NativeModules } from './NativePackage';
+import type { NativeModule } from 'react-native';
 
 export interface ApmNativeModule extends NativeModule {
   // Essential APIs //
@@ -25,9 +24,6 @@ export interface ApmNativeModule extends NativeModule {
     gqlQueryName?: string,
     serverErrorMessage?: string,
   ): void;
-  // registerNetworkLogsListener(): void;
-  // updateNetworkLogSnapshot(networkData: string): void;
-  // setNetworkLoggingRequestFilterPredicateIOS(value: boolean): void;
 
   // App Launches APIs //
   setAppLaunchEnabled(isEnabled: boolean): void;
@@ -48,17 +44,6 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
-
-  // Feature Flags //
-  isNativeInterceptionEnabled(): Promise<boolean>;
-  isAPMNetworkEnabled(): Promise<boolean>;
-  hasAPMNetworkPlugin(): Promise<boolean>;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;
-
-export enum NativeAPMEvent {
-  NETWORK_LOGGER_HANDLER = 'IBGNetworkLoggerHandler',
-}
-
-export const APMEmitter = new NativeEventEmitter(NativeAPM);

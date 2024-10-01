@@ -34,9 +34,9 @@ import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
-import { NativeAPM } from '../native/NativeAPM';
 import { addAppStateListener } from '../utils/AppStatesHandler';
 import InstabugConstants from '../utils/InstabugConstants';
+import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -82,10 +82,10 @@ function reportCurrentViewForAndroid(screenName: string | null) {
  */
 export const init = async (config: InstabugConfig) => {
   // Initialize necessary variables
-  isNativeInterceptionEnabled = await NativeAPM.isNativeInterceptionEnabled();
+  isNativeInterceptionEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
   if (Platform.OS === 'android') {
-    hasAPMNetworkPlugin = await NativeAPM.hasAPMNetworkPlugin();
-    isAPMNetworkEnabled = await NativeAPM.isAPMNetworkEnabled();
+    hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
+    isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
     disableAPMLogging = config.networkInterceptionMode === NetworkInterceptionMode.native;
   }
 
@@ -108,12 +108,16 @@ export const init = async (config: InstabugConfig) => {
      disableAPMLogging: ${disableAPMLogging}
     }`,
   );
+
+  //Set APM networking flags for the first time
   setApmNetworkFlagsIfChanged({
     isNativeInterceptionEnabled: isNativeInterceptionEnabled,
     hasAPMNetworkPlugin: hasAPMNetworkPlugin,
     isAPMNetworkEnabled: isAPMNetworkEnabled,
     disableAPMLogging: disableAPMLogging,
   });
+
+  // call Instabug native init method
   initializeNativeInstabug(config);
 
   _isFirstScreen = true;
@@ -154,9 +158,9 @@ const handleAppStateChange = async (nextAppState: AppStateStatus, config: Instab
  * Fetches the current APM network flags.
  */
 const fetchApmNetworkFlags = async () => {
-  isNativeInterceptionEnabled = await NativeAPM.isNativeInterceptionEnabled();
-  hasAPMNetworkPlugin = await NativeAPM.hasAPMNetworkPlugin();
-  isAPMNetworkEnabled = await NativeAPM.isAPMNetworkEnabled();
+  isNativeInterceptionEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
+  hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
+  isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
 
   return {
     isNativeInterceptionEnabled,

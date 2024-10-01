@@ -168,7 +168,7 @@ export function isContentTypeNotAllowed(contentType: string) {
 }
 
 //todo: remove all logs tagged with 'Andrew' in the file
-export const reportNetworkLog = async (network: NetworkData) => {
+export const reportNetworkLog = (network: NetworkData) => {
   if (Platform.OS === 'android') {
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
