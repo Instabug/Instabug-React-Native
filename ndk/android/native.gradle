@@ -1,7 +1,0 @@
-project.ext.instabug = [
-    version: '13.3.0'
-]
-
-dependencies {
-    api "com.instabug.library:instabug-ndk-crash:${project.ext.instabug.version}"
-}

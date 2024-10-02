@@ -20,9 +20,6 @@ if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
 }
 
-apply from: './native.gradle'
-
-
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["InstabugReactnativeNdk_" + name]
 }
@@ -86,5 +83,9 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
-}
 
+  // Grabs the Instabug Android SDK version from the Instabug React Native project
+  def instabugAndroidSdkVersion = project(':instabug-reactnative').ext.instabug.version
+
+  api "com.instabug.library:instabug-ndk-crash:$instabugAndroidSdkVersion"
+}
