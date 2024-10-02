@@ -331,6 +331,7 @@
   double startTime = 1719847101199;
   double duration = 150;
   NSString *gqlQueryName = nil;
+  NSString *serverErrorMessage = nil;
   
   [self.instabugBridge networkLogIOS:url
                               method:method
@@ -346,7 +347,8 @@
                            errorCode:errorCode
                            startTime:startTime
                             duration:duration
-                        gqlQueryName:gqlQueryName];
+                        gqlQueryName:gqlQueryName
+                  serverErrorMessage:serverErrorMessage];
   
   OCMVerify([mIBGNetworkLogger addNetworkLogWithUrl:url
                                             method:method
@@ -362,7 +364,8 @@
                                          errorCode:errorCode
                                          startTime:startTime * 1000
                                           duration:duration * 1000
-                                      gqlQueryName:gqlQueryName]);
+                                      gqlQueryName:gqlQueryName
+                                serverErrorMessage:serverErrorMessage]);
 }
 
 - (void)testSetFileAttachment {

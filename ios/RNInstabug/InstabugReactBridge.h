@@ -120,7 +120,9 @@
             errorCode:(double)errorCode
             startTime:(double)startTime
              duration:(double)duration
-         gqlQueryName:(NSString * _Nullable)gqlQueryName;
+         gqlQueryName:(NSString * _Nullable)gqlQueryName
+   serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
+
 /*
  +------------------------------------------------------------------------+
  |                              Experiments                               |

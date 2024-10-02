@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
                    errorCode:(int32_t)errorCode
                    startTime:(int64_t)startTime
                     duration:(int64_t) duration
-                gqlQueryName:(NSString * _Nullable)gqlQueryName;
+                gqlQueryName:(NSString * _Nullable)gqlQueryName
+          serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
 
 @end
 

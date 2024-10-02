@@ -66,6 +66,7 @@ export interface InstabugNativeModule extends NativeModule {
     startTime: number,
     duration: number,
     gqlQueryName: string | undefined,
+    serverErrorMessage: string | undefined,
   ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;
