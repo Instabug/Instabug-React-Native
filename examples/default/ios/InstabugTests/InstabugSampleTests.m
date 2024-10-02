@@ -8,7 +8,6 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "Instabug/Instabug.h"
-#import "Instabug/IBGSurvey.h"
 #import "InstabugReactBridge.h"
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
@@ -366,7 +365,12 @@
                                          startTime:startTime * 1000
                                           duration:duration * 1000
                                       gqlQueryName:gqlQueryName
-                                serverErrorMessage:serverErrorMessage]);
+                                serverErrorMessage:serverErrorMessage
+                                      isW3cCaughted:nil
+                                          partialID:nil
+                                          timestamp:nil
+                            generatedW3CTraceparent:nil
+                             caughtedW3CTraceparent:nil]);
 }
 
 - (void)testSetFileAttachment {

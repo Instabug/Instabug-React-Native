@@ -1,7 +1,10 @@
 import type React from 'react';
 import { Platform, findNodeHandle, processColor } from 'react-native';
 
-import type { NavigationState as NavigationStateV5 } from '@react-navigation/native';
+import type {
+  NavigationContainerRefWithCurrent,
+  NavigationState as NavigationStateV5,
+} from '@react-navigation/native';
 import type { ComponentDidAppearEvent } from 'react-native-navigation';
 import type { NavigationAction, NavigationState as NavigationStateV4 } from 'react-navigation';
 
@@ -531,6 +534,19 @@ export const onStateChange = (state?: NavigationStateV5) => {
       _currentScreen = null;
     }
   }, 1000);
+};
+
+/**
+ * Sets a listener for screen change
+ *  @param navigationRef a refrence of a navigation container
+ *
+ */
+export const setNavigationListener = (
+  navigationRef: NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>,
+) => {
+  return navigationRef.addListener('state', () => {
+    onStateChange(navigationRef.getRootState());
+  });
 };
 
 export const reportScreenChange = (screenName: string) => {
