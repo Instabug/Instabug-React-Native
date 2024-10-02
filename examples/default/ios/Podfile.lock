@@ -38,7 +38,7 @@ PODS:
   - hermes-engine (0.72.3):
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
-  - Instabug (13.4.0)
+  - Instabug (13.4.2)
   - instabug-reactnative-ndk (0.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -524,7 +524,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/feature-dynamic-sampling-callback-add-apm-delegate/13.4.0/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/feature-dynamic-sampling-callback-base/13.4.2/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - libevent (~> 2.1.12)
   - OCMock
@@ -600,7 +600,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/feature-dynamic-sampling-callback-add-apm-delegate/13.4.0/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/feature-dynamic-sampling-callback-base/13.4.2/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -706,7 +706,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: 16e4c013f2ae57ddca4966ea90736e48bbcdd2d5
+  Instabug: fdeda93a58be4e3fead76d264962111b8069e2f1
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
@@ -758,6 +758,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 
-PODFILE CHECKSUM: f16fc6271767fab2dc19a52068caa1ca15e29e62
+PODFILE CHECKSUM: 5d05a5f39e6af8a9c3e43e874715bc5f95e203e9
 
 COCOAPODS: 1.12.0
