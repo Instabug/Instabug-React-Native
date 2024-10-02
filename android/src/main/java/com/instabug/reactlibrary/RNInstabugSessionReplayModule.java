@@ -119,39 +119,50 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     }
 
-    public ReadableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
+    public WritableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
         WritableMap params = Arguments.createMap();
         params.putString("appVersion",sessionMetadata.getAppVersion());
         params.putString("OS",sessionMetadata.getOs());
         params.putString("device",sessionMetadata.getDevice());
         params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
         params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
-        params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
-        params.putDouble("launchDuration", sessionMetadata.getLaunchDuration());
         params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
 
-//                              TODO:Add rest of sessionMetadata
-//                            params.putDouble("bugsCount", ??);
-//                            params.putDouble("fatalCrashCount",??);
-//                            params.putDouble("oomCrashCount",??);
+        String launchType = sessionMetadata.getLaunchType();
+        Long launchDuration = sessionMetadata.getLaunchDuration();
+
+        if (launchType != null) {
+            params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
+        } else {
+            params.putString("launchType","" );
+        }
+
+        if (launchDuration != null) {
+            params.putDouble("launchDuration", (double)launchDuration);
+        } else {
+            params.putDouble("launchDuration", 0.0);
+        }
+
         return params;
     }
 
-    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ){
+    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ) {
         WritableArray networkLogs = Arguments.createArray();
 
-        for (SessionMetadata.NetworkLog log : networkLogList) {
-            WritableMap networkLog = Arguments.createMap();
-            networkLog.putString("url", log.getUrl());
-            networkLog.putDouble("duration", log.getDuration());
-            networkLog.putInt("statusCode", log.getStatusCode());
+        if (networkLogList != null) {
+            for (SessionMetadata.NetworkLog log : networkLogList) {
+                WritableMap networkLog = Arguments.createMap();
+                networkLog.putString("url", log.getUrl());
+                networkLog.putDouble("duration", log.getDuration());
+                networkLog.putInt("statusCode", log.getStatusCode());
 
-            networkLogs.pushMap(networkLog);
+                networkLogs.pushMap(networkLog);
+            }
         }
 
         return networkLogs;
     }
-
+    
     private boolean shouldSync = true;
     private CountDownLatch latch;
     @ReactMethod
