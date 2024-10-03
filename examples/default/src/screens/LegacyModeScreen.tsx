@@ -1,13 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import { Text, ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
+import { ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
 import Instabug from 'instabug-reactnative';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 
 export const LegacyModeScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
 
   const logInstabug = (log: string): Promise<void> => {
     return new Promise<void>((resolve) => {
@@ -158,8 +157,6 @@ export const LegacyModeScreen: React.FC = () => {
       <ListTile title="Attach 10 events at a time" onPress={() => getUserEvents(10)} />
       <ListTile title="Attach 10 tags at a time" onPress={() => getTags(10)} />
       <ListTile title="Attach 10 user attributes at a time" onPress={() => getUserAttributes(10)} />
-
-      {response && <Text>{JSON.stringify(response)}</Text>}
     </Screen>
   );
 };

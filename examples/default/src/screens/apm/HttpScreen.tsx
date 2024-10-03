@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import {  ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
+import { ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
 
@@ -12,10 +12,9 @@ export const HttpScreen: React.FC = () => {
   const [loadingPatch, setLoading5] = useState(false);
   const [loadingDownloadImage, setLoading6] = useState(false);
 
-
   const makeGetCall = async () => {
     setLoading(true);
-    const url = `https://httpbin.org/anything`;
+    const url = 'https://httpbin.org/anything';
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -50,7 +49,7 @@ export const HttpScreen: React.FC = () => {
 
   const makePostCall = async () => {
     setLoading2(true);
-    const url = `https://httpbin.org/post`;
+    const url = 'https://httpbin.org/post';
     // Create the body for the POST request
     const requestBody = {
       name: 'Islam',
@@ -90,7 +89,7 @@ export const HttpScreen: React.FC = () => {
 
   const makeDeleteCall = async () => {
     setLoading3(true);
-    const url = `https://httpbin.org/delete`;
+    const url = 'https://httpbin.org/delete';
     try {
       const response = await fetch(url, {
         method: 'DELETE',
@@ -123,7 +122,7 @@ export const HttpScreen: React.FC = () => {
 
   const makePutCall = async () => {
     setLoading4(true);
-    const url = `https://httpbin.org/put`;
+    const url = 'https://httpbin.org/put';
     const requestBody = {
       name: 'Islam',
     };
@@ -173,6 +172,8 @@ export const HttpScreen: React.FC = () => {
         body: jsonInputString,
       });
 
+      const responseBody = await response.json();
+      console.log('Response:', responseBody);
       setLoading5(false);
 
       if (Platform.OS === 'android') {
@@ -194,7 +195,7 @@ export const HttpScreen: React.FC = () => {
 
   const makeDownloadImageCall = async () => {
     setLoading6(true);
-    const url = `https://httpbin.org/image/jpeg`;
+    const url = 'https://httpbin.org/image/jpeg';
     try {
       const response = await fetch(url, {
         method: 'GET',
