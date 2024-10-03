@@ -6,14 +6,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.instabug.reactlibrary.RNInstabugAPMModule;
-import com.instabug.reactlibrary.RNInstabugBugReportingModule;
-import com.instabug.reactlibrary.RNInstabugCrashReportingModule;
-import com.instabug.reactlibrary.RNInstabugFeatureRequestsModule;
-import com.instabug.reactlibrary.RNInstabugReactnativeModule;
-import com.instabug.reactlibrary.RNInstabugRepliesModule;
-import com.instabug.reactlibrary.RNInstabugSessionReplayModule;
-import com.instabug.reactlibrary.RNInstabugSurveysModule;
 
 import java.util.ArrayList;
 import java.util.Collections;

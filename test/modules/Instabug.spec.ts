@@ -2,6 +2,7 @@ import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
+import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -234,6 +235,42 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.reportScreenChange).toBeCalledWith('ScreenName');
 
     await waitForExpect(() => expect(NativeInstabug.reportScreenChange).toBeCalledTimes(2));
+  });
+
+  it('setNavigationListener should call the onStateChange on a screen change', async () => {
+    const mockedState = { routes: [{ name: 'ScreenName' }], index: 0 };
+
+    const mockNavigationContainerRef = {
+      current: null,
+      navigate: jest.fn(),
+      reset: jest.fn(),
+      goBack: jest.fn(),
+      dispatch: jest.fn(),
+      getRootState: () => mockedState,
+      canGoBack: jest.fn(),
+
+      addListener: jest.fn((event, callback) => {
+        expect(event).toBe('state');
+        callback(mockedState);
+        return jest.fn();
+      }),
+      removeListener: jest.fn(),
+    } as unknown as NavigationContainerRefWithCurrent<ReactNavigation.RootParamList>;
+
+    const onStateChangeMock = jest.fn();
+
+    jest.spyOn(Instabug, 'onStateChange').mockImplementation(onStateChangeMock);
+
+    Instabug.setNavigationListener(mockNavigationContainerRef);
+
+    expect(mockNavigationContainerRef.addListener).toBeCalledTimes(1);
+    expect(mockNavigationContainerRef.addListener).toHaveBeenCalledWith(
+      'state',
+      expect.any(Function),
+    );
+
+    expect(onStateChangeMock).toBeCalledTimes(1);
+    expect(onStateChangeMock).toHaveBeenCalledWith(mockNavigationContainerRef.getRootState());
   });
 
   it('should call the native method init', () => {
