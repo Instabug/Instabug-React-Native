@@ -60,6 +60,17 @@ function reportCurrentViewForAndroid(screenName: string | null) {
   }
 }
 
+function _logFlags() {
+  console.log(
+    `Andrew: init -> {
+     isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
+     hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},
+     isApmNetworkEnabled: ${isAPMNetworkEnabled},
+     shouldEnableNativeInterception: ${shouldEnableNativeInterception}
+    }`,
+  );
+}
+
 /**
  * Initializes the SDK.
  * This is the main SDK method that does all the magic. This is the only
