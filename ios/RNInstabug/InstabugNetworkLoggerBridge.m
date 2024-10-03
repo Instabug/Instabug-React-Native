@@ -5,6 +5,7 @@
 //  Created by Andrew Amin on 01/10/2024.
 //
 #import "InstabugNetworkLoggerBridge.h"
+#import "Util/IBGNetworkLogger+CP.h"
 
 @implementation InstabugNtworkLoggerBridge
 
@@ -39,16 +40,10 @@ bool hasListeners = NO;
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
-// Get first-time value of [cp_native_interception_enabled] flag
-RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
-    @try {
-        // Assuming you want to return YES for now, wrapped in NSNumber
-        resolve(@(NO));
-    } @catch (NSError *error) {
-        reject(@"error_code", @"An error occurred", error);
-    }
+RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled));
 }
+
 
 // RCT_EXPORT_METHOD(registerNetworkLogsListener){
 //     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {

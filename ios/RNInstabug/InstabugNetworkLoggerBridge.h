@@ -10,4 +10,5 @@
  +------------------------------------------------------------------------+
  */
 
+- (void)isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 @end

@@ -14,25 +14,25 @@ import { NativeInstabug } from '../native/NativeInstabug';
 import { NativeAPM } from '../native/NativeAPM';
 
 type ApmNetworkFlags = {
-  isNativeInterceptionEnabled: boolean;
+  isNativeInterceptionFeatureEnabled: boolean;
   hasAPMNetworkPlugin: boolean;
   isAPMNetworkEnabled: boolean;
-  disableAPMLogging: boolean;
+  shouldEnableNativeInterception: boolean;
 };
 
 let apmFlags: ApmNetworkFlags = {
-  isNativeInterceptionEnabled: false,
+  isNativeInterceptionFeatureEnabled: false,
   hasAPMNetworkPlugin: false,
   isAPMNetworkEnabled: false,
-  disableAPMLogging: false,
+  shouldEnableNativeInterception: false,
 };
 
 export function setApmNetworkFlagsIfChanged(flags: ApmNetworkFlags): boolean {
   if (
     flags.isAPMNetworkEnabled === apmFlags.isAPMNetworkEnabled &&
     flags.hasAPMNetworkPlugin === apmFlags.hasAPMNetworkPlugin &&
-    flags.isNativeInterceptionEnabled === apmFlags.isNativeInterceptionEnabled &&
-    flags.disableAPMLogging === apmFlags.disableAPMLogging
+    flags.isNativeInterceptionFeatureEnabled === apmFlags.isNativeInterceptionFeatureEnabled &&
+    flags.shouldEnableNativeInterception === apmFlags.shouldEnableNativeInterception
   ) {
     return false;
   }
@@ -188,9 +188,9 @@ export const reportNetworkLog = (network: NetworkData) => {
     );
 
     if (
-      (!apmFlags.isNativeInterceptionEnabled ||
+      (!apmFlags.isNativeInterceptionFeatureEnabled ||
         !apmFlags.hasAPMNetworkPlugin ||
-        !apmFlags.disableAPMLogging) &&
+        !apmFlags.shouldEnableNativeInterception) &&
       apmFlags.isAPMNetworkEnabled
     ) {
       console.log('Andrew: ' + 'NetworkLogger -> NativeAPM.networkLogAndroid');
@@ -216,7 +216,7 @@ export const reportNetworkLog = (network: NetworkData) => {
   } else {
     console.log(
       'Andrew: ' +
-        `NetworkLogger -> {isNativeInterceptionEnabled: ${apmFlags.isNativeInterceptionEnabled}}`,
+        `NetworkLogger -> {isNativeInterceptionEnabled: ${apmFlags.isNativeInterceptionFeatureEnabled}}`,
     );
     console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogIOS');
 
