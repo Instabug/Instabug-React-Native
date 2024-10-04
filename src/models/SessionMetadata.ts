@@ -43,15 +43,15 @@ export interface SessionMetadata {
    */
   launchDuration: number;
   /**
-   * number of bugs in the session
+   * number of bugs in the session (iOS only)
    */
   bugsCount?: number;
   /**
-   * number of fetal crashes in the session
+   * number of fetal crashes in the session (iOS only)
    */
   fatalCrashCount?: number;
   /**
-   * number of out of memory crashes in the session
+   * number of out of memory crashes in the session (iOS only)
    */
   oomCrashCount?: number;
 }
