@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)setRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
 + (void)setRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
-+ (void)setResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
++ (void)setResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^completion)(BOOL keep)))responseFilteringHandler;
 
 @end
 
