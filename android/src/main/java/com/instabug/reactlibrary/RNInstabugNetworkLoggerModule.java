@@ -109,54 +109,54 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
 
 
 
-//    @ReactMethod
-//    public void registerNetworkLogsListener() {
-//        MainThreadHandler.runOnMainThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
-//                    @Override
-//                    public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-//                        final int id = onCompleteCallback.hashCode();
-//                        callbackMap.put(id, onCompleteCallback);
-//
-//                        WritableMap networkSnapshotParams = Arguments.createMap();
-//                        networkSnapshotParams.putInt("id", id);
-//                        networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
-//                        networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
-//
-//                        sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
-//
-//                    }
-//                });
-//            }
-//        });
-//    }
-//
-//    @ReactMethod
-//    protected void updateNetworkLogSnapshot(String jsonString) {
-//
-//        JSONObject newJSONObject = null;
-//        try {
-//            newJSONObject = new JSONObject(jsonString);
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        }
-//        final Integer ID = newJSONObject.optInt("id");
-//        final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
-//                newJSONObject.optString("url"),
-//                null,
-//                null,
-//                null,
-//                null,
-//                newJSONObject.optInt("responseCode")
-//        );
-//
-//        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
-//        if (callback != null) {
-//            callback.onComplete(null);
-//        }
-//        callbackMap.remove(ID);
-//
-//    }
+   @ReactMethod
+   public void registerNetworkLogsListener() {
+       MainThreadHandler.runOnMainThread(new Runnable() {
+           @Override
+           public void run() {
+               InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
+                   @Override
+                   public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
+                       final int id = onCompleteCallback.hashCode();
+                       callbackMap.put(id, onCompleteCallback);
+
+                       WritableMap networkSnapshotParams = Arguments.createMap();
+                       networkSnapshotParams.putInt("id", id);
+                       networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
+                       networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
+
+                       sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
+
+                   }
+               });
+           }
+       });
+   }
+
+   @ReactMethod
+   protected void updateNetworkLogSnapshot(String jsonString) {
+
+       JSONObject newJSONObject = null;
+       try {
+           newJSONObject = new JSONObject(jsonString);
+       } catch (JSONException e) {
+           throw new RuntimeException(e);
+       }
+       final Integer ID = newJSONObject.optInt("id");
+       final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
+               newJSONObject.optString("url"),
+               null,
+               null,
+               null,
+               null,
+               newJSONObject.optInt("responseCode")
+       );
+
+       final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
+       if (callback != null) {
+           callback.onComplete(null);
+       }
+       callbackMap.remove(ID);
+
+   }
 }

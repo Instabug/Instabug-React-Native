@@ -7,7 +7,11 @@
 #import "InstabugNetworkLoggerBridge.h"
 #import "Util/IBGNetworkLogger+CP.h"
 
+
 @implementation InstabugNtworkLoggerBridge
+//@property NSMutableDictionary<NSString *, IBGURLRequestAsyncObfuscationCompletedHandler> *dictionary;
+
+
 
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
@@ -20,12 +24,14 @@
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
-        @"IBGpreInvocationHandler"
+        @"IBGpreInvocationHandler",
+        @"IBGNetworkLoggerHandler"
     ];
 }
 RCT_EXPORT_MODULE(IBGNetworkLogger)
 
 bool hasListeners = NO;
+
 
 
 // Will be called when this module's first listener is added.
@@ -44,74 +50,76 @@ RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(
     resolve(@(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled));
 }
 
+//RCT_EXPORT_METHOD(registerNetworkLogsListener){
+//
+//    [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest *requestToBeObfuscated, IBGURLRequestAsyncObfuscationCompletedHandler completion) {
+//
+//        NSString *tempId = [[[NSUUID alloc] init] UUIDString];
+//        self.dictionary[tempId] = completion;
+//
+//           // Ensure the URL, HTTP body, and headers are in the correct format
+//           NSString *urlString = requestToBeObfuscated.URL.absoluteString ?: @"";
+//           NSString *bodyString = [[NSString alloc] initWithData:requestToBeObfuscated.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
+//           NSDictionary *headerDict = requestToBeObfuscated.allHTTPHeaderFields ?: @{};
+//
+//        // Create the dictionary to send
+//        NSDictionary *dict = @{
+//            @"tempId": tempId,
+//            @"url": urlString,
+//            @"requestBody": bodyString,
+//            @"requestHeader": headerDict
+//        };
+//
+//        // Send the event
+//        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+//
+//    }];
+//}
 
-// RCT_EXPORT_METHOD(registerNetworkLogsListener){
-//     [IBGNetworkLogger setRequestObfuscationHandlerV2:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completionHandler)(NSURLRequest * _Nonnull)) {
-//         NSString *tempId = [[[NSUUID alloc] init] UUIDString];
-//         self.dictionary[tempId] = completionHandler;
+
+//RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
+//    // Properly initialize the NSMutableURLRequest
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 //
-//            // Ensure the URL, HTTP body, and headers are in the correct format
-//            NSString *urlString = request.URL.absoluteString ?: @"";
-//            NSString *bodyString = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
-//            NSDictionary *headerDict = request.allHTTPHeaderFields ?: @{};
+//    // Convert jsonString to NSData
+//    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 //
-//            // Create the dictionary to send
-//            NSDictionary *dict = @{
-//                @"tempId": tempId,
-//                @"url": urlString,
-//                @"requestBody": bodyString,
-//                @"requestHeader": headerDict
-//            };
+//    // Parse the JSON into a dictionary
+//    NSError *error = nil;
+//    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
 //
-//            // Send the event
-//            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+//    // Check for JSON parsing errors
+//    if (error) {
+//        NSLog(@"Failed to parse JSON: %@", error);
+//        return;
+//    }
 //
-//        }];
-// }
+//    // Set the URL, HTTP body, and headers
+//    request.URL = [NSURL URLWithString:dict[@"url"]];
+//    request.HTTPBody = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding];
 //
-// RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
-//     // Properly initialize the NSMutableURLRequest
-//     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//    // Ensure requestHeader is a dictionary
+//    if ([dict[@"requestHeader"] isKindOfClass:[NSDictionary class]]) {
+//        request.allHTTPHeaderFields = dict[@"requestHeader"];
+//    } else {
+//        NSLog(@"Invalid requestHeader format");
+////        return;
+//    }
 //
-//     // Convert jsonString to NSData
-//     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-//
-//     // Parse the JSON into a dictionary
-//     NSError *error = nil;
-//     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-//
-//     // Check for JSON parsing errors
-//     if (error) {
-//         NSLog(@"Failed to parse JSON: %@", error);
-//         return;
-//     }
-//
-//     // Set the URL, HTTP body, and headers
-//     request.URL = [NSURL URLWithString:dict[@"url"]];
-//     request.HTTPBody = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding];
-//
-//     // Ensure requestHeader is a dictionary
-//     if ([dict[@"requestHeader"] isKindOfClass:[NSDictionary class]]) {
-//         request.allHTTPHeaderFields = dict[@"requestHeader"];
-//     } else {
-//         NSLog(@"Invalid requestHeader format");
-// //        return;
-//     }
-//
-//     // Ensure self.completion is not nil before calling it
-//     NSString *tempId = dict[@"tempId"];
-//     if ([tempId isKindOfClass:[NSString class]] && self.dictionary[tempId] != nil) {
-//         ((IBGURLRequestObfuscationHandler)self.dictionary[tempId])(request);
-//     } else {
-//         NSLog(@"Not Available Completion");
-//     }
-// }
-//
-// RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (BOOL)value){
-//
-//     NSPredicate *requestPredicate = [NSPredicate predicateWithValue:(value) ? YES : NO];
-//
-//     [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:nil];
-// }
+//    // Ensure self.completion is not nil before calling it
+//    NSString *tempId = dict[@"tempId"];
+//    if ([tempId isKindOfClass:[NSString class]] && self.dictionary[tempId] != nil) {
+//        ((IBGURLRequestObfuscationHandler)self.dictionary[tempId])(request);
+//    } else {
+//        NSLog(@"Not Available Completion");
+//    }
+//}
+
+RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (BOOL)value){
+
+    NSPredicate *requestPredicate = [NSPredicate predicateWithValue:(value) ? YES : NO];
+
+    [IBGNetworkLogger setNetworkLoggingRequestFilterPredicate:requestPredicate responseFilterPredicate:nil];
+}
 
 @end

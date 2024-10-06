@@ -31,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
      generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
       caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
 
++ (void)setRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
++ (void)setRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
++ (void)setResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END
