@@ -133,7 +133,7 @@ export const NetworkScreen: React.FC<
             ))}
           </HStack>
         </Section>
-        <ListTile title="HttpUrlConnection" onPress={() => navigation.navigate('HttpScreen')} />
+        <ListTile title="HTTP Screen" onPress={() => navigation.navigate('HttpScreen')} />
       </Screen>
     </ScrollView>
   );

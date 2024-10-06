@@ -1,16 +1,11 @@
-import React from 'react';
-import { useState } from 'react';
-import { ToastAndroid, Platform, ActivityIndicator, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
+import { showNotification } from '../../utils/showNotification';
 
 export const HttpScreen: React.FC = () => {
-  const [loadingGet, setLoading] = useState(false);
-  const [loadingPost, setLoading2] = useState(false);
-  const [loadingDelete, setLoading3] = useState(false);
-  const [loadingPut, setLoading4] = useState(false);
-  const [loadingPatch, setLoading5] = useState(false);
-  const [loadingDownloadImage, setLoading6] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const makeGetCall = async () => {
     setLoading(true);
@@ -27,30 +22,17 @@ export const HttpScreen: React.FC = () => {
       console.log('Response:', responseBody);
 
       setLoading(false);
-
-      // Show success message
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
       setLoading(false);
-
-      // Show error message
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      showNotification('Error', 'Failed');
     }
   };
 
   const makePostCall = async () => {
-    setLoading2(true);
+    setLoading(true);
     const url = 'https://httpbin.org/post';
-    // Create the body for the POST request
     const requestBody = {
       name: 'Islam',
     };
@@ -66,29 +48,17 @@ export const HttpScreen: React.FC = () => {
       const responseBody = await response.json();
       console.log('Response:', responseBody);
 
-      setLoading2(false);
-
-      // Show success message
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      setLoading(false);
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
-      setLoading2(false);
-
-      // Show error message
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      setLoading(false);
+      showNotification('Error', 'Failed');
     }
   };
 
   const makeDeleteCall = async () => {
-    setLoading3(true);
+    setLoading(true);
     const url = 'https://httpbin.org/delete';
     try {
       const response = await fetch(url, {
@@ -101,27 +71,17 @@ export const HttpScreen: React.FC = () => {
       const responseBody = await response.json();
       console.log('Response:', responseBody);
 
-      setLoading3(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      setLoading(false);
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
-      setLoading3(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      setLoading(false);
+      showNotification('Error', 'Failed');
     }
   };
 
   const makePutCall = async () => {
-    setLoading4(true);
+    setLoading(true);
     const url = 'https://httpbin.org/put';
     const requestBody = {
       name: 'Islam',
@@ -138,27 +98,17 @@ export const HttpScreen: React.FC = () => {
       const responseBody = await response.json();
       console.log('Response:', responseBody);
 
-      setLoading4(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      setLoading(false);
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
-      setLoading4(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      setLoading(false);
+      showNotification('Error', 'Failed');
     }
   };
 
   const makePatchCall = async () => {
-    setLoading5(true);
+    setLoading(true);
     const url = 'https://httpbin.org/patch';
 
     const jsonInputString = JSON.stringify({ name: 'Islam' });
@@ -174,27 +124,17 @@ export const HttpScreen: React.FC = () => {
 
       const responseBody = await response.json();
       console.log('Response:', responseBody);
-      setLoading5(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      setLoading(false);
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
-      setLoading5(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      setLoading(false);
+      showNotification('Error', 'Failed');
     }
   };
 
   const makeDownloadImageCall = async () => {
-    setLoading6(true);
+    setLoading(true);
     const url = 'https://httpbin.org/image/jpeg';
     try {
       const response = await fetch(url, {
@@ -207,44 +147,24 @@ export const HttpScreen: React.FC = () => {
       const responseBody = await response.blob();
       console.log('Response:', responseBody);
 
-      setLoading6(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Succeeded', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Success', 'Succeeded');
-      }
+      setLoading(false);
+      showNotification('Success', 'Succeeded');
     } catch (error) {
       console.error('Error:', error);
-      setLoading6(false);
-
-      if (Platform.OS === 'android') {
-        ToastAndroid.show('Failed', ToastAndroid.SHORT);
-      } else {
-        Alert.alert('Error', 'Failed');
-      }
+      setLoading(false);
+      showNotification('Error', 'Failed');
     }
   };
 
   return (
     <Screen>
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <ListTile title="GET" onPress={makeGetCall} />
-      {loadingGet && <ActivityIndicator size="large" color="#0000ff" />}
-
       <ListTile title="POST" onPress={makePostCall} />
-      {loadingPost && <ActivityIndicator size="large" color="#0000ff" />}
-
       <ListTile title="DELETE" onPress={makeDeleteCall} />
-      {loadingDelete && <ActivityIndicator size="large" color="#0000ff" />}
-
       <ListTile title="PUT" onPress={makePutCall} />
-      {loadingPut && <ActivityIndicator size="large" color="#0000ff" />}
-
       <ListTile title="PATCH" onPress={makePatchCall} />
-      {loadingPatch && <ActivityIndicator size="large" color="#0000ff" />}
-
       <ListTile title="Download Image" onPress={makeDownloadImageCall} />
-      {loadingDownloadImage && <ActivityIndicator size="large" color="#0000ff" />}
     </Screen>
   );
 };
