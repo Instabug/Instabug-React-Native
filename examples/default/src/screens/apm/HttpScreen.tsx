@@ -139,9 +139,6 @@ export const HttpScreen: React.FC = () => {
     try {
       const response = await fetch(url, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'image/jpeg',
-        },
       });
 
       const responseBody = await response.blob();
