@@ -56,9 +56,6 @@
     "react": ">=16.8.6",
     "react-native": ">=0.60.0"
   },
-  "workspaces": [
-    "example"
-  ],
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",

@@ -1,0 +1,19 @@
+{
+  "name": "instabug-react-native-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "git@github.com:Instabug/Instabug-React-Native.git",
+  "license": "MIT",
+  "scripts": {
+    "example": "yarn --cwd examples/default",
+    "core": "yarn --cwd core",
+    "ndk": "yarn --cwd ndk",
+    "pods": "cd examples/default && pod-install --quiet",
+    "bootstrap": "yarn && yarn core && yarn ndk && yarn example && yarn pods"
+  },
+  "dependencies": {
+    "@instabug/danger-plugin-coverage": "Instabug/danger-plugin-coverage",
+    "danger": "^12.3.3",
+    "pod-install": "^0.1.38"
+  }
+}
