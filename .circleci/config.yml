@@ -125,7 +125,8 @@ commands:
         type: string
         default: ~/project
     steps:
-      - install_node_modules
+      - install_node_modules:
+          app-dir: core
       - prepare_custom_package:
           npm_package: '@instabug/instabug-reactnative-dream11'
           android_package: dream11
@@ -133,11 +134,11 @@ commands:
           working_directory: << parameters.working_directory >>
       - run:
           name: Give execute permission to Dream11 script
-          command: chmod +x ./scripts/dream-11-delete-unused-features.sh
+          command: chmod +x ./scripts/prepare-dream11-sdk.sh
           working_directory: << parameters.working_directory >>
       - run:
           name: Remove unused features
-          command: ./scripts/dream-11-delete-unused-features.sh
+          command: ./scripts/prepare-dream11-sdk.sh
           working_directory: << parameters.working_directory >>
       # Remove the NDK package to avoid dependency conflicts on Android.
       - run:
@@ -171,6 +172,7 @@ jobs:
   lint:
     executor:
       name: node/default
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules
@@ -191,6 +193,7 @@ jobs:
         default: false
     executor:
       name: node/default
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - steps: << parameters.prepare_steps >>
@@ -202,7 +205,7 @@ jobs:
           condition: << parameters.collect_coverage >>
           steps:
             - persist_to_workspace:
-                root: coverage
+                root: core/coverage
                 paths:
                   - lcov.info
 
@@ -231,13 +234,14 @@ jobs:
           condition: << parameters.collect_coverage >>
           steps:
             - persist_to_workspace:
-                root: ~/project/android/build/reports/jacoco/jacocoTestReport
+                root: ~/project/core/android/build/reports/jacoco/jacocoTestReport
                 paths:
                   - jacocoTestReport.xml
 
   validate_shell_files:
     machine:
       image: ubuntu-2004:current
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - run:
@@ -256,7 +260,11 @@ jobs:
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
-      - install_node_modules
+      - install_node_modules:
+          app-dir: core
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: ndk
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default

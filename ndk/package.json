@@ -1,6 +1,6 @@
 {
   "name": "instabug-reactnative-ndk",
-  "version": "0.1.0",
+  "version": "13.4.0",
   "description": "This package is an add on to Instabug-React-native It start capturing NDK crashes that sent to the dashboard.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -54,7 +54,8 @@
   },
   "peerDependencies": {
     "react": ">=16.8.6",
-    "react-native": ">=0.60.0"
+    "react-native": ">=0.60.0",
+    "instabug-reactnative": "13.4.0"
   },
   "react-native-builder-bob": {
     "source": "src",
