@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Alert,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Switch,
-  ToastAndroid,
-} from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Text, View, Switch } from 'react-native';
 
 import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
@@ -21,6 +12,7 @@ import { VerticalListTile } from '../components/VerticalListTile';
 import { Button, VStack } from 'native-base';
 import { InputField } from '../components/InputField';
 import { Select } from '../components/Select';
+import { showNotification } from '../utils/showNotification';
 
 const styles = StyleSheet.create({
   inputWrapper: {
@@ -82,16 +74,8 @@ export const CrashReportingScreen: React.FC = () => {
 
   const toggleSwitch = (value: boolean) => {
     setIsEnabled(value);
-
-    // Update APM state here
     CrashReporting.setEnabled(value);
-    // Show Toast message
-
-    if (Platform.OS === 'android') {
-      ToastAndroid.show('Crash Reporting set to ' + value, ToastAndroid.SHORT);
-    } else {
-      Alert.alert('Crash Reporting set to ' + value);
-    }
+    showNotification('Crash Reporting status', 'Crash Reporting enabled set to ' + value);
   };
 
   function sendCrash() {
