@@ -22,6 +22,7 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) reproStates;
 + (ArgsDictionary *) locales;
 + (ArgsDictionary *)nonFatalExceptionLevel;
++ (ArgsDictionary *) launchType;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
 

@@ -18,7 +18,9 @@
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[];
+    return @[
+        @"IBGSessionReplayOnSyncCallback",
+    ];
 }
 
 RCT_EXPORT_MODULE(IBGSessionReplay)
@@ -44,6 +46,55 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
     NSString *link = IBGSessionReplay.sessionReplayLink;
     resolve(link);
 }
+
+- (NSArray<NSDictionary *> *)getNetworkLogsArray:
+     (NSArray<IBGSessionMetadataNetworkLogs *>*) networkLogs {
+     NSMutableArray<NSDictionary *> *networkLogsArray = [NSMutableArray array];
+    
+    for (IBGSessionMetadataNetworkLogs* log in networkLogs) {
+          NSDictionary *nLog = @{@"url": log.url, @"statusCode": @(log.statusCode), @"duration": @(log.duration)};
+          [networkLogsArray addObject:nLog];
+    }   
+    return networkLogsArray;
+}
+
+- (NSDictionary *)getMetadataObjectMap:(IBGSessionMetadata *)metadataObject {
+    return @{
+        @"appVersion": metadataObject.appVersion,
+        @"OS": metadataObject.os,
+        @"device": metadataObject.device,
+        @"sessionDurationInSeconds": @(metadataObject.sessionDuration),
+        @"hasLinkToAppReview": @(metadataObject.hasLinkToAppReview),
+        @"launchType": @(metadataObject.launchType),
+        @"launchDuration": @(metadataObject.launchDuration),
+        @"bugsCount": @(metadataObject.bugsCount),
+        @"fatalCrashCount": @(metadataObject.fatalCrashCount),
+        @"oomCrashCount": @(metadataObject.oomCrashCount),
+        @"networkLogs":[self getNetworkLogsArray:metadataObject.networkLogs]
+    };
+}
+
+RCT_EXPORT_METHOD(setSyncCallback) {
+    [IBGSessionReplay setSyncCallbackWithHandler:^(IBGSessionMetadata * _Nonnull metadataObject, SessionEvaluationCompletion  _Nonnull completion) {
+        
+        [self sendEventWithName:@"IBGSessionReplayOnSyncCallback"
+                           body:[self getMetadataObjectMap:metadataObject]];
+        
+        self.sessionEvaluationCompletion = completion;
+    }];
+}
+
+RCT_EXPORT_METHOD(evaluateSync:(BOOL)result) {
+    
+    if (self.sessionEvaluationCompletion) {
+        
+        self.sessionEvaluationCompletion(result);
+        
+        self.sessionEvaluationCompletion = nil;
+        
+    }
+}
+
 
 @synthesize description;
 

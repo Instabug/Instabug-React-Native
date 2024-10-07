@@ -1,40 +1,44 @@
 package com.instabug.reactlibrary;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.os.Handler;
 import android.os.Looper;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.JavaOnlyArray;
+import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableArray;
-import com.instabug.chat.Replies;
-import com.instabug.featuresrequest.ActionType;
-import com.instabug.featuresrequest.FeatureRequests;
-import com.instabug.library.Feature;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
 import com.instabug.library.OnSessionReplayLinkReady;
+import com.instabug.library.SessionSyncListener;
 import com.instabug.library.sessionreplay.SessionReplay;
+import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class RNInstabugSessionReplayModuleTest {
@@ -44,8 +48,8 @@ public class RNInstabugSessionReplayModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic <SessionReplay> mockSessionReplay;
+    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic<SessionReplay> mockSessionReplay;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -107,7 +111,7 @@ public class RNInstabugSessionReplayModuleTest {
     @Test
     public void testGetSessionReplayLink() {
         Promise promise = mock(Promise.class);
-        String link="instabug link";
+        String link = "instabug link";
 
         mockSessionReplay.when(() -> SessionReplay.getSessionReplayLink(any())).thenAnswer(
                 invocation -> {
@@ -136,5 +140,40 @@ public class RNInstabugSessionReplayModuleTest {
         mockSessionReplay.verifyNoMoreInteractions();
     }
 
+    @Test
+    public void testSetSyncCallback() throws Exception  {
+            MockedStatic<Arguments> mockArguments = mockStatic(Arguments.class);
+            MockedConstruction<CountDownLatch> mockCountDownLatch = mockConstruction(CountDownLatch.class);
+            RNInstabugSessionReplayModule SRModule = spy(new RNInstabugSessionReplayModule(mock(ReactApplicationContext.class)));
+
+            final boolean shouldSync = true;
+            final AtomicBoolean actual = new AtomicBoolean();
+
+            mockArguments.when(Arguments::createMap).thenReturn(new JavaOnlyMap());
+
+            mockSessionReplay.when(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)))
+                    .thenAnswer((invocation) -> {
+                        SessionSyncListener listener = (SessionSyncListener) invocation.getArguments()[0];
+                        SessionMetadata metadata = mock(SessionMetadata.class);
+                        actual.set(listener.onSessionReadyToSync(metadata));
+                        return null;
+                    });
+
+            doAnswer((invocation) -> {
+                SRModule.evaluateSync(shouldSync);
+                return null;
+            }).when(SRModule).sendEvent(eq(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION), any());
+
+            WritableMap params = Arguments.createMap();
+
+            SRModule.setSyncCallback();
+
+            assertEquals(shouldSync, actual.get());
+            verify(SRModule).sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, params);
+            mockSessionReplay.verify(() -> SessionReplay.setSyncCallback(any(SessionSyncListener.class)));
+
+            mockArguments.close();
+            mockCountDownLatch.close();
+    }
 
 }

@@ -8,6 +8,8 @@ const mockSessionReplay: SessionReplayNativeModule = {
   setInstabugLogsEnabled: jest.fn(),
   setUserStepsEnabled: jest.fn(),
   getSessionReplayLink: jest.fn().mockReturnValue('link'),
+  setSyncCallback: jest.fn(),
+  evaluateSync: jest.fn(),
 };
 
 export default mockSessionReplay;
