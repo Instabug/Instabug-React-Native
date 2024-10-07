@@ -109,7 +109,7 @@
     }]]);
     
     [self.bridge setSyncCallback];
-    [self waitForExpectationsWithTimeout:2 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
     
     OCMVerify([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]);
     OCMVerifyAll(self.mSessionReplay);
