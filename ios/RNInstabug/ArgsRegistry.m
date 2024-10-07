@@ -244,7 +244,6 @@
 
 + (ArgsDictionary *) launchType {
     return @{
-        @"hot": @(LaunchTypeHot),
         @"cold": @(LaunchTypeCold),
         @"unknown":@(LaunchTypeUnknown)
     };

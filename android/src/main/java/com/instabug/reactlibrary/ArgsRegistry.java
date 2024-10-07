@@ -243,7 +243,6 @@ final class ArgsRegistry {
 
     public static ArgsMap<String> launchType = new ArgsMap<String>() {{
         put("cold", SessionMetadata.LaunchType.COLD);
-        put("hot",SessionMetadata.LaunchType.HOT );
         put("warm",SessionMetadata.LaunchType.WARM );
     }};
     
@@ -251,7 +250,6 @@ final class ArgsRegistry {
 // This is used for mapping native `LaunchType` values into React Native enum values.
     public static HashMap<String,String> launchTypeReversed = new HashMap<String,String>() {{
         put(SessionMetadata.LaunchType.COLD,"cold");
-        put(SessionMetadata.LaunchType.HOT,"hot" );
         put(SessionMetadata.LaunchType.WARM,"warm" );
     }};
 

@@ -234,7 +234,6 @@ export enum StringKey {
 }
 
 export enum LaunchType {
-  hot = constants.hot,
   cold = constants.cold,
   /**
    *  iOS only
