@@ -1,18 +1,26 @@
 import { NativeModules } from './NativePackage';
 import { NativeEventEmitter, type NativeModule } from 'react-native';
 
+export enum NetworkListenerType {
+  filtering = 'filtering',
+  obfuscation = 'obfuscation',
+  both = 'both',
+}
+
 export interface NetworkLoggerNativeModule extends NativeModule {
   isNativeInterceptionEnabled(): Promise<boolean>;
-  // Android only
-  isAPMNetworkEnabled(): Promise<boolean>;
-  // Android only
-  hasAPMNetworkPlugin(): Promise<boolean>;
 
-  registerNetworkLogsListener(): void;
+  isAPMNetworkEnabled(): Promise<boolean>; // Android only
+
+  hasAPMNetworkPlugin(): Promise<boolean>; // Android only
+
+  registerNetworkLogsListener(type: NetworkListenerType): void;
+
+  // registerNetworkLogsListener(): void;
 
   updateNetworkLogSnapshot(networkData: string): void;
-  // iOS only
-  setNetworkLoggingRequestFilterPredicateIOS(value: boolean): void;
+
+  setNetworkLoggingRequestFilterPredicateIOS(id: string, value: boolean): void; // iOS only
 }
 
 export const NativeNetworkLogger = NativeModules.IBGNetworkLogger;

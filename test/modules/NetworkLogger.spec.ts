@@ -14,6 +14,7 @@ const clone = <T>(obj: T): T => {
 
 describe('NetworkLogger Module', () => {
   const network: NetworkLogger.NetworkData = {
+    id: '',
     url: 'https://api.instabug.com',
     requestBody: '',
     requestHeaders: { 'content-type': 'application/json' },

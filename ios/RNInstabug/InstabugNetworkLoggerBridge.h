@@ -4,6 +4,13 @@
 
 typedef void (^ IBGURLRequestAsyncObfuscationCompletedHandler)(NSURLRequest * _Nonnull request);
 typedef void (^IBGURLRequestResponseAsyncFilteringCompletedHandler)(BOOL keep);
+
+typedef NS_ENUM(NSInteger, NetworkListenerType) {
+    NetworkListenerTypeFiltering,
+    NetworkListenerTypeObfuscation,
+    NetworkListenerTypeBoth
+};
+
 @interface InstabugNtworkLoggerBridge : RCTEventEmitter <RCTBridgeModule>
 
 @property NSMutableDictionary<NSString *, IBGURLRequestAsyncObfuscationCompletedHandler> * _Nonnull requestObfuscationCompletionDictionary;
@@ -17,11 +24,13 @@ typedef void (^IBGURLRequestResponseAsyncFilteringCompletedHandler)(BOOL keep);
  +------------------------------------------------------------------------+
  */
 
-- (void)isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)isNativeInterceptionEnabled:(RCTPromiseResolveBlock _Nullable )resolve :(RCTPromiseRejectBlock _Nullable )reject;
 
-- (void) registerNetworkLogsListener;
+- (void) registerNetworkLogsListener:(NetworkListenerType)listenerType;
+
+//- (void) registerNetworkLogsListener;
 
 - (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
 
-- (void) setNetworkLoggingRequestFilterPredicateIOS:(BOOL)value;
+- (void) setNetworkLoggingRequestFilterPredicateIOS:(NSString * _Nonnull) callbackID : (BOOL)value;
 @end

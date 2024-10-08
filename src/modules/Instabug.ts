@@ -192,6 +192,7 @@ const handleNetworkInterceptionMode = (config: InstabugConfig) => {
   } else if (Platform.OS === 'ios') {
     checkNativeInterceptionForIOS(config);
   }
+  NetworkLogger.setNativeInterceptionEnabled(shouldEnableNativeInterception);
 
   if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
     NetworkLogger.setEnabled(true);

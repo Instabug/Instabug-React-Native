@@ -8,6 +8,7 @@ import Instabug, {
   InvocationEvent,
   LogLevel,
   NetworkInterceptionMode,
+  NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -31,6 +32,13 @@ export const App: React.FC = () => {
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
       networkInterceptionMode: NetworkInterceptionMode.native,
+    }).then((_) => {
+      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+        networkData.url = networkData.url + '/iOS/obfuscated';
+        return networkData;
+      });
+
+      NetworkLogger.setRequestFilterExpression('false');
     });
     CrashReporting.setNDKCrashesEnabled(true);
 
