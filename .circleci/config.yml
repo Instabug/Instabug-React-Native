@@ -448,10 +448,10 @@ jobs:
 
       ##### TODO: DELETE ME, WE STILL NEED TO PUBLISH ON THE CORRECT PACKAGE!!!
       - find_and_replace:
-        files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
-        search: instabug-reactnative
-        replace: '@instabug/react-native-private'
-        working_directory: project
+          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
+          search: instabug-reactnative
+          replace: '@instabug/react-native-private'
+          working_directory: project
 
 
       - run:
