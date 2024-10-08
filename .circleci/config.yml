@@ -104,17 +104,17 @@ commands:
           command: rm README.md
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: package.json android/sourcemaps.gradle ios/sourcemaps.sh
+          files: package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
           search: instabug-reactnative
           replace: << parameters.npm_package >>
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: cli/upload/uploadSourcemaps.ts cli/upload/uploadSoFiles.ts
+          files: core/cli/upload/uploadSourcemaps.ts core/cli/upload/uploadSoFiles.ts
           search: api.instabug.com
           replace: << parameters.api_endpoint >>
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: android/native.gradle
+          files: core/android/native.gradle
           search: 'com.instabug.library:instabug:'
           replace: 'com.instabug.library-<< parameters.android_package >>:instabug:'
           working_directory: << parameters.working_directory >>
@@ -126,7 +126,8 @@ commands:
         default: ~/project
     steps:
       - install_node_modules:
-          app-dir: core
+          # Using an absolute path to avoid issues with the working directory of the parent job.
+          app-dir: ~/project/core
       - prepare_custom_package:
           npm_package: '@instabug/instabug-reactnative-dream11'
           android_package: dream11
