@@ -77,7 +77,7 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param isEnabled
  */
 export const setNativeInterceptionEnabled = (isEnabled: boolean) => {
-  console.log(`NetworkLogger -> setNativeInterceptionEnabled ${isEnabled}`);
+  console.log(`Andrew: NetworkLogger -> setNativeInterceptionEnabled ${isEnabled}`);
   _isNativeInterceptionEnabled = isEnabled;
 };
 
@@ -89,16 +89,8 @@ export const setNetworkDataObfuscationHandler = (
   handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
   _networkDataObfuscationHandler = handler;
-
-  console.log(
-    `Andrew: Obfuscation -> _isNativeInterceptionEnabled ${_isNativeInterceptionEnabled}`,
-  );
   if (_isNativeInterceptionEnabled) {
     _registerNetworkLogsListener(NetworkListenerType.obfuscation, async (networkSnapshot) => {
-      console.log(
-        `Andrew: new snapshot from setNetworkDataObfuscationHandler: ${networkSnapshot.url}`,
-      );
-
       if (_networkDataObfuscationHandler) {
         networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
       }
@@ -113,11 +105,9 @@ export const setNetworkDataObfuscationHandler = (
  */
 export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
-  console.log(`Andrew: Filtering -> _isNativeInterceptionEnabled ${_isNativeInterceptionEnabled}`);
 
   if (_isNativeInterceptionEnabled) {
     _registerNetworkLogsListener(NetworkListenerType.filtering, async (networkSnapshot) => {
-      console.log(`Andrew: new snapshot from setRequestFilterExpression: ${networkSnapshot.url}`);
       // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       const value = predicate(networkSnapshot);
@@ -176,23 +166,16 @@ const _registerNetworkLogsListener = (
   } else {
     _networkListener = NetworkListenerType.both;
   }
-  console.log('Andrew: new NetworkLogsListener attached');
+  console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
   NetworkLoggerEmitter.addListener(
     NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
     (networkSnapshot) => {
-      const {
-        callbackID,
-        url,
-        requestHeader,
-        requestBody,
-        responseHeader,
-        response,
-        responseCode,
-      } = networkSnapshot;
+      const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
+        networkSnapshot;
 
       console.log(`Andrew: new snapshot ${url}`);
       const networkSnapshotObj: NetworkData = {
-        id: callbackID,
+        id: id,
         url: url,
         requestBody: requestBody,
         requestHeaders: requestHeader,
@@ -210,7 +193,6 @@ const _registerNetworkLogsListener = (
         serverErrorMessage: '',
         requestContentType: '',
       };
-      console.log(`Andrew registerNetworkLogsListener object ${networkSnapshotObj.url}`);
       if (handler) {
         handler(networkSnapshotObj);
       }

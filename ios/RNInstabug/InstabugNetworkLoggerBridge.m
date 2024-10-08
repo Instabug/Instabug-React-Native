@@ -189,7 +189,7 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
     }
 
     // Ensure self.completion is not nil before calling it
-    NSString *callbackID = dict[@"callbackID"];
+    NSString *callbackID = dict[@"id"];
     if ([callbackID isKindOfClass:[NSString class]] && self.requestObfuscationCompletionDictionary[callbackID] != nil) {
         ((IBGURLRequestAsyncObfuscationCompletedHandler)self.requestObfuscationCompletionDictionary[callbackID])(request);
     } else {
@@ -229,9 +229,10 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
 
 //    NSPredicate *requestPredicate = [NSPredicate predicateWithValue:(value) ? YES : NO];
     
-    if ([callbackID isKindOfClass:[NSString class]] && self.responseFilteringCompletionDictionary[callbackID] != nil) {
-        // ⬇️ YES == Response will be saved, NO == will be ignored
-        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.responseFilteringCompletionDictionary[callbackID])(YES);
+    
+    if ([callbackID isKindOfClass:[NSString class]] && self.requestFilteringCompletionDictionary[callbackID] != nil) {
+        // ⬇️ YES == Request will be saved, NO == will be ignored
+        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.requestFilteringCompletionDictionary[callbackID])(YES);
     } else {
         NSLog(@"Not Available Completion");
     }
@@ -250,7 +251,10 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
         self.requestFilteringCompletionDictionary[callbackID] = completion;
         
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        if(hasListeners){
+            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        }
+
     }];
 }
 
@@ -262,12 +266,16 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
         
         
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        if (hasListeners) {
+            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        }
+        
     }];
 }
 
 // Set up the obfuscation handler
 - (void)setupRequestFilteringAndObfuscationHandler {
+    
     NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
     
     [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
@@ -278,7 +286,10 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
         
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        if(hasListeners){
+            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
+        }
+        
     }];
 }
 
@@ -289,7 +300,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     NSDictionary *headerDict = request.allHTTPHeaderFields ?: @{};
     
     return @{
-        @"callbackID": callbackID,
+        @"id": callbackID,
         @"url": urlString,
         @"requestBody": bodyString,
         @"requestHeader": headerDict

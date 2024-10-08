@@ -16,8 +16,6 @@ export interface NetworkLoggerNativeModule extends NativeModule {
 
   registerNetworkLogsListener(type: NetworkListenerType): void;
 
-  // registerNetworkLogsListener(): void;
-
   updateNetworkLogSnapshot(networkData: string): void;
 
   setNetworkLoggingRequestFilterPredicateIOS(id: string, value: boolean): void; // iOS only

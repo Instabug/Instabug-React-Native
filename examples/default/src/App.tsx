@@ -37,8 +37,7 @@ export const App: React.FC = () => {
         networkData.url = networkData.url + '/iOS/obfuscated';
         return networkData;
       });
-
-      NetworkLogger.setRequestFilterExpression('false');
+      // NetworkLogger.setRequestFilterExpression('false');
     });
     CrashReporting.setNDKCrashesEnabled(true);
 
