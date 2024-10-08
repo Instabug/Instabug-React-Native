@@ -1,0 +1,132 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.0
+  advanced-checkout: vsco/advanced-checkout@1.1.0
+  node: circleci/node@5.1.0
+
+references:
+  release_dependencies: &release_dependencies
+    - lint
+
+commands:
+  install_node_modules:
+    parameters:
+      app-dir:
+        type: string
+        default: .
+    steps:
+      - node/install:
+          install-yarn: true
+          node-version: "v18.17.0"
+      - node/install-packages:
+          pkg-manager: yarn
+          # Network concurrency is set to 1 for installation from GitHub to work.
+          override-ci-command: yarn install --frozen-lockfile --network-concurrency 1
+          app-dir: << parameters.app-dir >>
+  install_pods:
+    parameters:
+      working_directory:
+        type: string
+    steps:
+      - restore_cache:
+          name: Restore Pods Cache
+          keys:
+            - v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
+      - run:
+          name: Install Pods
+          working_directory: << parameters.working_directory >>
+          command: pod install --deployment
+      - save_cache:
+          name: Save Pods Cache
+          key: v1-pods-{{ checksum "<< parameters.working_directory >>/Podfile.lock" }}
+          paths:
+            - << parameters.working_directory >>/Pods
+
+jobs:
+  lint:
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules
+      - run:
+          name: Check Format
+          command: yarn format
+      - run:
+          name: Check Lint
+          command: yarn lint:ci
+
+  publish:
+    macos:
+      xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
+    working_directory: "~"
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules:
+          app-dir: project
+      - run:
+          working_directory: project
+          command: yarn build
+      - run:
+          working_directory: project
+          command: Escape react-native publish
+
+  generate_snapshot:
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules
+      - run: yarn build
+      - run: yarn remove @instabug/danger-plugin-coverage
+      - run:
+          name: Remove build files from .gitignore
+          command: sed -i '/dist/d' .gitignore && sed -i '/bin/d' .gitignore
+      - run:
+          name: Get snapshot branch name
+          command: |
+            source scripts/snapshot-branch.sh
+            echo "export SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$BASH_ENV"
+      - run:
+          name: Setup Git
+          command: |
+            git config --global user.name "Instabug-CP-CI"
+            git config --global user.email github-ci+cp@instabug.com
+      - run:
+          name: Create snapshot branch
+          command: git checkout -b $SNAPSHOT_BRANCH
+      - run:
+          name: Commit changes
+          command: |
+            git add .
+            git commit -m "chore: add generate files"
+      - run:
+          name: Push snapshot
+          command: git push --force origin $SNAPSHOT_BRANCH
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+      - run:
+          name: Replace snapshot branch in comment template
+          command: sed -i "s|{BRANCH}|$SNAPSHOT_BRANCH|g" scripts/snapshot-comment.md
+      - notify_github:
+          data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+
+workflows:
+  publish:
+    jobs:
+      - lint
+      - hold_publish:
+          requires: *release_dependencies
+          type: approval
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - hold_publish
+          filters:
+            branches:
+              only: master
