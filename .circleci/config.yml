@@ -205,7 +205,7 @@ jobs:
           condition: << parameters.collect_coverage >>
           steps:
             - persist_to_workspace:
-                root: core/coverage
+                root: coverage
                 paths:
                   - lcov.info
 

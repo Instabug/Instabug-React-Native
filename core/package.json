@@ -24,11 +24,11 @@
     "feedback"
   ],
   "scripts": {
-    "lint": "eslint . --ignore-path .gitignore",
+    "lint": "eslint . --ignore-path ../.gitignore",
     "lint:fix": "yarn lint --fix",
     "lint:ci": "yarn lint --max-warnings=0",
-    "format": "prettier --check . --ignore-path .gitignore",
-    "format:fix": "prettier --write . --ignore-path .gitignore",
+    "format": "prettier --check . --ignore-path ../.gitignore",
+    "format:fix": "prettier --write . --ignore-path ../.gitignore",
     "test": "jest",
     "build": "yarn build:lib && yarn build:cli",
     "build:lib": "tsc",

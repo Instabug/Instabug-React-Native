@@ -39,7 +39,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.3)
   - hermes-engine/Pre-built (0.72.3)
   - Instabug (13.4.2)
-  - instabug-reactnative-ndk (0.1.0):
+  - instabug-reactnative-ndk (13.4.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - libevent (2.1.12)
@@ -705,7 +705,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
   Instabug: 7a71890217b97b1e32dbca96661845396b66da2f
-  instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
+  instabug-reactnative-ndk: bfe606c701cd9778261e7b935752f4ba9ee52bf7
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
@@ -758,4 +758,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 281036e04bd4b9e7c2cc03a503b3245d3f1dd0dd
 
-COCOAPODS: 1.14.0
+COCOAPODS: 1.12.0
