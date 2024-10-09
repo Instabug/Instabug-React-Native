@@ -112,9 +112,10 @@ export const setRequestFilterExpression = (expression: string) => {
       const predicate = Function('network', 'return ' + _requestFilterExpression);
       const value = predicate(networkSnapshot);
       if (Platform.OS === 'ios') {
-        NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, value);
+        // For iOS True == Request will be saved, False == will be ignored
+        NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
       } else {
-        // set android request url to null ;
+        // For Android Setting the passed data to empty string will ignore the request;
         if (value) {
           NativeNetworkLogger.updateNetworkLogSnapshot('');
         }

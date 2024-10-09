@@ -227,18 +227,12 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
 
 RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull) callbackID : (BOOL)value ){
 
-//    NSPredicate *requestPredicate = [NSPredicate predicateWithValue:(value) ? YES : NO];
-    
-    
     if ([callbackID isKindOfClass:[NSString class]] && self.requestFilteringCompletionDictionary[callbackID] != nil) {
         // ⬇️ YES == Request will be saved, NO == will be ignored
-        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.requestFilteringCompletionDictionary[callbackID])(YES);
+        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.requestFilteringCompletionDictionary[callbackID])(value);
     } else {
         NSLog(@"Not Available Completion");
     }
-    
-
-//    [IBGNetworkLogger setNetworkLoggingRequetFilterPredicate:requestPredicate responseFilterPredicate:nil];
 }
 
 
