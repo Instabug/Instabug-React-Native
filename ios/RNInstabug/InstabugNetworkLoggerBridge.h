@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, NetworkListenerType) {
     NetworkListenerTypeBoth
 };
 
-@interface InstabugNtworkLoggerBridge : RCTEventEmitter <RCTBridgeModule>
+@interface InstabugNetworkLoggerBridge : RCTEventEmitter <RCTBridgeModule>
 
 @property NSMutableDictionary<NSString *, IBGURLRequestAsyncObfuscationCompletedHandler> * _Nonnull requestObfuscationCompletionDictionary;
 @property NSMutableDictionary<NSString *, NetworkObfuscationCompletionBlock> * _Nonnull responseObfuscationCompletionDictionary;

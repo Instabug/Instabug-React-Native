@@ -33,11 +33,11 @@ export const App: React.FC = () => {
       debugLogsLevel: LogLevel.verbose,
       networkInterceptionMode: NetworkInterceptionMode.native,
     }).then((_) => {
-      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-        networkData.url = networkData.url + '/iOS/obfuscated';
-        return networkData;
-      });
-      // NetworkLogger.setRequestFilterExpression('false');
+      // NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+      //   networkData.url = networkData.url + '/iOS/obfuscated';
+      //   return networkData;
+      // });
+      NetworkLogger.setRequestFilterExpression('true');
     });
     CrashReporting.setNDKCrashesEnabled(true);
 

@@ -22,7 +22,7 @@ RCT_ENUM_CONVERTER(NetworkListenerType, (@{
 
 @end
 
-@implementation InstabugNtworkLoggerBridge
+@implementation InstabugNetworkLoggerBridge
 
 
 - (instancetype)init {
