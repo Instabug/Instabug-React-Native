@@ -2,7 +2,7 @@ import collectCoverage, { ReportType } from '@instabug/danger-plugin-coverage';
 import { danger, fail, schedule, warn } from 'danger';
 
 const hasSourceChanges = danger.git.modified_files.some((file) =>
-  file.startsWith('src/')
+  file.startsWith('core/src/')
 );
 const declaredTrivial =
   !hasSourceChanges ||

@@ -13,7 +13,10 @@
   },
   "dependencies": {
     "@instabug/danger-plugin-coverage": "Instabug/danger-plugin-coverage",
-    "danger": "^12.3.3",
+    "danger": "^11.2.5",
     "pod-install": "^0.1.38"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
   }
 }
