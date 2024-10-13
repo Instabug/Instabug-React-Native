@@ -1,6 +1,10 @@
 package com.instabug.reactlibrary;
 
 
+import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
+import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
+import static com.instabug.apm.configuration.cp.APMFeature.NETWORK_INTERCEPTION_ENABLED;
+
 import androidx.annotation.NonNull;
 
 //import com.facebook.react.bridge.Arguments;
@@ -12,6 +16,7 @@ import com.facebook.react.bridge.ReactMethod;
 //import com.instabug.apm.sanitization.OnCompleteCallback;
 //import com.instabug.apm.sanitization.VoidSanitizer;
 //import com.instabug.library.logging.listeners.networklogs.NetworkLogSnapshot;
+import com.instabug.apm.InternalAPM;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 //
@@ -46,6 +51,10 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
         super.removeListeners(count);
     }
 
+    private boolean getFlagValue(String key) {
+        return InternalAPM._isFeatureEnabledCP( key , "");
+    }
+
     /**
      * Get first time Value of [cp_native_interception_enabled] flag
      */
@@ -55,7 +64,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(CP_NATIVE_INTERCEPTION_ENABLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -76,7 +85,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(APM_NETWORK_PLUGIN_INSTALLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -97,7 +106,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(NETWORK_INTERCEPTION_ENABLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -106,7 +115,6 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             }
         });
     }
-
 
 
 //    @ReactMethod
