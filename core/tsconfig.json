@@ -1,32 +1,4 @@
 {
+  "extends": "../tsconfig.json",
   "include": ["src/**/*"],
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "jsx": "react-native",
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "outDir": "dist",
-
-    // Interop
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    // Emit
-    "declaration": true,
-    "importsNotUsedAsValues": "error",
-
-    // Code Style
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noStrictGenericChecks": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "strict": true
-  }
 }
