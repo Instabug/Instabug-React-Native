@@ -546,18 +546,18 @@ workflows:
       - e2e_android
       - hold_generate_snapshot:
           type: approval
-          requires: *release_dependencies
+          # requires: *release_dependencies
       - generate_snapshot:
           requires:
             - hold_generate_snapshot
       - hold_publish:
-          requires: *release_dependencies
+          # requires: *release_dependencies
           type: approval
           # filters:
           #   branches:
           #     only: master
       - hold_publish_new_namespace:
-          requires: *release_dependencies
+          # requires: *release_dependencies
           type: approval
           # filters:
           #   branches:
@@ -576,7 +576,7 @@ workflows:
           #     only: master
 
       - hold_release_nn:
-          requires: *release_dependencies
+          # requires: *release_dependencies
           type: approval
           # filters:
           #   branches:
@@ -600,7 +600,7 @@ workflows:
                 working_directory: core
 
       - hold_release_injazat:
-          requires: *release_dependencies
+          # requires: *release_dependencies
           type: approval
           # filters:
           #   branches:
@@ -644,12 +644,12 @@ workflows:
 
       # Dream11 release
       - hold_release_dream11:
-          requires:
-            - test_module_dream11
-            - test_android_dream11
-            - test_ios_dream11
-            - e2e_android_dream11
-            - e2e_ios_dream11
+          # requires:
+            # - test_module_dream11
+            # - test_android_dream11
+            # - test_ios_dream11
+            # - e2e_android_dream11
+            # - e2e_ios_dream11
           type: approval
           # filters:
           #   branches:
