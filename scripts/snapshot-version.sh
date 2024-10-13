@@ -5,7 +5,7 @@
 
 pr=$(basename $CIRCLE_PULL_REQUEST)
 random=$(($RANDOM % 900 + 100))
-version=$(jq -r '.version' package.json)
+version=$(jq -r '.version' core/package.json)
 suffix="SNAPSHOT"
 
 SNAPSHOT_VERSION="$version-$pr$random-$suffix"
