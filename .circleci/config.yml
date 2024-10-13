@@ -129,8 +129,7 @@ commands:
           # Using an absolute path to avoid issues with the working directory of the parent job.
           app-dir: ~/project/core
       - prepare_custom_package:
-          # npm_package: '@instabug/instabug-reactnative-dream11'
-          npm_package: '@instabug/react-native-private'
+          npm_package: '@instabug/instabug-reactnative-dream11'
           android_package: dream11
           api_endpoint: st001012dream11.instabug.com
           working_directory: << parameters.working_directory >>
@@ -444,16 +443,6 @@ jobs:
       - run:
           working_directory: project/core
           command: yarn build
-
-
-      ##### TODO: DELETE ME, WE STILL NEED TO PUBLISH ON THE CORRECT PACKAGE!!!
-      - find_and_replace:
-          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
-          search: instabug-reactnative
-          replace: '@instabug/react-native-private'
-          working_directory: project
-
-
       - run:
           working_directory: project
           command: Escape react-native publish
@@ -505,13 +494,6 @@ jobs:
       - run:
           command: npm version $SNAPSHOT_VERSION --no-git-tag-version
           working_directory: core
-      
-      ##### TODO: DELETE ME, WE STILL NEED TO PUBLISH ON THE CORRECT PACKAGE!!!
-      - find_and_replace:
-          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
-          search: instabug-reactnative
-          replace: '@instabug/react-native-private'
-
       - run:
           command: npm publish --tag snapshot
           working_directory: core
@@ -546,82 +528,72 @@ workflows:
       - e2e_android
       - hold_generate_snapshot:
           type: approval
-          # requires: *release_dependencies
+          requires: *release_dependencies
       - generate_snapshot:
           requires:
             - hold_generate_snapshot
       - hold_publish:
-          # requires: *release_dependencies
+          requires: *release_dependencies
           type: approval
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - hold_publish_new_namespace:
-          # requires: *release_dependencies
+          requires: *release_dependencies
           type: approval
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - publish:
           requires:
             - hold_publish
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - publish_new_namespace:
           requires:
             - hold_publish_new_namespace
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
 
       - hold_release_nn:
-          # requires: *release_dependencies
+          requires: *release_dependencies
           type: approval
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_nn
           requires:
             - hold_release_nn
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
           prepare_steps:
             - prepare_custom_package:
-                # npm_package: '@instabug/react-native-nn'
-                npm_package: '@instabug/react-native-private'
+                npm_package: '@instabug/react-native-nn'
                 android_package: nn
                 api_endpoint: st001009nn.instabug.com
-            - run:
-                name: TEMP change version
-                command: npm version 13.13.14-nn --no-git-tag-version
-                working_directory: core
 
       - hold_release_injazat:
-          # requires: *release_dependencies
+          requires: *release_dependencies
           type: approval
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_injazat
           requires:
             - hold_release_injazat
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
           prepare_steps:
             - prepare_custom_package:
-                # npm_package: '@instabug/react-native-injazat'
-                npm_package: '@instabug/react-native-private'
+                npm_package: '@instabug/react-native-injazat'
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
-            - run:
-                name: TEMP change version
-                command: npm version 13.13.14-injazat --no-git-tag-version
-                working_directory: core
 
       # Dream11 tests
       - hold_test_dream11:
@@ -644,26 +616,22 @@ workflows:
 
       # Dream11 release
       - hold_release_dream11:
-          # requires:
-            # - test_module_dream11
-            # - test_android_dream11
-            # - test_ios_dream11
-            # - e2e_android_dream11
-            # - e2e_ios_dream11
+          requires:
+            - test_module_dream11
+            - test_android_dream11
+            - test_ios_dream11
+            - e2e_android_dream11
+            - e2e_ios_dream11
           type: approval
-          # filters:
-          #   branches:
-          #     only: dream11
+          filters:
+            branches:
+              only: dream11
       - release_custom_package:
           name: release_dream11
           requires:
             - hold_release_dream11
-          # filters:
-          #   branches:
-          #     only: dream11
+          filters:
+            branches:
+              only: dream11
           prepare_steps:
             - prepare_dream11
-            - run:
-                name: TEMP change version
-                command: npm version 13.13.14-dream11 --no-git-tag-version
-                working_directory: core
