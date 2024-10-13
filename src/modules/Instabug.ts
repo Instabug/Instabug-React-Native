@@ -43,10 +43,10 @@ let _lastScreen: string | null = null;
 let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
 let _currentAppState = AppState.currentState;
-let isNativeInterceptionFeatureEnabled = false;
-let hasAPMNetworkPlugin = false;
-let isAPMNetworkEnabled = false;
-let shouldEnableNativeInterception = false; // used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid()
+let isNativeInterceptionFeatureEnabled = false; // Checks the value of "cp_native_interception_enabled" backend flag.
+let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.
+let isAPMNetworkEnabled = false; // Android only: checks if (APM enabled && Network enabled).
+let shouldEnableNativeInterception = false; // Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), iOS: used to control native interception (true == enabled , false == disabled)
 
 /**
  * Enables or disables Instabug functionality.
@@ -188,7 +188,7 @@ const handleNetworkInterceptionMode = (config: InstabugConfig) => {
 
   if (Platform.OS === 'android') {
     checkNativeInterceptionForAndroid(config);
-    config.networkInterceptionMode = NetworkInterceptionMode.javascript; // Need to enable JS interceptor in all scenarios for core network logs
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript; // Need to enable JS interceptor in all scenarios for Bugs & Crashes network logs
   } else if (Platform.OS === 'ios') {
     checkNativeInterceptionForIOS(config);
   }
@@ -225,6 +225,7 @@ const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
       if (hasAPMNetworkPlugin) {
         console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
       } else {
+        shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
         console.error(
           InstabugConstants.IBG_APM_TAG +
             'Native interception is disabled and plugin is not installed',

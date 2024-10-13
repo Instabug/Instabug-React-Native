@@ -1,6 +1,10 @@
 package com.instabug.reactlibrary;
 
 
+import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
+import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
+import static com.instabug.apm.configuration.cp.APMFeature.NETWORK_INTERCEPTION_ENABLED;
+
 import androidx.annotation.NonNull;
 
 //import com.facebook.react.bridge.Arguments;
@@ -12,6 +16,7 @@ import com.facebook.react.bridge.ReactMethod;
 //import com.instabug.apm.sanitization.OnCompleteCallback;
 //import com.instabug.apm.sanitization.VoidSanitizer;
 //import com.instabug.library.logging.listeners.networklogs.NetworkLogSnapshot;
+import com.instabug.apm.InternalAPM;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 //
@@ -46,6 +51,10 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
         super.removeListeners(count);
     }
 
+    private boolean getFlagValue(String key) {
+        return InternalAPM._isFeatureEnabledCP( key , "");
+    }
+
     /**
      * Get first time Value of [cp_native_interception_enabled] flag
      */
@@ -55,7 +64,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(CP_NATIVE_INTERCEPTION_ENABLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -76,7 +85,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(APM_NETWORK_PLUGIN_INSTALLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -97,7 +106,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    promise.resolve(true);
+                    promise.resolve(getFlagValue(NETWORK_INTERCEPTION_ENABLED));
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -108,55 +117,54 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
     }
 
 
-
-   @ReactMethod
-   public void registerNetworkLogsListener() {
-       MainThreadHandler.runOnMainThread(new Runnable() {
-           @Override
-           public void run() {
-               InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
-                   @Override
-                   public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-                       final int id = onCompleteCallback.hashCode();
-                       callbackMap.put(id, onCompleteCallback);
-
-                       WritableMap networkSnapshotParams = Arguments.createMap();
-                       networkSnapshotParams.putInt("id", id);
-                       networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
-                       networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
-
-                       sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
-
-                   }
-               });
-           }
-       });
-   }
-
-   @ReactMethod
-   protected void updateNetworkLogSnapshot(String jsonString) {
-
-       JSONObject newJSONObject = null;
-       try {
-           newJSONObject = new JSONObject(jsonString);
-       } catch (JSONException e) {
-           throw new RuntimeException(e);
-       }
-       final Integer ID = newJSONObject.optInt("id");
-       final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
-               newJSONObject.optString("url"),
-               null,
-               null,
-               null,
-               null,
-               newJSONObject.optInt("responseCode")
-       );
-
-       final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
-       if (callback != null) {
-           callback.onComplete(null);
-       }
-       callbackMap.remove(ID);
-
-   }
+//    @ReactMethod
+//    public void registerNetworkLogsListener() {
+//        MainThreadHandler.runOnMainThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
+//                    @Override
+//                    public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
+//                        final int id = onCompleteCallback.hashCode();
+//                        callbackMap.put(id, onCompleteCallback);
+//
+//                        WritableMap networkSnapshotParams = Arguments.createMap();
+//                        networkSnapshotParams.putInt("id", id);
+//                        networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
+//                        networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
+//
+//                        sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
+//
+//                    }
+//                });
+//            }
+//        });
+//    }
+//
+//    @ReactMethod
+//    protected void updateNetworkLogSnapshot(String jsonString) {
+//
+//        JSONObject newJSONObject = null;
+//        try {
+//            newJSONObject = new JSONObject(jsonString);
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        final Integer ID = newJSONObject.optInt("id");
+//        final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
+//                newJSONObject.optString("url"),
+//                null,
+//                null,
+//                null,
+//                null,
+//                newJSONObject.optInt("responseCode")
+//        );
+//
+//        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
+//        if (callback != null) {
+//            callback.onComplete(null);
+//        }
+//        callbackMap.remove(ID);
+//
+//    }
 }
