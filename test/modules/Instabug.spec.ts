@@ -1,16 +1,15 @@
 import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
-import { Platform, findNodeHandle, processColor } from 'react-native';
+import { findNodeHandle, Platform, processColor } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
-
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -23,6 +22,7 @@ import {
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
+import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe('Instabug Module', () => {
   });
 
   it("componentDidAppearListener shouldn't call the native method reportScreenChange if first screen", async () => {
-    Instabug.init({
+    await Instabug.init({
       token: 'some-token',
       invocationEvents: [InvocationEvent.none],
     });
@@ -273,7 +273,7 @@ describe('Instabug Module', () => {
     expect(onStateChangeMock).toHaveBeenCalledWith(mockNavigationContainerRef.getRootState());
   });
 
-  it('should call the native method init', () => {
+  it('should call the native method init', async () => {
     const instabugConfig = {
       token: 'some-token',
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
@@ -282,7 +282,7 @@ describe('Instabug Module', () => {
     };
     const usesNativeNetworkInterception = false;
 
-    Instabug.init(instabugConfig);
+    await Instabug.init(instabugConfig);
 
     expect(NetworkLogger.setEnabled).toBeCalledWith(true);
     expect(NativeInstabug.init).toBeCalledTimes(1);
@@ -304,7 +304,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
   });
 
-  it('init should disable JavaScript interceptor when using native interception mode', () => {
+  it('init should disable JavaScript interceptor when using native interception mode', async () => {
     const instabugConfig = {
       token: 'some-token',
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
@@ -313,18 +313,38 @@ describe('Instabug Module', () => {
       codePushVersion: '1.1.0',
     };
 
-    Instabug.init(instabugConfig);
+    // Stubbing Network feature flags
+    jest
+      .spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled')
+      .mockReturnValue(Promise.resolve(true));
+    jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(true));
 
-    expect(NetworkLogger.setEnabled).not.toBeCalled();
-    expect(NativeInstabug.init).toBeCalledTimes(1);
-    expect(NativeInstabug.init).toBeCalledWith(
-      instabugConfig.token,
-      instabugConfig.invocationEvents,
-      instabugConfig.debugLogsLevel,
-      // usesNativeNetworkInterception should be true when using native interception mode
-      true,
-      instabugConfig.codePushVersion,
-    );
+    await Instabug.init(instabugConfig);
+
+    if (Platform.OS === 'android') {
+      expect(NetworkLogger.setEnabled).not.toBeCalled();
+      expect(NativeInstabug.init).toBeCalledTimes(1);
+
+      expect(NativeInstabug.init).toBeCalledWith(
+        instabugConfig.token,
+        instabugConfig.invocationEvents,
+        instabugConfig.debugLogsLevel,
+        // usesNativeNetworkInterception should be false when using native interception mode with Android
+        false,
+        instabugConfig.codePushVersion,
+      );
+    } else {
+      expect(NativeInstabug.init).toBeCalledTimes(1);
+
+      expect(NativeInstabug.init).toBeCalledWith(
+        instabugConfig.token,
+        instabugConfig.invocationEvents,
+        instabugConfig.debugLogsLevel,
+        // usesNativeNetworkInterception should be true when using native interception mode with iOS
+        true,
+        instabugConfig.codePushVersion,
+      );
+    }
   });
 
   it('should report the first screen on SDK initialization', async () => {

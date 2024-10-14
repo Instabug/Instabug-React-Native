@@ -45,7 +45,6 @@ const firstScreen = 'Initial Screen';
 let _currentAppState = AppState.currentState;
 let isNativeInterceptionFeatureEnabled = false; // Checks the value of "cp_native_interception_enabled" backend flag.
 let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.
-let isAPMNetworkEnabled = false; // Android only: checks if (APM enabled && Network enabled).
 let shouldEnableNativeInterception = false; // Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), iOS: used to control native interception (true == enabled , false == disabled)
 
 /**
@@ -78,7 +77,6 @@ function _logFlags() {
     `Andrew: init -> {
      isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
      hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},
-     isApmNetworkEnabled: ${isAPMNetworkEnabled},
      shouldEnableNativeInterception: ${shouldEnableNativeInterception}
     }`,
   );
@@ -96,7 +94,6 @@ export const init = async (config: InstabugConfig) => {
   isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
   if (Platform.OS === 'android') {
     hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
-    isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
     shouldEnableNativeInterception =
       config.networkInterceptionMode === NetworkInterceptionMode.native;
   }
@@ -118,7 +115,6 @@ export const init = async (config: InstabugConfig) => {
   setApmNetworkFlagsIfChanged({
     isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
     hasAPMNetworkPlugin: hasAPMNetworkPlugin,
-    isAPMNetworkEnabled: isAPMNetworkEnabled,
     shouldEnableNativeInterception: shouldEnableNativeInterception,
   });
 
@@ -166,13 +162,11 @@ const fetchApmNetworkFlags = async () => {
   isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
   if (Platform.OS === 'android') {
     hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
-    isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
   }
 
   return {
     isNativeInterceptionFeatureEnabled,
     hasAPMNetworkPlugin,
-    isAPMNetworkEnabled,
     shouldEnableNativeInterception,
   };
 };
@@ -243,6 +237,7 @@ const checkNativeInterceptionForIOS = (config: InstabugConfig) => {
       shouldEnableNativeInterception = true;
     } else {
       shouldEnableNativeInterception = false;
+      NetworkLogger.setEnabled(true); // rollback to JS interceptor
       console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
     }
   }

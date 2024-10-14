@@ -33,6 +33,7 @@ describe('NetworkLogger Module', () => {
   };
 
   beforeEach(() => {
+    // NetworkLogger.setEnabled(true);
     NetworkLogger.setNetworkDataObfuscationHandler(null);
     NetworkLogger.setRequestFilterExpression('false');
   });

@@ -177,11 +177,6 @@ export const NetworkScreen: React.FC = () => {
               title="Send Sequantail Requests"
             />
 
-            <CustomButton
-              onPress={() => makeSequentialApiCalls(generateUrls())}
-              title="Send Sequantail Requests"
-            />
-
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}
