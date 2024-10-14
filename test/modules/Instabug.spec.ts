@@ -19,10 +19,12 @@ import {
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
-} from '../../src/utils/Enums';
+} from '../../src';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
 import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
+
+jest.mock('../../src/modules/NetworkLogger');
 
 describe('Instabug Module', () => {
   beforeEach(() => {
