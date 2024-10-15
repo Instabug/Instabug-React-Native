@@ -506,6 +506,37 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+  
+  release_ndk:
+    working_directory: ~/project
+    executor:
+      name: node/default
+    steps:
+      - install_node_modules:
+          app-dir: ndk
+      - run:
+          name: Build the SDK
+          command: yarn build
+          working_directory: ndk
+      - run:
+          name: Authorize with NPM
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      # TEMP: Remove this once ready.
+      - find_and_replace:
+          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
+          search: instabug-reactnative
+          replace: '@instabug/react-native-private'
+          working_directory: ndk
+      - run:
+          command: npm version 13.4.0-ndk-test --no-git-tag-version
+          working_directory: ndk
+
+
+      - run:
+          name: Publish new version
+          command: npm publish
+          working_directory: ndk
 
 workflows:
   publish:
@@ -556,6 +587,18 @@ workflows:
           filters:
             branches:
               only: master
+      - hold_release_ndk:
+          # requires: *release_dependencies
+          type: approval
+          # filters:
+          #   branches:
+          #     only: master
+      - release_ndk:
+          requires:
+            - hold_release_ndk
+          # filters:
+          #   branches:
+          #     only: master
 
       - hold_release_nn:
           requires: *release_dependencies
