@@ -13,8 +13,7 @@
     "lint:ci": "yarn lint --max-warnings=0",
     "format": "prettier --check . --ignore-path .gitignore",
     "format:fix": "prettier --write . --ignore-path .gitignore",
-    "build": "yarn build:lib && yarn build:cli",
-    "build:lib": "tsc"
+    "build": "bob build"
   },
   "keywords": [
     "react-native",
