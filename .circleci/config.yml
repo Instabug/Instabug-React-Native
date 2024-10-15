@@ -525,10 +525,9 @@ jobs:
 
       # TEMP: Remove this once ready.
       - find_and_replace:
-          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
-          search: instabug-reactnative
+          files: ndk/package.json
+          search: instabug-reactnative-ndk
           replace: '@instabug/react-native-private'
-          working_directory: ndk
       - run:
           command: npm version 13.4.0-ndk-test --no-git-tag-version
           working_directory: ndk
