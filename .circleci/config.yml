@@ -512,6 +512,7 @@ jobs:
     executor:
       name: node/default
     steps:
+      - advanced-checkout/shallow-checkout
       - install_node_modules:
           app-dir: ndk
       - run:
