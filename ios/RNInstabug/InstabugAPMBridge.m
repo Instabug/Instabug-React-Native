@@ -109,7 +109,6 @@ RCT_EXPORT_METHOD(endUITrace) {
     [IBGAPM endUITrace];
 }
 
-
 @synthesize description;
 
 @synthesize hash;

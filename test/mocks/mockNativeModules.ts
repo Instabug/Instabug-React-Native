@@ -7,10 +7,12 @@ import mockSessionReplay from './mockSessionReplay';
 import mockInstabug from './mockInstabug';
 import mockReplies from './mockReplies';
 import mockSurveys from './mockSurveys';
+import mockNetworkLogger from './mockNetworkLogger';
 
 jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
   const mockNativeModules: InstabugNativePackage = {
+    IBGNetworkLogger: mockNetworkLogger,
     IBGAPM: mockAPM,
     IBGBugReporting: mockBugReporting,
     IBGCrashReporting: mockCrashReporting,

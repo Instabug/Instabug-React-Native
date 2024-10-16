@@ -10,6 +10,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",

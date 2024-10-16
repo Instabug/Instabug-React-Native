@@ -23,7 +23,7 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[@"IBGpreSendingHandler" , @"IBGNetworkLoggerHandler"];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -314,7 +314,12 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  startTime:startTime * 1000
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage];
+                        serverErrorMessage:serverErrorMessage
+                             isW3cCaughted:nil
+                                 partialID:nil
+                                 timestamp:nil
+                   generatedW3CTraceparent:nil
+                    caughtedW3CTraceparent:nil];
 }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
@@ -364,7 +369,7 @@ RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
             [featureFlags addObject:[[IBGFeatureFlag alloc] initWithName:key variant:variant]];
         }
     }
-    
+
     [Instabug addFeatureFlags:featureFlags];
 }
 
@@ -373,7 +378,7 @@ RCT_EXPORT_METHOD(removeFeatureFlags:(NSArray *)featureFlags) {
     for(id item in featureFlags){
         [features addObject:[[IBGFeatureFlag alloc] initWithName:item]];
     }
-    
+
     @try {
         [Instabug removeFeatureFlags:features];
     }

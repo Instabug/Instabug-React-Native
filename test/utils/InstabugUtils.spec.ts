@@ -11,6 +11,7 @@ import InstabugUtils, {
   reportNetworkLog,
   sendCrashReport,
 } from '../../src/utils/InstabugUtils';
+import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 import { NativeAPM } from '../../src/native/NativeAPM';
 
@@ -260,12 +261,16 @@ describe('reportNetworkLog', () => {
     requestContentType: 'requestContentType',
   };
 
-  it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
+  it('reportNetworkLog should send network logs to native with the correct parameters on Android', async () => {
     Platform.OS = 'android';
+    jest
+      .spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled')
+      .mockReturnValue(Promise.resolve(false));
+    jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(false));
+    await Instabug.init({ token: '', invocationEvents: [InvocationEvent.none] });
 
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
-
     reportNetworkLog(network);
 
     expect(NativeInstabug.networkLogAndroid).toHaveBeenCalledTimes(1);

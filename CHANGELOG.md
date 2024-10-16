@@ -1,20 +1,23 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...dev)
+## [13.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...v13.4.0) (October 2, 2024)
 
 ### Added
 
 - Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
 - Enhance the network interceptor to capture more client error messages ([#1257](https://github.com/Instabug/Instabug-React-Native/pull/1257)).
 
+### Changed
+
+- Bump Instabug iOS SDK to v13.4.2 ([#1285](https://github.com/Instabug/Instabug-React-Native/pull/1285)). See release notes for [13.4.0](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.0), [13.4.1](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.1) and [13.4.2](https://github.com/Instabug/Instabug-iOS/releases/tag/13.4.2).
+- Bump Instabug Android SDK to v13.4.1 ([#1285](https://github.com/Instabug/Instabug-React-Native/pull/1285)). See release notes for [13.4.0](https://github.com/Instabug/Instabug-Android/releases/tag/v13.4.0) and [13.4.1](https://github.com/Instabug/Instabug-Android/releases/tag/v13.4.1).
+
 ### Fixed
 
+- Fix an issue with JavaScript fatal crashes on iOS causing them to be reported as native iOS crashes instead. ([#1290](https://github.com/Instabug/Instabug-React-Native/pull/1290)).
+- Correctly resolve the flavor path when uploading sourcemaps on Android. ([#1225](https://github.com/Instabug/Instabug-React-Native/pull/1225)).
 - Drop non-error objects reported as crashes since they don't have a stack trace ([#1279](https://github.com/Instabug/Instabug-React-Native/pull/1279)).
 - Fix APM network logging on iOS when the response body is missing or empty. ([#1273](https://github.com/Instabug/Instabug-React-Native/pull/1273)).
-
-### Fixed
-
-- Correctly resolve the flavor path when uploading sourcemaps on Android. ([#1225](https://github.com/Instabug/Instabug-React-Native/pull/1225)).
 
 ## [13.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.2.0...v13.3.0) (August 4, 2024)
 

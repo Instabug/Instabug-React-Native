@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply plugin: 'instabug-apm'
 
 import com.android.build.OutputFile
 
@@ -95,6 +96,12 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+instabug {
+    apm {
+//        networkEnabled = true
+//        debugEnabled = true
+    }
+}
 android {
     ndkVersion rootProject.ext.ndkVersion
 
