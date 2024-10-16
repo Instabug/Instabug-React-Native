@@ -36,6 +36,7 @@ import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
 import { addAppStateListener } from '../utils/AppStatesHandler';
 import InstabugConstants from '../utils/InstabugConstants';
+import instabugConstants from '../utils/InstabugConstants';
 import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 
 let _currentScreen: string | null = null;
@@ -101,16 +102,6 @@ export const init = async (config: InstabugConfig) => {
   // Add app state listener to handle background/foreground transitions
   addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
 
-  // Set up error capturing and rejection handling
-  InstabugUtils.captureJsErrors();
-  captureUnhandledRejections();
-
-  // Perform platform-specific checks and update interception mode
-  handleNetworkInterceptionMode(config);
-
-  // Log the current APM network flags and initialize Instabug
-  _logFlags();
-
   //Set APM networking flags for the first time
   setApmNetworkFlagsIfChanged({
     isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
@@ -118,8 +109,18 @@ export const init = async (config: InstabugConfig) => {
     shouldEnableNativeInterception: shouldEnableNativeInterception,
   });
 
+  // Perform platform-specific checks and update interception mode
+  handleNetworkInterceptionMode(config);
+
+  // Log the current APM network flags and initialize Instabug
+  _logFlags();
+
   // call Instabug native init method
   initializeNativeInstabug(config);
+
+  // Set up error capturing and rejection handling
+  InstabugUtils.captureJsErrors();
+  captureUnhandledRejections();
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
@@ -202,7 +203,7 @@ const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
     if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
       shouldEnableNativeInterception = true;
       console.warn(
-        InstabugConstants.IBG_APM_TAG + 'Switched to Native Interception: Android Plugin Detected',
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
       );
     }
   } else {
@@ -210,18 +211,19 @@ const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
       shouldEnableNativeInterception = hasAPMNetworkPlugin;
       if (!hasAPMNetworkPlugin) {
         console.error(
-          InstabugConstants.IBG_APM_TAG +
-            'Network traces won’t get captured as plugin is not installed',
+          InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE,
         );
       }
     } else {
       if (hasAPMNetworkPlugin) {
-        console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
+        console.error(
+          InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+        );
       } else {
         shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
         console.error(
           InstabugConstants.IBG_APM_TAG +
-            'Native interception is disabled and plugin is not installed',
+            InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
         );
       }
     }
@@ -238,7 +240,9 @@ const checkNativeInterceptionForIOS = (config: InstabugConfig) => {
     } else {
       shouldEnableNativeInterception = false;
       NetworkLogger.setEnabled(true); // rollback to JS interceptor
-      console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
+      console.error(
+        InstabugConstants.IBG_APM_TAG + instabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
     }
   }
 };

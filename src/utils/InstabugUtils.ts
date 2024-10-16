@@ -245,4 +245,5 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  reportNetworkLog,
 };
