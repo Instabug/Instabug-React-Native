@@ -79,3 +79,11 @@ dependencies {
     testImplementation "org.mockito:mockito-android:3.4.0"
     testImplementation 'junit:junit:4.13.2'
 }
+
+rootProject.allprojects {
+	repositories {
+		maven {
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
+		}
+	}
+}
