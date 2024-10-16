@@ -232,3 +232,15 @@ export enum StringKey {
   welcomeMessageLiveWelcomeStepContent = constants.welcomeMessageLiveWelcomeStepContent,
   welcomeMessageLiveWelcomeStepTitle = constants.welcomeMessageLiveWelcomeStepTitle,
 }
+
+export enum LaunchType {
+  cold = constants.cold,
+  /**
+   *  iOS only
+   */
+  unknown = constants.unknown,
+  /**
+   *  Android only
+   */
+  warm = constants.warm,
+}
