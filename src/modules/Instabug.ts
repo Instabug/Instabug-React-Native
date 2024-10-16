@@ -381,7 +381,8 @@ export const setReproStepsConfig = (config: ReproConfig) => {
  */
 export const setUserAttribute = (key: string, value: string) => {
   if (!key || typeof key !== 'string' || typeof value !== 'string') {
-    throw new TypeError('Invalid param, Expected String');
+    console.error('IBG-RN: Expected key and value passed to setUserAttribute to be of type string');
+    return;
   }
   NativeInstabug.setUserAttribute(key, value);
 };
@@ -404,7 +405,9 @@ export const getUserAttribute = async (key: string): Promise<string | null> => {
  */
 export const removeUserAttribute = (key: string) => {
   if (!key || typeof key !== 'string') {
-    throw new TypeError('Invalid param, Expected String');
+    console.error('IBG-RN: Expected the key passed to removeUserAttribute to be of type string');
+
+    return;
   }
   NativeInstabug.removeUserAttribute(key);
 };

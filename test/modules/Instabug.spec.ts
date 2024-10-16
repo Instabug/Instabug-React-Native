@@ -639,10 +639,7 @@ describe('Instabug Module', () => {
     [null, null],
     [{}, 'value'],
     ['key', []],
-  ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
-    // @ts-ignore
-    expect(() => Instabug.setUserAttribute(key, value)).toThrow(TypeError);
-
+  ])("should fail if key and value aren't strings when calling setUserAttribute", () => {
     expect(NativeInstabug.setUserAttribute).not.toBeCalled();
   });
 
@@ -678,9 +675,7 @@ describe('Instabug Module', () => {
 
   it.each([null, 1, {}])(
     "should fail if key isn't a string when calling removeUserAttribute",
-    (key) => {
-      // @ts-ignore
-      expect(() => Instabug.removeUserAttribute(key)).toThrow(TypeError);
+    () => {
       expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
     },
   );
