@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1744633257493,
@@ -12,6 +12,10 @@
                 {
                     "date": 1744633283826,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,8 +33,15 @@\n let _currentScreen: string | null = null;\n let _lastScreen: string | null = null;\n let _isFirstScreen = false;\n const firstScreen = 'Initial Screen';\n+<<<<<<< HEAD\n+=======\n+let _currentAppState = AppState.currentState;\n+let isNativeInterceptionFeatureEnabled = false; // Checks the value of \"cp_native_interception_enabled\" backend flag.\n+let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.\n+let shouldEnableNativeInterception = false; // Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), iOS: used to control native interception (true == enabled , false == disabled)\n+>>>>>>> f248be7f (chore: remove APMNetworkEnabled flag from android)\n \n /**\n  * Enables or disables Instabug functionality.\n  * @param isEnabled A boolean to enable/disable Instabug.\n@@ -64,9 +71,8 @@\n   console.log(\n     `Andrew: init -> {\n      isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},\n      hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},\n-     isApmNetworkEnabled: ${isAPMNetworkEnabled},\n      shouldEnableNativeInterception: ${shouldEnableNativeInterception}\n     }`,\n   );\n }\n@@ -77,9 +83,25 @@\n  * method that SHOULD be called.\n  * Should be called in constructor of the AppRegistry component\n  * @param config SDK configurations. See {@link InstabugConfig} for more info.\n  */\n+<<<<<<< HEAD\n export const init = (config: InstabugConfig) => {\n+=======\n+export const init = async (config: InstabugConfig) => {\n+  // Initialize necessary variables\n+  isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();\n+  if (Platform.OS === 'android') {\n+    hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();\n+    shouldEnableNativeInterception =\n+      config.networkInterceptionMode === NetworkInterceptionMode.native;\n+  }\n+\n+  // Add app state listener to handle background/foreground transitions\n+  addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));\n+\n+  // Set up error capturing and rejection handling\n+>>>>>>> f248be7f (chore: remove APMNetworkEnabled flag from android)\n   InstabugUtils.captureJsErrors();\n   captureUnhandledRejections();\n \n   if (Platform.OS === 'android') {\n"
+                },
+                {
+                    "date": 1744633318557,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -64,9 +64,8 @@\n   console.log(\n     `Andrew: init -> {\n      isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},\n      hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},\n-     isApmNetworkEnabled: ${isAPMNetworkEnabled},\n      shouldEnableNativeInterception: ${shouldEnableNativeInterception}\n     }`,\n   );\n }\n"
                 }
             ],
             "date": 1744633257493,
