@@ -43,8 +43,6 @@ void updateManifestPackage() {
     }
 }
 
-updateManifestPackage()
-
 android {
     if (supportsNamespace()) {
         namespace "com.instabug.reactlibrary"
