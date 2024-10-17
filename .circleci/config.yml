@@ -12,6 +12,7 @@ references:
     - test_module
     - test_android
     - validate_shell_files
+    - validate_package_versions
     - sync_generated_files
     - test_ios
     - e2e_ios
@@ -274,6 +275,26 @@ jobs:
           deployment: true
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
+
+  # Makes sure that the instabug-reactnative package version, sub-packages versions
+  # and peer dependency versions are all in sync.
+  #
+  # Ideally you shouldn't be modifying them manually but rather through the scripts/bump-up.sh
+  # script or the convenience `yarn bump <version>` script.
+  validate_package_versions:
+    machine:
+      image: ubuntu-2404:current
+    working_directory: ~/project
+    steps:
+      - advanced-checkout/shallow-checkout
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+      - run:
+          name: Bump up to validate no changes
+          command: ./scripts/bump-up.sh $(jq -r '.version' core/package.json)
+      - run: git --no-pager diff
+      - run: git diff-index HEAD --exit-code -p
 
   test_ios:
     parameters:
@@ -554,6 +575,7 @@ workflows:
       - test_ios:
           collect_coverage: true
       - validate_shell_files
+      - validate_package_versions
       - sync_generated_files
       - e2e_ios
       - e2e_android
@@ -665,6 +687,7 @@ workflows:
             - test_ios_dream11
             - e2e_android_dream11
             - e2e_ios_dream11
+            - validate_package_versions
           type: approval
           filters:
             branches:
