@@ -1,9 +1,9 @@
 # Distribution
-dist/
-lib/
-bin/
-upload/*
-!upload/package.json
+**/dist/
+**/lib/
+**/bin/
+**/upload/*
+!**/upload/package.json
 
 # NodeJS
 node_modules/
