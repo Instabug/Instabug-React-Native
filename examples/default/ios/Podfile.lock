@@ -524,7 +524,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
+  - "instabug-reactnative-ndk (from `../node_modules/@instabug/react-native-ndk`)"
   - libevent (~> 2.1.12)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -600,7 +600,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   instabug-reactnative-ndk:
-    :path: "../node_modules/instabug-reactnative-ndk"
+    :path: "../node_modules/@instabug/react-native-ndk"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
