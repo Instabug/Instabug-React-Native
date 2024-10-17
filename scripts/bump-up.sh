@@ -24,6 +24,9 @@ cd core
 npm version $version --no-git-tag-version --allow-same-version
 cd ..
 
+echo "Bumping version in core/android/build.gradle to $version"
+node scripts/replace.js --pattern 'versionName ".+"' "versionName \"$version\"" core/android/build.gradle
+
 for subpackage in "${subpackages[@]}"; do
     cd $subpackage
 
