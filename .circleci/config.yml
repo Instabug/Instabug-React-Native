@@ -501,26 +501,32 @@ jobs:
       - advanced-checkout/shallow-checkout
       - install_node_modules:
           app-dir: core
+      - install_node_modules:
+          app-dir: ndk
       - run:
           command: yarn build
           working_directory: core
+      - run:
+          command: yarn build
+          working_directory: ndk
       - run:
           name: Get snapshot version
           command: |
             source scripts/snapshot-version.sh
             echo "export SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> "$BASH_ENV"
       - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+      - run: yarn bump $VERSION
+      - run:
           name: Authorize with NPM
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run:
-          command: npm version $SNAPSHOT_VERSION --no-git-tag-version
-          working_directory: core
       - run:
           command: npm publish --tag snapshot
           working_directory: core
       - run:
-          name: Install jq
-          command: sudo apt-get update && sudo apt-get install -y jq
+          command: npm publish --tag snapshot
+          working_directory: ndk
       - find_and_replace:
           files: scripts/snapshot-comment.md
           search: '{VERSION}'

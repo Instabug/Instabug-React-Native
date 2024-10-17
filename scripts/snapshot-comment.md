@@ -13,3 +13,15 @@ or Yarn:
 ```sh
 yarn add instabug-reactnative@{VERSION}
 ```
+
+#### NDK Installation
+
+```sh
+npm install instabug-reactnative-ndk@{VERSION}
+```
+
+or Yarn:
+
+```sh
+yarn add instabug-reactnative-ndk@{VERSION}
+```
