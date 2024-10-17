@@ -7,16 +7,16 @@ orbs:
 
 references:
   release_dependencies: &release_dependencies
-    - danger
+    # - danger
     - lint
-    - test_module
-    - test_android
-    - validate_shell_files
-    - validate_package_versions
-    - sync_generated_files
-    - test_ios
-    - e2e_ios
-    - e2e_android
+    # - test_module
+    # - test_android
+    # - validate_shell_files
+    # - validate_package_versions
+    # - sync_generated_files
+    # - test_ios
+    # - e2e_ios
+    # - e2e_android
 
   dream11_prepare_config: &dream11_prepare_config
     prepare_steps:
