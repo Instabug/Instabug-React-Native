@@ -17,11 +17,11 @@ yarn add instabug-reactnative@{VERSION}
 #### NDK Installation
 
 ```sh
-npm install instabug-reactnative-ndk@{VERSION}
+npm install @instabug/react-native-ndk@{VERSION}
 ```
 
 or Yarn:
 
 ```sh
-yarn add instabug-reactnative-ndk@{VERSION}
+yarn add @instabug/react-native-ndk@{VERSION}
 ```

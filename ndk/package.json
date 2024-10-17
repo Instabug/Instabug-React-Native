@@ -1,5 +1,5 @@
 {
-  "name": "instabug-reactnative-ndk",
+  "name": "@instabug/react-native-ndk",
   "version": "13.4.0",
   "description": "This package is an add on to Instabug-React-native It start capturing NDK crashes that sent to the dashboard.",
   "main": "lib/commonjs/index",

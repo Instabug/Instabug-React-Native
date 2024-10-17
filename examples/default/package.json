@@ -10,6 +10,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@instabug/react-native-ndk": "../../ndk",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/slider": "^4.4.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -19,7 +20,6 @@
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "instabug-reactnative": "link:../../core",
-    "instabug-reactnative-ndk": "link:../../ndk",
     "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-native": "0.72.3",

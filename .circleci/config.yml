@@ -145,7 +145,7 @@ commands:
       # Remove the NDK package to avoid dependency conflicts on Android.
       - run:
           name: Remove the NDK package
-          command: yarn remove instabug-reactnative-ndk
+          command: yarn remove @instabug/react-native-ndk
           working_directory: << parameters.working_directory >>/examples/default
 
   notify_github:
