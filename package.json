@@ -9,7 +9,8 @@
     "core": "yarn --cwd core",
     "ndk": "yarn --cwd ndk",
     "pods": "cd examples/default && pod-install --quiet",
-    "bootstrap": "yarn && yarn core && yarn ndk && yarn example && yarn pods"
+    "bootstrap": "yarn && yarn core && yarn ndk && yarn example && yarn pods",
+    "bump": "./scripts/bump-up.sh"
   },
   "dependencies": {
     "@instabug/danger-plugin-coverage": "Instabug/danger-plugin-coverage",
