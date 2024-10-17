@@ -517,7 +517,7 @@ jobs:
       - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
-      - run: yarn bump $VERSION
+      - run: yarn bump $SNAPSHOT_VERSION
       - run:
           name: Authorize with NPM
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc

@@ -13,6 +13,11 @@ if ! [ -x "$(command -v jq)" ]; then
   exit 1
 fi
 
+if [ -z "$version" ]; then
+    echo "Error: Please provide a version number" >&2
+    exit 1
+fi
+
 echo "Bumping instabug-reactnative to $version"
 
 cd core
