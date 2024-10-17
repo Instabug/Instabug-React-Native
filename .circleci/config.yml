@@ -12,6 +12,7 @@ references:
     - test_module
     - test_android
     - validate_shell_files
+    - validate_package_versions
     - sync_generated_files
     - test_ios
     - e2e_ios
@@ -104,17 +105,17 @@ commands:
           command: rm README.md
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: package.json android/sourcemaps.gradle ios/sourcemaps.sh
+          files: core/package.json core/android/sourcemaps.gradle core/ios/sourcemaps.sh
           search: instabug-reactnative
           replace: << parameters.npm_package >>
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: cli/upload/uploadSourcemaps.ts cli/upload/uploadSoFiles.ts
+          files: core/cli/upload/uploadSourcemaps.ts core/cli/upload/uploadSoFiles.ts
           search: api.instabug.com
           replace: << parameters.api_endpoint >>
           working_directory: << parameters.working_directory >>
       - find_and_replace:
-          files: android/native.gradle
+          files: core/android/native.gradle
           search: 'com.instabug.library:instabug:'
           replace: 'com.instabug.library-<< parameters.android_package >>:instabug:'
           working_directory: << parameters.working_directory >>
@@ -125,7 +126,9 @@ commands:
         type: string
         default: ~/project
     steps:
-      - install_node_modules
+      - install_node_modules:
+          # Using an absolute path to avoid issues with the working directory of the parent job.
+          app-dir: ~/project/core
       - prepare_custom_package:
           npm_package: '@instabug/instabug-reactnative-dream11'
           android_package: dream11
@@ -133,16 +136,16 @@ commands:
           working_directory: << parameters.working_directory >>
       - run:
           name: Give execute permission to Dream11 script
-          command: chmod +x ./scripts/dream-11-delete-unused-features.sh
+          command: chmod +x ./scripts/prepare-dream11-sdk.sh
           working_directory: << parameters.working_directory >>
       - run:
           name: Remove unused features
-          command: ./scripts/dream-11-delete-unused-features.sh
+          command: ./scripts/prepare-dream11-sdk.sh
           working_directory: << parameters.working_directory >>
       # Remove the NDK package to avoid dependency conflicts on Android.
       - run:
           name: Remove the NDK package
-          command: yarn remove instabug-reactnative-ndk
+          command: yarn remove @instabug/react-native-ndk
           working_directory: << parameters.working_directory >>/examples/default
 
   notify_github:
@@ -171,6 +174,7 @@ jobs:
   lint:
     executor:
       name: node/default
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules
@@ -191,6 +195,7 @@ jobs:
         default: false
     executor:
       name: node/default
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - steps: << parameters.prepare_steps >>
@@ -231,13 +236,14 @@ jobs:
           condition: << parameters.collect_coverage >>
           steps:
             - persist_to_workspace:
-                root: ~/project/android/build/reports/jacoco/jacocoTestReport
+                root: ~/project/core/android/build/reports/jacoco/jacocoTestReport
                 paths:
                   - jacocoTestReport.xml
 
   validate_shell_files:
     machine:
       image: ubuntu-2004:current
+    working_directory: ~/project/core
     steps:
       - advanced-checkout/shallow-checkout
       - run:
@@ -256,7 +262,11 @@ jobs:
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
-      - install_node_modules
+      - install_node_modules:
+          app-dir: core
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: ndk
       - node/install-packages:
           pkg-manager: yarn
           app-dir: examples/default
@@ -265,6 +275,26 @@ jobs:
           deployment: true
       - run: git --no-pager diff
       - run: git diff-index HEAD --exit-code -p -I EXCLUDED_ARCHS # Ignore Arch Changes
+
+  # Makes sure that the instabug-reactnative package version, sub-packages versions
+  # and peer dependency versions are all in sync.
+  #
+  # Ideally you shouldn't be modifying them manually but rather through the scripts/bump-up.sh
+  # script or the convenience `yarn bump <version>` script.
+  validate_package_versions:
+    machine:
+      image: ubuntu-2404:current
+    working_directory: ~/project
+    steps:
+      - advanced-checkout/shallow-checkout
+      - run:
+          name: Install jq
+          command: sudo apt-get update && sudo apt-get install -y jq
+      - run:
+          name: Bump up to validate no changes
+          command: ./scripts/bump-up.sh $(jq -r '.version' core/package.json)
+      - run: git --no-pager diff
+      - run: git diff-index HEAD --exit-code -p
 
   test_ios:
     parameters:
@@ -401,16 +431,19 @@ jobs:
     steps:
       - advanced-checkout/shallow-checkout
       - steps: << parameters.prepare_steps >>
-      - install_node_modules
+      - install_node_modules:
+          app-dir: core
       - run:
           name: Build the SDK
           command: yarn build
+          working_directory: core
       - run:
           name: Authorize with NPM
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Publish new enterprise version
           command: npm publish
+          working_directory: core
 
   publish:
     macos:
@@ -427,13 +460,14 @@ jobs:
           working_directory: Escape/.build/release
           command: cp -f Escape /usr/local/bin/escape
       - install_node_modules:
-          app-dir: project
+          app-dir: project/core
       - run:
-          working_directory: project
+          working_directory: project/core
           command: yarn build
       - run:
           working_directory: project
           command: Escape react-native publish
+
   publish_new_namespace:
     working_directory: ~/project
     executor:
@@ -465,28 +499,60 @@ jobs:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - install_node_modules
-      - run: yarn build
-      - run: yarn remove @instabug/danger-plugin-coverage
+      - install_node_modules:
+          app-dir: core
+      - install_node_modules:
+          app-dir: ndk
+      - run:
+          command: yarn build
+          working_directory: core
+      - run:
+          command: yarn build
+          working_directory: ndk
       - run:
           name: Get snapshot version
           command: |
             source scripts/snapshot-version.sh
             echo "export SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> "$BASH_ENV"
       - run:
-          name: Authorize with NPM
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run: npm version $SNAPSHOT_VERSION --no-git-tag-version
-      - run: npm publish --tag snapshot
-      - run:
           name: Install jq
           command: sudo apt-get update && sudo apt-get install -y jq
+      - run: yarn bump $SNAPSHOT_VERSION
+      - run:
+          name: Authorize with NPM
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          command: npm publish --tag snapshot
+          working_directory: core
+      - run:
+          command: npm publish --tag snapshot
+          working_directory: ndk
       - find_and_replace:
           files: scripts/snapshot-comment.md
           search: '{VERSION}'
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+  
+  release_ndk:
+    working_directory: ~/project
+    executor:
+      name: node/default
+    steps:
+      - advanced-checkout/shallow-checkout
+      - install_node_modules:
+          app-dir: ndk
+      - run:
+          name: Build the SDK
+          command: yarn build
+          working_directory: ndk
+      - run:
+          name: Authorize with NPM
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+          name: Publish new version
+          command: npm publish
+          working_directory: ndk
 
 workflows:
   publish:
@@ -504,6 +570,7 @@ workflows:
       - test_ios:
           collect_coverage: true
       - validate_shell_files
+      - validate_package_versions
       - sync_generated_files
       - e2e_ios
       - e2e_android
@@ -534,6 +601,18 @@ workflows:
       - publish_new_namespace:
           requires:
             - hold_publish_new_namespace
+          filters:
+            branches:
+              only: master
+      - hold_release_ndk:
+          requires: *release_dependencies
+          type: approval
+          filters:
+            branches:
+              only: master
+      - release_ndk:
+          requires:
+            - hold_release_ndk
           filters:
             branches:
               only: master
@@ -603,6 +682,7 @@ workflows:
             - test_ios_dream11
             - e2e_android_dream11
             - e2e_ios_dream11
+            - validate_package_versions
           type: approval
           filters:
             branches:

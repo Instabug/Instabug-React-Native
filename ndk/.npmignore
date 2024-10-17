@@ -1,9 +1,30 @@
-# Distribution
-**/dist/
-**/lib/
-**/bin/
-**/upload/*
-!**/upload/package.json
+## Extra ignores
+
+# Misc
+.github/
+.circleci/
+examples/
+
+# Config files
+.eslintrc.js
+.prettierrc.js
+Dangerfile
+
+# CLI Config files
+rollup.config.js
+tsconfig.cli.json
+
+# Tests
+android/src/test/
+test/
+jest.config.js
+
+## Same as .gitignore
+
+# Must be Included in published npm package
+# # Distribution
+# dist/
+# bin/
 
 # NodeJS
 node_modules/
@@ -12,7 +33,6 @@ yarn-debug.log
 yarn-error.log
 coverage/
 .jest/cache/
-.yarn/
 
 # OSX
 .DS_Store
@@ -61,13 +81,3 @@ android/keystores/debug.keystore
 
 # Expo
 .expo/*
-
-# Bundle artifact
-*.jsbundle
-/examples/default/ios/main.jsbundle.map
-
-# Vscode local history
-.history/
-
-# .idea run configurations
-/.run/*
