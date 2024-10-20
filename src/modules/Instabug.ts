@@ -36,7 +36,6 @@ import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
 import { addAppStateListener } from '../utils/AppStatesHandler';
 import InstabugConstants from '../utils/InstabugConstants';
-import instabugConstants from '../utils/InstabugConstants';
 import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 
 let _currentScreen: string | null = null;
@@ -241,7 +240,7 @@ const checkNativeInterceptionForIOS = (config: InstabugConfig) => {
       shouldEnableNativeInterception = false;
       NetworkLogger.setEnabled(true); // rollback to JS interceptor
       console.error(
-        InstabugConstants.IBG_APM_TAG + instabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
       );
     }
   }

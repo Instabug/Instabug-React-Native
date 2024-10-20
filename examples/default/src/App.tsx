@@ -16,7 +16,6 @@ import { RootTabNavigator } from './navigation/RootTab';
 import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
-// import { QueryClient } from 'react-query';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -26,7 +25,6 @@ const queryClient = new QueryClient();
 export const App: React.FC = () => {
   useEffect(() => {
     Instabug.init({
-      // token: 'deb1910a7342814af4e4c9210c786f35',
       token: '0fcc87b8bf731164828cc411eccc802a',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
