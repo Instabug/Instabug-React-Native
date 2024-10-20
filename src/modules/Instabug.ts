@@ -137,7 +137,8 @@ export const init = async (config: InstabugConfig) => {
  * Handles app state changes and updates APM network flags if necessary.
  */
 const handleAppStateChange = async (nextAppState: AppStateStatus, config: InstabugConfig) => {
-  if (_currentAppState.match(/inactive|background/) && nextAppState === 'active') {
+  // Checks if  the app has come to the foreground
+  if (['inactive', 'background'].includes(_currentAppState) && nextAppState === 'active') {
     // Update the APM network flags
     const updatedFlags = await fetchApmNetworkFlags();
     const isUpdated = setApmNetworkFlagsIfChanged(updatedFlags);
