@@ -95,68 +95,6 @@ RCT_EXPORT_METHOD(registerNetworkLogsListener: (NetworkListenerType) listenerTyp
              break;
      }
 }
-//RCT_EXPORT_METHOD(registerNetworkLogsListener) {
-//    [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull requestToBeObfuscated,
-//                                                          void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
-//        NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-//        self.requestObfuscationCompletionDictionary[callbackID] = completion;
-//        
-//        // Ensure the URL, HTTP body, and headers are in the correct format
-//        NSString *urlString = requestToBeObfuscated.URL.absoluteString ?: @"";
-//        NSString *bodyString = [[NSString alloc] initWithData:requestToBeObfuscated.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
-//        NSDictionary *headerDict = requestToBeObfuscated.allHTTPHeaderFields ?: @{};
-//        
-//        // Create the dictionary to send
-//        NSDictionary *dict = @{
-//            @"callbackID": callbackID,
-//            @"url": urlString,
-//            @"requestBody": bodyString,
-//            @"requestHeader": headerDict
-//        };
-//        
-//        // Send the event
-//        [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
-//        
-//    }];
-//    
-//    
-//    [IBGNetworkLogger setResponseObfuscationHandler:^(NSData * _Nullable responseData, NSURLResponse * _Nonnull response, NetworkObfuscationCompletionBlock  _Nonnull completion) {
-//        
-//        NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-//        self.responseObfuscationCompletionDictionary[callbackID] = completion;
-//        
-//        
-//        // MARK: TODO: Convert Response To Dictionary & Pass it To React Native
-//        
-//    }];
-//    
-//    
-//    
-//    [IBGNetworkLogger setRequestFilteringHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(BOOL)) {
-//        
-//        NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-//        self.requestFilteringCompletionDictionary[callbackID] = completion;
-//        
-//        
-//        // MARK: TODO: Convert Request To Dictionary & Pass it To React Native
-//        
-//    }];
-//    
-//    
-//    [IBGNetworkLogger setResponseFilteringHandler:^(NSURLResponse * _Nonnull request, void (^ _Nonnull completion)(BOOL)) {
-//        
-//        NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-//        self.responseFilteringCompletionDictionary[callbackID] = completion;
-//        
-//        
-//        // MARK: TODO: Convert Request To Dictionary & Pass it To React Native
-//        
-//    }];
-//    
-//    
-//    
-//    
-//}
 
 
 RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
@@ -195,33 +133,6 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
     } else {
         NSLog(@"Not Available Completion");
     }
-//    
-//    
-//    // MARK: Might need to moved this into another method.
-//    NSURLResponse *response; // Must be initialized from React Native Objects
-//    NSData *responseData; // Must be initialized from React Native Objects
-//    if ([callbackID isKindOfClass:[NSString class]] && self.responseObfuscationCompletionDictionary[callbackID] != nil) {
-//        
-//        ((NetworkObfuscationCompletionBlock)self.responseObfuscationCompletionDictionary[callbackID])(responseData, response);
-//    } else {
-//        NSLog(@"Not Available Completion");
-//    }
-//    
-//    
-//    
-//    if ([callbackID isKindOfClass:[NSString class]] && self.responseFilteringCompletionDictionary[callbackID] != nil) {
-//        // ⬇️ YES == Response will be saved, NO == will be ignored
-//        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.responseFilteringCompletionDictionary[callbackID])(YES); 
-//    } else {
-//        NSLog(@"Not Available Completion");
-//    }
-//    
-//    if ([callbackID isKindOfClass:[NSString class]] && self.requestFilteringCompletionDictionary[callbackID] != nil) {
-//        // ⬇️ YES == Request will be saved, NO == will be ignored
-//        ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.requestFilteringCompletionDictionary[callbackID])(YES); 
-//    } else {
-//        NSLog(@"Not Available Completion");
-//    }
     
 }
 
@@ -240,7 +151,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
 
 // Set up the filtering handler
 - (void)setupRequestFilteringHandler {
-    [IBGNetworkLogger setRequestFilteringHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(BOOL)) {
+    [IBGNetworkLogger setCPRequestFilteringHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(BOOL)) {
         NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
         self.requestFilteringCompletionDictionary[callbackID] = completion;
         
@@ -254,7 +165,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
 
 // Set up the obfuscation handler
 - (void)setupRequestObfuscationHandler {
-    [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
+    [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
         
@@ -272,11 +183,11 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     
     NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
     
-    [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
+    [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
     }];
     
-    [IBGNetworkLogger setRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
+    [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
         
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];

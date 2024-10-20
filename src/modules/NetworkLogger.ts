@@ -163,14 +163,17 @@ const _registerNetworkLogsListener = (
   }
 
   if (_networkListener == null) {
+    // set new listener.
     _networkListener = type;
   } else {
+    // attach a new listener to the existing one.
     _networkListener = NetworkListenerType.both;
   }
   console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
   NetworkLoggerEmitter.addListener(
     NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
     (networkSnapshot) => {
+      // Mapping the data [Native -> React-Native].
       const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
         networkSnapshot;
 
