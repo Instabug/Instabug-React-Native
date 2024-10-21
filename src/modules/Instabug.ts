@@ -45,7 +45,6 @@ const firstScreen = 'Initial Screen';
 let _currentAppState = AppState.currentState;
 let isNativeInterceptionFeatureEnabled = false; // Checks the value of "cp_native_interception_enabled" backend flag.
 let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.
-let isAPMNetworkEnabled = false; // Android only: checks if (APM enabled && Network enabled).
 let shouldEnableNativeInterception = false; // Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), iOS: used to control native interception (true == enabled , false == disabled)
 
 /**
@@ -78,7 +77,6 @@ function _logFlags() {
     `Andrew: init -> {
      isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
      hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},
-     isApmNetworkEnabled: ${isAPMNetworkEnabled},
      shouldEnableNativeInterception: ${shouldEnableNativeInterception}
     }`,
   );
@@ -96,7 +94,6 @@ export const init = async (config: InstabugConfig) => {
   isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
   if (Platform.OS === 'android') {
     hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
-    isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
     shouldEnableNativeInterception =
       config.networkInterceptionMode === NetworkInterceptionMode.native;
   }
@@ -104,9 +101,12 @@ export const init = async (config: InstabugConfig) => {
   // Add app state listener to handle background/foreground transitions
   addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
 
-  // Set up error capturing and rejection handling
-  InstabugUtils.captureJsErrors();
-  captureUnhandledRejections();
+  //Set APM networking flags for the first time
+  setApmNetworkFlagsIfChanged({
+    isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
+    hasAPMNetworkPlugin: hasAPMNetworkPlugin,
+    shouldEnableNativeInterception: shouldEnableNativeInterception,
+  });
 
   // Perform platform-specific checks and update interception mode
   handleNetworkInterceptionMode(config);
@@ -114,16 +114,12 @@ export const init = async (config: InstabugConfig) => {
   // Log the current APM network flags and initialize Instabug
   _logFlags();
 
-  //Set APM networking flags for the first time
-  setApmNetworkFlagsIfChanged({
-    isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
-    hasAPMNetworkPlugin: hasAPMNetworkPlugin,
-    isAPMNetworkEnabled: isAPMNetworkEnabled,
-    shouldEnableNativeInterception: shouldEnableNativeInterception,
-  });
-
   // call Instabug native init method
   initializeNativeInstabug(config);
+
+  // Set up error capturing and rejection handling
+  InstabugUtils.captureJsErrors();
+  captureUnhandledRejections();
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
@@ -141,7 +137,8 @@ export const init = async (config: InstabugConfig) => {
  * Handles app state changes and updates APM network flags if necessary.
  */
 const handleAppStateChange = async (nextAppState: AppStateStatus, config: InstabugConfig) => {
-  if (_currentAppState.match(/inactive|background/) && nextAppState === 'active') {
+  // Checks if  the app has come to the foreground
+  if (['inactive', 'background'].includes(_currentAppState) && nextAppState === 'active') {
     // Update the APM network flags
     const updatedFlags = await fetchApmNetworkFlags();
     const isUpdated = setApmNetworkFlagsIfChanged(updatedFlags);
@@ -166,13 +163,11 @@ const fetchApmNetworkFlags = async () => {
   isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
   if (Platform.OS === 'android') {
     hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
-    isAPMNetworkEnabled = await NativeNetworkLogger.isAPMNetworkEnabled();
   }
 
   return {
     isNativeInterceptionFeatureEnabled,
     hasAPMNetworkPlugin,
-    isAPMNetworkEnabled,
     shouldEnableNativeInterception,
   };
 };
@@ -209,7 +204,7 @@ const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
     if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
       shouldEnableNativeInterception = true;
       console.warn(
-        InstabugConstants.IBG_APM_TAG + 'Switched to Native Interception: Android Plugin Detected',
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
       );
     }
   } else {
@@ -217,18 +212,19 @@ const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
       shouldEnableNativeInterception = hasAPMNetworkPlugin;
       if (!hasAPMNetworkPlugin) {
         console.error(
-          InstabugConstants.IBG_APM_TAG +
-            'Network traces won’t get captured as plugin is not installed',
+          InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE,
         );
       }
     } else {
       if (hasAPMNetworkPlugin) {
-        console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
+        console.error(
+          InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+        );
       } else {
         shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
         console.error(
           InstabugConstants.IBG_APM_TAG +
-            'Native interception is disabled and plugin is not installed',
+            InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
         );
       }
     }
@@ -244,7 +240,10 @@ const checkNativeInterceptionForIOS = (config: InstabugConfig) => {
       shouldEnableNativeInterception = true;
     } else {
       shouldEnableNativeInterception = false;
-      console.error(InstabugConstants.IBG_APM_TAG + 'Native interception is disabled');
+      NetworkLogger.setEnabled(true); // rollback to JS interceptor
+      console.error(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
     }
   }
 };

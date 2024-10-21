@@ -16,20 +16,17 @@ import { NativeAPM } from '../native/NativeAPM';
 type ApmNetworkFlags = {
   isNativeInterceptionFeatureEnabled: boolean;
   hasAPMNetworkPlugin: boolean;
-  isAPMNetworkEnabled: boolean;
   shouldEnableNativeInterception: boolean;
 };
 
 let apmFlags: ApmNetworkFlags = {
   isNativeInterceptionFeatureEnabled: false,
   hasAPMNetworkPlugin: false,
-  isAPMNetworkEnabled: false,
   shouldEnableNativeInterception: false,
 };
 
 export function setApmNetworkFlagsIfChanged(flags: ApmNetworkFlags): boolean {
   if (
-    flags.isAPMNetworkEnabled === apmFlags.isAPMNetworkEnabled &&
     flags.hasAPMNetworkPlugin === apmFlags.hasAPMNetworkPlugin &&
     flags.isNativeInterceptionFeatureEnabled === apmFlags.isNativeInterceptionFeatureEnabled &&
     flags.shouldEnableNativeInterception === apmFlags.shouldEnableNativeInterception
@@ -188,10 +185,9 @@ export const reportNetworkLog = (network: NetworkData) => {
     );
 
     if (
-      (!apmFlags.isNativeInterceptionFeatureEnabled ||
-        !apmFlags.hasAPMNetworkPlugin ||
-        !apmFlags.shouldEnableNativeInterception) &&
-      apmFlags.isAPMNetworkEnabled
+      !apmFlags.isNativeInterceptionFeatureEnabled ||
+      !apmFlags.hasAPMNetworkPlugin ||
+      !apmFlags.shouldEnableNativeInterception
     ) {
       console.log('Andrew: ' + 'NetworkLogger -> NativeAPM.networkLogAndroid');
       NativeAPM.networkLogAndroid(
@@ -249,4 +245,5 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  reportNetworkLog,
 };

@@ -79,17 +79,17 @@ RCT_EXPORT_METHOD(registerNetworkLogsListener: (NetworkListenerType) listenerTyp
              NSLog(@"Andrew: Network logs filtering enabled");
              [self setupRequestFilteringHandler];
              break;
-             
+
          case NetworkListenerTypeObfuscation:
              NSLog(@"Andrew: Network logs obfuscation enabled");
              [self setupRequestObfuscationHandler];
              break;
-             
+
          case NetworkListenerTypeBoth:
              NSLog(@"Andrew: Both filtering and obfuscation enabled");
              [self setupRequestFilteringAndObfuscationHandler];
              break;
-             
+
          default:
              NSLog(@"Andrew: Unknown NetworkListenerType");
              break;
@@ -133,7 +133,7 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
     } else {
         NSLog(@"Not Available Completion");
     }
-    
+
 }
 
 RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull) callbackID : (BOOL)value ){
@@ -154,7 +154,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     [IBGNetworkLogger setCPRequestFilteringHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(BOOL)) {
         NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
         self.requestFilteringCompletionDictionary[callbackID] = completion;
-        
+
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
         if(hasListeners){
             [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
@@ -168,33 +168,33 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
-        
-        
+
+
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
         if (hasListeners) {
             [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
         }
-        
+
     }];
 }
 
 // Set up the obfuscation handler
 - (void)setupRequestFilteringAndObfuscationHandler {
-    
+
     NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-    
+
     [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
     }];
-    
+
     [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
         self.requestObfuscationCompletionDictionary[callbackID] = completion;
-        
+
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
         if(hasListeners){
             [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
         }
-        
+
     }];
 }
 
@@ -203,7 +203,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     NSString *urlString = request.URL.absoluteString ?: @"";
     NSString *bodyString = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
     NSDictionary *headerDict = request.allHTTPHeaderFields ?: @{};
-    
+
     return @{
         @"id": callbackID,
         @"url": urlString,

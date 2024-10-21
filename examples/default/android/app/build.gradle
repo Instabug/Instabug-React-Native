@@ -98,8 +98,7 @@ def reactNativeArchitectures() {
 
 instabug {
     apm {
-//        networkEnabled = true
-//        debugEnabled = true
+       networkEnabled = true
     }
 }
 android {
