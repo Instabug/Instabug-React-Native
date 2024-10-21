@@ -17,14 +17,17 @@ export const NetworkScreen: React.FC<
 > = ({ navigation }) => {
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
-  const defaultRequestUrl = 'https://jsonplaceholder.typicode.com/posts/1';
+  const defaultRequestBaseUrl = 'https://jsonplaceholder.typicode.com/posts/';
+  const shortenLink = 'https://shorturl.at/3Ufj3';
+  const defaultRequestUrl = `${defaultRequestBaseUrl}1`;
+
   const imageUrls = [
     'https://fastly.picsum.photos/id/57/200/300.jpg?hmac=l908G1qVr4r7dP947-tak2mY8Vvic_vEYzCXUCKKskY',
     'https://fastly.picsum.photos/id/619/200/300.jpg?hmac=WqBGwlGjuY9RCdpzRaG9G-rc9Fi7TGUINX_-klAL2kA',
   ];
 
   async function sendRequestToUrl() {
-    let urlToSend = '';
+    let urlToSend: string;
 
     if (endpointUrl.trim() !== '') {
       urlToSend = endpointUrl;
@@ -52,7 +55,7 @@ export const NetworkScreen: React.FC<
   }
 
   async function sendRequestToUrlUsingAxios() {
-    let urlToSend = '';
+    let urlToSend: string;
 
     if (endpointUrl.trim() !== '') {
       urlToSend = endpointUrl;
@@ -68,6 +71,26 @@ export const NetworkScreen: React.FC<
       const response = await axios.get(urlToSend);
       // Format the JSON response for better logging
       const formattedData = JSON.stringify(response.data, null, 2);
+
+      // Log the formatted response
+      console.log('Response:', formattedData);
+    } catch (error) {
+      // Handle errors appropriately
+      console.error('Error:', error);
+    }
+  }
+
+  async function sendRedirectRequestToUrl() {
+    try {
+      console.log('Sending request to: ', shortenLink);
+      const response = await fetch(shortenLink);
+      console.log('Received from: ', response.url);
+
+      // Format the JSON response for better logging
+      const data = await response.json();
+
+      // Format the JSON response for better logging
+      const formattedData = JSON.stringify(data, null, 2);
 
       // Log the formatted response
       console.log('Response:', formattedData);
@@ -95,6 +118,40 @@ export const NetworkScreen: React.FC<
 
   const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
 
+  function generateUrls(count: number = 10) {
+    const urls = [];
+    for (let i = 1; i <= count; i++) {
+      urls.push(defaultRequestBaseUrl + i);
+    }
+    return urls;
+  }
+
+  async function makeSequentialApiCalls(urls: string[]): Promise<any[]> {
+    // const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
+    const results: any[] = [];
+
+    try {
+      for (let i = 0; i < urls.length; i++) {
+        await fetch(urls[i]);
+        results.push(results[i]);
+      }
+      return results;
+    } catch (error) {
+      console.error('Error making parallel API calls:', error);
+      throw error;
+    }
+  }
+  async function makeParallelApiCalls(urls: string[]): Promise<any[]> {
+    const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
+
+    try {
+      return await Promise.all(fetchPromises);
+    } catch (error) {
+      console.error('Error making parallel API calls:', error);
+      throw error;
+    }
+  }
+
   return (
     <ScrollView>
       <Screen>
@@ -108,8 +165,21 @@ export const NetworkScreen: React.FC<
             />
             <CustomButton onPress={sendRequestToUrl} title="Send Request To Url" />
             <CustomButton
+              onPress={sendRedirectRequestToUrl}
+              title="Send Redirection Request To Url"
+            />
+            <CustomButton
               onPress={sendRequestToUrlUsingAxios}
               title="Send Request To Url Using Axios"
+            />
+
+            <CustomButton
+              onPress={() => makeParallelApiCalls(generateUrls())}
+              title="Send Parallel Requests"
+            />
+            <CustomButton
+              onPress={() => makeSequentialApiCalls(generateUrls())}
+              title="Send Sequantail Requests"
             />
 
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />

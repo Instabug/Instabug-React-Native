@@ -7,6 +7,10 @@ import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../../src/utils/InstabugUtils';
 import InstabugConstants from '../../src/utils/InstabugConstants';
+import * as Instabug from '../../src/modules/Instabug';
+import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
+import { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../../src';
+import { Platform } from 'react-native';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
@@ -275,5 +279,35 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
+  });
+
+  it('Instabug.init should call NativeNetworkLogger.isNativeInterceptionEnabled and not call NativeNetworkLogger.hasAPMNetworkPlugin with iOS', async () => {
+    Platform.OS = 'ios';
+    const config = {
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
+      networkInterceptionMode: NetworkInterceptionMode.native,
+      codePushVersion: '1.1.0',
+    };
+    await Instabug.init(config);
+
+    expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
+    expect(NativeNetworkLogger.hasAPMNetworkPlugin).not.toHaveBeenCalled();
+  });
+
+  it('Instabug.init should call NativeNetworkLogger.isNativeInterceptionEnabled and NativeNetworkLogger.hasAPMNetworkPlugin with Android', async () => {
+    Platform.OS = 'android';
+    const config = {
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
+      networkInterceptionMode: NetworkInterceptionMode.native,
+      codePushVersion: '1.1.0',
+    };
+    await Instabug.init(config);
+
+    expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
+    expect(NativeNetworkLogger.hasAPMNetworkPlugin).toHaveBeenCalled();
   });
 });
