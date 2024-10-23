@@ -2,7 +2,12 @@
 import {ReactNode, useEffect} from 'react';
 import React from 'react';
 import {Button, Image, SafeAreaView, Text} from 'react-native';
-import Instabug, {CrashReporting, InvocationEvent, LogLevel, ReproStepsMode} from 'instabug-reactnative';
+import Instabug, {
+  CrashReporting,
+  InvocationEvent,
+  LogLevel,
+  ReproStepsMode,
+} from 'instabug-reactnative';
 
 const throwHandled = () => {
   try {
@@ -19,7 +24,6 @@ const throwUnhandled = () => {
 };
 
 const App: () => ReactNode = () => {
-  console.log('ayaaaaaa');
   useEffect(() => {
     Instabug.init({
       token: 'deb1910a7342814af4e4c9210c786f35',

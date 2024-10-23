@@ -2,21 +2,29 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "34.0.0"
         minSdkVersion = 26
-        compileSdkVersion = 33
-        targetSdkVersion = 33
-        kotlinVersion = "1.7.10"
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        kotlinVersion = "1.8.22"
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
+         androidXAppCompatVersion = "1.6.1"  // or use 1.7.0 with SDK 34
+        androidXCoreVersion = "1.12.0"      // or use 1.13.0 with SDK 34
+        androidXActivityVersion = "1.7.2"   // or use 1.8.0 with SDK 34
+        androidXTransitionVersion = "1.4.1" // or use 1.5.0 with SDK 34
+        androidXAnnotationVersion = "1.3.0" // or use 1.4.0 with SDK 34
     }
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+       classpath("com.android.tools.build:gradle:8.1.2")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
@@ -25,15 +33,17 @@ buildscript {
 allprojects {
     repositories {
         maven {
-            url("$rootDir/../node_modules/detox/Detox-android")
+            url "$rootDir/../node_modules/react-native/android"
         }
-
         maven {
-            credentials {
-                username System.getenv("DREAM11_MAVEN_USERNAME")
-                password System.getenv("DREAM11_MAVEN_PASSWORD")
-            }
-            url "https://mvn.instabug.com/nexus/repository/dream-11"
+            url "$rootDir/../node_modules/jsc-android/dist"
+        }
+        mavenCentral()
+        google()
+        maven { url "https://sdks.instabug.com/android" }
+        maven { url "https://www.jitpack.io" }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
 }
