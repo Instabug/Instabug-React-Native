@@ -12,7 +12,7 @@ public class HybridApplication extends Application {
         super.onCreate();
         Log.v("Instabug-Hybrid", "starting from native");
 
-        new Instabug.Builder(this, "f163dafcad22d79fb3653d3b6458729e")
+        new Instabug.Builder(this, "deb1910a7342814af4e4c9210c786f35")
                 .setSdkDebugLogsLevel(LogLevel.VERBOSE)
                 .setInvocationEvents(InstabugInvocationEvent.SHAKE, InstabugInvocationEvent.FLOATING_BUTTON)
                 .build();
