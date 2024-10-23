@@ -182,10 +182,10 @@ const handleNetworkInterceptionMode = (config: InstabugConfig) => {
   }
 
   if (Platform.OS === 'android') {
-    checkNativeInterceptionForAndroid(config);
+    handleInterceptionModeForAndroid(config);
     config.networkInterceptionMode = NetworkInterceptionMode.javascript; // Need to enable JS interceptor in all scenarios for Bugs & Crashes network logs
   } else if (Platform.OS === 'ios') {
-    checkNativeInterceptionForIOS(config);
+    handleInterceptionModeForIOS(config);
   }
   NetworkLogger.setNativeInterceptionEnabled(shouldEnableNativeInterception);
 
@@ -195,49 +195,64 @@ const handleNetworkInterceptionMode = (config: InstabugConfig) => {
 };
 
 /**
+ * Handles the JS interception logic for Android.
+ */
+function handleAndroidJSInterception() {
+  if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
+    shouldEnableNativeInterception = true;
+    console.warn(
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
+    );
+  }
+}
+
+/**
  * Handles the native interception logic for Android.
  */
-const checkNativeInterceptionForAndroid = (config: InstabugConfig) => {
+function handleAndroidNativeInterception() {
+  if (isNativeInterceptionFeatureEnabled) {
+    shouldEnableNativeInterception = hasAPMNetworkPlugin;
+    if (!hasAPMNetworkPlugin) {
+      console.error(InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE);
+    }
+  } else {
+    shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
+    if (hasAPMNetworkPlugin) {
+      console.error(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    } else {
+      console.error(
+        InstabugConstants.IBG_APM_TAG +
+          InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    }
+  }
+}
+
+/**
+ * Handles the interception mode logic for Android.
+ * By deciding which interception mode should be enabled (Native or JavaScript).
+ */
+const handleInterceptionModeForAndroid = (config: InstabugConfig) => {
   const { networkInterceptionMode } = config;
 
   if (networkInterceptionMode === NetworkInterceptionMode.javascript) {
-    if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
-      shouldEnableNativeInterception = true;
-      console.warn(
-        InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
-      );
-    }
+    handleAndroidJSInterception();
   } else {
-    if (isNativeInterceptionFeatureEnabled) {
-      shouldEnableNativeInterception = hasAPMNetworkPlugin;
-      if (!hasAPMNetworkPlugin) {
-        console.error(
-          InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE,
-        );
-      }
-    } else {
-      if (hasAPMNetworkPlugin) {
-        console.error(
-          InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-        );
-      } else {
-        shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
-        console.error(
-          InstabugConstants.IBG_APM_TAG +
-            InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-        );
-      }
-    }
+    handleAndroidNativeInterception();
   }
 };
 
 /**
- * Handles the native interception logic for iOS.
+ * Handles the interception mode logic for iOS.
+ * By deciding which interception mode should be enabled (Native or JavaScript).
  */
-const checkNativeInterceptionForIOS = (config: InstabugConfig) => {
+const handleInterceptionModeForIOS = (config: InstabugConfig) => {
   if (config.networkInterceptionMode === NetworkInterceptionMode.native) {
     if (isNativeInterceptionFeatureEnabled) {
       shouldEnableNativeInterception = true;
+      NetworkLogger.setEnabled(false); // insure JS interceptor is disabled
     } else {
       shouldEnableNativeInterception = false;
       NetworkLogger.setEnabled(true); // rollback to JS interceptor
