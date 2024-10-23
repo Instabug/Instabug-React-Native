@@ -10,7 +10,7 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
-import com.instabug.hybridsampleapp.BuildConfig;  // Ensure you have the correct package for BuildConfig
+import com.instabug.hybridsampleapp.BuildConfig;
 
 public class ReactNativeAppActivity extends Activity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
