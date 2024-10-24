@@ -21,12 +21,10 @@ public class ReactNativeAppActivity extends Activity implements DefaultHardwareB
         super.onCreate(savedInstanceState);
         SoLoader.init(this, false);
 
-        // Packages that cannot be autolinked yet can be added manually here, for example:
-        // packages.add(new MyReactNativePackage());
-        // Remember to include them in `settings.gradle` and `app/build.gradle` too.
-        List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
-
         mReactRootView = new ReactRootView(this);
+        List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
+        // Packages that cannot be autolinked yet can be added manually here, for example:
+
         mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(getApplication())
                 .setCurrentActivity(this)
@@ -36,10 +34,9 @@ public class ReactNativeAppActivity extends Activity implements DefaultHardwareB
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
-
-        // The string here (e.g. "MyReactNativeApp") has to match
         // the string in AppRegistry.registerComponent() in index.js
-        mReactRootView.startReactApplication(mReactInstanceManager, "HybridApp", null);
+        mReactRootView.startReactApplication(mReactInstanceManager, "hybridexampleapp", null);
+
         setContentView(mReactRootView);
     }
 
@@ -47,40 +44,49 @@ public class ReactNativeAppActivity extends Activity implements DefaultHardwareB
     public void invokeDefaultOnBackPressed() {
         super.onBackPressed();
     }
-
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostPause(this);
-        }
-    }
+protected void onPause() {
+    super.onPause();
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostResume(this);  // Corrected the method call
-        }
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostPause(this);
     }
+}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostDestroy(this);
-        }
-        if (mReactRootView != null) {
-            mReactRootView.unmountReactApplication();
-        }
-    }
+@Override
+protected void onResume() {
+    super.onResume();
 
-    @Override
-    public void onBackPressed() {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostResume(this, this);
     }
+}
+
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onHostDestroy(this);
+    }
+    if (mReactRootView != null) {
+        mReactRootView.unmountReactApplication();
+    }
+}
+@Override
+ public void onBackPressed() {
+    if (mReactInstanceManager != null) {
+        mReactInstanceManager.onBackPressed();
+    } else {
+        super.onBackPressed();
+    }
+}
+@Override
+public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_MENU && mReactInstanceManager != null) {
+        mReactInstanceManager.showDevOptionsDialog();
+        return true;
+    }
+    return super.onKeyUp(keyCode, event);
+}
 }
