@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+    <TextView
+        android:id="@+id/textview_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="21sp"
+        android:text="Android App" />
+
+    <Button
+        android:id="@+id/button_react_native"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="React Native" />
+
+    <Button
+        android:id="@+id/button_handled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Handled Crash" />
+
+    <Button
+        android:id="@+id/button_unhandled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unhandled Crash" />
+</LinearLayout>
