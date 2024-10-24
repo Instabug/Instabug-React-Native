@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import {ReactNode, useEffect} from 'react';
+import { ReactNode, useEffect } from 'react';
 import React from 'react';
-import {Button, Image, SafeAreaView, Text} from 'react-native';
+import { Button, Image, SafeAreaView, Text } from 'react-native';
 import Instabug, {
   CrashReporting,
   InvocationEvent,
@@ -52,7 +52,7 @@ const App: () => ReactNode = () => {
           width: 100,
         }}
       />
-      <Text style={{fontSize: 21, fontWeight: '700'}}>React Native App</Text>
+      <Text style={{ fontSize: 21, fontWeight: '700' }}>React Native App</Text>
       <Button title="Handled Crash" onPress={throwHandled} />
       <Button title="Unhandled Crash" onPress={throwUnhandled} />
     </SafeAreaView>
