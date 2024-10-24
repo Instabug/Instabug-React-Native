@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, Text, View, Switch } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
@@ -12,7 +12,6 @@ import { VerticalListTile } from '../components/VerticalListTile';
 import { Button, VStack } from 'native-base';
 import { InputField } from '../components/InputField';
 import { Select } from '../components/Select';
-import { showNotification } from '../utils/showNotification';
 
 const styles = StyleSheet.create({
   inputWrapper: {
@@ -62,7 +61,6 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     }
   }
-  const [isEnabled, setIsEnabled] = useState(false);
 
   const [userAttributeKey, setUserAttributeKey] = useState('');
   const [userAttributeValue, setUserAttributeValue] = useState('');
@@ -71,12 +69,6 @@ export const CrashReportingScreen: React.FC = () => {
   const [crashLevelValue, setCrashLevelValue] = useState<NonFatalErrorLevel>(
     NonFatalErrorLevel.error,
   );
-
-  const toggleSwitch = (value: boolean) => {
-    setIsEnabled(value);
-    CrashReporting.setEnabled(value);
-    showNotification('Crash Reporting status', 'Crash Reporting enabled set to ' + value);
-  };
 
   function sendCrash() {
     try {
@@ -107,8 +99,6 @@ export const CrashReportingScreen: React.FC = () => {
 
   return (
     <Screen>
-      <Text>Crash Reporting Enabled:</Text>
-      <Switch onValueChange={toggleSwitch} value={isEnabled} />
       <ScrollView>
         <Section title="Non-Fatals">
           <ListTile
