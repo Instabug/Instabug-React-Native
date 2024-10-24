@@ -26,8 +26,6 @@ import { TracesScreen } from '../screens/apm/TracesScreen';
 import { NetworkScreen } from '../screens/apm/NetworkScreen';
 import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
-import { LegacyModeScreen } from '../screens/LegacyModeScreen';
-import { HttpScreen } from '../screens/apm/HttpScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -47,8 +45,6 @@ export type HomeStackParamList = {
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
-  LegacyMode: undefined;
-  HttpScreen: undefined;
 
   // APM //
   APM: undefined;
@@ -136,12 +132,6 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
       <HomeStack.Screen name="ExecutionTraces" component={TracesScreen} />
       <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
-      <HomeStack.Screen
-        name="LegacyMode"
-        component={LegacyModeScreen}
-        options={{ title: 'LegacyMode' }}
-      />
-      <HomeStack.Screen name="HttpScreen" component={HttpScreen} options={{ title: 'HTTP' }} />
     </HomeStack.Navigator>
   );
 };
