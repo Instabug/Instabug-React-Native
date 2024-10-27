@@ -13,7 +13,6 @@
     // Do any additional setup after loading the view.
 }
 - (IBAction)startReactNative:(UIButton *)sender {
-    NSLog(@"High Score Button Pressed");
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSURL *jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios"];
