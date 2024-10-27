@@ -35,7 +35,7 @@ public class ReactNativeAppActivity extends Activity implements DefaultHardwareB
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
         // the string in AppRegistry.registerComponent() in index.js
-        mReactRootView.startReactApplication(mReactInstanceManager, "hybridexampleapp", null);
+        mReactRootView.startReactApplication(mReactInstanceManager, "HybridSampleApp", null);
 
         setContentView(mReactRootView);
     }
