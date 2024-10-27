@@ -1,12 +1,11 @@
 #import "AppDelegate.h"
-#import <Instabug/Instabug.h>
-
+#import <RNInstabug/RNInstabug.h>
 @implementation AppDelegate
 
 static NSString *const appToken = @"deb1910a7342814af4e4c9210c786f35";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [Instabug startWithToken:appToken invocationEvents:IBGInvocationEventFloatingButton];
+    [RNInstabug initWithToken:appToken invocationEvents:IBGInvocationEventFloatingButton];
     return YES;
 }
 
