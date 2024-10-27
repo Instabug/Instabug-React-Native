@@ -269,9 +269,9 @@ function handleIOSNativeInterception(config: InstabugConfig) {
       shouldEnableNativeInterception &&
       config.networkInterceptionMode === NetworkInterceptionMode.native
     ) {
-      NativeInstabug.setNetworkLoggingEnabled(true); // Enable native iOS automatic network logging.
+      NativeNetworkLogger.forceStartNetworkLoggingIOS(); // Enable native iOS automatic network logging.
     } else {
-      NativeNetworkLogger.resetNetworkLogToDefaultStateIOS(); // Disable native iOS automatic network logging.
+      NativeNetworkLogger.forceStopNetworkLoggingIOS(); // Disable native iOS automatic network logging.
     }
   }
 }

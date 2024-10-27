@@ -44,8 +44,14 @@ RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(
     resolve(@(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled));
 }
 
-RCT_EXPORT_METHOD(resetNetworkLogToDefaultStateIOS) {
-    [IBGNetworkLogger resetNetworkLogToDefaultState];
+RCT_EXPORT_METHOD(forceStartNetworkLoggingIOS) {
+    [IBGNetworkLogger forceStartNetworkLogging];
 }
+
+RCT_EXPORT_METHOD(forceStopNetworkLoggingIOS) {
+    [IBGNetworkLogger forceStopNetworkLogging];
+}
+
+
 
 @end

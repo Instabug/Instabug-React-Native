@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
                    timestamp:(NSNumber * _Nullable)timestamp
      generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
       caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
-+ (void)resetNetworkLogToDefaultState;
++ (void)forceStartNetworkLogging;
++ (void)forceStopNetworkLogging;
 
 @end
 

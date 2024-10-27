@@ -197,7 +197,7 @@ export const reportNetworkLog = (network: NetworkData) => {
         network.requestBody,
         network.requestBodySize,
         network.method,
-        network.url + '/js',
+        network.url,
         network.requestContentType,
         responseHeaders,
         network.responseBody,
@@ -217,7 +217,7 @@ export const reportNetworkLog = (network: NetworkData) => {
     console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogIOS');
 
     NativeInstabug.networkLogIOS(
-      network.url + '/js',
+      network.url,
       network.method,
       network.requestBody,
       network.requestBodySize,
