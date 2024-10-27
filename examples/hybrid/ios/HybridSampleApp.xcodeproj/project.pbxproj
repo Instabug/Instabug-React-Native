@@ -18,7 +18,7 @@
 		0CFE4DEF2CC818D50003EEA7 /* HybridSampleAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE4DEE2CC818D50003EEA7 /* HybridSampleAppUITests.m */; };
 		0CFE4DF12CC818D50003EEA7 /* HybridSampleAppUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE4DF02CC818D50003EEA7 /* HybridSampleAppUITestsLaunchTests.m */; };
 		0CFE4DFE2CC81A4D0003EEA7 /* Instabug.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CFE4DFD2CC81A4D0003EEA7 /* Instabug.xcframework */; };
-		D1EAC73849498F73F46696F0 /* libPods-HybridSampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 669FDB978865D8A588F7DD53 /* libPods-HybridSampleApp.a */; };
+		7552011623DF6FA7BAA9396D /* libPods-HybridSampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 191F7CF905384E260945F1BC /* libPods-HybridSampleApp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,9 +57,9 @@
 		0CFE4DEE2CC818D50003EEA7 /* HybridSampleAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HybridSampleAppUITests.m; sourceTree = "<group>"; };
 		0CFE4DF02CC818D50003EEA7 /* HybridSampleAppUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HybridSampleAppUITestsLaunchTests.m; sourceTree = "<group>"; };
 		0CFE4DFD2CC81A4D0003EEA7 /* Instabug.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Instabug.xcframework; path = Pods/Instabug/Instabug.xcframework; sourceTree = "<group>"; };
-		5D957DCE33A768B1ADA39DA4 /* Pods-HybridSampleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HybridSampleApp.debug.xcconfig"; path = "Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp.debug.xcconfig"; sourceTree = "<group>"; };
-		669FDB978865D8A588F7DD53 /* libPods-HybridSampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HybridSampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A39508F6C3949DC3AF5BDBFD /* Pods-HybridSampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HybridSampleApp.release.xcconfig"; path = "Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp.release.xcconfig"; sourceTree = "<group>"; };
+		191F7CF905384E260945F1BC /* libPods-HybridSampleApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HybridSampleApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDAF6F0831B59FBF78EF5CD3 /* Pods-HybridSampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HybridSampleApp.release.xcconfig"; path = "Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp.release.xcconfig"; sourceTree = "<group>"; };
+		DD8BC6C32D0FF637C576BA5F /* Pods-HybridSampleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HybridSampleApp.debug.xcconfig"; path = "Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CFE4DFE2CC81A4D0003EEA7 /* Instabug.xcframework in Frameworks */,
-				D1EAC73849498F73F46696F0 /* libPods-HybridSampleApp.a in Frameworks */,
+				7552011623DF6FA7BAA9396D /* libPods-HybridSampleApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,8 +149,8 @@
 		2DDC8407773CA2FAF348AF0C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5D957DCE33A768B1ADA39DA4 /* Pods-HybridSampleApp.debug.xcconfig */,
-				A39508F6C3949DC3AF5BDBFD /* Pods-HybridSampleApp.release.xcconfig */,
+				DD8BC6C32D0FF637C576BA5F /* Pods-HybridSampleApp.debug.xcconfig */,
+				CDAF6F0831B59FBF78EF5CD3 /* Pods-HybridSampleApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -159,7 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				0CFE4DFD2CC81A4D0003EEA7 /* Instabug.xcframework */,
-				669FDB978865D8A588F7DD53 /* libPods-HybridSampleApp.a */,
+				191F7CF905384E260945F1BC /* libPods-HybridSampleApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,13 +171,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0CFE4DF42CC818D50003EEA7 /* Build configuration list for PBXNativeTarget "HybridSampleApp" */;
 			buildPhases = (
-				A27A6C95E7732F5DB6861AB0 /* [CP] Check Pods Manifest.lock */,
+				E7BE9A3A8F017BA7CFE4AE55 /* [CP] Check Pods Manifest.lock */,
 				0CFE4DC12CC818D30003EEA7 /* Sources */,
 				0CFE4DC22CC818D30003EEA7 /* Frameworks */,
 				0CFE4DC32CC818D30003EEA7 /* Resources */,
-				8C39C89FF3747642F46DFA22 /* [CP] Embed Pods Frameworks */,
-				D23A93E7EC07553E0149BB55 /* [CP] Copy Pods Resources */,
-				F1A6D2C6D248C80EBA095259 /* [CP-User] [instabug-reactnative] Upload Sourcemap */,
+				ED32AADC33B0BCC494C5A17C /* [CP] Embed Pods Frameworks */,
+				2066411646711027106388D1 /* [CP] Copy Pods Resources */,
+				184F1656F78FFBA87258D53F /* [CP-User] [instabug-reactnative] Upload Sourcemap */,
 			);
 			buildRules = (
 			);
@@ -294,24 +294,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8C39C89FF3747642F46DFA22 /* [CP] Embed Pods Frameworks */ = {
+		184F1656F78FFBA87258D53F /* [CP-User] [instabug-reactnative] Upload Sourcemap */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\nmain() {\n  # Read environment variables from ios/.xcode.env if it exists\n  env_path=\"$PODS_ROOT/../.xcode.env\"\n  if [ -f \"$env_path\" ]; then\n      source \"$env_path\"\n  fi\n\n  # Read environment variables from ios/.xcode.env.local if it exists\n  local_env_path=\"${ENV_PATH}.local\"\n  if [ -f \"$local_env_path\" ]; then\n      source \"$local_env_path\"\n  fi\n\n  if [[ \"$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\" = true ]]; then\n    echo \"[Info] \\`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\\` was set to true, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ \"$CONFIGURATION\" = \"Debug\" ]]; then\n    echo \"[Info] Building in debug mode, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ -z \"$INFOPLIST_FILE\" ]] || [[ -z \"$PROJECT_DIR\" ]]; then\n    echo \"[Error] Instabug sourcemaps script must be invoked by Xcode\"\n    exit 0\n  fi\n\n  local source_map_file=$(generate_sourcemaps | tail -n 1)\n\n  local js_project_dir=\"$PROJECT_DIR/..\"\n  local instabug_dir=$(dirname $(node -p \"require.resolve('instabug-reactnative/package.json')\"))\n  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)\n  local app_token=$(resolve_var \"App Token\" \"INSTABUG_APP_TOKEN\" \"$inferred_token\" | tail -n 1)\n\n  local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_name=$(resolve_var \"Version Name\" \"INSTABUG_APP_VERSION_NAME\" \"$inferred_name\" | tail -n 1)\n\n  local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_code=$(resolve_var \"Version Code\" \"INSTABUG_APP_VERSION_CODE\" \"$inferred_code\" | tail -n 1)\n\n  node $instabug_dir/bin/index.js upload-sourcemaps \\\n      --platform ios \\\n      --file $source_map_file \\\n      --token $app_token \\\n      --name $version_name \\\n      --code $version_code\n}\n\ngenerate_sourcemaps() {\n  local react_native_dir=$(dirname $(node -p \"require.resolve('react-native/package.json')\"))\n\n  # Fixes an issue with react-native prior to v0.67.0\n  # For more info: https://github.com/facebook/react-native/issues/32168\n  export RN_DIR=$react_native_dir\n\n  # Used withing `react-native-xcode.sh` to generate sourcemap file\n  export SOURCEMAP_FILE=\"$(pwd)/main.jsbundle.map\";\n\n  source \"$react_native_dir/scripts/react-native-xcode.sh\"\n\n  if [[ ! -f \"$SOURCEMAP_FILE\" ]]; then\n    echo \"[Error] Unable to find source map file at: $SOURCEMAP_FILE\"\n    exit 0\n  fi\n\n  echo $SOURCEMAP_FILE\n}\n\nresolve_var() {\n  local name=$1\n  local env_key=$2\n  local default_value=$3\n\n  local env_value=\"${!env_key}\"\n\n  if [[ -n \"$env_value\" ]] &&  [[ -n \"$default_value\" ]]  && [[ \"$env_value\" != default_value ]]; then\n    echo \"[Warning] Environment variable \\`$env_key\\` might have incorrect value, make sure this was intentional:\"\n    echo \"   Environment Value: $env_value\"\n    echo \"   Default Value: $default_value\"\n  fi\n\n  local value=\"${env_value:-$default_value}\"\n\n  if [[ -z \"$value\" ]]; then\n    echo \"[Error] Unable to find $name! Set the environment variable \\`$env_key\\` and try again.\"\n    exit 0\n  fi\n\n  echo $value\n}\n\nmain \"$@\"; exit\n";
+		};
+		2066411646711027106388D1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A27A6C95E7732F5DB6861AB0 /* [CP] Check Pods Manifest.lock */ = {
+		E7BE9A3A8F017BA7CFE4AE55 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -333,32 +343,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D23A93E7EC07553E0149BB55 /* [CP] Copy Pods Resources */ = {
+		ED32AADC33B0BCC494C5A17C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HybridSampleApp/Pods-HybridSampleApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		F1A6D2C6D248C80EBA095259 /* [CP-User] [instabug-reactnative] Upload Sourcemap */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] [instabug-reactnative] Upload Sourcemap";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\nmain() {\n  # Read environment variables from ios/.xcode.env if it exists\n  env_path=\"$PODS_ROOT/../.xcode.env\"\n  if [ -f \"$env_path\" ]; then\n      source \"$env_path\"\n  fi\n\n  # Read environment variables from ios/.xcode.env.local if it exists\n  local_env_path=\"${ENV_PATH}.local\"\n  if [ -f \"$local_env_path\" ]; then\n      source \"$local_env_path\"\n  fi\n\n  if [[ \"$INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\" = true ]]; then\n    echo \"[Info] \\`INSTABUG_SOURCEMAPS_UPLOAD_DISABLE\\` was set to true, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ \"$CONFIGURATION\" = \"Debug\" ]]; then\n    echo \"[Info] Building in debug mode, skipping sourcemaps upload...\"\n    exit 0\n  fi\n\n  if [[ -z \"$INFOPLIST_FILE\" ]] || [[ -z \"$PROJECT_DIR\" ]]; then\n    echo \"[Error] Instabug sourcemaps script must be invoked by Xcode\"\n    exit 0\n  fi\n\n  local source_map_file=$(generate_sourcemaps | tail -n 1)\n\n  local js_project_dir=\"$PROJECT_DIR/..\"\n  local instabug_dir=$(dirname $(node -p \"require.resolve('instabug-reactnative/package.json')\"))\n  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)\n  local app_token=$(resolve_var \"App Token\" \"INSTABUG_APP_TOKEN\" \"$inferred_token\" | tail -n 1)\n\n  local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_name=$(resolve_var \"Version Name\" \"INSTABUG_APP_VERSION_NAME\" \"$inferred_name\" | tail -n 1)\n\n  local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' \"$PROJECT_DIR/$INFOPLIST_FILE\")\n  local version_code=$(resolve_var \"Version Code\" \"INSTABUG_APP_VERSION_CODE\" \"$inferred_code\" | tail -n 1)\n\n  node $instabug_dir/bin/index.js upload-sourcemaps \\\n      --platform ios \\\n      --file $source_map_file \\\n      --token $app_token \\\n      --name $version_name \\\n      --code $version_code\n}\n\ngenerate_sourcemaps() {\n  local react_native_dir=$(dirname $(node -p \"require.resolve('react-native/package.json')\"))\n\n  # Fixes an issue with react-native prior to v0.67.0\n  # For more info: https://github.com/facebook/react-native/issues/32168\n  export RN_DIR=$react_native_dir\n\n  # Used withing `react-native-xcode.sh` to generate sourcemap file\n  export SOURCEMAP_FILE=\"$(pwd)/main.jsbundle.map\";\n\n  source \"$react_native_dir/scripts/react-native-xcode.sh\"\n\n  if [[ ! -f \"$SOURCEMAP_FILE\" ]]; then\n    echo \"[Error] Unable to find source map file at: $SOURCEMAP_FILE\"\n    exit 0\n  fi\n\n  echo $SOURCEMAP_FILE\n}\n\nresolve_var() {\n  local name=$1\n  local env_key=$2\n  local default_value=$3\n\n  local env_value=\"${!env_key}\"\n\n  if [[ -n \"$env_value\" ]] &&  [[ -n \"$default_value\" ]]  && [[ \"$env_value\" != default_value ]]; then\n    echo \"[Warning] Environment variable \\`$env_key\\` might have incorrect value, make sure this was intentional:\"\n    echo \"   Environment Value: $env_value\"\n    echo \"   Default Value: $default_value\"\n  fi\n\n  local value=\"${env_value:-$default_value}\"\n\n  if [[ -z \"$value\" ]]; then\n    echo \"[Error] Unable to find $name! Set the environment variable \\`$env_key\\` and try again.\"\n    exit 0\n  fi\n\n  echo $value\n}\n\nmain \"$@\"; exit\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -552,7 +552,7 @@
 		};
 		0CFE4DF52CC818D50003EEA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D957DCE33A768B1ADA39DA4 /* Pods-HybridSampleApp.debug.xcconfig */;
+			baseConfigurationReference = DD8BC6C32D0FF637C576BA5F /* Pods-HybridSampleApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -580,7 +580,7 @@
 		};
 		0CFE4DF62CC818D50003EEA7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A39508F6C3949DC3AF5BDBFD /* Pods-HybridSampleApp.release.xcconfig */;
+			baseConfigurationReference = CDAF6F0831B59FBF78EF5CD3 /* Pods-HybridSampleApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
