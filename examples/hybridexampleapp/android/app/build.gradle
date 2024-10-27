@@ -7,11 +7,21 @@ plugins {
 
 android {
     signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+        buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
-            storeFile file('/Users/yrn/Desktop/release')
-            storePassword 'qwertttt'
-            keyAlias 'key0'
-            keyPassword 'qwertttt'
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
         }
     }
     namespace 'com.instabug.hybridsampleapp'
