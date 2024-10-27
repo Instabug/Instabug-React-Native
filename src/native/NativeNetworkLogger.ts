@@ -5,6 +5,7 @@ export interface NetworkLoggerNativeModule extends NativeModule {
   // Network logging Flags //
   isNativeInterceptionEnabled(): Promise<boolean>;
   hasAPMNetworkPlugin(): Promise<boolean>;
+  resetNetworkLogToDefaultStateIOS(): void; // iOS only
 }
 
 export const NativeNetworkLogger = NativeModules.IBGNetworkLogger;

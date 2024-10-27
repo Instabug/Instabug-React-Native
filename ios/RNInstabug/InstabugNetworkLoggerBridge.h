@@ -11,4 +11,5 @@
  */
 
 - (void)isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+- (void)resetNetworkLogToDefaultStateIOS;
 @end
