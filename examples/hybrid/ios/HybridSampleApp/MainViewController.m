@@ -13,7 +13,7 @@
     // Do any additional setup after loading the view.
 }
 - (IBAction)startReactNative:(UIButton *)sender {
-    NSURL *jsCodeLocation = [NSURL URLWithString:@"http://localhost:8080/index.bundle?platform=ios"];
+    NSURL *jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios"];
 
     RCTRootView *rootView =
           [[RCTRootView alloc] initWithBundleURL: jsCodeLocation
