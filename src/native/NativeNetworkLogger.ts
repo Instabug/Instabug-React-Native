@@ -10,15 +10,17 @@ export enum NetworkListenerType {
 export interface NetworkLoggerNativeModule extends NativeModule {
   isNativeInterceptionEnabled(): Promise<boolean>;
 
-  isAPMNetworkEnabled(): Promise<boolean>; // Android only
-
-  hasAPMNetworkPlugin(): Promise<boolean>; // Android only
-
   registerNetworkLogsListener(type: NetworkListenerType): void;
 
   updateNetworkLogSnapshot(networkData: string): void;
 
+  hasAPMNetworkPlugin(): Promise<boolean>; // Android only
+
   setNetworkLoggingRequestFilterPredicateIOS(id: string, value: boolean): void; // iOS only
+
+  forceStartNetworkLoggingIOS(): void; // iOS only;
+
+  forceStopNetworkLoggingIOS(): void; // iOS only;
 }
 
 export const NativeNetworkLogger = NativeModules.IBGNetworkLogger;

@@ -212,4 +212,14 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     };
 }
 
+RCT_EXPORT_METHOD(forceStartNetworkLoggingIOS) {
+    [IBGNetworkLogger forceStartNetworkLogging];
+}
+
+RCT_EXPORT_METHOD(forceStopNetworkLoggingIOS) {
+    [IBGNetworkLogger forceStopNetworkLogging];
+}
+
+
+
 @end

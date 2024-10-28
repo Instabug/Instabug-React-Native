@@ -5,7 +5,7 @@ import { Screen } from '../../components/Screen';
 import { ClipboardTextInput } from '../../components/ClipboardTextInput';
 import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
-import { gql, request } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
@@ -101,6 +101,12 @@ export const NetworkScreen: React.FC<
   }
 
   const fetchGraphQlData = async () => {
+    const client = new GraphQLClient('https://countries.trevorblades.com/graphql', {
+      headers: {
+        'ibg-graphql-header': 'AndrewQL', // change Query Name here
+      },
+    });
+
     const document = gql`
       query {
         country(code: "EG") {
@@ -110,10 +116,7 @@ export const NetworkScreen: React.FC<
       }
     `;
 
-    return request<{ country: { emoji: string; name: string } }>(
-      'https://countries.trevorblades.com/graphql',
-      document,
-    );
+    return client.request<{ country: { emoji: string; name: string } }>(document);
   };
 
   const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
@@ -127,7 +130,6 @@ export const NetworkScreen: React.FC<
   }
 
   async function makeSequentialApiCalls(urls: string[]): Promise<any[]> {
-    // const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
     const results: any[] = [];
 
     try {
@@ -182,7 +184,7 @@ export const NetworkScreen: React.FC<
               title="Send Sequantail Requests"
             />
 
-            <CustomButton onPress={() => refetch} title="Reload GraphQL" />
+            <CustomButton onPress={() => refetch()} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}

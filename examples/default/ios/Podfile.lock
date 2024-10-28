@@ -524,7 +524,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/feature-support_cp_network_filtering_obfuscation-release/13.4.3/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/release-support_cp_network_filtering_obfuscation-add_reset_network_state/13.4.3/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - libevent (~> 2.1.12)
   - OCMock
@@ -600,7 +600,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/feature-support_cp_network_filtering_obfuscation-release/13.4.3/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/release-support_cp_network_filtering_obfuscation-add_reset_network_state/13.4.3/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -706,7 +706,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: 10fbd3f62405c41ea07e71973ea61e1878d07322
-  Instabug: f582dcf7a4099acca604fa7ffa3bf4eda295317f
+  Instabug: 12ea6990039094c48a7c7e8103ba8679c0833f5e
   instabug-reactnative-ndk: 960119a69380cf4cbe47ccd007c453f757927d17
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
@@ -758,6 +758,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 
-PODFILE CHECKSUM: afd54e1cb156d7b63f6e1beca2ba1f66fa30be0f
+PODFILE CHECKSUM: c4e288aeafe746a77427798d0e33069c948e4b76
 
 COCOAPODS: 1.15.2

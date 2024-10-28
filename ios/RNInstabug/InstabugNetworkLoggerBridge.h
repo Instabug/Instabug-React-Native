@@ -31,4 +31,8 @@ typedef NS_ENUM(NSInteger, NetworkListenerType) {
 - (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
 
 - (void) setNetworkLoggingRequestFilterPredicateIOS:(NSString * _Nonnull) callbackID : (BOOL)value;
+
+- (void)forceStartNetworkLoggingIOS;
+
+- (void)forceStopNetworkLoggingIOS;
 @end
