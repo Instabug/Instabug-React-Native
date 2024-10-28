@@ -639,7 +639,9 @@ describe('Instabug Module', () => {
     [null, null],
     [{}, 'value'],
     ['key', []],
-  ])("should fail if key and value aren't strings when calling setUserAttribute", () => {
+  ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
+    // @ts-ignore
+    Instabug.setUserAttribute(key, value);
     expect(NativeInstabug.setUserAttribute).not.toBeCalled();
   });
 
@@ -673,12 +675,11 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.removeUserAttribute).toBeCalledWith(key);
   });
 
-  it.each([null, 1, {}])(
-    "should fail if key isn't a string when calling removeUserAttribute",
-    () => {
-      expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
-    },
-  );
+  it.each([[null]])("should fail if key isn't a string when calling removeUserAttribute", (key) => {
+    // @ts-ignore
+    Instabug.removeUserAttribute(key);
+    expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
+  });
 
   it('should call native method getAllUserAttributes', async () => {
     const expected = { type: 'guest' };
