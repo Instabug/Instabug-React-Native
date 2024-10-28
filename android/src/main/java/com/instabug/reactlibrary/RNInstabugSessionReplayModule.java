@@ -135,7 +135,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
         if (launchType != null) {
             params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
         } else {
-            params.putString("launchType","unknown");
+            params.putString("launchType",ArgsRegistry.launchType.get("unknown"));
         }
 
         if (launchDuration != null) {

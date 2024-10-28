@@ -244,6 +244,7 @@ final class ArgsRegistry {
     public static ArgsMap<String> launchType = new ArgsMap<String>() {{
         put("cold", SessionMetadata.LaunchType.COLD);
         put("warm",SessionMetadata.LaunchType.WARM );
+        put("unknown","unknown");
     }};
     
 // Temporary workaround to be removed in future release
