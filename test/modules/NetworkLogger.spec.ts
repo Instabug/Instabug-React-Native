@@ -8,13 +8,20 @@ import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../../src/utils/InstabugUtils';
 import InstabugConstants from '../../src/utils/InstabugConstants';
 import * as Instabug from '../../src/modules/Instabug';
-import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
+import {
+  NativeNetworkLogger,
+  NativeNetworkLoggerEvent,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../../src/native/NativeNetworkLogger';
 import { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../../src';
 import { Platform } from 'react-native';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
+
+jest.mock('../../src/native/NativeNetworkLogger');
 
 describe('NetworkLogger Module', () => {
   const network: NetworkLogger.NetworkData = {
@@ -310,5 +317,113 @@ describe('NetworkLogger Module', () => {
 
     expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
     expect(NativeNetworkLogger.hasAPMNetworkPlugin).toHaveBeenCalled();
+  });
+});
+
+describe('_registerNetworkLogsListener', () => {
+  let handlerMock: jest.Mock;
+  let type: NetworkListenerType;
+
+  beforeEach(() => {
+    jest.resetModules(); // Clear cached modules and reload
+    jest.resetAllMocks(); // Reset mock implementation and calls
+    jest.clearAllMocks(); // Clear only calls, keeping implementation intact
+  });
+
+  afterEach(() => {
+    handlerMock = jest.fn();
+    type = NetworkListenerType.both;
+    // Make sure to clean up listeners to avoid side effects
+    NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+  });
+
+  it('should ignore repetitive calls with the same type', () => {
+    // Simulate existing listener
+    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(1);
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    // Call again with the same type to ensure it does nothing
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    expect(NetworkLoggerEmitter.removeAllListeners).toHaveBeenCalledTimes(1);
+    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalledTimes(1);
+    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledTimes(1);
+  });
+
+  it('should remove old listeners if they exist', () => {
+    // Simulate that there are existing listeners
+    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(2);
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    expect(NetworkLoggerEmitter.removeAllListeners).toHaveBeenCalledWith(
+      NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
+    );
+  });
+
+  it('should set the new listener if _networkListener is null', () => {
+    // No existing listener
+    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(0);
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalled();
+    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledWith(type);
+  });
+
+  it('should attach a new listener to the existing one if _networkListener is set', () => {
+    type = NetworkListenerType.filtering;
+    const newType = NetworkListenerType.both;
+
+    // First call to set the listener
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    // Second call with a different type to trigger setting to `both`
+    NetworkLogger.registerNetworkLogsListener(newType, handlerMock);
+
+    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalledTimes(2);
+    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledWith(
+      NetworkListenerType.both,
+    );
+  });
+
+  it('should map networkSnapshot data correctly and call handler', () => {
+    const mockNetworkSnapshot = {
+      id: '123',
+      url: 'http://example.com',
+      requestHeader: {},
+      requestBody: 'test request body',
+      responseHeader: {},
+      response: 'test response',
+      responseCode: 200,
+    };
+
+    (NetworkLoggerEmitter.addListener as jest.Mock).mockImplementation((_, callback) => {
+      callback(mockNetworkSnapshot);
+    });
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    const expectedNetworkData: NetworkLogger.NetworkData = {
+      id: '123',
+      url: 'http://example.com',
+      requestBody: 'test request body',
+      requestHeaders: {},
+      method: '',
+      responseBody: 'test response',
+      responseCode: 200,
+      responseHeaders: {},
+      contentType: '',
+      duration: 0,
+      requestBodySize: 0,
+      responseBodySize: 0,
+      errorDomain: '',
+      errorCode: 0,
+      startTime: 0,
+      serverErrorMessage: '',
+      requestContentType: '',
+    };
+
+    expect(handlerMock).toHaveBeenCalledWith(expectedNetworkData);
   });
 });

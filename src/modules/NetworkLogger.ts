@@ -146,6 +146,19 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
   return forward(operation);
 };
 
+/**
+ * @internal
+ * Exported for internal/testing purposes only.
+ */
+export function registerNetworkLogsListener(
+  type: NetworkListenerType,
+  handler?: (networkSnapshot: NetworkData) => void,
+) {
+  if (process.env.NODE_ENV === 'test') {
+    _registerNetworkLogsListener(type, handler);
+  }
+}
+
 const _registerNetworkLogsListener = (
   type: NetworkListenerType,
   handler?: (networkSnapshot: NetworkData) => void,

@@ -926,7 +926,7 @@ describe('Instabug iOS initialization tests', () => {
     await Instabug.init(config);
 
     expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
-    expect(NetworkLogger.setEnabled).not.toHaveBeenCalled();
+    expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(false);
     expect(NativeInstabug.init).toHaveBeenCalledWith(
       config.token,
       config.invocationEvents,
