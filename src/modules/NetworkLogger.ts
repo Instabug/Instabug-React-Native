@@ -115,9 +115,10 @@ export const setRequestFilterExpression = (expression: string) => {
         // For iOS True == Request will be saved, False == will be ignored
         NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
       } else {
-        // For Android Setting the passed data to empty string will ignore the request;
+        // For Android Setting the [url] to an empty string will ignore the request;
         if (value) {
-          NativeNetworkLogger.updateNetworkLogSnapshot('');
+          networkSnapshot.url = '';
+          NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
         }
       }
     });
