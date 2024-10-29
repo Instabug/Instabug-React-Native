@@ -325,16 +325,10 @@ describe('_registerNetworkLogsListener', () => {
   let type: NetworkListenerType;
 
   beforeEach(() => {
-    jest.resetModules(); // Clear cached modules and reload
-    jest.resetAllMocks(); // Reset mock implementation and calls
-    jest.clearAllMocks(); // Clear only calls, keeping implementation intact
-  });
-
-  afterEach(() => {
     handlerMock = jest.fn();
     type = NetworkListenerType.both;
-    // Make sure to clean up listeners to avoid side effects
-    NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+    jest.resetAllMocks(); // Reset mock implementation and calls
+    NetworkLogger.resetNetworkListener(); // Clear only calls, keeping implementation intact
   });
 
   it('should ignore repetitive calls with the same type', () => {

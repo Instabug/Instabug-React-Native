@@ -159,6 +159,16 @@ export function registerNetworkLogsListener(
   }
 }
 
+/**
+ * @internal
+ * Exported for internal/testing purposes only.
+ */
+export const resetNetworkListener = () => {
+  if (process.env.NODE_ENV === 'test') {
+    _networkListener = null;
+  }
+};
+
 const _registerNetworkLogsListener = (
   type: NetworkListenerType,
   handler?: (networkSnapshot: NetworkData) => void,
