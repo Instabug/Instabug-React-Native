@@ -1,0 +1,86 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.facebook.react'
+
+}
+
+android {
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+        buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+        }
+    }
+    namespace 'com.instabug.hybridsampleapp'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.instabug.hybridsampleapp"
+        minSdk 29
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.8"
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+        compose = true
+        buildConfig = true
+    }
+}
+
+dependencies {
+    // Use consistent versions
+    def composeBom = platform('androidx.compose:compose-bom:2023.10.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+
+    // Compose dependencies
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.appcompat.resources
+    implementation libs.androidx.core.ktx.v1130
+    implementation libs.androidx.core
+    implementation libs.androidx.activity
+    implementation libs.androidx.transition
+    implementation libs.androidx.annotation.experimental
+    implementation "com.facebook.react:react-android"
+    implementation "com.facebook.react:hermes-android"
+    // Other dependencies...
+}
+configurations.all {
+    resolutionStrategy {
+        force "androidx.appcompat:appcompat:${rootProject.ext.androidXAppCompatVersion}"
+        force "androidx.appcompat:appcompat-resources:${rootProject.ext.androidXAppCompatVersion}"
+        force "androidx.core:core:${rootProject.ext.androidXCoreVersion}"
+        force "androidx.core:core-ktx:${rootProject.ext.androidXCoreVersion}"
+    }
+}
+
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

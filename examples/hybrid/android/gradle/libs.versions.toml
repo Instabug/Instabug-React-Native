@@ -1,0 +1,51 @@
+[versions]
+activity = "1.8.0"
+agp = "8.5.2"
+androidxCoreKtx = "1.13.0"
+annotationExperimental = "1.4.0"
+appcompatResources = "1.7.0"
+coreKtxVersion = "1.9.0"
+instabug = "13.4.1"
+kotlin = "1.9.0"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.3"
+composeBom = "2024.04.01"
+appcompat = "1.7.0"
+reactNative = "0.72.3"
+transition = "1.5.0"
+
+[libraries]
+androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
+androidx-annotation-experimental = { module = "androidx.annotation:annotation-experimental", version.ref = "annotationExperimental" }
+androidx-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "appcompatResources" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidxCoreKtx" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v1130 = { module = "androidx.core:core-ktx", version.ref = "androidxCoreKtx" }
+androidx-core-ktx-v190 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
+androidx-transition = { module = "androidx.transition:transition", version.ref = "transition" }
+instabug = { module = "com.instabug.library:instabug", version.ref = "instabug" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+react-native = { module = "com.facebook.react:react-native", version.ref = "reactNative" }
+react-native-gradle-plugin = { module = "com.facebook.react:react-native-gradle-plugin" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
