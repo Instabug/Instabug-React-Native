@@ -170,9 +170,6 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: ~/project/examples/hybrid
-      - run:
-          command: yarn tsc
-          working_directory: ~/project/examples/hybrid
 
 
 jobs:
