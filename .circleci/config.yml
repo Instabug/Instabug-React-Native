@@ -47,8 +47,11 @@ commands:
         default: false
     steps:
       - run:
+          name: Uninstall Existing CocoaPods
+          command: gem uninstall -x cocoapods
+      - run:
           name: Install CocoaPods
-          command: gem install cocoapods -v 1.14.0
+          command: gem install cocoapods:1.14.0
       - restore_cache:
           name: Restore Pods Cache
           keys:
