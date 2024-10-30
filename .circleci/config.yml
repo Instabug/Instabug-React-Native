@@ -312,7 +312,7 @@ jobs:
                 -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
-                -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                -destination 'platform=iOS Simulator,name=any' \
                 test | xcpretty
       - when:
           condition: << parameters.collect_coverage >>
@@ -505,6 +505,7 @@ jobs:
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
   build_android_release:
+    working_directory: ~/project
     executor:
       name: android/android-machine
       tag: '2024.01.1'
