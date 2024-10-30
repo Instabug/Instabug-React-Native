@@ -532,7 +532,7 @@ jobs:
             -scheme HybridSampleApp \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \ | xcpretty
+            -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5'
 workflows:
   publish:
     jobs:
