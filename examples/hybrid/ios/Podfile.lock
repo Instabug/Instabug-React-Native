@@ -388,9 +388,6 @@ PODS:
     - React-jsi (= 0.72.3)
     - React-logger (= 0.72.3)
     - React-perflogger (= 0.72.3)
-  - RNInstabug (13.4.0):
-    - Instabug (= 13.4.2)
-    - React-Core
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -434,7 +431,6 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - RNInstabug (from `../node_modules/instabug-reactnative`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -518,8 +514,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  RNInstabug:
-    :path: "../node_modules/instabug-reactnative"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -563,7 +557,6 @@ SPEC CHECKSUMS:
   React-runtimescheduler: af0b24628c1d543a3f87251c9efa29c5a589e08a
   React-utils: bcb57da67eec2711f8b353f6e3d33bd8e4b2efa3
   ReactCommon: d7d63a5b3c3ff29304a58fc8eb3b4f1b077cd789
-  RNInstabug: 8e7eb1df3f35b935dda661f5bb475f37cef595e6
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
 
