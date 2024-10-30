@@ -520,7 +520,7 @@ jobs:
 
   build_ios_release:
     macos:
-      xcode: 13.4.1
+      xcode: 15.0.0
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
@@ -535,7 +535,7 @@ jobs:
             -scheme HybridSampleApp \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator'
+            -destination 'platform=iOS Simulator,name=iPhone 14'
 
 workflows:
   publish:
