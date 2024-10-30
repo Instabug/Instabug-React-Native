@@ -3,7 +3,6 @@ package com.instabug.reactlibrary;
 
 import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
 import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
-import static com.instabug.apm.configuration.cp.APMFeature.NETWORK_INTERCEPTION_ENABLED;
 
 import androidx.annotation.NonNull;
 
@@ -11,11 +10,9 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.instabug.apm.InternalAPM;
-import com.instabug.apm.sanitization.AsyncSanitizer;
 import com.instabug.apm.sanitization.OnCompleteCallback;
 import com.instabug.library.logging.listeners.networklogs.NetworkLogSnapshot;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
@@ -24,14 +21,13 @@ import com.instabug.reactlibrary.utils.MainThreadHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
 
-    private final ConcurrentHashMap<String, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<String, OnCompleteCallback<NetworkLogSnapshot>>();
+    public final ConcurrentHashMap<String, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<String, OnCompleteCallback<NetworkLogSnapshot>>();
 
     public RNInstabugNetworkLoggerModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -143,8 +139,8 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
     @ReactMethod
     protected void updateNetworkLogSnapshot(String jsonString) {
 
-        JSONObject newJSONObject = null;
-        String url = "";
+        JSONObject newJSONObject;
+        String url;
         NetworkLogSnapshot modifiedSnapshot = null;
         try {
             newJSONObject = new JSONObject(jsonString);
@@ -155,21 +151,13 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
         final String ID = newJSONObject.optString("id");
 
         if (!url.isEmpty()) {
-            modifiedSnapshot = new NetworkLogSnapshot(
-                    url,
-                    null,
-                    null,
-                    null,
-                    null,
-                    newJSONObject.optInt("responseCode")
-            );
+            modifiedSnapshot = new NetworkLogSnapshot(url, null, null, null, null, newJSONObject.optInt("responseCode"));
         }
 
         final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
         if (callback != null) {
             callback.onComplete(modifiedSnapshot);
+            callbackMap.remove(ID);
         }
-        callbackMap.remove(ID);
-
     }
 }

@@ -255,7 +255,7 @@ function handleAndroidNativeInterception() {
 }
 
 /**
- * Control either to enable or disable the native interception logic for iOS.
+ * Control either to enable or disable the native interception for iOS.
  */
 function handleIOSNativeInterception(config: InstabugConfig) {
   if (Platform.OS === 'ios') {
