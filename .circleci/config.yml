@@ -506,7 +506,6 @@ jobs:
             - ./*     
 
   build_android_release:
-    name: Build android
     executor:
       name: node/defaul
     steps:
@@ -519,7 +518,6 @@ jobs:
             ./gradlew assembleDebug
 
   build_ios_release:
-    name: Build iOS
     executor:
       name: node/default
     macos:
