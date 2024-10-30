@@ -155,6 +155,10 @@ commands:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
   pack_and_build_sdk:
+    parameters:
+      working_directory:
+        type: string
+        default: ~/project
     steps:
       - install_node_modules
       - run:
