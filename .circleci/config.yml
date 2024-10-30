@@ -529,8 +529,10 @@ jobs:
           command: |
             cd examples/hybrid/ios
             xcodebuild -workspace HybridSampleApp.xcworkspace \
-             -scheme HybridSampleApp -configuration Debug \ -sdk iphonesimulator \
-             -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \ | xcpretty
+            -scheme HybridSampleApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \ | xcpretty
 workflows:
   publish:
     jobs:
