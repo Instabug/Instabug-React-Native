@@ -128,6 +128,9 @@ android {
             keyPassword 'android'
         }
     }
+    buildFeatures {
+        buildConfig true
+    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
