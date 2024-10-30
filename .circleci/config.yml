@@ -162,13 +162,18 @@ commands:
     steps:
       - install_node_modules
       - run:
-          name: Build and Pack SDK
-          command: |
-            yarn build
-            yarn pack --filename InstabugSDK.tgz
-            cd examples/hybrid
-            yarn add file:../../InstabugSDK.tgz
-            yarn tsc
+          command: yarn build
+          working_directory: ~/project
+      - run:
+          command: yarn pack --filename InstabugSDK.tgz
+          working_directory: ~/project
+      - run:
+          command: yarn add file:../../InstabugSDK.tgz
+          working_directory: ~/project/examples/hybrid
+      - run:
+          command: yarn tsc
+          working_directory: ~/project/examples/hybrid
+
 
 jobs:
   danger:
