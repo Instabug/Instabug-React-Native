@@ -521,6 +521,7 @@ jobs:
   build_ios_release:
     macos:
       xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
       - pack_and_build_sdk
@@ -534,7 +535,7 @@ jobs:
             -scheme HybridSampleApp \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5'
+            -destination 'platform=iOS Simulator,name=any' \
 
 workflows:
   publish:
