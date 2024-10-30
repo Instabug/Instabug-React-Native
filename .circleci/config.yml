@@ -490,6 +490,8 @@ jobs:
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
   pack_and_build_sdk:
+    executor:
+      name: node/defaul
     steps:
       - install_node_modules
       - run:
