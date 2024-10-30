@@ -16,8 +16,6 @@ references:
     - test_ios
     - e2e_ios
     - e2e_android
-    - android_release
-    - build_and_test
 
   dream11_prepare_config: &dream11_prepare_config
     prepare_steps:
@@ -156,6 +154,17 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
+  pack_and_build_sdk:
+    steps:
+      - install_node_modules
+      - run:
+          name: Build and Pack SDK
+          command: |
+            yarn build
+            yarn pack --filename InstabugSDK.tgz
+            cd examples/hybrid
+            yarn add file:../../InstabugSDK.tgz
+            yarn tsc
 
 jobs:
   danger:
@@ -489,30 +498,12 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
-  pack_and_build_sdk:
-    executor:
-      name: node/defaul
-    steps:
-      - install_node_modules
-      - run:
-          name: Build and Pack SDK
-          command: |
-            yarn build
-            yarn pack --filename InstabugSDK.tgz
-            cd examples/hybrid
-            yarn add file:../../InstabugSDK.tgz
-            yarn tsc
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./*     
-
   build_android_release:
     executor:
-      name: node/defaul
+      name: android/android-machine
+      tag: '2024.01.1'
     steps:
-      - attach_workspace:
-          at: .
+      - pack_and_build_sdk
       - run:
           name: Build Android
           command: |
@@ -520,18 +511,17 @@ jobs:
             ./gradlew assembleDebug
 
   build_ios_release:
-    executor:
-      name: node/default
     macos:
-      xcode: "13.4.1"
+      xcode: '13.4.1'
     steps:
-      - attach_workspace:
-          at: .
+      - advanced-checkout/shallow-checkout
+      - pack_and_build_sdk
+      - install_pods:
+          working_directory: examples/hybrid/ios
       - run:
           name: Build iOS
           command: |
             cd examples/hybrid/ios
-            pod install
             xcodebuild -workspace HybridSampleApp.xcworkspace -scheme HybridSampleApp -configuration Debug
 workflows:
   publish:
@@ -652,24 +642,23 @@ workflows:
           filters:
             branches:
               only: dream11
+      - build_ios_release:
+          filters:
+            branches:
+              only: master
+      - build_android_release:
+          filters:
+            branches:
+              only: master
+
       - release_custom_package:
           name: release_dream11
           requires:
-            - realese_post_check
+            - build_android_release
+            - build_ios_release
             - hold_release_dream11
           filters:
             branches:
               only: dream11
           prepare_steps:
             - prepare_dream11
-      - pack_and_build_sdk
-      - build_android_release
-      - build_ios_release
-      - realese_post_check:
-        requires: 
-         - pack_and_build_sdk
-         - build_android_release
-         - build_ios_release
-        filters:
-            branches:
-            only: master 
