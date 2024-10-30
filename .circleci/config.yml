@@ -506,6 +506,9 @@ jobs:
             - ./*     
 
   build_android_release:
+    name: Build android
+    executor:
+      name: node/defaul
     steps:
       - attach_workspace:
           at: .
@@ -516,6 +519,9 @@ jobs:
             ./gradlew assembleDebug
 
   build_ios_release:
+    name: Build iOS
+    executor:
+      name: node/default
     macos:
       xcode: "13.4.1"
     steps:
