@@ -487,7 +487,44 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+pack_and_build_sdk:
+    steps:
+      - install_node_modules
+      - run:
+          name: Build and Pack SDK
+          command: |
+            yarn build
+            yarn pack --filename InstabugSDK.tgz
+            cd examples/hybrid
+            yarn add file:../../InstabugSDK.tgz
+            yarn tsc
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*     
 
+  build_android_release:
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build Android
+          command: |
+            cd examples/hybrid/android
+            ./gradlew assembleDebug
+
+  build_ios_release:
+    macos:
+      xcode: "13.4.1"
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build iOS
+          command: |
+            cd examples/hybrid/ios
+            pod install
+            xcodebuild -workspace HybridSampleApp.xcworkspace -scheme HybridSampleApp -configuration Debug
 workflows:
   publish:
     jobs:
@@ -610,9 +647,19 @@ workflows:
       - release_custom_package:
           name: release_dream11
           requires:
+            - realese_post_check
             - hold_release_dream11
           filters:
             branches:
               only: dream11
           prepare_steps:
             - prepare_dream11
+      - realese_post_check:
+        requires: 
+         - pack_and_build_sdk
+         - build_android_release
+         - build_ios_release
+        filters:
+            branches:
+            only: 
+            - master 
