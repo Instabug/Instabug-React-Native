@@ -46,6 +46,9 @@ commands:
         type: boolean
         default: false
     steps:
+      - run:
+          name: Install CocoaPods
+          command: gem install cocoapods -v 1.14.0
       - restore_cache:
           name: Restore Pods Cache
           keys:
