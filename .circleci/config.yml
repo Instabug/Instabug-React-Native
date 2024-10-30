@@ -510,6 +510,7 @@ jobs:
       name: android/android-machine
       tag: '2024.01.1'
     steps:
+      - advanced-checkout/shallow-checkout
       - pack_and_build_sdk
       - run:
           name: Build Android
@@ -519,7 +520,7 @@ jobs:
 
   build_ios_release:
     macos:
-      xcode: '13.4.1'
+      xcode: 13.4.1
     steps:
       - advanced-checkout/shallow-checkout
       - pack_and_build_sdk
@@ -533,7 +534,8 @@ jobs:
             -scheme HybridSampleApp \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5'
+            -destination 'platform=iOS Simulator,name=any' 
+
 workflows:
   publish:
     jobs:
