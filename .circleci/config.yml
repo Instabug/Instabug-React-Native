@@ -504,37 +504,46 @@ jobs:
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
   build_check_android:
-    working_directory: ~/project
+    parameters:
+      working_directory:
+        type: string
+      android_path:
+        type: string
     executor:
-      name: android/android-machine
-      tag: '2024.01.1'
+        name: android/android-machine
+        tag: '2024.01.1'
     steps:
       - advanced-checkout/shallow-checkout
       - build_and_pack_sdk:
-          working_directory: ~/project/examples/hybrid
+          working_directory: << parameters.working_directory >>
       - run:
           name: Build Android
           command: |
-            cd examples/hybrid/android
-            ./gradlew assembleDebug
+            cd << parameters.android_path >>
+            ./gradlew assembleRelease
 
   build_check_ios:
+    parameters:
+      working_directory:
+        type: string
+      ios_path:
+        type: string
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
       - build_and_pack_sdk:
-          working_directory: ~/project/examples/hybrid
+          working_directory: << parameters.working_directory >>
       - install_pods:
-          working_directory: examples/hybrid/ios
+          working_directory: << parameters.ios_path >>
       - run:
           name: Build iOS
           command: |
-            cd examples/hybrid/ios
+            cd << parameters.ios_path >>
             xcodebuild -workspace HybridSampleApp.xcworkspace \
             -scheme HybridSampleApp \
-            -configuration Debug \
+            -configuration Release \
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
 
@@ -658,10 +667,14 @@ workflows:
             branches:
               only: dream11
       - build_check_ios:
+          working_directory: ~/project/examples/hybrid
+          ios_path: examples/hybrid/ios
           filters:
             branches:
               only: master
       - build_check_android:
+          working_directory: ~/project/examples/hybrid
+          android_path: examples/hybrid/android
           filters:
             branches:
               only: master
