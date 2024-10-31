@@ -534,7 +534,7 @@ jobs:
             -scheme HybridSampleApp \
             -configuration Debug \
             -sdk iphonesimulator \
-            -destination 'platform=iOS OS:15.5, name=iPhone 11 Pro Max'
+            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
 
 workflows:
   publish:
