@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (13.4.2)
+  - Instabug (13.4.3)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1603,7 +1603,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - RNInstabug (13.4.0):
-    - Instabug (= 13.4.2)
+    - Instabug (= 13.4.3)
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
@@ -1747,6 +1747,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/release-support_cp_network_filtering_obfuscation-add_reset_network_state/13.4.3/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1825,7 +1826,6 @@ SPEC REPOS:
   trunk:
     - Google-Maps-iOS-Utils
     - GoogleMaps
-    - Instabug
     - OCMock
     - SocketRocket
 
@@ -1843,6 +1843,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-08-15-RNv0.75.1-4b3bf912cc0f705b51b71ce1a5b8bd79b93a451b
+  Instabug:
+    :podspec: https://ios-releases.instabug.com/custom/release-support_cp_network_filtering_obfuscation-add_reset_network_state/13.4.3/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -1993,7 +1995,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 7a71890217b97b1e32dbca96661845396b66da2f
+  Instabug: 12ea6990039094c48a7c7e8103ba8679c0833f5e
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
@@ -2059,14 +2061,14 @@ SPEC CHECKSUMS:
   ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
   RNCClipboard: 2821ac938ef46f736a8de0c8814845dde2dcbdfb
   RNGestureHandler: 511250b190a284388f9dd0d2e56c1df76f14cfb8
-  RNInstabug: 8e7eb1df3f35b935dda661f5bb475f37cef595e6
+  RNInstabug: 514b187e5b884939fd337eefb3244ea75e7e34f8
   RNReanimated: f42a5044d121d68e91680caacb0293f4274228eb
   RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
   RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
+  Yoga: aa3df615739504eebb91925fc9c58b4922ea9a08
 
-PODFILE CHECKSUM: 9116afa418638f45a5fba99099befb7da0049828
+PODFILE CHECKSUM: 784fde5e5fa833eeefea8a5deaa699d18167d101
 
-COCOAPODS: 1.14.0
+COCOAPODS: 1.15.2

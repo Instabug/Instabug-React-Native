@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,22 +20,35 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
 
-//Setting up the handler
-
 export const App: React.FC = () => {
-  useEffect(() => {
-    Instabug.init({
-      token: '0fcc87b8bf731164828cc411eccc802a',
-      invocationEvents: [InvocationEvent.floatingButton],
-      debugLogsLevel: LogLevel.verbose,
-      networkInterceptionMode: NetworkInterceptionMode.native,
-    });
-    CrashReporting.setNDKCrashesEnabled(true);
+  const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
 
-    Instabug.setReproStepsConfig({
-      all: ReproStepsMode.enabled,
-    });
+  useEffect(() => {
+    const initializeInstabug = async () => {
+      try {
+        await Instabug.init({
+          token: '0fcc87b8bf731164828cc411eccc802a',
+          invocationEvents: [InvocationEvent.floatingButton],
+          debugLogsLevel: LogLevel.verbose,
+          networkInterceptionMode: NetworkInterceptionMode.native,
+        });
+
+        CrashReporting.setNDKCrashesEnabled(true);
+        Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
+
+        setIsInstabugInitialized(true); // Set to true after initialization
+      } catch (error) {
+        console.error('Instabug initialization failed:', error);
+        setIsInstabugInitialized(true); // Proceed even if initialization fails
+      }
+    };
+
+    initializeInstabug();
   }, []);
+
+  if (!isInstabugInitialized) {
+    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
+  }
 
   return (
     <GestureHandlerRootView style={styles.root}>
@@ -53,5 +66,10 @@ export const App: React.FC = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

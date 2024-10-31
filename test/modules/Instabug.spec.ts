@@ -926,7 +926,7 @@ describe('Instabug iOS initialization tests', () => {
     await Instabug.init(config);
 
     expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
-    expect(NetworkLogger.setEnabled).not.toHaveBeenCalled();
+    expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(false);
     expect(NativeInstabug.init).toHaveBeenCalledWith(
       config.token,
       config.invocationEvents,
@@ -1044,8 +1044,7 @@ describe('Instabug Android initialization tests', () => {
 
     expect(logSpy).toBeCalledTimes(1);
     expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG +
-        InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
     );
   });
 

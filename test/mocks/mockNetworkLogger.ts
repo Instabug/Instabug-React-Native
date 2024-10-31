@@ -5,6 +5,8 @@ const mockNetworkLogger: NetworkLoggerNativeModule = {
   removeListeners: jest.fn(),
   hasAPMNetworkPlugin: jest.fn(),
   isNativeInterceptionEnabled: jest.fn(),
+  forceStartNetworkLoggingIOS: jest.fn(),
+  forceStopNetworkLoggingIOS: jest.fn(),
 };
 
 export default mockNetworkLogger;

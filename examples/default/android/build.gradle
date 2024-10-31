@@ -24,7 +24,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:8.1.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath 'com.instabug.library:instabug-plugin:13.4.1.6273165-SNAPSHOT'
+        classpath("com.instabug.library:instabug-plugin:14.0.0.6273738-SNAPSHOT")
     }
 }
 

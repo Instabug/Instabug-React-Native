@@ -9,11 +9,11 @@ const InstabugConstants = {
     'The request body has not been logged because it exceeds the maximum size of 10 Kb',
   IBG_APM_TAG: 'IBG-APM: ',
   SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE:
-    'Switched to Native Interception: Android Plugin Detected',
-  PLUGIN_NOT_INSTALLED_MESSAGE: 'Network traces won’t get captured as plugin is not installed',
-  PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE:
-    'Network traces won’t get captured as plugin is not installed and native interception is disabled from BE',
-  NATIVE_INTERCEPTION_DISABLED_MESSAGE: 'Native interception is disabled',
+    'Android Plugin Detected. Switched to Native Interception.',
+  PLUGIN_NOT_INSTALLED_MESSAGE:
+    'Network Spans will not be captured as Android Plugin is not installed. Disabling Native Interception to minimize data loss.',
+  NATIVE_INTERCEPTION_DISABLED_MESSAGE:
+    'Network Spans capture is disabled by Instabug. Disabling native interception to avoid data loss.',
 };
 
 export default InstabugConstants;
