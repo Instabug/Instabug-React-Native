@@ -542,11 +542,12 @@ jobs:
           command: |
             cd << parameters.ios_path >>
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+            rm -rf ~/Library/Developer/Xcode/DerivedData/*
             xcodebuild -workspace HybridSampleApp.xcworkspace \
             -scheme HybridSampleApp \
             -configuration Release \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
+            -destination "platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro Max"
 
 workflows:
   publish:
