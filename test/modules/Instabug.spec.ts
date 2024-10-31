@@ -1044,8 +1044,7 @@ describe('Instabug Android initialization tests', () => {
 
     expect(logSpy).toBeCalledTimes(1);
     expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG +
-        InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
     );
   });
 

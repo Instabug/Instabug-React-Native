@@ -45,7 +45,7 @@ const firstScreen = 'Initial Screen';
 let _currentAppState = AppState.currentState;
 let isNativeInterceptionFeatureEnabled = false; // Checks the value of "cp_native_interception_enabled" backend flag.
 let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.
-let shouldEnableNativeInterception = false; // Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), iOS: used to control native interception (true == enabled , false == disabled)
+let shouldEnableNativeInterception = false; // For Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), For iOS: used to control native interception (true == enabled , false == disabled)
 
 /**
  * Enables or disables Instabug functionality.
@@ -241,16 +241,9 @@ function handleAndroidNativeInterception() {
     }
   } else {
     shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
-    if (hasAPMNetworkPlugin) {
-      console.error(
-        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-      );
-    } else {
-      console.error(
-        InstabugConstants.IBG_APM_TAG +
-          InstabugConstants.PLUGIN_NOT_INSTALLED_AND_NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-      );
-    }
+    console.error(
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+    );
   }
 }
 
