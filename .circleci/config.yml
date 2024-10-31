@@ -311,7 +311,7 @@ jobs:
                 -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
-                -destination 'platform=iOS Simulator,name=any' \
+                -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max" \
                 test | xcpretty
       - when:
           condition: << parameters.collect_coverage >>
