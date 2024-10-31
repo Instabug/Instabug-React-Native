@@ -18,7 +18,6 @@ target 'HybridSampleApp' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  pod 'Instabug', '~> 13.4.2'
 
   post_install do |installer|
     react_native_post_install(
