@@ -510,8 +510,8 @@ jobs:
       android_path:
         type: string
     executor:
-        name: android/android-machine
-        tag: '2024.01.1'
+      name: android/android-machine
+      tag: '2024.01.1'
     steps:
       - advanced-checkout/shallow-checkout
       - build_and_pack_sdk:
