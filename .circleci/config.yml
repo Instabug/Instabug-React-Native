@@ -154,6 +154,23 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
+  pack_and_build_sdk:
+    parameters:
+      working_directory:
+        type: string
+        default: ~/project
+    steps:
+      - install_node_modules
+      - run:
+          command: yarn build
+          working_directory: ~/project
+      - run:
+          command: yarn pack --filename InstabugSDK.tgz
+          working_directory: ~/project
+      - run:
+          command: yarn add file:../../InstabugSDK.tgz
+          working_directory: ~/project/examples/hybrid
+
 
 jobs:
   danger:
@@ -295,7 +312,7 @@ jobs:
                 -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
-                -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                -destination 'platform=iOS Simulator,name=any' \
                 test | xcpretty
       - when:
           condition: << parameters.collect_coverage >>
@@ -487,6 +504,38 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+  build_android_release:
+    working_directory: ~/project
+    executor:
+      name: android/android-machine
+      tag: '2024.01.1'
+    steps:
+      - advanced-checkout/shallow-checkout
+      - pack_and_build_sdk
+      - run:
+          name: Build Android
+          command: |
+            cd examples/hybrid/android
+            ./gradlew assembleDebug
+
+  build_ios_release:
+    macos:
+      xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
+    steps:
+      - advanced-checkout/shallow-checkout
+      - pack_and_build_sdk
+      - install_pods:
+          working_directory: examples/hybrid/ios
+      - run:
+          name: Build iOS
+          command: |
+            cd examples/hybrid/ios
+            xcodebuild -workspace HybridSampleApp.xcworkspace \
+            -scheme HybridSampleApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 11'
 
 workflows:
   publish:
@@ -607,9 +656,13 @@ workflows:
           filters:
             branches:
               only: dream11
+      - build_ios_release
+      - build_android_release
       - release_custom_package:
           name: release_dream11
           requires:
+            - build_android_release
+            - build_ios_release
             - hold_release_dream11
           filters:
             branches:
