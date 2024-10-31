@@ -154,7 +154,7 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
-  pack_and_build_sdk:
+  build_and_pack_sdk:
     parameters:
       working_directory:
         type: string
@@ -169,7 +169,7 @@ commands:
           working_directory: ~/project
       - run:
           command: yarn add file:../../InstabugSDK.tgz
-          working_directory: ~/project/examples/hybrid
+          working_directory: <<parameters.working_directory>>
 
 jobs:
   danger:
@@ -503,27 +503,29 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
-  build_android_release:
+  build_check_android:
     working_directory: ~/project
     executor:
       name: android/android-machine
       tag: '2024.01.1'
     steps:
       - advanced-checkout/shallow-checkout
-      - pack_and_build_sdk
+      - build_and_pack_sdk:
+          working_directory: ~/project/examples/hybrid
       - run:
           name: Build Android
           command: |
             cd examples/hybrid/android
             ./gradlew assembleDebug
 
-  build_ios_release:
+  build_check_ios:
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
-      - pack_and_build_sdk
+      - build_and_pack_sdk:
+          working_directory: ~/project/examples/hybrid
       - install_pods:
           working_directory: examples/hybrid/ios
       - run:
@@ -655,19 +657,19 @@ workflows:
           filters:
             branches:
               only: dream11
-      - build_ios_release:
+      - build_check_ios:
           filters:
             branches:
               only: master
-      - build_android_release:
+      - build_check_android:
           filters:
             branches:
               only: master
       - release_custom_package:
           name: release_dream11
           requires:
-            - build_android_release
-            - build_ios_release
+            - build_check_android
+            - build_check_ios
             - hold_release_dream11
           filters:
             branches:
