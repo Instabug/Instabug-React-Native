@@ -171,7 +171,6 @@ commands:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: ~/project/examples/hybrid
 
-
 jobs:
   danger:
     executor:
