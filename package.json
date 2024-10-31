@@ -36,7 +36,7 @@
     "example": "yarn --cwd examples/default",
     "hybrid": "yarn --cwd examples/hybrid",
     "pods": "cd examples/default &&  pod-install --quiet && cd ../hybrid && pod-install --quiet ",
-    "packSDK":"yarn build && yarn pack --filename InstabugSDK.tgz",
+    "packSDK": "yarn build && yarn pack --filename InstabugSDK.tgz",
     "bootstrap": "yarn packSDK && yarn example && yarn hybrid && yarn && yarn pods"
   },
   "peerDependencies": {
