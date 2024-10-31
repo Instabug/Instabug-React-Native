@@ -655,8 +655,14 @@ workflows:
           filters:
             branches:
               only: dream11
-      - build_ios_release
-      - build_android_release
+      - build_ios_release:
+          filters:
+            branches:
+              only: master
+      - build_android_release:
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_dream11
           requires:
