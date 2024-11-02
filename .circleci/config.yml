@@ -542,6 +542,7 @@ jobs:
           command: |
             cd << parameters.ios_path >>
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+            rm -rf ~/Library/Developer/Xcode/DerivedData/*
             xcodebuild -workspace HybridSampleApp.xcworkspace \
             -scheme HybridSampleApp \
             -configuration Release \
