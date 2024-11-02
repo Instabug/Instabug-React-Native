@@ -671,9 +671,15 @@ workflows:
       - build_check_ios:
           working_directory: ~/project/examples/hybrid
           ios_path: examples/hybrid/ios
+          filters:
+            branches:
+              only: master
       - build_check_android:
           working_directory: ~/project/examples/hybrid
           android_path: examples/hybrid/android
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_dream11
           requires:
