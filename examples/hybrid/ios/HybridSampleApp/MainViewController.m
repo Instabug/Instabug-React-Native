@@ -2,29 +2,39 @@
 #import <React/RCTRootView.h>
 #import <Instabug/Instabug.h>
 #import <Instabug/IBGCrashReporting.h>
-@interface MainViewController ()
-
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTBridge.h>
+@interface MainViewController () <RCTBridgeDelegate>
+@property (nonatomic, strong) RCTBridge *bridge;
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:nil];
 }
+
 - (IBAction)startReactNative:(UIButton *)sender {
-    NSURL *jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios"];
-
-    RCTRootView *rootView =
-          [[RCTRootView alloc] initWithBundleURL: jsCodeLocation
-                                      moduleName: @"HybridSampleApp"
-                               initialProperties:nil
-launchOptions: nil];
-        UIViewController *vc = [[UIViewController alloc] init];
-        vc.view = rootView;
-        [self presentViewController:vc animated:YES completion:nil];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.bridge
+                                                    moduleName:@"HybridSampleApp"
+                                             initialProperties:nil];
+    
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.view = rootView;
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
+// This will now be called by the bridge
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
+{
+    NSLog(@"sourceURLForBridge called!"); // This will now print
+#if DEBUG
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+#else
+    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+}
 - (IBAction)throwHandled:(UIButton *)sender {
     NSException *exception = [NSException exceptionWithName:@"Objective-C Handled Exception"
                                                      reason:@"no reason"
