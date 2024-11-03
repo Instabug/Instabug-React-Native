@@ -72,6 +72,7 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @internal
  * Sets whether enabling or disabling native network interception.
  * It is disabled by default.
  * @param isEnabled
@@ -157,6 +158,10 @@ export function registerNetworkLogsListener(
 ) {
   if (process.env.NODE_ENV === 'test') {
     _registerNetworkLogsListener(type, handler);
+  } else {
+    console.error(
+      `${InstabugConstants.IBG_APM_TAG}: The \`registerNetworkLogsListener()\` method is intended solely for testing purposes.`,
+    );
   }
 }
 
@@ -167,6 +172,10 @@ export function registerNetworkLogsListener(
 export const resetNetworkListener = () => {
   if (process.env.NODE_ENV === 'test') {
     _networkListener = null;
+  } else {
+    console.error(
+      `${InstabugConstants.IBG_APM_TAG}: The \`resetNetworkListener()\` method is intended solely for testing purposes.`,
+    );
   }
 };
 
@@ -174,26 +183,29 @@ const _registerNetworkLogsListener = (
   type: NetworkListenerType,
   handler?: (networkSnapshot: NetworkData) => void,
 ) => {
-  console.log('Andrew: registerNetworkLogsListener called');
-  // ignore repetitive calls
-  if (_networkListener === type || _networkListener === NetworkListenerType.both) {
-    console.log('Andrew: _registerNetworkLogsListener called on the same type');
-    return;
-  }
-  // remove old listeners
-  if (NetworkLoggerEmitter.listenerCount(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER) > 0) {
-    console.log('Andrew: removeAllListeners called');
-    NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+  if (Platform.OS === 'ios') {
+    console.log('Andrew: registerNetworkLogsListener called');
+    // ignore repetitive calls
+    if (_networkListener === type || _networkListener === NetworkListenerType.both) {
+      console.log('Andrew: _registerNetworkLogsListener called on the same type');
+      return;
+    }
+    // remove old listeners
+    if (NetworkLoggerEmitter.listenerCount(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER) > 0) {
+      console.log('Andrew: removeAllListeners called');
+      NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+    }
+
+    if (_networkListener == null) {
+      // set new listener.
+      _networkListener = type;
+    } else {
+      // attach a new listener to the existing one.
+      _networkListener = NetworkListenerType.both;
+    }
+    console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
   }
 
-  if (_networkListener == null) {
-    // set new listener.
-    _networkListener = type;
-  } else {
-    // attach a new listener to the existing one.
-    _networkListener = NetworkListenerType.both;
-  }
-  console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
   NetworkLoggerEmitter.addListener(
     NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
     (networkSnapshot) => {
@@ -201,7 +213,7 @@ const _registerNetworkLogsListener = (
       const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
         networkSnapshot;
 
-      console.log(`Andrew: new snapshot ${url}`);
+      // console.log(`Andrew: new snapshot ${url}`);
       const networkSnapshotObj: NetworkData = {
         id: id,
         url: url,
@@ -226,7 +238,9 @@ const _registerNetworkLogsListener = (
       }
     },
   );
-  //todo: find where to remove listener
-  // emitter.removeAllListeners(NativeEvents.NETWORK_LOGGER_HANDLER);
-  NativeNetworkLogger.registerNetworkLogsListener(_networkListener);
+  if (Platform.OS === 'ios') {
+    NativeNetworkLogger.registerNetworkLogsListener(_networkListener ?? NetworkListenerType.both);
+  } else {
+    NativeNetworkLogger.registerNetworkLogsListener();
+  }
 };

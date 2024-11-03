@@ -10,7 +10,7 @@ export enum NetworkListenerType {
 export interface NetworkLoggerNativeModule extends NativeModule {
   isNativeInterceptionEnabled(): Promise<boolean>;
 
-  registerNetworkLogsListener(type: NetworkListenerType): void;
+  registerNetworkLogsListener(type?: NetworkListenerType): void;
 
   updateNetworkLogSnapshot(networkData: string): void;
 

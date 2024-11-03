@@ -332,6 +332,8 @@ describe('_registerNetworkLogsListener', () => {
   });
 
   it('should ignore repetitive calls with the same type', () => {
+    Platform.OS = 'ios';
+
     // Simulate existing listener
     jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(1);
     NetworkLogger.registerNetworkLogsListener(type, handlerMock);
@@ -345,6 +347,8 @@ describe('_registerNetworkLogsListener', () => {
   });
 
   it('should remove old listeners if they exist', () => {
+    Platform.OS = 'ios';
+
     // Simulate that there are existing listeners
     jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(2);
 
@@ -356,6 +360,7 @@ describe('_registerNetworkLogsListener', () => {
   });
 
   it('should set the new listener if _networkListener is null', () => {
+    Platform.OS = 'ios';
     // No existing listener
     jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(0);
 
@@ -366,6 +371,8 @@ describe('_registerNetworkLogsListener', () => {
   });
 
   it('should attach a new listener to the existing one if _networkListener is set', () => {
+    Platform.OS = 'ios';
+
     type = NetworkListenerType.filtering;
     const newType = NetworkListenerType.both;
 
