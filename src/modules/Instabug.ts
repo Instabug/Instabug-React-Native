@@ -1,5 +1,11 @@
-import type React from 'react';
-import { Platform, findNodeHandle, processColor } from 'react-native';
+//todo: remove all logs tagged with 'Andrew' in the file
+import {
+  AppState,
+  type AppStateStatus,
+  findNodeHandle,
+  Platform,
+  processColor,
+} from 'react-native';
 
 import type {
   NavigationContainerRefWithCurrent,
@@ -10,7 +16,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
 import {
   ColorTheme,
   Locale,
@@ -20,16 +26,26 @@ import {
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import InstabugUtils, { stringifyIfNotString } from '../utils/InstabugUtils';
+import InstabugUtils, {
+  setApmNetworkFlagsIfChanged,
+  stringifyIfNotString,
+} from '../utils/InstabugUtils';
 import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
+import { addAppStateListener } from '../utils/AppStatesHandler';
+import InstabugConstants from '../utils/InstabugConstants';
+import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
 let _isFirstScreen = false;
 const firstScreen = 'Initial Screen';
+let _currentAppState = AppState.currentState;
+let isNativeInterceptionFeatureEnabled = false; // Checks the value of "cp_native_interception_enabled" backend flag.
+let hasAPMNetworkPlugin = false; // Android only: checks if the APM plugin is installed.
+let shouldEnableNativeInterception = false; // For Android: used to disable APM logging inside reportNetworkLog() -> NativeAPM.networkLogAndroid(), For iOS: used to control native interception (true == enabled , false == disabled)
 
 /**
  * Enables or disables Instabug functionality.
@@ -56,6 +72,25 @@ function reportCurrentViewForAndroid(screenName: string | null) {
   }
 }
 
+function _logFlags() {
+  if (Platform.OS === 'android') {
+    console.log(
+      `Andrew: APM Flags -> {
+     isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
+     hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},
+     shouldEnableNativeInterception: ${shouldEnableNativeInterception}
+    }`,
+    );
+  } else {
+    console.log(
+      `Andrew: APM Flags -> {
+     isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
+     shouldEnableNativeInterception: ${shouldEnableNativeInterception}
+    }`,
+    );
+  }
+}
+
 /**
  * Initializes the SDK.
  * This is the main SDK method that does all the magic. This is the only
@@ -63,26 +98,37 @@ function reportCurrentViewForAndroid(screenName: string | null) {
  * Should be called in constructor of the AppRegistry component
  * @param config SDK configurations. See {@link InstabugConfig} for more info.
  */
-export const init = (config: InstabugConfig) => {
+export const init = async (config: InstabugConfig) => {
+  // Initialize necessary variables
+  isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
+  if (Platform.OS === 'android') {
+    hasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
+    shouldEnableNativeInterception =
+      config.networkInterceptionMode === NetworkInterceptionMode.native;
+  }
+
+  // Add app state listener to handle background/foreground transitions
+  addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
+
+  // Perform platform-specific checks and update interception mode
+  handleNetworkInterceptionMode(config);
+
+  // Log the current APM network flags and initialize Instabug
+  _logFlags();
+
+  //Set APM networking flags for the first time
+  setApmNetworkFlagsIfChanged({
+    isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
+    hasAPMNetworkPlugin: hasAPMNetworkPlugin,
+    shouldEnableNativeInterception: shouldEnableNativeInterception,
+  });
+
+  // call Instabug native init method
+  initializeNativeInstabug(config);
+
+  // Set up error capturing and rejection handling
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
-
-  // Default networkInterceptionMode to JavaScript
-  if (config.networkInterceptionMode == null) {
-    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
-  }
-
-  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
-    NetworkLogger.setEnabled(true);
-  }
-
-  NativeInstabug.init(
-    config.token,
-    config.invocationEvents,
-    config.debugLogsLevel ?? LogLevel.error,
-    config.networkInterceptionMode === NetworkInterceptionMode.native,
-    config.codePushVersion,
-  );
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
@@ -94,6 +140,186 @@ export const init = (config: InstabugConfig) => {
       _currentScreen = null;
     }
   }, 1000);
+};
+
+/**
+ * Handles app state changes and updates APM network flags if necessary.
+ */
+const handleAppStateChange = async (nextAppState: AppStateStatus, config: InstabugConfig) => {
+  // Checks if  the app has come to the foreground
+  if (['inactive', 'background'].includes(_currentAppState) && nextAppState === 'active') {
+    // Update the APM network flags
+    const isUpdated = await fetchApmNetworkFlags();
+
+    if (isUpdated) {
+      console.log('Andrew: App has come to the foreground!');
+      console.log('Andrew: APM network flags updated.');
+      handleNetworkInterceptionMode(config);
+      handleIOSNativeInterception(config);
+      _logFlags();
+      setApmNetworkFlagsIfChanged({
+        isNativeInterceptionFeatureEnabled,
+        hasAPMNetworkPlugin,
+        shouldEnableNativeInterception,
+      });
+    }
+  }
+
+  _currentAppState = nextAppState;
+  console.log(`Andrew: Current AppState: ${_currentAppState}`);
+};
+
+/**
+ * Fetches the current APM network flags.
+ */
+const fetchApmNetworkFlags = async () => {
+  let isUpdated = false;
+  const newNativeInterceptionFeatureEnabled =
+    await NativeNetworkLogger.isNativeInterceptionEnabled();
+  if (isNativeInterceptionFeatureEnabled !== newNativeInterceptionFeatureEnabled) {
+    isNativeInterceptionFeatureEnabled = newNativeInterceptionFeatureEnabled;
+    isUpdated = true;
+  }
+  if (Platform.OS === 'android') {
+    const newHasAPMNetworkPlugin = await NativeNetworkLogger.hasAPMNetworkPlugin();
+    if (hasAPMNetworkPlugin !== newHasAPMNetworkPlugin) {
+      hasAPMNetworkPlugin = newHasAPMNetworkPlugin;
+      isUpdated = true;
+    }
+  }
+
+  console.log(
+    `Andrew: fetchApmNetworkFlags {isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled}, hasAPMNetworkPlugin: ${hasAPMNetworkPlugin}}`,
+  );
+  return isUpdated;
+};
+
+/**
+ * Handles platform-specific checks and updates the network interception mode.
+ */
+const handleNetworkInterceptionMode = (config: InstabugConfig) => {
+  // Default networkInterceptionMode to JavaScript if not set
+  if (config.networkInterceptionMode == null) {
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
+  }
+
+  if (Platform.OS === 'android') {
+    handleInterceptionModeForAndroid(config);
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript; // Need to enable JS interceptor in all scenarios for Bugs & Crashes network logs
+  } else if (Platform.OS === 'ios') {
+    handleInterceptionModeForIOS(config);
+  }
+
+  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    NetworkLogger.setEnabled(true);
+  }
+};
+
+/**
+ * Handles the network interception logic for Android if the user set
+ * network interception mode with [NetworkInterceptionMode.javascript].
+ */
+function handleAndroidJSInterception() {
+  if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
+    shouldEnableNativeInterception = true;
+    console.warn(
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
+    );
+  }
+}
+
+/**
+ * Handles the network interception logic for Android if the user set
+ * network interception mode with [NetworkInterceptionMode.native].
+ */
+function handleAndroidNativeInterception() {
+  if (isNativeInterceptionFeatureEnabled) {
+    shouldEnableNativeInterception = hasAPMNetworkPlugin;
+    if (!hasAPMNetworkPlugin) {
+      console.error(InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE);
+    }
+  } else {
+    shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
+    console.error(
+      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+    );
+  }
+}
+
+/**
+ * Control either to enable or disable the native interception logic for iOS.
+ */
+function handleIOSNativeInterception(config: InstabugConfig) {
+  if (Platform.OS === 'ios') {
+    console.log(
+      `Andrew: handleIOSNativeInterception(${
+        shouldEnableNativeInterception &&
+        config.networkInterceptionMode === NetworkInterceptionMode.native
+      })`,
+    );
+
+    if (
+      shouldEnableNativeInterception &&
+      config.networkInterceptionMode === NetworkInterceptionMode.native
+    ) {
+      NativeNetworkLogger.forceStartNetworkLoggingIOS(); // Enable native iOS automatic network logging.
+    } else {
+      NativeNetworkLogger.forceStopNetworkLoggingIOS(); // Disable native iOS automatic network logging.
+    }
+  }
+}
+
+/**
+ * Handles the network interception mode logic for Android.
+ * By deciding which interception mode should be enabled (Native or JavaScript).
+ */
+const handleInterceptionModeForAndroid = (config: InstabugConfig) => {
+  const { networkInterceptionMode } = config;
+
+  if (networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    handleAndroidJSInterception();
+  } else {
+    handleAndroidNativeInterception();
+  }
+};
+
+/**
+ * Handles the interception mode logic for iOS.
+ * By deciding which interception mode should be enabled (Native or JavaScript).
+ */
+const handleInterceptionModeForIOS = (config: InstabugConfig) => {
+  if (config.networkInterceptionMode === NetworkInterceptionMode.native) {
+    if (isNativeInterceptionFeatureEnabled) {
+      shouldEnableNativeInterception = true;
+      NetworkLogger.setEnabled(false); // insure JS interceptor is disabled
+    } else {
+      shouldEnableNativeInterception = false;
+      NetworkLogger.setEnabled(true); // rollback to JS interceptor
+      console.error(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    }
+  }
+};
+
+/**
+ * Initializes Instabug with the given configuration.
+ */
+const initializeNativeInstabug = (config: InstabugConfig) => {
+  console.log(
+    `Andrew: initializeNativeInstabug -> NativeNetworkInterceptionMode ${
+      shouldEnableNativeInterception &&
+      config.networkInterceptionMode === NetworkInterceptionMode.native
+    }`,
+  );
+  NativeInstabug.init(
+    config.token,
+    config.invocationEvents,
+    config.debugLogsLevel ?? LogLevel.error,
+    shouldEnableNativeInterception &&
+      config.networkInterceptionMode === NetworkInterceptionMode.native,
+    config.codePushVersion,
+  );
 };
 
 /**

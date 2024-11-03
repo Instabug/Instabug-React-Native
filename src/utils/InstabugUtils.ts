@@ -8,10 +8,34 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import type { CrashData } from '../native/NativeCrashReporting';
-import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
 import { NativeAPM } from '../native/NativeAPM';
+
+type ApmNetworkFlags = {
+  isNativeInterceptionFeatureEnabled: boolean;
+  hasAPMNetworkPlugin: boolean;
+  shouldEnableNativeInterception: boolean;
+};
+
+let apmFlags: ApmNetworkFlags = {
+  isNativeInterceptionFeatureEnabled: false,
+  hasAPMNetworkPlugin: false,
+  shouldEnableNativeInterception: false,
+};
+
+export function setApmNetworkFlagsIfChanged(flags: ApmNetworkFlags): boolean {
+  if (
+    flags.hasAPMNetworkPlugin === apmFlags.hasAPMNetworkPlugin &&
+    flags.isNativeInterceptionFeatureEnabled === apmFlags.isNativeInterceptionFeatureEnabled &&
+    flags.shouldEnableNativeInterception === apmFlags.shouldEnableNativeInterception
+  ) {
+    return false;
+  }
+  apmFlags = flags;
+  return true;
+}
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -140,10 +164,14 @@ export function isContentTypeNotAllowed(contentType: string) {
   return allowed.every((type) => !contentType.includes(type));
 }
 
-export function reportNetworkLog(network: NetworkData) {
+//todo: remove all logs tagged with 'Andrew' in the file
+export const reportNetworkLog = (network: NetworkData) => {
   if (Platform.OS === 'android') {
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
+
+    console.log('Andrew: ' + `NetworkLogger -> ${JSON.stringify(apmFlags)}`);
+    console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogAndroid');
 
     NativeInstabug.networkLogAndroid(
       network.url,
@@ -156,25 +184,38 @@ export function reportNetworkLog(network: NetworkData) {
       network.duration,
     );
 
-    NativeAPM.networkLogAndroid(
-      network.startTime,
-      network.duration,
-      requestHeaders,
-      network.requestBody,
-      network.requestBodySize,
-      network.method,
-      network.url,
-      network.requestContentType,
-      responseHeaders,
-      network.responseBody,
-      network.responseBodySize,
-      network.responseCode,
-      network.contentType,
-      network.errorDomain,
-      network.gqlQueryName,
-      network.serverErrorMessage,
-    );
+    if (
+      !apmFlags.isNativeInterceptionFeatureEnabled ||
+      !apmFlags.hasAPMNetworkPlugin ||
+      !apmFlags.shouldEnableNativeInterception
+    ) {
+      console.log('Andrew: ' + 'NetworkLogger -> NativeAPM.networkLogAndroid');
+      NativeAPM.networkLogAndroid(
+        network.startTime,
+        network.duration,
+        requestHeaders,
+        network.requestBody,
+        network.requestBodySize,
+        network.method,
+        network.url,
+        network.requestContentType,
+        responseHeaders,
+        network.responseBody,
+        network.responseBodySize,
+        network.responseCode,
+        network.contentType,
+        network.errorDomain,
+        network.gqlQueryName,
+        network.serverErrorMessage,
+      );
+    }
   } else {
+    console.log(
+      'Andrew: ' +
+        `NetworkLogger -> {isNativeInterceptionEnabled: ${apmFlags.isNativeInterceptionFeatureEnabled}}`,
+    );
+    console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogIOS');
+
     NativeInstabug.networkLogIOS(
       network.url,
       network.method,
@@ -194,7 +235,7 @@ export function reportNetworkLog(network: NetworkData) {
       network.serverErrorMessage,
     );
   }
-}
+};
 
 export default {
   parseErrorStack,
@@ -204,4 +245,5 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  reportNetworkLog,
 };

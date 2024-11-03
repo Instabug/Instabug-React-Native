@@ -1,6 +1,5 @@
-import type { NativeModule } from 'react-native';
-
 import { NativeModules } from './NativePackage';
+import type { NativeModule } from 'react-native';
 
 export interface ApmNativeModule extends NativeModule {
   // Essential APIs //

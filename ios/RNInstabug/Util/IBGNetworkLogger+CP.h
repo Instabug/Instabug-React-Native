@@ -2,7 +2,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
+
 @interface IBGNetworkLogger (CP)
+
+@property (class, atomic, assign) BOOL isNativeNetworkInterceptionFeatureEnabled;
 
 + (void)disableAutomaticCapturingOfNetworkLogs;
 + (void)addNetworkLogWithUrl:(NSString *_Nonnull)url
@@ -26,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
                    timestamp:(NSNumber * _Nullable)timestamp
      generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
       caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
++ (void)forceStartNetworkLogging;
++ (void)forceStopNetworkLogging;
 
 @end
 
