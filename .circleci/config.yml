@@ -507,8 +507,6 @@ jobs:
     parameters:
       working_directory:
         type: string
-      android_path:
-        type: string
     executor:
       name: android/android-machine
       tag: '2024.01.1'
@@ -519,14 +517,12 @@ jobs:
       - run:
           name: Build Android
           command: |
-            cd << parameters.android_path >>
             ./gradlew assembleRelease
+            working_directory: <<parameters.working_directory>>/android
 
   build_check_ios:
     parameters:
       working_directory:
-        type: string
-      ios_path:
         type: string
     macos:
       xcode: 13.4.1
@@ -536,11 +532,11 @@ jobs:
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
       - install_pods:
-          working_directory: << parameters.ios_path >>
+          working_directory: <<parameters.working_directory>>/ios
       - run:
           name: Build iOS
           command: |
-            cd << parameters.ios_path >>
+            working_directory: <<parameters.working_directory>>/ios
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
             rm -rf ~/Library/Developer/Xcode/DerivedData/*
             xcodebuild -workspace HybridSampleApp.xcworkspace \
@@ -670,13 +666,11 @@ workflows:
               only: dream11
       - build_check_ios:
           working_directory: ~/project/examples/hybrid
-          ios_path: examples/hybrid/ios
           filters:
             branches:
               only: master
       - build_check_android:
           working_directory: ~/project/examples/hybrid
-          android_path: examples/hybrid/android
           filters:
             branches:
               only: master
