@@ -516,9 +516,8 @@ jobs:
           working_directory: << parameters.working_directory >>
       - run:
           name: Build Android
-          command: |
-            ./gradlew assembleRelease
-            working_directory: <<parameters.working_directory>>/android
+          working_directory: <<parameters.working_directory>>/android
+          command: ./gradlew assembleRelease
 
   build_check_ios:
     parameters:
@@ -535,8 +534,8 @@ jobs:
           working_directory: <<parameters.working_directory>>/ios
       - run:
           name: Build iOS
+          working_directory: <<parameters.working_directory>>/ios
           command: |
-            working_directory: <<parameters.working_directory>>/ios
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
             rm -rf ~/Library/Developer/Xcode/DerivedData/*
             xcodebuild -workspace HybridSampleApp.xcworkspace \
@@ -664,21 +663,27 @@ workflows:
           filters:
             branches:
               only: dream11
-      - build_check_ios:
-          working_directory: ~/project/examples/hybrid
-          filters:
-            branches:
-              only: master
       - build_check_android:
+          name: build_check_default_android
+          working_directory: ~/project/examples/default
+          type: approval
+      - build_check_ios:
+          name: build_check_default_ios
           working_directory: ~/project/examples/hybrid
-          filters:
-            branches:
-              only: master
+          type: approval
+      - build_check_android:
+          name: build_check_hybrid_android
+          working_directory: ~/project/examples/hybrid
+          type: approval
+      - build_check_ios:
+          name: build_check_hybrid_ios
+          working_directory: ~/project/examples/default
+          type: approval
       - release_custom_package:
           name: release_dream11
           requires:
-            - build_check_android
-            - build_check_ios
+            - build_check_hybrid_android
+            - build_check_hybrid_ios
             - hold_release_dream11
           filters:
             branches:
