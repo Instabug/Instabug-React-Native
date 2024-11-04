@@ -11,6 +11,7 @@ yarn-debug.log
 yarn-error.log
 coverage/
 .jest/cache/
+.yarn
 
 # OSX
 .DS_Store
@@ -62,7 +63,8 @@ android/keystores/debug.keystore
 
 # Bundle artifact
 *.jsbundle
-/examples/default/ios/main.jsbundle.map
+*.bundle
+main.jsbundle.map
 
 # Vscode local history
 .history/

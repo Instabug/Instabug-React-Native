@@ -34,8 +34,10 @@
     "build:lib": "tsc",
     "build:cli": "npx rollup -c rollup.config.js --bundleConfigAsCjs",
     "example": "yarn --cwd examples/default",
-    "pods": "cd examples/default && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "hybrid": "yarn --cwd examples/hybrid",
+    "pods": "cd examples/default &&  pod-install --quiet && cd ../hybrid && pod-install --quiet ",
+    "pack:sdk": "yarn build && yarn pack --filename InstabugSDK.tgz",
+    "bootstrap": "yarn example && yarn hybrid && yarn && yarn pods"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
