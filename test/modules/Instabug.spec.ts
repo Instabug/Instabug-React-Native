@@ -23,6 +23,7 @@ import {
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
+import InstabugConstants from '../../src/utils/InstabugConstants';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -640,9 +641,13 @@ describe('Instabug Module', () => {
     [{}, 'value'],
     ['key', []],
   ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
+    const logSpy = jest.spyOn(console, 'error');
+
     // @ts-ignore
     Instabug.setUserAttribute(key, value);
     expect(NativeInstabug.setUserAttribute).not.toBeCalled();
+    expect(logSpy).toHaveBeenCalledWith(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    logSpy.mockRestore();
   });
 
   it('should call the native method setUserAttribute', () => {
@@ -676,9 +681,15 @@ describe('Instabug Module', () => {
   });
 
   it.each([[null]])("should fail if key isn't a string when calling removeUserAttribute", (key) => {
+    const logSpy = jest.spyOn(console, 'error');
+
     // @ts-ignore
     Instabug.removeUserAttribute(key);
     expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
+    expect(logSpy).toHaveBeenCalledWith(
+      InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE,
+    );
+    logSpy.mockRestore();
   });
 
   it('should call native method getAllUserAttributes', async () => {

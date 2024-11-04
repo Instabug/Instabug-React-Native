@@ -25,6 +25,7 @@ import * as NetworkLogger from './NetworkLogger';
 import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking';
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
+import InstabugConstants from '../utils/InstabugConstants';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -381,7 +382,7 @@ export const setReproStepsConfig = (config: ReproConfig) => {
  */
 export const setUserAttribute = (key: string, value: string) => {
   if (!key || typeof key !== 'string' || typeof value !== 'string') {
-    console.error('IBG-RN: Expected key and value passed to setUserAttribute to be of type string');
+    console.error(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
     return;
   }
   NativeInstabug.setUserAttribute(key, value);
@@ -405,7 +406,7 @@ export const getUserAttribute = async (key: string): Promise<string | null> => {
  */
 export const removeUserAttribute = (key: string) => {
   if (!key || typeof key !== 'string') {
-    console.error('IBG-RN: Expected the key passed to removeUserAttribute to be of type string');
+    console.error(InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
 
     return;
   }
