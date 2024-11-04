@@ -541,6 +541,7 @@ jobs:
           working_directory: <<parameters.working_directory>>/ios
           command: |
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+            rm -rf ~/Library/Developer/Xcode/DerivedData/*
             xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
             -scheme <<parameters.scheme>> \
             -configuration Release \
