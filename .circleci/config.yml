@@ -663,27 +663,43 @@ workflows:
           filters:
             branches:
               only: dream11
+      - hold_build_check_android:
+          name: hold_build_check_android_default
+          type: approval
+      - hold_build_check_ios:
+          name: hold_build_check_ios_default
+          type: approval
+      - hold_build_check_android:
+          name: hold_build_check_android_hybrid
+          type: approval
+      - hold_build_check_ios:
+          name: hold_build_check_ios_hybrid
+          type: approval
       - build_check_android:
-          name: build_check_default_android
+          name: build_check_android_default
           working_directory: ~/project/examples/default
-          type: approval
+          requires: 
+            - hold_build_check_android_default
       - build_check_ios:
-          name: build_check_default_ios
-          working_directory: ~/project/examples/hybrid
-          type: approval
+          name: build_check_ios_default
+          working_directory: ~/project/examples/default
+          requires: 
+            - hold_build_check_ios_default
       - build_check_android:
-          name: build_check_hybrid_android
+          name: build_check_android_hybrid
           working_directory: ~/project/examples/hybrid
-          type: approval
+          requires: 
+            - hold_build_check_android_hybrid
       - build_check_ios:
-          name: build_check_hybrid_ios
-          working_directory: ~/project/examples/default
-          type: approval
+          name: build_check_ios_hybrid
+          working_directory: ~/project/examples/hybrid
+          requires: 
+            - hold_build_check_ios_hybrid
       - release_custom_package:
           name: release_dream11
           requires:
-            - build_check_hybrid_android
-            - build_check_hybrid_ios
+            - build_check_android_hybrid
+            - build_check_ios_hybrid
             - hold_release_dream11
           filters:
             branches:
