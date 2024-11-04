@@ -523,6 +523,10 @@ jobs:
     parameters:
       working_directory:
         type: string
+      scheme:
+        type: string
+      workspace_path:
+        type: string
     macos:
       xcode: 13.4.1
     resource_class: macos.m1.medium.gen1
@@ -538,8 +542,8 @@ jobs:
           command: |
             yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
             rm -rf ~/Library/Developer/Xcode/DerivedData/*
-            xcodebuild -workspace HybridSampleApp.xcworkspace \
-            -scheme HybridSampleApp \
+            xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
+            -scheme <<parameters.scheme>> \
             -configuration Release \
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
@@ -683,6 +687,8 @@ workflows:
       - build_check_ios:
           name: build_check_ios_default
           working_directory: ~/project/examples/default
+          scheme: InstabugExample
+          workspace_path: InstabugExample
           requires:
             - hold_build_check_ios_default
       - build_check_android:
@@ -693,6 +699,8 @@ workflows:
       - build_check_ios:
           name: build_check_ios_hybrid
           working_directory: ~/project/examples/hybrid
+          scheme: HybridSampleApp
+          workspace_path: HybridSampleApp
           requires:
             - hold_build_check_ios_hybrid
       - release_custom_package:
