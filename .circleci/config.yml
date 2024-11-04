@@ -666,42 +666,32 @@ workflows:
           filters:
             branches:
               only: dream11
-      - hold_build_check_android:
-          name: hold_build_check_android_default
-          type: approval
-      - hold_build_check_ios:
-          name: hold_build_check_ios_default
-          type: approval
-      - hold_build_check_android:
-          name: hold_build_check_android_hybrid
-          type: approval
-      - hold_build_check_ios:
-          name: hold_build_check_ios_hybrid
+      - hold_build_check:
           type: approval
       - build_check_android:
           name: build_check_android_default
           working_directory: ~/project/examples/default
           requires:
-            - hold_build_check_android_default
+            - hold_build_check
       - build_check_ios:
           name: build_check_ios_default
           working_directory: ~/project/examples/default
           scheme: InstabugExample
           workspace_path: InstabugExample
           requires:
-            - hold_build_check_ios_default
+            - hold_build_check
       - build_check_android:
           name: build_check_android_hybrid
           working_directory: ~/project/examples/hybrid
           requires:
-            - hold_build_check_android_hybrid
+            - hold_build_check
       - build_check_ios:
           name: build_check_ios_hybrid
           working_directory: ~/project/examples/hybrid
           scheme: HybridSampleApp
           workspace_path: HybridSampleApp
           requires:
-            - hold_build_check_ios_hybrid
+            - hold_build_check
       - release_custom_package:
           name: release_dream11
           requires:
