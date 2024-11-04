@@ -154,6 +154,22 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
+  build_and_pack_sdk:
+    parameters:
+      working_directory:
+        type: string
+        default: ~/project
+    steps:
+      - install_node_modules
+      - run:
+          command: yarn build
+          working_directory: ~/project
+      - run:
+          command: yarn pack --filename InstabugSDK.tgz
+          working_directory: ~/project
+      - run:
+          command: yarn add file:../../InstabugSDK.tgz
+          working_directory: <<parameters.working_directory>>
 
 jobs:
   danger:
@@ -295,7 +311,7 @@ jobs:
                 -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
-                -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max" \
                 test | xcpretty
       - when:
           condition: << parameters.collect_coverage >>
@@ -487,6 +503,50 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
+  build_check_android:
+    parameters:
+      working_directory:
+        type: string
+    executor:
+      name: android/android-machine
+      tag: '2024.01.1'
+    steps:
+      - advanced-checkout/shallow-checkout
+      - build_and_pack_sdk:
+          working_directory: << parameters.working_directory >>
+      - run:
+          name: Build Android
+          working_directory: <<parameters.working_directory>>/android
+          command: ./gradlew assembleRelease
+
+  build_check_ios:
+    parameters:
+      working_directory:
+        type: string
+      scheme:
+        type: string
+      workspace_path:
+        type: string
+    macos:
+      xcode: 13.4.1
+    resource_class: macos.m1.medium.gen1
+    steps:
+      - advanced-checkout/shallow-checkout
+      - build_and_pack_sdk:
+          working_directory: << parameters.working_directory >>
+      - install_pods:
+          working_directory: <<parameters.working_directory>>/ios
+      - run:
+          name: Build iOS
+          working_directory: <<parameters.working_directory>>/ios
+          command: |
+            yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+            rm -rf ~/Library/Developer/Xcode/DerivedData/*
+            xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
+            -scheme <<parameters.scheme>> \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
 
 workflows:
   publish:
@@ -607,9 +667,37 @@ workflows:
           filters:
             branches:
               only: dream11
+      - hold_build_check:
+          type: approval
+      - build_check_android:
+          name: build_check_android_default
+          working_directory: ~/project/examples/default
+          requires:
+            - hold_build_check
+      - build_check_ios:
+          name: build_check_ios_default
+          working_directory: ~/project/examples/default
+          scheme: InstabugExample
+          workspace_path: InstabugExample
+          requires:
+            - hold_build_check
+      - build_check_android:
+          name: build_check_android_hybrid
+          working_directory: ~/project/examples/hybrid
+          requires:
+            - hold_build_check
+      - build_check_ios:
+          name: build_check_ios_hybrid
+          working_directory: ~/project/examples/hybrid
+          scheme: HybridSampleApp
+          workspace_path: HybridSampleApp
+          requires:
+            - hold_build_check
       - release_custom_package:
           name: release_dream11
           requires:
+            - build_check_android_hybrid
+            - build_check_ios_hybrid
             - hold_release_dream11
           filters:
             branches:
