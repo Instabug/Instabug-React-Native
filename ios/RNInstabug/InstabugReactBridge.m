@@ -314,7 +314,12 @@ RCT_EXPORT_METHOD(networkLogIOS:(NSString * _Nonnull)url
                                  startTime:startTime * 1000
                                   duration:duration * 1000
                               gqlQueryName:gqlQueryName
-                        serverErrorMessage:serverErrorMessage];
+                        serverErrorMessage:serverErrorMessage
+                             isW3cCaughted:nil
+                                 partialID:nil
+                                 timestamp:nil
+                   generatedW3CTraceparent:nil
+                    caughtedW3CTraceparent:nil];
 }
 
 RCT_EXPORT_METHOD(addPrivateView: (nonnull NSNumber *)reactTag) {
