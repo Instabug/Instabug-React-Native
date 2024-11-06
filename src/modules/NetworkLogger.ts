@@ -4,7 +4,6 @@ import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
 import { NativeModules } from 'react-native';
-import Config from 'react-native-config';
 
 export type { NetworkData };
 
@@ -22,13 +21,6 @@ const getDevServerURL = (): string | null => {
     const { scriptURL } = NativeModules.SourceCode;
     if (scriptURL) {
       return filterURL(scriptURL.toString());
-    }
-  }
-  // for the new architecture
-  if (Config.DEV_SERVER_URL) {
-    const configURL = Config.DEV_SERVER_URL;
-    if (configURL) {
-      return filterURL(configURL.toString());
     }
   }
   return null;
