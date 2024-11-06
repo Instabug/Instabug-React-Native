@@ -6,6 +6,10 @@
 
 - Exclude DEV server from network logs ([#1307](https://github.com/Instabug/Instabug-React-Native/pull/1307)).
 
+### Fixed
+
+- Replace thrown errors with logs ([#1220](https://github.com/Instabug/Instabug-React-Native/pull/1220))
+
 ## [13.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...v13.4.0) (October 2, 2024)
 
 ### Added
