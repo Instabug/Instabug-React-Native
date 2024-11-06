@@ -17,9 +17,11 @@ const filterURL = (url: string): string => {
 };
 
 const getDevServerURL = (): string | null => {
-  const { scriptURL } = NativeModules.SourceCode;
-  if (scriptURL) {
-    return filterURL(new URL(scriptURL).toString());
+  if (NativeModules.SourceCode) {
+    const { scriptURL } = NativeModules.SourceCode;
+    if (scriptURL) {
+      return filterURL(scriptURL.toString());
+    }
   }
   return null;
 };
