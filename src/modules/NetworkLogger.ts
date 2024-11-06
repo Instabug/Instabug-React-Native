@@ -44,9 +44,6 @@ export const setEnabled = (isEnabled: boolean) => {
           if (__DEV__) {
             const devServerURL = getDevServerURL();
             const networkServerURL = filterURL(network.url);
-            console.log('Dev Server URL:', devServerURL);
-            console.log('Network Server URL:', networkServerURL);
-
             // Skip logging for requests to the dev server
             if (devServerURL === networkServerURL) {
               return;
