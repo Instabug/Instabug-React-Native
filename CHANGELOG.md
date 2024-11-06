@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v13.4.0...dev)
+
+### Added
+
+- Exclude DEV server from network logs ([#1307](https://github.com/Instabug/Instabug-React-Native/pull/1307)).
+
 ## [13.4.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.3.0...v13.4.0) (October 2, 2024)
 
 ### Added
