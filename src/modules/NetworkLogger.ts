@@ -11,18 +11,15 @@ export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<Netwo
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
 
-const filterURL = (url: string) => {
-  const urlWithoutPrototcol = url.split('://');
-  if (urlWithoutPrototcol.length > 1) {
-    return urlWithoutPrototcol[1].split('/')[0];
-  }
-  return urlWithoutPrototcol[0].split('/')[0];
+const filterURL = (url: string): string => {
+  const [protocol, rest] = url.split('://');
+  return (rest || protocol).split('/')[0];
 };
-const getDevServerURL = () => {
+
+const getDevServerURL = (): string | null => {
   const { scriptURL } = NativeModules.SourceCode;
   if (scriptURL) {
-    const url = new URL(scriptURL);
-    return filterURL(url + '');
+    return filterURL(new URL(scriptURL).toString());
   }
   return null;
 };
@@ -43,12 +40,18 @@ export const setEnabled = (isEnabled: boolean) => {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
           }
+
           if (__DEV__) {
             const devServerURL = getDevServerURL();
+            const networkServerURL = filterURL(network.url);
             console.log('Dev Server URL:', devServerURL);
-            console.log('NETWORK Server URL:', filterURL(network.url));
-          }
+            console.log('Network Server URL:', networkServerURL);
 
+            // Skip logging for requests to the dev server
+            if (devServerURL === networkServerURL) {
+              return;
+            }
+          }
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
             network.requestBody = InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE;
             console.warn('IBG-RN:', InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE);
