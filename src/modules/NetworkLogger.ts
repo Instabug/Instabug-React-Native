@@ -3,7 +3,7 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
-import { NativeModules } from 'react-native';
+import { metroDevServerPort } from './Instabug';
 
 export type { NetworkData };
 
@@ -11,20 +11,10 @@ export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<Netwo
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
 
-const filterURL = (url: string): string => {
-  const [protocol, rest] = url.split('://');
-  return (rest || protocol).split('/')[0];
-};
-
-const getDevServerURL = (): string | null => {
-  if (NativeModules.SourceCode) {
-    const { scriptURL } = NativeModules.SourceCode;
-    if (scriptURL) {
-      return filterURL(scriptURL.toString());
-    }
-  }
-  return null;
-};
+function getPortFromUrl(url: string) {
+  const portMatch = url.match(/:(\d+)(?=\/|$)/);
+  return portMatch ? portMatch[1] : null;
+}
 
 /**
  * Sets whether network logs should be sent with bug reports.
@@ -44,10 +34,8 @@ export const setEnabled = (isEnabled: boolean) => {
           }
 
           if (__DEV__) {
-            const devServerURL = getDevServerURL();
-            const networkServerURL = filterURL(network.url);
-            // Skip logging for requests to the dev server
-            if (devServerURL === networkServerURL) {
+            const urlPort = getPortFromUrl(network.url);
+            if (urlPort === InstabugConstants.METRO_SERVER_URL) {
               return;
             }
           }

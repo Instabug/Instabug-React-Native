@@ -633,6 +633,13 @@ export const willRedirectToStore = () => {
   NativeInstabug.willRedirectToStore();
 };
 
+/**
+ * This API has be called when changing the default Metro server port (8081) to exclude the DEV URL from network logging.
+ */
+export const setMetroDevServerPort = (port: number) => {
+  InstabugConstants.METRO_SERVER_URL = port.toString();
+};
+
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
     _lastScreen = event.componentName;
