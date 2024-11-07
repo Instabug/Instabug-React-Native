@@ -4,6 +4,7 @@ plugins {
     id 'com.facebook.react'
 
 }
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 android {
     signingConfigs {
@@ -57,6 +58,7 @@ dependencies {
     def composeBom = platform('androidx.compose:compose-bom:2023.10.00')
     implementation composeBom
     androidTestImplementation composeBom
+    implementation project(':react-native-code-push')
 
     // Compose dependencies
     implementation "androidx.compose.ui:ui"
@@ -72,6 +74,7 @@ dependencies {
     implementation libs.androidx.annotation.experimental
     implementation "com.facebook.react:react-android"
     implementation "com.facebook.react:hermes-android"
+    implementation 'com.instabug.library:instabug-with-okhttp-interceptor:13.0.1'
     // Other dependencies...
 }
 configurations.all {
