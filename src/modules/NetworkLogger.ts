@@ -3,7 +3,6 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
-import { metroDevServerPort } from './Instabug';
 
 export type { NetworkData };
 
