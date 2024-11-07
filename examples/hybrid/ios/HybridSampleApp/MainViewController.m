@@ -4,6 +4,8 @@
 #import <Instabug/IBGCrashReporting.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTBridge.h>
+#import <CodePush/CodePush.h>
+
 @interface MainViewController () <RCTBridgeDelegate>
 @property (nonatomic, strong) RCTBridge *bridge;
 @end
@@ -32,7 +34,7 @@
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    return [CodePush bundleURL];
 #endif
 }
 - (IBAction)throwHandled:(UIButton *)sender {
@@ -59,5 +61,53 @@
         topViewController = topViewController.presentedViewController;
     }
     return topViewController;
+}
+- (IBAction)sendGraphQLRequest:(UIButton *)sender {
+    NSString *urlString = @"https://countries.trevorblades.com/graphql";
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"GetCountry" forHTTPHeaderField:@"ibg-graphql-header"];
+    
+    NSDictionary *queryDict = @{
+        @"query": @"query GetCountry { country(code: \"EG\") { emoji name } }"
+    };
+    
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:queryDict
+                                                      options:0
+                                                        error:&error];
+    if (error) {
+        NSLog(@"JSON Serialization Error: %@", error);
+        return;
+    }
+    
+    request.HTTPBody = jsonData;
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                          completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+            return;
+        }
+        
+        NSError *jsonError;
+        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                   options:0
+                                                                     error:&jsonError];
+        if (jsonError) {
+            NSLog(@"JSON Parsing Error: %@", jsonError);
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Response: %@", jsonResponse[@"data"]);
+        });
+    }];
+    
+    [task resume];
 }
 @end

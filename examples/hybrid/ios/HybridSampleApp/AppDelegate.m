@@ -2,10 +2,11 @@
 #import <RNInstabug/RNInstabug.h>
 @implementation AppDelegate
 
-static NSString *const appToken = @"deb1910a7342814af4e4c9210c786f35";
+static NSString *const appToken = @"0fcc87b8bf731164828cc411eccc802a";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [RNInstabug initWithToken:appToken invocationEvents:IBGInvocationEventFloatingButton];
+    [Instabug setCodePushVersion:@""];
+    [RNInstabug initWithToken:appToken invocationEvents:IBGInvocationEventFloatingButton useNativeNetworkInterception:YES];
     return YES;
 }
 
