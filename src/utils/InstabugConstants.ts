@@ -11,7 +11,7 @@ const InstabugConstants = {
     'IBG-RN: Expected key and value passed to setUserAttribute to be of type string',
   REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
     'IBG-RN: Expected key and value passed to removeUserAttribute to be of type string',
-  METRO_SERVER_URL: '8081',
+  DEFAULT_METRO_SERVER_URL: '8081',
 };
 
 export default InstabugConstants;

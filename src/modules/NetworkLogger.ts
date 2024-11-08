@@ -3,6 +3,7 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
+import { InstabugRNConfig } from '../utils/config';
 
 export type { NetworkData };
 
@@ -34,7 +35,7 @@ export const setEnabled = (isEnabled: boolean) => {
 
           if (__DEV__) {
             const urlPort = getPortFromUrl(network.url);
-            if (urlPort === InstabugConstants.METRO_SERVER_URL) {
+            if (urlPort === InstabugRNConfig.metroDevServerPort) {
               return;
             }
           }
