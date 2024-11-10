@@ -35,7 +35,6 @@ public class HybridApplication extends Application {
         Log.v("Instabug-Hybrid", "starting from native");
 
         new RNInstabug.Builder(this, "0fcc87b8bf731164828cc411eccc802a")
-                .setCodePushVersion("")
                 .setInvocationEvents(InstabugInvocationEvent.SHAKE, InstabugInvocationEvent.FLOATING_BUTTON)
                 .build();
     }
