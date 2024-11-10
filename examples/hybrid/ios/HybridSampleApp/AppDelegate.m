@@ -5,7 +5,6 @@
 static NSString *const appToken = @"0fcc87b8bf731164828cc411eccc802a";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [Instabug setCodePushVersion:@""];
     [RNInstabug initWithToken:appToken invocationEvents:IBGInvocationEventFloatingButton useNativeNetworkInterception:YES];
     return YES;
 }
