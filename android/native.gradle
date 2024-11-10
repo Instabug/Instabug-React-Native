@@ -4,5 +4,4 @@ project.ext.instabug = [
 
 dependencies {
     api "com.instabug.library:instabug:${project.ext.instabug.version}"
-    api "com.instabug.library:instabug-with-okhttp-interceptor:${project.ext.instabug.version}"
 }

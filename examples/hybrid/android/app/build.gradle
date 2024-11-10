@@ -74,6 +74,7 @@ dependencies {
     implementation libs.androidx.annotation.experimental
     implementation "com.facebook.react:react-android"
     implementation "com.facebook.react:hermes-android"
+    implementation "com.instabug.library:instabug-with-okhttp-interceptor:${project.ext.instabug.version}"
 }
 configurations.all {
     resolutionStrategy {
