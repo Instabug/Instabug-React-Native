@@ -79,3 +79,17 @@ dependencies {
     testImplementation "org.mockito:mockito-android:3.4.0"
     testImplementation 'junit:junit:4.13.2'
 }
+
+rootProject.allprojects {
+	repositories {
+		google()
+		jcenter()
+		maven {
+			url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+			credentials {
+			  username "instabug"
+			  password System.getenv('INSTABUG_REPOSITORY_PASSWORD')
+			}
+		}
+	}
+}
