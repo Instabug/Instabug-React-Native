@@ -4,8 +4,8 @@ plugins {
     id 'com.facebook.react'
 
 }
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
+apply from: "../../node_modules/instabug-reactnative/android/native.gradle"
 android {
     signingConfigs {
         debug {
@@ -74,8 +74,6 @@ dependencies {
     implementation libs.androidx.annotation.experimental
     implementation "com.facebook.react:react-android"
     implementation "com.facebook.react:hermes-android"
-    implementation 'com.instabug.library:instabug-with-okhttp-interceptor:13.0.1'
-    // Other dependencies...
 }
 configurations.all {
     resolutionStrategy {
