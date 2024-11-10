@@ -15,8 +15,8 @@
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "graphql": "^16.8.1",
     "axios": "^1.7.4",
+    "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "instabug-reactnative": "link:../..",
     "instabug-reactnative-ndk": "github:https://github.com/Instabug/Instabug-React-Native-NDK",
@@ -32,6 +32,7 @@
     "react-native-screens": "^3.20.0",
     "react-native-svg": "^13.9.0",
     "react-native-vector-icons": "^10.0.0",
+    "react-native-webview": "^13.12.3",
     "react-query": "^3.39.3"
   },
   "devDependencies": {
