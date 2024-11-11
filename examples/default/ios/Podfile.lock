@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (13.4.2)
+  - Instabug (14.0.0)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1602,8 +1602,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNInstabug (13.4.0):
-    - Instabug (= 13.4.2)
+  - RNInstabug (14.0.0):
+    - Instabug (= 14.0.0)
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
@@ -1993,7 +1993,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 7a71890217b97b1e32dbca96661845396b66da2f
+  Instabug: a0beffc01658773e2fac549845782f8937707dc4
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
@@ -2059,7 +2059,7 @@ SPEC CHECKSUMS:
   ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
   RNCClipboard: 2821ac938ef46f736a8de0c8814845dde2dcbdfb
   RNGestureHandler: 511250b190a284388f9dd0d2e56c1df76f14cfb8
-  RNInstabug: 8e7eb1df3f35b935dda661f5bb475f37cef595e6
+  RNInstabug: eaa8cde2bcd3c8e757c6dd5c0d33a20814f9658a
   RNReanimated: f42a5044d121d68e91680caacb0293f4274228eb
   RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
   RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
