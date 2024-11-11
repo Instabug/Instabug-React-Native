@@ -38,4 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Unhandled Crash" />
+    <Button
+        android:id="@+id/buttonGraphQL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send GraphQL Request" />
 </LinearLayout>

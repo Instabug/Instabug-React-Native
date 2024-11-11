@@ -26,6 +26,7 @@ target 'HybridSampleApp' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
   post_install do |installer|
     react_native_post_install(
