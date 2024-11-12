@@ -98,19 +98,25 @@
         actualValue = shouldSync;
         [completionExpectation fulfill];
     };
-                                  
+
+  OCMStub([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock: ^BOOL(void(^handler)(IBGSessionMetadata *metadataObject, SessionEvaluationCompletion completion)) {
+      handler(mockMetadata, sessionEvaluationCompletion);
+      return YES;
+  }]]);
+
     OCMStub([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]).andDo(^(NSInvocation *invocation) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.bridge evaluateSync:expectedValue];
+
+      });
     });
-    
-    OCMStub([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock: ^BOOL(void(^handler)(IBGSessionMetadata *metadataObject, SessionEvaluationCompletion completion)) {
-        handler(mockMetadata, sessionEvaluationCompletion);
-        return YES;
-    }]]);
-    
+
+
+
+
     [self.bridge setSyncCallback];
     [self waitForExpectationsWithTimeout:2 handler:nil];
-    
+
     OCMVerify([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]);
     OCMVerifyAll(self.mSessionReplay);
     XCTAssertEqual(actualValue, expectedValue);
