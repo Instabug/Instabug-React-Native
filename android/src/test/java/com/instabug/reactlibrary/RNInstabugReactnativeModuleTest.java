@@ -638,20 +638,20 @@ public class RNInstabugReactnativeModuleTest {
 
     @Test
     public void testEnableAutoMasking() {
-
+        // when
         rnModule.setAutoMaskingEnabled(true);
 
-        verify(Instabug.class, times(1));
-        Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED);
+        // then
+        mockInstabug.verify(() -> Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED));
     }
-    
+
     @Test
     public void testDisableAutoMasking() {
-
+        // when
         rnModule.setAutoMaskingEnabled(false);
 
-        verify(Instabug.class, times(1));
-        Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED);
+        // then
+        mockInstabug.verify(() -> Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED));
     }
 
 }
