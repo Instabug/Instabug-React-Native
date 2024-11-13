@@ -635,4 +635,23 @@ public class RNInstabugReactnativeModuleTest {
         // then
         mockInstabug.verify(() -> Instabug.willRedirectToStore());
     }
+
+    @Test
+    public void testEnableAutoMasking() {
+
+        rnModule.setAutoMaskingEnabled(true);
+
+        verify(Instabug.class, times(1));
+        Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED);
+    }
+    
+    @Test
+    public void testDisableAutoMasking() {
+
+        rnModule.setAutoMaskingEnabled(false);
+
+        verify(Instabug.class, times(1));
+        Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED);
+    }
+
 }

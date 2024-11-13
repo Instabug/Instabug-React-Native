@@ -1148,7 +1148,26 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-
+    /**
+     * Enables or disables network logs sensitive information auto masking.
+     * @param isEnabled A boolean to enable/disable.
+     */
+    @ReactMethod
+    public void setAutoMaskingEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(isEnabled)
+                        Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED);
+                    else
+                        Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     /**
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the
