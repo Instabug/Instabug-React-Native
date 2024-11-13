@@ -1150,7 +1150,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
     /**
      * Enables or disables network logs sensitive information auto masking.
-     * @param isEnabled A boolean to enable/disable.
+     * @param isEnabled A boolean to enable/disable auto masking.
      */
     @ReactMethod
     public void setAutoMaskingEnabled(final boolean isEnabled) {
