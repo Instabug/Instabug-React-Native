@@ -394,6 +394,9 @@ RCT_EXPORT_METHOD(removeAllFeatureFlags) {
 RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
+RCT_EXPORT_METHOD(setAutoMaskingEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.autoMaskingEnabled = isEnabled;
+}
 
 - (NSDictionary *)constantsToExport {
     return ArgsRegistry.getAll;
