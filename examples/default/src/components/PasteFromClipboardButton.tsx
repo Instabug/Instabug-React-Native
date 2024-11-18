@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { StyleProp, TextStyle, TouchableHighlight } from 'react-native';
 import React, { PropsWithChildren } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';

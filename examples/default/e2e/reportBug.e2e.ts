@@ -13,6 +13,7 @@ it('reports a bug', async () => {
   const floatingButton = getElement('floatingButton');
   await waitFor(floatingButton).toBeVisible().withTimeout(30000);
   await floatingButton.tap();
+
   const reportBugMenuItemButton = getElement('reportBugMenuItem');
   await waitFor(reportBugMenuItemButton).toBeVisible().withTimeout(30000);
   await reportBugMenuItemButton.tap();
