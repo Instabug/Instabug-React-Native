@@ -24,6 +24,7 @@ import {
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
 import InstabugConstants from '../../src/utils/InstabugConstants';
+import { Logger } from '../../src/utils/logger';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -641,7 +642,7 @@ describe('Instabug Module', () => {
     [{}, 'value'],
     ['key', []],
   ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
-    const logSpy = jest.spyOn(console, 'error');
+    const logSpy = jest.spyOn(Logger, 'error');
 
     // @ts-ignore
     Instabug.setUserAttribute(key, value);

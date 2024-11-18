@@ -2,6 +2,7 @@ import tracking, { RejectionTrackingOptions } from 'promise/setimmediate/rejecti
 import { sendCrashReport } from './InstabugUtils';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import { NonFatalErrorLevel } from './Enums';
+import { Logger } from './logger';
 
 export interface HermesInternalType {
   enablePromiseRejectionTracker?: (options?: RejectionTrackingOptions) => void;
@@ -113,5 +114,5 @@ function _originalOnUnhandled(id: number, rejection: unknown = {}) {
     `Possible Unhandled Promise Rejection (id: ${id}):\n` +
     `${message ?? ''}\n` +
     (stack == null ? '' : stack);
-  console.warn(warning);
+  Logger.warn(warning);
 }
