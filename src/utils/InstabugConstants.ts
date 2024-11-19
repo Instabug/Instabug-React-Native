@@ -7,6 +7,10 @@ const InstabugConstants = {
     'The response body has not been logged because it exceeds the maximum size of 10 Kb',
   MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE:
     'The request body has not been logged because it exceeds the maximum size of 10 Kb',
+  SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
+    'IBG-RN: Expected key and value passed to setUserAttribute to be of type string',
+  REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
+    'IBG-RN: Expected key and value passed to removeUserAttribute to be of type string',
 };
 
 export default InstabugConstants;

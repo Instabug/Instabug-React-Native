@@ -62,7 +62,6 @@ describe('APM Module', () => {
 
   it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
     mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce(null);
-
     const promise = APM.startExecutionTrace('trace');
 
     await expect(promise).rejects.toThrowError(/trace "trace" wasn't created/i);
