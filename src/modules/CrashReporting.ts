@@ -5,6 +5,7 @@ import InstabugUtils from '../utils/InstabugUtils';
 import { Platform } from 'react-native';
 import type { NonFatalOptions } from '../models/NonFatalOptions';
 import { NonFatalErrorLevel } from '../utils/Enums';
+import { Logger } from '../utils/logger';
 
 /**
  * Enables and disables everything related to crash reporting including intercepting
@@ -35,7 +36,7 @@ export const reportError = (error: ExtendedError, nonFatalOptions: NonFatalOptio
       ),
     );
   } else {
-    console.warn(
+    Logger.warn(
       `IBG-RN: The error ${error} has been omitted because only error type is supported.`,
     );
     return;
