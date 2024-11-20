@@ -322,7 +322,7 @@ commands:
             appium --version
             appium driver list
 
-            appium --log-timestamp --debug-log-spacing --log appium.log &
+            appium --log-timestamp --debug-log-spacing --log appium.log
 
 jobs:
   danger:
