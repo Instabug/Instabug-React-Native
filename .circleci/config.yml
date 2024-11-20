@@ -16,6 +16,7 @@ references:
     - test_ios
     - e2e_ios
     - e2e_android
+    - appium_e2e_ios
     - appium_e2e_android
 
   dream11_prepare_config: &dream11_prepare_config
@@ -207,10 +208,10 @@ commands:
             sdkmanager "platforms;android-34"
             sdkmanager "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd \
-              --name TestEmulator \
-              --package "system-images;android-34;default;x86_64" \
-              --device "Nexus_6P_API_34"
-            emulator -avd Nexus_6P_API_34 \
+              --name Pixel8 \
+              --package "system-images;android-34;google_apis;x86_64" \
+              --device "pixel_8"
+            emulator -avd Pixel8 \
               -no-window \
               -no-audio \
               -no-boot-anim \
@@ -241,63 +242,64 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
-
-            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out mitmproxy-ca-cert.der
-
-            cat << EOF > custom.mobileconfig
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
-              <key>PayloadContent</key>
-              <array>
-                <dict>
-                  <key>PayloadContent</key>
-                  <data>
-                    $(base64 mitmproxy-ca-cert.der)
-                  </data>
-                  <key>PayloadIdentifier</key>
-                  <string>com.apple.security.root.$(uuidgen)</string>
-                  <key>PayloadType</key>
-                  <string>com.apple.security.root</string>
-                  <key>PayloadUUID</key>
-                  <string>$(uuidgen)</string>
-                  <key>PayloadVersion</key>
-                  <integer>1</integer>
-                </dict>
-              </array>
-              <key>PayloadDisplayName</key>
-              <string>MITM Proxy CA</string>
-              <key>PayloadIdentifier</key>
-              <string>com.mitmproxy</string>
-              <key>PayloadRemovalDisallowed</key>
-              <false/>
-              <key>PayloadType</key>
-              <string>Configuration</string>
-              <key>PayloadUUID</key>
-              <string>$(uuidgen)</string>
-              <key>PayloadVersion</key>
-              <integer>1</integer>
-            </dict>
-            </plist>
-            EOF
-
-            xcrun simctl install booted custom.mobileconfig
-            xcrun simctl profile booted install custom.mobileconfig
-
-            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
-              HTTPEnable 1 \
-              HTTPProxy localhost \
-              HTTPPort 8080 \
-              HTTPSEnable 1 \
-              HTTPSProxy localhost \
-              HTTPSPort 8080
-
-            xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
+           # Use xcrun simctl list devices to verify exact device name
+           xcrun simctl boot "iPhone 14 Pro Max"
+           sleep 5
+ 
+           openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out mitmproxy-ca-cert.der
+ 
+           cat > custom.mobileconfig << EOF
+           <?xml version="1.0" encoding="UTF-8"?>
+           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+           <plist version="1.0">
+           <dict>
+             <key>PayloadContent</key>
+             <array>
+               <dict>
+                 <key>PayloadContent</key>
+                 <data>
+                 $(base64 mitmproxy-ca-cert.der)
+                 </data>
+                 <key>PayloadIdentifier</key>
+                 <string>com.apple.security.root.$(uuidgen)</string>
+                 <key>PayloadType</key>
+                 <string>com.apple.security.root</string>
+                 <key>PayloadUUID</key>
+                 <string>$(uuidgen)</string>
+                 <key>PayloadVersion</key>
+                 <integer>1</integer>
+               </dict>
+             </array>
+             <key>PayloadDisplayName</key>
+             <string>MITM Proxy CA</string>
+             <key>PayloadIdentifier</key>
+             <string>com.mitmproxy</string>
+             <key>PayloadRemovalDisallowed</key>
+             <false/>
+             <key>PayloadType</key>
+             <string>Configuration</string>
+             <key>PayloadUUID</key>
+             <string>$(uuidgen)</string>
+             <key>PayloadVersion</key>
+             <integer>1</integer>
+           </dict>
+           </plist>
+           EOF
+ 
+           xcrun simctl install booted custom.mobileconfig
+           xcrun simctl profile booted install custom.mobileconfig
+ 
+           defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
+             HTTPEnable 1 \
+             HTTPProxy localhost \
+             HTTPPort 8080 \
+             HTTPSEnable 1 \
+             HTTPSProxy localhost \
+             HTTPSPort 8080
+ 
+           xcrun simctl shutdown all
+           xcrun simctl boot "iPhone 14 Pro Max"
+           sleep 5
   setup_appium:
     steps:
       - run:
@@ -855,9 +857,16 @@ workflows:
           working_directory: ~/project/examples/hybrid
           requires:
             - hold_appium_e2e
+      - appium_e2e_ios:
+          working_directory: ~/project/examples/hybrid
+          scheme: HybridSampleApp
+          workspace_path: HybridSampleApp
+          requires:
+            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
+            - appium_e2e_ios
             - appium_e2e_android
             - hold_release_dream11
           filters:
