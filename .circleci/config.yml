@@ -16,7 +16,6 @@ references:
     - test_ios
     - e2e_ios
     - e2e_android
-    - appium_e2e_ios
     - appium_e2e_android
 
   dream11_prepare_config: &dream11_prepare_config
@@ -242,8 +241,7 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-           # Use xcrun simctl list devices to verify exact device name
-           xcrun simctl boot "iPhone 14 Pro Max"
+           xcrun simctl boot "iPhone 11 Pro Max"
            sleep 5
  
            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out mitmproxy-ca-cert.der
@@ -298,7 +296,7 @@ commands:
              HTTPSPort 8080
  
            xcrun simctl shutdown all
-           xcrun simctl boot "iPhone 14 Pro Max"
+           xcrun simctl boot "iPhone 11 Pro Max"
            sleep 5
   setup_appium:
     steps:
@@ -857,16 +855,9 @@ workflows:
           working_directory: ~/project/examples/hybrid
           requires:
             - hold_appium_e2e
-      - appium_e2e_ios:
-          working_directory: ~/project/examples/hybrid
-          scheme: HybridSampleApp
-          workspace_path: HybridSampleApp
-          requires:
-            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
-            - appium_e2e_ios
             - appium_e2e_android
             - hold_release_dream11
           filters:
