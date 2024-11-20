@@ -203,10 +203,10 @@ commands:
             openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1 > hash
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-
+            --sdkmanager "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd \
               --name testDevice \
-              --sdkmanager "system-images;android-34;google_apis;x86_64" \
+              --package "system-images;android-34;google_apis;x86_64" \
             emulator -avd testDevice \
               -no-window \
               -no-audio \
@@ -240,6 +240,7 @@ commands:
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
              sleep 5
+             mkdir -p tmp
 
              openssl x509 -in /tmp/mitmproxy-ca-cert.pem -outform der -out /tmp/mitmproxy-ca-cert.der
 
@@ -678,7 +679,6 @@ jobs:
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
             E2E_DEVICE: 'android'
-          no_output_timeout: 30m
 
   appium_e2e_ios:
     parameters:
