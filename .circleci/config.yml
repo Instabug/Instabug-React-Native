@@ -205,7 +205,7 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             echo "no" | avdmanager create avd \
               --name testDevice \
-              --package "system-images;android-34;google_apis;x86_64" \              
+              --package "system-images;android-34;google_apis;x86_64"              
             emulator -avd testDevice -skin 1080x2400 &
             adb wait-for-device
 
