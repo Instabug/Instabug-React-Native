@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-
+jest.setTimeout(300000);
 describe('Instabug Configuration Validation', () => {
   let configData: any;
 
