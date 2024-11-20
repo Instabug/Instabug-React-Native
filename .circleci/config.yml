@@ -205,10 +205,8 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             echo "no" | avdmanager create avd \
               --name testDevice \
-              --package "system-images;android-34;google_apis;x86_64" \
-            emulator testDevice \
-              -skin 1080x2400 &
-                        
+              --package "system-images;android-34;google_apis;x86_64" \              
+            emulator -avd testDevice -skin 1080x2400 &
             adb wait-for-device
 
             until adb shell getprop sys.boot_completed | grep -m 1 "1"; do
@@ -270,7 +268,7 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-            
+
             xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
@@ -663,6 +661,11 @@ jobs:
             mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
             sleep 5
           background: true
+      - run:
+          name: Set Proxy for iOS Simulator
+          command: |
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
       - run:
           working_directory: << parameters.working_directory >>
           command: |
