@@ -206,9 +206,7 @@ commands:
             echo "no" | avdmanager create avd \
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64" \
-            emulator testDevice \
-              -memory 2048 \
-              -skin 1080x2400 &
+            emulator testDevice
                         
             adb wait-for-device
 
@@ -271,7 +269,7 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-            
+
             xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
@@ -666,6 +664,13 @@ jobs:
           background: true
       - run:
           working_directory: << parameters.working_directory >>
+          name: Start Appium Server
+          command: |
+            appium &
+            sleep 10
+          background: true
+      - run:
+          working_directory: << parameters.working_directory >>
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
@@ -707,6 +712,13 @@ jobs:
           command: |
             mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
             sleep 5
+          background: true
+      - run:
+          working_directory: << parameters.working_directory >>
+          name: Start Appium Server
+          command: |
+            appium &
+            sleep 10
           background: true
       - run:
           working_directory: << parameters.working_directory >>
