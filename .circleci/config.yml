@@ -206,7 +206,8 @@ commands:
             echo "no" | avdmanager create avd \
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64" \
-            emulator testDevice
+            emulator testDevice \
+              -skin 1080x2400 &
                         
             adb wait-for-device
 
@@ -269,7 +270,7 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-
+            
             xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
@@ -664,13 +665,6 @@ jobs:
           background: true
       - run:
           working_directory: << parameters.working_directory >>
-          name: Start Appium Server
-          command: |
-            appium &
-            sleep 10
-          background: true
-      - run:
-          working_directory: << parameters.working_directory >>
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
@@ -713,6 +707,19 @@ jobs:
             mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
             sleep 5
           background: true
+      - run:
+          name: Set Proxy for iOS Simulator
+          command: |
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
+
+            # Set proxy for booted simulator
+            plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
+            plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
+            plutil -replace HTTPPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
+            plutil -replace HTTPSEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
+            plutil -replace HTTPSProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
+            plutil -replace HTTPSPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
       - run:
           working_directory: << parameters.working_directory >>
           name: Start Appium Server
