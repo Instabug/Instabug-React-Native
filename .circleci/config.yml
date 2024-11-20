@@ -204,10 +204,9 @@ commands:
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            sdkmanager "platforms;android-34"
             echo "no" | avdmanager create avd \
               --name testDevice \
-              --package "system-images;android-30;google_apis;x86_64" \
+              --sdkmanager "system-images;android-34;google_apis;x86_64" \
             emulator -avd testDevice \
               -no-window \
               -no-audio \
