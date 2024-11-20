@@ -207,12 +207,6 @@ commands:
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64" \
             emulator testDevice \
-              -no-window \
-              -no-audio \
-              -no-boot-anim \
-              -gpu swiftshader_indirect \
-              -camera-back none \
-              -camera-front none \
               -memory 2048 \
               -skin 1080x2400 &
                         
