@@ -248,7 +248,7 @@ commands:
  
            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out mitmproxy-ca-cert.der
  
-           cat > custom.mobileconfig << EOF
+           cat <<'EOF'>>custom.mobileconfig
            <?xml version="1.0" encoding="UTF-8"?>
            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
            <plist version="1.0">
