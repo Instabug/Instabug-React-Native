@@ -205,12 +205,11 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
             sdkmanager "platforms;android-34"
-            sdkmanager "system-images;android-34;google_apis;x86_64"
+            sdkmanager "system-images;android-30;google_apis;x86_644"
             echo "no" | avdmanager create avd \
-              --name Pixel8 \
-              --package "system-images;android-34;google_apis;x86_64" \
-              --device "pixel_8"
-            emulator -avd Pixel8 \
+              --name testDevice \
+              --package "system-images;android-30;google_apis;x86_64" \
+            emulator -avd testDevice \
               -no-window \
               -no-audio \
               -no-boot-anim \
