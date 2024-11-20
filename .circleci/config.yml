@@ -203,7 +203,6 @@ commands:
             openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1 > hash
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-            --sdkmanager "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd \
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64" \
