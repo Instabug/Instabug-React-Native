@@ -194,7 +194,6 @@ commands:
               sleep 1
             done
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.cer -inform PEM -out ~/.mitmproxy/mitmproxy-ca-cert.crt
-            pkill mitmdump
 
   setup_android_proxy:
     steps:
@@ -206,7 +205,6 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
             sdkmanager "platforms;android-34"
-            sdkmanager "system-images;android-30;google_apis;x86_644"
             echo "no" | avdmanager create avd \
               --name testDevice \
               --package "system-images;android-30;google_apis;x86_64" \
