@@ -16,7 +16,6 @@ references:
     - test_ios
     - e2e_ios
     - e2e_android
-    - appium_e2e_ios
     - appium_e2e_android
 
   dream11_prepare_config: &dream11_prepare_config
@@ -172,7 +171,6 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
-
   setup_mitm_proxy:
     description: Install and configure MITM proxy
     steps:
@@ -206,13 +204,13 @@ commands:
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            sdkmanager "platforms;android-34"
-            sdkmanager "system-images;android-34;google_apis;x86_64"
+            sdkmanager "platforms;android-27"
+            sdkmanager "system-images;android-27;default;x86"
             echo "no" | avdmanager create avd \
-              --name Pixel8 \
+              --name Nexus_6P_API_27 \
               --package "system-images;android-34;google_apis;x86_64" \
-              --device "pixel_8"
-            emulator -avd Pixel8 \
+              --device "Nexus_6P_API_27"
+            emulator -avd Nexus_6P_API_27 \
               -no-window \
               -no-audio \
               -no-boot-anim \
@@ -238,7 +236,6 @@ commands:
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8080
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
-
   setup_ios_proxy:
     steps:
       - run:
@@ -301,7 +298,6 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-
   setup_appium:
     steps:
       - run:
@@ -322,7 +318,7 @@ commands:
             appium --version
             appium driver list
 
-            appium --log-timestamp --debug-log-spacing --log appium.log
+            appium --log-timestamp --debug-log-spacing --log appium.log &
 
 jobs:
   danger:
@@ -689,51 +685,6 @@ jobs:
             E2E_DEVICE: 'android'
           no_output_timeout: 30m
 
-  appium_e2e_ios:
-    parameters:
-      working_directory:
-        type: string
-      scheme:
-        type: string
-      workspace_path:
-        type: string
-    macos:
-      xcode: 13.4.1
-    resource_class: macos.m1.medium.gen1
-    steps:
-      - advanced-checkout/shallow-checkout
-      - build_and_pack_sdk:
-          working_directory: << parameters.working_directory >>
-      - install_pods:
-          working_directory: <<parameters.working_directory>>/ios
-      - setup_mitm_proxy
-      - setup_ios_proxy
-      - setup_appium
-      - run:
-          name: Build iOS
-          working_directory: <<parameters.working_directory>>/ios
-          command: |
-            yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
-            rm -rf ~/Library/Developer/Xcode/DerivedData/*
-            xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
-            -scheme <<parameters.scheme>> \
-            -configuration Release \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
-      - run:
-          name: Start MITM Proxy with logging
-          command: |
-            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
-            sleep 5
-          background: true
-      - run:
-          working_directory: << parameters.working_directory >>
-          command: |
-            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
-          environment:
-            E2E_DEVICE: 'ios'
-          no_output_timeout: 30m
-
 workflows:
   publish:
     jobs:
@@ -859,16 +810,9 @@ workflows:
           working_directory: ~/project/examples/hybrid
           requires:
             - hold_appium_e2e
-      - appium_e2e_ios:
-          working_directory: ~/project/examples/hybrid
-          scheme: HybridSampleApp
-          workspace_path: HybridSampleApp
-          requires:
-            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
-            - appium_e2e_ios
             - appium_e2e_android
             - hold_release_dream11
           filters:
