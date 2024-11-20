@@ -271,9 +271,8 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-
-            xcrun simctl install booted certs/custom.mobileconfig
-            xcrun simctl profile booted install certs/custom.mobileconfig
+            
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
               HTTPEnable 1 \
