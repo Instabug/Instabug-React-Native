@@ -238,61 +238,60 @@ commands:
           name: Setup iOS MITM Certificate and Proxy
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
-             sleep 5
-             mkdir -p tmp
+            sleep 5
 
-             openssl x509 -in /tmp/mitmproxy-ca-cert.pem -outform der -out /tmp/mitmproxy-ca-cert.der
+            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
 
-             echo '<?xml version="1.0" encoding="UTF-8"?>' > /tmp/custom.mobileconfig
-             echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> /tmp/custom.mobileconfig
-             echo '<plist version="1.0">' >> /tmp/custom.mobileconfig
-             echo '<dict>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadContent</key>' >> /tmp/custom.mobileconfig
-             echo '  <array>' >> /tmp/custom.mobileconfig
-             echo '    <dict>' >> /tmp/custom.mobileconfig
-             echo '      <key>PayloadContent</key>' >> /tmp/custom.mobileconfig
-             echo '      <data>' >> /tmp/custom.mobileconfig
-             base64 /tmp/mitmproxy-ca-cert.der >> /tmp/custom.mobileconfig
-             echo '      </data>' >> /tmp/custom.mobileconfig
-             echo '      <key>PayloadIdentifier</key>' >> /tmp/custom.mobileconfig
-             echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> /tmp/custom.mobileconfig
-             echo '      <key>PayloadType</key>' >> /tmp/custom.mobileconfig
-             echo '      <string>com.apple.security.root</string>' >> /tmp/custom.mobileconfig
-             echo '      <key>PayloadUUID</key>' >> /tmp/custom.mobileconfig
-             echo "      <string>$(uuidgen)</string>" >> /tmp/custom.mobileconfig
-             echo '      <key>PayloadVersion</key>' >> /tmp/custom.mobileconfig
-             echo '      <integer>1</integer>' >> /tmp/custom.mobileconfig
-             echo '    </dict>' >> /tmp/custom.mobileconfig
-             echo '  </array>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadDisplayName</key>' >> /tmp/custom.mobileconfig
-             echo '  <string>MITM Proxy CA</string>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadIdentifier</key>' >> /tmp/custom.mobileconfig
-             echo '  <string>com.mitmproxy</string>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadRemovalDisallowed</key>' >> /tmp/custom.mobileconfig
-             echo '  <false/>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadType</key>' >> /tmp/custom.mobileconfig
-             echo '  <string>Configuration</string>' >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadUUID</key>' >> /tmp/custom.mobileconfig
-             echo "  <string>$(uuidgen)</string>" >> /tmp/custom.mobileconfig
-             echo '  <key>PayloadVersion</key>' >> /tmp/custom.mobileconfig
-             echo '  <integer>1</integer>' >> /tmp/custom.mobileconfig
-             echo '</dict>' >> /tmp/custom.mobileconfig
-             echo '</plist>' >> /tmp/custom.mobileconfig
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
+            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
+            echo '<plist version="1.0">' >> certs/custom.mobileconfig
+            echo '<dict>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '  <array>' >> certs/custom.mobileconfig
+            echo '    <dict>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '      <data>' >> certs/custom.mobileconfig
+            base64 certs/mitmproxy-ca-cert.der >> certs/custom.mobileconfig
+            echo '      </data>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '    </dict>' >> certs/custom.mobileconfig
+            echo '  </array>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
+            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
+            echo '  <false/>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '</dict>' >> certs/custom.mobileconfig
+            echo '</plist>' >> certs/custom.mobileconfig
 
-             xcrun simctl install booted /tmp/custom.mobileconfig
-             xcrun simctl profile booted install /tmp/custom.mobileconfig
+            xcrun simctl install booted certs/custom.mobileconfig
+            xcrun simctl profile booted install certs/custom.mobileconfig
 
-             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
-               HTTPEnable 1 \
-               HTTPProxy localhost \
-               HTTPPort 8080 \
-               HTTPSEnable 1 \
-               HTTPSProxy localhost \
-               HTTPSPort 8080
+            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
+              HTTPEnable 1 \
+              HTTPProxy localhost \
+              HTTPPort 8080 \
+              HTTPSEnable 1 \
+              HTTPSProxy localhost \
+              HTTPSPort 8080
 
-             xcrun simctl shutdown all
-             xcrun simctl boot "iPhone 11 Pro Max"
-             sleep 5
+            xcrun simctl shutdown all
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
   setup_appium:
     steps:
       - run:
