@@ -46,6 +46,12 @@ commands:
         type: boolean
         default: false
     steps:
+      - run:
+          name: Uninstall Existing CocoaPods
+          command: gem uninstall -x cocoapods
+      - run:
+          name: Install CocoaPods
+          command: gem install cocoapods:1.14.0
       - restore_cache:
           name: Restore Pods Cache
           keys:
@@ -252,7 +258,7 @@ jobs:
   # ios/upload_sourcemap.sh files respectively.
   sync_generated_files:
     macos:
-      xcode: 13.4.1
+      xcode: 15.4.0
     resource_class: macos.m1.medium.gen1
     steps:
       - advanced-checkout/shallow-checkout
@@ -275,7 +281,7 @@ jobs:
         type: boolean
         default: false
     macos:
-      xcode: 13.4.1
+      xcode: 15.4.0
     resource_class: macos.m1.medium.gen1
     working_directory: ~/project/examples/default
     environment:
@@ -295,7 +301,7 @@ jobs:
                 -scheme InstabugExample \
                 -resultBundlePath coverage/result.xcresult \
                 -sdk iphonesimulator \
-                -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max,OS=15.5' \
+                -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' \
                 test | xcpretty
       - when:
           condition: << parameters.collect_coverage >>
@@ -315,7 +321,7 @@ jobs:
         type: steps
         default: []
     macos:
-      xcode: 13.4.1
+      xcode: 15.4.0
     resource_class: macos.m1.medium.gen1
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
@@ -414,7 +420,7 @@ jobs:
 
   publish:
     macos:
-      xcode: 13.4.1
+      xcode: 15.4.0
     resource_class: macos.m1.medium.gen1
     working_directory: '~'
     steps:
