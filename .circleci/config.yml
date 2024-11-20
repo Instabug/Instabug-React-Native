@@ -172,6 +172,7 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
+
   setup_mitm_proxy:
     description: Install and configure MITM proxy
     steps:
@@ -237,6 +238,7 @@ commands:
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8080
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
+
   setup_ios_proxy:
     steps:
       - run:
@@ -299,6 +301,7 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
+
   setup_appium:
     steps:
       - run:
