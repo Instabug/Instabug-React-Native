@@ -181,10 +181,10 @@ commands:
             if command -v brew &> /dev/null; then
               brew install python3 openssl
             fi
-            
+
             python3 --version
             pip3 --version
-            
+
             pip3 install --upgrade pip
             pip3 install mitmproxy
             mitmdump --set block_global=false &
@@ -204,7 +204,7 @@ commands:
             openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1 > hash
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-            
+
             sdkmanager "platforms;android-34"
             sdkmanager "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd \
@@ -222,17 +222,17 @@ commands:
               -skin 1080x2400 &
                         
             adb wait-for-device
-            
+
             until adb shell getprop sys.boot_completed | grep -m 1 "1"; do
               sleep 1
             done
-            
+
             adb root
             adb wait-for-device
             adb remount
             adb push $HASH.0 /system/etc/security/cacerts/
             adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
-            
+
             adb shell settings put global http_proxy "localhost:8080"
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8080
@@ -244,9 +244,9 @@ commands:
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-            
+
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out mitmproxy-ca-cert.der
-            
+
             cat << EOF > custom.mobileconfig
             <?xml version="1.0" encoding="UTF-8"?>
             <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -284,10 +284,10 @@ commands:
             </dict>
             </plist>
             EOF
-            
+
             xcrun simctl install booted custom.mobileconfig
             xcrun simctl profile booted install custom.mobileconfig
-            
+
             defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
               HTTPEnable 1 \
               HTTPProxy localhost \
@@ -295,7 +295,7 @@ commands:
               HTTPSEnable 1 \
               HTTPSProxy localhost \
               HTTPSPort 8080
-            
+
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
@@ -306,21 +306,21 @@ commands:
           command: |
             npm install -g appium@2.11.4
             npm install -g @appium/doctor
-            
+
             appium driver install uiautomator2@3.0.5
             appium driver install xcuitest@7.9.1
-            
+
             npm install --save-dev webdriverio@9.1.0
             npm install --save-dev appium@2.11.4
             npm install --save-dev jest@29.7.0
             npm install --save-dev appium-uiautomator2-driver@3.0.5
             npm install --save-dev appium-xcuitest-driver@7.9.1
-            
+
             appium --version
             appium driver list
-            
+
             appium --log-timestamp --debug-log-spacing --log appium.log &
-            
+
 jobs:
   danger:
     executor:
@@ -668,7 +668,7 @@ jobs:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
           command: ./gradlew assembleRelease
-      
+
       - setup_mitm_proxy
       - setup_android_proxy
       - setup_appium
@@ -683,7 +683,7 @@ jobs:
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
-            E2E_DEVICE: "android"
+            E2E_DEVICE: 'android'
           no_output_timeout: 30m
 
   appium_e2e_ios:
@@ -728,7 +728,7 @@ jobs:
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
-            E2E_DEVICE: "ios"
+            E2E_DEVICE: 'ios'
           no_output_timeout: 30m
 
 workflows:

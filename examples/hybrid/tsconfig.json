@@ -4,5 +4,4 @@
   },
   "extends": "@react-native/typescript-config/tsconfig.json",
   "types": ["node", "webdriverio", "wdio-intercept-service"]
-
 }
