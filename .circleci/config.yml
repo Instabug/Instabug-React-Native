@@ -206,7 +206,7 @@ commands:
             echo "no" | avdmanager create avd \
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64" \
-            emulator -avd testDevice \
+            emulator testDevice \
               -no-window \
               -no-audio \
               -no-boot-anim \
@@ -239,7 +239,7 @@ commands:
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-
+            mkdir -p certs
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
 
             echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
