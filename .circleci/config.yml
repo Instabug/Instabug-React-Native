@@ -347,6 +347,9 @@ jobs:
       # This is a workaround until the iOS SDK is updated to prioritize the custom
       # Instabug.plist over the internal Config.plist.
       - run:
+          name: Give execute permission to Customize API Endpoints
+          command: chmod +x  ./scripts/customize-ios-endpoints.sh
+      - run:
           name: Customize API Endpoints
           command: ./scripts/customize-ios-endpoints.sh
       - run:
