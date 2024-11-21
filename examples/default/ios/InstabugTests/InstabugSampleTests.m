@@ -13,6 +13,7 @@
 #import "IBGConstants.h"
 #import "RNInstabug.h"
 #import <RNInstabug/IBGNetworkLogger+CP.h>
+#import "Instabug+CP.h"
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -45,7 +46,7 @@
 
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
-  self.instabugBridge = [[InstabugReactBridge alloc] init];
+  self.instabugBridge = OCMPartialMock([[InstabugReactBridge alloc] init]);
   self.mRNInstabug = OCMClassMock([RNInstabug class]);
 }
 
@@ -233,14 +234,25 @@
 - (void)testSetReproStepsConfig {
   id mock = OCMClassMock([Instabug class]);
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
-  IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
-  IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
+    IBGUserStepsMode anr = IBGUserStepsModeEnabledWithNoScreenshots;
 
-  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
+  IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode appHangsMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashFatalMode = IBGUserStepsModeEnabledWithNoScreenshots;
+  IBGUserStepsMode crashNonFatalMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode oomMode = IBGUserStepsModeEnable;
+  IBGUserStepsMode forceRestartMode = IBGUserStepsModeEnabledWithNoScreenshots;
+
+  [self.instabugBridge setReproStepsConfig:bugMode :sessionReplayMode :anr :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeFatal withMode:crashFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeNonFatal withMode:crashNonFatalMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeForceRestart withMode:forceRestartMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeOutOfMemory withMode:oomMode]);
+
 }
 
 - (void)testSetUserAttribute {
@@ -315,7 +327,7 @@
 
 - (void)testNetworkLogIOS {
   id mIBGNetworkLogger = OCMClassMock([IBGNetworkLogger class]);
-  
+
   NSString *url = @"https://api.instabug.com";
   NSString *method = @"GET";
   NSString *requestBody = @"requestBody";
@@ -332,7 +344,7 @@
   double duration = 150;
   NSString *gqlQueryName = nil;
   NSString *serverErrorMessage = nil;
-  
+
   [self.instabugBridge networkLogIOS:url
                               method:method
                          requestBody:requestBody
@@ -349,7 +361,7 @@
                             duration:duration
                         gqlQueryName:gqlQueryName
                   serverErrorMessage:serverErrorMessage];
-  
+
   OCMVerify([mIBGNetworkLogger addNetworkLogWithUrl:url
                                             method:method
                                        requestBody:requestBody

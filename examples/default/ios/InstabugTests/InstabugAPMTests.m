@@ -26,7 +26,7 @@
  */
 - (void)setEnabled:(BOOL)isEnabled;
 
-@end/Users/ahmedalaa-instabug/projects/Instabug-React-Native/ios/RNInstabug/ArgsRegistry.h
+@end
 
 @protocol ExecutionTraceCPTestProtocol <NSObject>
 /**
