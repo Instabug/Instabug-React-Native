@@ -200,8 +200,9 @@ commands:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
-            # Remove existing Android SDK installation
-            rm -rf $ANDROID_HOME
+           if [ -d "/opt/android/sdk" ]; then
+             sudo rm -rf "/opt/android/sdk" || echo "Failed to remove Android SDK directory"
+           fi
 
             # Reinstall Android SDK
             curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
