@@ -203,7 +203,7 @@ commands:
             # Create AVD with specific configurations
             echo "no" | avdmanager create avd \
             --name testDevice \
-            --package "system-images;android-34;google_apis;x86_64" \
+            --package "system-images;android-30;google_apis;x86_64" \
             --device "Pixel 4"
 
             # Configure emulator for CI
@@ -306,13 +306,13 @@ commands:
 
             xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
-            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
-              HTTPEnable 1 \
-              HTTPProxy localhost \
-              HTTPPort 8080 \
-              HTTPSEnable 1 \
-              HTTPSProxy localhost \
-              HTTPSPort 8080
+            # defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
+            #   HTTPEnable 1 \
+            #   HTTPProxy localhost \
+            #   HTTPPort 8080 \
+            #   HTTPSEnable 1 \
+            #   HTTPSProxy localhost \
+            #   HTTPSPort 8080
 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
