@@ -238,9 +238,9 @@ commands:
             adb push $HASH.0 /data/local/tmp/$HASH.0
 
             # Set proxy settings
-            adb shell settings put global http_proxy "localhost:8080"
+            adb shell settings put global http_proxy "localhost:8082"
             adb shell settings put global global_http_proxy_host "localhost"
-            adb shell settings put global global_http_proxy_port 8080
+            adb shell settings put global global_http_proxy_port 8082
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
 
             echo "Emulator setup complete"
@@ -680,7 +680,7 @@ jobs:
       - run:
           name: Start MITM Proxy with logging
           command: |
-            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
+            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8082 &
             sleep 5
           background: true
       - run:
