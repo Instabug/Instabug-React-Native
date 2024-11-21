@@ -200,15 +200,17 @@ commands:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
+            sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
             sdkmanager "system-images;android-34;google_apis;x86_64"
-
       - run:
           name: Create and Launch Android Emulator
           command: |
             # Create AVD with specific configurations
-            echo "no" | avdmanager create avd -n Pixel_8 -k "system-images;android-34;google_apis;x86_64" --device "pixel_8"
-            # Start emulator with extensive logging and configuration
-            emulator -avd Pixel_8 \
+              echo "no" | avdmanager create avd -n Pixel_8 \
+              -k "system-images;android-34;google_apis;x86_64" \
+              -d pixel_3a \
+              --force
+              emulator -avd Pixel_8 \
               -no-snapshot \
               -no-boot-anim \
               -no-window \
@@ -216,7 +218,10 @@ commands:
               -no-audio \
               -verbose \
               -qemu &
+              adb wait-for-device
 
+              adb devices
+              adb shell getprop ro.build.version.release
       - run:
           name: Setup MITM Proxy and Certificates
           command: |
