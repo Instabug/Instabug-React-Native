@@ -208,32 +208,38 @@ commands:
             HASH=$(cat hash)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             echo "no" | avdmanager create avd \
-              --name testDevice \
-              --package "system-images;android-34;google_apis;x86_64"
+            --name testDevice \
+            --package "system-images;android-34;default;x86_64"
 
-            emulator -avd testDevice -skin 1080x2400 -writable-system -no-snapshot -no-boot-anim -no-audio -no-window &
+            # Start the emulator with writable system
+            emulator -avd testDevice -writable-system -no-snapshot -no-boot-anim -no-audio -no-window &
             adb wait-for-device
-
+            
+            # Wait for the emulator to fully boot
             until adb shell getprop sys.boot_completed | grep -m 1 "1"; do
               echo "Waiting for emulator to fully boot..."
               sleep 5
             done
-
+            
+            # Restart adb as root
             adb root
             adb wait-for-device
-
-            adb remount
-
+            
+            # Remount /system as writable
+            adb shell mount -o rw,remount /system
+            
+            # Push the certificate to the system's trusted CA store
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             adb push $HASH.0 /system/etc/security/cacerts/
             adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
-
+            
+            # Set up the proxy
             adb shell settings put global http_proxy "localhost:8080"
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8080
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
-
+            
             echo "Emulator is ready with proxy settings."
   setup_ios_proxy:
     steps:
