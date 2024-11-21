@@ -210,10 +210,6 @@ commands:
             --package "system-images;android-30;google_apis;x86_64" \
             --device "Nexus 5X"
 
-            # Configure emulator for CI
-            echo "hw.ramSize=2048" >> ~/.android/avd/testDevice.avd/config.ini
-            echo "vm.heapSize=256" >> ~/.android/avd/testDevice.avd/config.ini
-            echo "disk.dataPartition.size=2G" >> ~/.android/avd/testDevice.avd/config.ini
 
             # Start emulator with extensive logging and configuration
             emulator -avd testDevice \
@@ -224,19 +220,6 @@ commands:
               -no-audio \
               -verbose \
               -qemu &
-
-            # Wait for emulator to be ready
-            timeout 300 bash -c '
-              while true; do 
-                adb devices | grep -q "device$" && break
-                adb shell "getprop sys.boot_completed" | grep -q "1" && break
-                sleep 5
-              done
-            '
-
-            # Verify emulator is ready
-            adb devices
-            adb shell "ls /data"
 
       - run:
           name: Setup MITM Proxy and Certificates
@@ -741,7 +724,7 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
-
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
             # Set proxy for booted simulator
             plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
