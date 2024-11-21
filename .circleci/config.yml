@@ -200,20 +200,18 @@ commands:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
-            sdkmanager --install "system-images;android-34;google_apis;x86_64"
+            sdkmanager --install "system-images;android-30;google_apis;x86_64"
       - run:
           name: Create and Launch Android Emulator
           command: |
             # Create AVD with specific configurations
             echo "no" | avdmanager create avd \
-            --name "Pixel8_API34" \
-            --package "system-images;android-34;google_apis;x86_64" \
-            --device "Pixel 8"
+            --name testDevice \
+            --package "system-images;android-30;google_apis;x86_64" \
+            --device "Nexus 5X"
 
-            echo "hw.ramSize=4096" >> ~/.android/avd/Pixel\ 8\ API\ 34.avd/config.ini
-            echo "vm.heapSize=512" >> ~/.android/avd/Pixel\ 8\ API\ 34.avd/config.ini
             # Start emulator with extensive logging and configuration
-            emulator -avd "Pixel 8 API 34" \
+            emulator -avd testDevice \
               -no-snapshot \
               -no-boot-anim \
               -no-window \
