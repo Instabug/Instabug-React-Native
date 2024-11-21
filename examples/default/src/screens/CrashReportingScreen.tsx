@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, Text, View, Switch } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View, Switch } from 'react-native';
 
 import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
