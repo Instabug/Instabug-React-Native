@@ -62,6 +62,7 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     }
   }
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   const [userAttributeKey, setUserAttributeKey] = useState('');
@@ -133,7 +134,9 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Handled Native Exception"
-            onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
+            onPress={() =>
+              NativeExampleCrashReporting.sendNativeNonFatal('Handled Native Exception')
+            }
           />
           <VerticalListTile title="Throw Handeld crash">
             <VStack>
