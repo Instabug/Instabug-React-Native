@@ -206,7 +206,7 @@ commands:
           command: |
             # Create AVD with specific configurations
             echo "no" | avdmanager create avd \
-            --name "Pixel 8 API 34" \
+            --name "Pixel8_API34" \
             --package "system-images;android-34;google_apis;x86_64" \
             --device "Pixel 8"
 
