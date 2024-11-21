@@ -198,34 +198,12 @@ commands:
   setup_android_proxy:
     steps:
       - run:
-          name: Clean and Reinstall Android SDK
-          command: |
-            # Reinstall Android SDK
-            curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
-            mkdir -p $ANDROID_HOME/cmdline-tools
-            unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools
-            rm sdk-tools.zip
-
-            # Set up PATH
-            export PATH=$ANDROID_HOME/cmdline-tools/bin:$PATH
-
-            # Accept licenses non-interactively
-            yes | sdkmanager --licenses
-
-            # Install core components
-            sdkmanager --verbose \
-              "platforms;android-30" \
-              "platform-tools" \
-              "emulator" \
-              "system-images;android-30;google_apis;x86_64"
-
-      - run:
           name: Create and Launch Android Emulator
           command: |
             # Create AVD with specific configurations
             echo "no" | avdmanager create avd \
             --name testDevice \
-            --package "system-images;android-30;google_apis;x86_64" \
+            --package "system-images;android-34;google_apis;x86_64" \
             --device "Pixel 4"
 
             # Configure emulator for CI
@@ -759,9 +737,7 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
-            xcrun simctl erase "iPhone 11 Pro Max"
-
-            xcrun simctl boot "iPhone 11 Pro Max" || exit 1
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
             sleep 5
 
             # Set proxy for booted simulator
