@@ -4,7 +4,7 @@
 
 @interface CrashReportingExampleModule : RCTEventEmitter <RCTBridgeModule>
 
-- (void)sendNativeNonFatal;
+- (void)sendNativeNonFatal:(NSString*)exception;
 - (void)sendNativeFatalCrash;
 - (void)sendFatalHang;
 - (void)sendOOM;

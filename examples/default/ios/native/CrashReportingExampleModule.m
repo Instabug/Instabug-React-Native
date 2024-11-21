@@ -48,7 +48,7 @@
 RCT_EXPORT_MODULE(CrashReportingExampleModule)
 
 
-RCT_EXPORT_METHOD(sendNativeNonFatal) {
+RCT_EXPORT_METHOD(sendNativeNonFatal:(NSString*)exception) {
     IBGNonFatalException *nonFatalException = [IBGCrashReporting exception:[NSException exceptionWithName:@"native Handled NS Exception" reason:@"Test iOS Handled Crash" userInfo:@{@"Key": @"Value"}]];
 
     [nonFatalException report];
