@@ -209,7 +209,7 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             echo "no" | avdmanager create avd \
             --name testDevice \
-            --package "system-images;android-34;default;x86_64"
+            --package "system-images;android-34;google_apis;x86_64"
 
             # Start the emulator with writable system
             emulator -avd testDevice -writable-system -no-snapshot -no-boot-anim -no-audio -no-window &
