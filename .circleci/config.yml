@@ -200,24 +200,24 @@ commands:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
-             # Reinstall Android SDK
-             curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
-             mkdir -p $ANDROID_HOME/cmdline-tools
-             unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools
-             rm sdk-tools.zip
+            # Reinstall Android SDK
+            curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
+            mkdir -p $ANDROID_HOME/cmdline-tools
+            unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools
+            rm sdk-tools.zip
 
-             # Set up PATH
-             export PATH=$ANDROID_HOME/cmdline-tools/bin:$PATH
+            # Set up PATH
+            export PATH=$ANDROID_HOME/cmdline-tools/bin:$PATH
 
-             # Accept licenses non-interactively
-             yes | sdkmanager --licenses
+            # Accept licenses non-interactively
+            yes | sdkmanager --licenses
 
-             # Install core components
-             sdkmanager --verbose \
-               "platforms;android-30" \
-               "platform-tools" \
-               "emulator" \
-               "system-images;android-30;google_apis;x86_64"
+            # Install core components
+            sdkmanager --verbose \
+              "platforms;android-30" \
+              "platform-tools" \
+              "emulator" \
+              "system-images;android-30;google_apis;x86_64"
 
       - run:
           name: Create and Launch Android Emulator
