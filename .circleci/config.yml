@@ -211,9 +211,6 @@ commands:
               --name testDevice \
               --package "system-images;android-34;google_apis;x86_64"
 
-            emulator -avd testDevice -skin 1080x2400 &
-            adb wait-for-device
-
             emulator -avd testDevice -skin 1080x2400 -writable-system -no-snapshot -no-boot-anim -no-audio -no-window &
             adb wait-for-device
 
