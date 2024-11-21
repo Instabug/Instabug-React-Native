@@ -198,6 +198,10 @@ commands:
   setup_android_proxy:
     steps:
       - run:
+          name: Install Android SDK System Image
+          command: |
+            sdkmanager --install "system-images;android-30;google_apis;x86_64"
+      - run:
           name: Create and Launch Android Emulator
           command: |
             # Create AVD with specific configurations
@@ -264,10 +268,8 @@ commands:
           name: Setup iOS MITM Certificate and Proxy
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
             mkdir -p certs
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
-
             echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
             echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
             echo '<plist version="1.0">' >> certs/custom.mobileconfig
@@ -303,17 +305,15 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-
-            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
-
-            # defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
-            #   HTTPEnable 1 \
-            #   HTTPProxy localhost \
-            #   HTTPPort 8080 \
-            #   HTTPSEnable 1 \
-            #   HTTPSProxy localhost \
-            #   HTTPSPort 8080
-
+            xcrun simctl install booted certs/custom.mobileconfig
+            xcrun simctl profile booted install certs/custom.mobileconfig
+            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
+              HTTPEnable 1 \
+              HTTPProxy localhost \
+              HTTPPort 8080 \
+              HTTPSEnable 1 \
+              HTTPSProxy localhost \
+              HTTPSPort 8080
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
