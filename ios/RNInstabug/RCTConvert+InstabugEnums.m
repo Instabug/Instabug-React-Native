@@ -102,4 +102,11 @@ RCT_ENUM_CONVERTER(
   integerValue
 );
 
+RCT_ENUM_CONVERTER(
+  IBGNonFatalLevel,
+  ArgsRegistry.nonFatalExceptionLevel,
+  IBGNonFatalLevelError,
+  integerValue
+);
+
 @end

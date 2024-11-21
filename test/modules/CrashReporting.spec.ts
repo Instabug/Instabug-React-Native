@@ -1,9 +1,10 @@
-import '../mocks/mockInstabugUtils';
+import '../mocks/mockNativeModules';
 
 import * as CrashReporting from '../../src/modules/CrashReporting';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
-import InstabugUtils from '../../src/utils/InstabugUtils';
 import { Platform } from 'react-native';
+import { NonFatalErrorLevel } from '../../src';
+import { getCrashDataFromError } from '../../src/utils/InstabugUtils';
 
 describe('CrashReporting Module', () => {
   it('should call the native method setEnabled', () => {
@@ -13,14 +14,18 @@ describe('CrashReporting Module', () => {
     expect(NativeCrashReporting.setEnabled).toBeCalledWith(true);
   });
 
-  it('should call the native method sendCrashReporting with JSON object and sendHandledJsCrash as a callback', () => {
+  it('should call the native method sendHandledJSCrash with error, fingerprint and level', async () => {
     const error = new TypeError('Invalid type');
-    CrashReporting.reportError(error);
+    const fingerprint = 'fingerprint';
+    const level = NonFatalErrorLevel.critical;
 
-    expect(InstabugUtils.sendCrashReport).toBeCalledTimes(1);
-    expect(InstabugUtils.sendCrashReport).toBeCalledWith(
-      error,
-      NativeCrashReporting.sendHandledJSCrash,
+    await CrashReporting.reportError(error, { fingerprint, level });
+    const crashData = getCrashDataFromError(error);
+    expect(NativeCrashReporting.sendHandledJSCrash).toBeCalledWith(
+      crashData,
+      undefined,
+      fingerprint,
+      level,
     );
   });
 

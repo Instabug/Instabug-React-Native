@@ -1,16 +1,25 @@
 package com.instabug.reactlibrary;
 
+import static com.instabug.crash.CrashReporting.getFingerprintObject;
+import static com.instabug.reactlibrary.util.GlobalMocks.reflected;
+import static org.mockito.AdditionalMatchers.cmpEq;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import android.os.Looper;
 
 import com.instabug.crash.CrashReporting;
+import com.instabug.crash.models.IBGNonFatalException;
 import com.instabug.library.Feature;
 import com.instabug.reactlibrary.util.GlobalMocks;
+import com.instabug.reactlibrary.util.MockReflected;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +27,9 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RNInstabugCrashReportingModuleTest {
@@ -38,6 +50,7 @@ public class RNInstabugCrashReportingModuleTest {
         // Mock Looper class
         Looper mockMainThreadLooper = mock(Looper.class);
         Mockito.when(Looper.getMainLooper()).thenReturn(mockMainThreadLooper);
+        GlobalMocks.setUp();
 
 
         // Override runOnMainThread
@@ -58,6 +71,8 @@ public class RNInstabugCrashReportingModuleTest {
         mockLooper.close();
         mockMainThreadHandler.close();
         mockCrashReporting.close();
+        GlobalMocks.close();
+
     }
 
     /********Crashes*********/
@@ -78,6 +93,18 @@ public class RNInstabugCrashReportingModuleTest {
 
         //then
         mockCrashReporting.verify(() -> CrashReporting.setNDKCrashesState(Feature.State.DISABLED));
+    }
+
+    @Test
+    public void testSendNonFatalError() {
+        String jsonCrash = "{}";
+        boolean isHandled = true;
+        String fingerPrint = "test";
+        String level = ArgsRegistry.nonFatalExceptionLevel.keySet().iterator().next();
+        JSONObject expectedFingerprint = getFingerprintObject(fingerPrint);
+        IBGNonFatalException.Level expectedLevel = ArgsRegistry.nonFatalExceptionLevel.get(level);
+        rnModule.sendHandledJSCrash(jsonCrash, null, fingerPrint, level);
+        reflected.verify(() -> MockReflected.reportException(any(JSONObject.class), eq(isHandled), eq(null), eq(expectedFingerprint), eq(expectedLevel)));
     }
 
     @Test

@@ -10,7 +10,6 @@ import type {
   StringKey,
   WelcomeMessageMode,
 } from '../utils/Enums';
-import type { NetworkData } from '../utils/XhrNetworkInterceptor';
 import type { NativeConstants } from './NativeConstants';
 import { NativeModules } from './NativePackage';
 
@@ -47,7 +46,35 @@ export interface InstabugNativeModule extends NativeModule {
   setString(string: string, key: StringKey): void;
 
   // Network APIs //
-  networkLog(network: NetworkData | string): void;
+  networkLogAndroid(
+    url: string,
+    requestBody: string,
+    responseBody: string | null,
+    method: string,
+    responseCode: number,
+    requestHeaders: string,
+    responseHeaders: string,
+    duration: number,
+  ): void;
+
+  networkLogIOS(
+    url: string,
+    method: string,
+    requestBody: string | null,
+    requestBodySize: number,
+    responseBody: string | null,
+    responseBodySize: number,
+    responseCode: number,
+    requestHeaders: Record<string, string>,
+    responseHeaders: Record<string, string>,
+    contentType: string,
+    errorDomain: string,
+    errorCode: number,
+    startTime: number,
+    duration: number,
+    gqlQueryName: string | undefined,
+    serverErrorMessage: string | undefined,
+  ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;
 
@@ -124,6 +151,12 @@ export interface InstabugNativeModule extends NativeModule {
   removeExperiments(experiments: string[]): void;
 
   clearAllExperiments(): void;
+
+  addFeatureFlags(featureFlags: Record<string, string | undefined>): void;
+
+  removeFeatureFlags(featureFlags: string[]): void;
+
+  removeAllFeatureFlags(): void;
 
   // Files APIs //
   setFileAttachment(filePath: string, fileName?: string): void;

@@ -8,10 +8,27 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import type { CrashData } from '../native/NativeCrashReporting';
+import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import { NativeInstabug } from '../native/NativeInstabug';
+import { NativeAPM } from '../native/NativeAPM';
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
+};
+
+export const getCrashDataFromError = (error: Error) => {
+  const jsStackTrace = getStackTrace(error);
+
+  const jsonObject: CrashData = {
+    message: error.name + ' - ' + error.message,
+    e_message: error.message,
+    e_name: error.name,
+    os: Platform.OS,
+    platform: 'react_native',
+    exception: jsStackTrace,
+  };
+  return jsonObject;
 };
 
 export const getActiveRouteName = (navigationState: NavigationStateV4): string | null => {
@@ -101,22 +118,82 @@ export async function sendCrashReport(
   error: ExtendedError,
   remoteSenderCallback: (json: CrashData | string) => Promise<void>,
 ) {
-  const jsStackTrace = getStackTrace(error);
-
-  const jsonObject: CrashData = {
-    message: error.name + ' - ' + error.message,
-    e_message: error.message,
-    e_name: error.name,
-    os: Platform.OS,
-    platform: 'react_native',
-    exception: jsStackTrace,
-  };
+  const jsonObject = getCrashDataFromError(error);
 
   if (Platform.OS === 'android') {
     return remoteSenderCallback(JSON.stringify(jsonObject));
   }
 
   return remoteSenderCallback(jsonObject);
+}
+
+export function isContentTypeNotAllowed(contentType: string) {
+  const allowed = [
+    'application/protobuf',
+    'application/json',
+    'application/xml',
+    'text/xml',
+    'text/html',
+    'text/plain',
+  ];
+
+  return allowed.every((type) => !contentType.includes(type));
+}
+
+export function reportNetworkLog(network: NetworkData) {
+  if (Platform.OS === 'android') {
+    const requestHeaders = JSON.stringify(network.requestHeaders);
+    const responseHeaders = JSON.stringify(network.responseHeaders);
+
+    NativeInstabug.networkLogAndroid(
+      network.url,
+      network.requestBody,
+      network.responseBody,
+      network.method,
+      network.responseCode,
+      requestHeaders,
+      responseHeaders,
+      network.duration,
+    );
+
+    NativeAPM.networkLogAndroid(
+      network.startTime,
+      network.duration,
+      requestHeaders,
+      network.requestBody,
+      network.requestBodySize,
+      network.method,
+      network.url,
+      network.requestContentType,
+      responseHeaders,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.contentType,
+      network.errorDomain,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
+  } else {
+    NativeInstabug.networkLogIOS(
+      network.url,
+      network.method,
+      network.requestBody,
+      network.requestBodySize,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.requestHeaders,
+      network.responseHeaders,
+      network.contentType,
+      network.errorDomain,
+      network.errorCode,
+      network.startTime,
+      network.duration,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
+  }
 }
 
 export default {

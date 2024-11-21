@@ -18,7 +18,9 @@
     [all addEntriesFromDictionary:ArgsRegistry.extendedBugReportStates];
     [all addEntriesFromDictionary:ArgsRegistry.reproStates];
     [all addEntriesFromDictionary:ArgsRegistry.locales];
+    [all addEntriesFromDictionary:ArgsRegistry.nonFatalExceptionLevel];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
+    [all addEntriesFromDictionary:ArgsRegistry.launchType];
 
     return all;
 }
@@ -150,6 +152,17 @@
     };
 }
 
++ (ArgsDictionary *)nonFatalExceptionLevel {
+    return @{
+        @"nonFatalErrorLevelInfo" : @(IBGNonFatalLevelInfo),
+        @"nonFatalErrorLevelError" : @(IBGNonFatalLevelError),
+        @"nonFatalErrorLevelWarning" : @(IBGNonFatalLevelWarning),
+        @"nonFatalErrorLevelCritical" : @(IBGNonFatalLevelCritical)
+
+
+    };
+}
+
 + (NSDictionary<NSString *, NSString *> *) placeholders {
     return @{
         @"shakeHint": kIBGShakeStartAlertTextStringName,
@@ -226,6 +239,13 @@
         @"conversationTextFieldHint": kIBGChatReplyFieldPlaceholderStringName,
         @"insufficientContentTitle" : kIBGInsufficientContentTitleStringName,
         @"insufficientContentMessage" : kIBGInsufficientContentMessageStringName,
+    };
+}
+
++ (ArgsDictionary *) launchType {
+    return @{
+        @"cold": @(LaunchTypeCold),
+        @"unknown":@(LaunchTypeUnknown)
     };
 }
 

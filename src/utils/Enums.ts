@@ -124,6 +124,16 @@ export enum ReproStepsMode {
 }
 
 /**
+ * The non fatal error level.
+ */
+export enum NonFatalErrorLevel {
+  error = constants.nonFatalErrorLevelError,
+  critical = constants.nonFatalErrorLevelCritical,
+  info = constants.nonFatalErrorLevelInfo,
+  warning = constants.nonFatalErrorLevelWarning,
+}
+
+/**
  * Supported locales
  */
 export enum Locale {
@@ -221,4 +231,13 @@ export enum StringKey {
   welcomeMessageBetaWelcomeStepTitle = constants.welcomeMessageBetaWelcomeStepTitle,
   welcomeMessageLiveWelcomeStepContent = constants.welcomeMessageLiveWelcomeStepContent,
   welcomeMessageLiveWelcomeStepTitle = constants.welcomeMessageLiveWelcomeStepTitle,
+}
+
+export enum LaunchType {
+  cold = constants.cold,
+  unknown = constants.unknown,
+  /**
+   *  Android only
+   */
+  warm = constants.warm,
 }

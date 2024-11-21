@@ -1,13 +1,30 @@
-import React from 'react';
-import { Alert, Platform, ScrollView, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Platform, ScrollView, StyleSheet, Text, View, Switch } from 'react-native';
 
-import { CrashReporting } from 'instabug-reactnative';
+import { CrashReporting, NonFatalErrorLevel } from 'instabug-reactnative';
 
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import { Section } from '../components/Section';
 import { PlatformListTile } from '../components/PlatformListTile';
 import { NativeExampleCrashReporting } from '../native/NativeCrashReporting';
+import { VerticalListTile } from '../components/VerticalListTile';
+import { Button, VStack } from 'native-base';
+import { InputField } from '../components/InputField';
+import { Select } from '../components/Select';
+import { showNotification } from '../utils/showNotification';
+
+const styles = StyleSheet.create({
+  inputWrapper: {
+    padding: 4,
+    flex: 1,
+  },
+
+  formContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+});
 
 export const CrashReportingScreen: React.FC = () => {
   function throwHandledException(error: Error) {
@@ -19,7 +36,7 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     } catch (err) {
       if (err instanceof Error) {
-        CrashReporting.reportError(err).then(() =>
+        CrashReporting.reportError(err, { level: NonFatalErrorLevel.critical }).then(() =>
           Alert.alert(`Crash report for ${error.name} is Sent!`),
         );
       }
@@ -45,9 +62,53 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     }
   }
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const [userAttributeKey, setUserAttributeKey] = useState('');
+  const [userAttributeValue, setUserAttributeValue] = useState('');
+  const [crashNameValue, setCrashNameValue] = useState('');
+  const [crashFingerprint, setCrashFingerprint] = useState('');
+  const [crashLevelValue, setCrashLevelValue] = useState<NonFatalErrorLevel>(
+    NonFatalErrorLevel.error,
+  );
+
+  const toggleSwitch = (value: boolean) => {
+    setIsEnabled(value);
+    CrashReporting.setEnabled(value);
+    showNotification('Crash Reporting status', 'Crash Reporting enabled set to ' + value);
+  };
+
+  function sendCrash() {
+    try {
+      const error = new Error(crashNameValue);
+
+      throw error;
+    } catch (err) {
+      if (err instanceof Error) {
+        const attrMap: { [k: string]: string } = {};
+        attrMap[userAttributeKey] = userAttributeValue;
+
+        const userAttributes: Record<string, string> = {};
+        if (userAttributeKey && userAttributeValue) {
+          userAttributes[userAttributeKey] = userAttributeValue;
+        }
+        const fingerprint = crashFingerprint.length === 0 ? undefined : crashFingerprint;
+
+        CrashReporting.reportError(err, {
+          userAttributes: userAttributes,
+          fingerprint: fingerprint,
+          level: crashLevelValue,
+        }).then(() => {
+          Alert.alert(`Crash report for ${crashNameValue} is Sent!`);
+        });
+      }
+    }
+  }
 
   return (
     <Screen>
+      <Text>Crash Reporting Enabled:</Text>
+      <Switch onValueChange={toggleSwitch} value={isEnabled} />
       <ScrollView>
         <Section title="Non-Fatals">
           <ListTile
@@ -74,6 +135,71 @@ export const CrashReportingScreen: React.FC = () => {
             title="Throw Handled Native Exception"
             onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
           />
+          <VerticalListTile title="Throw Handeld crash">
+            <VStack>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="Crash name"
+                  onChangeText={(key) => setCrashNameValue(key)}
+                  value={crashNameValue}
+                />
+              </View>
+              <View style={styles.formContainer}>
+                <View style={styles.inputWrapper}>
+                  <InputField
+                    placeholder="User attribute key"
+                    onChangeText={(key) => setUserAttributeKey(key)}
+                    value={userAttributeKey}
+                  />
+                </View>
+                <View style={styles.inputWrapper}>
+                  <InputField
+                    placeholder="User attribute value"
+                    onChangeText={(value) => setUserAttributeValue(value)}
+                    value={userAttributeValue}
+                  />
+                </View>
+              </View>
+              <View style={styles.inputWrapper}>
+                <Select
+                  label="Select Error Level"
+                  items={[
+                    {
+                      label: 'Error',
+                      value: NonFatalErrorLevel.error,
+                      isInitial: true,
+                    },
+                    {
+                      label: 'Info',
+                      value: NonFatalErrorLevel.info,
+                    },
+                    {
+                      label: 'Critical',
+                      value: NonFatalErrorLevel.critical,
+                    },
+                    {
+                      label: 'Warning',
+                      value: NonFatalErrorLevel.warning,
+                    },
+                  ]}
+                  onValueChange={(value) => {
+                    setCrashLevelValue(value);
+                  }}
+                />
+              </View>
+
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="Fingerprint"
+                  onChangeText={(text) => setCrashFingerprint(text)}
+                  value={crashFingerprint}
+                />
+              </View>
+              <Button mt="4" onPress={sendCrash}>
+                Send Crash
+              </Button>
+            </VStack>
+          </VerticalListTile>
         </Section>
         <Section title={'Fatal Crashes'}>
           <Text>Fatal Crashes can only be tested in release mode </Text>
@@ -120,50 +246,6 @@ export const CrashReportingScreen: React.FC = () => {
             onPress={() => NativeExampleCrashReporting.sendOOM()}
           />
         </Section>
-        {Platform.OS === 'android' ? (
-          <Section title={'NDK Crashes'}>
-            <Text>NDK Crashes can only be tested in release mode </Text>
-            <Text>These buttons will crash the application.</Text>
-            <ListTile
-              title="Throw Unhandled NDK SIGSEGV Crash"
-              onPress={async () => {
-                console.log('Sending NDK SIGSEGV Crash');
-                await NativeExampleCrashReporting.causeSIGSEGVCrash();
-              }}
-            />
-            <ListTile
-              title="Throw Unhandled NDK SIGFPE Crash"
-              onPress={async () => {
-                console.log('Sending NDK SIGFPE Crash');
-                await NativeExampleCrashReporting.causeSIGFPECrash();
-              }}
-            />
-            <ListTile
-              title="Throw Unhandled NDK SIGILL Crash"
-              onPress={async () => {
-                console.log('Sending NDK SIGILL Crash');
-                await NativeExampleCrashReporting.causeSIGILLCrash();
-              }}
-            />
-
-            <ListTile
-              title="Throw Unhandled NDK SIGBUS Crash"
-              onPress={async () => {
-                console.log('Sending NDK SIGBUS Crash');
-                await NativeExampleCrashReporting.causeSIGBUSCrash();
-              }}
-            />
-            <ListTile
-              title="Throw Unhandled NDK SIGTRAP Crash"
-              onPress={async () => {
-                console.log('Sending NDK SIGTRAP Crash');
-                await NativeExampleCrashReporting.causeSIGTRAPCrash();
-              }}
-            />
-          </Section>
-        ) : (
-          <View />
-        )}
       </ScrollView>
     </Screen>
   );

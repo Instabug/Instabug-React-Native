@@ -106,6 +106,23 @@
 
 - (void)setNetworkLoggingEnabled:(BOOL)isEnabled;
 
+- (void)networkLogIOS:(NSString * _Nonnull)url
+               method:(NSString * _Nonnull)method
+          requestBody:(NSString * _Nonnull)requestBody
+      requestBodySize:(double)requestBodySize
+         responseBody:(NSString * _Nonnull)responseBody
+     responseBodySize:(double)responseBodySize
+         responseCode:(double)responseCode
+       requestHeaders:(NSDictionary * _Nonnull)requestHeaders
+      responseHeaders:(NSDictionary * _Nonnull)responseHeaders
+          contentType:(NSString * _Nonnull)contentType
+          errorDomain:(NSString * _Nullable)errorDomain
+            errorCode:(double)errorCode
+            startTime:(double)startTime
+             duration:(double)duration
+         gqlQueryName:(NSString * _Nullable)gqlQueryName
+   serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
+
 /*
  +------------------------------------------------------------------------+
  |                              Experiments                               |
@@ -116,5 +133,7 @@
 - (void)removeExperiments:(NSArray *)experiments;
 - (void)clearAllExperiments;
 - (void)setOnNetworkDiagnosticsHandler;
-
+- (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
+- (void)removeFeatureFlags:(NSArray *)featureFlags;
+- (void)removeAllFeatureFlags;
 @end

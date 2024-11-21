@@ -18,7 +18,9 @@
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[];
+    return @[
+        @"IBGSessionReplayOnSyncCallback",
+    ];
 }
 
 RCT_EXPORT_MODULE(IBGSessionReplay)

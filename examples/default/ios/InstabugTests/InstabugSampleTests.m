@@ -12,7 +12,7 @@
 #import <Instabug/IBGTypes.h>
 #import "IBGConstants.h"
 #import "RNInstabug.h"
-#import "Instabug+CP.h"
+#import <RNInstabug/IBGNetworkLogger+CP.h>
 
 @protocol InstabugCPTestProtocol <NSObject>
 /**
@@ -45,7 +45,7 @@
 
 - (void)setUp {
   // Put setup code here. This method is called before the invocation of each test method in the class.
-  self.instabugBridge = OCMPartialMock([[InstabugReactBridge alloc] init]);
+  self.instabugBridge = [[InstabugReactBridge alloc] init];
   self.mRNInstabug = OCMClassMock([RNInstabug class]);
 }
 
@@ -233,26 +233,14 @@
 - (void)testSetReproStepsConfig {
   id mock = OCMClassMock([Instabug class]);
   IBGUserStepsMode bugMode = IBGUserStepsModeDisable;
-    IBGUserStepsMode anr = IBGUserStepsModeEnabledWithNoScreenshots;
-
+  IBGUserStepsMode crashMode = IBGUserStepsModeEnable;
   IBGUserStepsMode sessionReplayMode = IBGUserStepsModeEnabledWithNoScreenshots;
-  IBGUserStepsMode appHangsMode = IBGUserStepsModeEnabledWithNoScreenshots;
-  IBGUserStepsMode crashFatalMode = IBGUserStepsModeEnabledWithNoScreenshots;
-  IBGUserStepsMode crashNonFatalMode = IBGUserStepsModeEnable;
-  IBGUserStepsMode oomMode = IBGUserStepsModeEnable;
-  IBGUserStepsMode forceRestartMode = IBGUserStepsModeEnabledWithNoScreenshots;
 
-
-  [self.instabugBridge setReproStepsConfig:bugMode :sessionReplayMode :anr :appHangsMode : crashFatalMode :crashNonFatalMode :forceRestartMode :oomMode];
+  [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeAppHang withMode:appHangsMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeFatal withMode:crashFatalMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeNonFatal withMode:crashNonFatalMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeForceRestart withMode:forceRestartMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeOutOfMemory withMode:oomMode]);
-
 }
 
 - (void)testSetUserAttribute {
@@ -323,6 +311,66 @@
   OCMStub([mock setWelcomeMessageMode:welcomeMessageMode]);
   [self.instabugBridge setWelcomeMessageMode:welcomeMessageMode];
   OCMVerify([mock setWelcomeMessageMode:welcomeMessageMode]);
+}
+
+- (void)testNetworkLogIOS {
+  id mIBGNetworkLogger = OCMClassMock([IBGNetworkLogger class]);
+  
+  NSString *url = @"https://api.instabug.com";
+  NSString *method = @"GET";
+  NSString *requestBody = @"requestBody";
+  double requestBodySize = 10;
+  NSString *responseBody = @"responseBody";
+  double responseBodySize = 15;
+  double responseCode = 200;
+  NSDictionary *requestHeaders = @{ @"accept": @"application/json" };
+  NSDictionary *responseHeaders = @{ @"cache-control": @"no-store" };
+  NSString *contentType = @"application/json";
+  double errorCode = 0;
+  NSString *errorDomain = nil;
+  double startTime = 1719847101199;
+  double duration = 150;
+  NSString *gqlQueryName = nil;
+  NSString *serverErrorMessage = nil;
+  
+  [self.instabugBridge networkLogIOS:url
+                              method:method
+                         requestBody:requestBody
+                     requestBodySize:requestBodySize
+                        responseBody:responseBody
+                    responseBodySize:responseBodySize
+                        responseCode:responseCode
+                      requestHeaders:requestHeaders
+                     responseHeaders:responseHeaders
+                         contentType:contentType
+                         errorDomain:errorDomain
+                           errorCode:errorCode
+                           startTime:startTime
+                            duration:duration
+                        gqlQueryName:gqlQueryName
+                  serverErrorMessage:serverErrorMessage];
+  
+  OCMVerify([mIBGNetworkLogger addNetworkLogWithUrl:url
+                                            method:method
+                                       requestBody:requestBody
+                                   requestBodySize:requestBodySize
+                                      responseBody:responseBody
+                                  responseBodySize:responseBodySize
+                                      responseCode:responseCode
+                                    requestHeaders:requestHeaders
+                                   responseHeaders:responseHeaders
+                                       contentType:contentType
+                                       errorDomain:errorDomain
+                                         errorCode:errorCode
+                                         startTime:startTime * 1000
+                                          duration:duration * 1000
+                                      gqlQueryName:gqlQueryName
+                                serverErrorMessage:serverErrorMessage
+                                      isW3cCaughted:nil
+                                          partialID:nil
+                                          timestamp:nil
+                            generatedW3CTraceparent:nil
+                             caughtedW3CTraceparent:nil]);
 }
 
 - (void)testSetFileAttachment {
@@ -454,25 +502,43 @@
   OCMVerify([mock clearAllExperiments]);
 }
 
-- (void)testSetOnNetworkDiagnosticsHandler {
-  id mInstabug = OCMClassMock([Instabug class]);
-  NSString* date = @"1/2/2024";
-  NSInteger totalRequestCount = 10;
-  NSInteger failureCount = 8;
+- (void)testAddFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSDictionary *featureFlagsMap = @{ @"key13" : @"value1", @"key2" : @"value2"};
 
-  NSDictionary *expected = @{
-      @"date": date,
-      @"totalRequestCount": @(totalRequestCount),
-      @"failureCount": @(failureCount)
-  };
+  OCMStub([mock addFeatureFlags :[OCMArg any]]);
+  [self.instabugBridge addFeatureFlags:featureFlagsMap];
+  OCMVerify([mock addFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+    NSArray<IBGFeatureFlag *> *featureFlags = value;
+    NSString* firstFeatureFlagName = [featureFlags objectAtIndex:0 ].name;
+    NSString* firstFeatureFlagKey = [[featureFlagsMap allKeys] objectAtIndex:0] ;
+    if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+      return YES;
+    }
+    return  NO;
+  }]]);
+}
 
-  OCMStub([mInstabug setWillSendNetworkDiagnosticsHandler:([OCMArg invokeBlockWithArgs:date, OCMOCK_VALUE(totalRequestCount), OCMOCK_VALUE(failureCount), nil])]);
+- (void)testRemoveFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  NSArray *featureFlags = @[@"exp1", @"exp2"];
+  [self.instabugBridge removeFeatureFlags:featureFlags];
+     OCMVerify([mock removeFeatureFlags: [OCMArg checkWithBlock:^(id value) {
+        NSArray<IBGFeatureFlag *> *featureFlagsObJ = value;
+        NSString* firstFeatureFlagName = [featureFlagsObJ objectAtIndex:0 ].name;
+        NSString* firstFeatureFlagKey = [featureFlags firstObject] ;
+        if([ firstFeatureFlagKey isEqualToString: firstFeatureFlagName]){
+          return YES;
+        }
+        return  NO;
+      }]]);
+}
 
-  OCMStub([self.instabugBridge sendEventWithName:[OCMArg any] body:[OCMArg any]]);
-
-  [self.instabugBridge setOnNetworkDiagnosticsHandler];
-
-  OCMVerify([self.instabugBridge sendEventWithName:@"IBGNetworkDiagnosticsHandler" body:expected]);
+- (void)testRemoveAllFeatureFlags {
+  id mock = OCMClassMock([Instabug class]);
+  OCMStub([mock removeAllFeatureFlags]);
+  [self.instabugBridge removeAllFeatureFlags];
+  OCMVerify([mock removeAllFeatureFlags]);
 }
 
 @end
