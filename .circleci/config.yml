@@ -723,12 +723,6 @@ jobs:
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
       - run:
-          name: Start MITM Proxy with logging
-          command: |
-            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
-            sleep 5
-          background: true
-      - run:
           name: Set Proxy for iOS Simulator
           command: |
             xcrun simctl boot "iPhone 11 Pro Max"
