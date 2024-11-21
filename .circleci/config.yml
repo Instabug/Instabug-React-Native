@@ -211,8 +211,7 @@ commands:
             --name testDevice \
             --package "system-images;android-34;google_apis;x86_64"
 
-            # Start the emulator with writable system
-            emulator -avd testDevice -writable-system -no-snapshot -no-boot-anim -no-audio -no-window &
+            emulator -avd testDevice -writable-system -no-snapshot -no-boot-anim -no-audio -no-window -qemu -append 'init=/bin/bash' &
             adb wait-for-device
 
             # Wait for the emulator to fully boot
@@ -221,12 +220,10 @@ commands:
               sleep 5
             done
 
-            # Restart adb as root
+            # Restart adb as root and remount /
             adb root
             adb wait-for-device
-
-            # Remount /system as writable
-            adb shell mount -o rw,remount /system
+            adb shell mount -o rw,remount /
 
             # Push the certificate to the system's trusted CA store
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
@@ -239,8 +236,8 @@ commands:
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8080
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
-
             echo "Emulator is ready with proxy settings."
+
   setup_ios_proxy:
     steps:
       - run:
