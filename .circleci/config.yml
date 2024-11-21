@@ -686,6 +686,13 @@ jobs:
           background: true
       - run:
           working_directory: << parameters.working_directory >>
+          name: Start Appium Server
+          command: |
+            appium &
+            sleep 10
+          background: true
+      - run:
+          working_directory: << parameters.working_directory >>
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
