@@ -338,7 +338,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
 
             final boolean hasError = errorDomain != null && !errorDomain.isEmpty();
             final String errorMessage = hasError ? errorDomain : null;
-   Boolean isW3cHeaderFound=false;
+            Boolean isW3cHeaderFound=false;
             Long partialId=null;
             Long networkStartTimeInSeconds=null;
 
@@ -348,7 +348,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
                     isW3cHeaderFound = w3cAttributes.getBoolean("isW3cHeaderFound");
                 }
 
-                if (w3cAttributes.hasKey("partialId")) {
+                if (!w3cAttributes.isNull("partialId")) {
                     partialId =(long) w3cAttributes.getDouble("partialId");
                     networkStartTimeInSeconds = (long) w3cAttributes.getDouble("networkStartTimeInSeconds");
                 }
