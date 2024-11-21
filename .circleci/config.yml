@@ -198,17 +198,32 @@ commands:
   setup_android_proxy:
     steps:
       - run:
-          name: Update Android SDK Tools and Emulator
+          name: Clean and Reinstall Android SDK
           command: |
-            yes | sdkmanager --update
-            yes | sdkmanager "emulator"
-            sdkmanager --list_installed
+            # Remove existing Android SDK installation
+            rm -rf $ANDROID_HOME
+
+            # Reinstall Android SDK
+            curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
+            mkdir -p $ANDROID_HOME/cmdline-tools
+            unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools
+            rm sdk-tools.zip
+
+            # Set up PATH
+            export PATH=$ANDROID_HOME/cmdline-tools/bin:$PATH
+
+            # Accept licenses non-interactively
+            yes | sdkmanager --licenses
+
+            # Install core components
+            sdkmanager --verbose \
+              "platforms;android-30" \
+              "platform-tools" \
+              "emulator" \
+              "system-images;android-30;google_apis;x86_64"
+
       - run:
-          name: Install Android SDK System Image
-          command: |
-            sdkmanager --install "system-images;android-30;google_apis;x86_64"
-      - run:
-          name: Setup Android MITM Certificate and Proxy
+          name: Create and Launch Android Emulator
           command: |
             # Create AVD with specific configurations
             echo "no" | avdmanager create avd \
@@ -216,7 +231,12 @@ commands:
             --package "system-images;android-30;google_apis;x86_64" \
             --device "Pixel 4"
 
-            # Start emulator with verbose logging and specific configurations
+            # Configure emulator for CI
+            echo "hw.ramSize=2048" >> ~/.android/avd/testDevice.avd/config.ini
+            echo "vm.heapSize=256" >> ~/.android/avd/testDevice.avd/config.ini
+            echo "disk.dataPartition.size=2G" >> ~/.android/avd/testDevice.avd/config.ini
+
+            # Start emulator with extensive logging and configuration
             emulator -avd testDevice \
               -no-snapshot \
               -no-boot-anim \
@@ -224,28 +244,34 @@ commands:
               -gpu swiftshader_indirect \
               -no-audio \
               -verbose \
-              -qemu
+              -qemu &
 
-            # Wait for emulator to boot
-            adb wait-for-device
-            adb devices
-
-            # Check boot status with multiple methods
+            # Wait for emulator to be ready
             timeout 300 bash -c '
               while true; do 
-                adb shell "getprop sys.boot_completed" | grep "1" && break
-                adb shell "ls /data" && break
+                adb devices | grep -q "device$" && break
+                adb shell "getprop sys.boot_completed" | grep -q "1" && break
                 sleep 5
               done
             '
 
+            # Verify emulator is ready
+            adb devices
+            adb shell "ls /data"
+
+      - run:
+          name: Setup MITM Proxy and Certificates
+          command: |
             # Prepare MITM certificate
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            # Try multiple methods for certificate installation and proxy setup
+            # Attempt multiple methods for certificate and proxy installation
             set +e
-            adb shell mount -o rw,remount /
+
+            # Try remounting and pushing certificate
+            adb root
+            adb remount
             adb push $HASH.0 /system/etc/security/cacerts/$HASH.0 || \
             adb push $HASH.0 /data/local/tmp/$HASH.0
 
@@ -255,7 +281,7 @@ commands:
             adb shell settings put global global_http_proxy_port 8080
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
 
-            echo "Emulator setup complete""
+            echo "Emulator setup complete"
 
   setup_ios_proxy:
     steps:
@@ -696,11 +722,6 @@ jobs:
             sleep 5
           background: true
       - run:
-          name: Set Proxy for iOS Simulator
-          command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
-      - run:
           working_directory: << parameters.working_directory >>
           command: |
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
@@ -741,7 +762,9 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
+            xcrun simctl erase "iPhone 11 Pro Max"
+
+            xcrun simctl boot "iPhone 11 Pro Max" || exit 1
             sleep 5
 
             # Set proxy for booted simulator
