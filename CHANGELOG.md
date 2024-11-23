@@ -1,5 +1,37 @@
 # Changelog
 
+## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...14.0.0) (November 25, 2024)
+
+### Added
+
+- Add support for opting into session syncing ([#1292](https://github.com/Instabug/Instabug-React-Native/pull/1292)).
+- Add support for Expo Router navigation tracking ([#1270](https://github.com/Instabug/Instabug-React-Native/pull/1270)).
+- Enhance the network interceptor to capture more client error messages ([#1257](https://github.com/Instabug/Instabug-React-Native/pull/1257)).
+- Add support for Feature Flags APIs `Instabug.addFeatureFlags`, `Instabug.removeFeatureFlags` and `Instabug.clearAllFeatureFlags` ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
+- Export `uploadSourcemaps` and `uploadSoFiles` utilities in the `instabug-reactnative/upload` sub-package for usage in custom Node.js upload scripts ([#1252](https://github.com/Instabug/Instabug-React-Native/pull/1252)).
+- Add support for passing a grouping fingerprint, error level, and user attributes to the `CrashReporting.reportError` non-fatals API ([#1194](https://github.com/Instabug/Instabug-React-Native/pull/1194)).
+
+### Deprecated
+
+- Deprecate Experiments APIs `Instabug.addExperiments`, `Instabug.removeExperiments` and `Instabug.clearAllExperiments` in favor of the new Feature Flags APIs ([#1230](https://github.com/Instabug/Instabug-React-Native/pull/1230)).
+
+### Changed
+
+- Bump Instabug iOS SDK to v14.0.0 ([#1312](https://github.com/Instabug/Instabug-React-Native/pull/1312)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.0.0).
+- Bump Instabug Android SDK to v14.0.0 ([#1312](https://github.com/Instabug/Instabug-React-Native/pull/1312)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v14.0.0).
+
+### Fixed
+
+- Replace thrown errors with logs ([#1220](https://github.com/Instabug/Instabug-React-Native/pull/1220))
+- Fix an issue with JavaScript fatal crashes on iOS causing them to be reported as native iOS crashes instead. ([#1290](https://github.com/Instabug/Instabug-React-Native/pull/1290)).
+- Correctly resolve the flavor path when uploading sourcemaps on Android. ([#1225](https://github.com/Instabug/Instabug-React-Native/pull/1225)).
+- Drop non-error objects reported as crashes since they don't have a stack trace ([#1279](https://github.com/Instabug/Instabug-React-Native/pull/1279)).
+- Fix APM network logging on iOS when the response body is missing or empty. ([#1273](https://github.com/Instabug/Instabug-React-Native/pull/1273)).
+- Fix APM network logging on Android ([#1253](https://github.com/Instabug/Instabug-React-Native/pull/1253)).
+- Fix an OOM (out-of-memory) crash while saving network logs on Android ([#1244](https://github.com/Instabug/Instabug-React-Native/pull/1244)).
+- Change parameters used inside inner classes to `final` in Android code to maintain compatibility with Java 7 and earlier ([#1239](https://github.com/Instabug/Instabug-React-Native/pull/1239)).
+- Read `INSTABUG_APP_TOKEN` from system environment when there is no default value ([#1232](https://github.com/Instabug/Instabug-React-Native/pull/1232)).
+
 ## [13.0.6](https://github.com/Instabug/Instabug-React-Native/compare/v13.0.5...v13.0.6) (JUN 17, 2024)
 
 ### Changed

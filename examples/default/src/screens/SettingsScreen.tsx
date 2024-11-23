@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import Instabug, { BugReporting, ColorTheme, InvocationEvent } from 'instabug-reactnative';
+import Instabug, {
+  BugReporting,
+  ColorTheme,
+  InvocationEvent,
+  Locale,
+  ReproStepsMode,
+} from 'instabug-reactnative';
 import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
 
 import { ListTile } from '../components/ListTile';
@@ -17,8 +23,12 @@ export const SettingsScreen: React.FC = () => {
   const [userID, setUserID] = useState('');
   const [userAttributeKey, setUserAttributeKey] = useState('');
   const [userAttributeValue, setUserAttributeValue] = useState('');
+  const [featureFlagName, setFeatureFlagName] = useState('');
+  const [featureFlagVariant, setfeatureFlagVariant] = useState('');
+
   const toast = useToast();
   const [userAttributesFormError, setUserAttributesFormError] = useState<any>({});
+  const [featureFlagFormError, setFeatureFlagFormError] = useState<any>({});
 
   const validateUserAttributeForm = () => {
     const errors: any = {};
@@ -31,6 +41,15 @@ export const SettingsScreen: React.FC = () => {
     setUserAttributesFormError(errors);
     return Object.keys(errors).length === 0;
   };
+  const validateFeatureFlagForm = () => {
+    const errors: any = {};
+    if (featureFlagName.length === 0) {
+      errors.featureFlagName = 'Value is required';
+    }
+    setFeatureFlagFormError(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const styles = StyleSheet.create({
     inputWrapper: {
       padding: 4,
@@ -59,6 +78,37 @@ export const SettingsScreen: React.FC = () => {
       setUserAttributeKey('');
       setUserAttributeValue('');
     }
+  };
+  const saveFeatureFlags = () => {
+    if (validateFeatureFlagForm()) {
+      Instabug.addFeatureFlag({
+        name: featureFlagName,
+        variant: featureFlagVariant,
+      });
+      toast.show({
+        description: 'Feature Flag added successfully',
+      });
+      setFeatureFlagName('');
+      setfeatureFlagVariant('');
+    }
+  };
+  const removeFeatureFlags = () => {
+    if (validateFeatureFlagForm()) {
+      Instabug.removeFeatureFlag(featureFlagName);
+      toast.show({
+        description: 'Feature Flag removed successfully',
+      });
+      setFeatureFlagName('');
+      setfeatureFlagVariant('');
+    }
+  };
+  const removeAllFeatureFlags = () => {
+    Instabug.removeAllFeatureFlags();
+    toast.show({
+      description: 'Feature Flags removed successfully',
+    });
+    setFeatureFlagName('');
+    setfeatureFlagVariant('');
   };
 
   const logout = () => {
@@ -149,6 +199,32 @@ export const SettingsScreen: React.FC = () => {
             onValueChange={Instabug.setColorTheme}
           />
         </ListTile>
+        <ListTile
+          title="Change Locale to Arabic"
+          onPress={() => {
+            Instabug.setLocale(Locale.arabic);
+          }}
+        />
+        <ListTile
+          title="Disable Repro Steps"
+          onPress={() => {
+            Instabug.setReproStepsConfig({
+              all: ReproStepsMode.disabled,
+            });
+          }}
+        />
+        <ListTile
+          title="Add Experiments"
+          onPress={() => {
+            Instabug.addExperiments(['exp1', 'exp2']);
+          }}
+        />
+        <ListTile
+          title="Remove Experiments"
+          onPress={() => {
+            Instabug.removeExperiments(['exp1', 'exp2']);
+          }}
+        />
 
         <VerticalListTile title="User Identification">
           <VStack>
@@ -212,6 +288,38 @@ export const SettingsScreen: React.FC = () => {
 
             <Button mt="4" colorScheme="red" onPress={clearUserAttributes}>
               Clear user attributes
+            </Button>
+          </VStack>
+        </VerticalListTile>
+        <VerticalListTile title="Support varient">
+          <VStack>
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="FeatureFlag name"
+                  onChangeText={(key) => setFeatureFlagName(key)}
+                  value={featureFlagName}
+                  errorText={featureFlagFormError.featureFlagName}
+                />
+              </View>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="Feature Flag varient"
+                  onChangeText={(value) => setfeatureFlagVariant(value)}
+                  value={featureFlagVariant}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={saveFeatureFlags}>
+              Save Feature flag
+            </Button>
+
+            <Button mt="4" colorScheme="red" onPress={removeFeatureFlags}>
+              remove Feature Flag
+            </Button>
+            <Button mt="4" colorScheme="red" onPress={removeAllFeatureFlags}>
+              remove all Feature Flag
             </Button>
           </VStack>
         </VerticalListTile>

@@ -16,7 +16,7 @@ const mockAPM: ApmNativeModule = {
   endUITrace: jest.fn(),
   endAppLaunch: jest.fn(),
   ibgSleep: jest.fn(),
-  networkLog: jest.fn(),
+  networkLogAndroid: jest.fn(),
 };
 
 export default mockAPM;

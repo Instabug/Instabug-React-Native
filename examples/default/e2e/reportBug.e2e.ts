@@ -14,7 +14,9 @@ it('reports a bug', async () => {
   await waitFor(floatingButton).toBeVisible().withTimeout(30000);
   await floatingButton.tap();
 
-  await getElement('reportBugMenuItem').tap();
+  const reportBugMenuItemButton = getElement('reportBugMenuItem');
+  await waitFor(reportBugMenuItemButton).toBeVisible().withTimeout(30000);
+  await reportBugMenuItemButton.tap();
 
   await getElement('emailField').typeText(mockData.email);
   await getElement('commentField').typeText(mockData.bugComment);

@@ -1,4 +1,5 @@
 import InstabugConstants from './InstabugConstants';
+import { stringifyIfNotString } from './InstabugUtils';
 
 export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend: number) => void;
 export type NetworkDataCallback = (data: NetworkData) => void;
@@ -71,7 +72,8 @@ export default {
     originalXHROpen = XMLHttpRequest.prototype.open;
     originalXHRSend = XMLHttpRequest.prototype.send;
     originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
-
+    // An error code that signifies an issue with the RN client.
+    const clientErrorCode = 9876;
     XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
       network.url = url;
@@ -80,7 +82,12 @@ export default {
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
-      network.requestHeaders[header] = typeof value === 'string' ? value : JSON.stringify(value);
+      // According to the HTTP RFC, headers are case-insensitive, so we convert
+      // them to lower-case to make accessing headers predictable.
+      // This avoid issues like failing to get the Content-Type header for a request
+      // because the header is set as 'Content-Type' instead of 'content-type'.
+      const key = header.toLowerCase();
+      network.requestHeaders[key] = stringifyIfNotString(value);
       originalXHRSetRequestHeader.apply(this, [header, value]);
     };
 
@@ -139,14 +146,24 @@ export default {
 
             // @ts-ignore
             if (this._hasError) {
-              cloneNetwork.errorCode = 0;
+              cloneNetwork.errorCode = clientErrorCode;
               cloneNetwork.errorDomain = 'ClientError';
 
               // @ts-ignore
               const _response = this._response;
               cloneNetwork.requestBody =
                 typeof _response === 'string' ? _response : JSON.stringify(_response);
-              cloneNetwork.responseBody = null;
+              cloneNetwork.responseBody = '';
+
+              // Detect a more descriptive error message.
+              if (typeof _response === 'string' && _response.length > 0) {
+                cloneNetwork.errorDomain = _response;
+              }
+
+              // @ts-ignore
+            } else if (this._timedOut) {
+              cloneNetwork.errorCode = clientErrorCode;
+              cloneNetwork.errorDomain = 'TimeOutError';
             }
 
             if (this.response) {
@@ -156,6 +173,9 @@ export default {
               } else if (['text', '', 'json'].includes(this.responseType)) {
                 cloneNetwork.responseBody = JSON.stringify(this.response);
               }
+            } else {
+              cloneNetwork.responseBody = '';
+              cloneNetwork.contentType = 'text/plain';
             }
 
             cloneNetwork.requestBodySize = cloneNetwork.requestBody.length;

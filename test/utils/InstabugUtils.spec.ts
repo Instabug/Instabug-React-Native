@@ -5,8 +5,14 @@ import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorS
 
 import * as Instabug from '../../src/modules/Instabug';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
-import { InvocationEvent } from '../../src/utils/Enums';
-import InstabugUtils, { getStackTrace, sendCrashReport } from '../../src/utils/InstabugUtils';
+import { InvocationEvent, NetworkData, NonFatalErrorLevel } from '../../src';
+import InstabugUtils, {
+  getStackTrace,
+  reportNetworkLog,
+  sendCrashReport,
+} from '../../src/utils/InstabugUtils';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
+import { NativeAPM } from '../../src/native/NativeAPM';
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -185,7 +191,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, remoteSenderCallback);
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
 
     const expectedMap = {
       message: 'TypeError - Invalid type',
@@ -197,7 +205,12 @@ describe('Instabug Utils', () => {
     };
     const expectedJsonObject = JSON.stringify(expectedMap);
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
-    expect(remoteSenderCallback).toHaveBeenCalledWith(expectedJsonObject);
+    expect(remoteSenderCallback).toHaveBeenCalledWith(
+      expectedJsonObject,
+      null,
+      null,
+      NonFatalErrorLevel.error,
+    );
   });
 
   it('should call remoteSenderCallback with the correct JSON object on iOS', () => {
@@ -206,8 +219,9 @@ describe('Instabug Utils', () => {
     const errorMock = new TypeError('Invalid type');
     const jsStackTrace = getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, remoteSenderCallback);
-
+    sendCrashReport(errorMock, (data) =>
+      remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
+    );
     const expectedMap = {
       message: 'TypeError - Invalid type',
       e_message: 'Invalid type',
@@ -217,6 +231,99 @@ describe('Instabug Utils', () => {
       exception: jsStackTrace,
     };
     expect(remoteSenderCallback).toHaveBeenCalledTimes(1);
-    expect(remoteSenderCallback).toHaveBeenCalledWith(expectedMap);
+    expect(remoteSenderCallback).toHaveBeenCalledWith(
+      expectedMap,
+      null,
+      null,
+      NonFatalErrorLevel.error,
+    );
+  });
+});
+
+describe('reportNetworkLog', () => {
+  const network: NetworkData = {
+    url: 'https://api.instabug.com',
+    method: 'GET',
+    requestBody: 'requestBody',
+    requestHeaders: { request: 'header' },
+    responseBody: 'responseBody',
+    responseCode: 200,
+    responseHeaders: { response: 'header' },
+    contentType: 'application/json',
+    startTime: 1,
+    duration: 2,
+    requestBodySize: 3,
+    responseBodySize: 4,
+    errorCode: 5,
+    errorDomain: 'errorDomain',
+    serverErrorMessage: 'serverErrorMessage',
+    requestContentType: 'requestContentType',
+  };
+
+  it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
+    Platform.OS = 'android';
+
+    const requestHeaders = JSON.stringify(network.requestHeaders);
+    const responseHeaders = JSON.stringify(network.responseHeaders);
+
+    reportNetworkLog(network);
+
+    expect(NativeInstabug.networkLogAndroid).toHaveBeenCalledTimes(1);
+    expect(NativeInstabug.networkLogAndroid).toHaveBeenCalledWith(
+      network.url,
+      network.requestBody,
+      network.responseBody,
+      network.method,
+      network.responseCode,
+      requestHeaders,
+      responseHeaders,
+      network.duration,
+    );
+
+    expect(NativeAPM.networkLogAndroid).toHaveBeenCalledTimes(1);
+    expect(NativeAPM.networkLogAndroid).toHaveBeenCalledWith(
+      network.startTime,
+      network.duration,
+      requestHeaders,
+      network.requestBody,
+      network.requestBodySize,
+      network.method,
+      network.url,
+      network.requestContentType,
+      responseHeaders,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.contentType,
+      network.errorDomain,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
+  });
+
+  it('reportNetworkLog should send network logs to native with the correct parameters on iOS', () => {
+    Platform.OS = 'ios';
+
+    reportNetworkLog(network);
+
+    expect(NativeInstabug.networkLogIOS).toHaveBeenCalledTimes(1);
+    expect(NativeInstabug.networkLogIOS).toHaveBeenCalledWith(
+      network.url,
+      network.method,
+      network.requestBody,
+      network.requestBodySize,
+      network.responseBody,
+      network.responseBodySize,
+      network.responseCode,
+      network.requestHeaders,
+      network.responseHeaders,
+      network.contentType,
+      network.errorDomain,
+      network.errorCode,
+      network.startTime,
+      network.duration,
+      network.gqlQueryName,
+      network.serverErrorMessage,
+    );
   });
 });

@@ -2,21 +2,56 @@ import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import Instabug, { InvocationEvent, LogLevel, ReproStepsMode } from 'instabug-reactnative';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import Instabug, {
+  InvocationEvent,
+  LogLevel,
+  ReproStepsMode,
+  SessionReplay,
+  LaunchType,
+} from 'instabug-reactnative';
+import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
 import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
 export const App: React.FC = () => {
+  const shouldSyncSession = (data: SessionMetadata) => {
+    if (data.launchType === LaunchType.cold) {
+      return true;
+    }
+    if (data.sessionDurationInSeconds > 20) {
+      return true;
+    }
+    if (data.OS === 'OS Level 34') {
+      return true;
+    }
+    return false;
+  };
+
+  const navigationRef = useNavigationContainerRef();
+
   useEffect(() => {
+    SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
+
     Instabug.init({
       token: 'deb1910a7342814af4e4c9210c786f35',
       invocationEvents: [InvocationEvent.floatingButton],
       debugLogsLevel: LogLevel.verbose,
     });
+    Instabug.onNetworkDiagnosticsHandler(
+      (data, totalRequestCount: number, failureCount: number) => {
+        console.log(data);
+        console.log(totalRequestCount);
+        console.log(failureCount);
+      },
+    );
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
       bug: ReproStepsMode.enabledWithNoScreenshots,
@@ -31,12 +66,20 @@ export const App: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const unregisterListener = Instabug.setNavigationListener(navigationRef);
+
+    return unregisterListener;
+  }, [navigationRef]);
+
   return (
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
-        <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
-          <RootTabNavigator />
-        </NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer theme={navigationTheme} ref={navigationRef}>
+            <RootTabNavigator />
+          </NavigationContainer>
+        </QueryClientProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
   );

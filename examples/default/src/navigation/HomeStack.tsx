@@ -4,10 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { BugReportingScreen } from '../screens/BugReportingScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
-import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
-import { SurveysScreen } from '../screens/SurveysScreen';
 import { UserStepsScreen } from '../screens/user-steps/UserStepsScreen';
 import { BasicComponentsScreen } from '../screens/user-steps/BasicComponentsScreen';
 import { ScrollViewScreen } from '../screens/user-steps/ScrollViewScreen';
@@ -21,7 +19,13 @@ import {
 } from '../screens/user-steps/BackAndForthScreen';
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
+import { APMScreen } from '../screens/apm/APMScreen';
+import { TracesScreen } from '../screens/apm/TracesScreen';
+import { NetworkScreen } from '../screens/apm/NetworkScreen';
+import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
+import { LegacyModeScreen } from '../screens/LegacyModeScreen';
+import { HttpScreen } from '../screens/apm/HttpScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -41,6 +45,14 @@ export type HomeStackParamList = {
   LargeImageList: undefined;
   SessionReplay: undefined;
   BackAndForthScreen: BackAndForthScreenProp;
+  LegacyMode: undefined;
+  HttpScreen: undefined;
+
+  // APM //
+  APM: undefined;
+  NetworkTraces: undefined;
+  ExecutionTraces: undefined;
+  AppFlows: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -59,14 +71,7 @@ export const HomeStackNavigator: React.FC = () => {
         component={CrashReportingScreen}
         options={{ title: 'Crash Reporting' }}
       />
-      <HomeStack.Screen
-        name="FeatureRequests"
-        component={FeatureRequestsScreen}
-        options={{ title: 'Feature Requests' }}
-      />
       <HomeStack.Screen name="Replies" component={RepliesScreen} />
-
-      <HomeStack.Screen name="Surveys" component={SurveysScreen} />
       <HomeStack.Screen
         name="SessionReplay"
         component={SessionReplayScreen}
@@ -119,6 +124,16 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Large Image List' }}
       />
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
+      <HomeStack.Screen name="APM" component={APMScreen} />
+      <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
+      <HomeStack.Screen name="ExecutionTraces" component={TracesScreen} />
+      <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
+      <HomeStack.Screen
+        name="LegacyMode"
+        component={LegacyModeScreen}
+        options={{ title: 'LegacyMode' }}
+      />
+      <HomeStack.Screen name="HttpScreen" component={HttpScreen} options={{ title: 'HTTP' }} />
     </HomeStack.Navigator>
   );
 };
