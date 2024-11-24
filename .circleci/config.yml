@@ -679,6 +679,18 @@ jobs:
       - setup_android_proxy
       - setup_appium
       - run:
+          name: start AVD
+          command: |
+            emulator -avd Pixel_8 \
+              -no-snapshot \
+              -no-boot-anim \
+              -no-window \
+              -gpu swiftshader_indirect \
+              -no-audio \
+              -verbose \
+              -qemu -m 2048 &
+            adb wait-for-device
+      - run:
           name: Start MITM Proxy with logging
           command: |
             mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8082 &
@@ -732,8 +744,6 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
-            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
-            # Set proxy for booted simulator
             plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
