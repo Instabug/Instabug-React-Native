@@ -5,7 +5,7 @@ export let capabilities: any;
 const android = {
   platformName: 'Android',
   'appium:platformVersion': '14', //Update Your Platform Version
-  'appium:deviceName': 'Pixel 8 API 34', //Update Your emulator Name
+  'appium:deviceName': 'pixel_3a', //Update Your emulator Name
   'appium:app': './android/app/build/outputs/apk/debug/app-debug.apk', //apk path
   'appium:appPackage': 'com.instabug.hybridsampleapp',
   'appium:appActivity': '.MainActivity',
