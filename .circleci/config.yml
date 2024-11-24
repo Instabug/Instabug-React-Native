@@ -744,6 +744,7 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
+            xcrun simctl boot "iPhone 11 Pro Max"
             plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
@@ -756,6 +757,12 @@ jobs:
           command: |
             appium &
             sleep 10
+          background: true
+      - run:
+          name: Start MITM Proxy with logging
+          command: |
+            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
+            sleep 5
           background: true
       - run:
           working_directory: << parameters.working_directory >>
