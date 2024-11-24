@@ -374,24 +374,6 @@ commands:
               sleep 2
             done
 
-  setup_android_drivers:
-    steps:
-      - run:
-          name: Setup Android Drivers and Tools
-          command: |
-            # Install Android SDK components
-            yes | sdkmanager --licenses
-            sdkmanager --install \
-              "build-tools;34.0.0" \
-              "platform-tools" \
-              "platforms;android-34" \
-              "system-images;android-34;google_apis;x86_64" \
-              "emulator"
-
-            # Verify Android installations
-            adb --version
-            emulator -version
-
   setup_ios_proxy:
     steps:
       - run:
@@ -807,7 +789,6 @@ jobs:
       - setup_mitm_proxy
       - setup_android_proxy
       - setup_appium
-      - setup_android_drivers
       # Start services
       - run:
           name: Start MITM Proxy
