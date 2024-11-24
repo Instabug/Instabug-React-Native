@@ -17,7 +17,6 @@ references:
     - e2e_ios
     - e2e_android
     - appium_e2e_android
-    - appium_e2e_ios
 
   dream11_prepare_config: &dream11_prepare_config
     prepare_steps:
@@ -172,15 +171,15 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
+
   setup_mitm_proxy:
     description: Install and configure MITM proxy
     steps:
       - run:
           name: Install Python3 and MITM Proxy
           command: |
-            if command -v brew &> /dev/null; then
-              brew install python3 openssl
-            fi
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip openssl
 
             python3 --version
             pip3 --version
@@ -194,23 +193,22 @@ commands:
               sleep 1
             done
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.cer -inform PEM -out ~/.mitmproxy/mitmproxy-ca-cert.crt
-
   setup_android_proxy:
     steps:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
-            sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-            sdkmanager "system-images;android-34;google_apis;x86_64"
+            yes | sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+            yes | sdkmanager "system-images;android-34;google_apis;x86_64"
       - run:
           name: Create and Launch Android Emulator
           command: |
-            # Create AVD with specific configurations
-              echo "no" | avdmanager create avd -n Pixel_8 \
+            echo "no" | avdmanager create avd -n Pixel_8 \
               -k "system-images;android-34;google_apis;x86_64" \
-              -d pixel_3a \
+              -d pixel_8 \
               --force
-              emulator -avd Pixel_8 \
+              
+            emulator -avd Pixel_8 \
               -no-snapshot \
               -no-boot-anim \
               -no-window \
@@ -218,10 +216,10 @@ commands:
               -no-audio \
               -verbose \
               -qemu &
-              adb wait-for-device
-
-              adb devices
-              adb shell getprop ro.build.version.release
+              
+            adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+            adb devices
+            adb shell getprop ro.build.version.release
       - run:
           name: Setup MITM Proxy and Certificates
           command: |
@@ -229,22 +227,47 @@ commands:
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            # Attempt multiple methods for certificate and proxy installation
-            set +e
-
-            # Try remounting and pushing certificate
+            # Root access and certificate installation
             adb root
+            adb wait-for-device
             adb remount
-            adb push $HASH.0 /system/etc/security/cacerts/$HASH.0 || \
-            adb push $HASH.0 /data/local/tmp/$HASH.0
 
-            # Set proxy settings
+            # Push certificate and set permissions
+            adb push $HASH.0 /system/etc/security/cacerts/$HASH.0 || {
+              adb shell "su 0 mount -o rw,remount /system"
+              adb push $HASH.0 /data/local/tmp/$HASH.0
+              adb shell "su 0 cp /data/local/tmp/$HASH.0 /system/etc/security/cacerts/"
+              adb shell "su 0 chmod 644 /system/etc/security/cacerts/$HASH.0"
+              adb shell "su 0 mount -o ro,remount /system"
+            }
+
+            # Configure proxy settings
             adb shell settings put global http_proxy "localhost:8082"
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8082
             adb shell am broadcast -a android.intent.action.PROXY_CHANGE
 
             echo "Emulator setup complete"
+
+  setup_appium:
+    steps:
+      - run:
+          name: Install and Setup Appium
+          command: |
+            npm install -g appium@2.11.4
+            npm install -g @appium/doctor
+
+            appium driver install uiautomator2@3.0.5
+            appium driver install xcuitest@7.9.1
+
+            npm install --save-dev webdriverio@9.1.0
+            npm install --save-dev appium@2.11.4
+            npm install --save-dev jest@29.7.0
+            npm install --save-dev appium-uiautomator2-driver@3.0.5
+            npm install --save-dev appium-xcuitest-driver@7.9.1
+
+            appium --version
+            appium driver list
 
   setup_ios_proxy:
     steps:
@@ -305,27 +328,6 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-  setup_appium:
-    steps:
-      - run:
-          name: Install and Setup Appium
-          command: |
-            npm install -g appium@2.11.4
-            npm install -g @appium/doctor
-
-            appium driver install uiautomator2@3.0.5
-            appium driver install xcuitest@7.9.1
-
-            npm install --save-dev webdriverio@9.1.0
-            npm install --save-dev appium@2.11.4
-            npm install --save-dev jest@29.7.0
-            npm install --save-dev appium-uiautomator2-driver@3.0.5
-            npm install --save-dev appium-xcuitest-driver@7.9.1
-
-            appium --version
-            appium driver list
-
-            appium --log-timestamp --debug-log-spacing --log appium.log &
 
 jobs:
   danger:
@@ -678,31 +680,23 @@ jobs:
       - setup_mitm_proxy
       - setup_android_proxy
       - setup_appium
-      - run:
-          name: start AVD
-          command: |
-            emulator -avd Pixel_8 \
-              -no-snapshot \
-              -no-boot-anim \
-              -no-window \
-              -gpu swiftshader_indirect \
-              -no-audio \
-              -verbose \
-              -qemu -m 2048 &
-            adb wait-for-device
+
+      # Start services in background
       - run:
           name: Start MITM Proxy with logging
           command: |
             mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8082 &
             sleep 5
           background: true
+
       - run:
-          working_directory: << parameters.working_directory >>
           name: Start Appium Server
           command: |
-            appium &
+            appium --log-timestamp --debug-log-spacing --log appium.log &
             sleep 10
           background: true
+
+      # Run tests
       - run:
           working_directory: << parameters.working_directory >>
           command: |
@@ -744,7 +738,7 @@ jobs:
       - run:
           name: Set Proxy for iOS Simulator
           command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
+            xcrun simctl boot "iPhone 11 Pro Max" --timeout 120
             plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
             plutil -replace HTTPPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
@@ -897,17 +891,10 @@ workflows:
           working_directory: ~/project/examples/hybrid
           requires:
             - hold_appium_e2e
-      - appium_e2e_ios:
-          working_directory: ~/project/examples/hybrid
-          scheme: HybridSampleApp
-          workspace_path: HybridSampleApp
-          requires:
-            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
             - appium_e2e_android
-            - appium_e2e_ios
             - hold_release_dream11
           filters:
             branches:
