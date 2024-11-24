@@ -782,7 +782,7 @@ jobs:
       # Build Android app
       - run:
           name: Build Android App
-          working_directory: ~/project/examples/hybrid/android
+          working_directory: << parameters.working_directory >>/android
           command: ./gradlew assembleRelease
 
       # Setup testing environment
