@@ -794,7 +794,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -p 8080 --set block_global=false &
+            mitmdump -p 8082 --set block_global=false &
             sleep 5
 
       # Run tests
