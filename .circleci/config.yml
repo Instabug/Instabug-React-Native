@@ -366,7 +366,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
+              if curl -s http://localhost:4724/wd/hub/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
