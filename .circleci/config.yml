@@ -315,9 +315,9 @@ commands:
             adb shell ls -l /data/local/tmp/certs/$HASH.0
 
             # Configure proxy settings
-            adb shell settings put global http_proxy "localhost:8080"
+            adb shell settings put global http_proxy "localhost:8082"
             adb shell settings put global global_http_proxy_host "localhost"
-            adb shell settings put global global_http_proxy_port 8080
+            adb shell settings put global global_http_proxy_port 8082
 
             # Verify proxy settings
             echo "Verifying proxy settings..."
