@@ -198,8 +198,8 @@ commands:
       - run:
           name: Clean and Reinstall Android SDK
           command: |
-            yes | sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-            yes | sdkmanager "system-images;android-34;google_apis;x86_64"
+            sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+            sdkmanager "system-images;android-34;google_apis;x86_64"
       - run:
           name: Create and Launch Android Emulator
           command: |
