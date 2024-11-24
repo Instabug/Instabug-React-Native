@@ -361,7 +361,7 @@ commands:
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
-              --base-path /wd/hub \
+              --base-path / \
               --log appium.log &
 
             # Wait for server to start
@@ -796,13 +796,6 @@ jobs:
           command: |
             mitmdump -p 8080 --set block_global=false &
             sleep 5
-
-      - run:
-          name: Start Appium Server
-          background: true
-          command: |
-            appium --log-timestamp --debug-log-spacing --log appium.log &
-            sleep 10
 
       # Run tests
       - run:
