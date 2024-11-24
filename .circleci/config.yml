@@ -223,18 +223,13 @@ commands:
       - run:
           name: Setup MITM Proxy and Certificates
           command: |
-            if ! adb devices | grep -q "emulator"; then
-              echo "No emulator found. Devices list:"
-              adb devices
-              exit 1
-            fi
+            # Try remounting and pushing certificate
             # Prepare MITM certificate
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
             # Root access and certificate installation
             adb root
-            adb wait-for-device
             adb remount
 
             # Push certificate and set permissions
