@@ -221,11 +221,24 @@ commands:
             adb devices
             adb shell getprop ro.build.version.release
       - run:
-          name: Setup MITM Proxy and Certificates
+          name: Start Emulator
+          background: true
           command: |
-            emulator -avd Pixel_8 &
+            emulator -avd Pixel_8 \
+              -no-snapshot \
+              -no-boot-anim \
+              -no-window \
+              -gpu swiftshader_indirect \
+              -no-audio \
+              -writable-system \
+              -selinux permissive \
+              -qemu -enable-kvm
 
             adb wait-for-device
+
+      - run:
+          name: Setup MITM Proxy and Certificates
+          command: |
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
@@ -233,7 +246,7 @@ commands:
             adb remount
 
             # Push certificate and set permissions
-            adb push $HASH.0 /system/etc/security/cacerts/$HASH.0 || {
+              adb push $HASH.0 /system/etc/security/cacerts/$HASH.0 || {
               adb shell "su 0 mount -o rw,remount /system"
               adb push $HASH.0 /data/local/tmp/$HASH.0
               adb shell "su 0 cp /data/local/tmp/$HASH.0 /system/etc/security/cacerts/"
