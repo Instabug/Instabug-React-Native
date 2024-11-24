@@ -7,7 +7,7 @@ const android = {
   'appium:platformVersion': '14', //Update Your Platform Version
   'appium:deviceName': 'pixel_3a',
   'appium:avd': 'Pixel_8',
-  'appium:app': './android/app/build/outputs/apk/release/app-release.apk', //apk path
+  'appium:app': '/home/circleci/project/android/app/build/outputs/apk/release/app-release.apk',
   'appium:appPackage': 'com.instabug.hybridsampleapp',
   'appium:appActivity': '.MainActivity',
   'appium:automationName': 'UiAutomator2',
