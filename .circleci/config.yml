@@ -778,7 +778,8 @@ jobs:
       - advanced-checkout/shallow-checkout
       - install_node_modules:
           app-dir: << parameters.working_directory >>
-
+      - build_and_pack_sdk:
+          working_directory: << parameters.working_directory >>
       # Build Android app
       - run:
           name: Build Android
