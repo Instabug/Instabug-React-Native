@@ -223,12 +223,12 @@ commands:
       - run:
           name: Setup MITM Proxy and Certificates
           command: |
-            # Try remounting and pushing certificate
-            # Prepare MITM certificate
+            emulator -avd Pixel_8 &
+
+            adb wait-for-device
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            # Root access and certificate installation
             adb root
             adb remount
 
