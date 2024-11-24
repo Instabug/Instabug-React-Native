@@ -205,7 +205,7 @@ commands:
           command: |
             echo "no" | avdmanager create avd -n Pixel_8 \
               -k "system-images;android-34;google_apis;x86_64" \
-              -d pixel_8 \
+              -d pixel_3a \
               --force
               
             emulator -avd Pixel_8 \
