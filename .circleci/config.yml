@@ -782,14 +782,13 @@ jobs:
       # Build Android app
       - run:
           name: Build Android App
-          working_directory: << parameters.working_directory >>/android
-          command: ./gradlew assembleDebug
+          working_directory: ~/project/examples/hybrid/android
+          command: ./gradlew assembleRelease
 
       # Setup testing environment
       - setup_mitm_proxy
       - setup_android_proxy
       - setup_appium
-      # Start services
       - run:
           name: Start MITM Proxy
           background: true
