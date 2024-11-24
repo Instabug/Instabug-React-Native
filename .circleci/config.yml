@@ -325,18 +325,6 @@ commands:
             adb shell settings get global global_http_proxy_host
             adb shell settings get global global_http_proxy_port
 
-      - run:
-          name: Verify Certificate and Proxy Setup
-          command: |
-            # Test certificate installation
-            adb shell ls -la /system/etc/security/cacerts/
-
-            # Test proxy configuration
-            adb shell settings get global http_proxy
-
-            # Optional: Test network connection
-            adb shell ping -c 1 google.com
-
   setup_appium:
     steps:
       - run:
