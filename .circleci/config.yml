@@ -781,8 +781,8 @@ jobs:
 
       # Build Android app
       - run:
-          name: Build Android App
-          working_directory: << parameters.working_directory >>/android
+          name: Build Android
+          working_directory: <<parameters.working_directory>>/android
           command: ./gradlew assembleRelease
 
       # Setup testing environment
