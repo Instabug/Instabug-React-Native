@@ -358,6 +358,8 @@ commands:
                   break
 
             # Configure proxy settings
+            emulator -avd pixel_3a -http-proxy localhost:8084
+
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "localhost:8084"
@@ -365,42 +367,50 @@ commands:
   setup_ios_proxy:
     steps:
       - run:
-          name: Configure System and Simulator Proxy Settings
+          name: Configure and Test Proxy Settings
           command: |
-            # Configure system-wide proxy settings
+            # Boot simulator 
             xcrun simctl boot "iPhone 11 Pro Max"
-            curl --proxy localhost:8080 'https://mitmproxy.org' || echo "Proxy test failed"
-
-
-            # Verify system proxy settings
-            echo "Verifying system proxy settings..."
-            networksetup -getwebproxy "Wi-Fi"
-            networksetup -getsecurewebproxy "Wi-Fi"
-
-            # Additional simulator network settings
+            sleep 5  # Wait for simulator to boot
+            
+            # Verify MITM proxy is running
+            echo "Verifying MITM proxy is running..."
+            for i in {1..30}; do
+              if curl -s -o /dev/null http://localhost:8084; then
+                echo "MITM proxy is running"
+                break
+              fi
+              echo "Waiting for MITM proxy... ($i/30)"
+              sleep 2
+            done
+      
+            # Test proxy connection with verbose output
+            echo "Testing proxy connection..."
+            curl -v --proxy localhost:8084 'http://mitm.it' || {
+              echo "Proxy test failed"
+              # Print proxy processes for debugging
+              echo "Running proxy processes:"
+              ps aux | grep mitm
+              # Print proxy logs if available
+              echo "Proxy logs:"
+              cat appium.log || true
+            }
+      
+            # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
-              HTTPPort 8080 \
+              HTTPPort 8084 \
               HTTPProxy localhost \
               HTTPSEnable 1 \
-              HTTPSPort 8080 \
+              HTTPSPort 8084 \
               HTTPSProxy localhost
-
-            echo "Verifying simulator proxy settings..."
-            xcrun simctl spawn $SIMULATOR_UDID defaults read com.apple.CFNetwork.plist
-
-      - run:
-          name: Restart Network Services
-          command: |
-            # Restart network services to apply changes
-            sudo killall -HUP mDNSResponder
-            sudo dscacheutil -flushcache
-
+      
             # Restart simulator to apply changes
             xcrun simctl shutdown all
+            sleep 2
+            xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-            xcrun simctl boot $SIMULATOR_UDID
-            sleep 10
+
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
