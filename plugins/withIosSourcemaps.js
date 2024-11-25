@@ -3,8 +3,8 @@ const { withXcodeProject } = require('@expo/config-plugins');
 const BUILD_PHASE = 'PBXShellScriptBuildPhase';
 
 function withIosPlugin(config) {
-  return withXcodeProject(config, (config) => {
-    const xcodeProject = config.modResults;
+  return withXcodeProject(config, (xcodeConfig) => {
+    const xcodeProject = xcodeConfig.modResults;
 
     const bundleReactNativePhase = xcodeProject.pbxItemByComment(
       'Bundle React Native code and images',
@@ -21,7 +21,7 @@ function withIosPlugin(config) {
     if (uploadSourcemapPhase) {
       uploadSourcemapPhase.shellScript = addSourceMapExport(uploadSourcemapPhase.shellScript);
     }
-    return config;
+    return xcodeConfig;
   });
 }
 
