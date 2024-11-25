@@ -785,7 +785,14 @@ jobs:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
           command: ./gradlew assembleRelease
-
+      - store_artifacts:
+          path: <<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk
+          destination: app-release.apk
+      - run:
+          name: Export APK Path
+          command: |
+            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk" >> $BASH_ENV
+            source $BASH_ENV
       # Setup testing environment
       - setup_mitm_proxy
       - setup_android_proxy
