@@ -369,20 +369,13 @@ commands:
           command: |
             # Configure system-wide proxy settings
             xcrun simctl boot "iPhone 11 Pro Max"
-            networksetup -setwebproxy "Wi-Fi" localhost 8080
-            networksetup -setsecurewebproxy "Wi-Fi" localhost 8080
-            networksetup -setwebproxystate "Wi-Fi" on
-            networksetup -setsecurewebproxystate "Wi-Fi" on
+            curl --proxy localhost:8080 'https://mitmproxy.org' || echo "Proxy test failed"
+
 
             # Verify system proxy settings
             echo "Verifying system proxy settings..."
             networksetup -getwebproxy "Wi-Fi"
             networksetup -getsecurewebproxy "Wi-Fi"
-
-            # Configure simulator proxy settings
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.mobilesafari WebKitPreferences.encryption "HTTP/1.1"
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPProxy -dict HTTPEnable 1 HTTPPort 8080 HTTPProxy localhost
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPSProxy -dict HTTPSEnable 1 HTTPSPort 8080 HTTPSProxy localhost
 
             # Additional simulator network settings
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
@@ -839,7 +832,7 @@ jobs:
       - run:
           name: Start MITM Proxy with logging
           command: |
-            mitmdump -s ~project/examples/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8084 &
             sleep 5
           background: true
 
@@ -892,7 +885,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ~project/examples/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8084 &
             sleep 5
 
       # Run tests
