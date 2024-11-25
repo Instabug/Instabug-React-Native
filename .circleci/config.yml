@@ -387,9 +387,9 @@ commands:
             adb shell ls -l /data/local/tmp/certs/$HASH.0
 
             # Configure proxy settings
-            adb shell settings put global http_proxy "localhost:8084"
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
+            adb shell settings put global http_proxy "localhost:8084"
 
             # Verify proxy settings
             echo "Verifying proxy settings..."
@@ -397,21 +397,6 @@ commands:
             adb shell settings get global global_http_proxy_host
             adb shell settings get global global_http_proxy_port
 
-      - run:
-          name: Start MITM Proxy with Verbose Logging
-          background: true
-          command: |
-            mitmdump -p 8084 --set block_global=false --verbose &
-            sleep 5
-
-            # Verify proxy is running
-            if ! pgrep -f "mitmdump"; then
-              echo "Proxy failed to start"
-              exit 1
-            fi
-
-            # Monitor proxy logs
-            tail -f ~/.mitmproxy/mitmproxy.log &
   setup_ios_simulator:
     steps:
       - run:
