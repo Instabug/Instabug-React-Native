@@ -344,7 +344,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
 
 
             try {
-                if (w3cAttributes.hasKey("isW3cHeaderFound")) {
+                if (!w3cAttributes.isNull("isW3cHeaderFound")) {
                     isW3cHeaderFound = w3cAttributes.getBoolean("isW3cHeaderFound");
                 }
 
