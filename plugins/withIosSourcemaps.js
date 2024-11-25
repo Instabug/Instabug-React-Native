@@ -8,22 +8,19 @@ function withIosPlugin(config) {
 
     const bundleReactNativePhase = xcodeProject.pbxItemByComment(
       'Bundle React Native code and images',
-      BUILD_PHASE
+      BUILD_PHASE,
     );
 
-    bundleReactNativePhase.shellScript = addSourceMapExport(
-      bundleReactNativePhase.shellScript
-    );
+    bundleReactNativePhase.shellScript = addSourceMapExport(bundleReactNativePhase.shellScript);
 
     const uploadSourcemapPhase = xcodeProject.pbxItemByComment(
       '[CP-User] [instabug-reactnative] Upload Sourcemap',
-      BUILD_PHASE
+      BUILD_PHASE,
     );
 
-    uploadSourcemapPhase.shellScript = addSourceMapExport(
-      uploadSourcemapPhase.shellScript
-    );
-
+    if (uploadSourcemapPhase) {
+      uploadSourcemapPhase.shellScript = addSourceMapExport(uploadSourcemapPhase.shellScript);
+    }
     return config;
   });
 }
