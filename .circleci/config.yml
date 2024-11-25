@@ -372,7 +372,7 @@ commands:
             # Boot simulator 
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5  # Wait for simulator to boot
-            
+
             # Verify MITM proxy is running
             echo "Verifying MITM proxy is running..."
             for i in {1..30}; do
@@ -383,7 +383,7 @@ commands:
               echo "Waiting for MITM proxy... ($i/30)"
               sleep 2
             done
-      
+
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8084 'http://mitm.it' || {
@@ -395,7 +395,7 @@ commands:
               echo "Proxy logs:"
               cat appium.log || true
             }
-      
+
             # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
@@ -404,7 +404,7 @@ commands:
               HTTPSEnable 1 \
               HTTPSPort 8084 \
               HTTPSProxy localhost
-      
+
             # Restart simulator to apply changes
             xcrun simctl shutdown all
             sleep 2
