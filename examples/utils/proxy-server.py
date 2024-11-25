@@ -6,8 +6,8 @@ from datetime import datetime
 # Configuration
 TARGET_HOST = "instabug.com"
 ORIGINAL_DOMAIN = "api.instabug.com"
-NEW_DOMAIN = "st001012dream11.instabug.com"
-TARGET_TOKEN = "dfed1c768730afbd56efafd571b4cbaa"
+NEW_DOMAIN = os.getenv('Domain')
+TARGET_TOKEN = os.getenv('Key')
 ALL_REQUESTS_FILE = "InterceptedRequests.json"
 CAPTURED_RESPONSE_FILE = "captured_response.json" 
 

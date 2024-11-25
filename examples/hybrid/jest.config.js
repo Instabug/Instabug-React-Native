@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['./appiumTests/setup.ts'],
+  setupFilesAfterEnv: ['../utils/appiumConfig/setup.ts'],
   moduleNameMapper: {
     '^react-native$': require.resolve('react-native'),
   },

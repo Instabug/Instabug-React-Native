@@ -802,10 +802,17 @@ jobs:
     parameters:
       working_directory:
         type: string
+      DOMAIN:
+        type: string
+      TOKEN:
+        type: string
     executor:
       name: android/android-machine
       tag: '2024.01.1'
       resource-class: large
+    environment:
+      DOMAIN: << parameters.DOMAIN >>
+      TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules:
@@ -832,7 +839,7 @@ jobs:
       - run:
           name: Start MITM Proxy with logging
           command: |
-            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8084 &
+            mitmdump -s ../<< parameters.working_directory >>/utils/proxy-server.py -p 8084 &
             sleep 5
           background: true
 
@@ -848,15 +855,21 @@ jobs:
     parameters:
       working_directory:
         type: string
+      DOMAIN:
+        type: string
+      TOKEN:
+        type: string
     macos:
       xcode: 13.4.1
+    environment:
+      DOMAIN: << parameters.DOMAIN >>
+      TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
       - install_node_modules:
           app-dir: << parameters.working_directory >>
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
-      # Build iOS app
       - run:
           name: Install CocoaPods
           working_directory: <<parameters.working_directory>>/ios
@@ -879,7 +892,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s utils/proxy-server.py  -p 8080            
+            mitmdump -s ../<< parameters.working_directory >>/utils/proxy-server.py -p 8084 &
             sleep 5
 
       # Run tests
@@ -1012,11 +1025,17 @@ workflows:
       - hold_appium_e2e:
           type: approval
       - appium_e2e_android:
+          name: Dream11_hybrid_android_e2e
           working_directory: ~/project/examples/hybrid
+          DOMAIN: ${DREAM11_DOMAIN}
+          TOKEN: ${DREAM11_TOKEN}
           requires:
             - hold_appium_e2e
       - appium_e2e_ios:
+          name: Dream11_Hybrid_ios_e2e
           working_directory: ~/project/examples/hybrid
+          DOMAIN: ${DREAM11_DOMAIN}
+          TOKEN: ${DREAM11_TOKEN}
           requires:
             - hold_appium_e2e
       - release_custom_package:
