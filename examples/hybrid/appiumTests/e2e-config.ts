@@ -13,8 +13,8 @@ const android = {
   'appium:automationName': 'UiAutomator2',
   'appium:proxy': {
     proxyType: 'manual',
-    httpProxy: 'localhost:8082',
-    sslProxy: 'localhost:8082',
+    httpProxy: 'localhost:8080',
+    sslProxy: 'localhost:8080',
   },
 };
 
