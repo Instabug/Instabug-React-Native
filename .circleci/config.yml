@@ -247,21 +247,10 @@ commands:
             adb root
             sleep 2
 
-            # Clear any existing proxy
-            adb shell settings delete global global_http_proxy_host
-            adb shell settings delete global global_http_proxy_port
-            adb shell settings delete global http_proxy
-
             # Set new proxy settings
             adb shell settings put global http_proxy 127.0.0.1:8082
             adb shell settings put global global_http_proxy_host 127.0.0.1
             adb shell settings put global global_http_proxy_port 8082
-
-            # Verify proxy settings
-            echo "Current proxy settings:"
-            adb shell settings get global http_proxy
-            adb shell settings get global global_http_proxy_host
-            adb shell settings get global global_http_proxy_port
 
             # Test connection
             echo "Testing connection..."
