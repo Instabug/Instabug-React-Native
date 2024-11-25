@@ -358,8 +358,6 @@ commands:
                   break
 
             # Configure proxy settings
-            emulator -avd pixel_3a -http-proxy localhost:8084
-
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "localhost:8084"
