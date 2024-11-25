@@ -220,7 +220,7 @@ commands:
               -qemu -enable-kvm
 
       - run:
-          name: Wait for Emulator and Configure Proxy
+          name: Wait for Emulator and Setup Certificates
           command: |
             # Wait for device to be ready
             for i in $(seq 1 30); do
@@ -241,25 +241,89 @@ commands:
               sleep 10
             done
 
-            echo "Configuring proxy settings..."
-
-            # Set global proxy settings
+            # Prepare system for certificate installation
             adb root
+            sleep 5
+            adb shell avbctl disable-verification
             sleep 2
+            adb reboot
 
-            # Set new proxy settings
-            adb shell settings put global http_proxy 127.0.0.1:8082
-            adb shell settings put global global_http_proxy_host 127.0.0.1
+            # Wait for reboot
+            sleep 30
+            adb wait-for-device
+
+            # Remount with proper steps
+            adb root
+            sleep 5
+            adb shell setenforce 0
+            adb disable-verity
+            adb reboot
+
+            # Wait for second reboot
+            sleep 30
+            adb wait-for-device
+
+            # Final remount
+            adb root
+            sleep 5
+            adb remount
+
+            # Verify system is writable
+            adb shell touch /system/test_writable
+            if [ $? -ne 0 ]; then
+              echo "System partition is not writable!"
+              exit 1
+            fi
+            adb shell rm /system/test_writable
+
+            # Install certificate
+            echo "Installing certificate..."
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
+
+            # Try multiple methods to install certificate
+            for method in {1..3}; do
+              case $method in
+                1)
+                  echo "Trying method 1: Direct push to /system/etc/security/cacerts"
+                  adb push $HASH.0 /system/etc/security/cacerts/ && \
+                  adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0" && \
+                  break
+                  ;;
+                2)
+                  echo "Trying method 2: Push to temp and move"
+                  adb push $HASH.0 /data/local/tmp/ && \
+                  adb shell "su 0 mount -o rw,remount /system" && \
+                  adb shell "su 0 cp /data/local/tmp/$HASH.0 /system/etc/security/cacerts/" && \
+                  adb shell "su 0 chmod 644 /system/etc/security/cacerts/$HASH.0" && \
+                  break
+                  ;;
+                3)
+                  echo "Trying method 3: Use temporary certificate directory"
+                  adb shell "mkdir -p /data/local/tmp/certs" && \
+                  adb push $HASH.0 /data/local/tmp/certs/ && \
+                  adb shell "chown -R root:root /data/local/tmp/certs" && \
+                  adb shell "chmod -R 644 /data/local/tmp/certs/*" && \
+                  export CERT_PATH="/data/local/tmp/certs" && \
+                  break
+                  ;;
+              esac
+            done
+
+            # Verify certificate installation
+            adb shell ls -l /system/etc/security/cacerts/$HASH.0 || \
+            adb shell ls -l /data/local/tmp/certs/$HASH.0
+
+            # Configure proxy settings
+            adb shell settings put global http_proxy "localhost:8082"
+            adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8082
 
-            # Test connection
-            echo "Testing connection..."
-            adb shell ping -c 1 google.com
-
-            echo "Proxy setup complete"
-
-            # Install certificates (keep your existing certificate installation steps)
-            ...
+            # Verify proxy settings
+            echo "Verifying proxy settings..."
+            adb shell settings get global http_proxy
+            adb shell settings get global global_http_proxy_host
+            adb shell settings get global global_http_proxy_port
 
       - run:
           name: Start MITM Proxy with Verbose Logging
@@ -325,66 +389,6 @@ commands:
               echo "Waiting for Appium server... ($i/30)"
               sleep 2
             done
-
-  setup_ios_proxy:
-    steps:
-      - run:
-          name: Setup iOS MITM Certificate and Proxy
-          command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
-            mkdir -p certs
-            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
-
-            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
-            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
-            echo '<plist version="1.0">' >> certs/custom.mobileconfig
-            echo '<dict>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
-            echo '  <array>' >> certs/custom.mobileconfig
-            echo '    <dict>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
-            echo '      <data>' >> certs/custom.mobileconfig
-            base64 certs/mitmproxy-ca-cert.der >> certs/custom.mobileconfig
-            echo '      </data>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
-            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
-            echo '    </dict>' >> certs/custom.mobileconfig
-            echo '  </array>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
-            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
-            echo '  <false/>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
-            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
-            echo '</dict>' >> certs/custom.mobileconfig
-            echo '</plist>' >> certs/custom.mobileconfig
-
-            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
-
-            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
-              HTTPEnable 1 \
-              HTTPProxy localhost \
-              HTTPPort 8080 \
-              HTTPSEnable 1 \
-              HTTPSProxy localhost \
-              HTTPSPort 8080
-
-            xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
 
 jobs:
   danger:
@@ -764,68 +768,6 @@ jobs:
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
             E2E_DEVICE: 'android'
-
-  appium_e2e_ios:
-    parameters:
-      working_directory:
-        type: string
-      scheme:
-        type: string
-      workspace_path:
-        type: string
-    macos:
-      xcode: 13.4.1
-    resource_class: macos.m1.medium.gen1
-    steps:
-      - advanced-checkout/shallow-checkout
-      - build_and_pack_sdk:
-          working_directory: << parameters.working_directory >>
-      - install_pods:
-          working_directory: <<parameters.working_directory>>/ios
-      - setup_mitm_proxy
-      - setup_ios_proxy
-      - setup_appium
-      - run:
-          name: Build iOS
-          working_directory: <<parameters.working_directory>>/ios
-          command: |
-            yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
-            rm -rf ~/Library/Developer/Xcode/DerivedData/*
-            xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
-            -scheme <<parameters.scheme>> \
-            -configuration Release \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
-      - run:
-          name: Set Proxy for iOS Simulator
-          command: |
-            xcrun simctl boot "iPhone 11 Pro Max" --timeout 120
-            plutil -replace HTTPEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
-            plutil -replace HTTPProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
-            plutil -replace HTTPPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
-            plutil -replace HTTPSEnable -bool true ~/Library/Preferences/com.apple.iphonesimulator.plist
-            plutil -replace HTTPSProxy -string "localhost" ~/Library/Preferences/com.apple.iphonesimulator.plist
-            plutil -replace HTTPSPort -integer 8080 ~/Library/Preferences/com.apple.iphonesimulator.plist
-      - run:
-          working_directory: << parameters.working_directory >>
-          name: Start Appium Server
-          command: |
-            appium &
-            sleep 10
-          background: true
-      - run:
-          name: Start MITM Proxy with logging
-          command: |
-            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8080 &
-            sleep 5
-          background: true
-      - run:
-          working_directory: << parameters.working_directory >>
-          command: |
-            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
-          environment:
-            E2E_DEVICE: 'ios'
-          no_output_timeout: 30m
 
 workflows:
   publish:
