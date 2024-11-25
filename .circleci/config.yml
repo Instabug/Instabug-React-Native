@@ -387,9 +387,9 @@ commands:
             adb shell ls -l /data/local/tmp/certs/$HASH.0
 
             # Configure proxy settings
-            adb shell settings put global http_proxy "localhost:8082"
+            adb shell settings put global http_proxy "localhost:8084"
             adb shell settings put global global_http_proxy_host "localhost"
-            adb shell settings put global global_http_proxy_port 8082
+            adb shell settings put global global_http_proxy_port 8084
 
             # Verify proxy settings
             echo "Verifying proxy settings..."
@@ -401,7 +401,7 @@ commands:
           name: Start MITM Proxy with Verbose Logging
           background: true
           command: |
-            mitmdump -p 8082 --set block_global=false --verbose &
+            mitmdump -p 8084 --set block_global=false --verbose &
             sleep 5
 
             # Verify proxy is running
@@ -479,6 +479,7 @@ commands:
           name: Install and Trust Certificate
           command: |
             # Wait for certificate files
+            mkdir -p ~/.mitmproxy
             while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.der ]; do
               echo "Waiting for MITM certificate..."
               sleep 2
@@ -862,7 +863,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -p 8082 --set block_global=false &
+            mitmdump -p 8084 --set block_global=false &
             sleep 5
 
       # Run tests
