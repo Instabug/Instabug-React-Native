@@ -397,89 +397,65 @@ commands:
             adb shell settings get global global_http_proxy_host
             adb shell settings get global global_http_proxy_port
 
-  setup_ios_simulator:
-    steps:
-      - run:
-          name: Install iOS Simulator
-          command: |
-            # Create simulator
-            UDID=$(xcrun simctl create "iPhone 11 Pro Max" com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max com.apple.CoreSimulator.SimRuntime.iOS-15-5)
-
-            # Export simulator UDID for other steps
-            echo "export SIMULATOR_UDID=$UDID" >> $BASH_ENV
-            source $BASH_ENV
-
-      - run:
-          name: Start iOS Simulator
-          background: true
-          command: |
-            # Start Simulator in headless mode
-            xcrun simctl boot $SIMULATOR_UDID
-
-            # Start Simulator.app in headless mode
-            open -a Simulator --args -CurrentDeviceUDID $SIMULATOR_UDID -ConnectHardwareKeyboard 0 -StatusBar 1 -NoUIRestore 1
-
-      - run:
-          name: Wait for Simulator
-          command: |
-            # Wait for device to be ready
-            for i in $(seq 1 30); do
-              if xcrun simctl list | grep -q "Booted"; then
-                echo "Simulator is booted"
-                break
-              fi
-              echo "Waiting for simulator to start... ($i/30)"
-              sleep 10
-            done
-
-            # Wait for system to be ready
-            for i in $(seq 1 30); do
-              if xcrun simctl spawn $SIMULATOR_UDID launchctl print system | grep -q "com.apple.springboard"; then
-                echo "System is ready"
-                break
-              fi
-              echo "Waiting for system to be ready... ($i/30)"
-              sleep 10
-            done
-
-            # Verify simulator status
-            xcrun simctl list devices
-            xcrun simctl spawn $SIMULATOR_UDID launchctl print system
-
   setup_ios_proxy:
     steps:
       - run:
-          name: Configure iOS Proxy Settings
+          name: Setup iOS MITM Certificate and Proxy
           command: |
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.mobilesafari WebKitPreferences.encryption "HTTP/1.1"
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPProxy -dict HTTPEnable 1 HTTPPort 8080 HTTPProxy localhost
-            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPSProxy -dict HTTPSEnable 1 HTTPSPort 8080 HTTPSProxy localhost
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
+            mkdir -p certs
+            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
 
-            echo "Verifying proxy settings..."
-            xcrun simctl spawn $SIMULATOR_UDID defaults read com.apple.CFNetwork.plist
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
+            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
+            echo '<plist version="1.0">' >> certs/custom.mobileconfig
+            echo '<dict>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '  <array>' >> certs/custom.mobileconfig
+            echo '    <dict>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '      <data>' >> certs/custom.mobileconfig
+            base64 certs/mitmproxy-ca-cert.der >> certs/custom.mobileconfig
+            echo '      </data>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '    </dict>' >> certs/custom.mobileconfig
+            echo '  </array>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
+            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
+            echo '  <false/>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '</dict>' >> certs/custom.mobileconfig
+            echo '</plist>' >> certs/custom.mobileconfig
 
-  setup_ios_certificate:
-    steps:
-      - run:
-          name: Install and Trust Certificate
-          command: |
-            # Wait for certificate files
-            mkdir -p ~/.mitmproxy
-            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.der ]; do
-              echo "Waiting for MITM certificate..."
-              sleep 2
-            done
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
-            # Install in simulator
-            xcrun simctl keychain $SIMULATOR_UDID add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.der
-            sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ~/.mitmproxy/mitmproxy-ca-cert.pem
+            defaults write ~/Library/Preferences/com.apple.iphonesimulator.plist GlobalHTTPProxy -dict \
+              HTTPEnable 1 \
+              HTTPProxy localhost \
+              HTTPPort 8080 \
+              HTTPSEnable 1 \
+              HTTPSProxy localhost \
+              HTTPSPort 8080
 
-            # Add to simulator profiles
-            xcrun simctl spawn $SIMULATOR_UDID mkdir -p /Library/Keychains/
-            xcrun simctl push $SIMULATOR_UDID ~/.mitmproxy/mitmproxy-ca-cert.der /Library/Keychains/mitmproxy-ca-cert.der
-            xcrun simctl spawn $SIMULATOR_UDID profiles trust-root-cert /Library/Keychains/mitmproxy-ca-cert.der
-
-            echo "Certificate installation completed"
+            xcrun simctl shutdown all
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
 
 jobs:
   danger:
@@ -888,15 +864,13 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - setup_ios_simulator
-      - setup_ios_certificate
       - setup_ios_proxy
       - setup_appium
       - run:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -p 8080 --set block_global=false &
+            mitmdump -s utils/proxy-server.py  -p 8080            
             sleep 5
 
       # Run tests
