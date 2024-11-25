@@ -845,11 +845,11 @@ jobs:
       - setup_android_proxy
       - setup_appium
       - run:
-          name: Start MITM Proxy
-          background: true
+          name: Start MITM Proxy with logging
           command: |
-            mitmdump -p 8084 --set block_global=false &
+            mitmdump -s << parameters.working_directory >>/utils/proxy-server.py -p 8084 &
             sleep 5
+          background: true
 
       # Run tests
       - run:
