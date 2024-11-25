@@ -12,11 +12,6 @@ const config = {
   capabilities: {
     ...capabilities,
   },
-  proxy: {
-    proxyType: 'manual',
-    httpProxy: 'localhost:8080', // mitmproxy listens on port 8080
-    sslProxy: 'localhost:8080',
-  },
   connectionRetryCount: 0,
   framework: 'jest',
 };

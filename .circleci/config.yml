@@ -220,7 +220,7 @@ commands:
               -qemu -enable-kvm
 
       - run:
-          name: Wait for Emulator and Configure WiFi Proxy
+          name: Wait for Emulator and Configure Proxy
           command: |
             # Wait for device to be ready
             for i in $(seq 1 30); do
@@ -241,63 +241,52 @@ commands:
               sleep 10
             done
 
-            # Configure WiFi Proxy Settings
-            echo "Configuring WiFi proxy settings..."
+            echo "Configuring proxy settings..."
 
-            # Enable WiFi
-            adb shell svc wifi enable
+            # Set global proxy settings
+            adb root
             sleep 2
 
-            # Get current WiFi network ID
-            WIFI_NETWORK_ID=$(adb shell cmd -w wifi list-networks | grep -m1 '' | cut -f1)
-            echo "WiFi Network ID: $WIFI_NETWORK_ID"
+            # Clear any existing proxy
+            adb shell settings delete global global_http_proxy_host
+            adb shell settings delete global global_http_proxy_port
+            adb shell settings delete global http_proxy
 
-            # Configure proxy settings for the current network
-            adb shell cmd wifi set-mobile-data-enabled true
-            adb shell settings put global http_proxy :0  # Clear any existing proxy
-
-            # Configure manual proxy
-            adb shell am start -a android.settings.WIFI_SETTINGS
-            sleep 2
-
-            # Using input tap to navigate to proxy settings (you might need to adjust coordinates)
-            adb shell "input touchscreen tap 500 500"  # Tap on current network
-            sleep 1
-            adb shell "input touchscreen tap 500 1000" # Tap on Modify network
-            sleep 1
-            adb shell "input touchscreen tap 500 800"  # Tap on Advanced options
-            sleep 1
-            adb shell "input touchscreen tap 500 1000" # Tap on Proxy
-            sleep 1
-            adb shell "input touchscreen tap 500 700"  # Select Manual
-            sleep 1
-
-            # Input proxy settings
-            adb shell "input text 'localhost'"         # Proxy hostname
-            adb shell "input keyevent 61"             # Tab to port field
-            adb shell "input text '8082'"             # Proxy port
-            adb shell "input keyevent 61"             # Tab
-            adb shell "input keyevent 66"             # Enter to save
+            # Set new proxy settings
+            adb shell settings put global http_proxy 127.0.0.1:8082
+            adb shell settings put global global_http_proxy_host 127.0.0.1
+            adb shell settings put global global_http_proxy_port 8082
 
             # Verify proxy settings
-            echo "Verifying proxy settings..."
+            echo "Current proxy settings:"
             adb shell settings get global http_proxy
+            adb shell settings get global global_http_proxy_host
+            adb shell settings get global global_http_proxy_port
 
             # Test connection
-            echo "Testing connection through proxy..."
+            echo "Testing connection..."
             adb shell ping -c 1 google.com
 
             echo "Proxy setup complete"
 
-            # Continue with certificate installation...
-            # [Previous certificate installation steps remain the same]
+            # Install certificates (keep your existing certificate installation steps)
+            ...
 
       - run:
-          name: Start MITM Proxy
+          name: Start MITM Proxy with Verbose Logging
           background: true
           command: |
             mitmdump -p 8082 --set block_global=false --verbose &
             sleep 5
+
+            # Verify proxy is running
+            if ! pgrep -f "mitmdump"; then
+              echo "Proxy failed to start"
+              exit 1
+            fi
+
+            # Monitor proxy logs
+            tail -f ~/.mitmproxy/mitmproxy.log &
 
   setup_appium:
     steps:
