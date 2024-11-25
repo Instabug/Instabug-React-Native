@@ -368,6 +368,7 @@ commands:
           name: Configure System and Simulator Proxy Settings
           command: |
             # Configure system-wide proxy settings
+            xcrun simctl boot "iPhone 11 Pro Max"
             networksetup -setwebproxy "Wi-Fi" localhost 8080
             networksetup -setsecurewebproxy "Wi-Fi" localhost 8080
             networksetup -setwebproxystate "Wi-Fi" on
@@ -838,7 +839,7 @@ jobs:
       - run:
           name: Start MITM Proxy with logging
           command: |
-            mitmdump -s ../<< parameters.working_directory >>/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~project/examples/utils/proxy-server.py -p 8084 &
             sleep 5
           background: true
 
@@ -891,7 +892,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ../<< parameters.working_directory >>/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~project/examples/utils/proxy-server.py -p 8084 &
             sleep 5
 
       # Run tests

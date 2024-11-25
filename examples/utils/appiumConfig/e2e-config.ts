@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 export let capabilities: any;
 
 const android = {
