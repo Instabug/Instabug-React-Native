@@ -353,52 +353,61 @@ commands:
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
 
-            # Try multiple methods to install certificate
-            for method in {1..3}; do
-              case $method in
-                1)
-                  echo "Trying method 1: Direct push to /system/etc/security/cacerts"
+
                   adb push $HASH.0 /system/etc/security/cacerts/ && \
                   adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0" && \
                   break
-                  ;;
-                2)
-                  echo "Trying method 2: Push to temp and move"
-                  adb push $HASH.0 /data/local/tmp/ && \
-                  adb shell "su 0 mount -o rw,remount /system" && \
-                  adb shell "su 0 cp /data/local/tmp/$HASH.0 /system/etc/security/cacerts/" && \
-                  adb shell "su 0 chmod 644 /system/etc/security/cacerts/$HASH.0" && \
-                  break
-                  ;;
-                3)
-                  echo "Trying method 3: Use temporary certificate directory"
-                  adb shell "mkdir -p /data/local/tmp/certs" && \
-                  adb push $HASH.0 /data/local/tmp/certs/ && \
-                  adb shell "chown -R root:root /data/local/tmp/certs" && \
-                  adb shell "chmod -R 644 /data/local/tmp/certs/*" && \
-                  export CERT_PATH="/data/local/tmp/certs" && \
-                  break
-                  ;;
-              esac
-            done
-
-            # Verify certificate installation
-            adb shell ls -l /system/etc/security/cacerts/$HASH.0 || \
-            adb shell ls -l /data/local/tmp/certs/$HASH.0
 
             # Configure proxy settings
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "localhost:8084"
 
-            # Verify proxy settings
-            echo "Verifying proxy settings..."
-            adb shell settings get global http_proxy
-            adb shell settings get global global_http_proxy_host
-            adb shell settings get global global_http_proxy_port
-
   setup_ios_proxy:
     steps:
+      - run:
+          name: Configure System and Simulator Proxy Settings
+          command: |
+            # Configure system-wide proxy settings
+            networksetup -setwebproxy "Wi-Fi" localhost 8080
+            networksetup -setsecurewebproxy "Wi-Fi" localhost 8080
+            networksetup -setwebproxystate "Wi-Fi" on
+            networksetup -setsecurewebproxystate "Wi-Fi" on
+
+            # Verify system proxy settings
+            echo "Verifying system proxy settings..."
+            networksetup -getwebproxy "Wi-Fi"
+            networksetup -getsecurewebproxy "Wi-Fi"
+
+            # Configure simulator proxy settings
+            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.mobilesafari WebKitPreferences.encryption "HTTP/1.1"
+            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPProxy -dict HTTPEnable 1 HTTPPort 8080 HTTPProxy localhost
+            xcrun simctl spawn $SIMULATOR_UDID defaults write com.apple.CFNetwork.plist HTTPSProxy -dict HTTPSEnable 1 HTTPSPort 8080 HTTPSProxy localhost
+
+            # Additional simulator network settings
+            defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
+              HTTPEnable 1 \
+              HTTPPort 8080 \
+              HTTPProxy localhost \
+              HTTPSEnable 1 \
+              HTTPSPort 8080 \
+              HTTPSProxy localhost
+
+            echo "Verifying simulator proxy settings..."
+            xcrun simctl spawn $SIMULATOR_UDID defaults read com.apple.CFNetwork.plist
+
+      - run:
+          name: Restart Network Services
+          command: |
+            # Restart network services to apply changes
+            sudo killall -HUP mDNSResponder
+            sudo dscacheutil -flushcache
+
+            # Restart simulator to apply changes
+            xcrun simctl shutdown all
+            sleep 5
+            xcrun simctl boot $SIMULATOR_UDID
+            sleep 10
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
