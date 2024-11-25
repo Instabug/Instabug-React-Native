@@ -1034,10 +1034,15 @@ workflows:
           working_directory: ~/project/examples/hybrid
           requires:
             - hold_appium_e2e
+      - appium_e2e_ios:
+          working_directory: ~/project/examples/hybrid
+          requires:
+            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
             - appium_e2e_android
+            - appium_e2e_ios
             - hold_release_dream11
           filters:
             branches:
