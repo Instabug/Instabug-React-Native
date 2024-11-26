@@ -390,7 +390,6 @@ commands:
               cat appium.log || true
             }
 
-            Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
