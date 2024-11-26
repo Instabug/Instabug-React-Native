@@ -287,6 +287,7 @@ commands:
               -gpu swiftshader_indirect \
               -no-audio \
               -writable-system \
+              -dns-server 8.8.8.8 \
               -selinux permissive \
               -qemu -enable-kvm
 
@@ -304,6 +305,8 @@ commands:
 
             # Wait for emulator boot completion
             adb wait-for-device
+            adb shell svc wifi enable
+            adb shell settings put global wifi_on 1
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
                 break
@@ -409,8 +412,6 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
             mkdir -p certs
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
 
