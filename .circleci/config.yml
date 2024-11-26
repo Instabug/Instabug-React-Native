@@ -375,22 +375,22 @@ commands:
           command: |
             mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 --set block_global=false &
             # Boot simulator 
-            # xcrun simctl boot "iPhone 11 Pro Max"
-            # sleep 5  # Wait for simulator to boot
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5  # Wait for simulator to boot
 
-            # # Test proxy connection with verbose output
-            # echo "Testing proxy connection..."
-            # curl -v --proxy localhost:8082 'http://mitm.it' || {
-            #   echo "Proxy test failed"
-            #   # Print proxy processes for debugging
-            #   echo "Running proxy processes:"
-            #   ps aux | grep mitm
-            #   # Print proxy logs if available
-            #   echo "Proxy logs:"
-            #   cat appium.log || true
-            # }
+            # Test proxy connection with verbose output
+            echo "Testing proxy connection..."
+            curl -v --proxy localhost:8082 'http://mitm.it' || {
+              echo "Proxy test failed"
+              # Print proxy processes for debugging
+              echo "Running proxy processes:"
+              ps aux | grep mitm
+              # Print proxy logs if available
+              echo "Proxy logs:"
+              cat appium.log || true
+            }
 
-            # Set simulator proxy
+            Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
