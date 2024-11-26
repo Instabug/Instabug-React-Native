@@ -24,8 +24,8 @@ const ios = {
   'appium:bundleId': 'com.instabug.HybridSampleApp', // TODO: update your app bundle id
   'appium:proxy': {
     proxyType: 'manual',
-    httpProxy: 'localhost:8080',
-    sslProxy: 'localhost:8080',
+    httpProxy: 'localhost:8082',
+    sslProxy: 'localhost:8082',
   },
 };
 if (process.env.E2E_DEVICE === 'android') {
