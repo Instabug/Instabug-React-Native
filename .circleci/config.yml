@@ -284,6 +284,7 @@ commands:
               -writable-system \
               -dns-server 8.8.8.8 \
               -selinux permissive \
+              -feature -Wifi \
               -qemu -enable-kvm
 
       - run:
