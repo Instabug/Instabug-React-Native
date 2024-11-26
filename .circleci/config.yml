@@ -250,16 +250,6 @@ commands:
               --allow-insecure chromedriver_autodownload \
               --base-path / \
               --log appium.log &
-
-            # Wait for server to start
-            for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
-                echo "Appium server is ready"
-                break
-              fi
-              echo "Waiting for Appium server... ($i/30)"
-              sleep 2
-            done
   setup_android_proxy:
     steps:
       - run:

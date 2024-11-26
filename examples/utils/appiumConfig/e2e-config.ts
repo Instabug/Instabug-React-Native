@@ -9,11 +9,6 @@ const android = {
   'appium:appPackage': 'com.instabug.hybridsampleapp',
   'appium:appActivity': '.MainActivity',
   'appium:automationName': 'UiAutomator2',
-  'appium:proxy': {
-    proxyType: 'manual',
-    httpProxy: 'localhost:8084',
-    sslProxy: 'localhost:8084',
-  },
 };
 
 const ios = {
@@ -22,11 +17,6 @@ const ios = {
   'appium:deviceName': 'iPhone 11 Pro Max', // TODO: update your device name
   'appium:platformVersion': '15.5', // TODO: update platform version
   'appium:bundleId': 'com.instabug.HybridSampleApp', // TODO: update your app bundle id
-  'appium:proxy': {
-    proxyType: 'manual',
-    httpProxy: 'localhost:8082',
-    sslProxy: 'localhost:8082',
-  },
 };
 if (process.env.E2E_DEVICE === 'android') {
   capabilities = android;
