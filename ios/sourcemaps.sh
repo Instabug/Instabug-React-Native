@@ -1,4 +1,7 @@
+export SOURCEMAP_FILE="$TMPDIR/$(md5 -qs "$CONFIGURATION_BUILD_DIR")-main.jsbundle.map"
+
 #!/bin/sh
+
 main() {
   # Read environment variables from ios/.xcode.env if it exists
   env_path="$PODS_ROOT/../.xcode.env"

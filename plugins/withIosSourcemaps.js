@@ -13,14 +13,6 @@ function withIosPlugin(config) {
 
     bundleReactNativePhase.shellScript = addSourceMapExport(bundleReactNativePhase.shellScript);
 
-    const uploadSourcemapPhase = xcodeProject.pbxItemByComment(
-      '[CP-User] [instabug-reactnative] Upload Sourcemap',
-      BUILD_PHASE,
-    );
-
-    if (uploadSourcemapPhase) {
-      uploadSourcemapPhase.shellScript = addSourceMapExport(uploadSourcemapPhase.shellScript);
-    }
     return xcodeConfig;
   });
 }
