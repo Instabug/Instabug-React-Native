@@ -305,7 +305,6 @@ commands:
 
             # Wait for emulator boot completion
             adb wait-for-device
-            adb shell settings put global wifi_on 1
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
                 break
@@ -360,6 +359,7 @@ commands:
             adb shell settings put global http_proxy "localhost:8084"
             adb shell settings put global airplane_mode_on 0
             adb shell settings put global private_dns_mode "off"
+            adb shell settings put global wifi_on 1
             # Verify internet connectivity
             adb shell ping -c 4 8.8.8.8
 
