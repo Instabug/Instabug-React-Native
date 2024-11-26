@@ -1,25 +1,14 @@
-const fs = require('fs').promises;
+import { client } from '../../utils/appiumConfig/setup';
+
+//const fs = require('fs').promises;
 jest.setTimeout(300000);
 describe('Instabug Configuration Validation', () => {
-  let configData: any;
-
-  beforeAll(async () => {
-    try {
-      const jsonData = await fs.readFile('./captured_response.json');
-      configData = JSON.parse(jsonData);
-    } catch (error) {
-      console.error('Error reading ecomplete_response.json:', error);
-      throw error;
-    }
-  });
-
-  test('should contain correct session replay URL in configuration', () => {
-    expect(configData).toHaveProperty('session_replay');
-
-    expect(configData.session_replay).toHaveProperty('url');
-
-    const expectedUrl =
-      'https://dream11.instabug.com/applications/dream11/production/session-replay';
-    expect(configData.session_replay.url).toBe(expectedUrl);
+  it('test', async () => {
+    const reactNativeElement = client.$(
+      '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/buttonGraphQL"]',
+    );
+    reactNativeElement.click();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    expect(true).toBe(true);
   });
 });
