@@ -305,7 +305,6 @@ commands:
 
             # Wait for emulator boot completion
             adb wait-for-device
-            adb shell svc wifi enable
             adb shell settings put global wifi_on 1
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -351,6 +350,10 @@ commands:
             adb push $HASH.0 /system/etc/security/cacerts/ && \
             adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
 
+
+            adb shell settings put global airplane_mode_on 0
+            adb shell settings put global private_dns_mode "off"
+
             # Configure proxy settings
             echo "Configuring proxy settings for emulator..."
             adb shell settings put global global_http_proxy_host "localhost"
@@ -358,11 +361,8 @@ commands:
             adb shell settings put global http_proxy "localhost:8084"
 
             # Verify internet connectivity
-            echo "Verifying internet connectivity..."
-            adb shell "ping -c 4 google.com" || {
-              echo "Internet connection not available on the emulator."
-              exit 1
-            }
+            adb shell ping -c 4 8.8.8.8
+
 
             # Launch browser to test proxy
             echo "Launching browser to test proxy..."
@@ -379,20 +379,20 @@ commands:
           command: |
             mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 --set block_global=false &
             # Boot simulator 
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5  # Wait for simulator to boot
+            # xcrun simctl boot "iPhone 11 Pro Max"
+            # sleep 5  # Wait for simulator to boot
 
-            # Test proxy connection with verbose output
-            echo "Testing proxy connection..."
-            curl -v --proxy localhost:8082 'http://mitm.it' || {
-              echo "Proxy test failed"
-              # Print proxy processes for debugging
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-              # Print proxy logs if available
-              echo "Proxy logs:"
-              cat appium.log || true
-            }
+            # # Test proxy connection with verbose output
+            # echo "Testing proxy connection..."
+            # curl -v --proxy localhost:8082 'http://mitm.it' || {
+            #   echo "Proxy test failed"
+            #   # Print proxy processes for debugging
+            #   echo "Running proxy processes:"
+            #   ps aux | grep mitm
+            #   # Print proxy logs if available
+            #   echo "Proxy logs:"
+            #   cat appium.log || true
+            # }
 
             # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
