@@ -336,7 +336,8 @@ commands:
             adb shell settings put global http_proxy "localhost:8084"
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
-
+            adb shell am start -a android.intent.action.VIEW -d "https://example.com"
+            adb shell ping -c 4 google.com
             # Verify proxy settings
             adb shell settings list global | grep proxy
 
