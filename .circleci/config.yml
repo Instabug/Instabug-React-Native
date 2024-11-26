@@ -361,7 +361,7 @@ commands:
             # Verify MITM proxy is running
             echo "Verifying MITM proxy is running..."
             for i in {1..30}; do
-              if curl -s -o /dev/null http://localhost:8084; then
+              if curl -s -o /dev/null http://localhost:8080; then
                 echo "MITM proxy is running"
                 break
               fi
@@ -371,7 +371,7 @@ commands:
 
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
-            curl -v --proxy localhost:8084 'http://mitm.it' || {
+            curl -v --proxy localhost:8080 'http://mitm.it' || {
               echo "Proxy test failed"
               # Print proxy processes for debugging
               echo "Running proxy processes:"
@@ -384,10 +384,10 @@ commands:
             # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
-              HTTPPort 8084 \
+              HTTPPort 8080 \
               HTTPProxy localhost \
               HTTPSEnable 1 \
-              HTTPSPort 8084 \
+              HTTPSPort 8080 \
               HTTPSProxy localhost
 
             # Restart simulator to apply changes
@@ -880,7 +880,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8080 &
             sleep 5
 
       # Run tests
