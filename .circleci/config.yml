@@ -316,15 +316,23 @@ commands:
             adb root
             sleep 5
             adb shell avbctl disable-verification
+            sleep 2
             adb reboot
+            # Wait for reboot
             sleep 30
+            adb wait-for-device
+            # Remount with proper steps
             adb root
+            sleep 5
+            adb shell setenforce 0
             adb disable-verity
             adb reboot
+            # Wait for second reboot
             sleep 30
+            adb wait-for-device
+            # Final remount
             adb root
-            adb remount
-
+            sleep 5
             # Install certificate
             echo "Installing MITM certificate..."
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
