@@ -374,13 +374,12 @@ commands:
       - run:
           name: Configure and Test Proxy Settings
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 --set block_global=false &
+            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8080 --set block_global=false &
             # Boot simulator 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-            killall mitmdump
 
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
@@ -407,7 +406,6 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
