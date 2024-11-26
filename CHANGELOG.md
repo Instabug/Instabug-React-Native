@@ -1,6 +1,10 @@
 # Changelog
 
-## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.4.0...14.0.0) (November 11, 2024)
+## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.4.0...14.0.0) (November 19, 2024)
+
+### Added
+
+- Add support for opting into session syncing ([#1292](https://github.com/Instabug/Instabug-React-Native/pull/1292)).
 
 ### Changed
 
