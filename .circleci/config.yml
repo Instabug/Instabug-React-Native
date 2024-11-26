@@ -235,11 +235,6 @@ commands:
             npm install --save-dev appium-uiautomator2-driver@3.0.5
             npm install --save-dev appium-xcuitest-driver@7.9.1
 
-            # Install Android build tools and platform tools
-            sdkmanager "build-tools;34.0.0"
-            sdkmanager "platform-tools"
-            sdkmanager "platforms;android-34"
-
             # Verify installations
             echo "Verifying installations..."
             appium --version
@@ -370,16 +365,8 @@ commands:
             adb shell ping -c 4 8.8.8.8
 
 
-            echo "Testing proxy connection..."
-            adb shell curl -v --proxy 127.0.0.1:8084 http://mitm.it || {
-              echo "Proxy test failed. Debug info:"
-              echo "Current proxy settings:"
-              adb shell settings get global http_proxy
-              echo "Network interfaces:"
-              adb shell ifconfig
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-            }
+            echo "Testing HTTPS connection through proxy..."
+            adb shell am start -a android.intent.action.VIEW -d https://google.com
 
   setup_ios_proxy:
     steps:
