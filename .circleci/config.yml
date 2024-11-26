@@ -293,7 +293,7 @@ commands:
       - run:
           name: Wait for Emulator and Setup Certificates
           command: |
-            # Wait for device to be ready
+            # Wait for emulator to be ready
             for i in $(seq 1 30); do
               if adb devices | grep -q "emulator"; then
                 break
@@ -302,7 +302,7 @@ commands:
               sleep 10
             done
 
-            # Wait for boot complete
+            # Wait for emulator boot completion
             adb wait-for-device
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -312,7 +312,7 @@ commands:
               sleep 10
             done
 
-            # Prepare system for certificate installation
+            # Remount system partition and prepare for certificate installation
             adb root
             sleep 5
             adb shell avbctl disable-verification
@@ -320,10 +320,11 @@ commands:
             adb reboot
 
             # Wait for reboot
+            echo "Waiting for device to reboot..."
             sleep 30
             adb wait-for-device
 
-            # Remount with proper steps
+            # Remount system partition as writable
             adb root
             sleep 5
             adb shell setenforce 0
@@ -331,6 +332,7 @@ commands:
             adb reboot
 
             # Wait for second reboot
+            echo "Waiting for device to reboot again..."
             sleep 30
             adb wait-for-device
 
@@ -339,24 +341,32 @@ commands:
             sleep 5
             adb remount
 
-            # Install certificate
+            # Install MITM certificate
             echo "Installing certificate..."
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-
-
-                  adb push $HASH.0 /system/etc/security/cacerts/ && \
-                  adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0" && \
-                  break
+            adb push $HASH.0 /system/etc/security/cacerts/ && \
+            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
 
             # Configure proxy settings
+            echo "Configuring proxy settings for emulator..."
             adb shell settings put global global_http_proxy_host "localhost"
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "localhost:8084"
 
-            adb shell am start -a android.intent.action.VIEW -d "https://example.com"
-            adb shell ping -c 4 google.com
+            # Verify internet connectivity
+            echo "Verifying internet connectivity..."
+            adb shell "ping -c 4 google.com" || {
+              echo "Internet connection not available on the emulator."
+              exit 1
+            }
+
+            # Launch browser to test proxy
+            echo "Launching browser to test proxy..."
+            adb shell am start -n "com.android.chrome/com.google.android.apps.chrome.Main" -a android.intent.action.VIEW -d "https://example.com"
+
             # Verify proxy settings
+            echo "Verifying proxy settings..."
             adb shell settings list global | grep proxy
 
   setup_ios_proxy:
