@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...dev)
+
+### Added
+
+- Add support for tracing network requests from Instabug to services like Datadog and New Relic ([#1288](https://github.com/Instabug/Instabug-React-Native/pull/1288))
+
 ## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.4.0...14.0.0) (November 11, 2024)
 
 ### Added
