@@ -16,8 +16,8 @@
 
 
 - (void)setUp {
-    self.mSessionReplay = OCMClassMock([IBGSessionReplay class]);
-    self.bridge = [[InstabugSessionReplayBridge alloc] init];
+  self.mSessionReplay = OCMClassMock([IBGSessionReplay class]);
+  self.bridge = [[InstabugSessionReplayBridge alloc] init];
 }
 
 - (void)testSetEnabled {
@@ -67,7 +67,60 @@
     [self.bridge getSessionReplayLink:resolve :reject];
     OCMVerify([self.mSessionReplay sessionReplayLink]);
     [self waitForExpectations:@[expectation] timeout:5.0];
-
 }
+
+- (void)testSetSyncCallback {
+    id mockMetadata = OCMClassMock([IBGSessionMetadata class]);
+    id mockNetworkLog = OCMClassMock([IBGSessionMetadataNetworkLogs class]);
+    id partialMock = OCMPartialMock(self.bridge);
+
+    XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Completion block should be called with the expected value"];
+
+    BOOL expectedValue = YES;
+    __block BOOL actualValue = NO;
+
+    OCMStub([mockNetworkLog url]).andReturn(@"http://example.com");
+    OCMStub([mockNetworkLog statusCode]).andReturn(200);
+
+    OCMStub([mockMetadata device]).andReturn(@"ipohne");
+    OCMStub([mockMetadata os]).andReturn(@"ios");
+    OCMStub([mockMetadata appVersion]).andReturn(@"13.4.1");
+    OCMStub([mockMetadata sessionDuration]).andReturn(20);
+    OCMStub([mockMetadata hasLinkToAppReview]).andReturn(NO);
+    OCMStub([mockMetadata launchType]).andReturn(LaunchTypeCold);
+    OCMStub([mockMetadata launchDuration]).andReturn(20);
+    OCMStub([mockMetadata bugsCount]).andReturn(10);
+    OCMStub([mockMetadata fatalCrashCount]).andReturn(10);
+    OCMStub([mockMetadata oomCrashCount]).andReturn(10);
+    OCMStub([mockMetadata networkLogs]).andReturn(@[mockNetworkLog]);
+
+    SessionEvaluationCompletion sessionEvaluationCompletion = ^(BOOL shouldSync) {
+        actualValue = shouldSync;
+        [completionExpectation fulfill];
+    };
+
+  OCMStub([self.mSessionReplay setSyncCallbackWithHandler:[OCMArg checkWithBlock: ^BOOL(void(^handler)(IBGSessionMetadata *metadataObject, SessionEvaluationCompletion completion)) {
+      handler(mockMetadata, sessionEvaluationCompletion);
+      return YES;
+  }]]);
+
+    OCMStub([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]).andDo(^(NSInvocation *invocation) {
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.bridge evaluateSync:expectedValue];
+
+      });
+    });
+
+
+
+
+    [self.bridge setSyncCallback];
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+
+    OCMVerify([partialMock sendEventWithName:@"IBGSessionReplayOnSyncCallback" body:OCMArg.any]);
+    OCMVerifyAll(self.mSessionReplay);
+    XCTAssertEqual(actualValue, expectedValue);
+  }
+
 
 @end
