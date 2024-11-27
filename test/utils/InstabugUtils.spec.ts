@@ -258,6 +258,11 @@ describe('reportNetworkLog', () => {
     errorDomain: 'errorDomain',
     serverErrorMessage: 'serverErrorMessage',
     requestContentType: 'requestContentType',
+    isW3cHeaderFound: null,
+    partialId: null,
+    networkStartTimeInSeconds: null,
+    w3cGeneratedHeader: null,
+    w3cCaughtHeader: null,
   };
 
   it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
@@ -296,6 +301,13 @@ describe('reportNetworkLog', () => {
       network.responseCode,
       network.contentType,
       network.errorDomain,
+      {
+        isW3cHeaderFound: null,
+        partialId: null,
+        networkStartTimeInSeconds: null,
+        w3cGeneratedHeader: null,
+        w3cCaughtHeader: null,
+      },
       network.gqlQueryName,
       network.serverErrorMessage,
     );
@@ -324,6 +336,13 @@ describe('reportNetworkLog', () => {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
+      {
+        isW3cHeaderFound: null,
+        partialId: null,
+        networkStartTimeInSeconds: null,
+        w3cGeneratedHeader: null,
+        w3cCaughtHeader: null,
+      },
     );
   });
 });
