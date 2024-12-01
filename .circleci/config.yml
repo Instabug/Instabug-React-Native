@@ -364,7 +364,6 @@ commands:
       - run:
           name: Configure and Test Proxy Settings
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8080 --set block_global=false &
             # Boot simulator 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
