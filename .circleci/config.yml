@@ -391,8 +391,10 @@ commands:
 
             # Enable WiFi
             echo "Enabling WiFi..."
-            xcrun simctl status_bar "$DEVICE_ID" override --wifi "WiFi"
-
+            xcrun simctl status_bar "$DEVICE_ID" override \
+                --dataNetwork wifi \
+                --wifiMode active \
+                --wifiBars 3
             # Wait for simulator to fully boot
             echo "Waiting for simulator to complete boot process..."
             sleep 10
