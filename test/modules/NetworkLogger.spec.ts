@@ -7,6 +7,7 @@ import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../../src/utils/InstabugUtils';
 import InstabugConstants from '../../src/utils/InstabugConstants';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
@@ -280,5 +281,12 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
+  });
+
+  it('should call the native method setAutoMaskingEnabled', () => {
+    NetworkLogger.setAutoMaskingEnabled(true);
+
+    expect(NativeInstabug.setAutoMaskingEnabled).toBeCalledTimes(1);
+    expect(NativeInstabug.setAutoMaskingEnabled).toBeCalledWith(true);
   });
 });

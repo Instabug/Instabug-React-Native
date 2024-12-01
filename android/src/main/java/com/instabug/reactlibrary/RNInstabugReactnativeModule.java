@@ -1157,6 +1157,27 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
     /**
+     * Enables or disables network logs sensitive information auto masking.
+     * @param isEnabled A boolean to enable/disable auto masking.
+     */
+    @ReactMethod
+    public void setAutoMaskingEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(isEnabled)
+                        Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED);
+                    else
+                        Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+        /**
      * Register a listener for W3C flags value change
      */
     @ReactMethod
@@ -1186,8 +1207,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
         });
     }
-
-
+    
     /**
      *  Get first time Value of W3ExternalTraceID flag
      */

@@ -550,6 +550,15 @@
   OCMVerify([mock removeAllFeatureFlags]);
 }
 
+- (void)testSetAutoMaskingEnabled {
+  id mock = OCMClassMock([IBGNetworkLogger class]);
+  BOOL isEnabled = true;
+
+  OCMStub([mock setAutoMaskingEnabled:isEnabled]);
+  [self.instabugBridge setAutoMaskingEnabled:isEnabled];
+  OCMVerify([mock setAutoMaskingEnabled:isEnabled]);
+}
+
 
 - (void) testIsW3ExternalTraceIDEnabled {
     id mock = OCMClassMock([IBGNetworkLogger class]);

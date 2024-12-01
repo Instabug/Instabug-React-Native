@@ -638,6 +638,25 @@ public class RNInstabugReactnativeModuleTest {
         // then
         mockInstabug.verify(() -> Instabug.willRedirectToStore());
     }
+
+    @Test
+    public void testEnableAutoMasking() {
+        // when
+        rnModule.setAutoMaskingEnabled(true);
+
+        // then
+        mockInstabug.verify(() -> Instabug.setNetworkAutoMaskingState(Feature.State.ENABLED));
+    }
+
+    @Test
+    public void testDisableAutoMasking() {
+        // when
+        rnModule.setAutoMaskingEnabled(false);
+
+        // then
+        mockInstabug.verify(() -> Instabug.setNetworkAutoMaskingState(Feature.State.DISABLED));
+    }
+
     @Test
     public void testW3CExternalTraceIDFlag(){
         Promise promise = mock(Promise.class);

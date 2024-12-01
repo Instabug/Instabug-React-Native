@@ -402,6 +402,9 @@ RCT_EXPORT_METHOD(removeAllFeatureFlags) {
 RCT_EXPORT_METHOD(willRedirectToStore){
     [Instabug willRedirectToAppStore];
 }
+RCT_EXPORT_METHOD(setAutoMaskingEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.autoMaskingEnabled = isEnabled;
+}
 
 RCT_EXPORT_METHOD(isW3ExternalTraceIDEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve(@(IBGNetworkLogger.w3ExternalTraceIDEnabled));
