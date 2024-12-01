@@ -222,8 +222,8 @@ commands:
       - run:
           name: Install and Setup Appium
           command: |
+            npm init
             npm install -g appium@2.11.4
-
             # Install iOS and Android drivers
             appium driver install uiautomator2@3.0.5
             appium driver install xcuitest@7.9.1
