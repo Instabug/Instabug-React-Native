@@ -220,6 +220,7 @@ commands:
   setup_appium:
     steps:
       - run:
+          working_directory: ~/project/examples/hybrid
           name: Install and Setup Appium
           command: |
             npm install -g appium@2.11.4
@@ -231,6 +232,7 @@ commands:
             npm install --save-dev webdriverio@9.1.0
             npm install --save-dev appium@2.11.4
             npm install --save-dev jest@29.7.0
+            npm install --save-dev appium-uiautomator2-driver@3.0.5
             npm install --save-dev appium-xcuitest-driver@7.9.1
 
             # Verify installations
