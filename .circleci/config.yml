@@ -365,36 +365,43 @@ commands:
           name: Configure and Test Proxy Settings
           command: |
             # Boot simulator 
+            DEVICE_NAME="iPhone 11 Pro Max"
+            RUNTIME="iOS 15.5"
+            DEVICE_ID=""
+
+            echo "Setting up $DEVICE_NAME with $RUNTIME..."
+
+            # Create simulator if it doesn't exist
+            DEVICE_ID=$(xcrun simctl create "$DEVICE_NAME" "com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max" "com.apple.CoreSimulator.SimRuntime.iOS-15-5" 2>/dev/null)
+
+            if [ $? -ne 0 ]; then
+                echo "Error: Failed to create simulator. Please ensure iOS 15.5 runtime is installed."
+                echo "Available runtimes:"
+                xcrun simctl list runtimes
+                exit 1
+            fi
+
+            # Shutdown all simulators first
+            echo "Shutting down any running simulators..."
             xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
-            echo "wait to boot..."
-            sleep 5  # Wait for simulator to boot
 
-            # Test proxy connection with verbose output
-            echo "Testing proxy connection..."
-            curl -v --proxy localhost:8082 'http://mitm.it' || {
-              echo "Proxy test failed"
-              # Print proxy processes for debugging
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-              # Print proxy logs if available
-              echo "Proxy logs:"
-              cat appium.log || true
-            }
+            # Boot our specific simulator
+            echo "Booting $DEVICE_NAME simulator..."
+            xcrun simctl boot "$DEVICE_ID"
 
-            defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
-              HTTPEnable 1 \
-              HTTPPort 8082 \
-              HTTPProxy localhost \
-              HTTPSEnable 1 \
-              HTTPSPort 8082 \
-              HTTPSProxy localhost
+            # Enable WiFi
+            echo "Enabling WiFi..."
+            xcrun simctl status_bar "$DEVICE_ID" override --wifi "WiFi"
 
-            # Restart simulator to apply changes
-            xcrun simctl shutdown all
-            sleep 2
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
+            # Wait for simulator to fully boot
+            echo "Waiting for simulator to complete boot process..."
+            sleep 10
+
+            # Verify simulator is running
+            if ! xcrun simctl list devices | grep "$DEVICE_ID" | grep "Booted" > /dev/null; then
+                echo "Error: Simulator failed to boot properly"
+                exit 1
+            fi
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
@@ -437,11 +444,18 @@ commands:
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
 
-            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
+            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
 
-            xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
+            defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
+            HTTPEnable 1 \
+            HTTPPort 8082 \
+            HTTPProxy localhost \
+            HTTPSEnable 1 \
+            HTTPSPort 8082 \
+            HTTPSProxy localhost
+
+            echo "Setup complete! Please check the simulator to approve the certificate installation."
+            echo "Simulator ID: $DEVICE_ID"
 
 jobs:
   danger:
