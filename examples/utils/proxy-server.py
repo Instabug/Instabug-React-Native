@@ -6,9 +6,11 @@ from datetime import datetime
 # Configuration
 TARGET_HOST = "instabug.com"
 ORIGINAL_DOMAIN = "api.instabug.com"
-NEW_DOMAIN = "st001012dream11.instabug.com"
-TARGET_TOKEN = "dfed1c768730afbd56efafd571b4cbaa"
+NEW_DOMAIN = os.getenv('Domain')
+TARGET_TOKEN = os.getenv('Key')
 ALL_REQUESTS_FILE = "InterceptedRequests.json"
+CAPTURED_RESPONSE_FILE = "captured_response.json" 
+
 def save_to_json(data, filename):
     try:
         if os.path.exists(filename):
@@ -23,6 +25,19 @@ def save_to_json(data, filename):
             json.dump(existing_data, f, indent=2)
     except Exception as e:
         ctx.log.error(f"Error saving to {filename}: {str(e)}")
+
+def save_captured_response(response_body):
+    try:
+        if isinstance(response_body, str):
+            response_json = json.loads(response_body)
+        else:
+            response_json = json.loads(response_body.decode('utf-8'))
+            
+        with open(CAPTURED_RESPONSE_FILE, 'w') as f:
+            json.dump(response_json, f, indent=2)
+            
+    except Exception as e:
+        ctx.log.error(f"Error saving captured response: {str(e)}")
 
 def should_intercept(url: str) -> bool:
     return TARGET_HOST in url
@@ -69,6 +84,10 @@ def response(flow: http.HTTPFlow) -> None:
                 'headers': dict(flow.response.headers),
                 'content': flow.response.get_text()
             }
+            
+            response_body = flow.response.get_text()
+            save_captured_response(response_body)
+            
             flow.metadata['captured_response'] = captured_response
             
             ctx.log.info("Restoring original request details")
@@ -95,4 +114,4 @@ def response(flow: http.HTTPFlow) -> None:
             "body": flow.response.get_text() if flow.response.get_text() else None
         }
     }
-    save_to_json(request_response_data, ALL_REQUESTS_FILE)
+    save_to_json(flow.response, ALL_REQUESTS_FILE)
