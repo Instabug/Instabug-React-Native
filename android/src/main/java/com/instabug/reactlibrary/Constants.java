@@ -9,4 +9,7 @@ final class Constants {
 
     final static String IBG_ON_NEW_MESSAGE_HANDLER = "IBGonNewMessageHandler";
     final static String IBG_ON_NEW_REPLY_RECEIVED_CALLBACK = "IBGOnNewReplyReceivedCallback";
+
+    final static String IBG_ON_FEATURES_UPDATED_CALLBACK = "IBGOnFeatureUpdatedCallback";
+    final static String IBG_NETWORK_LOGGER_HANDLER = "IBGNetworkLoggerHandler";
 }

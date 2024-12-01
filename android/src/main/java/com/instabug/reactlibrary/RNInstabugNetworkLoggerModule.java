@@ -130,7 +130,7 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
                         networkSnapshotParams.putMap("responseHeader", convertFromMapToWriteableMap(networkLogSnapshot.getResponseHeaders()));
                     }
 
-                    sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
+                    sendEvent(Constants.IBG_NETWORK_LOGGER_HANDLER, networkSnapshotParams);
                 });
             }
         });
