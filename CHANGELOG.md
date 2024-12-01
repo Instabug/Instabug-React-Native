@@ -6,6 +6,8 @@
 
 - Add support for tracing network requests from Instabug to services like Datadog and New Relic ([#1288](https://github.com/Instabug/Instabug-React-Native/pull/1288))
 
+- Add support enable/disable the automatic masking of sensitive information in network logs. ([#1314](https://github.com/Instabug/Instabug-React-Native/pull/1314))
+
 ## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v13.4.0...14.0.0) (November 19, 2024)
 
 ### Added
