@@ -17,6 +17,10 @@
 - Bump Instabug iOS SDK to v14.0.0 ([#1312](https://github.com/Instabug/Instabug-React-Native/pull/1312)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.0.0).
 - Bump Instabug Android SDK to v14.0.0 ([#1312](https://github.com/Instabug/Instabug-React-Native/pull/1312)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v14.0.0).
 
+### Added
+
+- Exclude DEV server from network logs ([#1307](https://github.com/Instabug/Instabug-React-Native/pull/1307)).
+
 ### Fixed
 
 - Replace thrown errors with logs ([#1220](https://github.com/Instabug/Instabug-React-Native/pull/1220))

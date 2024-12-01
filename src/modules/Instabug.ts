@@ -27,6 +27,7 @@ import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking'
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
 import InstabugConstants from '../utils/InstabugConstants';
+import { InstabugRNConfig } from '../utils/config';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -636,6 +637,13 @@ export const removeAllFeatureFlags = () => {
  */
 export const willRedirectToStore = () => {
   NativeInstabug.willRedirectToStore();
+};
+
+/**
+ * This API has be called when changing the default Metro server port (8081) to exclude the DEV URL from network logging.
+ */
+export const setMetroDevServerPort = (port: number) => {
+  InstabugRNConfig.metroDevServerPort = port.toString();
 };
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {

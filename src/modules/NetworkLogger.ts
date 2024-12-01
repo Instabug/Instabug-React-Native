@@ -2,13 +2,19 @@ import type { RequestHandler } from '@apollo/client';
 
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import { reportNetworkLog, isContentTypeNotAllowed } from '../utils/InstabugUtils';
+import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
+import { InstabugRNConfig } from '../utils/config';
 
 export type { NetworkData };
 
 export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<NetworkData>;
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
+
+function getPortFromUrl(url: string) {
+  const portMatch = url.match(/:(\d+)(?=\/|$)/);
+  return portMatch ? portMatch[1] : null;
+}
 
 /**
  * Sets whether network logs should be sent with bug reports.
@@ -27,6 +33,12 @@ export const setEnabled = (isEnabled: boolean) => {
             network = await _networkDataObfuscationHandler(network);
           }
 
+          if (__DEV__) {
+            const urlPort = getPortFromUrl(network.url);
+            if (urlPort === InstabugRNConfig.metroDevServerPort) {
+              return;
+            }
+          }
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
             network.requestBody = InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE;
             console.warn('IBG-RN:', InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE);
