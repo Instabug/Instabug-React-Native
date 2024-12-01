@@ -446,7 +446,7 @@ commands:
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
 
-            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
             HTTPEnable 1 \
