@@ -226,15 +226,16 @@ commands:
             npm install -g appium@2.11.4
             npm cache clean --force
             # Install iOS and Android drivers
-            appium driver uninstall uiautomator2 || true
-            appium driver uninstall xcuitest || true
+            appium driver install uiautomator2
+            appium driver install xcuitest
 
             # Install test dependencies
-            appium driver install uiautomator2@3.0.5
-            appium driver install xcuitest@7.9.1
             npm install --save-dev webdriverio@9.1.0
             npm install --save-dev appium@2.11.4
             npm install --save-dev jest@29.7.0
+            npm update --save-dev appium-uiautomator2-driver
+            npm update --save-dev appium-xcuitest-driver
+
 
             # Verify installations
             echo "Verifying installations..."
