@@ -224,12 +224,17 @@ commands:
           name: Install and Setup Appium
           command: |
             npm install -g appium@2.11.4 --legacy-peer-deps
-            npm cache clean --force
-            # Install iOS and Android drivers
-            appium driver install uiautomator2 --legacy-peer-deps
-            appium driver install xcuitest --legacy-peer-deps
 
-            # Install test dependencies
+            # Clear npm cache
+            npm cache clean --force
+            
+            # Install Appium drivers (without --legacy-peer-deps flag as it's not supported)
+            echo "Installing Appium drivers..."
+            appium driver install uiautomator2
+            appium driver install xcuitest
+            
+            # Install and update dependencies with legacy peer deps
+            echo "Installing test dependencies..."
             npm install --save-dev webdriverio@9.1.0 --legacy-peer-deps
             npm install --save-dev appium@2.11.4 --legacy-peer-deps
             npm install --save-dev jest@29.7.0 --legacy-peer-deps
