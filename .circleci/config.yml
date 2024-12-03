@@ -218,6 +218,7 @@ commands:
             echo "MITM Proxy setup completed"
 
   setup_appium:
+    working_directory: ~/project/examples/hybrid
     steps:
       - run:
           name: Install and Setup Appium
@@ -242,6 +243,7 @@ commands:
 
       - run:
           name: Start Appium Server
+          working_directory: ~/project/examples/hybrid
           background: true
           command: |
             appium \
