@@ -218,10 +218,10 @@ commands:
             echo "MITM Proxy setup completed"
 
   setup_appium:
-    working_directory: ~/project/examples/hybrid
     steps:
       - run:
           name: Install and Setup Appium
+          working_directory: ~/project/examples/hybrid
           command: |
             npm install -g appium@2.11.4
 
