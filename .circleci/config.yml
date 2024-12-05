@@ -250,7 +250,6 @@ commands:
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
               --base-path / \
-              --use-drivers=xcuitest,uiautomator2 \
               --log appium.log &
   setup_android_proxy:
     steps:
