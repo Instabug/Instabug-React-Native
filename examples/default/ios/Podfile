@@ -12,6 +12,7 @@ if linkage != nil
 end
 
 target 'InstabugExample' do
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/dream11/Instabug.podspec'
   config = use_native_modules!
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path

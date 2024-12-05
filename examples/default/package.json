@@ -19,7 +19,6 @@
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "instabug-reactnative": "link:../..",
-    "instabug-reactnative-ndk": "github:https://github.com/Instabug/Instabug-React-Native-NDK",
     "native-base": "^3.4.28",
     "react": "18.3.1",
     "react-native": "0.75.4",
