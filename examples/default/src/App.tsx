@@ -7,7 +7,7 @@ import Instabug, {
   CrashReporting,
   InvocationEvent,
   LogLevel,
-  NetworkInterceptionMode,
+  NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -23,27 +23,33 @@ const queryClient = new QueryClient();
 export const App: React.FC = () => {
   const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
 
+  const initializeInstabug = async () => {
+    try {
+      await Instabug.init({
+        token: '0fcc87b8bf731164828cc411eccc802a',
+        invocationEvents: [InvocationEvent.floatingButton],
+        debugLogsLevel: LogLevel.verbose,
+        // networkInterceptionMode: NetworkInterceptionMode.native,
+      });
+
+      CrashReporting.setNDKCrashesEnabled(true);
+      Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
+
+      setIsInstabugInitialized(true); // Set to true after initialization
+    } catch (error) {
+      console.error('Instabug initialization failed:', error);
+      setIsInstabugInitialized(true); // Proceed even if initialization fails
+    }
+  };
+
   useEffect(() => {
-    const initializeInstabug = async () => {
-      try {
-        await Instabug.init({
-          token: '0fcc87b8bf731164828cc411eccc802a',
-          invocationEvents: [InvocationEvent.floatingButton],
-          debugLogsLevel: LogLevel.verbose,
-          networkInterceptionMode: NetworkInterceptionMode.native,
-        });
-
-        CrashReporting.setNDKCrashesEnabled(true);
-        Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
-
-        setIsInstabugInitialized(true); // Set to true after initialization
-      } catch (error) {
-        console.error('Instabug initialization failed:', error);
-        setIsInstabugInitialized(true); // Proceed even if initialization fails
-      }
-    };
-
-    initializeInstabug();
+    initializeInstabug().then(() => {
+      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+        networkData.url = `${networkData.url}/JS/Obfuscated`;
+        return networkData;
+      });
+      // NetworkLogger.setRequestFilterExpression('false');
+    });
   }, []);
 
   if (!isInstabugInitialized) {

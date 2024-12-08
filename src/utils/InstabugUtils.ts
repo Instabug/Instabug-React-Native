@@ -12,6 +12,13 @@ import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
 import { NativeAPM } from '../native/NativeAPM';
+import * as NetworkLogger from '../modules/NetworkLogger';
+import {
+  NativeNetworkLogger,
+  NativeNetworkLoggerEvent,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../native/NativeNetworkLogger';
 
 type ApmNetworkFlags = {
   isNativeInterceptionFeatureEnabled: boolean;
@@ -190,6 +197,7 @@ export const reportNetworkLog = (network: NetworkData) => {
       !apmFlags.shouldEnableNativeInterception
     ) {
       console.log('Andrew: ' + 'NetworkLogger -> NativeAPM.networkLogAndroid');
+      console.log('Andrew: ' + `NetworkLogger -> ${network.url}`);
       NativeAPM.networkLogAndroid(
         network.startTime,
         network.duration,
@@ -236,6 +244,98 @@ export const reportNetworkLog = (network: NetworkData) => {
     );
   }
 };
+
+export function registerObfuscationListener() {
+  NetworkLogger.registerNetworkLogsListener(
+    NetworkListenerType.obfuscation,
+    async (networkSnapshot) => {
+      const _networkDataObfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+      if (_networkDataObfuscationHandler) {
+        networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+      }
+      NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+    },
+  );
+}
+
+export function registerFilteringListener(filterExpression: string) {
+  NetworkLogger.registerNetworkLogsListener(
+    NetworkListenerType.filtering,
+    async (networkSnapshot) => {
+      // eslint-disable-next-line no-new-func
+      const predicate = Function('network', 'return ' + filterExpression);
+      const value = predicate(networkSnapshot);
+      if (Platform.OS === 'ios') {
+        // For iOS True == Request will be saved, False == will be ignored
+        NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
+      } else {
+        // For Android Setting the [url] to an empty string will ignore the request;
+        if (value) {
+          networkSnapshot.url = '';
+          NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+        }
+      }
+    },
+  );
+}
+
+export function registerFilteringAndObfuscationListener(filterExpression: string) {
+  NetworkLogger.registerNetworkLogsListener(NetworkListenerType.both, async (networkSnapshot) => {
+    // eslint-disable-next-line no-new-func
+    const predicate = Function('network', 'return ' + filterExpression);
+    const value = predicate(networkSnapshot);
+    if (Platform.OS === 'ios') {
+      // For iOS True == Request will be saved, False == will be ignored
+      NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
+    } else {
+      // For Android Setting the [url] to an empty string will ignore the request;
+      if (value) {
+        networkSnapshot.url = '';
+        NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+      }
+    }
+    if (!value) {
+      const _networkDataObfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+      if (_networkDataObfuscationHandler) {
+        networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+      }
+      NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+    }
+  });
+}
+
+export function checkNetworkRequestHandlers() {
+  const obfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+  const hasFilterExpression = NetworkLogger.hasRequestFilterExpression();
+
+  console.log(
+    `Andrew: handlers 
+    {filtering = ${hasFilterExpression}, obfuscation = ${obfuscationHandler != null}}`,
+  );
+  if (hasFilterExpression && obfuscationHandler) {
+    // Register listener that handles both (Filtering & Obfuscation)
+    registerFilteringAndObfuscationListener(NetworkLogger.getRequestFilterExpression());
+    return;
+  }
+  if (obfuscationHandler) {
+    // Register listener that handles only (Obfuscation)
+    registerObfuscationListener();
+    return;
+  }
+
+  if (hasFilterExpression) {
+    // Register listener that handles only (Filtering)
+    registerFilteringListener(NetworkLogger.getRequestFilterExpression());
+    return;
+  }
+}
+export function resetNativeObfuscationListener() {
+  console.log('Andrew: refreshAPMNetworkConfigs -> Remove all (NETWORK_LOGGER_HANDLER) listeners');
+  if (Platform.OS === 'android') {
+    NativeNetworkLogger.resetNetworkLogsListener();
+  }
+  NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+}
 
 export default {
   parseErrorStack,

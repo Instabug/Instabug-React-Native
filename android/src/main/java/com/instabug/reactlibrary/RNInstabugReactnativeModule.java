@@ -1,5 +1,7 @@
 package com.instabug.reactlibrary;
 
+import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
+import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.app.Application;
@@ -22,6 +24,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.instabug.apm.InternalAPM;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -31,13 +34,14 @@ import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.core.InstabugCore;
 import com.instabug.library.featuresflags.model.IBGFeatureFlag;
+import com.instabug.library.internal.crossplatform.InternalCore;
+import com.instabug.library.internal.crossplatform.OnFeaturesUpdatedListener;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.util.InstabugSDKLogger;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
@@ -104,6 +108,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Enables or disables Instabug functionality.
+     *
      * @param isEnabled A boolean to enable/disable Instabug.
      */
     @ReactMethod
@@ -112,7 +117,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    if(isEnabled)
+                    if (isEnabled)
                         Instabug.enable();
                     else
                         Instabug.disable();
@@ -125,10 +130,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Initializes the SDK.
-     * @param token The token that identifies the app. You can find it on your dashboard.
+     *
+     * @param token                 The token that identifies the app. You can find it on your dashboard.
      * @param invocationEventValues The events that invoke the SDK's UI.
-     * @param logLevel The level of detail in logs that you want to print.
-     * @param codePushVersion The Code Push version to be used for all reports.
+     * @param logLevel              The level of detail in logs that you want to print.
+     * @param codePushVersion       The Code Push version to be used for all reports.
      */
     @ReactMethod
     public void init(
@@ -154,8 +160,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
 
-                if(codePushVersion != null) {
-                    if(Instabug.isBuilt()) {
+                if (codePushVersion != null) {
+                    if (Instabug.isBuilt()) {
                         Instabug.setCodePushVersion(codePushVersion);
                     } else {
                         builder.setCodePushVersion(codePushVersion);
@@ -321,7 +327,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      *
      * @param userEmail User's default email
      * @param userName  Username.
-     * @param userId User's ID
+     * @param userId    User's ID
      */
     @ReactMethod
     public void identifyUser(
@@ -741,15 +747,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();
-        for(int i = 0; i < hashMap.size(); i++) {
+        for (int i = 0; i < hashMap.size(); i++) {
             Object key = hashMap.keySet().toArray()[i];
             Object value = hashMap.get(key);
-            writableMap.putString((String) key,(String) value);
+            writableMap.putString((String) key, (String) value);
         }
         return writableMap;
     }
 
-    private static JSONObject objectToJSONObject(Object object){
+    private static JSONObject objectToJSONObject(Object object) {
         Object json = null;
         JSONObject jsonObject = null;
         try {
@@ -766,13 +772,12 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     private WritableArray convertArrayListToWritableArray(List arrayList) {
         WritableArray writableArray = new WritableNativeArray();
 
-        for(int i = 0; i < arrayList.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             Object object = arrayList.get(i);
 
-            if(object instanceof String) {
+            if (object instanceof String) {
                 writableArray.pushString((String) object);
-            }
-            else {
+            } else {
                 JSONObject jsonObject = objectToJSONObject(object);
                 writableArray.pushMap((WritableMap) jsonObject);
             }
@@ -828,7 +833,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Shows the welcome message in a specific mode.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                          live, or beta.
+     *                           live, or beta.
      */
     @ReactMethod
     public void showWelcomeMessageWithMode(final String welcomeMessageMode) {
@@ -850,7 +855,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Sets the welcome message mode to live, beta or disabled.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-      *                          live, beta or disabled.
+     *                           live, beta or disabled.
      */
     @ReactMethod
     public void setWelcomeMessageMode(final String welcomeMessageMode) {
@@ -985,7 +990,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen name been changed (Current View).
      *
      * @param screenName string containing the screen name
-     *
      */
     @ReactMethod
     public void reportCurrentViewChange(final String screenName) {
@@ -1008,7 +1012,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
      *
      * @param screenName string containing the screen name
-     *
      */
     @ReactMethod
     public void reportScreenChange(final String screenName) {
@@ -1018,7 +1021,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportScreenChange", Bitmap.class, String.class);
                     if (method != null) {
-                        method.invoke(null , null, screenName);
+                        method.invoke(null, null, screenName);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1112,7 +1115,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                   ArrayList<String> stringArray = ArrayUtil.parseReadableArrayOfStrings(featureFlags);
+                    ArrayList<String> stringArray = ArrayUtil.parseReadableArrayOfStrings(featureFlags);
                     Instabug.removeFeatureFlag(stringArray);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1153,7 +1156,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the
      * constant with its actual value from the {@link ArgsRegistry} maps.
-     *
+     * <p>
      * This is a workaround, because RN cannot resolve enums in the constants map.
      */
     @Override
@@ -1166,5 +1169,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
 
         return constants;
+    }
+
+    @ReactMethod
+    public void setOnFeaturesUpdatedListener() {
+        InternalCore.INSTANCE._setOnFeaturesUpdatedListener(new OnFeaturesUpdatedListener() {
+            @Override
+            public void invoke() {
+                final boolean cpNativeInterceptionEnabled = InternalAPM._isFeatureEnabledCP(CP_NATIVE_INTERCEPTION_ENABLED, "");
+                final boolean hasAPMPlugin = InternalAPM._isFeatureEnabledCP(APM_NETWORK_PLUGIN_INSTALLED, "");
+
+                WritableMap params = Arguments.createMap();
+                params.putBoolean("cpNativeInterceptionEnabled", cpNativeInterceptionEnabled);
+                params.putBoolean("hasAPMPlugin", hasAPMPlugin);
+                sendEvent(Constants.IBG_ON_FEATURES_UPDATED_CALLBACK, params);
+            }
+        });
     }
 }

@@ -243,6 +243,7 @@ describe('Instabug Utils', () => {
 
 describe('reportNetworkLog', () => {
   const network: NetworkData = {
+    id: 'id',
     url: 'https://api.instabug.com',
     method: 'GET',
     requestBody: 'requestBody',

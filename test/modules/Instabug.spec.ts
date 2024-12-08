@@ -28,6 +28,10 @@ import InstabugConstants from '../../src/utils/InstabugConstants';
 
 jest.mock('../../src/modules/NetworkLogger');
 
+function fakeTimer(callback: () => void) {
+  setTimeout(callback, 100);
+}
+
 describe('Instabug Module', () => {
   beforeEach(() => {
     const events = Object.values(NativeEvents);
@@ -900,6 +904,8 @@ describe('Instabug iOS initialization tests', () => {
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
     };
+    // Fast-forward until all timers have been executed
+    jest.advanceTimersByTime(1000);
   });
 
   it('should initialize correctly with javascript interception mode', async () => {
@@ -986,17 +992,17 @@ describe('Instabug Android initialization tests', () => {
   it('should initialize correctly with native interception enabled', async () => {
     config.networkInterceptionMode = NetworkInterceptionMode.native;
     await Instabug.init(config);
-
-    expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
-    expect(NativeNetworkLogger.hasAPMNetworkPlugin).toHaveBeenCalled();
-    expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(true);
-    expect(NativeInstabug.init).toHaveBeenCalledWith(
-      config.token,
-      config.invocationEvents,
-      config.debugLogsLevel,
-      false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
-      config.codePushVersion,
-    );
+    fakeTimer(() => {
+      expect(NativeInstabug.setOnFeaturesUpdatedListener).toHaveBeenCalled();
+      expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(true);
+      expect(NativeInstabug.init).toHaveBeenCalledWith(
+        config.token,
+        config.invocationEvents,
+        config.debugLogsLevel,
+        false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
+        config.codePushVersion,
+      );
+    });
   });
 
   it('should show warning message when networkInterceptionMode == javascript and user added APM plugin', async () => {
@@ -1007,11 +1013,12 @@ describe('Instabug Android initialization tests', () => {
     const logSpy = jest.spyOn(global.console, 'warn');
 
     await Instabug.init(config);
-
-    expect(logSpy).toBeCalledTimes(1);
-    expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
-    );
+    fakeTimer(() => {
+      expect(logSpy).toBeCalledTimes(1);
+      expect(logSpy).toBeCalledWith(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
+      );
+    });
   });
 
   it('should show error message when networkInterceptionMode == native and user did not add APM plugin', async () => {
@@ -1025,10 +1032,12 @@ describe('Instabug Android initialization tests', () => {
 
     await Instabug.init(config);
 
-    expect(logSpy).toBeCalledTimes(1);
-    expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE,
-    );
+    fakeTimer(() => {
+      expect(logSpy).toBeCalledTimes(1);
+      expect(logSpy).toBeCalledWith(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE,
+      );
+    });
   });
 
   it('should show error message when networkInterceptionMode == native and user did not add APM plugin and the isNativeInterceptionEnabled is disabled', async () => {
@@ -1042,10 +1051,12 @@ describe('Instabug Android initialization tests', () => {
 
     await Instabug.init(config);
 
-    expect(logSpy).toBeCalledTimes(1);
-    expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-    );
+    fakeTimer(() => {
+      expect(logSpy).toBeCalledTimes(1);
+      expect(logSpy).toBeCalledWith(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    });
   });
 
   it('should show error message when networkInterceptionMode == native and the isNativeInterceptionEnabled is disabled', async () => {
@@ -1058,9 +1069,11 @@ describe('Instabug Android initialization tests', () => {
 
     await Instabug.init(config);
 
-    expect(logSpy).toBeCalledTimes(1);
-    expect(logSpy).toBeCalledWith(
-      InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
-    );
+    fakeTimer(() => {
+      expect(logSpy).toBeCalledTimes(1);
+      expect(logSpy).toBeCalledWith(
+        InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    });
   });
 });

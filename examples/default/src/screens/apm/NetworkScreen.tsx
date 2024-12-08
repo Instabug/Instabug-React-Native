@@ -10,7 +10,6 @@ import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ListTile } from '../../components/ListTile';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
@@ -185,6 +184,11 @@ export const NetworkScreen: React.FC<
             />
 
             <CustomButton onPress={() => refetch()} title="Reload GraphQL" />
+            <CustomButton
+              onPress={() => navigation.navigate('HttpScreen')}
+              title="Go HTTP Screen"
+            />
+
             <View>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}
@@ -205,7 +209,6 @@ export const NetworkScreen: React.FC<
             ))}
           </HStack>
         </Section>
-        <ListTile title="HTTP Screen" onPress={() => navigation.navigate('HttpScreen')} />
       </Screen>
     </ScrollView>
   );
