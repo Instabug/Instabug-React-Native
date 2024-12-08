@@ -10,6 +10,7 @@ const mockNetworkLogger: NetworkLoggerNativeModule = {
   registerNetworkLogsListener: jest.fn(),
   updateNetworkLogSnapshot: jest.fn(),
   setNetworkLoggingRequestFilterPredicateIOS: jest.fn(),
+  resetNetworkLogsListener: jest.fn(),
 };
 
 export default mockNetworkLogger;

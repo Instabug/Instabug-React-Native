@@ -303,21 +303,6 @@ describe('NetworkLogger Module', () => {
     expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
     expect(NativeNetworkLogger.hasAPMNetworkPlugin).not.toHaveBeenCalled();
   });
-
-  it('Instabug.init should call NativeNetworkLogger.isNativeInterceptionEnabled and NativeNetworkLogger.hasAPMNetworkPlugin with Android', async () => {
-    Platform.OS = 'android';
-    const config = {
-      token: 'some-token',
-      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
-      debugLogsLevel: LogLevel.debug,
-      networkInterceptionMode: NetworkInterceptionMode.native,
-      codePushVersion: '1.1.0',
-    };
-    await Instabug.init(config);
-
-    expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
-    expect(NativeNetworkLogger.hasAPMNetworkPlugin).toHaveBeenCalled();
-  });
 });
 
 describe('_registerNetworkLogsListener', () => {

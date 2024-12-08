@@ -137,6 +137,16 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
     }
 
     @ReactMethod
+    public void resetNetworkLogsListener() {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                InternalAPM._registerNetworkLogSanitizer(null);
+            }
+        });
+    }
+
+    @ReactMethod
     protected void updateNetworkLogSnapshot(String jsonString) {
 
         JSONObject newJSONObject;

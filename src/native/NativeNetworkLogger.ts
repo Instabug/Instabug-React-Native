@@ -16,6 +16,8 @@ export interface NetworkLoggerNativeModule extends NativeModule {
 
   hasAPMNetworkPlugin(): Promise<boolean>; // Android only
 
+  resetNetworkLogsListener(): void; //Android only
+
   setNetworkLoggingRequestFilterPredicateIOS(id: string, value: boolean): void; // iOS only
 
   forceStartNetworkLoggingIOS(): void; // iOS only;
