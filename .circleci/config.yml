@@ -248,7 +248,6 @@ commands:
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
-              --base-path / \
               --log appium.log &
   setup_android_proxy:
     steps:
@@ -877,7 +876,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 5
 
       # Run tests
