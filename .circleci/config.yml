@@ -246,7 +246,7 @@ commands:
           command: |
             appium \
               --log-timestamp \
-              --config ~/project/examples/utils/appiumConfig/e2e-config.js \
+              --config ~/project/examples/utils/appiumConfig/e2e-config.ts \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
               --base-path / \
