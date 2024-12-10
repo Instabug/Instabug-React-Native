@@ -246,7 +246,6 @@ commands:
           command: |
             appium \
               --log-timestamp \
-              --config ~/project/examples/utils/appiumConfig/e2e-config.ts \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
               --base-path / \
@@ -825,7 +824,7 @@ jobs:
       - run:
           name: Start MITM Proxy with logging
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8084 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8084 &
             sleep 5
           background: true
 
