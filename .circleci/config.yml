@@ -250,6 +250,8 @@ commands:
               --base-path / \
               --log appium.log &
 
+            emulator -list-avds
+
             for i in $(seq 1 30); do
               if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
@@ -374,7 +376,7 @@ commands:
           command: |
             # Boot simulator 
             xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 13 Pro Max"
+            xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
 
@@ -401,7 +403,7 @@ commands:
             # Restart simulator to apply changes
             xcrun simctl shutdown all
             sleep 2
-            xcrun simctl boot "iPhone 13 Pro Max"
+            xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
 
       - run:
@@ -875,7 +877,7 @@ jobs:
                       -scheme HybridSampleApp \
                       -configuration Release \
                       -sdk iphonesimulator \
-                      -destination "platform=iOS Simulator,name=iPhone 13 Pro Max ,OS=15.5" \
+                      -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
                       build
       # Setup testing environment
       - setup_mitm_proxy

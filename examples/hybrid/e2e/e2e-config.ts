@@ -14,7 +14,7 @@ const android = {
 const ios = {
   'appium:platformName': 'iOS',
   'appium:automationName': 'XCUITest', // driver
-  'appium:deviceName': 'iPhone 13 Pro Max', // TODO: update your device name
+  'appium:deviceName': 'iPhone 11 Pro Max', // TODO: update your device name
   'appium:platformVersion': '15.5', // TODO: update platform version
   'appium:bundleId': 'com.instabug.HybridSampleApp', // TODO: update your app bundle id
 };
