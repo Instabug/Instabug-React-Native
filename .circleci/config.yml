@@ -250,8 +250,6 @@ commands:
               --base-path / \
               --log appium.log &
 
-            emulator -list-avds
-
             for i in $(seq 1 30); do
               if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
@@ -400,6 +398,13 @@ commands:
               HTTPSPort 8082 \
               HTTPSProxy localhost
 
+            networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8080
+            networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8080
+            echo 'export http_proxy="http://localhost:8080"' >> $BASH_ENV
+            echo 'export https_proxy="http://localhost:8080"' >> $BASH_ENV
+            echo 'export HTTP_PROXY="http://localhost:8080"' >> $BASH_ENV
+            echo 'export HTTPS_PROXY="http://localhost:8080"' >> $BASH_ENV
+            source $BASH_ENV
             # Restart simulator to apply changes
             xcrun simctl shutdown all
             sleep 2
@@ -891,6 +896,12 @@ jobs:
             sleep 5
 
       # Run tests
+      - run:
+          name: Run React Native iOS App
+          command: |
+            react-native run-ios --simulator="iPhone 11 Pro Max"
+            # Wait for app to fully launch
+            sleep 30
       - run:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
