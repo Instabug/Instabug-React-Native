@@ -247,7 +247,6 @@ commands:
             appium \
               --log-timestamp \
               --debug-log-spacing \
-              --allow-insecure chromedriver_autodownload \
               --base-path / \
               --log appium.log &
 
@@ -375,7 +374,7 @@ commands:
           command: |
             # Boot simulator 
             xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
+            xcrun simctl boot "iPhone 13"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
 
@@ -402,7 +401,7 @@ commands:
             # Restart simulator to apply changes
             xcrun simctl shutdown all
             sleep 2
-            xcrun simctl boot "iPhone 11 Pro Max"
+            xcrun simctl boot "iPhone 13"
             sleep 5
 
       - run:
@@ -876,7 +875,7 @@ jobs:
                       -scheme HybridSampleApp \
                       -configuration Release \
                       -sdk iphonesimulator \
-                      -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
+                      -destination "platform=iOS Simulator,name=iPhone 13 ,OS=17.5" \
                       build
       # Setup testing environment
       - setup_mitm_proxy
