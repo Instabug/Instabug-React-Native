@@ -12,7 +12,15 @@ export interface NetworkLoggerNativeModule extends NativeModule {
 
   registerNetworkLogsListener(type?: NetworkListenerType): void;
 
-  updateNetworkLogSnapshot(networkData: string): void;
+  updateNetworkLogSnapshot(
+    url: string,
+    callbackID: string,
+    requestBody: string | null,
+    responseBody: string | null,
+    responseCode: number,
+    requestHeaders: Record<string, string>,
+    responseHeaders: Record<string, string>,
+  ): void;
 
   hasAPMNetworkPlugin(): Promise<boolean>; // Android only
 

@@ -169,6 +169,7 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
 export const resetNetworkListener = () => {
   if (process.env.NODE_ENV === 'test') {
     _networkListener = null;
+    NativeNetworkLogger.resetNetworkLogsListener();
   } else {
     console.error(
       `${InstabugConstants.IBG_APM_TAG}: The \`resetNetworkListener()\` method is intended solely for testing purposes.`,
@@ -186,11 +187,7 @@ export const registerNetworkLogsListener = (
 ) => {
   if (Platform.OS === 'ios') {
     console.log('Andrew: registerNetworkLogsListener called');
-    // ignore repetitive calls
-    if (_networkListener === type || _networkListener === NetworkListenerType.both) {
-      console.log('Andrew: _registerNetworkLogsListener called on the same type');
-      return;
-    }
+
     // remove old listeners
     if (NetworkLoggerEmitter.listenerCount(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER) > 0) {
       console.log('Andrew: removeAllListeners called');
@@ -214,7 +211,6 @@ export const registerNetworkLogsListener = (
       const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
         networkSnapshot;
 
-      // console.log(`Andrew: new snapshot ${url}`);
       const networkSnapshotObj: NetworkData = {
         id: id,
         url: url,

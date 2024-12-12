@@ -206,10 +206,10 @@ public class RNInstabugNetworkLoggerModuleTest {
     }
 
 
-    @Test
-    public void testUpdateNetworkLogSnapshotInvalidJson() {
-        String invalidJsonString = "{\"id\":\"testId\"";
-
-        assertThrows(RuntimeException.class, () -> rnInstabugNetworkLoggerModule.updateNetworkLogSnapshot(invalidJsonString));
-    }
+//    @Test
+//    public void testUpdateNetworkLogSnapshotInvalidJson() {
+//        String invalidJsonString = "{\"id\":\"testId\"";
+//
+//        assertThrows(RuntimeException.class, () -> rnInstabugNetworkLoggerModule.updateNetworkLogSnapshot(invalidJsonString));
+//    }
 }

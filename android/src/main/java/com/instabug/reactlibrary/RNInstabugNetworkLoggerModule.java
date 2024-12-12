@@ -4,12 +4,16 @@ package com.instabug.reactlibrary;
 import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
 import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.instabug.apm.InternalAPM;
@@ -21,6 +25,7 @@ import com.instabug.reactlibrary.utils.MainThreadHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -55,14 +60,25 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
         return InternalAPM._isFeatureEnabledCP(key, "");
     }
 
-    private WritableMap convertFromMapToWriteableMap(Map map) {
+    private WritableMap convertFromMapToWritableMap(Map<String, Object> map) {
         WritableMap writableMap = new WritableNativeMap();
-        for (int i = 0; i < map.size(); i++) {
-            Object key = map.keySet().toArray()[i];
+        for (Object key : map.keySet().toArray()) {
             Object value = map.get(key);
             writableMap.putString((String) key, (String) value);
         }
         return writableMap;
+    }
+
+    private Map<String, Object> convertReadableMapToMap(ReadableMap readableMap) {
+        Map<String, Object> map = new HashMap<>();
+        if (readableMap != null) {
+            ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
+            while (iterator.hasNextKey()) {
+                String key = iterator.nextKey();
+                map.put(key, readableMap.getString(key));
+            }
+        }
+        return map;
     }
 
     /**
@@ -123,11 +139,11 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
                     networkSnapshotParams.putString("response", networkLogSnapshot.getResponse());
                     final Map<String, Object> requestHeaders = networkLogSnapshot.getRequestHeaders();
                     if (requestHeaders != null) {
-                        networkSnapshotParams.putMap("requestHeader", convertFromMapToWriteableMap(networkLogSnapshot.getRequestHeaders()));
+                        networkSnapshotParams.putMap("requestHeader", convertFromMapToWritableMap(requestHeaders));
                     }
                     final Map<String, Object> responseHeaders = networkLogSnapshot.getResponseHeaders();
                     if (responseHeaders != null) {
-                        networkSnapshotParams.putMap("responseHeader", convertFromMapToWriteableMap(networkLogSnapshot.getResponseHeaders()));
+                        networkSnapshotParams.putMap("responseHeader", convertFromMapToWritableMap(responseHeaders));
                     }
 
                     sendEvent(Constants.IBG_NETWORK_LOGGER_HANDLER, networkSnapshotParams);
@@ -147,27 +163,33 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
     }
 
     @ReactMethod
-    protected void updateNetworkLogSnapshot(String jsonString) {
-
-        JSONObject newJSONObject;
-        String url;
-        NetworkLogSnapshot modifiedSnapshot = null;
+    public void updateNetworkLogSnapshot(
+            String url,
+            String callbackID,
+            String requestBody,
+            String responseBody,
+            int responseCode,
+            ReadableMap requestHeaders,
+            ReadableMap responseHeaders
+    ) {
         try {
-            newJSONObject = new JSONObject(jsonString);
-            url = newJSONObject.optString("url");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        final String ID = newJSONObject.optString("id");
+            // Convert ReadableMap to a Java Map for easier handling
+            Map<String, Object> requestHeadersMap = convertReadableMapToMap(requestHeaders);
+            Map<String, Object> responseHeadersMap = convertReadableMapToMap(responseHeaders);
 
-        if (!url.isEmpty()) {
-            modifiedSnapshot = new NetworkLogSnapshot(url, null, null, null, null, newJSONObject.optInt("responseCode"));
-        }
+            NetworkLogSnapshot modifiedSnapshot = null;
+            if (!url.isEmpty()) {
+                modifiedSnapshot = new NetworkLogSnapshot(url, requestHeadersMap, requestBody, responseHeadersMap, responseBody, responseCode);
+            }
 
-        final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
-        if (callback != null) {
-            callback.onComplete(modifiedSnapshot);
-            callbackMap.remove(ID);
+            final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(callbackID);
+            if (callback != null) {
+                callback.onComplete(modifiedSnapshot);
+                callbackMap.remove(callbackID);
+            }
+        } catch (Exception e) {
+            // Reject the promise to indicate an error occurred
+            Log.e("IB-CP-Bridge", "InstabugNetworkLogger.updateNetworkLogSnapshot failed to parse the network snapshot object.");
         }
     }
 }

@@ -316,21 +316,6 @@ describe('_registerNetworkLogsListener', () => {
     NetworkLogger.resetNetworkListener(); // Clear only calls, keeping implementation intact
   });
 
-  it('should ignore repetitive calls with the same type', () => {
-    Platform.OS = 'ios';
-
-    // Simulate existing listener
-    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(1);
-    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
-
-    // Call again with the same type to ensure it does nothing
-    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
-
-    expect(NetworkLoggerEmitter.removeAllListeners).toHaveBeenCalledTimes(1);
-    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalledTimes(1);
-    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledTimes(1);
-  });
-
   it('should remove old listeners if they exist', () => {
     Platform.OS = 'ios';
 

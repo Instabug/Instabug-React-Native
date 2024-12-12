@@ -76,69 +76,68 @@ RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(
 RCT_EXPORT_METHOD(registerNetworkLogsListener: (NetworkListenerType) listenerType) {
     switch (listenerType) {
          case NetworkListenerTypeFiltering:
-             NSLog(@"Andrew: Network logs filtering enabled");
              [self setupRequestFilteringHandler];
              break;
 
          case NetworkListenerTypeObfuscation:
-             NSLog(@"Andrew: Network logs obfuscation enabled");
              [self setupRequestObfuscationHandler];
              break;
 
          case NetworkListenerTypeBoth:
-             NSLog(@"Andrew: Both filtering and obfuscation enabled");
-             [self setupRequestFilteringAndObfuscationHandler];
+            // The obfuscation handler sends additional data to the JavaScript side. If filtering is applied, the request will be ignored; otherwise, it will be obfuscated and saved in the database.
+            [self setupRequestObfuscationHandler];
              break;
 
          default:
-             NSLog(@"Andrew: Unknown NetworkListenerType");
+             NSLog(@"Unknown NetworkListenerType");
              break;
      }
 }
 
 
-RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)jsonString) {
-    // Properly initialize the NSMutableURLRequest
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-
-    // Convert jsonString to NSData
-    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-
-    // Parse the JSON into a dictionary
-    NSError *error = nil;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-
-    // Check for JSON parsing errors
-    if (error) {
-        NSLog(@"Failed to parse JSON: %@", error);
+RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)url
+                  callbackID:(NSString * _Nonnull)callbackID
+                  requestBody:(NSString * _Nullable)requestBody
+                  responseBody:(NSString * _Nullable)responseBody
+                  responseCode:(double)responseCode
+                  requestHeaders:(NSDictionary * _Nullable)requestHeaders
+                  responseHeaders:(NSDictionary * _Nullable)responseHeaders)
+{
+    // Validate and construct the URL
+    NSURL *requestURL = [NSURL URLWithString:url];
+    if (!requestURL) {
+        NSLog(@"Invalid URL: %@", url);
         return;
     }
 
-    // Set the URL, HTTP body, and headers
-    request.URL = [NSURL URLWithString:dict[@"url"]];
-    request.HTTPBody = [dict[@"requestBody"] dataUsingEncoding:NSUTF8StringEncoding];
-
-    // Ensure requestHeader is a dictionary
-    if ([dict[@"requestHeader"] isKindOfClass:[NSDictionary class]]) {
-        request.allHTTPHeaderFields = dict[@"requestHeader"];
-    } else {
-        NSLog(@"Invalid requestHeader format");
-//        return;
+    // Initialize the NSMutableURLRequest
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:requestURL];
+    
+    // Set the HTTP body if provided
+    if (requestBody && [requestBody isKindOfClass:[NSString class]]) {
+        request.HTTPBody = [requestBody dataUsingEncoding:NSUTF8StringEncoding];
     }
 
-    // Ensure self.completion is not nil before calling it
-    NSString *callbackID = dict[@"id"];
-    if ([callbackID isKindOfClass:[NSString class]] && self.requestObfuscationCompletionDictionary[callbackID] != nil) {
-        ((IBGURLRequestAsyncObfuscationCompletedHandler)self.requestObfuscationCompletionDictionary[callbackID])(request);
+    // Ensure requestHeaders is a valid dictionary before setting it
+    if (requestHeaders && [requestHeaders isKindOfClass:[NSDictionary class]]) {
+        request.allHTTPHeaderFields = requestHeaders;
     } else {
-        NSLog(@"Not Available Completion");
+        NSLog(@"Invalid requestHeaders format, expected NSDictionary.");
     }
 
+    // Ensure callbackID is valid and the completion handler exists
+    IBGURLRequestAsyncObfuscationCompletedHandler completionHandler = self.requestObfuscationCompletionDictionary[callbackID];
+    if (callbackID && [callbackID isKindOfClass:[NSString class]] && completionHandler) {
+        // Call the completion handler with the constructed request
+        completionHandler(request);
+    } else {
+        NSLog(@"CallbackID not found or completion handler is unavailable for CallbackID: %@", callbackID);
+    }
 }
 
 RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnull) callbackID : (BOOL)value ){
 
-    if ([callbackID isKindOfClass:[NSString class]] && self.requestFilteringCompletionDictionary[callbackID] != nil) {
+    if (self.requestFilteringCompletionDictionary[callbackID] != nil) {
         // ⬇️ YES == Request will be saved, NO == will be ignored
         ((IBGURLRequestResponseAsyncFilteringCompletedHandler)self.requestFilteringCompletionDictionary[callbackID])(value);
     } else {
@@ -178,28 +177,8 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
     }];
 }
 
-// Set up the obfuscation handler
-- (void)setupRequestFilteringAndObfuscationHandler {
-
-    NSString *callbackID = [[[NSUUID alloc] init] UUIDString];
-
-    [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
-        self.requestObfuscationCompletionDictionary[callbackID] = completion;
-    }];
-
-    [IBGNetworkLogger setCPRequestAsyncObfuscationHandler:^(NSURLRequest * _Nonnull request, void (^ _Nonnull completion)(NSURLRequest * _Nonnull)) {
-        self.requestObfuscationCompletionDictionary[callbackID] = completion;
-
-        NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        if(hasListeners){
-            [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
-        }
-
-    }];
-}
-
 // Helper to create a dictionary from the request and callbackID
-- (NSDictionary *)createNetworkRequestDictForRequest:(NSURLRequest *)request callbackID:(NSString *)callbackID {
+- (NSDictionary *)createNetworkRequestDictForRequest:(NSURLRequest *)request callbackID:(NSString *)callbackID  {
     NSString *urlString = request.URL.absoluteString ?: @"";
     NSString *bodyString = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding] ?: @"";
     NSDictionary *headerDict = request.allHTTPHeaderFields ?: @{};

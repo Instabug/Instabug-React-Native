@@ -253,7 +253,7 @@ export function registerObfuscationListener() {
       if (_networkDataObfuscationHandler) {
         networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
       }
-      NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+      updateNetworkLogSnapshot(networkSnapshot);
     },
   );
 }
@@ -272,7 +272,7 @@ export function registerFilteringListener(filterExpression: string) {
         // For Android Setting the [url] to an empty string will ignore the request;
         if (value) {
           networkSnapshot.url = '';
-          NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+          updateNetworkLogSnapshot(networkSnapshot);
         }
       }
     },
@@ -291,7 +291,7 @@ export function registerFilteringAndObfuscationListener(filterExpression: string
       // For Android Setting the [url] to an empty string will ignore the request;
       if (value) {
         networkSnapshot.url = '';
-        NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+        updateNetworkLogSnapshot(networkSnapshot);
       }
     }
     if (!value) {
@@ -299,7 +299,7 @@ export function registerFilteringAndObfuscationListener(filterExpression: string
       if (_networkDataObfuscationHandler) {
         networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
       }
-      NativeNetworkLogger.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
+      updateNetworkLogSnapshot(networkSnapshot);
     }
   });
 }
@@ -330,11 +330,22 @@ export function checkNetworkRequestHandlers() {
   }
 }
 export function resetNativeObfuscationListener() {
-  console.log('Andrew: refreshAPMNetworkConfigs -> Remove all (NETWORK_LOGGER_HANDLER) listeners');
   if (Platform.OS === 'android') {
     NativeNetworkLogger.resetNetworkLogsListener();
   }
   NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+}
+
+function updateNetworkLogSnapshot(networkSnapshot: NetworkData) {
+  NativeNetworkLogger.updateNetworkLogSnapshot(
+    networkSnapshot.url,
+    networkSnapshot.id,
+    networkSnapshot.requestBody,
+    networkSnapshot.responseBody,
+    networkSnapshot.responseCode ?? 200,
+    networkSnapshot.requestHeaders,
+    networkSnapshot.responseHeaders,
+  );
 }
 
 export default {
