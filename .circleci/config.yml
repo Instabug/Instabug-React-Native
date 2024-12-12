@@ -170,6 +170,7 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
+
   setup_mitm_proxy:
     description: Install and configure MITM proxy
     steps:
@@ -186,23 +187,15 @@ commands:
               sudo apt-get install -y python3 python3-pip openssl
             fi
 
-            # Verify installations
             python3 --version
             pip3 --version
 
-            # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
-
-            # Start mitmdump
             mitmdump --set block_global=false &
             sleep 10
-
-            # Create mitmproxy directory
             mkdir -p ~/.mitmproxy
-
-            # Wait for certificate generation
-            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
+            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.cer ]; do
               sleep 2
             done
 
@@ -288,7 +281,7 @@ commands:
       - run:
           name: Wait for Emulator and Setup Certificates
           command: |
-            # Wait for emulator to be ready
+            # Wait for device to be ready
             for i in $(seq 1 30); do
               if adb devices | grep -q "emulator"; then
                 break
@@ -297,7 +290,7 @@ commands:
               sleep 10
             done
 
-            # Wait for emulator boot completion
+            # Wait for boot complete
             adb wait-for-device
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -307,7 +300,7 @@ commands:
               sleep 10
             done
 
-            # Remount system partition and prepare for certificate installation
+            # Prepare system for certificate installation
             adb root
             sleep 5
             adb shell avbctl disable-verification
@@ -315,11 +308,10 @@ commands:
             adb reboot
 
             # Wait for reboot
-            echo "Waiting for device to reboot..."
             sleep 30
             adb wait-for-device
 
-            # Remount system partition as writable
+            # Remount with proper steps
             adb root
             sleep 5
             adb shell setenforce 0
@@ -327,7 +319,6 @@ commands:
             adb reboot
 
             # Wait for second reboot
-            echo "Waiting for device to reboot again..."
             sleep 30
             adb wait-for-device
 

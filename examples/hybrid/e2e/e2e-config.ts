@@ -1,9 +1,11 @@
+require('dotenv').config();
+
 export let capabilities: any;
 
 const android = {
   platformName: 'Android',
   'appium:platformVersion': '14', //Update Your Platform Version
-  'appium:deviceName': 'Pixel_8',
+  'appium:deviceName': 'pixel_3a',
   'appium:avd': 'Pixel_8',
   'appium:app': process.env.APK_PATH || './android/app/build/outputs/apk/release/app-release.apk', //apk path
   'appium:appPackage': 'com.instabug.hybridsampleapp',
