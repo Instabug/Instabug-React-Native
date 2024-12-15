@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)forceStartNetworkLogging;
 + (void)forceStopNetworkLogging;
 
++ (void)setCPRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
++ (void)setCPRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
++ (void)setCPResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

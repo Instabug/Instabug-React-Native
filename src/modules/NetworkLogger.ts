@@ -2,13 +2,29 @@ import type { RequestHandler } from '@apollo/client';
 
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
-import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
+import {
+  isContentTypeNotAllowed,
+  registerFilteringAndObfuscationListener,
+  registerFilteringListener,
+  registerObfuscationListener,
+  reportNetworkLog,
+} from '../utils/InstabugUtils';
+import {
+  NativeNetworkLogger,
+  NativeNetworkLoggerEvent,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../native/NativeNetworkLogger';
+import { Platform } from 'react-native';
 
 export type { NetworkData };
 
 export type NetworkDataObfuscationHandler = (data: NetworkData) => Promise<NetworkData>;
 let _networkDataObfuscationHandler: NetworkDataObfuscationHandler | null | undefined;
 let _requestFilterExpression = 'false';
+let _isNativeInterceptionEnabled = false;
+let _networkListener: NetworkListenerType | null = null;
+let hasFilterExpression = false;
 
 /**
  * Sets whether network logs should be sent with bug reports.
@@ -25,6 +41,9 @@ export const setEnabled = (isEnabled: boolean) => {
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
+            console.log(
+              `Andrew: xhr.setOnDoneCallback -> _networkDataObfuscationHandler ${network.url}`,
+            );
           }
 
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
@@ -63,6 +82,23 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
+ * @internal
+ * Sets whether enabling or disabling native network interception.
+ * It is disabled by default.
+ * @param isEnabled
+ */
+export const setNativeInterceptionEnabled = (isEnabled: boolean) => {
+  console.log(`Andrew: NetworkLogger -> setNativeInterceptionEnabled ${isEnabled}`);
+  _isNativeInterceptionEnabled = isEnabled;
+};
+
+export const getNetworkDataObfuscationHandler = () => _networkDataObfuscationHandler;
+
+export const getRequestFilterExpression = () => _requestFilterExpression;
+
+export const hasRequestFilterExpression = () => hasFilterExpression;
+
+/**
  * Obfuscates any response data.
  * @param handler
  */
@@ -70,19 +106,17 @@ export const setNetworkDataObfuscationHandler = (
   handler?: NetworkDataObfuscationHandler | null | undefined,
 ) => {
   _networkDataObfuscationHandler = handler;
-
-  // if (isNativeInterceptionEnabled) {
-  //   registerNetworkLogsListener(async (networkSnapshot) => {
-  //     console.log(
-  //       `Andrew: new snapshot from setNetworkDataObfuscationHandler: ${networkSnapshot.url}`,
-  //     );
-  //
-  //     if (_networkDataObfuscationHandler) {
-  //       networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
-  //     }
-  //     NativeInstabug.updateNetworkLogSnapshot(JSON.stringify(networkSnapshot));
-  //   });
-  // }
+  if (_isNativeInterceptionEnabled && Platform.OS === 'ios') {
+    if (hasFilterExpression) {
+      console.log(
+        'Andrew: setNetworkDataObfuscationHandler -> registerFilteringAndObfuscationListenerV2',
+      );
+      registerFilteringAndObfuscationListener(_requestFilterExpression);
+    } else {
+      console.log('Andrew: setNetworkDataObfuscationHandler -> registerObfuscationListener');
+      registerObfuscationListener();
+    }
+  }
 };
 
 /**
@@ -91,23 +125,19 @@ export const setNetworkDataObfuscationHandler = (
  */
 export const setRequestFilterExpression = (expression: string) => {
   _requestFilterExpression = expression;
+  hasFilterExpression = true;
 
-  // if (isNativeInterceptionEnabled) {
-  //   registerNetworkLogsListener(async (networkSnapshot) => {
-  //     console.log(`Andrew: new snapshot from setRequestFilterExpression: ${networkSnapshot.url}`);
-  //     // eslint-disable-next-line no-new-func
-  //     const predicate = Function('network', 'return ' + _requestFilterExpression);
-  //     const value = predicate(networkSnapshot);
-  //     if (Platform.OS === 'ios') {
-  //       NativeInstabug.setNetworkLoggingRequestFilterPredicateIOS(value);
-  //     } else {
-  //       // set android request url to null ;
-  //       if (value) {
-  //         NativeInstabug.updateNetworkLogSnapshot('');
-  //       }
-  //     }
-  //   });
-  // }
+  if (_isNativeInterceptionEnabled && Platform.OS === 'ios') {
+    if (_networkDataObfuscationHandler) {
+      console.log(
+        'Andrew: setRequestFilterExpression -> registerFilteringAndObfuscationListenerV2',
+      );
+      registerFilteringAndObfuscationListener(_requestFilterExpression);
+    } else {
+      console.log('Andrew: setRequestFilterExpression -> registerFilteringListener');
+      registerFilteringListener(_requestFilterExpression);
+    }
+  }
 };
 
 /**
@@ -130,4 +160,84 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
   }
 
   return forward(operation);
+};
+
+/**
+ * @internal
+ * Exported for internal/testing purposes only.
+ */
+export const resetNetworkListener = () => {
+  if (process.env.NODE_ENV === 'test') {
+    _networkListener = null;
+    NativeNetworkLogger.resetNetworkLogsListener();
+  } else {
+    console.error(
+      `${InstabugConstants.IBG_APM_TAG}: The \`resetNetworkListener()\` method is intended solely for testing purposes.`,
+    );
+  }
+};
+
+/**
+ * @internal
+ * Exported for internal/testing purposes only.
+ */
+export const registerNetworkLogsListener = (
+  type: NetworkListenerType,
+  handler?: (networkSnapshot: NetworkData) => void,
+) => {
+  if (Platform.OS === 'ios') {
+    console.log('Andrew: registerNetworkLogsListener called');
+
+    // remove old listeners
+    if (NetworkLoggerEmitter.listenerCount(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER) > 0) {
+      console.log('Andrew: removeAllListeners called');
+      NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+    }
+
+    if (_networkListener == null) {
+      // set new listener.
+      _networkListener = type;
+    } else {
+      // attach a new listener to the existing one.
+      _networkListener = NetworkListenerType.both;
+    }
+    console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
+  }
+
+  NetworkLoggerEmitter.addListener(
+    NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
+    (networkSnapshot) => {
+      // Mapping the data [Native -> React-Native].
+      const { id, url, requestHeader, requestBody, responseHeader, response, responseCode } =
+        networkSnapshot;
+
+      const networkSnapshotObj: NetworkData = {
+        id: id,
+        url: url,
+        requestBody: requestBody,
+        requestHeaders: requestHeader,
+        method: '',
+        responseBody: response,
+        responseCode: responseCode,
+        responseHeaders: responseHeader,
+        contentType: '',
+        duration: 0,
+        requestBodySize: 0,
+        responseBodySize: 0,
+        errorDomain: '',
+        errorCode: 0,
+        startTime: 0,
+        serverErrorMessage: '',
+        requestContentType: '',
+      };
+      if (handler) {
+        handler(networkSnapshotObj);
+      }
+    },
+  );
+  if (Platform.OS === 'ios') {
+    NativeNetworkLogger.registerNetworkLogsListener(_networkListener ?? NetworkListenerType.both);
+  } else {
+    NativeNetworkLogger.registerNetworkLogsListener();
+  }
 };

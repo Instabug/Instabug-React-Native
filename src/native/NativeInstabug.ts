@@ -140,12 +140,15 @@ export interface InstabugNativeModule extends NativeModule {
   addFileAttachmentWithURLToReport(url: string, filename?: string): void;
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
   willRedirectToStore(): void;
+
+  setOnFeaturesUpdatedListener(handler?: (params: any) => void): void; // android only
 }
 
 export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  IBG_ON_FEATURES_UPDATED_CALLBACK = 'IBGOnFeatureUpdatedCallback',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

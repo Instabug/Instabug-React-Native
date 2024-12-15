@@ -123,12 +123,6 @@
          gqlQueryName:(NSString * _Nullable)gqlQueryName
    serverErrorMessage:(NSString * _Nullable)serverErrorMessage;
 
-// - (void) registerNetworkLogsListener;
-//
-// - (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
-//
-// - (void) setNetworkLoggingRequestFilterPredicateIOS:(BOOL)value;
-
 /*
  +------------------------------------------------------------------------+
  |                              Experiments                               |
