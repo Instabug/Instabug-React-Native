@@ -62,9 +62,9 @@ public class RNInstabugNetworkLoggerModule extends EventEmitterModule {
 
     private WritableMap convertFromMapToWritableMap(Map<String, Object> map) {
         WritableMap writableMap = new WritableNativeMap();
-        for (Object key : map.keySet().toArray()) {
+        for (String key : map.keySet()) {
             Object value = map.get(key);
-            writableMap.putString((String) key, (String) value);
+            writableMap.putString(key, (String) value);
         }
         return writableMap;
     }
