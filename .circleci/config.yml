@@ -246,7 +246,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -302,10 +302,11 @@ commands:
               sleep 10
             done
 
-            # Prepare system for certificate installation
-            adb root
-            sleep 5
-            adb shell avbctl disable-verification
+            # Configure WiFi Proxy Settings
+            echo "Configuring WiFi proxy settings..."
+
+            # Enable WiFi
+            adb shell svc wifi enable
             sleep 2
             adb reboot
 
@@ -370,18 +371,6 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-
-            # Test proxy connection with verbose output
-            echo "Testing proxy connection..."
-            curl -v --proxy localhost:8082 'http://mitm.it' || {
-              echo "Proxy test failed"
-              # Print proxy processes for debugging
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-              # Print proxy logs if available
-              echo "Proxy logs:"
-              cat appium.log || true
-            }
 
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
