@@ -66,7 +66,7 @@ const elements = {
 describe('Instabug Configuration Validation', () => {
   let configData: any;
   it('test', async () => {
-    if (Platform.OS === 'android') {
+    if (process.env.E2E_DEVICE === 'android') {
       client
         .$(
           '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/button_react_native"]',

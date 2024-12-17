@@ -883,13 +883,6 @@ jobs:
             mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 &
             sleep 5
 
-      # Run tests
-      - run:
-          name: Run React Native iOS App
-          command: |
-            react-native run-ios --simulator="iPhone 11 Pro Max"
-            # Wait for app to fully launch
-            sleep 30
       - run:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
