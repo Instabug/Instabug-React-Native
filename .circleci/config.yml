@@ -240,11 +240,13 @@ commands:
             appium \
               --log-timestamp \
               --debug-log-spacing \
+              --allow-insecure chromedriver_autodownload \
               --base-path / \
               --log appium.log &
 
+            # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
