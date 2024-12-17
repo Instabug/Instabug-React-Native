@@ -370,7 +370,7 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
-            sleep 5  # Wait for simulator to boot
+            sleep 5
 
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
