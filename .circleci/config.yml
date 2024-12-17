@@ -170,7 +170,6 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
-
   setup_mitm_proxy:
     description: Install and configure MITM proxy
     steps:
@@ -187,15 +186,23 @@ commands:
               sudo apt-get install -y python3 python3-pip openssl
             fi
 
+            # Verify installations
             python3 --version
             pip3 --version
 
+            # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
+
+            # Start mitmdump
             mitmdump --set block_global=false &
             sleep 10
+
+            # Create mitmproxy directory
             mkdir -p ~/.mitmproxy
-            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.cer ]; do
+
+            # Wait for certificate generation
+            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
               sleep 2
             done
 
@@ -283,7 +290,7 @@ commands:
       - run:
           name: Wait for Emulator and Setup Certificates
           command: |
-            # Wait for device to be ready
+            # Wait for emulator to be ready
             for i in $(seq 1 30); do
               if adb devices | grep -q "emulator"; then
                 break
@@ -292,7 +299,7 @@ commands:
               sleep 10
             done
 
-            # Wait for boot complete
+            # Wait for emulator boot completion
             adb wait-for-device
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -302,7 +309,7 @@ commands:
               sleep 10
             done
 
-            # Prepare system for certificate installation
+            # Remount system partition and prepare for certificate installation
             adb root
             sleep 5
             adb shell avbctl disable-verification
@@ -310,10 +317,11 @@ commands:
             adb reboot
 
             # Wait for reboot
+            echo "Waiting for device to reboot..."
             sleep 30
             adb wait-for-device
 
-            # Remount with proper steps
+            # Remount system partition as writable
             adb root
             sleep 5
             adb shell setenforce 0
@@ -321,6 +329,7 @@ commands:
             adb reboot
 
             # Wait for second reboot
+            echo "Waiting for device to reboot again..."
             sleep 30
             adb wait-for-device
 
@@ -369,7 +378,7 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
-            sleep 5
+            sleep 5  # Wait for simulator to boot
 
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
@@ -380,6 +389,7 @@ commands:
               ps aux | grep mitm
               # Print proxy logs if available
               echo "Proxy logs:"
+              cat appium.log || true
             }
 
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
@@ -390,13 +400,6 @@ commands:
               HTTPSPort 8082 \
               HTTPSProxy localhost
 
-            networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8080
-            networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8080
-            echo 'export http_proxy="http://localhost:8080"' >> $BASH_ENV
-            echo 'export https_proxy="http://localhost:8080"' >> $BASH_ENV
-            echo 'export HTTP_PROXY="http://localhost:8080"' >> $BASH_ENV
-            echo 'export HTTPS_PROXY="http://localhost:8080"' >> $BASH_ENV
-            source $BASH_ENV
             # Restart simulator to apply changes
             xcrun simctl shutdown all
             sleep 2
@@ -447,16 +450,9 @@ commands:
 
             xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
 
-            defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
-            HTTPEnable 1 \
-            HTTPPort 8082 \
-            HTTPProxy localhost \
-            HTTPSEnable 1 \
-            HTTPSPort 8082 \
-            HTTPSProxy localhost
-
-            echo "Setup complete! Please check the simulator to approve the certificate installation."
-            echo "Simulator ID: $DEVICE_ID"
+            xcrun simctl shutdown all
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
 
 jobs:
   danger:
@@ -884,7 +880,7 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
+            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 &
             sleep 5
 
       # Run tests
