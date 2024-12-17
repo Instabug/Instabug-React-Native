@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+import { Platform } from 'react-native';
 import { client } from './setup';
 jest.setTimeout(300000);
 export function getElement(name: keyof typeof elements) {
@@ -65,8 +66,16 @@ const elements = {
 describe('Instabug Configuration Validation', () => {
   let configData: any;
   it('test', async () => {
-    await getElement('floatingButton').click();
-    await getElement('reportBugMenuItem').isDisplayed();
+    if (Platform.OS === 'android') {
+      client
+        .$(
+          '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/button_react_native"]',
+        )
+        .isDisplayed();
+    } else {
+      await getElement('floatingButton').click();
+      await getElement('reportBugMenuItem').isDisplayed();
+    }
   });
   test('should contain correct session replay URL in configuration', async () => {
     const jsonData = await fs.readFile('./captured_response.json');
