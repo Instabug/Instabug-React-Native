@@ -1,6 +1,6 @@
 # Changelog
 
-## [14.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...14.0.1) (December 18, 2024)
+## [14.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...14.0.2) (December 18, 2024)
 
 ### Changed
 
