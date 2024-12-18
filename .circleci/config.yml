@@ -253,7 +253,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -286,17 +286,7 @@ commands:
               -selinux permissive \
               -feature -Wifi \
               -qemu -enable-kvm
-      - run:
-          name: Wait for Emulator
-          command: |
-            # Wait for emulator to start
-            circle-android wait-for-boot
-            # Verify device is connected
-            adb devices
-            # Disable animations
-            adb shell settings put global window_animation_scale 0
-            adb shell settings put global transition_animation_scale 0
-            adb shell settings put global animator_duration_scale 0
+
       - run:
           name: Wait for Emulator and Setup Certificates
           command: |
@@ -796,111 +786,118 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
-  appium_e2e_android:
-    parameters:
-      working_directory:
-        type: string
-      DOMAIN:
-        type: string
-      TOKEN:
-        type: string
-    executor:
-      name: android/android-machine
-      tag: '2024.01.1'
-      resource-class: large
-    environment:
-      DOMAIN: << parameters.DOMAIN >>
-      TOKEN: << parameters.TOKEN >>
-    steps:
-      - advanced-checkout/shallow-checkout
-      - install_node_modules:
-          app-dir: << parameters.working_directory >>
-      - build_and_pack_sdk:
-          working_directory: << parameters.working_directory >>
-      # Build Android app
-      - run:
-          name: Build Android
-          working_directory: <<parameters.working_directory>>/android
-          command: ./gradlew assembleDebug adb install -r app/build/outputs/apk/debug/app-debug.apk
-      - store_artifacts:
-          path: <<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk
-          destination: app-debug.apk
-      - run:
-          name: Export APK Path
-          command: |
-            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk" >> $BASH_ENV
-            source $BASH_ENV
-      # Setup testing environment
-      - setup_mitm_proxy
-      - setup_android_proxy
-      - setup_appium
-      - run:
-          name: Start MITM Proxy with logging
-          command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8084 &
-            sleep 5
-          background: true
-
-      # Run tests
-      - run:
-          name: Run E2E Tests
-          working_directory: << parameters.working_directory >>
-          command: |
-            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
-          environment:
-            E2E_DEVICE: 'android'
   appium_e2e_ios:
-    parameters:
-      working_directory:
-        type: string
-      DOMAIN:
-        type: string
-      TOKEN:
-        type: string
-    macos:
-      xcode: 13.4.1
-    environment:
-      DOMAIN: << parameters.DOMAIN >>
-      TOKEN: << parameters.TOKEN >>
-    steps:
-      - advanced-checkout/shallow-checkout
-      - install_node_modules:
-          app-dir: << parameters.working_directory >>
-      - build_and_pack_sdk:
-          working_directory: << parameters.working_directory >>
-      - run:
-          name: Install CocoaPods
-          working_directory: <<parameters.working_directory>>/ios
-          command: pod install
-      - run:
-          name: Build iOS App
-          working_directory: <<parameters.working_directory>>/ios
-          command: |
-            yarn start --max-workers=1 &
-            xcodebuild -allowProvisioningUpdates \
-                      -workspace HybridSampleApp.xcworkspace \
-                      -scheme HybridSampleApp \
-                      -configuration Debug \
-                      -sdk iphonesimulator \
-                      -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
-                      build test
-      # Setup testing environment
-      - setup_mitm_proxy
-      - setup_ios_proxy
-      - setup_appium
-      - run:
-          name: Start MITM Proxy
-          background: true
-          command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
-            sleep 5
-      - run:
-          name: Run E2E Tests
-          working_directory: << parameters.working_directory >>
-          command: |
-            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
-          environment:
-            E2E_DEVICE: 'ios'
+      parameters:
+        working_directory:
+          type: string
+        DOMAIN:
+          type: string
+        TOKEN:
+          type: string
+      macos:
+        xcode: 13.4.1
+      environment:
+        DOMAIN: << parameters.DOMAIN >>
+        TOKEN: << parameters.TOKEN >>
+      steps:
+        - advanced-checkout/shallow-checkout
+        - install_node_modules:
+            app-dir: << parameters.working_directory >>
+        - build_and_pack_sdk:
+            working_directory: << parameters.working_directory >>
+        - run:
+            name: Install CocoaPods
+            working_directory: <<parameters.working_directory>>/ios
+            command: pod install
+        - run:
+            name: Build iOS App
+            working_directory: <<parameters.working_directory>>/ios
+            command: |
+              xcodebuild -allowProvisioningUpdates \
+                        -workspace HybridSampleApp.xcworkspace \
+                        -scheme HybridSampleApp \
+                        -configuration Debug \
+                        -sdk iphonesimulator \
+                        -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
+                        -derivedDataPath ./build \
+                        build
+        # Setup testing environment
+        - setup_mitm_proxy
+        - setup_ios_proxy
+        - setup_appium
+        - run:
+            name: Start MITM Proxy
+            background: true
+            command: |
+              mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
+              sleep 5
+        - run:
+            name: Run E2E Tests
+            working_directory: << parameters.working_directory >>
+            command: |
+              export APP_PATH=<<parameters.working_directory>>/ios/build/Build/Products/Debug-iphonesimulator/HybridSampleApp.app
+              node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
+            environment:
+              E2E_DEVICE: 'ios'
+  
+  appium_e2e_android:
+      parameters:
+        working_directory:
+          type: string
+        DOMAIN:
+          type: string
+        TOKEN:
+          type: string
+      executor:
+        name: android/android-machine
+        tag: '2024.01.1'
+        resource-class: large
+      environment:
+        DOMAIN: << parameters.DOMAIN >>
+        TOKEN: << parameters.TOKEN >>
+      steps:
+        - advanced-checkout/shallow-checkout
+        - install_node_modules:
+            app-dir: << parameters.working_directory >>
+        - build_and_pack_sdk:
+            working_directory: << parameters.working_directory >>
+        # Build Android app
+        - run:
+            name: Build Android
+            working_directory: <<parameters.working_directory>>/android
+            command: ./gradlew assembleDebug
+        - run:
+            name: Export APK Path
+            command: |
+              echo "export APP_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk" >> $BASH_ENV
+              source $BASH_ENV
+        # Setup testing environment
+        - setup_mitm_proxy
+        - setup_android_proxy
+        - setup_appium
+        - run:
+            name: Start MITM Proxy with logging
+            command: |
+              mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8084 &
+              sleep 10 # Increased sleep time to ensure proxy is ready
+            background: true
+        - run:
+            name: Wait for Emulator
+            command: |
+              # Additional wait for emulator readiness
+              adb wait-for-device
+              until adb shell getprop sys.boot_completed 2>&1 | grep -m 1 "1"; do
+                sleep 2
+              done
+              sleep 30 # Additional buffer time for services to start
+        # Run tests
+        - run:
+            name: Run E2E Tests
+            working_directory: << parameters.working_directory >>
+            command: |
+              node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js --verbose
+            environment:
+              E2E_DEVICE: 'android'
 workflows:
   publish:
     jobs:
