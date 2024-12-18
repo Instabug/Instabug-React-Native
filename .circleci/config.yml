@@ -268,7 +268,7 @@ commands:
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd -n Pixel_8 \
               -k "system-images;android-34;google_apis;x86_64" \
-              -d "pixel_3a" \
+              -d "pixel_6a" \
               --force
 
       - run:
