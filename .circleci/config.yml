@@ -869,10 +869,10 @@ jobs:
             xcodebuild -allowProvisioningUpdates \
                       -workspace HybridSampleApp.xcworkspace \
                       -scheme HybridSampleApp \
-                      -configuration Release \
+                      -configuration Debug \
                       -sdk iphonesimulator \
                       -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
-                      test
+                      build
       # Setup testing environment
       - setup_mitm_proxy
       - setup_ios_proxy
