@@ -866,12 +866,13 @@ jobs:
           name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
           command: |
-            xcodebuild -workspace HybridSampleApp.xcworkspace \
+            xcodebuild -allowProvisioningUpdates \
+                      -workspace HybridSampleApp.xcworkspace \
                       -scheme HybridSampleApp \
-                      -configuration Release \
+                      -configuration Debug \
                       -sdk iphonesimulator \
                       -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
-                      build
+                      test
       # Setup testing environment
       - setup_mitm_proxy
       - setup_ios_proxy
@@ -880,9 +881,8 @@ jobs:
           name: Start MITM Proxy
           background: true
           command: |
-            mitmdump -s ~/project/examples/utils/proxy-server.py -p 8082 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 5
-
       - run:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
