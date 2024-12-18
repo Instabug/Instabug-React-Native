@@ -819,17 +819,9 @@ jobs:
           working_directory: << parameters.working_directory >>
       # Build Android app
       - run:
-          name: Build and Install App
-          command: |
-            # Check if device is ready
-            adb devices
-            # Build and install
-            cd android && ./gradlew assembleDebug
-            adb install -r app/build/outputs/apk/debug/app-debug.apk
-      - run:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
-          command: ./gradlew assembleDebug installDebug
+          command: ./gradlew assembleDebug adb install -r app/build/outputs/apk/debug/app-debug.apk
       - store_artifacts:
           path: <<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk
           destination: app-debug.apk
