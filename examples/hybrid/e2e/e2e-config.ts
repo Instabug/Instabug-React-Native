@@ -5,6 +5,7 @@ export let capabilities: any;
 const android = {
   platformName: 'Android',
   'appium:platformVersion': '14', //Update Your Platform Version
+  port: 4723,
   'appium:deviceName': 'pixel_6a',
   'appium:avd': 'Pixel_8',
   'appium:app': process.env.APK_PATH || './android/app/build/outputs/apk/release/app-release.apk', //apk path
@@ -15,6 +16,7 @@ const android = {
 
 const ios = {
   'appium:platformName': 'iOS',
+  port: 4724,
   'appium:automationName': 'XCUITest', // driver
   'appium:deviceName': 'iPhone 11 Pro Max', // TODO: update your device name
   'appium:platformVersion': '15.5', // TODO: update platform version
