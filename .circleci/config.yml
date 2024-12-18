@@ -286,7 +286,17 @@ commands:
               -selinux permissive \
               -feature -Wifi \
               -qemu -enable-kvm
-
+      - run:
+          name: Wait for Emulator
+          command: |
+            # Wait for emulator to start
+            circle-android wait-for-boot
+            # Verify device is connected
+            adb devices
+            # Disable animations
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
       - run:
           name: Wait for Emulator and Setup Certificates
           command: |
@@ -809,16 +819,24 @@ jobs:
           working_directory: << parameters.working_directory >>
       # Build Android app
       - run:
+          name: Build and Install App
+          command: |
+            # Check if device is ready
+            adb devices
+            # Build and install
+            cd android && ./gradlew assembleDebug
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+      - run:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
           command: ./gradlew assembleDebug installDebug
       - store_artifacts:
-          path: <<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk
-          destination: app-release.apk
+          path: <<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk
+          destination: app-debug.apk
       - run:
           name: Export APK Path
           command: |
-            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk" >> $BASH_ENV
+            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk" >> $BASH_ENV
             source $BASH_ENV
       # Setup testing environment
       - setup_mitm_proxy
