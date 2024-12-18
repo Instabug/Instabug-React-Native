@@ -253,7 +253,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/wd/hub/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -811,7 +811,7 @@ jobs:
       - run:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
-          command: ./gradlew assembleRelease
+          command: ./gradlew assembleDebug installDebug
       - store_artifacts:
           path: <<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk
           destination: app-release.apk
@@ -866,13 +866,14 @@ jobs:
           name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
           command: |
+            yarn start --max-workers=1 &
             xcodebuild -allowProvisioningUpdates \
                       -workspace HybridSampleApp.xcworkspace \
                       -scheme HybridSampleApp \
                       -configuration Debug \
                       -sdk iphonesimulator \
                       -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
-                      build
+                      build test
       # Setup testing environment
       - setup_mitm_proxy
       - setup_ios_proxy
