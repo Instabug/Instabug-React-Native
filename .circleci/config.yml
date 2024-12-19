@@ -275,7 +275,7 @@ commands:
           name: Start Emulator with System Writable
           background: true
           command: |
-            emulator -avd Pixel_8 \
+              export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
               -no-snapshot \
               -no-boot-anim \
               -no-window \
@@ -286,10 +286,6 @@ commands:
               -selinux permissive \
               -feature -Wifi \
               -qemu -enable-kvm
-      - run:
-          name: Starting emulator in background
-          command: export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 -skin 1080x1920 -memory 1024 -engine qemu2 -netfast -no-audio -no-snapshot -accel on
-          background: true
       - run: |
           adb wait-for-device
           adb devices
@@ -297,10 +293,6 @@ commands:
       - run: |
           rm -rf node_modules
           npm cache clean --force
-          rm -rf package-lock.json
-      - run: npm install --save-dev
-      - run: npm audit fix --force
-      - run: npm install --save-dev chai
       - run:
           name: Starting metro in background
           command: npm start --reset-cache &> metro-android.log
