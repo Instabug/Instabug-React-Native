@@ -253,7 +253,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4723/status | grep -q "ready"; then
+              if curl -s http://localhost:4724/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -268,7 +268,7 @@ commands:
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd -n Pixel_8 \
               -k "system-images;android-34;google_apis;x86_64" \
-              -d "pixel_6a" \
+              -d "pixel_3a" \
               --force
 
       - run:
@@ -392,6 +392,7 @@ commands:
               cat appium.log || true
             }
 
+            # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
@@ -836,6 +837,7 @@ jobs:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
           command: |
+            adb shell am instrument -w -e debug false io.appium.espressoserver.test/androidx.test.runner.AndroidJUnitRunner \
             node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
           environment:
             E2E_DEVICE: 'android'
@@ -866,8 +868,7 @@ jobs:
           name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
           command: |
-            xcodebuild -allowProvisioningUpdates \
-                      -workspace HybridSampleApp.xcworkspace \
+            xcodebuild -workspace HybridSampleApp.xcworkspace \
                       -scheme HybridSampleApp \
                       -configuration Release \
                       -sdk iphonesimulator \
@@ -883,6 +884,8 @@ jobs:
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 5
+
+      # Run tests
       - run:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>

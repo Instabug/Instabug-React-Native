@@ -1,5 +1,4 @@
 const fs = require('fs').promises;
-import { Platform } from 'react-native';
 import { client } from './setup';
 jest.setTimeout(300000);
 export function getElement(name: keyof typeof elements) {
