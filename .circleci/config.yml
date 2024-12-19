@@ -244,7 +244,7 @@ commands:
           name: Start Appium Server
           background: true
           command: |
-            appium \
+            appium --port 4724  \
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \

@@ -7,8 +7,8 @@ export let client: any;
 
 const config = {
   hostname: 'localhost',
-  port: 4724,
   path: '/', // Adjust if necessary
+  port: 4724,
   capabilities: {
     ...capabilities,
   },
