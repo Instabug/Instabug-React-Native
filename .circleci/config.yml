@@ -297,7 +297,7 @@ commands:
           command: npm start --reset-cache &> metro-android.log
           background: true
       - run: |
-          react-native run-android &> build-android.log
+          yarn run-android &> build-android.log
           sleep 30
 
 
