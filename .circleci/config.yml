@@ -288,7 +288,7 @@ commands:
               -qemu -enable-kvm
       - run:
           name: Starting emulator in background
-          command: export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd test_device -skin 1080x1920 -memory 1024 -engine qemu2 -netfast -no-audio -no-snapshot -accel on
+          command: export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 -skin 1080x1920 -memory 1024 -engine qemu2 -netfast -no-audio -no-snapshot -accel on
           background: true
       - run: |
           adb wait-for-device
