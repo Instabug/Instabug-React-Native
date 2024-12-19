@@ -11,8 +11,6 @@ const android = {
   'appium:appPackage': 'com.instabug.hybridsampleapp',
   'appium:appActivity': '.MainActivity',
   'appium:automationName': 'UiAutomator2',
-  'appium:noReset': false,
-  'appium:fullReset': true,
 };
 
 const ios = {
@@ -21,8 +19,6 @@ const ios = {
   'appium:deviceName': 'iPhone 11 Pro Max', // TODO: update your device name
   'appium:platformVersion': '15.5', // TODO: update platform version
   'appium:bundleId': 'com.instabug.HybridSampleApp', // TODO: update your app bundle id
-  'appium:noReset': false,
-  'appium:fullReset': true,
 };
 if (process.env.E2E_DEVICE === 'android') {
   capabilities = android;
