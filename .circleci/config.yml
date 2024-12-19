@@ -299,7 +299,7 @@ commands:
           npm cache clean --force
           rm -rf package-lock.json
       - run: npm install --save-dev
-      - run: npm audit fix
+      - run: npm audit fix --force
       - run: npm install --save-dev chai
       - run:
           name: Starting metro in background
