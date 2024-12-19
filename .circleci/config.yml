@@ -291,7 +291,6 @@ commands:
           adb devices
           echo "Emulator started"
       - run: |
-          rm -rf node_modules
           npm cache clean --force
       - run:
           name: Starting metro in background
