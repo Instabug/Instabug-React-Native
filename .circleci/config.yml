@@ -286,6 +286,29 @@ commands:
               -selinux permissive \
               -feature -Wifi \
               -qemu -enable-kvm
+      - run:
+          name: Starting emulator in background
+          command: export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd test_device -skin 1080x1920 -memory 1024 -engine qemu2 -netfast -no-audio -no-snapshot -accel on
+          background: true
+      - run: |
+          adb wait-for-device
+          adb devices
+          echo "Emulator started"
+      - run: |
+          rm -rf node_modules
+          npm cache clean --force
+          rm -rf package-lock.json
+      - run: npm install --save-dev
+      - run: npm audit fix
+      - run: npm install --save-dev chai
+      - run:
+          name: Starting metro in background
+          command: npm start --reset-cache &> metro-android.log
+          background: true
+      - run: |
+          react-native run-android &> build-android.log
+          sleep 30
+
 
       - run:
           name: Wait for Emulator and Setup Certificates
