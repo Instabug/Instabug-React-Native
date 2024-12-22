@@ -290,17 +290,21 @@ commands:
           adb wait-for-device
           adb devices
           echo "Emulator started"
-      - run: |
-          npm cache clean --force
-          yarn install
+      - run: 
+          name: install yarn
+          working_directory: ~/project/examples/hybrid
+          command: |
+            npm cache clean --force \
+            yarn install
       - run:
           name: Starting metro in background
+          working_directory: ~/project/examples/hybrid
           command: yarn start
           background: true
-      - run: |
-          yarn android &> build-android.log
-          sleep 30
-
+      - run:
+          name: Run React Native app
+          working_directory: ~/project/examples/hybrid
+          command: yarn android &> build-android.log 
 
       - run:
           name: Wait for Emulator and Setup Certificates
