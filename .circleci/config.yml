@@ -439,7 +439,7 @@ commands:
       - run:
           name: Starting metro in background
           working_directory: ~/project/examples/hybrid
-          command: yarn start
+          command: yarn start --port 8088
           background: true
       - run:
           name: Run React Native app
