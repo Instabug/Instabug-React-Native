@@ -843,6 +843,7 @@ jobs:
       # Setup testing environment
       - setup_mitm_proxy
       - setup_android_proxy
+      - setup_appium
       # Wait for Appium server to be ready
       - run:
           name: Verify Appium Server
