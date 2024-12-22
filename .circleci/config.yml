@@ -275,22 +275,22 @@ commands:
           name: Start Emulator with System Writable
           background: true
           command: |
-              export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
-              -no-snapshot \
-              -no-boot-anim \
-              -no-window \
-              -gpu swiftshader_indirect \
-              -no-audio \
-              -writable-system \
-              -dns-server 8.8.8.8 \
-              -selinux permissive \
-              -feature -Wifi \
-              -qemu -enable-kvm
+            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
+            -no-snapshot \
+            -no-boot-anim \
+            -no-window \
+            -gpu swiftshader_indirect \
+            -no-audio \
+            -writable-system \
+            -dns-server 8.8.8.8 \
+            -selinux permissive \
+            -feature -Wifi \
+            -qemu -enable-kvm
       - run: |
           adb wait-for-device
           adb devices
           echo "Emulator started"
-      - run: 
+      - run:
           name: install yarn
           working_directory: ~/project/examples/hybrid
           command: |
@@ -304,7 +304,7 @@ commands:
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
-          command: yarn android &> build-android.log 
+          command: yarn android &> build-android.log
 
       - run:
           name: Wait for Emulator and Setup Certificates
