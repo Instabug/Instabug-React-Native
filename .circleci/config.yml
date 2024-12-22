@@ -843,20 +843,70 @@ jobs:
       # Setup testing environment
       - setup_mitm_proxy
       - setup_android_proxy
-      - setup_appium
+      # Wait for Appium server to be ready
       - run:
-          name: Start MITM Proxy with logging
+          name: Verify Appium Server
+          command: |
+            # Function to check if Appium is responding
+            check_appium() {
+              for i in {1..30}; do
+                if curl -s http://localhost:4723/status | grep -q "ready"; then
+                  echo "Appium server is ready"
+                  return 0
+                fi
+                echo "Waiting for Appium server... ($i/30)"
+                sleep 2
+              done
+              echo "Appium server failed to start"
+              return 1
+            }
+
+            # Check Appium status
+            check_appium
+
+      # Start MITM Proxy with logging
+      - run:
+          name: Start MITM Proxy
+          background: true
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8084 &
             sleep 5
-          background: true
 
-      # Run tests
+      # Verify MITM Proxy is running
+      - run:
+          name: Verify MITM Proxy
+          command: |
+            for i in {1..30}; do
+              if lsof -i :8084 > /dev/null; then
+                echo "MITM Proxy is running on port 8084"
+                break
+              fi
+              echo "Waiting for MITM Proxy... ($i/30)"
+              sleep 2
+            done
+
+      # Run tests only after all services are verified
       - run:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
           command: |
-            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
+            # Final verification of all required services
+            if ! curl -s http://localhost:4723/status | grep -q "ready"; then
+              echo "Appium server is not ready"
+              exit 1
+            fi
+
+            if ! lsof -i :8084 > /dev/null; then
+              echo "MITM Proxy is not running"
+              exit 1
+            fi
+
+            # If all services are running, execute tests
+            echo "All services are ready, starting tests..."
+            node --experimental-vm-modules node_modules/jest/bin/jest.js \
+              --config=jest.config.js \
+              --runInBand \
+              --forceExit
           environment:
             E2E_DEVICE: 'android'
   appium_e2e_ios:
