@@ -292,12 +292,13 @@ commands:
           echo "Emulator started"
       - run: |
           npm cache clean --force
+          yarn install
       - run:
           name: Starting metro in background
-          command: npm start --reset-cache &> metro-android.log
+          command: yarn start
           background: true
       - run: |
-          yarn run-android &> build-android.log
+          yarn android &> build-android.log
           sleep 30
 
 
