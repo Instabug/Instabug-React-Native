@@ -244,7 +244,7 @@ commands:
           name: Start Appium Server
           background: true
           command: |
-            appium --port 4724  \
+            appium --port 4723  \
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
@@ -253,7 +253,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4724/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
