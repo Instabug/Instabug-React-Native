@@ -3,6 +3,7 @@ import type { RequestHandler } from '@apollo/client';
 import InstabugConstants from '../utils/InstabugConstants';
 import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkInterceptor';
 import { reportNetworkLog, isContentTypeNotAllowed } from '../utils/InstabugUtils';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 export type { NetworkData };
 
@@ -100,4 +101,13 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
   }
 
   return forward(operation);
+};
+
+/**
+ * Sets whether network logs sensitive information should be masked.
+ * It is disabled by default.
+ * @param isEnabled
+ */
+export const setAutoMaskingEnabled = (isEnabled: boolean) => {
+  NativeInstabug.setAutoMaskingEnabled(isEnabled);
 };

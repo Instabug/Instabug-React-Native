@@ -138,4 +138,5 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
 - (void)removeFeatureFlags:(NSArray *)featureFlags;
 - (void)removeAllFeatureFlags;
+- (void)setAutoMaskingEnabled:(BOOL)isEnabled;
 @end

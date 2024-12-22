@@ -72,6 +72,7 @@ export interface InstabugNativeModule extends NativeModule {
   ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;
+  setAutoMaskingEnabled(isEnabled: boolean): void;
 
   // Repro Steps APIs //
   setReproStepsConfig(
