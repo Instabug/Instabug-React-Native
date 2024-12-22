@@ -242,6 +242,7 @@ commands:
 
       - run:
           name: Start Appium Server
+          background: true
           command: |
             # Start Appium in background and save its PID
             appium --port 4723  \
