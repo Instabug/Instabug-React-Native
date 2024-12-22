@@ -242,24 +242,35 @@ commands:
 
       - run:
           name: Start Appium Server
-          background: true
           command: |
+            # Start Appium in background and save its PID
             appium --port 4723  \
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
               --base-path / \
-              --log appium.log &
+              --log appium.log & 
+            APPIUM_PID=$!
+            echo $APPIUM_PID > /tmp/appium.pid
 
             # Wait for server to start
             for i in $(seq 1 30); do
               if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
-                break
+                exit 0
               fi
               echo "Waiting for Appium server... ($i/30)"
               sleep 2
+              
+              # Check if Appium is still running
+              if ! kill -0 $APPIUM_PID 2>/dev/null; then
+                echo "Appium server process died"
+                exit 1
+              fi
             done
+
+            echo "Appium server failed to become ready in time"
+            exit 1
   setup_android_proxy:
     steps:
       - run:
@@ -846,27 +857,6 @@ jobs:
       - setup_appium
       # Wait for Appium server to be ready
       - run:
-          name: Verify Appium Server
-          command: |
-            # Function to check if Appium is responding
-            check_appium() {
-              for i in {1..30}; do
-                if curl -s http://localhost:4723/status | grep -q "ready"; then
-                  echo "Appium server is ready"
-                  return 0
-                fi
-                echo "Waiting for Appium server... ($i/30)"
-                sleep 2
-              done
-              echo "Appium server failed to start"
-              return 1
-            }
-
-            # Check Appium status
-            check_appium
-
-      # Start MITM Proxy with logging
-      - run:
           name: Start MITM Proxy
           background: true
           command: |
@@ -891,17 +881,6 @@ jobs:
           name: Run E2E Tests
           working_directory: << parameters.working_directory >>
           command: |
-            # Final verification of all required services
-            if ! curl -s http://localhost:4723/status | grep -q "ready"; then
-              echo "Appium server is not ready"
-              exit 1
-            fi
-
-            if ! lsof -i :8084 > /dev/null; then
-              echo "MITM Proxy is not running"
-              exit 1
-            fi
-
             # If all services are running, execute tests
             echo "All services are ready, starting tests..."
             node --experimental-vm-modules node_modules/jest/bin/jest.js \
