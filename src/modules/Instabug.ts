@@ -27,6 +27,8 @@ import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking'
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
 import InstabugConstants from '../utils/InstabugConstants';
+import { InstabugRNConfig } from '../utils/config';
+import { Logger } from '../utils/logger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -92,6 +94,8 @@ export const init = (config: InstabugConfig) => {
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
+
+  InstabugRNConfig.debugLogsLevel = config.debugLogsLevel ?? LogLevel.error;
 
   reportCurrentViewForAndroid(firstScreen);
   setTimeout(() => {
@@ -387,9 +391,10 @@ export const setReproStepsConfig = (config: ReproConfig) => {
  */
 export const setUserAttribute = (key: string, value: string) => {
   if (!key || typeof key !== 'string' || typeof value !== 'string') {
-    console.error(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    Logger.error(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
     return;
   }
+
   NativeInstabug.setUserAttribute(key, value);
 };
 
@@ -411,7 +416,7 @@ export const getUserAttribute = async (key: string): Promise<string | null> => {
  */
 export const removeUserAttribute = (key: string) => {
   if (!key || typeof key !== 'string') {
-    console.error(InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    Logger.error(InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
 
     return;
   }
@@ -636,6 +641,13 @@ export const removeAllFeatureFlags = () => {
  */
 export const willRedirectToStore = () => {
   NativeInstabug.willRedirectToStore();
+};
+
+/**
+ * This API has be called when changing the default Metro server port (8081) to exclude the DEV URL from network logging.
+ */
+export const setMetroDevServerPort = (port: number) => {
+  InstabugRNConfig.metroDevServerPort = port.toString();
 };
 
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
