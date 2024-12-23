@@ -473,6 +473,15 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
+      - run:
+          name: Starting metro in background
+          working_directory: ~/project/examples/hybrid
+          command: yarn start
+          background: true
+      - run:
+          name: Run React Native app
+          working_directory: ~/project/examples/hybrid
+          command: yarn ios &> build-ios.log
 
 jobs:
   danger:
