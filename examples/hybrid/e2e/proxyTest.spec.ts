@@ -109,8 +109,7 @@ describe('Instabug Configuration Validation', () => {
     try {
       if (process.env.E2E_DEVICE === 'android') {
         const selector =
-          '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/button_react_native"]';
-
+          'android=new UiSelector().resourceId("com.instabug.hybridsampleapp:id/button_react_native")';
         await client.waitUntil(
           async () => {
             try {
