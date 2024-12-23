@@ -1,4 +1,3 @@
-//todo: remove all logs tagged with 'Andrew' in the file
 import {
   AppState,
   type AppStateStatus,

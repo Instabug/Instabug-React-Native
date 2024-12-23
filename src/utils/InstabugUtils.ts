@@ -171,7 +171,6 @@ export function isContentTypeNotAllowed(contentType: string) {
   return allowed.every((type) => !contentType.includes(type));
 }
 
-//todo: remove all logs tagged with 'Andrew' in the file
 export const reportNetworkLog = (network: NetworkData) => {
   if (Platform.OS === 'android') {
     const requestHeaders = JSON.stringify(network.requestHeaders);
@@ -214,7 +213,7 @@ export const reportNetworkLog = (network: NetworkData) => {
     }
   } else {
     NativeInstabug.networkLogIOS(
-      network.url + '/JS/Andrew',
+      network.url,
       network.method,
       network.requestBody,
       network.requestBodySize,
