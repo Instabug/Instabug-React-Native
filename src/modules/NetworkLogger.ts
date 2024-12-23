@@ -41,9 +41,6 @@ export const setEnabled = (isEnabled: boolean) => {
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
-            console.log(
-              `Andrew: xhr.setOnDoneCallback -> _networkDataObfuscationHandler ${network.url}`,
-            );
           }
 
           if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
@@ -88,7 +85,6 @@ export const setEnabled = (isEnabled: boolean) => {
  * @param isEnabled
  */
 export const setNativeInterceptionEnabled = (isEnabled: boolean) => {
-  console.log(`Andrew: NetworkLogger -> setNativeInterceptionEnabled ${isEnabled}`);
   _isNativeInterceptionEnabled = isEnabled;
 };
 
@@ -108,12 +104,8 @@ export const setNetworkDataObfuscationHandler = (
   _networkDataObfuscationHandler = handler;
   if (_isNativeInterceptionEnabled && Platform.OS === 'ios') {
     if (hasFilterExpression) {
-      console.log(
-        'Andrew: setNetworkDataObfuscationHandler -> registerFilteringAndObfuscationListenerV2',
-      );
       registerFilteringAndObfuscationListener(_requestFilterExpression);
     } else {
-      console.log('Andrew: setNetworkDataObfuscationHandler -> registerObfuscationListener');
       registerObfuscationListener();
     }
   }
@@ -129,12 +121,8 @@ export const setRequestFilterExpression = (expression: string) => {
 
   if (_isNativeInterceptionEnabled && Platform.OS === 'ios') {
     if (_networkDataObfuscationHandler) {
-      console.log(
-        'Andrew: setRequestFilterExpression -> registerFilteringAndObfuscationListenerV2',
-      );
       registerFilteringAndObfuscationListener(_requestFilterExpression);
     } else {
-      console.log('Andrew: setRequestFilterExpression -> registerFilteringListener');
       registerFilteringListener(_requestFilterExpression);
     }
   }
@@ -186,11 +174,8 @@ export const registerNetworkLogsListener = (
   handler?: (networkSnapshot: NetworkData) => void,
 ) => {
   if (Platform.OS === 'ios') {
-    console.log('Andrew: registerNetworkLogsListener called');
-
     // remove old listeners
     if (NetworkLoggerEmitter.listenerCount(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER) > 0) {
-      console.log('Andrew: removeAllListeners called');
       NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
     }
 
@@ -201,7 +186,6 @@ export const registerNetworkLogsListener = (
       // attach a new listener to the existing one.
       _networkListener = NetworkListenerType.both;
     }
-    console.log(`Andrew: new NetworkLogsListener (${_networkListener}) attached`);
   }
 
   NetworkLoggerEmitter.addListener(

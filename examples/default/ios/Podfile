@@ -19,7 +19,7 @@ target 'InstabugExample' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
 
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/release-support_cp_network_filtering_obfuscation-add_reset_network_state/13.4.3/Instabug.podspec'
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-support_cp_network_filtering_obfuscation-base/14.1.0/Instabug.podspec'
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.

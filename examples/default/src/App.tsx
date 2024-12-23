@@ -7,6 +7,7 @@ import Instabug, {
   CrashReporting,
   InvocationEvent,
   LogLevel,
+  NetworkInterceptionMode,
   NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
@@ -29,7 +30,7 @@ export const App: React.FC = () => {
         token: '0fcc87b8bf731164828cc411eccc802a',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
-        // networkInterceptionMode: NetworkInterceptionMode.native,
+        networkInterceptionMode: NetworkInterceptionMode.native,
       });
 
       CrashReporting.setNDKCrashesEnabled(true);

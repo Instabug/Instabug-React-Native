@@ -171,14 +171,10 @@ export function isContentTypeNotAllowed(contentType: string) {
   return allowed.every((type) => !contentType.includes(type));
 }
 
-//todo: remove all logs tagged with 'Andrew' in the file
 export const reportNetworkLog = (network: NetworkData) => {
   if (Platform.OS === 'android') {
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
-
-    console.log('Andrew: ' + `NetworkLogger -> ${JSON.stringify(apmFlags)}`);
-    console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogAndroid');
 
     NativeInstabug.networkLogAndroid(
       network.url,
@@ -196,8 +192,6 @@ export const reportNetworkLog = (network: NetworkData) => {
       !apmFlags.hasAPMNetworkPlugin ||
       !apmFlags.shouldEnableNativeInterception
     ) {
-      console.log('Andrew: ' + 'NetworkLogger -> NativeAPM.networkLogAndroid');
-      console.log('Andrew: ' + `NetworkLogger -> ${network.url}`);
       NativeAPM.networkLogAndroid(
         network.startTime,
         network.duration,
@@ -218,12 +212,6 @@ export const reportNetworkLog = (network: NetworkData) => {
       );
     }
   } else {
-    console.log(
-      'Andrew: ' +
-        `NetworkLogger -> {isNativeInterceptionEnabled: ${apmFlags.isNativeInterceptionFeatureEnabled}}`,
-    );
-    console.log('Andrew: ' + 'NetworkLogger -> NativeInstabug.networkLogIOS');
-
     NativeInstabug.networkLogIOS(
       network.url,
       network.method,
@@ -308,10 +296,6 @@ export function checkNetworkRequestHandlers() {
   const obfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
   const hasFilterExpression = NetworkLogger.hasRequestFilterExpression();
 
-  console.log(
-    `Andrew: handlers 
-    {filtering = ${hasFilterExpression}, obfuscation = ${obfuscationHandler != null}}`,
-  );
   if (hasFilterExpression && obfuscationHandler) {
     // Register listener that handles both (Filtering & Obfuscation)
     registerFilteringAndObfuscationListener(NetworkLogger.getRequestFilterExpression());
