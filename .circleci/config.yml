@@ -244,34 +244,22 @@ commands:
           name: Start Appium Server
           background: true
           command: |
-            # Start Appium in background and save its PID
             appium --port 4724  \
               --log-timestamp \
               --debug-log-spacing \
               --allow-insecure chromedriver_autodownload \
               --base-path / \
-              --log appium.log & 
-            APPIUM_PID=$!
-            echo $APPIUM_PID > /tmp/appium.pid
+              --log appium.log &
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://localhost:4724/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
-                exit 0
+                break
               fi
               echo "Waiting for Appium server... ($i/30)"
               sleep 2
-              
-              # Check if Appium is still running
-              if ! kill -0 $APPIUM_PID 2>/dev/null; then
-                echo "Appium server process died"
-                exit 1
-              fi
             done
-
-            echo "Appium server failed to become ready in time"
-            exit 1
   setup_android_proxy:
     steps:
       - run:
@@ -287,7 +275,7 @@ commands:
           name: Start Emulator with System Writable
           background: true
           command: |
-             export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
+              export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
               -no-snapshot \
               -no-boot-anim \
               -no-window \
@@ -437,15 +425,6 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-      - run:
-          name: Starting metro in background
-          working_directory: ~/project/examples/hybrid
-          command: yarn start --port 8088
-          background: true
-      - run:
-          name: Run React Native app
-          working_directory: ~/project/examples/hybrid
-          command: yarn ios &> build-ios.log
 
       - run:
           name: Setup iOS MITM Certificate and Proxy
@@ -1078,3 +1057,4 @@ workflows:
               only: dream11
           prepare_steps:
             - prepare_dream11
+            
