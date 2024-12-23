@@ -1,14 +1,12 @@
 const fs = require('fs').promises;
 import { client } from './setup';
 
-// Increase timeout for potentially slow operations
+// Configuration
 jest.setTimeout(300000);
-
-// Add retry logic and timeout configuration
 const RETRY_ATTEMPTS = 3;
 const WAIT_TIMEOUT = 10000;
 
-// Enhanced element getter with retry logic and better error handling
+// Enhanced element getter with retry logic
 export async function getElement(name: keyof typeof elements) {
   if (!elements.hasOwnProperty(name)) {
     throw new Error(`Element with name ${name} does not exist.`);
@@ -20,37 +18,46 @@ export async function getElement(name: keyof typeof elements) {
   for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
     try {
       const element = await getElementFn();
-      // Wait for element to be interactable
-      await element.waitForDisplayed({ timeout: WAIT_TIMEOUT });
+      // Add stability check
+      await client.waitUntil(
+        async () => {
+          try {
+            return await element.isDisplayed();
+          } catch {
+            return false;
+          }
+        },
+        {
+          timeout: WAIT_TIMEOUT,
+          timeoutMsg: `Element ${name} not displayed after ${WAIT_TIMEOUT}ms`,
+          interval: 500,
+        },
+      );
       return element;
     } catch (error) {
       if (attempt === RETRY_ATTEMPTS) {
-        throw new Error(
-          `Failed to get element ${name} after ${RETRY_ATTEMPTS} attempts: ${error.message}`,
-        );
+        throw new Error(`Failed to get element ${name}: ${error.message}`);
       }
-      // Wait before retry
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 }
 
-// Enhanced elements object with better selectors and wait conditions
 const elements = {
   floatingButton: {
     ios: () => client.$('~IBGFloatingButtonAccessibilityIdentifier'),
     android: () =>
-      client.$('android=new UiSelector().className("android.widget.ImageButton").clickable(true)'),
+      client.$('//android.widget.ImageButton[contains(@class, "android.widget.ImageButton")]'),
   },
   reportBugMenuItem: {
-    android: () => client.$('android=new UiSelector().text("Report a bug").clickable(true)'),
+    android: () => client.$('//android.widget.TextView[@text="Report a bug"]'),
     ios: () => client.$('-ios predicate string:name == "Report a bug"'),
   },
   emailField: {
     ios: () => client.$('~IBGBugInputViewEmailFieldAccessibilityIdentifier'),
     android: async () => {
       const elements = await client.$$(
-        '//android.widget.EditText[@resource-id="com.instabug.react.example:id/ib_edit_text"]',
+        'android=new UiSelector().resourceId("com.instabug.react.example:id/ib_edit_text")',
       );
       return elements[0];
     },
@@ -59,7 +66,7 @@ const elements = {
     ios: () => client.$('~IBGBugInputViewCommentFieldAccessibilityIdentifier'),
     android: async () => {
       const elements = await client.$$(
-        '//android.widget.EditText[@resource-id="com.instabug.react.example:id/ib_edit_text"]',
+        'android=new UiSelector().resourceId("com.instabug.react.example:id/ib_edit_text")',
       );
       return elements[1];
     },
@@ -70,11 +77,11 @@ const elements = {
   },
   thanksMessage: {
     ios: () => client.$('-ios predicate string:name == "Thank you"'),
-    android: () => client.$('android=new UiSelector().text("Thank you!").clickable(true)'),
+    android: () => client.$('//android.widget.TextView[@text="Thank you!"]'),
   },
   settingButton: {
     ios: () => client.$('~Settings, tab, 2 of 2'),
-    android: () => client.$('android=new UiSelector().text("Settings").clickable(true)'),
+    android: () => client.$('//android.widget.TextView[@text="Settings"]'),
   },
   AttributeKey: {
     ios: () => client.$('UserAttributeKeyLabel'),
@@ -90,55 +97,63 @@ const elements = {
   },
 };
 
-// Enhanced test suite with better error handling and assertions
 describe('Instabug Configuration Validation', () => {
   let configData: any;
 
-  // Add setup and teardown hooks
-  beforeAll(async () => {
-    // Add any necessary setup
-    await client.setImplicitTimeout(5000);
-  });
-
-  afterAll(async () => {
-    // Add cleanup if needed
+  beforeEach(async () => {
+    // Reset timeouts before each test
+    await client.setTimeout({ implicit: 5000 });
   });
 
   it('should verify React Native button visibility', async () => {
     try {
       if (process.env.E2E_DEVICE === 'android') {
-        const reactNativeButton = await client.$(
-          '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/button_react_native"]',
+        const selector =
+          '//android.widget.Button[@resource-id="com.instabug.hybridsampleapp:id/button_react_native"]';
+
+        await client.waitUntil(
+          async () => {
+            try {
+              const element = await client.$(selector);
+              return await element.isDisplayed();
+            } catch {
+              return false;
+            }
+          },
+          {
+            timeout: WAIT_TIMEOUT,
+            timeoutMsg: `React Native button not visible after ${WAIT_TIMEOUT}ms`,
+            interval: 1000,
+          },
         );
-        await reactNativeButton.waitForDisplayed({ timeout: WAIT_TIMEOUT });
-        expect(await reactNativeButton.isDisplayed()).toBe(true);
+
+        const button = await client.$(selector);
+        expect(await button.isDisplayed()).toBe(true);
       } else {
         const floatingButton = await getElement('floatingButton');
         await floatingButton.click();
 
         const reportBugMenu = await getElement('reportBugMenuItem');
-        await reportBugMenu.waitForDisplayed({ timeout: WAIT_TIMEOUT });
         expect(await reportBugMenu.isDisplayed()).toBe(true);
       }
     } catch (error) {
-      throw new Error(`Failed to verify button visibility: ${error.message}`);
+      throw new Error(`Test failed: ${error.message}`);
     }
   });
 
   test('should contain correct session replay URL in configuration', async () => {
     try {
-      const jsonData = await fs.readFile('./captured_response.json');
+      const jsonData = await fs.readFile('./captured_response.json', 'utf8');
       configData = JSON.parse(jsonData);
 
-      // Add more specific assertions
-      expect(configData).toHaveProperty('session_replay', expect.any(Object));
-      expect(configData.session_replay).toHaveProperty('url', expect.any(String));
+      expect(configData).toHaveProperty('session_replay');
+      expect(configData.session_replay).toHaveProperty('url');
 
       const expectedUrl =
         'https://dream11.instabug.com/applications/dream11/production/session-replay';
       expect(configData.session_replay.url).toBe(expectedUrl);
     } catch (error) {
-      throw new Error(`Failed to verify session replay configuration: ${error.message}`);
+      throw new Error(`Configuration validation failed: ${error.message}`);
     }
   });
 });
