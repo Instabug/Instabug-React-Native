@@ -74,25 +74,6 @@ function reportCurrentViewForAndroid(screenName: string | null) {
   }
 }
 
-function _logFlags() {
-  if (Platform.OS === 'android') {
-    console.log(
-      `Andrew: APM Flags -> {
-     isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
-     hasAPMNetworkPlugin: ${hasAPMNetworkPlugin},
-     shouldEnableNativeInterception: ${shouldEnableNativeInterception}
-    }`,
-    );
-  } else {
-    console.log(
-      `Andrew: APM Flags -> {
-     isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled},
-     shouldEnableNativeInterception: ${shouldEnableNativeInterception}
-    }`,
-    );
-  }
-}
-
 /**
  * Initializes the SDK.
  * This is the main SDK method that does all the magic. This is the only
@@ -148,14 +129,11 @@ const handleAppStateChange = async (nextAppState: AppStateStatus, config: Instab
     const isUpdated = await fetchApmNetworkFlags();
 
     if (isUpdated) {
-      console.log('Andrew: App has come to the foreground!');
-      console.log('Andrew: APM network flags updated.');
       refreshAPMNetworkConfigs(config);
     }
   }
 
   _currentAppState = nextAppState;
-  console.log(`Andrew: Current AppState: ${_currentAppState}`);
 };
 
 /**
@@ -176,10 +154,6 @@ const fetchApmNetworkFlags = async () => {
       isUpdated = true;
     }
   }
-
-  console.log(
-    `Andrew: fetchApmNetworkFlags {isNativeInterceptionFeatureEnabled: ${isNativeInterceptionFeatureEnabled}, hasAPMNetworkPlugin: ${hasAPMNetworkPlugin}}`,
-  );
   return isUpdated;
 };
 
@@ -241,13 +215,6 @@ function handleAndroidNativeInterception() {
  * Control either to enable or disable the native interception for iOS after the init method is called.
  */
 function handleIOSNativeInterception(config: InstabugConfig) {
-  console.log(
-    `Andrew: handleIOSNativeInterception(${
-      shouldEnableNativeInterception &&
-      config.networkInterceptionMode === NetworkInterceptionMode.native
-    })`,
-  );
-
   if (
     shouldEnableNativeInterception &&
     config.networkInterceptionMode === NetworkInterceptionMode.native
@@ -295,12 +262,6 @@ const handleInterceptionModeForIOS = (config: InstabugConfig) => {
  * Initializes Instabug with the given configuration.
  */
 const initializeNativeInstabug = (config: InstabugConfig) => {
-  console.log(
-    `Andrew: initializeNativeInstabug -> NativeNetworkInterceptionMode ${
-      shouldEnableNativeInterception &&
-      config.networkInterceptionMode === NetworkInterceptionMode.native
-    }`,
-  );
   NativeInstabug.init(
     config.token,
     config.invocationEvents,
@@ -319,7 +280,6 @@ function refreshAPMNetworkConfigs(config: InstabugConfig, forceRefreshIOS: boole
   if (Platform.OS === 'ios' && forceRefreshIOS) {
     handleIOSNativeInterception(config);
   }
-  _logFlags();
   setApmNetworkFlagsIfChanged({
     isNativeInterceptionFeatureEnabled,
     hasAPMNetworkPlugin,
@@ -339,10 +299,6 @@ function refreshAPMNetworkConfigs(config: InstabugConfig, forceRefreshIOS: boole
 function addOnFeatureUpdatedListener(config: InstabugConfig) {
   emitter.addListener(NativeEvents.IBG_ON_FEATURES_UPDATED_CALLBACK, (flags) => {
     const { cpNativeInterceptionEnabled, hasAPMPlugin } = flags;
-    console.log(`Andrew: addOnFeatureUpdatedListener ->
-    isNativeInterceptionFeatureEnabled: ${cpNativeInterceptionEnabled},
-    hasAPMNetworkPlugin: ${hasAPMPlugin}.
-    `);
     isNativeInterceptionFeatureEnabled = cpNativeInterceptionEnabled;
     hasAPMNetworkPlugin = hasAPMPlugin;
     shouldEnableNativeInterception =
