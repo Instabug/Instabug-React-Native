@@ -840,14 +840,14 @@ jobs:
       - run:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
-          command: ./gradlew assembleRelease
+          command: ./gradlew assembleDebug
       - store_artifacts:
-          path: <<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk
-          destination: app-release.apk
+          path: <<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk
+          destination: app-debug.apk
       - run:
           name: Export APK Path
           command: |
-            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk" >> $BASH_ENV
+            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/debug/app-debug.apk" >> $BASH_ENV
             source $BASH_ENV
       # Setup testing environment
       - setup_mitm_proxy
@@ -906,11 +906,11 @@ jobs:
       - setup_ios_proxy
       - setup_appium
       - run:
-          name: Start MITM Proxy
-          background: true
+          name: Start MITM Proxy with logging
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
-            sleep 5
+            sleep 10
+          background: true
 
       # Run tests
       - run:
