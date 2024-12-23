@@ -474,11 +474,6 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
       - run:
-          name: Starting metro in background
-          working_directory: ~/project/examples/hybrid
-          command: yarn start
-          background: true
-      - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
           command: yarn ios &> build-ios.log
@@ -906,11 +901,11 @@ jobs:
       - setup_ios_proxy
       - setup_appium
       - run:
-          name: Start MITM Proxy with logging
+          name: Start MITM Proxy
+          background: true
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
-          background: true
 
       # Run tests
       - run:
