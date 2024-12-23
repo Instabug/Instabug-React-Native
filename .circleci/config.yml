@@ -290,21 +290,6 @@ commands:
           adb wait-for-device
           adb devices
           echo "Emulator started"
-      - run:
-          name: install yarn
-          working_directory: ~/project/examples/hybrid
-          command: |
-            npm cache clean --force \
-            yarn install
-      - run:
-          name: Starting metro in background
-          working_directory: ~/project/examples/hybrid
-          command: yarn start
-          background: true
-      - run:
-          name: Run React Native app
-          working_directory: ~/project/examples/hybrid
-          command: yarn android &> build-android.log
 
       - run:
           name: Wait for Emulator and Setup Certificates
@@ -898,7 +883,6 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - setup_ios_proxy
       - setup_appium
       - run:
           name: Start MITM Proxy
@@ -906,6 +890,7 @@ jobs:
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
+      - setup_ios_proxy
 
       # Run tests
       - run:
