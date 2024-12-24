@@ -193,30 +193,7 @@ commands:
             # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
-            mitmdump --set block_global=false & 
-            MITM_PID=$!
-            sleep 10
 
-            # Create mitmproxy directory
-            mkdir -p ~/.mitmproxy
-
-            # Wait for certificate generation
-            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
-              sleep 2
-            done
-
-            # Create all required certificate formats
-            cd ~/.mitmproxy
-            # Create .cer (PEM format)
-            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.cer
-            # Create .crt (PEM format)
-            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.crt
-            # Create .der format for iOS
-            openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
-
-            echo "MITM Proxy setup completed"
-            # Kill it using the saved PID
-            kill $MITM_PID || kill -9 $MITM_PID
 
   setup_appium:
     steps:
@@ -272,27 +249,38 @@ commands:
             -d "pixel" \
             --force
       - run:
+          name: Start MITM proxy with custom config
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
+          background: true
+      - run:
           name: Start Emulator with System Writable
           background: true
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
-            -no-snapshot \
-            -no-boot-anim \
-            -no-window \
-            -gpu swiftshader_indirect \
-            -no-audio \
-            -writable-system \
-            -dns-server 8.8.8.8 \
-            -selinux permissive \
-            -feature -Wifi \
-            -qemu -enable-kvm
-            adb shell settings put global window_animation_scale 0.0
-            adb shell settings put global transition_animation_scale 0.0
-            adb shell settings put global animator_duration_scale 0.0
-      - run: |
-          adb wait-for-device
-          adb devices
-          echo "Emulator started"
+            -http-proxy http://localhost:8080 \
+              -dns-server 8.8.8.8 \
+              -writable-system \
+              -partition-size 2048
+      - run:
+          name: Wait for emulator and configure network
+          command: |
+            adb wait-for-device
+            adb shell settings put global http_proxy localhost:8080
+            adb shell svc wifi enable
+            adb shell cmd wifi connect-network "CircleCI-Network" -S WPA2 -P "circle-password"
+      - run:
+          name: Configure emulator networking
+          command: |
+            echo 'hw.cpu.ncore=2' >> ~/.android/avd/test_device.avd/config.ini
+            echo 'hw.ramSize=2048' >> ~/.android/avd/test.avd/config.ini
+            echo 'disk.dataPartition.size=2048M' >> ~/.android/avd/test.avd/config.ini
+      - run:
+          name: Install MITM certificate on Android
+          command: |
+            adb root
+            adb remount
+            adb push ~/.mitmproxy/mitmproxy-ca-cert.cer /system/etc/security/cacerts/mitmproxy-ca.crt
+            adb shell chmod 644 /system/etc/security/cacerts/mitmproxy-ca.crt
       - run:
           name: install yarn
           working_directory: ~/project/examples/hybrid
@@ -310,94 +298,21 @@ commands:
           command: yarn android &> build-android.log
 
       - run:
-          name: Wait for Emulator and Setup Certificates
+          name: Generate MITM certificates
           command: |
-            # Wait for emulator to be ready
-            for i in $(seq 1 30); do
-              if adb devices | grep -q "emulator"; then
-                break
-              fi
-              echo "Waiting for emulator to start... ($i/30)"
-              sleep 10
-            done
-
-            # Wait for emulator boot completion
-            adb wait-for-device
-            for i in $(seq 1 30); do
-              if adb shell getprop sys.boot_completed | grep -q "1"; then
-                break
-              fi
-              echo "Waiting for boot to complete... ($i/30)"
-              sleep 10
-            done
-
-            # Remount system partition and prepare for certificate installation
-            adb root
+            mkdir -p ~/.mitmproxy
+            mitmproxy --version
+            mitmproxy &
             sleep 5
-            adb shell avbctl disable-verification
-            sleep 2
-            adb reboot
-
-            # Wait for reboot
-            echo "Waiting for device to reboot..."
-            sleep 30
-            adb wait-for-device
-
-            # Remount system partition as writable
-            adb root
-            sleep 5
-            adb shell setenforce 0
-            adb disable-verity
-            adb reboot
-
-            # Wait for second reboot
-            echo "Waiting for device to reboot again..."
-            sleep 30
-            adb wait-for-device
-
-            # Final remount
-            adb root
-            sleep 5
-            adb remount
-            adb shell setprop net.eth0.dns1 8.8.8.8
-            adb shell setprop net.eth0.dns2 8.8.4.4
-            # Install MITM certificate
-            echo "Installing certificate..."
-            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-            adb push $HASH.0 /system/etc/security/cacerts/ && \
-            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
-
-            echo "Waiting for network connectivity..."
-            for i in {1..30}; do
-              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
-                echo "Network is accessible"
-                break
-              fi
-              echo "Attempt $i/30: Network not ready yet..."
-              sleep 2
-            done
-
-            echo "Configuring proxy settings..."
-            adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8084
-            adb shell settings put global http_proxy "127.0.0.1:8084"
-
-
-            echo "Testing network connection..."
-            adb shell ping -c 4 8.8.8.8
-
-
-            echo "Testing HTTPS connection through proxy..."
-            adb shell am start -a android.intent.action.VIEW -d https://google.com
+            kill %1
       - run:
-          name: Configure DNS
+          name: Configure DNS settings
           command: |
-            echo "nameserver 8.8.8.8
-            nameserver 8.8.4.4" | sudo tee /etc/resolv.conf > /dev/null
-            
-            # Verify DNS settings
-            cat /etc/resolv.conf
+            sudo mkdir -p /etc/resolver
+            echo "nameserver 8.8.8.8" | sudo tee /etc/resolver/mitm
+            echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
+            sudo resolvectl dns eth0 8.8.8.8 8.8.4.4
+            sudo systemctl restart systemd-resolved
   setup_ios_proxy:
     steps:
       - run:
