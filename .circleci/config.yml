@@ -265,9 +265,9 @@ commands:
           name: Wait for emulator and configure network
           command: |
             adb wait-for-device
-            adb shell settings put global http_proxy localhost:8080
+            adb shell sqlite3 /data/data/com.android.providers.settings/databases/settings.db "insert into global values(null, 'http_proxy', 'localhost:8080');"
             adb shell svc wifi enable
-            adb shell cmd wifi connect-network "CircleCI-Network" -S WPA2 -P "circle-password"
+            adb shell am start -a android.intent.action.VIEW -d "wifi://ssid=CircleCI-Network&password=circle-password&type=WPA2"
       - run:
           name: Configure emulator networking
           command: |
