@@ -243,7 +243,6 @@ commands:
       - run:
           name: Start Appium Server
           background: true
-          working_directory: ~/project/examples/hybrid
           command: |
             appium --port 4724  \
               --log-timestamp \
@@ -290,6 +289,21 @@ commands:
           adb wait-for-device
           adb devices
           echo "Emulator started"
+      - run:
+          name: install yarn
+          working_directory: ~/project/examples/hybrid
+          command: |
+            npm cache clean --force \
+            yarn install
+      - run:
+          name: Starting metro in background
+          working_directory: ~/project/examples/hybrid
+          command: yarn start
+          background: true
+      - run:
+          name: Run React Native app
+          working_directory: ~/project/examples/hybrid
+          command: yarn android &> build-android.log
 
       - run:
           name: Wait for Emulator and Setup Certificates
@@ -394,6 +408,7 @@ commands:
               ps aux | grep mitm
               # Print proxy logs if available
               echo "Proxy logs:"
+              cat appium.log || true
             }
 
             # Set simulator proxy
