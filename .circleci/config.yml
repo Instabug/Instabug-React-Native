@@ -264,12 +264,65 @@ commands:
       - run:
           name: Wait for emulator and configure network
           command: |
+            command: |
+            for i in $(seq 1 30); do
+              if adb devices | grep -q "emulator"; then
+                break
+              fi
+              echo "Waiting for emulator to start... ($i/30)"
+              sleep 10
+            done
             adb wait-for-device
+            for i in $(seq 1 30); do
+              if adb shell getprop sys.boot_completed | grep -q "1"; then
+                break
+              fi
+              echo "Waiting for boot to complete... ($i/30)"
+              sleep 10
+            done
+            adb root
+            sleep 5
+            adb shell avbctl disable-verification
+            sleep 2
+            adb reboot
+            echo "Waiting for device to reboot..."
+            sleep 30
+            adb wait-for-device
+            adb root
+            sleep 5
+            adb shell setenforce 0
+            adb disable-verity
+            adb reboot
+            echo "Waiting for device to reboot again..."
+            sleep 30
+            adb wait-for-device
+            adb root
+            sleep 5
+            adb remount
+            adb shell setprop net.eth0.dns1 8.8.8.8
+            adb shell setprop net.eth0.dns2 8.8.4.4
+            echo "Installing certificate..."
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
+            adb push $HASH.0 /system/etc/security/cacerts/ && \
+            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+            echo "Waiting for network connectivity..."
+            for i in {1..30}; do
+              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                echo "Network is accessible"
+                break
+              fi
+              echo "Attempt $i/30: Network not ready yet..."
+              sleep 2
+            done
+            echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8080
-            adb shell settings put global http_proxy "127.0.0.1:8080"
-            adb shell svc wifi enable
-            adb shell am broadcast -a android.net.wifi.PICK_WIFI_NETWORK
+            adb shell settings put global global_http_proxy_port 8084
+            adb shell settings put global http_proxy "127.0.0.1:8084"
+            echo "Testing network connection..."
+            adb shell ping -c 4 8.8.8.8
+            echo "Testing HTTPS connection through proxy..."
+            adb shell am start -a android.intent.action.VIEW -d https://google.com
       - run:
           name: Configure emulator networking
           command: |
@@ -308,6 +361,7 @@ commands:
             sleep 5
             kill %1
       - run:
+          cname: Configure DNS settings
           command: |
             if [ ! -w /etc ]; then
               sudo mkdir -p /etc/resolver || echo "Failed to create resolver directory"
