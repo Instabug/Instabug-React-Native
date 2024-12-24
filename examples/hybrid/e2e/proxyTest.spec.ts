@@ -95,8 +95,68 @@ const elements = {
     ios: () => client.$('SaveUserAttributesButton'),
     android: () => client.$('//android.widget.Button[@content-desc="saveUserAttributesButton"]'),
   },
+  systemUIWaitButton: {
+    android: () =>
+      client.$('//android.widget.Button[@resource-id="android:id/aerr_wait"][@text="Wait"]'),
+    ios: () => client.$(''), // iOS implementation would go here if needed
+  },
+  systemUIDialog: {
+    android: () => client.$('//android.widget.TextView[@text="System UI isn\'t responding"]'),
+    ios: () => client.$(''), // iOS implementation would go here if needed
+  },
 };
+describe('System UI Dialog Handling', () => {
+  beforeEach(async () => {
+    await client.setTimeout({ implicit: 5000 });
+  });
 
+  it('should handle System UI not responding dialog', async () => {
+    try {
+      if (process.env.E2E_DEVICE === 'android') {
+        // Wait for the System UI dialog to appear
+        await client.waitUntil(
+          async () => {
+            try {
+              const dialog = await elements.systemUIDialog.android();
+              return await dialog.isDisplayed();
+            } catch {
+              return false;
+            }
+          },
+          {
+            timeout: WAIT_TIMEOUT,
+            timeoutMsg: `System UI dialog not visible after ${WAIT_TIMEOUT}ms`,
+            interval: 1000,
+          },
+        );
+
+        // Get and click the Wait button
+        const waitButton = await elements.systemUIWaitButton.android();
+        expect(await waitButton.isDisplayed()).toBe(true);
+        await waitButton.click();
+
+        // Verify the dialog is dismissed (optional)
+        await client.waitUntil(
+          async () => {
+            try {
+              const dialog = await elements.systemUIDialog.android();
+              return !(await dialog.isDisplayed());
+            } catch {
+              return true;
+            }
+          },
+          {
+            timeout: WAIT_TIMEOUT,
+            timeoutMsg: `System UI dialog still visible after ${WAIT_TIMEOUT}ms`,
+            interval: 1000,
+          },
+        );
+      }
+    } catch (error) {
+      throw new Error(`Test failed: ${error.message}`);
+    }
+  });
+});
 describe('Instabug Configuration Validation', () => {
   let configData: any;
 
