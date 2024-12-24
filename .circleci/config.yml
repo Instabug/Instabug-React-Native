@@ -389,6 +389,21 @@ commands:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
           command: |
+            sudo networksetup -setwebproxy "Wi-Fi" localhost 8082
+            sudo networksetup -setwebproxystate "Wi-Fi" on
+            
+            # Configure HTTPS proxy
+            sudo networksetup -setsecurewebproxy "Wi-Fi" localhost 8082
+            sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+            
+            # Optional: Set bypass domains
+            sudo networksetup -setproxybypassdomains "Wi-Fi" "localhost" "127.0.0.1" "*.local"
+            
+            # Verify the configuration
+            echo "HTTP Proxy settings:"
+            networksetup -getwebproxy "Wi-Fi"
+            echo "HTTPS Proxy settings:"
+            networksetup -getsecurewebproxy "Wi-Fi"
             # Boot simulator 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
