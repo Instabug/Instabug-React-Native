@@ -5,7 +5,7 @@ export let capabilities: any;
 const android = {
   platformName: 'Android',
   'appium:platformVersion': '14', //Update Your Platform Version
-  'appium:deviceName': 'pixel_7a',
+  'appium:deviceName': 'Pixel_5',
   'appium:avd': 'Pixel_8_API_34',
   'appium:app': process.env.APK_PATH || './android/app/build/outputs/apk/release/app-release.apk', //apk path
   'appium:appPackage': 'com.instabug.hybridsampleapp',

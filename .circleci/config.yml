@@ -269,7 +269,7 @@ commands:
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd -n Pixel_8_Pro_API_34 \
               -k "system-images;android-34;google_apis;x86_64" \
-              -d "pixel_7a" \
+              -d "Pixel_5" \
               --force
 
       - run:
@@ -892,6 +892,7 @@ jobs:
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
       - setup_ios_proxy
+
       # Run tests
       - run:
           name: Run E2E Tests
