@@ -243,6 +243,7 @@ commands:
       - run:
           name: Start Appium Server
           background: true
+          working_directory: ~/project/examples/hybrid
           command: |
             appium --port 4724  \
               --log-timestamp \
@@ -266,7 +267,7 @@ commands:
           name: Setup Android SDK and Emulator
           command: |
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
-            echo "no" | avdmanager create avd -n Pixel_8 \
+            echo "no" | avdmanager create avd -n Pixel_8_Pro_API_34 \
               -k "system-images;android-34;google_apis;x86_64" \
               -d "pixel_3a" \
               --force
@@ -275,7 +276,7 @@ commands:
           name: Start Emulator with System Writable
           background: true
           command: |
-            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8 \
+            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8_Pro_API_34 \
             -no-snapshot \
             -no-boot-anim \
             -no-window \
