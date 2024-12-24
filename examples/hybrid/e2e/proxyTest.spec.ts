@@ -108,6 +108,8 @@ describe('Instabug Configuration Validation', () => {
   it('should verify React Native button visibility', async () => {
     try {
       if (process.env.E2E_DEVICE === 'android') {
+        console.log('Current UI XML:', await client.getPageSource());
+
         const selector =
           'android=new UiSelector().resourceId("com.instabug.hybridsampleapp:id/button_react_native")';
         await client.waitUntil(

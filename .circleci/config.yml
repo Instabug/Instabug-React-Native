@@ -274,7 +274,7 @@ commands:
           name: Start Emulator with System Writable
           background: true
           command: |
-            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd test_device \
+            $ANDROID_HOME/emulator/emulator -avd test_device \
             -no-snapshot \
             -no-boot-anim \
             -no-window \
@@ -898,8 +898,6 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - setup_ios_proxy
-      - setup_appium
       - run:
           name: Start MITM Proxy
           background: true
@@ -907,6 +905,9 @@ jobs:
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
 
+      - setup_ios_proxy
+      - setup_appium
+      
       # Run tests
       - run:
           name: Run E2E Tests
