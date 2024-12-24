@@ -266,11 +266,12 @@ commands:
       - run:
           name: Setup Android SDK and Emulator
           command: |
-            sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
-            echo "no" | avdmanager create avd -n Pixel_8_Pro_API_34 \
-              -k "system-images;android-34;google_apis;x86_64" \
-              -d "Pixel_5" \
-              --force
+            sdkmanager --list | grep system-images
+            # sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
+            # echo "no" | avdmanager create avd -n Pixel_8_Pro_API_34 \
+            #   -k "system-images;android-34;google_apis;x86_64" \
+            #   -d "Pixel_5" \
+            #   --force
 
       - run:
           name: Start Emulator with System Writable
