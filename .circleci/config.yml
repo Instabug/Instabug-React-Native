@@ -265,7 +265,9 @@ commands:
           name: Wait for emulator and configure network
           command: |
             adb wait-for-device
-            adb shell "settings put global http_proxy 'localhost:8080'"
+            adb shell settings put global global_http_proxy_host "127.0.0.1"
+            adb shell settings put global global_http_proxy_port 8080
+            adb shell settings put global http_proxy "127.0.0.1:8080"
             adb shell svc wifi enable
             adb shell am broadcast -a android.net.wifi.PICK_WIFI_NETWORK
       - run:
