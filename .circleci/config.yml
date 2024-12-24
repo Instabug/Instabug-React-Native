@@ -390,7 +390,14 @@ commands:
 
             echo "Testing HTTPS connection through proxy..."
             adb shell am start -a android.intent.action.VIEW -d https://google.com
-
+      - run:
+          name: Configure DNS
+          command: |
+            echo "nameserver 8.8.8.8
+            nameserver 8.8.4.4" | sudo tee /etc/resolv.conf > /dev/null
+            
+            # Verify DNS settings
+            cat /etc/resolv.conf
   setup_ios_proxy:
     steps:
       - run:
@@ -406,9 +413,11 @@ commands:
             
             # # Optional: Set bypass domains
             # sudo networksetup -setproxybypassdomains "Wi-Fi" "localhost" "127.0.0.1" "*.local"
+            sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist
+            sudo rm /Library/Preferences/SystemConfiguration/preferences.plist
+            sudo killall -HUP mDNSResponder
+            sudo killall -HUP mDNSResponderHelper
             networksetup -listallnetworkservices
-
-
             # Verify the configuration
             echo "HTTP Proxy settings:"
             networksetup -getwebproxy "Wi-Fi"
