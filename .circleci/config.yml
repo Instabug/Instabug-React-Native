@@ -266,18 +266,16 @@ commands:
       - run:
           name: Setup Android SDK and Emulator
           command: |
-            sdkmanager --list | grep system-images
-            # sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
-            # echo "no" | avdmanager create avd -n Pixel_8_Pro_API_34 \
-            #   -k "system-images;android-34;google_apis;x86_64" \
-            #   -d "Pixel_5" \
-            #   --force
-
+            sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_atd;arm64-v8a"
+            echo "no" | avdmanager create avd -n test_device \
+            -k "system-images;android-34;google_atd;arm64-v8a" \
+            -d "pixel" \
+            --force
       - run:
           name: Start Emulator with System Writable
           background: true
           command: |
-            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd Pixel_8_Pro_API_34 \
+            export ANDROID_AVD_HOME=/Users/$USER/.android/avd && export ANDROID_HOME=$ANDROID_SDK_ROOT && $ANDROID_HOME/emulator/emulator -avd test_device \
             -no-snapshot \
             -no-boot-anim \
             -no-window \
