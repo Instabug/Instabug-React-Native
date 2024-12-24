@@ -265,9 +265,9 @@ commands:
           name: Wait for emulator and configure network
           command: |
             adb wait-for-device
-            adb shell sqlite3 /data/data/com.android.providers.settings/databases/settings.db "insert into global values(null, 'http_proxy', 'localhost:8080');"
+            adb shell "settings put global http_proxy 'localhost:8080'"
             adb shell svc wifi enable
-            adb shell am start -a android.intent.action.VIEW -d "wifi://ssid=CircleCI-Network&password=circle-password&type=WPA2"
+            adb shell am broadcast -a android.net.wifi.PICK_WIFI_NETWORK
       - run:
           name: Configure emulator networking
           command: |
@@ -306,13 +306,31 @@ commands:
             sleep 5
             kill %1
       - run:
-          name: Configure DNS settings
           command: |
-            sudo mkdir -p /etc/resolver
-            echo "nameserver 8.8.8.8" | sudo tee /etc/resolver/mitm
-            echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
-            sudo resolvectl dns eth0 8.8.8.8 8.8.4.4
-            sudo systemctl restart systemd-resolved
+            if [ ! -w /etc ]; then
+              sudo mkdir -p /etc/resolver || echo "Failed to create resolver directory"
+            else
+              mkdir -p /etc/resolver
+            fi
+            
+            if [ -w /etc/resolver ]; then
+              echo "nameserver 8.8.8.8" > /etc/resolver/mitm
+              echo "nameserver 8.8.4.4" >> /etc/resolver/mitm
+            else
+              echo "nameserver 8.8.8.8" | sudo tee /etc/resolver/mitm
+              echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
+            fi
+            
+            if command -v resolvectl &> /dev/null; then
+              sudo resolvectl dns eth0 8.8.8.8 8.8.4.4 || echo "Failed to set DNS via resolvectl"
+            else
+              echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
+              echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
+            fi
+            
+            if command -v systemctl &> /dev/null; then
+              sudo systemctl restart systemd-resolved || echo "Failed to restart systemd-resolved"
+            fi
   setup_ios_proxy:
     steps:
       - run:
