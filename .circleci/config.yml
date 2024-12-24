@@ -394,16 +394,18 @@ commands:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
           command: |
-            sudo networksetup -setwebproxy "Wi-Fi" localhost 8082
-            sudo networksetup -setwebproxystate "Wi-Fi" on
+            # sudo networksetup -setwebproxy "Wi-Fi" localhost 8082
+            # sudo networksetup -setwebproxystate "Wi-Fi" on
             
-            # Configure HTTPS proxy
-            sudo networksetup -setsecurewebproxy "Wi-Fi" localhost 8082
-            sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+            # # Configure HTTPS proxy
+            # sudo networksetup -setsecurewebproxy "Wi-Fi" localhost 8082
+            # sudo networksetup -setsecurewebproxystate "Wi-Fi" on
             
-            # Optional: Set bypass domains
-            sudo networksetup -setproxybypassdomains "Wi-Fi" "localhost" "127.0.0.1" "*.local"
-            
+            # # Optional: Set bypass domains
+            # sudo networksetup -setproxybypassdomains "Wi-Fi" "localhost" "127.0.0.1" "*.local"
+            networksetup -listallnetworkservices
+
+
             # Verify the configuration
             echo "HTTP Proxy settings:"
             networksetup -getwebproxy "Wi-Fi"
