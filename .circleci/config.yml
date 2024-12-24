@@ -377,6 +377,7 @@ commands:
     steps:
       - run:
           name: Configure and Test Proxy Settings
+          working_directory: ~/project/examples/hybrid
           command: |
             # Boot simulator 
             xcrun simctl shutdown all
