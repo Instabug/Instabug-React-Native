@@ -194,10 +194,6 @@ commands:
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
 
-            # Start mitmdump
-            mitmdump --set block_global=false &
-            sleep 10
-
             # Create mitmproxy directory
             mkdir -p ~/.mitmproxy
 
