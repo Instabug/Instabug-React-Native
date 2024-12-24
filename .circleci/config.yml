@@ -193,6 +193,9 @@ commands:
             # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
+            mitmdump --set block_global=false & 
+            MITM_PID=$!
+            sleep 10
 
             # Create mitmproxy directory
             mkdir -p ~/.mitmproxy
@@ -212,6 +215,8 @@ commands:
             openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
 
             echo "MITM Proxy setup completed"
+            # Kill it using the saved PID
+            kill $MITM_PID || kill -9 $MITM_PID
 
   setup_appium:
     steps:
