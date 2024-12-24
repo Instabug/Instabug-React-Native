@@ -841,7 +841,7 @@ jobs:
         type: string
     executor:
       name: android/android-machine
-      tag: android@2024.11.1-browsers
+      tag: '2024.11.1'
       resource-class: large
     environment:
       DOMAIN: << parameters.DOMAIN >>
