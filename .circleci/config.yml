@@ -266,9 +266,9 @@ commands:
       - run:
           name: Setup Android SDK and Emulator
           command: |
-            sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_atd;arm64-v8a"
+            sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
             echo "no" | avdmanager create avd -n test_device \
-            -k "system-images;android-34;google_atd;arm64-v8a" \
+            -k "system-images;android-34;google_apis;x86_64" \
             -d "pixel" \
             --force
       - run:
@@ -883,6 +883,7 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
+      - setup_ios_proxy
       - setup_appium
       - run:
           name: Start MITM Proxy
@@ -890,7 +891,6 @@ jobs:
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
-      - setup_ios_proxy
 
       # Run tests
       - run:
