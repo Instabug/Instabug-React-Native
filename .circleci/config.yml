@@ -369,8 +369,17 @@ commands:
 
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8084
-            adb shell settings put global http_proxy "127.0.0.1:8084"    
+            adb shell settings put global global_http_proxy_port 8080
+            adb shell settings put global http_proxy "127.0.0.1:8080"    
+
+      - run:
+          name: install yarn and start app
+          working_directory: ~/project/examples/hybrid
+          command: |
+            npm cache clean --force
+            yarn install
+            yarn start & # Start metro in background
+            yarn android &> build-android.log # Run React Native app
 
   setup_ios_proxy:
     steps:
