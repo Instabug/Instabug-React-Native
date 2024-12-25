@@ -193,8 +193,9 @@ commands:
             # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
-            mitmdump --set block_global=false & 
-            MITM_PID=$!
+
+            # Start mitmdump
+            mitmdump --set block_global=false &
             sleep 10
 
             # Create mitmproxy directory
@@ -215,9 +216,6 @@ commands:
             openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
 
             echo "MITM Proxy setup completed"
-            # Kill it using the saved PID
-            kill $MITM_PID || kill -9 $MITM_PID
-
 
   setup_appium:
     steps:
@@ -334,6 +332,7 @@ commands:
               echo "Waiting for emulator to start... ($i/30)"
               sleep 10
             done
+            # Wait for emulator boot completion
             adb wait-for-device
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -342,32 +341,44 @@ commands:
               echo "Waiting for boot to complete... ($i/30)"
               sleep 10
             done
+
+            # Remount system partition and prepare for certificate installation
             adb root
             sleep 5
             adb shell avbctl disable-verification
             sleep 2
             adb reboot
+
+            # Wait for reboot
             echo "Waiting for device to reboot..."
             sleep 30
             adb wait-for-device
+
+            # Remount system partition as writable
             adb root
             sleep 5
             adb shell setenforce 0
             adb disable-verity
             adb reboot
+
+            # Wait for second reboot
             echo "Waiting for device to reboot again..."
             sleep 30
             adb wait-for-device
+
+            # Final remount
             adb root
             sleep 5
             adb remount
             adb shell setprop net.eth0.dns1 8.8.8.8
             adb shell setprop net.eth0.dns2 8.8.4.4
+            # Install MITM certificate
             echo "Installing certificate..."
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             adb push $HASH.0 /system/etc/security/cacerts/ && \
             adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+
             echo "Waiting for network connectivity..."
             for i in {1..30}; do
               if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
@@ -377,6 +388,7 @@ commands:
               echo "Attempt $i/30: Network not ready yet..."
               sleep 2
             done
+
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
             adb shell settings put global global_http_proxy_port 8084
@@ -396,36 +408,13 @@ commands:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
           command: |
-            sudo rm -f /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist
-            sudo rm -f /Library/Preferences/SystemConfiguration/preferences.plist
-            # sudo killall -HUP mDNSResponder
-            # sudo killall -HUP mDNSResponderHelper
-            
-            # Configure system proxy
-            # NETWORK_SERVICE="Wi-Fi"
-            # PROXY_HOST="127.0.0.1"
-            # PROXY_PORT="8082"
-            
-            # # Set HTTP proxy
-            # networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
-            # networksetup -setwebproxystate "$NETWORK_SERVICE" on
-            
-            # # Set HTTPS proxy
-            # networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
-            # networksetup -setsecurewebproxystate "$NETWORK_SERVICE" on
-            
-            # Verify settings
-            # echo "HTTP Proxy settings:"
-            # networksetup -getwebproxy "$NETWORK_SERVICE"
-            # echo "HTTPS Proxy settings:"
-            # networksetup -getsecurewebproxy "$NETWORK_SERVICE"
-            
-            # Reset and configure simulator
+            # Boot simulator 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
-            
-            # Test proxy connection
+            echo "wait to boot..."
+            sleep 5  # Wait for simulator to boot
+
+            # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
                 echo "Proxy test failed"
@@ -914,13 +903,6 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - run:
-          name: Start MITM Proxy
-          background: true
-          command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
-            sleep 10
-
       - setup_ios_proxy
       - setup_appium
       
