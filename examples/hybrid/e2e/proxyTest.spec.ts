@@ -106,9 +106,6 @@ const elements = {
   },
 };
 describe('System UI Dialog Handling', () => {
-  beforeEach(async () => {
-    await client.setTimeout({ implicit: 500000 });
-  });
 
   it('should handle System UI not responding dialog continuously', async () => {
     try {
@@ -185,11 +182,6 @@ describe('System UI Dialog Handling', () => {
 });
 describe('Instabug Configuration Validation', () => {
   let configData: any;
-
-  beforeEach(async () => {
-    // Reset timeouts before each test
-    await client.setTimeout({ implicit: 500000 });
-  });
 
   it('should verify React Native button visibility', async () => {
     try {
