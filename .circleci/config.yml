@@ -380,16 +380,7 @@ commands:
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
             adb shell settings put global global_http_proxy_port 8084
-            adb shell settings put global http_proxy "127.0.0.1:8084"
-            echo "Testing network connection..."
-            sudo networksetup -setdnsservers Wi-Fi 8.8.8.8 8.8.4.4
-            sudo killall -HUP mDNSResponder
-            sudo killall -HUP mDNSResponderHelper
-            
-            # Test DNS
-            ping -c 4 8.8.8.8            
-            echo "Testing HTTPS connection through proxy..."
-            adb shell am start -a android.intent.action.VIEW -d https://google.com
+            adb shell settings put global http_proxy "127.0.0.1:8084"    
 
       - run:
           name: install yarn and start app
