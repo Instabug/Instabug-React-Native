@@ -382,7 +382,12 @@ commands:
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "127.0.0.1:8084"
             echo "Testing network connection..."
-            adb shell ping -c 4 8.8.8.8
+            sudo networksetup -setdnsservers Wi-Fi 8.8.8.8 8.8.4.4
+            sudo killall -HUP mDNSResponder
+            sudo killall -HUP mDNSResponderHelper
+            
+            # Test DNS
+            ping -c 4 8.8.8.8            
             echo "Testing HTTPS connection through proxy..."
             adb shell am start -a android.intent.action.VIEW -d https://google.com
 
@@ -406,23 +411,23 @@ commands:
             sudo killall -HUP mDNSResponderHelper
             
             # Configure system proxy
-            NETWORK_SERVICE="Wi-Fi"
-            PROXY_HOST="127.0.0.1"
-            PROXY_PORT="8082"
+            # NETWORK_SERVICE="Wi-Fi"
+            # PROXY_HOST="127.0.0.1"
+            # PROXY_PORT="8082"
             
-            # Set HTTP proxy
-            networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
-            networksetup -setwebproxystate "$NETWORK_SERVICE" on
+            # # Set HTTP proxy
+            # networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
+            # networksetup -setwebproxystate "$NETWORK_SERVICE" on
             
-            # Set HTTPS proxy
-            networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
-            networksetup -setsecurewebproxystate "$NETWORK_SERVICE" on
+            # # Set HTTPS proxy
+            # networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
+            # networksetup -setsecurewebproxystate "$NETWORK_SERVICE" on
             
             # Verify settings
-            echo "HTTP Proxy settings:"
-            networksetup -getwebproxy "$NETWORK_SERVICE"
-            echo "HTTPS Proxy settings:"
-            networksetup -getsecurewebproxy "$NETWORK_SERVICE"
+            # echo "HTTP Proxy settings:"
+            # networksetup -getwebproxy "$NETWORK_SERVICE"
+            # echo "HTTPS Proxy settings:"
+            # networksetup -getsecurewebproxy "$NETWORK_SERVICE"
             
             # Reset and configure simulator
             xcrun simctl shutdown all
