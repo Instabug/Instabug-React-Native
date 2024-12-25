@@ -342,29 +342,7 @@ commands:
               sleep 10
             done
 
-            # Remount system partition and prepare for certificate installation
-            adb root
-            sleep 5
-            adb shell avbctl disable-verification
-            sleep 2
-            adb reboot
 
-            # Wait for reboot
-            echo "Waiting for device to reboot..."
-            sleep 30
-            adb wait-for-device
-
-            # Remount system partition as writable
-            adb root
-            sleep 5
-            adb shell setenforce 0
-            adb disable-verity
-            adb reboot
-
-            # Wait for second reboot
-            echo "Waiting for device to reboot again..."
-            sleep 30
-            adb wait-for-device
 
             # Final remount
             adb root
@@ -394,14 +372,6 @@ commands:
             adb shell settings put global global_http_proxy_port 8084
             adb shell settings put global http_proxy "127.0.0.1:8084"    
 
-      - run:
-          name: install yarn and start app
-          working_directory: ~/project/examples/hybrid
-          command: |
-            npm cache clean --force
-            yarn install
-            yarn start & # Start metro in background
-            yarn android &> build-android.log # Run React Native app
   setup_ios_proxy:
     steps:
       - run:

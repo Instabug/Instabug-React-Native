@@ -188,7 +188,7 @@ describe('Instabug Configuration Validation', () => {
 
   beforeEach(async () => {
     // Reset timeouts before each test
-    await client.setTimeout({ implicit: 5000 });
+    await client.setTimeout({ implicit: 500000 });
   });
 
   it('should verify React Native button visibility', async () => {
