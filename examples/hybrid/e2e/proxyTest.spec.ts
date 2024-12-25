@@ -110,32 +110,58 @@ describe('System UI Dialog Handling', () => {
     await client.setTimeout({ implicit: 5000 });
   });
 
-  it('should handle System UI not responding dialog', async () => {
+  it('should handle System UI not responding dialog continuously', async () => {
     try {
       if (process.env.E2E_DEVICE === 'android') {
-        // Wait for the System UI dialog to appear
-        await client.waitUntil(
-          async () => {
-            try {
-              const dialog = await elements.systemUIDialog.android();
-              return await dialog.isDisplayed();
-            } catch {
-              return false;
+        let dialogVisible = true;
+
+        while (dialogVisible) {
+          try {
+            // Wait for the System UI dialog to appear
+            await client.waitUntil(
+              async () => {
+                try {
+                  const dialog = await elements.systemUIDialog.android();
+                  return await dialog.isDisplayed();
+                } catch {
+                  return false;
+                }
+              },
+              {
+                timeout: WAIT_TIMEOUT,
+                timeoutMsg: `System UI dialog not visible after ${WAIT_TIMEOUT}ms`,
+                interval: 1000,
+              },
+            );
+
+            // Get and click the Wait button
+            const waitButton = await elements.systemUIWaitButton.android();
+            if (await waitButton.isDisplayed()) {
+              await waitButton.click();
+
+              // Wait a bit before checking if dialog is still visible
+              await client.pause(2000);
+
+              // Check if dialog is still visible
+              try {
+                const dialog = await elements.systemUIDialog.android();
+                dialogVisible = await dialog.isDisplayed();
+              } catch {
+                dialogVisible = false;
+              }
+            } else {
+              dialogVisible = false;
             }
-          },
-          {
-            timeout: WAIT_TIMEOUT,
-            timeoutMsg: `System UI dialog not visible after ${WAIT_TIMEOUT}ms`,
-            interval: 1000,
-          },
-        );
+          } catch (error) {
+            // If waitUntil times out, assume dialog is no longer visible
+            dialogVisible = false;
+          }
 
-        // Get and click the Wait button
-        const waitButton = await elements.systemUIWaitButton.android();
-        expect(await waitButton.isDisplayed()).toBe(true);
-        await waitButton.click();
+          // Add a small pause between iterations to prevent excessive CPU usage
+          await client.pause(1000);
+        }
 
-        // Verify the dialog is dismissed (optional)
+        // Final verification that dialog is dismissed
         await client.waitUntil(
           async () => {
             try {

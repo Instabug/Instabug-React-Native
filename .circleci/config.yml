@@ -398,8 +398,8 @@ commands:
           command: |
             sudo rm -f /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist
             sudo rm -f /Library/Preferences/SystemConfiguration/preferences.plist
-            sudo killall -HUP mDNSResponder
-            sudo killall -HUP mDNSResponderHelper
+            # sudo killall -HUP mDNSResponder
+            # sudo killall -HUP mDNSResponderHelper
             
             # Configure system proxy
             # NETWORK_SERVICE="Wi-Fi"
