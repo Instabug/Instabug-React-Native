@@ -193,7 +193,11 @@ commands:
             # Upgrade pip and install mitmproxy
             pip3 install --upgrade pip
             pip3 install mitmproxy==10.2.4
-             # Create mitmproxy directory
+            mitmdump --set block_global=false & 
+            MITM_PID=$!
+            sleep 10
+
+            # Create mitmproxy directory
             mkdir -p ~/.mitmproxy
 
             # Wait for certificate generation
