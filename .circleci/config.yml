@@ -400,44 +400,44 @@ commands:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
           command: |
-            # sudo networksetup -setwebproxy "Wi-Fi" localhost 8082
-            # sudo networksetup -setwebproxystate "Wi-Fi" on
-            
-            # # Configure HTTPS proxy
-            # sudo networksetup -setsecurewebproxy "Wi-Fi" localhost 8082
-            # sudo networksetup -setsecurewebproxystate "Wi-Fi" on
-            
-            # # Optional: Set bypass domains
-            # sudo networksetup -setproxybypassdomains "Wi-Fi" "localhost" "127.0.0.1" "*.local"
-            sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist
-            sudo rm /Library/Preferences/SystemConfiguration/preferences.plist
+            sudo rm -f /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist
+            sudo rm -f /Library/Preferences/SystemConfiguration/preferences.plist
             sudo killall -HUP mDNSResponder
             sudo killall -HUP mDNSResponderHelper
-            networksetup -listallnetworkservices
-            # Verify the configuration
+            
+            # Configure system proxy
+            NETWORK_SERVICE="Wi-Fi"
+            PROXY_HOST="127.0.0.1"
+            PROXY_PORT="8082"
+            
+            # Set HTTP proxy
+            networksetup -setwebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
+            networksetup -setwebproxystate "$NETWORK_SERVICE" on
+            
+            # Set HTTPS proxy
+            networksetup -setsecurewebproxy "$NETWORK_SERVICE" "$PROXY_HOST" "$PROXY_PORT"
+            networksetup -setsecurewebproxystate "$NETWORK_SERVICE" on
+            
+            # Verify settings
             echo "HTTP Proxy settings:"
-            networksetup -getwebproxy "Wi-Fi"
+            networksetup -getwebproxy "$NETWORK_SERVICE"
             echo "HTTPS Proxy settings:"
-            networksetup -getsecurewebproxy "Wi-Fi"
-            # Boot simulator 
+            networksetup -getsecurewebproxy "$NETWORK_SERVICE"
+            
+            # Reset and configure simulator
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
-            echo "wait to boot..."
-            sleep 5  # Wait for simulator to boot
-
-            # Test proxy connection with verbose output
+            sleep 5
+            
+            # Test proxy connection
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
-              echo "Proxy test failed"
-              # Print proxy processes for debugging
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-              # Print proxy logs if available
-              echo "Proxy logs:"
-              cat appium.log || true
+                echo "Proxy test failed"
+                echo "Running proxy processes:"
+                ps aux | grep mitm
             }
-
-            # Set simulator proxy
+            
+            # Configure simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
