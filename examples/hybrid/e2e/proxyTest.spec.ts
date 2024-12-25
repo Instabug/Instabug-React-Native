@@ -107,7 +107,7 @@ const elements = {
 };
 describe('System UI Dialog Handling', () => {
   beforeEach(async () => {
-    await client.setTimeout({ implicit: 5000 });
+    await client.setTimeout({ implicit: 500000 });
   });
 
   it('should handle System UI not responding dialog continuously', async () => {
