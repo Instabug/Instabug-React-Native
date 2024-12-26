@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082
           background: true
 
       - run:
@@ -339,7 +339,7 @@ commands:
           background: true
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
-            -http-proxy http://localhost:8080 \
+            -http-proxy http://localhost:8082 \
             -dns-server 8.8.8.8 \
             -writable-system \
             -feature -Wifi    \
@@ -392,8 +392,8 @@ commands:
 
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8080
-            adb shell settings put global http_proxy "127.0.0.1:8080"   
+            adb shell settings put global global_http_proxy_port 8082
+            adb shell settings put global http_proxy "127.0.0.1:8082"   
       - run:
                       name: install yarn and start app
                       working_directory: ~/project/examples/hybrid
@@ -446,18 +446,33 @@ commands:
       - run:
           name: Configure HTTP/HTTPS ports
           command: |
-            networksetup -listallnetworkservices
-            # For HTTP
-            # sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8082
-            # sudo networksetup -setwebproxystate "Wi-Fi" on
+            echo "Configuring proxy for Ethernet interface..."
             
-            # # For HTTPS
-            # sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8082
-            # sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+            # Set HTTP proxy
+            sudo networksetup -setwebproxy "Ethernet" 127.0.0.1 8082
+            if [ $? -eq 0 ]; then
+              echo "Successfully configured HTTP proxy"
+              sudo networksetup -setwebproxystate "Ethernet" on
+            else
+              echo "Failed to set HTTP proxy"
+              exit 1
+            fi
             
-            # # Verify the settings
-            # networksetup -getwebproxy "Wi-Fi"
-            # networksetup -getsecurewebproxy "Wi-Fi"
+            # Set HTTPS proxy
+            sudo networksetup -setsecurewebproxy "Ethernet" 127.0.0.1 8082
+            if [ $? -eq 0 ]; then
+              echo "Successfully configured HTTPS proxy"
+              sudo networksetup -setsecurewebproxystate "Ethernet" on
+            else
+              echo "Failed to set HTTPS proxy"
+              exit 1
+            fi
+            
+            # Verify the settings
+            echo "Current HTTP proxy settings:"
+            networksetup -getwebproxy "Ethernet"
+            echo "Current HTTPS proxy settings:"
+            networksetup -getsecurewebproxy "Ethernet"
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
