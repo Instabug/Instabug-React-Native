@@ -341,63 +341,54 @@ commands:
       - run:
           name: Wait for emulator and configure network
           command: |
+            # Wait for emulator
             for i in $(seq 1 30); do
-              if adb devices | grep -q "emulator"; then
-                break
-              fi
-              echo "Waiting for emulator to start... ($i/30)"
+              if adb devices | grep -q "emulator"; then break; fi
+              echo "Waiting for emulator... ($i/30)"
               sleep 10
             done
-            # Wait for emulator boot completion
+            
+            # Wait for boot
             adb wait-for-device
             for i in $(seq 1 30); do
-              if adb shell getprop sys.boot_completed | grep -q "1"; then
-                break
-              fi
-              echo "Waiting for boot to complete... ($i/30)"
+              if adb shell getprop sys.boot_completed | grep -q "1"; then break; fi
+              echo "Waiting for boot... ($i/30)"
               sleep 10
             done
-
-
-
-            # Final remount
-            adb root
-            sleep 5
-            adb remount
-            adb shell setprop net.eth0.dns1 8.8.8.8
-            adb shell setprop net.eth0.dns2 8.8.4.4
-            # Install MITM certificate
-            echo "Installing certificate..."
-            adb root
+            
+            # Disable verity and prepare system
+            adb root && sleep 5
             adb disable-verity
-            adb reboot
-            # Wait for reboot
-            adb root
+            adb reboot && sleep 15
+            adb wait-for-device
+            
+            # Remount and install cert
+            adb root && sleep 5
             adb remount
+            adb shell "mount -o rw,remount /system"
             adb shell "mkdir -p /system/etc/security/cacerts"
+            
+            # Configure DNS
+            adb shell "setprop net.eth0.dns1 8.8.8.8"
+            adb shell "setprop net.eth0.dns2 8.8.4.4"
+            
+            # Install certificate
             CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            adb push ~/.mitmproxy/mitmproxy-ca-cert.cer /system/etc/security/cacerts/${CERT_HASH}.0
+            adb push ~/.mitmproxy/mitmproxy-ca-cert.cer "/system/etc/security/cacerts/${CERT_HASH}.0"
             adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
-            adb root
-            adb disable-verity
-            adb reboot
-            # Wait for reboot
-            adb root
-            adb remount
-            echo "Waiting for network connectivity..."
+            
+            # Wait for network
             for i in {1..30}; do
               if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
-                echo "Network is accessible"
+                echo "Network ready"
                 break
               fi
-              echo "Attempt $i/30: Network not ready yet..."
+              echo "Network attempt $i/30..."
               sleep 2
             done
-
-            echo "Configuring proxy settings..."
-            adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8082
-            adb shell settings put global http_proxy "127.0.0.1:8082"   
+            
+            # Configure proxy
+            adb shell settings put global http_proxy "127.0.0.1:8082"
       - run:
                       name: install yarn and start app
                       working_directory: ~/project/examples/hybrid
@@ -424,8 +415,8 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-            # networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
-            # networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
+            networksetup -setwebproxy "Ethernet" 127.0.0.1 8082
+            networksetup -setsecurewebproxy "Ethernet" 127.0.0.1 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
@@ -497,13 +488,17 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
             # Check if certificate exists
-            xcrun simctl keychain booted list-certs
-
-            # Verify trust settings
-            xcrun simctl keychain booted list-trusted-certs
+            # Add root certificate
+            xcrun simctl keychain booted add-root-cert path/to/certificate.pem
             
-            # Test HTTPS connection (should show no certificate errors)
-            xcrun simctl spawn booted curl -v https://your-mitm-proxy
+            # List installed certificates
+            xcrun simctl keychain booted list-certs
+            
+            # Reset keychain if needed
+            xcrun simctl keychain booted reset
+            
+            # Test HTTPS connection
+            xcrun simctl spawn booted curl -v https://127.0.0.1:8082
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
