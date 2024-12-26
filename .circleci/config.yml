@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false
           background: true
 
       - run:
