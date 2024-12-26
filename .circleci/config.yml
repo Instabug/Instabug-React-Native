@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
           background: true
 
       - run:
@@ -346,65 +346,129 @@ commands:
             -partition-size 2048
 
       - run:
-          name: Wait for emulator and configure network
-          command: |
-            for i in $(seq 1 30); do
-              if adb devices | grep -q "emulator"; then
-                break
-              fi
-              echo "Waiting for emulator to start... ($i/30)"
-              sleep 10
-            done
-            # Wait for emulator boot completion
-            adb wait-for-device
-            for i in $(seq 1 30); do
-              if adb shell getprop sys.boot_completed | grep -q "1"; then
-                break
-              fi
-              echo "Waiting for boot to complete... ($i/30)"
-              sleep 10
-            done
-
-
-
-            # Final remount
-            adb root
-            sleep 5
-            adb remount
-            adb shell setprop net.eth0.dns1 8.8.8.8
-            adb shell setprop net.eth0.dns2 8.8.4.4
-            # Install MITM certificate
-            adb root
-            adb remount
-
-            # Then install the certificate
-            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-            adb push $HASH.0 /system/etc/security/cacerts/
-            adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
-
-            echo "Waiting for network connectivity..."
-            for i in {1..30}; do
-              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
-                echo "Network is accessible"
-                break
-              fi
-              echo "Attempt $i/30: Network not ready yet..."
-              sleep 2
-            done
-
-            echo "Configuring proxy settings..."
-            adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8082
-            adb shell settings put global http_proxy "127.0.0.1:8082"
-      - run:
+            name: Wait for emulator and configure network
+            command: |
+                # Wait for emulator to start
+                for i in $(seq 1 30); do
+                    if adb devices | grep -q "emulator"; then
+                        break
+                    fi
+                    echo "Waiting for emulator to start... ($i/30)"
+                    sleep 10
+                done
+            
+                # Wait for boot completion
+                adb wait-for-device
+                for i in $(seq 1 30); do
+                    if adb shell getprop sys.boot_completed | grep -q "1"; then
+                        break
+                    fi
+                    echo "Waiting for boot to complete... ($i/30)"
+                    sleep 10
+                done
+            
+                # Enable root and unlock bootloader
+                echo "Unlocking bootloader and enabling root access..."
+                adb root
+                sleep 5
+                adb shell su root setenforce 0 || echo "SELinux modification failed - continuing"
+                
+                # Verify if device is unlocked
+                BOOTLOADER_STATUS=$(adb shell getprop ro.bootloader.unlock)
+                if [ "$BOOTLOADER_STATUS" != "1" ]; then
+                    echo "Attempting to unlock bootloader..."
+                    adb reboot bootloader
+                    sleep 10
+                    fastboot flashing unlock || echo "Manual bootloader unlock may be required"
+                    fastboot reboot
+                    sleep 30
+                fi
+            
+                # Remount with verification
+                echo "Attempting to remount system..."
+                adb root
+                sleep 5
+                adb remount || {
+                    echo "Remount failed - trying alternative approach"
+                    adb shell mount -o rw,remount /system
+                }
+            
+                # Configure networking
+                echo "Configuring network settings..."
+                echo "net.ipv6.conf.all.disable_ipv6=1" | sudo tee -a /etc/sysctl.conf
+                echo "net.ipv6.conf.default.disable_ipv6=1" | sudo tee -a /etc/sysctl.conf
+                echo "net.ipv6.conf.lo.disable_ipv6=1" | sudo tee -a /etc/sysctl.conf
+                sudo sysctl -p
+            
+                # Set DNS properties with verification
+                echo "Setting DNS properties..."
+                adb shell setprop net.eth0.dns1 8.8.8.8
+                adb shell setprop net.eth0.dns2 8.8.4.4
+                sleep 2
+                DNS1=$(adb shell getprop net.eth0.dns1)
+                if [ "$DNS1" != "8.8.8.8" ]; then
+                    echo "Warning: DNS1 not set correctly - trying alternative method"
+                    adb shell "echo 'nameserver 8.8.8.8' > /system/etc/resolv.conf"
+                fi
+            
+                # Install MITM certificate with verification
+                echo "Installing certificate..."
+                CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
+                if [ ! -f "$CERT_PATH" ]; then
+                    echo "Error: Certificate file not found at $CERT_PATH"
+                    exit 1
+                fi
+                
+                HASH=$(openssl x509 -inform PEM -subject_hash_old -in $CERT_PATH | head -1)
+                cp $CERT_PATH $HASH.0
+                
+                adb push $HASH.0 /system/etc/security/cacerts/ || {
+                    echo "Certificate push failed - attempting alternative method"
+                    adb shell mount -o rw,remount /system
+                    adb push $HASH.0 /system/etc/security/cacerts/
+                }
+                
+                adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+                
+                # Restart system server more gracefully
+                echo "Restarting system server..."
+                adb shell killall system_server || {
+                    echo "Fallback to stop/start"
+                    adb shell stop
+                    adb shell start
+                }
+            
+                # Network connectivity check with timeout
+                echo "Verifying network connectivity..."
+                for i in {1..30}; do
+                    if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                        echo "Network is accessible"
+                        break
+                    fi
+                    echo "Attempt $i/30: Network not ready yet..."
+                    sleep 2
+                done
+            
+                # Configure proxy with verification
+                echo "Setting up proxy..."
+                adb shell settings put global global_http_proxy_host "127.0.0.1"
+                adb shell settings put global global_http_proxy_port 8080
+                adb shell settings put global http_proxy "127.0.0.1:8080"
+                
+                # Verify proxy settings
+                PROXY_CHECK=$(adb shell settings get global http_proxy)
+                if [ "$PROXY_CHECK" != "127.0.0.1:8080" ]; then
+                    echo "Warning: Proxy settings may not have been applied correctly"
+                fi 
+            
+                  - run:
                       name: install yarn and start app
                       working_directory: ~/project/examples/hybrid
                       command: |
                         npm cache clean --force
                         yarn install
                         yarn start & # Start metro in background
-                        yarn android &> build-android.log # Run React Native app 
+                        yarn android &> build-android.log # Run React Native app
 
   setup_ios_proxy:
     steps:
@@ -446,36 +510,7 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-      - run:
-          name: Configure HTTP/HTTPS ports
-          command: |
-            echo "Configuring proxy for Ethernet interface..."
-            
-            # Set HTTP proxy
-            sudo networksetup -setwebproxy "Ethernet" 127.0.0.1 8082
-            if [ $? -eq 0 ]; then
-              echo "Successfully configured HTTP proxy"
-              sudo networksetup -setwebproxystate "Ethernet" on
-            else
-              echo "Failed to set HTTP proxy"
-              exit 1
-            fi
-            
-            # Set HTTPS proxy
-            sudo networksetup -setsecurewebproxy "Ethernet" 127.0.0.1 8082
-            if [ $? -eq 0 ]; then
-              echo "Successfully configured HTTPS proxy"
-              sudo networksetup -setsecurewebproxystate "Ethernet" on
-            else
-              echo "Failed to set HTTPS proxy"
-              exit 1
-            fi
-            
-            # Verify the settings
-            echo "Current HTTP proxy settings:"
-            networksetup -getwebproxy "Ethernet"
-            echo "Current HTTPS proxy settings:"
-            networksetup -getsecurewebproxy "Ethernet"
+
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
@@ -1098,4 +1133,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            - 
+            - prepare_dream11
