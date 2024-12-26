@@ -374,11 +374,14 @@ commands:
             adb shell setprop net.eth0.dns1 8.8.8.8
             adb shell setprop net.eth0.dns2 8.8.4.4
             # Install MITM certificate
-            echo "Installing certificate..."
+            adb root
+            adb remount
+
+            # Then install the certificate
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
-            adb push $HASH.0 /system/etc/security/cacerts/ && \
-            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+            adb push $HASH.0 /system/etc/security/cacerts/
+            adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
 
             echo "Waiting for network connectivity..."
             for i in {1..30}; do
@@ -393,7 +396,7 @@ commands:
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
             adb shell settings put global global_http_proxy_port 8082
-            adb shell settings put global http_proxy "127.0.0.1:8082"   
+            adb shell settings put global http_proxy "127.0.0.1:8082"
       - run:
                       name: install yarn and start app
                       working_directory: ~/project/examples/hybrid
