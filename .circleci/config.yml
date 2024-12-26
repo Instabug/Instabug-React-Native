@@ -365,6 +365,17 @@ commands:
             # Remount and install cert
             adb root && sleep 5
             adb remount
+            adb shell "ip link set eth0 up"
+            adb shell "ip addr add 10.0.2.15/24 dev eth0"
+            adb shell "ip route add default via 10.0.2.2"
+            
+            # Then configure DNS
+            adb shell "setprop net.dns1 8.8.8.8"
+            adb shell "setprop net.eth0.dns1 8.8.8.8"
+            
+            # Verify setup
+            adb shell "ip route"
+            adb shell ping -c 1 8.8.8.8
             adb shell "mount -o rw,remount /system"
             adb shell "mkdir -p /system/etc/security/cacerts"
             adb shell "ip link set eth0 up"
