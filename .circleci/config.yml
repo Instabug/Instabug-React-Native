@@ -486,6 +486,14 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
+            # Check if certificate exists
+            xcrun simctl keychain booted list-certs
+
+            # Verify trust settings
+            xcrun simctl keychain booted list-trusted-certs
+            
+            # Test HTTPS connection (should show no certificate errors)
+            xcrun simctl spawn booted curl -v https://your-mitm-proxy
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
