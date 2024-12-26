@@ -387,7 +387,17 @@ commands:
               echo "Network attempt $i/30..."
               sleep 2
             done
+            # Verify network interface
+            adb shell ip addr show
             
+            # Check DNS persistence
+            adb shell getprop net.eth0.dns1
+            
+            # Try disabling proxy temporarily
+            adb shell settings delete global http_proxy
+            
+            # Test connectivity without proxy
+            adb shell ping -c 1 google.com
             # Configure proxy
             adb shell settings put global http_proxy "127.0.0.1:8082"
             adb shell "ls -l /system/etc/security/cacerts/ | grep mitmproxy"
@@ -490,8 +500,13 @@ commands:
             sleep 5
             # Check if certificate exists
             # Add root certificate
-            xcrun simctl keychain booted add-root-cert path/to/certificate.pem
-            
+            xcrun simctl keychain booted add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
+
+            # Verify certificate exists
+            ls -l ~/.mitmproxy/mitmproxy-ca-cert.pem
+
+            # Verify simulator state
+            xcrun simctl list devices | grep "Booted"
             # List installed certificates
             xcrun simctl keychain booted list-certs
             
