@@ -487,7 +487,8 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-
+            networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
+            networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
