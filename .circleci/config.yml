@@ -415,8 +415,14 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-            networksetup -setwebproxy "Ethernet" 127.0.0.1 8082
-            networksetup -setsecurewebproxy "Ethernet" 127.0.0.1 8082
+            export HTTP_PROXY="http://127.0.0.1:8082"
+            export HTTPS_PROXY="http://127.0.0.1:8082"
+            export http_proxy="http://127.0.0.1:8082"
+            export https_proxy="http://127.0.0.1:8082"
+            export PROXY="http://127.0.0.1:8082"
+            export GLOBAL_PROXY="http://127.0.0.1:8082"
+            sudo iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-port 8082
+            sudo iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to-port 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
