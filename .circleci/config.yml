@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082
           background: true
 
       - run:
@@ -452,12 +452,12 @@ commands:
                 # Configure proxy with verification
                 echo "Setting up proxy..."
                 adb shell settings put global global_http_proxy_host "127.0.0.1"
-                adb shell settings put global global_http_proxy_port 8080
-                adb shell settings put global http_proxy "127.0.0.1:8080"
+                adb shell settings put global global_http_proxy_port 8082
+                adb shell settings put global http_proxy "127.0.0.1:8082"
                 
                 # Verify proxy settings
                 PROXY_CHECK=$(adb shell settings get global http_proxy)
-                if [ "$PROXY_CHECK" != "127.0.0.1:8080" ]; then
+                if [ "$PROXY_CHECK" != "127.0.0.1:8082" ]; then
                     echo "Warning: Proxy settings may not have been applied correctly"
                 fi 
             
