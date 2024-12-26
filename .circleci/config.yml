@@ -342,6 +342,7 @@ commands:
             -http-proxy http://localhost:8080 \
             -dns-server 8.8.8.8 \
             -writable-system \
+            -feature -Wifi    \
             -partition-size 2048
 
       - run:
@@ -391,8 +392,16 @@ commands:
 
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8084
-            adb shell settings put global http_proxy "127.0.0.1:8084"    
+            adb shell settings put global global_http_proxy_port 8080
+            adb shell settings put global http_proxy "127.0.0.1:8080"   
+      - run:
+                      name: install yarn and start app
+                      working_directory: ~/project/examples/hybrid
+                      command: |
+                        npm cache clean --force
+                        yarn install
+                        yarn start & # Start metro in background
+                        yarn android &> build-android.log # Run React Native app 
 
   setup_ios_proxy:
     steps:
@@ -434,7 +443,20 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-
+      - run:
+          name: Configure HTTP/HTTPS ports
+          command: |
+            # For HTTP
+            sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8082
+            sudo networksetup -setwebproxystate "Wi-Fi" on
+            
+            # For HTTPS
+            sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8082
+            sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+            
+            # Verify the settings
+            networksetup -getwebproxy "Wi-Fi"
+            networksetup -getsecurewebproxy "Wi-Fi"
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
@@ -1057,4 +1079,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            - prepare_dream11
+            - 

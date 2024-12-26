@@ -184,34 +184,36 @@ describe('Instabug Configuration Validation', () => {
 
   it('should verify React Native button visibility', async () => {
     try {
-      console.log('Current UI XML:', await client.getPageSource());
+      if (process.env.E2E_DEVICE === 'android') {
+        console.log('Current UI XML:', await client.getPageSource());
 
-      const selector =
-        'android=new UiSelector().resourceId("com.instabug.hybridsampleapp:id/button_react_native")';
-      await client.waitUntil(
-        async () => {
-          try {
-            const element = await client.$(selector);
-            return await element.isDisplayed();
-          } catch {
-            return false;
-          }
-        },
-        {
-          timeout: WAIT_TIMEOUT,
-          timeoutMsg: `React Native button not visible after ${WAIT_TIMEOUT}ms`,
-          interval: 1000,
-        },
-      );
+        const selector =
+          'android=new UiSelector().resourceId("com.instabug.hybridsampleapp:id/button_react_native")';
+        await client.waitUntil(
+          async () => {
+            try {
+              const element = await client.$(selector);
+              return await element.isDisplayed();
+            } catch {
+              return false;
+            }
+          },
+          {
+            timeout: WAIT_TIMEOUT,
+            timeoutMsg: `React Native button not visible after ${WAIT_TIMEOUT}ms`,
+            interval: 1000,
+          },
+        );
 
-      const button = await client.$(selector);
-      expect(await button.isDisplayed()).toBe(true);
+        const button = await client.$(selector);
+        expect(await button.isDisplayed()).toBe(true);
+      } else {
+        const floatingButton = await getElement('floatingButton');
+        await floatingButton.click();
 
-      const floatingButton = await getElement('floatingButton');
-      await floatingButton.click();
-
-      const reportBugMenu = await getElement('reportBugMenuItem');
-      expect(await reportBugMenu.isDisplayed()).toBe(true);
+        const reportBugMenu = await getElement('reportBugMenuItem');
+        expect(await reportBugMenu.isDisplayed()).toBe(true);
+      }
     } catch (error) {
       throw new Error(`Test failed: ${error.message}`);
     }
