@@ -367,7 +367,16 @@ commands:
             adb remount
             adb shell "mount -o rw,remount /system"
             adb shell "mkdir -p /system/etc/security/cacerts"
+            adb shell "ip link set eth0 up"
+
+            # Add IP address to eth0
+            adb shell "ip addr add 192.168.1.2/24 dev eth0"
             
+            # Verify connection
+            adb shell ping -c 1 8.8.8.8
+            
+            # Configure routes if needed
+            adb shell "ip route add default via 192.168.1.1"
             # Configure DNS
             adb shell "setprop net.eth0.dns1 8.8.8.8"
             adb shell "setprop net.eth0.dns2 8.8.4.4"
@@ -500,21 +509,16 @@ commands:
             sleep 5
             # Check if certificate exists
             # Add root certificate
-            xcrun simctl keychain booted add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
+            DEVICE_ID=$(xcrun simctl list | grep Booted | cut -d "(" -f 2 | cut -d ")" -f 1)
 
-            # Verify certificate exists
-            ls -l ~/.mitmproxy/mitmproxy-ca-cert.pem
-
-            # Verify simulator state
-            xcrun simctl list devices | grep "Booted"
-            # List installed certificates
-            xcrun simctl keychain booted list-certs
+            # Add certificate
+            xcrun simctl keychain "$DEVICE_ID" add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
             
-            # Reset keychain if needed
-            xcrun simctl keychain booted reset
+            # List certificates to verify installation
+            xcrun simctl keychain "$DEVICE_ID" list-certs
             
             # Test HTTPS connection
-            xcrun simctl spawn booted curl -v https://127.0.0.1:8082
+            xcrun simctl spawn "$DEVICE_ID" curl -v https://127.0.0.1:8082
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
