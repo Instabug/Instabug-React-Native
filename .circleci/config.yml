@@ -341,7 +341,8 @@ commands:
             $ANDROID_HOME/emulator/emulator -avd test_device \
             -http-proxy http://localhost:8080 \
             -dns-server 8.8.8.8 \
-            -feature -Wifi    \
+            -writable-system \
+             -feature -Wifi    \
             -partition-size 2048
 
       - run:
