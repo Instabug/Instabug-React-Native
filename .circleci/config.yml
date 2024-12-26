@@ -446,17 +446,18 @@ commands:
       - run:
           name: Configure HTTP/HTTPS ports
           command: |
+            networksetup -listallnetworkservices
             # For HTTP
-            sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8082
-            sudo networksetup -setwebproxystate "Wi-Fi" on
+            # sudo networksetup -setwebproxy "Wi-Fi" 127.0.0.1 8082
+            # sudo networksetup -setwebproxystate "Wi-Fi" on
             
-            # For HTTPS
-            sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8082
-            sudo networksetup -setsecurewebproxystate "Wi-Fi" on
+            # # For HTTPS
+            # sudo networksetup -setsecurewebproxy "Wi-Fi" 127.0.0.1 8082
+            # sudo networksetup -setsecurewebproxystate "Wi-Fi" on
             
-            # Verify the settings
-            networksetup -getwebproxy "Wi-Fi"
-            networksetup -getsecurewebproxy "Wi-Fi"
+            # # Verify the settings
+            # networksetup -getwebproxy "Wi-Fi"
+            # networksetup -getsecurewebproxy "Wi-Fi"
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
