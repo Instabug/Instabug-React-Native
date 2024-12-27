@@ -369,9 +369,6 @@ commands:
             adb remount
             sleep 5
             
-            # Configure network properly - using Android's default emulator network setup
-            adb shell "svc wifi enable"
-            sleep 5
             adb shell "settings put global airplane_mode_on 0"
             sleep 2
             
@@ -457,6 +454,7 @@ commands:
           command: |
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
+      # Boot the iOS simulator, configure it, and test proxy
       - run:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
@@ -464,9 +462,10 @@ commands:
             # Boot simulator 
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
-            echo "wait to boot..."
-            sleep 5  # Wait for simulator to boot
-            # Test proxy connection with verbose output
+            echo "Waiting for simulator to boot..."
+            sleep 15  # Ensure the simulator is fully booted
+
+            # Test proxy connection with MITMProxy
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
                 echo "Proxy test failed"
@@ -475,6 +474,7 @@ commands:
             }
             
             # Configure simulator proxy
+            echo "Configuring simulator proxy settings..."
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
@@ -560,9 +560,9 @@ commands:
             xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
             sleep 5  # Wait for profile installation
             
-            # Install root certificate
+            # Install the root certificate (using add-cert)
             if [ -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; then
-                xcrun simctl keychain "$DEVICE_ID" add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
+                xcrun simctl keychain "$DEVICE_ID" add-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
             else
                 echo "Certificate file not found at ~/.mitmproxy/mitmproxy-ca-cert.pem"
                 exit 1
@@ -571,8 +571,10 @@ commands:
             # Verify certificate installation
             xcrun simctl keychain "$DEVICE_ID" list-certs
             
-            # Test HTTPS connection
+            # Test HTTPS connection with the MITMProxy
             xcrun simctl spawn "$DEVICE_ID" curl -v https://127.0.0.1:8082
+            xcrun simctl spawn "$DEVICE_ID" curl -v --proxy http://localhost:8082 https://example.com
+            xcrun simctl spawn "$DEVICE_ID" curl -v https://example.com
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
