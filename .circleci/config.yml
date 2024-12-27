@@ -343,85 +343,103 @@ commands:
           command: |
             # Wait for emulator
             for i in $(seq 1 30); do
-              if adb devices | grep -q "emulator"; then break; fi
-              echo "Waiting for emulator... ($i/30)"
-              sleep 10
+                if adb devices | grep -q "emulator"; then break; fi
+                echo "Waiting for emulator... ($i/30)"
+                sleep 10
             done
             
-            # Wait for boot
+            # Wait for boot completion
             adb wait-for-device
             for i in $(seq 1 30); do
-              if adb shell getprop sys.boot_completed | grep -q "1"; then break; fi
-              echo "Waiting for boot... ($i/30)"
-              sleep 10
+                if adb shell getprop sys.boot_completed | grep -q "1"; then break; fi
+                echo "Waiting for boot... ($i/30)"
+                sleep 10
             done
             
-            # Disable verity and prepare system
-            adb root && sleep 5
+            # First root access and disable verity
+            adb root && sleep 10
             adb disable-verity
-            adb reboot && sleep 15
-            adb wait-for-device
+            adb reboot && sleep 30  # Increased sleep time after reboot
             
-            # Remount and install cert
-            adb root && sleep 5
+            # Wait for device after reboot
+            adb wait-for-device && sleep 10
+            adb root && sleep 10
+            
+            # Remount with proper checks
             adb remount
+            sleep 5
+            
+            # Configure network properly - using Android's default emulator network setup
+            adb shell "svc wifi enable"
+            sleep 5
+            adb shell "settings put global airplane_mode_on 0"
+            sleep 2
+            
+            # Setup basic network configuration
+            adb shell "ip link set eth0 down"
+            sleep 2
             adb shell "ip link set eth0 up"
+            sleep 2
             adb shell "ip addr add 10.0.2.15/24 dev eth0"
             adb shell "ip route add default via 10.0.2.2"
             
-            # Then configure DNS
+            # Configure DNS with both IPv4 and IPv6
             adb shell "setprop net.dns1 8.8.8.8"
-            adb shell "setprop net.eth0.dns1 8.8.8.8"
-            
-            # Verify setup
-            adb shell "ip route"
-            adb shell ping -c 1 8.8.8.8
-            adb shell "mount -o rw,remount /system"
-            adb shell "mkdir -p /system/etc/security/cacerts"
-            adb shell "ip link set eth0 up"
-
-            # Add IP address to eth0
-            adb shell "ip addr add 192.168.1.2/24 dev eth0"
-            
-            # Verify connection
-            adb shell ping -c 1 8.8.8.8
-            
-            # Configure routes if needed
-            adb shell "ip route add default via 192.168.1.1"
-            # Configure DNS
+            adb shell "setprop net.dns2 8.8.4.4"
             adb shell "setprop net.eth0.dns1 8.8.8.8"
             adb shell "setprop net.eth0.dns2 8.8.4.4"
-
+            
+            # Verify network setup
+            echo "Checking network configuration..."
+            adb shell "ip addr show eth0"
+            adb shell "ip route"
+            
+            # Create certificate directory and set permissions
+            adb shell "mount -o rw,remount /system"
+            adb shell "mkdir -p /system/etc/security/cacerts"
+            adb shell "chmod 777 /system/etc/security/cacerts"
+            
             # Install certificate
+            echo "Installing certificate..."
             CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            adb push ~/.mitmproxy/mitmproxy-ca-cert.cer "/system/etc/security/cacerts/${CERT_HASH}.0"
+            if [ -z "$CERT_HASH" ]; then
+                echo "Failed to generate certificate hash"
+                exit 1
+            fi
+            echo "Certificate hash: $CERT_HASH"
+            
+            # Convert and push certificate
+            openssl x509 -inform PEM -in ~/.mitmproxy/mitmproxy-ca-cert.pem -out ~/.mitmproxy/mitmproxy-ca-cert.crt
+            adb push ~/.mitmproxy/mitmproxy-ca-cert.crt "/system/etc/security/cacerts/${CERT_HASH}.0"
             adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
-            sudo apt-get install ca-certificates
-            sudo update-ca-certificates
-            # Wait for network
-            for i in {1..30}; do
-              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
-                echo "Network ready"
-                break
-              fi
-              echo "Network attempt $i/30..."
-              sleep 2
+            
+            # Verify certificate installation
+            echo "Verifying certificate installation..."
+            adb shell "ls -l /system/etc/security/cacerts/${CERT_HASH}.0"
+            
+            # Configure proxy after ensuring network is up
+            echo "Checking network connectivity..."
+            for i in {1..10}; do
+                if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                    echo "Network is ready"
+                    break
+                fi
+                echo "Waiting for network... attempt $i/10"
+                sleep 3
             done
-            # Verify network interface
-            adb shell ip addr show
             
-            # Check DNS persistence
-            adb shell getprop net.eth0.dns1
-            
-            # Try disabling proxy temporarily
-            adb shell settings delete global http_proxy
-            
-            # Test connectivity without proxy
-            adb shell ping -c 1 google.com
-            # Configure proxy
+            # Set up proxy
+            echo "Configuring proxy..."
             adb shell settings put global http_proxy "127.0.0.1:8082"
-            adb shell "ls -l /system/etc/security/cacerts/ | grep mitmproxy"
-            adb logcat | grep -i "certificate"
+            
+            # Final verification
+            echo "Performing final checks..."
+            adb shell "ls -l /system/etc/security/cacerts/ | grep $CERT_HASH"
+            adb shell settings get global http_proxy
+            
+            # Test connection
+            echo "Testing connection..."
+            adb shell ping -c 1 google.com
       - run:
                       name: install yarn and start app
                       working_directory: ~/project/examples/hybrid
@@ -474,9 +492,13 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
+            # Create certificates directory
             mkdir -p certs
+            
+            # Convert certificate to DER format
             openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
-
+            
+            # Create mobileconfig file using echo commands
             echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
             echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
             echo '<plist version="1.0">' >> certs/custom.mobileconfig
@@ -512,20 +534,41 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-
-            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
-
-            xcrun simctl shutdown all
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 5
-            # Check if certificate exists
-            # Add root certificate
-            DEVICE_ID=$(xcrun simctl list | grep Booted | cut -d "(" -f 2 | cut -d ")" -f 1)
-
-            # Add certificate
-            xcrun simctl keychain "$DEVICE_ID" add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
             
-            # List certificates to verify installation
+            # Shutdown all simulators
+            xcrun simctl shutdown all
+            
+            # Boot the simulator and wait for it to be fully ready
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 15  # Increased sleep time to ensure simulator is fully booted
+            
+            # Get device ID with improved parsing and verification
+            DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
+            
+            # Verify device ID was captured
+            if [ -z "$DEVICE_ID" ]; then
+                echo "Failed to get device ID"
+                exit 1
+            fi
+            
+            echo "Using Device ID: $DEVICE_ID"
+            
+            # Reset keychain first
+            xcrun simctl keychain "$DEVICE_ID" reset
+            
+            # Install configuration profile
+            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
+            sleep 5  # Wait for profile installation
+            
+            # Install root certificate
+            if [ -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; then
+                xcrun simctl keychain "$DEVICE_ID" add-root-cert ~/.mitmproxy/mitmproxy-ca-cert.pem
+            else
+                echo "Certificate file not found at ~/.mitmproxy/mitmproxy-ca-cert.pem"
+                exit 1
+            fi
+            
+            # Verify certificate installation
             xcrun simctl keychain "$DEVICE_ID" list-certs
             
             # Test HTTPS connection
