@@ -176,39 +176,68 @@ commands:
       - run:
           name: Install Python3 and MITM Proxy
           command: |
-            # Detect OS and install requirements accordingly
-            if [ "$(uname)" == "Darwin" ]; then
-              echo "Running on macOS..."
-              brew install python3 openssl
-            else
-              echo "Running on Linux..."
-              sudo apt-get update
-              sudo apt-get install -y python3 python3-pip openssl
-            fi
+           # Detect OS and install requirements accordingly
+           if [ "$(uname)" == "Darwin" ]; then
+               echo "Running on macOS..."
+               # Ensure Homebrew is installed first
+               if ! command -v brew &> /dev/null; then
+                   echo "Homebrew not found. Installing Homebrew..."
+                   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+               fi
+               brew install python3 openssl
+           else
+               echo "Running on Linux..."
+               sudo apt-get update
+               sudo apt-get install -y python3 python3-pip openssl
+           fi
+           
+           # Verify installations
+           python3 --version
+           pip3 --version
+           
+           # Upgrade pip to the latest version
+           pip3 install --upgrade pip
+           
+           # Install mitmproxy version 10.2.4
+           pip3 install mitmproxy==10.2.4
+           
+           # Start mitmdump in the background (non-blocking)
+           mitmdump --set block_global=false &
+           MITMPROXY_PID=$!
+           
+           # Wait for mitmdump to initialize properly (adjust sleep if needed)
+           sleep 10
+           
+           # Create necessary directories
+           mkdir -p certs
+           mkdir -p ~/.mitmproxy
+           
+           # Ensure that the certificate is generated and available
+           # Mitmproxy should generate mitmproxy-ca-cert.pem after it runs for a while
+           CERT_PEM_PATH="~/.mitmproxy/mitmproxy-ca-cert.pem"
+           
+           echo "Waiting for mitmproxy to generate the certificate..."
+           while [ ! -f $CERT_PEM_PATH ]; do
+               sleep 2
+               echo "Waiting for certificate to be available..."
+           done
+           
+           # Generate the certificate hash (subject hash)
+           CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in $CERT_PEM_PATH | head -1)
+           
+           # If certificate hash generation fails, exit with an error
+           if [ -z "$CERT_HASH" ]; then
+               echo "Failed to generate certificate hash. Exiting..."
+               exit 1
+           fi
+           
+           echo "Certificate hash: $CERT_HASH"
+           
+           echo "MITM Proxy setup completed."
+           
+           # Optionally, you can kill mitmdump after the setup
+           kill $MITMPROXY_PID
 
-            # Verify installations
-            python3 --version
-            pip3 --version
-
-            # Upgrade pip and install mitmproxy
-            pip3 install --upgrade pip
-            pip3 install mitmproxy==10.2.4
-
-            # Start mitmdump
-            mitmdump --set block_global=false &
-            sleep 10
-
-            # Create mitmproxy directory
-            mkdir -p ~/.mitmproxy
-            CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.cer | head -1)
-
-            # Wait for certificate generation
-            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
-              sleep 2
-            done
-    
-
-            echo "MITM Proxy setup completed"
 
   setup_appium:
     steps:
@@ -301,8 +330,6 @@ commands:
             if command -v systemctl &> /dev/null; then
               sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed (this is okay if not using systemd)"
             fi
-            adb shell settings get global http_proxy
-            netstat -an | grep 8082
             # Test DNS resolution
             echo "Testing DNS resolution:"
             ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
@@ -389,7 +416,6 @@ commands:
             openssl x509 -inform PEM -in ~/.mitmproxy/mitmproxy-ca-cert.pem -out ~/.mitmproxy/mitmproxy-ca-cert.crt
             adb push ~/.mitmproxy/mitmproxy-ca-cert.crt "/system/etc/security/cacerts/${CERT_HASH}.0"
             adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
-            
             # Configure proxy settings
             for i in $(seq 1 3); do
                 echo "Setting up proxy... Attempt $i"
@@ -400,6 +426,7 @@ commands:
             
             # Verify the proxy settings
             adb shell settings get global http_proxy
+            \            netstat -an | grep 8082
             
             # Test connectivity
             adb shell ping -c 1 google.com
