@@ -177,6 +177,9 @@ commands:
           name: Install Python3 and MITM Proxy
           command: |
            # Detect OS and install requirements accordingly
+           #!/bin/bash
+
+           # Detect OS and install requirements accordingly
            if [ "$(uname)" == "Darwin" ]; then
                echo "Running on macOS..."
                # Ensure Homebrew is installed first
@@ -201,23 +204,30 @@ commands:
            # Install mitmproxy version 10.2.4
            pip3 install mitmproxy==10.2.4
            
-           # Start mitmdump in the background (non-blocking)
-           mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &
-           MITMPROXY_PID=$!
-           
-           # Wait for mitmdump to initialize properly (adjust sleep if needed)
-           sleep 10
-           ps aux | grep mitmdump
-           tail -f mitmdump.log
-           # Create necessary directories
-           mkdir -p certs
+           # Create necessary directories and ensure permissions
            mkdir -p ~/.mitmproxy
            chmod 700 ~/.mitmproxy
-           ls -l ~/.mitmproxy/mitmproxy-ca-cert.pem
-           # Ensure that the certificate is generated and available
-           # Mitmproxy should generate mitmproxy-ca-cert.pem after it runs for a while
-           CERT_PEM_PATH="~/.mitmproxy/mitmproxy-ca-cert.pem"
            
+           # Start mitmproxy in the background and capture logs
+           mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &> ~/.mitmproxy/mitmdump.log &
+           MITMPROXY_PID=$!
+           echo "mitmproxy started with PID $MITMPROXY_PID"
+           
+           # Wait for mitmproxy to initialize properly (adjust sleep if needed)
+           sleep 10
+           
+           # Check if mitmproxy is running
+           if ! ps -p $MITMPROXY_PID > /dev/null; then
+               echo "mitmproxy failed to start."
+               exit 1
+           fi
+           
+           # Check for mitmdump.log
+           echo "Checking mitmproxy logs..."
+           tail -n 10 ~/.mitmproxy/mitmdump.log
+           
+           # Wait for the certificate to be generated
+           CERT_PEM_PATH="$HOME/.mitmproxy/mitmproxy-ca-cert.pem"
            echo "Waiting for mitmproxy to generate the certificate..."
            while [ ! -f $CERT_PEM_PATH ]; do
                sleep 2
@@ -230,15 +240,19 @@ commands:
            # If certificate hash generation fails, exit with an error
            if [ -z "$CERT_HASH" ]; then
                echo "Failed to generate certificate hash. Exiting..."
+               kill $MITMPROXY_PID
                exit 1
            fi
            
            echo "Certificate hash: $CERT_HASH"
            
+           # MITM Proxy setup completed
            echo "MITM Proxy setup completed."
            
-           # Optionally, you can kill mitmdump after the setup
+           # Optionally, you can kill mitmproxy after the setup
+           echo "Killing mitmproxy process with PID $MITMPROXY_PID"
            kill $MITMPROXY_PID
+
 
 
   setup_appium:
