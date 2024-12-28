@@ -378,7 +378,6 @@ commands:
             $ANDROID_HOME/emulator/emulator -avd test_device \
             -http-proxy http://0.0.0.0:8082 \
             -dns-server 8.8.8.8 \
-            -writable-system \
             -feature -Wifi    \
             -partition-size 2048
 
@@ -548,74 +547,74 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-            #!/bin/bash
-
-            # Define certificate paths
-            CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
-            CERT_DER_PATH=certs/mitmproxy-ca-cert.der
-            
-            # Create certs directory
-            mkdir -p certs
-            
-            # Convert the certificate to DER format
-            openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
-            
-            # Create the mobileconfig file
-            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
-            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
-            echo '<plist version="1.0">' >> certs/custom.mobileconfig
-            echo '<dict>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
-            echo '  <array>' >> certs/custom.mobileconfig
-            echo '    <dict>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
-            echo '      <data>' >> certs/custom.mobileconfig
-            base64 "$CERT_DER_PATH" >> certs/custom.mobileconfig
-            echo '      </data>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
-            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
-            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
-            echo '    </dict>' >> certs/custom.mobileconfig
-            echo '  </array>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
-            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
-            echo '  <false/>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
-            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
-            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
-            echo '</dict>' >> certs/custom.mobileconfig
-            echo '</plist>' >> certs/custom.mobileconfig
-            
-            # Shutdown and boot simulator
-            xcrun simctl shutdown all
-            sleep 2
-            xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 15
-            
-            # Get the device ID
-            DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
-            
-            if [ -z "$DEVICE_ID" ]; then
-                echo "Failed to get device ID"
-                exit 1
-            fi
-            
-            echo "Using Device ID: $DEVICE_ID"
-            
-            # Reset keychain and install mobileconfig
-            xcrun simctl keychain "$DEVICE_ID" reset
-            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig
+           #!/bin/bash
+           
+           # Define certificate paths
+           CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
+           CERT_DER_PATH=certs/mitmproxy-ca-cert.der
+           
+           # Create certs directory
+           mkdir -p certs
+           
+           # Convert the certificate to DER format
+           openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
+           
+           # Create the mobileconfig file
+           echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
+           echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
+           echo '<plist version="1.0">' >> certs/custom.mobileconfig
+           echo '<dict>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
+           echo '  <array>' >> certs/custom.mobileconfig
+           echo '    <dict>' >> certs/custom.mobileconfig
+           echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
+           echo '      <data>' >> certs/custom.mobileconfig
+           base64 "$CERT_DER_PATH" >> certs/custom.mobileconfig
+           echo '      </data>' >> certs/custom.mobileconfig
+           echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+           echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
+           echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
+           echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
+           echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+           echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+           echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+           echo '      <integer>1</integer>' >> certs/custom.mobileconfig
+           echo '    </dict>' >> certs/custom.mobileconfig
+           echo '  </array>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
+           echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+           echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
+           echo '  <false/>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
+           echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
+           echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+           echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+           echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+           echo '  <integer>1</integer>' >> certs/custom.mobileconfig
+           echo '</dict>' >> certs/custom.mobileconfig
+           echo '</plist>' >> certs/custom.mobileconfig
+           
+           # Shutdown and boot simulator
+           xcrun simctl shutdown all
+           sleep 2
+           xcrun simctl boot "iPhone 11 Pro Max"
+           sleep 15
+           
+           # Get the device ID
+           DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
+           
+           if [ -z "$DEVICE_ID" ]; then
+               echo "Failed to get device ID"
+               exit 1
+           fi
+           
+           echo "Using Device ID: $DEVICE_ID"
+           
+           # Reset keychain and install mobileconfig
+           xcrun simctl keychain "$DEVICE_ID" reset
+           xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
 
       - run:
           name: Run React Native app
