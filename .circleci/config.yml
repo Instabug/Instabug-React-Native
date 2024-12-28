@@ -202,16 +202,18 @@ commands:
            pip3 install mitmproxy==10.2.4
            
            # Start mitmdump in the background (non-blocking)
-           mitmdump --set block_global=false &
+           mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &
            MITMPROXY_PID=$!
            
            # Wait for mitmdump to initialize properly (adjust sleep if needed)
            sleep 10
-           
+           ps aux | grep mitmdump
+           tail -f mitmdump.log
            # Create necessary directories
            mkdir -p certs
            mkdir -p ~/.mitmproxy
-           
+           chmod 700 ~/.mitmproxy
+           ls -l ~/.mitmproxy/mitmproxy-ca-cert.pem
            # Ensure that the certificate is generated and available
            # Mitmproxy should generate mitmproxy-ca-cert.pem after it runs for a while
            CERT_PEM_PATH="~/.mitmproxy/mitmproxy-ca-cert.pem"
