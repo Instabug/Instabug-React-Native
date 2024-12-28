@@ -204,54 +204,54 @@ commands:
            # Install mitmproxy version 10.2.4
            pip3 install mitmproxy==10.2.4
            
-           # Create necessary directories and ensure permissions
-           mkdir -p ~/.mitmproxy
-           chmod 700 ~/.mitmproxy
+          #  # Create necessary directories and ensure permissions
+          #  mkdir -p ~/.mitmproxy
+          #  chmod 700 ~/.mitmproxy
            
-           # Start mitmproxy in the background and capture logs
-           mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &> ~/.mitmproxy/mitmdump.log &
-           MITMPROXY_PID=$!
-           echo "mitmproxy started with PID $MITMPROXY_PID"
+          #  # Start mitmproxy in the background and capture logs
+          #  mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &> ~/.mitmproxy/mitmdump.log &
+          #  MITMPROXY_PID=$!
+          #  echo "mitmproxy started with PID $MITMPROXY_PID"
            
-           # Wait for mitmproxy to initialize properly (adjust sleep if needed)
-           sleep 10
+          #  # Wait for mitmproxy to initialize properly (adjust sleep if needed)
+          #  sleep 10
            
-           # Check if mitmproxy is running
-           if ! ps -p $MITMPROXY_PID > /dev/null; then
-               echo "mitmproxy failed to start."
-               exit 1
-           fi
+          #  # Check if mitmproxy is running
+          #  if ! ps -p $MITMPROXY_PID > /dev/null; then
+          #      echo "mitmproxy failed to start."
+          #      exit 1
+          #  fi
            
-           # Check for mitmdump.log
-           echo "Checking mitmproxy logs..."
-           tail -n 10 ~/.mitmproxy/mitmdump.log
+          #  # Check for mitmdump.log
+          #  echo "Checking mitmproxy logs..."
+          #  tail -n 10 ~/.mitmproxy/mitmdump.log
            
-           # Wait for the certificate to be generated
-           CERT_PEM_PATH="$HOME/.mitmproxy/mitmproxy-ca-cert.pem"
-           echo "Waiting for mitmproxy to generate the certificate..."
-           while [ ! -f $CERT_PEM_PATH ]; do
-               sleep 2
-               echo "Waiting for certificate to be available..."
-           done
+          #  # Wait for the certificate to be generated
+          #  CERT_PEM_PATH="$HOME/.mitmproxy/mitmproxy-ca-cert.pem"
+          #  echo "Waiting for mitmproxy to generate the certificate..."
+          #  while [ ! -f $CERT_PEM_PATH ]; do
+          #      sleep 2
+          #      echo "Waiting for certificate to be available..."
+          #  done
            
-           # Generate the certificate hash (subject hash)
-           CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in $CERT_PEM_PATH | head -1)
+          #  # Generate the certificate hash (subject hash)
+          #  CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in $CERT_PEM_PATH | head -1)
            
-           # If certificate hash generation fails, exit with an error
-           if [ -z "$CERT_HASH" ]; then
-               echo "Failed to generate certificate hash. Exiting..."
-               kill $MITMPROXY_PID
-               exit 1
-           fi
+          #  # If certificate hash generation fails, exit with an error
+          #  if [ -z "$CERT_HASH" ]; then
+          #      echo "Failed to generate certificate hash. Exiting..."
+          #      kill $MITMPROXY_PID
+          #      exit 1
+          #  fi
            
-           echo "Certificate hash: $CERT_HASH"
+          #  echo "Certificate hash: $CERT_HASH"
            
-           # MITM Proxy setup completed
-           echo "MITM Proxy setup completed."
+          #  # MITM Proxy setup completed
+          #  echo "MITM Proxy setup completed."
            
-           # Optionally, you can kill mitmproxy after the setup
-           echo "Killing mitmproxy process with PID $MITMPROXY_PID"
-           kill $MITMPROXY_PID
+          #  # Optionally, you can kill mitmproxy after the setup
+          #  echo "Killing mitmproxy process with PID $MITMPROXY_PID"
+          #  kill $MITMPROXY_PID
 
 
 
@@ -425,7 +425,7 @@ commands:
             # Verify network configuration
             adb shell "ip addr show eth0"
             adb shell "ip route"
-            
+            mkdir -p certs
             # Install certificate (converted to the right format)
             CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             echo "Certificate hash: $CERT_HASH"
@@ -502,6 +502,7 @@ commands:
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
+            mkdir -p certs
             # Create certificates directory
             # Assuming the certificate is in ~/.mitmproxy/mitmproxy-ca-cert.pem
             # Convert the certificate to DER format
