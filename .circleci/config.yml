@@ -385,102 +385,112 @@ commands:
       - run:
           name: Wait for emulator and configure network
           command: |
-            # Wait for emulator
-            # Wait for the emulator to be available
-            #!/bin/bash
+           #!/bin/bash
+ 
+           # Start the emulator if it's not already running
+           echo "Starting emulator if it's not already running..."
+           emulator -avd test_device &
+           
+           # Wait a few seconds for the emulator to boot up
+           sleep 10
+           
+           # Check the ADB device status and retry if offline
+           MAX_RETRIES=5
+           RETRY_COUNT=0
+           DEVICE_STATUS=$(adb devices | grep emulator-5554)
+           
+           while [[ "$DEVICE_STATUS" == *"offline"* && $RETRY_COUNT -lt $MAX_RETRIES ]]; do
+               echo "Device is offline, retrying..."
+               adb kill-server
+               adb start-server
+               sleep 5
+               DEVICE_STATUS=$(adb devices | grep emulator-5554)
+               RETRY_COUNT=$((RETRY_COUNT + 1))
+           done
+           
+           # If the device is still offline, exit with an error
+           if [[ "$DEVICE_STATUS" == *"offline"* ]]; then
+               echo "Emulator is still offline after $MAX_RETRIES retries. Exiting."
+               exit 1
+           fi
+           
+           echo "Device is online."
+           
+           # Wait for boot completion by polling the sys.boot_completed property
+           for i in $(seq 1 30); do
+               boot_complete=$(adb shell getprop sys.boot_completed)
+               if [[ "$boot_complete" == "1" ]]; then
+                   break
+               fi
+               echo "Waiting for boot... ($i/30)"
+               sleep 10
+           done
+           
+           if [[ "$boot_complete" != "1" ]]; then
+               echo "Emulator failed to boot correctly. Exiting."
+               exit 1
+           fi
+           
+           # Ensure root access and remount system as writable
+           adb root
+           sleep 5
+           adb remount
+           sleep 5
+           
+           # Enable Wi-Fi and disable Airplane mode
+           adb shell "svc wifi enable"
+           adb shell "settings put global airplane_mode_on 0"
+           
+           # Set up network
+           adb shell "ip link set eth0 down"
+           adb shell "ip link set eth0 up"
+           adb shell "ip addr add 10.0.2.15/24 dev eth0"
+           adb shell "ip route add default via 10.0.2.2"
+           adb shell "setprop net.dns1 8.8.8.8"
+           adb shell "setprop net.dns2 8.8.4.4"
+           
+           # Verify network configuration
+           adb shell "ip addr show eth0"
+           adb shell "ip route"
+           
+           # Ensure the certificates directory exists
+           mkdir -p certs
+           
+           # Convert the certificate to the correct format (DER format) for Android
+           echo "Converting certificate to DER format..."
+           CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
+           CERT_DER_PATH=certs/mitmproxy-ca-cert.der
+           openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
+           
+           # Generate the certificate hash (Android uses the subject hash for the certificate)
+           CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in "$CERT_PATH" | head -1)
+           echo "Certificate hash: $CERT_HASH"
+           
+           # Push the certificate to the emulator's system directory
+           echo "Pushing certificate to emulator..."
+           adb push "$CERT_DER_PATH" "/system/etc/security/cacerts/${CERT_HASH}.0"
+           
+           # Set permissions on the certificate file
+           adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
+           
+           # Configure the proxy settings for the emulator
+           for i in $(seq 1 3); do
+               echo "Setting up proxy... Attempt $i"
+               adb shell settings put global http_proxy "127.0.0.1:8082" && break
+               echo "Failed to set proxy. Retrying..."
+               sleep 5
+           done
+           
+           # Verify the proxy settings
+           adb shell settings get global http_proxy
+           netstat -an | grep 8082
+           
+           # Test connectivity by pinging Google
+           adb shell ping -c 1 google.com
+           
+           # Optionally, test the proxy by accessing a website through the proxy
+           adb shell curl -v --proxy http://127.0.0.1:8082 https://example.com
 
-            # Ensure the emulator is running
-            echo "Starting emulator if it's not already running..."
-            emulator -avd test_device &
-            
-            # Wait a few seconds for the emulator to boot up
-            sleep 10
-            
-            # Check the ADB device status and retry if offline
-            MAX_RETRIES=5
-            RETRY_COUNT=0
-            DEVICE_STATUS=$(adb devices | grep emulator-5554)
-            
-            while [[ "$DEVICE_STATUS" == *"offline"* && $RETRY_COUNT -lt $MAX_RETRIES ]]; do
-                echo "Device is offline, retrying..."
-                adb kill-server
-                adb start-server
-                sleep 5
-                DEVICE_STATUS=$(adb devices | grep emulator-5554)
-                RETRY_COUNT=$((RETRY_COUNT + 1))
-            done
-            
-            # If the device is still offline, exit with an error
-            if [[ "$DEVICE_STATUS" == *"offline"* ]]; then
-                echo "Emulator is still offline after $MAX_RETRIES retries. Exiting."
-                exit 1
-            fi
-            
-            echo "Device is online."
-            
-            # Wait for boot completion by polling the sys.boot_completed property
-            for i in $(seq 1 30); do
-                boot_complete=$(adb shell getprop sys.boot_completed)
-                if [[ "$boot_complete" == "1" ]]; then
-                    break
-                fi
-                echo "Waiting for boot... ($i/30)"
-                sleep 10
-            done
-            
-            if [[ "$boot_complete" != "1" ]]; then
-                echo "Emulator failed to boot correctly. Exiting."
-                exit 1
-            fi
-            
-            # Ensure root access
-            adb root && sleep 5
-            
-            # Remount system as writable
-            adb remount && sleep 5
-            
-            # Enable Wi-Fi and disable Airplane mode
-            adb shell "svc wifi enable"
-            adb shell "settings put global airplane_mode_on 0"
-            
-            # Set up network
-            adb shell "ip link set eth0 down"
-            adb shell "ip link set eth0 up"
-            adb shell "ip addr add 10.0.2.15/24 dev eth0"
-            adb shell "ip route add default via 10.0.2.2"
-            adb shell "setprop net.dns1 8.8.8.8"
-            adb shell "setprop net.dns2 8.8.4.4"
-            
-            # Verify network configuration
-            adb shell "ip addr show eth0"
-            adb shell "ip route"
-            
-            # Ensure the certificates directory exists
-            mkdir -p certs
-            
-            # Install certificate (converted to the right format)
-            CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            echo "Certificate hash: $CERT_HASH"
-            openssl x509 -inform PEM -in ~/.mitmproxy/mitmproxy-ca-cert.pem -out ~/.mitmproxy/mitmproxy-ca-cert.crt
-            
-            # Push certificate to the emulator
-            adb push ~/.mitmproxy/mitmproxy-ca-cert.crt "/system/etc/security/cacerts/${CERT_HASH}.0"
-            adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
-            
-            # Configure proxy settings
-            for i in $(seq 1 3); do
-                echo "Setting up proxy... Attempt $i"
-                adb shell settings put global http_proxy "127.0.0.1:8082" && break
-                echo "Failed to set proxy. Retrying..."
-                sleep 5
-            done
-            
-            # Verify the proxy settings
-            adb shell settings get global http_proxy
-            netstat -an | grep 8082
-            
-            # Test connectivity
-            adb shell ping -c 1 google.com
 
 
       - run:
