@@ -245,7 +245,6 @@ commands:
             done
   setup_android_proxy:
     steps:
-
       - run:
           name: Configure DNS settings
           command: |
@@ -316,7 +315,7 @@ commands:
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false &
             MITM_PID=$!
             # Wait until MITM proxy is ready (port 8082 is open)
-            while ! netstat -an | grep 8082; do
+            while ! ss -tuln | grep 8082; do
                 echo "Waiting for MITM proxy to be up..."
                 sleep 2
             done
@@ -436,28 +435,32 @@ commands:
           name: Start MITM Proxy
           background: true
           command: |
+            echo "Starting MITM Proxy on port 8082..."
             mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --listen-host 0.0.0.0 &
             sleep 10
-      # Boot the iOS simulator, configure it, and test proxy
+            echo "MITM Proxy started."
+  
       - run:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
           command: |
-            # Boot simulator 
+            echo "Shutting down all simulators..."
             xcrun simctl shutdown all
+  
+            echo "Booting iPhone 11 Pro Max simulator..."
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "Waiting for simulator to boot..."
-            sleep 15  # Ensure the simulator is fully booted
-
-            # Test proxy connection with MITMProxy
-            echo "Testing proxy connection..."
+            sleep 15
+  
+            echo "Testing proxy connection with MITMProxy..."
             curl -v --proxy 0.0.0.0:8082 'http://mitm.it' || {
-                echo "Proxy test failed"
-                echo "Running proxy processes:"
+                echo "Proxy test failed. Debugging details:"
+                echo "Active proxy processes:"
                 ps aux | grep mitm
+                exit 1
             }
-            
-            # Configure simulator proxy
+            echo "Proxy test succeeded."
+  
             echo "Configuring simulator proxy settings..."
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
@@ -466,86 +469,89 @@ commands:
               HTTPSEnable 1 \
               HTTPSPort 8082 \
               HTTPSProxy 0.0.0.0
-
-            # Restart simulator to apply changes
+  
+            echo "Simulator proxy settings applied. Restarting simulator..."
             xcrun simctl shutdown all
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-
+  
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-           #!/bin/bash
-           
-           # Define certificate paths
-           CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
-           CERT_DER_PATH=certs/mitmproxy-ca-cert.der
-           
-           # Create certs directory
-           mkdir -p certs
-           
-           # Convert the certificate to DER format
-           openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
-           
-           # Create the mobileconfig file
-           echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
-           echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
-           echo '<plist version="1.0">' >> certs/custom.mobileconfig
-           echo '<dict>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
-           echo '  <array>' >> certs/custom.mobileconfig
-           echo '    <dict>' >> certs/custom.mobileconfig
-           echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
-           echo '      <data>' >> certs/custom.mobileconfig
-           base64 "$CERT_DER_PATH" >> certs/custom.mobileconfig
-           echo '      </data>' >> certs/custom.mobileconfig
-           echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-           echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
-           echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
-           echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
-           echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-           echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-           echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-           echo '      <integer>1</integer>' >> certs/custom.mobileconfig
-           echo '    </dict>' >> certs/custom.mobileconfig
-           echo '  </array>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
-           echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
-           echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
-           echo '  <false/>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
-           echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
-           echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
-           echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
-           echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
-           echo '  <integer>1</integer>' >> certs/custom.mobileconfig
-           echo '</dict>' >> certs/custom.mobileconfig
-           echo '</plist>' >> certs/custom.mobileconfig
-           
-           # Shutdown and boot simulator
-           xcrun simctl shutdown all
-           sleep 2
-           xcrun simctl boot "iPhone 11 Pro Max"
-           sleep 15
-           
-           # Get the device ID
-           DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
-           
-           if [ -z "$DEVICE_ID" ]; then
-               echo "Failed to get device ID"
-               exit 1
-           fi
-           
-           echo "Using Device ID: $DEVICE_ID"
-           
-           # Reset keychain and install mobileconfig
-           xcrun simctl keychain "$DEVICE_ID" reset
-           xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
-
-
+            CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
+            CERT_DER_PATH=certs/mitmproxy-ca-cert.der
+  
+            echo "Setting up MITM Certificate..."
+            mkdir -p certs
+  
+            if [ -f "$CERT_PATH" ]; then
+                openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
+                echo "Certificate converted to DER format."
+            else
+                echo "Certificate file not found at $CERT_PATH. Aborting."
+                exit 1
+            fi
+  
+            echo "Creating mobileconfig file..."
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
+            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
+            echo '<plist version="1.0">' >> certs/custom.mobileconfig
+            echo '<dict>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '  <array>' >> certs/custom.mobileconfig
+            echo '    <dict>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '      <data>' >> certs/custom.mobileconfig
+            base64 "$CERT_DER_PATH" >> certs/custom.mobileconfig
+            echo '      </data>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '    </dict>' >> certs/custom.mobileconfig
+            echo '  </array>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
+            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
+            echo '  <false/>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '</dict>' >> certs/custom.mobileconfig
+            echo '</plist>' >> certs/custom.mobileconfig
+            echo "Mobileconfig file created successfully."
+  
+            echo "Restarting simulator for certificate installation..."
+            xcrun simctl shutdown all
+            sleep 2
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 15
+  
+            DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
+            if [ -z "$DEVICE_ID" ]; then
+                echo "Failed to retrieve simulator device ID. Aborting."
+                exit 1
+            fi
+            echo "Using Device ID: $DEVICE_ID"
+  
+            echo "Resetting keychain for Device ID $DEVICE_ID..."
+            xcrun simctl keychain "$DEVICE_ID" reset
+  
+            echo "Installing MITM certificate mobileconfig..."
+            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
+  
+            echo "MITM Proxy setup completed successfully."
+  
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
