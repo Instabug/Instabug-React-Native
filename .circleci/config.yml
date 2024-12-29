@@ -346,6 +346,7 @@ commands:
           name: Verify Root Access
           command: |
             adb root || echo "Failed to switch to root mode. Ensure the emulator image is rooted."
+            adb remount
       - run:
           name: Install MITM Certificate
           command: |
