@@ -446,10 +446,8 @@ commands:
             echo "Configuring proxy settings..."
             adb shell settings put global http_proxy 127.0.0.1:8082
             
-            # Create a test script to run on device
-            echo "Creating test script..."
-            adb shell "cat > /data/local/tmp/test_cert.sh" << 'EOF'
-            #!/system/bin/sh
+            # Create test script content
+            TEST_SCRIPT='#!/system/bin/sh
             
             # Test domains
             DOMAINS="google.com github.com api.github.com"
@@ -508,8 +506,10 @@ commands:
             else
               echo "✗ Some certificate tests failed"
               exit 1
-            fi
-            EOF
+            fi'
+            
+            # Write test script to device
+            echo "$TEST_SCRIPT" | adb shell "cat > /data/local/tmp/test_cert.sh"
             
             # Make script executable and run it
             echo "Running certificate tests..."
