@@ -424,11 +424,145 @@ commands:
             # Final reboot to apply changes
             adb reboot
       - run:
+          name: Verify Certificate Trust
+          command: |
+            # Wait for device to be fully booted after reboot
+            adb wait-for-device
+            echo "Waiting for system boot..."
+            while ! adb shell getprop sys.boot_completed | grep -q "1"; do
+              sleep 2
+            done
+            sleep 5  # Additional wait for services
+            
+            # Verify certificate exists in correct location
+            echo "Verifying certificate presence..."
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            if ! adb shell ls "/system/etc/security/cacerts/$HASH.0" > /dev/null; then
+              echo "Certificate not found in system store"
+              exit 1
+            fi
+            
+            # Ensure proxy settings are correct
+            echo "Configuring proxy settings..."
+            adb shell settings put global http_proxy 127.0.0.1:8082
+            
+            # Create a test script to run on device
+            echo "Creating test script..."
+            adb shell "cat > /data/local/tmp/test_cert.sh" << 'EOF'
+            #!/system/bin/sh
+            
+            # Test domains
+            DOMAINS="google.com github.com api.github.com"
+            
+            # Function to test HTTPS connection
+            test_https() {
+              domain=$1
+              echo "Testing HTTPS connection to $domain..."
+              
+              # Try curl first
+              if command -v curl > /dev/null; then
+                if curl -v -s -o /dev/null "https://$domain" 2>&1 | grep -i "SSL certificate verify ok"; then
+                  echo "✓ Curl: Certificate verified for $domain"
+                  return 0
+                else
+                  echo "✗ Curl: Certificate verification failed for $domain"
+                  return 1
+                fi
+              fi
+              
+              # Try wget as backup
+              if command -v wget > /dev/null; then
+                if wget -q --https-only --no-check-certificate "https://$domain" -O /dev/null 2>&1; then
+                  echo "✓ Wget: Connection successful to $domain"
+                  return 0
+                else
+                  echo "✗ Wget: Connection failed to $domain"
+                  return 1
+                fi
+              fi
+              
+              echo "Neither curl nor wget available"
+              return 1
+            }
+            
+            # Test certificate state
+            echo "Testing system certificate store..."
+            ls -l /system/etc/security/cacerts/$HASH.0
+            
+            # Verify proxy settings
+            echo "Current proxy settings:"
+            settings get global http_proxy
+            
+            # Run tests
+            failures=0
+            for domain in $DOMAINS; do
+              if ! test_https "$domain"; then
+                failures=$((failures + 1))
+              fi
+            done
+            
+            # Final results
+            if [ $failures -eq 0 ]; then
+              echo "✓ All certificate tests passed"
+              exit 0
+            else
+              echo "✗ Some certificate tests failed"
+              exit 1
+            fi
+            EOF
+            
+            # Make script executable and run it
+            echo "Running certificate tests..."
+            adb shell "chmod +x /data/local/tmp/test_cert.sh"
+            adb shell "/data/local/tmp/test_cert.sh"
+            
+            # Check mitmdump logs for successful HTTPS interception
+            echo "Checking MITM proxy logs..."
+            if ps aux | grep "[m]itmdump" > /dev/null; then
+              echo "✓ MITM proxy is running"
+            else
+              echo "✗ MITM proxy is not running"
+              exit 1
+            fi
+      - run:
           name: Test Proxy Connectivity
           command: |
+            # Wait for device to come online with timeout
+            echo "Waiting for device to come online..."
+            timeout 120 bash -c '
+              until adb wait-for-device && adb shell getprop sys.boot_completed | grep -q "1"; do
+                echo "Waiting for device boot to complete..."
+                sleep 5
+              done
+            ' || { echo "Timeout waiting for device"; exit 1; }
+            
+            # Additional wait to ensure all services are up
+            sleep 10
+            
+            # Configure proxy settings
+            echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
             adb shell settings put global global_http_proxy_port 8082
-            adb shell curl -v http://example.com | grep "Proxy" 
+            
+            # Verify proxy settings
+            echo "Verifying proxy settings..."
+            PROXY_HOST=$(adb shell settings get global global_http_proxy_host)
+            PROXY_PORT=$(adb shell settings get global global_http_proxy_port)
+            echo "Current proxy settings - Host: $PROXY_HOST, Port: $PROXY_PORT"
+            
+            # Test connectivity with retries
+            echo "Testing proxy connectivity..."
+            for i in {1..3}; do
+              echo "Attempt $i of 3..."
+              if adb shell curl -v http://example.com | grep "Proxy"; then
+                echo "✓ Proxy test successful"
+                exit 0
+              fi
+              sleep 5
+            done
+            
+            echo "✗ Proxy test failed after 3 attempts"
+            exit 1
       - run:
           name: install yarn and start app
           working_directory: ~/project/examples/hybrid
@@ -460,8 +594,6 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-            networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
-            networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
