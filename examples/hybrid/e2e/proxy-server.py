@@ -43,6 +43,9 @@ def should_intercept(url: str) -> bool:
     return TARGET_HOST in url
 
 def request(flow: http.HTTPFlow) -> None:
+    # New logging statement to print received requests
+    print(f"Received request: {flow.request.host}")
+    
     original_url = flow.request.pretty_url
     
     if not should_intercept(original_url):

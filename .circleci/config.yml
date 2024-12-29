@@ -236,7 +236,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://0.0.0.0:4723/status | grep -q "ready"; then
+              if curl -s http://127.0.0.1:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -444,9 +444,11 @@ commands:
           background: true
           command: |
             echo "Starting MITM Proxy on port 8082..."
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --listen-host 0.0.0.0 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --listen-host 127.0.0.1 &
             sleep 10
             echo "MITM Proxy started."
+            curl -v --proxy 127.0.0.1:8082 http://mitm.it
+            lsof -iTCP:8082 -sTCP:LISTEN
   
       - run:
           name: Configure and Test Proxy Settings
@@ -461,7 +463,7 @@ commands:
             sleep 15
   
             echo "Testing proxy connection with MITMProxy..."
-            curl -v --proxy 0.0.0.0:8082 'http://mitm.it' || {
+            curl -v --proxy 127.0.0.1:8082 'http://mitm.it' || {
                 echo "Proxy test failed. Debugging details:"
                 echo "Active proxy processes:"
                 ps aux | grep mitm
@@ -473,10 +475,10 @@ commands:
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
-              HTTPProxy 0.0.0.0 \
+              HTTPProxy 127.0.0.1 \
               HTTPSEnable 1 \
               HTTPSPort 8082 \
-              HTTPSProxy 0.0.0.0
+              HTTPSProxy 127.0.0.1
   
             echo "Simulator proxy settings applied. Restarting simulator..."
             xcrun simctl shutdown all
