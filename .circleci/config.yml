@@ -322,6 +322,16 @@ commands:
             echo "MITM proxy is running with PID $MITM_PID"
 
       - run:
+          name: Start Emulator with System Writable
+          background: true
+          command: |
+            $ANDROID_HOME/emulator/emulator -avd test_device \
+            -http-proxy http://127.0.0.1:8082 \
+            -dns-server 8.8.8.8 \
+            -writable-system \
+            -feature -Wifi    \
+            -partition-size 2048
+      - run:
           name: Wait for Emulator to Start
           command: |
             adb wait-for-device
