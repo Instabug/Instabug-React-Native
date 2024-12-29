@@ -363,26 +363,66 @@ commands:
       - run:
           name: Install MITM Certificate
           command: |
-            # Verify system partition is writable
-            if ! adb shell touch /system/test_write && adb shell rm /system/test_write; then
-              echo "System partition is not writable. Cannot proceed."
-              exit 1
-            fi
+            # Wait for device
+            adb wait-for-device
             
-            # Install certificate
-            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            adb push ~/.mitmproxy/mitmproxy-ca-cert.pem /system/etc/security/cacerts/$HASH.0
-            adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
+            # Enable root and disable verity
+            adb root
+            sleep 3
+            adb disable-verity || echo "Warning: disable-verity failed or already disabled"
             
-            # Verify certificate was installed
-            if ! adb shell ls /system/etc/security/cacerts/$HASH.0 > /dev/null; then
-              echo "Certificate installation failed"
-              exit 1
-            fi
-            
-            # Reboot device
+            # Reboot after disabling verity
             adb reboot
             adb wait-for-device
+            sleep 10
+            
+            # Re-enable root and remount
+            adb root
+            sleep 3
+            adb remount
+            sleep 2
+            
+            # Double-check and force remount if needed
+            adb shell mount -o rw,remount /system
+            adb shell mount -o rw,remount /
+            
+            # Verify system partition is writable
+            if ! adb shell "touch /system/test_write"; then
+              echo "System partition still read-only, attempting alternative mount"
+              adb shell mount -o rw,remount -t ext4 /system
+              adb shell mount -o rw,remount -t f2fs /system
+            fi
+            
+            # Calculate certificate hash
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            echo "Using certificate hash: $HASH"
+            
+            # Create directory if doesn't exist
+            adb shell "mkdir -p /system/etc/security/cacerts"
+            
+            # Push certificate with retries
+            for i in {1..3}; do
+              if adb push ~/.mitmproxy/mitmproxy-ca-cert.pem "/system/etc/security/cacerts/$HASH.0"; then
+                echo "Certificate pushed successfully"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep 2
+            done
+            
+            # Set permissions
+            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+            
+            # Verify installation
+            if adb shell "ls -l /system/etc/security/cacerts/$HASH.0"; then
+              echo "Certificate installed successfully"
+            else
+              echo "Failed to verify certificate installation"
+              exit 1
+            fi
+            
+            # Final reboot to apply changes
+            adb reboot
       - run:
           name: Test Proxy Connectivity
           command: |
