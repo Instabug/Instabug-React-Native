@@ -245,9 +245,11 @@ commands:
             done
   setup_android_proxy:
     steps:
+
       - run:
           name: Configure DNS settings
           command: |
+            # First, detect the actual network interface name
             INTERFACE=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -n1)
             echo "Detected network interface: $INTERFACE"
             
@@ -294,7 +296,6 @@ commands:
             echo "Testing DNS resolution:"
             ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
             nslookup google.com || echo "DNS lookup failed"
-
       - run:
           name: Setup Android SDK and Emulator
           command: |
@@ -331,6 +332,7 @@ commands:
             -writable-system \
             -feature -Wifi    \
             -partition-size 2048
+
       - run:
           name: Wait for Emulator to Start
           command: |
@@ -343,19 +345,44 @@ commands:
               sleep 10
             done
       - run:
-          name: Verify Root Access
+          name: Verify Root Access and Remount System
           command: |
-            adb root || echo "Failed to switch to root mode. Ensure the emulator image is rooted."
-            adb remount
+            # Wait for device to be ready
+            adb wait-for-device
+            
+            # Try to get root access and remount with retries
+            for i in {1..3}; do
+              if adb root && sleep 2 && adb remount; then
+                echo "Successfully gained root access and remounted system"
+                break
+              fi
+              echo "Attempt $i failed, retrying..."
+              sleep 5
+            done
+
       - run:
           name: Install MITM Certificate
           command: |
+            # Verify system partition is writable
+            if ! adb shell touch /system/test_write && adb shell rm /system/test_write; then
+              echo "System partition is not writable. Cannot proceed."
+              exit 1
+            fi
+            
+            # Install certificate
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             adb push ~/.mitmproxy/mitmproxy-ca-cert.pem /system/etc/security/cacerts/$HASH.0
             adb shell chmod 644 /system/etc/security/cacerts/$HASH.0
+            
+            # Verify certificate was installed
+            if ! adb shell ls /system/etc/security/cacerts/$HASH.0 > /dev/null; then
+              echo "Certificate installation failed"
+              exit 1
+            fi
+            
+            # Reboot device
             adb reboot
             adb wait-for-device
-            adb shell ls /system/etc/security/cacerts/ | grep "$HASH.0"
       - run:
           name: Test Proxy Connectivity
           command: |
@@ -390,11 +417,11 @@ commands:
           command: |
             # Boot simulator 
             xcrun simctl shutdown all
-  
-            echo "Booting iPhone 11 Pro Max simulator..."
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
+            networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
+            networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
@@ -417,25 +444,13 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-  
+
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
-            CERT_PATH=~/.mitmproxy/mitmproxy-ca-cert.pem
-            CERT_DER_PATH=certs/mitmproxy-ca-cert.der
-  
-            echo "Setting up MITM Certificate..."
             mkdir -p certs
-  
-            if [ -f "$CERT_PATH" ]; then
-                openssl x509 -in "$CERT_PATH" -outform der -out "$CERT_DER_PATH"
-                echo "Certificate converted to DER format."
-            else
-                echo "Certificate file not found at $CERT_PATH. Aborting."
-                exit 1
-            fi
-  
-            echo "Creating mobileconfig file..."
+            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
+
             echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
             echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
             echo '<plist version="1.0">' >> certs/custom.mobileconfig
@@ -445,7 +460,7 @@ commands:
             echo '    <dict>' >> certs/custom.mobileconfig
             echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
             echo '      <data>' >> certs/custom.mobileconfig
-            base64 "$CERT_DER_PATH" >> certs/custom.mobileconfig
+            base64 certs/mitmproxy-ca-cert.der >> certs/custom.mobileconfig
             echo '      </data>' >> certs/custom.mobileconfig
             echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
             echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
@@ -471,29 +486,12 @@ commands:
             echo '  <integer>1</integer>' >> certs/custom.mobileconfig
             echo '</dict>' >> certs/custom.mobileconfig
             echo '</plist>' >> certs/custom.mobileconfig
-            echo "Mobileconfig file created successfully."
-  
-            echo "Restarting simulator for certificate installation..."
+
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
+
             xcrun simctl shutdown all
-            sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
-            sleep 15
-  
-            DEVICE_ID=$(xcrun simctl list devices | grep 'iPhone 11 Pro Max' | grep 'Booted' | sed -n 's/.*(\([^)]*\)).*/\1/p')
-            if [ -z "$DEVICE_ID" ]; then
-                echo "Failed to retrieve simulator device ID. Aborting."
-                exit 1
-            fi
-            echo "Using Device ID: $DEVICE_ID"
-  
-            echo "Resetting keychain for Device ID $DEVICE_ID..."
-            xcrun simctl keychain "$DEVICE_ID" reset
-  
-            echo "Installing MITM certificate mobileconfig..."
-            xcrun simctl openurl "$DEVICE_ID" "file://$(pwd)/certs/custom.mobileconfig"
-  
-            echo "MITM Proxy setup completed successfully."
-  
+            sleep 5
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
@@ -1069,4 +1067,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            -
+            - 
