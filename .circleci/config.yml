@@ -177,12 +177,8 @@ commands:
           name: Install Python3 and MITM Proxy
           command: |
            # Detect OS and install requirements accordingly
-           #!/bin/bash
-
-           # Detect OS and install requirements accordingly
            if [ "$(uname)" == "Darwin" ]; then
                echo "Running on macOS..."
-               # Ensure Homebrew is installed first
                if ! command -v brew &> /dev/null; then
                    echo "Homebrew not found. Installing Homebrew..."
                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -204,57 +200,6 @@ commands:
            # Install mitmproxy version 10.2.4
            pip3 install mitmproxy==10.2.4
            
-          #  # Create necessary directories and ensure permissions
-          #  mkdir -p ~/.mitmproxy
-          #  chmod 700 ~/.mitmproxy
-           
-          #  # Start mitmproxy in the background and capture logs
-          #  mitmproxy --set block_global=false --cert ~/.mitmproxy/mitmproxy-ca-cert.pem &> ~/.mitmproxy/mitmdump.log &
-          #  MITMPROXY_PID=$!
-          #  echo "mitmproxy started with PID $MITMPROXY_PID"
-           
-          #  # Wait for mitmproxy to initialize properly (adjust sleep if needed)
-          #  sleep 10
-           
-          #  # Check if mitmproxy is running
-          #  if ! ps -p $MITMPROXY_PID > /dev/null; then
-          #      echo "mitmproxy failed to start."
-          #      exit 1
-          #  fi
-           
-          #  # Check for mitmdump.log
-          #  echo "Checking mitmproxy logs..."
-          #  tail -n 10 ~/.mitmproxy/mitmdump.log
-           
-          #  # Wait for the certificate to be generated
-          #  CERT_PEM_PATH="$HOME/.mitmproxy/mitmproxy-ca-cert.pem"
-          #  echo "Waiting for mitmproxy to generate the certificate..."
-          #  while [ ! -f $CERT_PEM_PATH ]; do
-          #      sleep 2
-          #      echo "Waiting for certificate to be available..."
-          #  done
-           
-          #  # Generate the certificate hash (subject hash)
-          #  CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in $CERT_PEM_PATH | head -1)
-           
-          #  # If certificate hash generation fails, exit with an error
-          #  if [ -z "$CERT_HASH" ]; then
-          #      echo "Failed to generate certificate hash. Exiting..."
-          #      kill $MITMPROXY_PID
-          #      exit 1
-          #  fi
-           
-          #  echo "Certificate hash: $CERT_HASH"
-           
-          #  # MITM Proxy setup completed
-          #  echo "MITM Proxy setup completed."
-           
-          #  # Optionally, you can kill mitmproxy after the setup
-          #  echo "Killing mitmproxy process with PID $MITMPROXY_PID"
-          #  kill $MITMPROXY_PID
-
-
-
   setup_appium:
     steps:
       - run:
@@ -304,7 +249,6 @@ commands:
       - run:
           name: Configure DNS settings
           command: |
-            # First, detect the actual network interface name
             INTERFACE=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -n1)
             echo "Detected network interface: $INTERFACE"
             
@@ -344,20 +288,19 @@ commands:
             
             # Try to restart systemd-resolved if available
             if command -v systemctl &> /dev/null; then
-              sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed (this is okay if not using systemd)"
+              sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed"
             fi
+            
             # Test DNS resolution
             echo "Testing DNS resolution:"
             ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
             nslookup google.com || echo "DNS lookup failed"
+
       - run:
           name: Setup Android SDK and Emulator
           command: |
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
-            echo "no" | avdmanager create avd -n test_device \
-            -k "system-images;android-34;google_apis;x86_64" \
-            -d "pixel" \
-            --force
+            echo "no" | avdmanager create avd -n test_device -k "system-images;android-34;google_apis;x86_64" -d "pixel" --force
 
       - run:
           name: Configure emulator networking
@@ -368,25 +311,31 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false
-          background: true
+          command: |
+            # Start MITM proxy in background
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false &
+            MITM_PID=$!
+            # Wait until MITM proxy is ready (port 8082 is open)
+            while ! netstat -an | grep 8082; do
+                echo "Waiting for MITM proxy to be up..."
+                sleep 2
+            done
+            echo "MITM proxy is running with PID $MITM_PID"
 
       - run:
           name: Start Emulator with System Writable
           background: true
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
-            -http-proxy http://0.0.0.0:8082 \
+            -http-proxy http://127.0.0.1:8082 \
             -dns-server 8.8.8.8 \
+            -writable-system \
             -feature -Wifi    \
-            -partition-size 2048 \
-            -read-only
+            -partition-size 2048
 
       - run:
           name: Wait for emulator and configure network
           command: |
-           #!/bin/bash
-
            # Start the emulator if it's not already running
            echo "Starting emulator if it's not already running..."
            emulator -avd test_device &
@@ -437,15 +386,11 @@ commands:
            adb remount
            sleep 5
      
-           # Enable Wi-Fi and disable Airplane mode
-           adb shell "svc wifi enable"
-           adb shell "settings put global airplane_mode_on 0"
-     
-           # Set up network
-           adb shell "ip link set eth0 down"
-           adb shell "ip link set eth0 up"
-           adb shell "ip addr add 10.0.2.15/24 dev eth0"
-           adb shell "ip route add default via 10.0.2.2"
+           # Disable Wi-Fi and set up proxy
+           adb shell "svc wifi disable"
+           adb shell settings put global http_proxy "127.0.0.1:8082"
+
+           # Set DNS properties
            adb shell "setprop net.dns1 8.8.8.8"
            adb shell "setprop net.dns2 8.8.4.4"
      
@@ -473,32 +418,17 @@ commands:
            # Set permissions on the certificate file
            adb shell "chmod 644 /system/etc/security/cacerts/${CERT_HASH}.0"
      
-           # Configure the proxy settings for the emulator
-           for i in $(seq 1 3); do
-               echo "Setting up proxy... Attempt $i"
-               adb shell settings put global http_proxy "127.0.0.1:8082" && break
-               echo "Failed to set proxy. Retrying..."
-               sleep 5
-           done
-     
-           # Verify the proxy settings
-           adb shell settings get global http_proxy
-           netstat -an | grep 8082
-     
-           # Test connectivity by pinging Google
-           adb shell ping -c 1 google.com
-     
-           # Optionally, test the proxy by accessing a website through the proxy
-           adb shell curl -v --proxy http://127.0.0.1:8082 https://example.com
+           # Test the proxy connection
+           adb shell curl -v --proxy http://127.0.0.1:8082 https://www.google.com
 
       - run:
-                      name: install yarn and start app
-                      working_directory: ~/project/examples/hybrid
-                      command: |
-                        npm cache clean --force
-                        yarn install
-                        yarn start & # Start metro in background
-                        yarn android &> build-android.log # Run React Native app 
+          name: install yarn and start app
+          working_directory: ~/project/examples/hybrid
+          command: |
+            npm cache clean --force
+            yarn install
+            yarn start & # Start metro in background
+            yarn android &> build-android.log # Run React Native app  
 
   setup_ios_proxy:
     steps:
@@ -1191,4 +1121,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            - 
+            -
