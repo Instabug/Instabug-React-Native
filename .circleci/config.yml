@@ -336,6 +336,14 @@ commands:
           name: Wait for emulator and configure network
           command: |
            # Start the emulator if it's not already running
+           echo "Checking for running emulator instances..."
+           RUNNING_EMULATORS=$(adb devices | grep emulator-5554)
+           
+           if [[ -n "$RUNNING_EMULATORS" ]]; then
+               echo "An emulator is already running. Shutting it down..."
+               adb -s emulator-5554 emu kill
+               sleep 5
+           fi
            echo "Starting emulator if it's not already running..."
            emulator -avd test_device &
      
