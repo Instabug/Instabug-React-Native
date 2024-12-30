@@ -399,7 +399,11 @@ commands:
             
             # Create directory if doesn't exist
             adb shell "mkdir -p /system/etc/security/cacerts"
-            
+            cd ~/.mitmproxy/
+            HASH=$(openssl x509 -in mitmproxy-ca-cert.pem -inform PEM -subject_hash_old)
+            cp mitmproxy-ca-cert.pem "$HASH.0"
+            openssl x509 -in mitmproxy-ca-cert.pem -inform PEM -text >> "$HASH.0"    
+            adb push "$HASH.0" /system/etc/security/cacerts/
             # Push certificate with retries
             for i in {1..3}; do
               if adb push ~/.mitmproxy/mitmproxy-ca-cert.pem "/system/etc/security/cacerts/$HASH.0"; then
@@ -438,7 +442,11 @@ commands:
             echo "Verifying certificate presence..."
             CERT_HASH=c8750f0d  # Using known hash
             echo "Certificate hash: $CERT_HASH"
-            
+            # Verify certificate installation
+           adb shell ls -la /system/etc/security/cacerts/$HASH.0
+           adb shell settings get global http_proxy
+           adb shell settings get global https_proxy
+
             # Check certificate file and permissions
             if CERT_FILE=$(adb shell ls -l "/system/etc/security/cacerts/$CERT_HASH.0"); then
               echo "✓ Certificate found in system store"
@@ -476,7 +484,9 @@ commands:
               echo "✗ MITM proxy is not running"
               exit 1
             fi
-            
+            # Test connection through proxy
+           adb shell ping -c 1 google.com
+           adb shell curl -v https://google.com
             echo "All essential certificate trust checks passed successfully!"
       - run:
           name: Test Proxy Connectivity
@@ -495,7 +505,9 @@ commands:
             
             # Configure proxy settings
             echo "Configuring proxy settings..."
-            adb shell settings put global global_http_proxy_host "127.0.0.1"
+            adb shell settings put global http_proxy 127.0.0.1:8082
+            adb shell settings put global https_proxy 127.0.0.1:8082
+            adb shell settings put global global_http_proxy_host 127.0.0.1
             adb shell settings put global global_http_proxy_port 8082
             
             # Verify proxy settings
