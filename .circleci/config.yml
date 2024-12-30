@@ -636,6 +636,7 @@ commands:
           name: Verify iOS Certificate Trust Status
           command: |
             # Get the simulator UDID
+            xcrun simctl boot "iPhone 11 Pro Max"
             SIMULATOR_ID=$(xcrun simctl list devices | grep "iPhone 11 Pro Max" | grep -v "unavailable" | head -n 1 | sed -n 's/.*(\([^)]*\)).*/\1/p')
             
             echo "Using simulator: $SIMULATOR_ID"
