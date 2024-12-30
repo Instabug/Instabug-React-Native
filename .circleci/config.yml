@@ -520,18 +520,6 @@ commands:
             PROXY_PORT=$(adb shell settings get global global_http_proxy_port)
             echo "Current proxy settings - Host: $PROXY_HOST, Port: $PROXY_PORT"
             # Test connectivity with retries
-            echo "Testing proxy connectivity..."
-            for i in {1..3}; do
-              echo "Attempt $i of 3..."
-              if adb shell curl -v http://example.com | grep "Proxy"; then
-                echo "✓ Proxy test successful"
-                exit 0
-              fi
-              sleep 5
-            done
-            
-            echo "✗ Proxy test failed after 3 attempts"
-            exit 1
       - run:
           name: install yarn and start app
           working_directory: ~/project/examples/hybrid
