@@ -376,118 +376,105 @@ commands:
             adb wait-for-device
             sleep 10
             
-            # Re-enable root and remount
+            # Re-enable root and remount with all possible methods
             adb root
             sleep 3
             adb remount
             sleep 2
-            
-            # Double-check and force remount if needed
             adb shell mount -o rw,remount /system
             adb shell mount -o rw,remount /
             
-            # Verify system partition is writable
-            if ! adb shell "touch /system/test_write"; then
-              echo "System partition still read-only, attempting alternative mount"
-              adb shell mount -o rw,remount -t ext4 /system
-              adb shell mount -o rw,remount -t f2fs /system
-            fi
+            # Create temporary directory for certificate handling
+            TEMP_DIR=$(mktemp -d)
+            cd "$TEMP_DIR"
             
-            # Calculate certificate hash
-            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            # Copy and prepare certificate
+            cp ~/.mitmproxy/mitmproxy-ca-cert.pem ./cert.pem
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in cert.pem | head -1)
             echo "Using certificate hash: $HASH"
             
-            # Create directory if doesn't exist
+            # Create properly formatted certificate
+            cp cert.pem "$HASH.0"
+            openssl x509 -inform PEM -text -in cert.pem >> "$HASH.0"
+            
+            # Ensure target directory exists
             adb shell "mkdir -p /system/etc/security/cacerts"
-            cd ~/.mitmproxy/
-            HASH=$(openssl x509 -in mitmproxy-ca-cert.pem -inform PEM -subject_hash_old)
-            cp mitmproxy-ca-cert.pem "$HASH.0"
-            openssl x509 -in mitmproxy-ca-cert.pem -inform PEM -text >> "$HASH.0"    
-            adb push "$HASH.0" /system/etc/security/cacerts/
+            
             # Push certificate with retries
             for i in {1..3}; do
-              if adb push ~/.mitmproxy/mitmproxy-ca-cert.pem "/system/etc/security/cacerts/$HASH.0"; then
-                echo "Certificate pushed successfully"
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              sleep 2
+                if adb push "$HASH.0" "/system/etc/security/cacerts/$HASH.0"; then
+                    echo "Certificate pushed successfully"
+                    break
+                fi
+                echo "Push attempt $i failed, retrying..."
+                sleep 2
             done
             
-            # Set permissions
+            # Set proper permissions and SELinux context
             adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+            adb shell "chown root:root /system/etc/security/cacerts/$HASH.0"
+            adb shell "chcon u:object_r:system_file:s0 /system/etc/security/cacerts/$HASH.0"
             
-            # Verify installation
-            if adb shell "ls -l /system/etc/security/cacerts/$HASH.0"; then
-              echo "Certificate installed successfully"
-            else
-              echo "Failed to verify certificate installation"
-              exit 1
-            fi
+            # Clean up
+            cd - > /dev/null
+            rm -rf "$TEMP_DIR"
             
             # Final reboot to apply changes
             adb reboot
       - run:
           name: Verify Certificate Trust
           command: |
-           # Wait for device
+           # Wait for complete boot
             adb wait-for-device
             echo "Waiting for system boot..."
             while ! adb shell getprop sys.boot_completed | grep -q "1"; do
-              sleep 2
+                sleep 2
             done
-            sleep 5  # Additional wait for services
+            sleep 5
             
-            # Verify certificate exists in correct location
+            # Verify certificate
             echo "Verifying certificate presence..."
-            CERT_HASH=c8750f0d  # Using known hash
+            CERT_HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             echo "Certificate hash: $CERT_HASH"
-            # Verify certificate installation
-           adb shell ls -la /system/etc/security/cacerts/$HASH.0
-           adb shell settings get global http_proxy
-           adb shell settings get global https_proxy
-
-            # Check certificate file and permissions
-            if CERT_FILE=$(adb shell ls -l "/system/etc/security/cacerts/$CERT_HASH.0"); then
-              echo "✓ Certificate found in system store"
-              echo "$CERT_FILE"
-            else
-              echo "✗ Certificate not found in system store"
-              exit 1
+            
+            # Full certificate verification
+            if ! adb shell "ls -l /system/etc/security/cacerts/$CERT_HASH.0"; then
+                echo "✗ Certificate not found in system store"
+                exit 1
             fi
+            
+            # Configure all proxy settings
+            echo "Configuring proxy settings..."
+            adb shell settings put global http_proxy "127.0.0.1:8082"
+            adb shell settings put global https_proxy "127.0.0.1:8082"
+            adb shell settings put global global_http_proxy_host "127.0.0.1"
+            adb shell settings put global global_http_proxy_port "8082"
             
             # Verify proxy settings
-            echo "Checking proxy settings..."
             PROXY_SETTINGS=$(adb shell settings get global http_proxy)
-            if [ "$PROXY_SETTINGS" = "127.0.0.1:8082" ]; then
-              echo "✓ Proxy settings correctly configured"
-            else
-              echo "✗ Proxy settings incorrect: $PROXY_SETTINGS"
-              echo "Configuring proxy settings..."
-              adb shell settings put global http_proxy 127.0.0.1:8082
+            if [ "$PROXY_SETTINGS" != "127.0.0.1:8082" ]; then
+                echo "✗ Proxy settings incorrect: $PROXY_SETTINGS"
+                exit 1
             fi
             
-            # Test HTTPS connection through app_process
-            echo "Testing HTTPS connection..."
-            if adb shell "app_process -Djava.class.path=/data/local/tmp/SSLTest.jar /system/bin com.example.SSLTest https://google.com" 2>&1 | grep -q "Connection successful"; then
-              echo "✓ HTTPS connection successful through proxy"
-            else
-              echo "✗ HTTPS connection failed"
-              exit 1
+            # Comprehensive connection testing
+            echo "Testing connections..."
+            adb shell ping -c 1 google.com || echo "Warning: Ping failed"
+            adb shell curl -v https://google.com
+            
+            # Test HTTPS through app_process
+            if ! adb shell "app_process -Djava.class.path=/data/local/tmp/SSLTest.jar /system/bin com.example.SSLTest https://google.com" 2>&1 | grep -q "Connection successful"; then
+                echo "✗ HTTPS connection failed"
+                exit 1
             fi
             
-            # Check if MITM proxy is running
-            echo "Verifying MITM proxy status..."
-            if ps aux | grep "[m]itmdump" > /dev/null; then
-              echo "✓ MITM proxy is running"
-            else
-              echo "✗ MITM proxy is not running"
-              exit 1
+            # Verify MITM proxy
+            if ! ps aux | grep "[m]itmdump" > /dev/null; then
+                echo "✗ MITM proxy is not running"
+                exit 1
             fi
-            # Test connection through proxy
-           adb shell ping -c 1 google.com
-           adb shell curl -v https://google.com
-            echo "All essential certificate trust checks passed successfully!"
+            
+            echo "All certificate trust and proxy checks passed successfully!"
       - run:
           name: Test Proxy Connectivity
           command: |
