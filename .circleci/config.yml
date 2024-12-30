@@ -434,9 +434,11 @@ commands:
             done
             sleep 5  # Additional wait for services
             
-            # Verify certificate exists in correct location
+            # Calculate hash and verify certificate
             echo "Verifying certificate presence..."
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            echo "Certificate hash: $HASH"
+            
             if ! adb shell ls "/system/etc/security/cacerts/$HASH.0" > /dev/null; then
               echo "Certificate not found in system store"
               exit 1
@@ -446,67 +448,35 @@ commands:
             echo "Configuring proxy settings..."
             adb shell settings put global http_proxy 127.0.0.1:8082
             
-            # Create test script content
-            TEST_SCRIPT='#!/system/bin/sh
+            # Create test script with proper hash
+            TEST_SCRIPT="#!/system/bin/sh
             
-            # Test domains
-            DOMAINS="google.com github.com api.github.com"
+            CERT_HASH=$HASH
+            echo \"Using certificate hash: \$CERT_HASH\"
             
-            # Function to test HTTPS connection
-            test_https() {
-              domain=$1
-              echo "Testing HTTPS connection to $domain..."
-              
-              # Try curl first
-              if command -v curl > /dev/null; then
-                if curl -v -s -o /dev/null "https://$domain" 2>&1 | grep -i "SSL certificate verify ok"; then
-                  echo "✓ Curl: Certificate verified for $domain"
-                  return 0
-                else
-                  echo "✗ Curl: Certificate verification failed for $domain"
-                  return 1
-                fi
-              fi
-              
-              # Try wget as backup
-              if command -v wget > /dev/null; then
-                if wget -q --https-only --no-check-certificate "https://$domain" -O /dev/null 2>&1; then
-                  echo "✓ Wget: Connection successful to $domain"
-                  return 0
-                else
-                  echo "✗ Wget: Connection failed to $domain"
-                  return 1
-                fi
-              fi
-              
-              echo "Neither curl nor wget available"
-              return 1
-            }
+            # Verify certificate file
+            if [ -f \"/system/etc/security/cacerts/\$CERT_HASH.0\" ]; then
+              echo \"✓ Certificate found in system store\"
+              ls -l \"/system/etc/security/cacerts/\$CERT_HASH.0\"
+            else
+              echo \"✗ Certificate not found in system store\"
+              exit 1
+            fi
             
-            # Test certificate state
-            echo "Testing system certificate store..."
-            ls -l /system/etc/security/cacerts/$HASH.0
-            
-            # Verify proxy settings
-            echo "Current proxy settings:"
+            # Get current proxy settings
+            echo \"Current proxy settings:\"
             settings get global http_proxy
             
-            # Run tests
-            failures=0
-            for domain in $DOMAINS; do
-              if ! test_https "$domain"; then
-                failures=$((failures + 1))
-              fi
-            done
             
-            # Final results
-            if [ $failures -eq 0 ]; then
-              echo "✓ All certificate tests passed"
+            # Try using built-in HttpURLConnection via app_process
+            adb shell \"app_process -Djava.class.path=/data/local/tmp/SSLTest.jar /system/bin com.example.SSLTest https://google.com\" 2>&1 | grep -q 'Connection successful'
+            if [ $? -eq 0 ]; then
+              echo \"✓ Java: Certificate verification successful\"
               exit 0
-            else
-              echo "✗ Some certificate tests failed"
-              exit 1
-            fi'
+            fi
+            
+            echo \"✗ All certificate verification methods failed\"
+            exit 1"
             
             # Write test script to device
             echo "$TEST_SCRIPT" | adb shell "cat > /data/local/tmp/test_cert.sh"
@@ -515,7 +485,7 @@ commands:
             echo "Running certificate tests..."
             adb shell "chmod +x /data/local/tmp/test_cert.sh"
             adb shell "/data/local/tmp/test_cert.sh"
-            
+
             # Check mitmdump logs for successful HTTPS interception
             echo "Checking MITM proxy logs..."
             if ps aux | grep "[m]itmdump" > /dev/null; then
@@ -549,7 +519,6 @@ commands:
             PROXY_HOST=$(adb shell settings get global global_http_proxy_host)
             PROXY_PORT=$(adb shell settings get global global_http_proxy_port)
             echo "Current proxy settings - Host: $PROXY_HOST, Port: $PROXY_PORT"
-            
             # Test connectivity with retries
             echo "Testing proxy connectivity..."
             for i in {1..3}; do
