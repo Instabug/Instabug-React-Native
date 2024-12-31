@@ -236,7 +236,7 @@ commands:
 
             # Wait for server to start
             for i in $(seq 1 30); do
-              if curl -s http://127.0.0.1:4723/status | grep -q "ready"; then
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
                 echo "Appium server is ready"
                 break
               fi
@@ -249,18 +249,12 @@ commands:
       - run:
           name: Configure DNS settings
           command: |
-            # First, detect the actual network interface name
-            INTERFACE=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -n1)
-            echo "Detected network interface: $INTERFACE"
-            
-            # Create resolver directory if needed
             if [ ! -w /etc ]; then
               sudo mkdir -p /etc/resolver || echo "Failed to create resolver directory"
             else
               mkdir -p /etc/resolver
             fi
             
-            # Configure resolver settings
             if [ -w /etc/resolver ]; then
               echo "nameserver 8.8.8.8" > /etc/resolver/mitm
               echo "nameserver 8.8.4.4" >> /etc/resolver/mitm
@@ -269,38 +263,25 @@ commands:
               echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
             fi
             
-            # Try resolvectl if available
-            if command -v resolvectl &> /dev/null && [ ! -z "$INTERFACE" ]; then
-              echo "Setting DNS via resolvectl for interface $INTERFACE"
-              sudo resolvectl dns "$INTERFACE" 8.8.8.8 8.8.4.4 || {
-                echo "Failed to set DNS via resolvectl, falling back to resolv.conf"
-                echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
-                echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
-              }
+            if command -v resolvectl &> /dev/null; then
+              sudo resolvectl dns eth0 8.8.8.8 8.8.4.4 || echo "Failed to set DNS via resolvectl"
             else
-              echo "Using direct resolv.conf configuration"
-              echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+              echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
               echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
             fi
             
-            # Verify DNS configuration
-            echo "Current DNS configuration:"
-            cat /etc/resolv.conf
-            
-            # Try to restart systemd-resolved if available
             if command -v systemctl &> /dev/null; then
-              sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed"
+              sudo systemctl restart systemd-resolved || echo "Failed to restart systemd-resolved"
             fi
-            
-            # Test DNS resolution
-            echo "Testing DNS resolution:"
-            ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
-            nslookup google.com || echo "DNS lookup failed"
+
       - run:
           name: Setup Android SDK and Emulator
           command: |
             sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
-            echo "no" | avdmanager create avd -n test_device -k "system-images;android-34;google_apis;x86_64" -d "pixel" --force
+            echo "no" | avdmanager create avd -n test_device \
+            -k "system-images;android-34;google_apis;x86_64" \
+            -d "pixel" \
+            --force
 
       - run:
           name: Configure emulator networking
@@ -311,31 +292,29 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: |
-            # Start MITM proxy in background
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false &
-            MITM_PID=$!
-            # Wait until MITM proxy is ready (port 8082 is open)
-            while ! ss -tuln | grep 8082; do
-                echo "Waiting for MITM proxy to be up..."
-                sleep 2
-            done
-            echo "MITM proxy is running with PID $MITM_PID"
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
+          background: true
 
       - run:
           name: Start Emulator with System Writable
           background: true
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
-            -http-proxy http://127.0.0.1:8082 \
+            -http-proxy http://localhost:8080 \
             -dns-server 8.8.8.8 \
             -writable-system \
-            -feature -Wifi    \
             -partition-size 2048
 
       - run:
-          name: Wait for Emulator to Start
+          name: Wait for emulator and configure network
           command: |
+            for i in $(seq 1 30); do
+              if adb devices | grep -q "emulator"; then
+                break
+              fi
+              echo "Waiting for emulator to start... ($i/30)"
+              sleep 10
+            done
             adb wait-for-device
             for i in $(seq 1 30); do
               if adb shell getprop sys.boot_completed | grep -q "1"; then
@@ -344,55 +323,28 @@ commands:
               echo "Waiting for boot to complete... ($i/30)"
               sleep 10
             done
-      - run:
-          name: Verify Root Access and Remount System
-          command: |
-            # Wait for device to be ready
-            adb wait-for-device
-            
-            # Try to get root access and remount with retries
-            for i in {1..3}; do
-              if adb root && sleep 2 && adb remount; then
-                echo "Successfully gained root access and remounted system"
-                break
-              fi
-              echo "Attempt $i failed, retrying..."
-              sleep 5
-            done
-
-      - run:
-          name: Install MITM Certificate
-          command: |
-            # Wait for device
-            adb wait-for-device
-            
-            # Enable root and disable verity
             adb root
-            sleep 3
-            adb disable-verity || echo "Warning: disable-verity failed or already disabled"
-            
-            # Reboot after disabling verity
-            adb reboot
-            adb wait-for-device
-            sleep 10
-            
-            # Re-enable root and remount
-            adb root
-            sleep 3
-            adb remount
+            sleep 5
+            adb shell avbctl disable-verification
             sleep 2
-            
-            # Double-check and force remount if needed
-            adb shell mount -o rw,remount /system
-            adb shell mount -o rw,remount /
-            
-            # Verify system partition is writable
-            if ! adb shell "touch /system/test_write"; then
-              echo "System partition still read-only, attempting alternative mount"
-              adb shell mount -o rw,remount -t ext4 /system
-              adb shell mount -o rw,remount -t f2fs /system
-            fi
-            
+            adb reboot
+            echo "Waiting for device to reboot..."
+            sleep 30
+            adb wait-for-device
+            adb root
+            sleep 5
+            adb shell setenforce 0
+            adb disable-verity
+            adb reboot
+            echo "Waiting for device to reboot again..."
+            sleep 30
+            adb wait-for-device
+            adb root
+            sleep 5
+            adb remount
+            adb shell setprop net.eth0.dns1 8.8.8.8
+            adb shell setprop net.eth0.dns2 8.8.4.4
+            echo "Installing certificate..."
             # Calculate certificate hash
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             echo "Using certificate hash: $HASH"
@@ -423,103 +375,15 @@ commands:
             
             # Final reboot to apply changes
             adb reboot
-      - run:
-          name: Verify Certificate Trust
-          command: |
-            # Wait for device to be fully booted after reboot
-            adb wait-for-device
-            echo "Waiting for system boot..."
-            while ! adb shell getprop sys.boot_completed | grep -q "1"; do
-              sleep 2
-            done
-            sleep 5  # Additional wait for services
-            
-            # Calculate hash and verify certificate
-            echo "Verifying certificate presence..."
-            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            echo "Certificate hash: $HASH"
-            
-            if ! adb shell ls "/system/etc/security/cacerts/$HASH.0" > /dev/null; then
-              echo "Certificate not found in system store"
-              exit 1
-            fi
-            
-            # Ensure proxy settings are correct
-            echo "Configuring proxy settings..."
-            adb shell settings put global http_proxy 127.0.0.1:8082
-            
-            # Create test script with proper hash
-            TEST_SCRIPT="#!/system/bin/sh
-            
-            CERT_HASH=$HASH
-            echo \"Using certificate hash: \$CERT_HASH\"
-            
-            # Verify certificate file
-            if [ -f \"/system/etc/security/cacerts/\$CERT_HASH.0\" ]; then
-              echo \"✓ Certificate found in system store\"
-              ls -l \"/system/etc/security/cacerts/\$CERT_HASH.0\"
-            else
-              echo \"✗ Certificate not found in system store\"
-              exit 1
-            fi
-            
-            # Get current proxy settings
-            echo \"Current proxy settings:\"
-            settings get global http_proxy
-            
-            
-            # Try using built-in HttpURLConnection via app_process
-            adb shell \"app_process -Djava.class.path=/data/local/tmp/SSLTest.jar /system/bin com.example.SSLTest https://google.com\" 2>&1 | grep -q 'Connection successful'
-            if [ $? -eq 0 ]; then
-              echo \"✓ Java: Certificate verification successful\"
-              exit 0
-            fi
-            
-            echo \"✗ All certificate verification methods failed\"
-            exit 1"
-            
-            # Write test script to device
-            echo "$TEST_SCRIPT" | adb shell "cat > /data/local/tmp/test_cert.sh"
-            
-            # Make script executable and run it
-            echo "Running certificate tests..."
-            adb shell "chmod +x /data/local/tmp/test_cert.sh"
-            adb shell "/data/local/tmp/test_cert.sh"
-
-            # Check mitmdump logs for successful HTTPS interception
-            echo "Checking MITM proxy logs..."
-            if ps aux | grep "[m]itmdump" > /dev/null; then
-              echo "✓ MITM proxy is running"
-            else
-              echo "✗ MITM proxy is not running"
-              exit 1
-            fi
-      - run:
-          name: Test Proxy Connectivity
-          command: |
-            # Wait for device to come online with timeout
-            echo "Waiting for device to come online..."
-            timeout 120 bash -c '
-              until adb wait-for-device && adb shell getprop sys.boot_completed | grep -q "1"; do
-                echo "Waiting for device boot to complete..."
-                sleep 5
-              done
-            ' || { echo "Timeout waiting for device"; exit 1; }
-            
-            # Additional wait to ensure all services are up
-            sleep 10
-            
-            # Configure proxy settings
             echo "Configuring proxy settings..."
             adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8082
-            
-            # Verify proxy settings
-            echo "Verifying proxy settings..."
-            PROXY_HOST=$(adb shell settings get global global_http_proxy_host)
-            PROXY_PORT=$(adb shell settings get global global_http_proxy_port)
-            echo "Current proxy settings - Host: $PROXY_HOST, Port: $PROXY_PORT"
-            # Test connectivity with retries
+            adb shell settings put global global_http_proxy_port 8084
+            adb shell settings put global http_proxy "127.0.0.1:8084"
+            echo "Testing network connection..."
+            adb shell ping -c 4 8.8.8.8
+            echo "Testing HTTPS connection through proxy..."
+            adb shell am start -a android.intent.action.VIEW -d https://google.com
+
       - run:
           name: install yarn and start app
           working_directory: ~/project/examples/hybrid
@@ -527,8 +391,7 @@ commands:
             npm cache clean --force
             yarn install
             yarn start & # Start metro in background
-            yarn android &> build-android.log # Run React Native app  
-
+            yarn android &> build-android.log # Run React Native app
   setup_ios_proxy:
     steps:
       - run:
@@ -541,7 +404,6 @@ commands:
             echo "MITM Proxy started."
             curl -v --proxy 127.0.0.1:8082 http://mitm.it
             lsof -iTCP:8082 -sTCP:LISTEN
-  
       - run:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
@@ -551,15 +413,14 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
+
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
-                echo "Proxy test failed"
-                echo "Running proxy processes:"
-                ps aux | grep mitm
-            }
-            
-            # Configure simulator proxy
+              echo "Proxy test failed"
+              echo "Running proxy processes:"
+              ps aux | grep mitm
+            # Set simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
@@ -573,6 +434,7 @@ commands:
             sleep 2
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
+
       - run:
           name: Setup iOS MITM Certificate and Proxy
           command: |
@@ -1098,6 +960,13 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
+      - run:
+          name: Start MITM Proxy
+          background: true
+          command: |
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
+            sleep 10
+
       - setup_ios_proxy
       - setup_appium
       
@@ -1254,4 +1123,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            - 
+            - prepare_dream11
