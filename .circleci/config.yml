@@ -303,86 +303,142 @@ commands:
             -http-proxy http://localhost:8080 \
             -dns-server 8.8.8.8 \
             -writable-system \
+            -feature -Wifi    \
             -partition-size 2048
 
       - run:
           name: Wait for emulator and configure network
           command: |
+            # Function to check device status
+            check_device() {
+               for i in {1..10}; do
+                   if adb devices | grep -q "device$"; then
+                       return 0
+                   fi
+                   echo "Waiting for device to come online... ($i/10)"
+                   sleep 5
+               done
+               return 1
+            }
+            
+            # Function to execute adb command with retries
+            adb_retry() {
+               local cmd="$*"
+               local max_attempts=3
+               
+               for ((i=1; i<=max_attempts; i++)); do
+                   if eval "$cmd"; then
+                       return 0
+                   fi
+                   echo "Command failed, attempt $i of $max_attempts"
+                   sleep 5
+               done
+               return 1
+            }
+            
+            # Wait for emulator
+            echo "Waiting for emulator..."
             for i in $(seq 1 30); do
-              if adb devices | grep -q "emulator"; then
-                break
-              fi
-              echo "Waiting for emulator to start... ($i/30)"
-              sleep 10
+               if adb devices | grep -q "emulator"; then
+                   break
+               fi
+               echo "Waiting for emulator to start... ($i/30)"
+               sleep 10
             done
+            
+            # Wait for boot completion
+            echo "Waiting for boot completion..."
             adb wait-for-device
             for i in $(seq 1 30); do
-              if adb shell getprop sys.boot_completed | grep -q "1"; then
-                break
-              fi
-              echo "Waiting for boot to complete... ($i/30)"
-              sleep 10
+               if adb shell getprop sys.boot_completed | grep -q "1"; then
+                   break
+               fi
+               echo "Waiting for boot to complete... ($i/30)"
+               sleep 10
             done
-            adb root
+            
+            # First root and disable verification
+            adb_retry "adb root"
             sleep 5
-            adb shell avbctl disable-verification
+            adb_retry "adb shell avbctl disable-verification"
             sleep 2
-            adb reboot
-            echo "Waiting for device to reboot..."
+            
+            # First reboot
+            echo "First reboot..."
+            adb_retry "adb reboot"
             sleep 30
-            adb wait-for-device
-            adb root
+            check_device || { echo "Device offline after first reboot"; exit 1; }
+            
+            # Second root and disable verity
+            adb_retry "adb root"
             sleep 5
-            adb shell setenforce 0
-            adb disable-verity
-            adb reboot
-            echo "Waiting for device to reboot again..."
+            adb_retry "adb shell setenforce 0"
+            adb_retry "adb disable-verity"
+            
+            # Second reboot
+            echo "Second reboot..."
+            adb_retry "adb reboot"
             sleep 30
-            adb wait-for-device
-            adb root
+            check_device || { echo "Device offline after second reboot"; exit 1; }
+            
+            # Final root and remount
+            adb_retry "adb root"
             sleep 5
-            adb remount
-            adb shell setprop net.eth0.dns1 8.8.8.8
-            adb shell setprop net.eth0.dns2 8.8.4.4
+            adb_retry "adb remount"
+            adb_retry "adb shell setprop net.eth0.dns1 8.8.8.8"
+            adb_retry "adb shell setprop net.eth0.dns2 8.8.4.4"
+            
+            # Certificate installation
             echo "Installing certificate..."
-            # Calculate certificate hash
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
             echo "Using certificate hash: $HASH"
             
-            # Create directory if doesn't exist
-            adb shell "mkdir -p /system/etc/security/cacerts"
+            adb_retry "adb shell 'mkdir -p /system/etc/security/cacerts'"
             
-            # Push certificate with retries
-            for i in {1..3}; do
-              if adb push ~/.mitmproxy/mitmproxy-ca-cert.pem "/system/etc/security/cacerts/$HASH.0"; then
-                echo "Certificate pushed successfully"
-                break
-              fi
-              echo "Push attempt $i failed, retrying..."
-              sleep 2
-            done
-            
-            # Set permissions
-            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
-            
-            # Verify installation
-            if adb shell "ls -l /system/etc/security/cacerts/$HASH.0"; then
-              echo "Certificate installed successfully"
+            if adb_retry "adb push ~/.mitmproxy/mitmproxy-ca-cert.pem /system/etc/security/cacerts/$HASH.0"; then
+               echo "Certificate pushed successfully"
+               adb_retry "adb shell 'chmod 644 /system/etc/security/cacerts/$HASH.0'"
+               
+               if adb shell "ls -l /system/etc/security/cacerts/$HASH.0"; then
+                   echo "Certificate installed successfully"
+               else
+                   echo "Failed to verify certificate installation"
+                   exit 1
+               fi
             else
-              echo "Failed to verify certificate installation"
-              exit 1
+               echo "Failed to push certificate"
+               exit 1
             fi
             
-            # Final reboot to apply changes
-            adb reboot
+            # Final reboot and proxy configuration
+            echo "Final reboot..."
+            adb_retry "adb reboot"
+            sleep 30
+            check_device || { echo "Device offline after final reboot"; exit 1; }
+            
             echo "Configuring proxy settings..."
-            adb shell settings put global global_http_proxy_host "127.0.0.1"
-            adb shell settings put global global_http_proxy_port 8084
-            adb shell settings put global http_proxy "127.0.0.1:8084"
+            if ! adb_retry "adb shell settings put global global_http_proxy_host '127.0.0.1'"; then
+               echo "Failed to set proxy host"
+               exit 1
+            fi
+            
+            if ! adb_retry "adb shell settings put global global_http_proxy_port 8084"; then
+               echo "Failed to set proxy port"
+               exit 1
+            fi
+            
+            if ! adb_retry "adb shell settings put global http_proxy '127.0.0.1:8084'"; then
+               echo "Failed to set http proxy"
+               exit 1
+            fi
+            
             echo "Testing network connection..."
-            adb shell ping -c 4 8.8.8.8
-            echo "Testing HTTPS connection through proxy..."
-            adb shell am start -a android.intent.action.VIEW -d https://google.com
+            adb_retry "adb shell ping -c 4 8.8.8.8"
+            
+            echo "Testing HTTPS connection..."
+            adb_retry "adb shell am start -a android.intent.action.VIEW -d https://google.com"
+            
+            echo "Setup completed successfully"
 
       - run:
           name: install yarn and start app
