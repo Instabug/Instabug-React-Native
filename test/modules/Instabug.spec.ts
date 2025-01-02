@@ -24,6 +24,7 @@ import {
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
 import InstabugConstants from '../../src/utils/InstabugConstants';
+import { Logger } from '../../src/utils/logger';
 
 describe('Instabug Module', () => {
   beforeEach(() => {
@@ -641,7 +642,7 @@ describe('Instabug Module', () => {
     [{}, 'value'],
     ['key', []],
   ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
-    const logSpy = jest.spyOn(console, 'error');
+    const logSpy = jest.spyOn(Logger, 'error');
 
     // @ts-ignore
     Instabug.setUserAttribute(key, value);
@@ -869,5 +870,21 @@ describe('Instabug Module', () => {
   it('should call the native willRedirectToStore method', () => {
     Instabug.willRedirectToStore();
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
+  });
+
+  it('should register W3C flag listener', async () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+
+    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
+  });
+
+  it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANGE);
+
+    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
+    expect(callback).toHaveBeenCalled();
   });
 });

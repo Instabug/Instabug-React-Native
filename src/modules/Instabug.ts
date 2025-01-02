@@ -10,7 +10,8 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
-import { NativeEvents, NativeInstabug, emitter } from '../native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
+import { registerW3CFlagsListener } from '../utils/FeatureFlags';
 import {
   ColorTheme,
   Locale,
@@ -26,6 +27,8 @@ import { captureUnhandledRejections } from '../utils/UnhandledRejectionTracking'
 import type { ReproConfig } from '../models/ReproConfig';
 import type { FeatureFlag } from '../models/FeatureFlag';
 import InstabugConstants from '../utils/InstabugConstants';
+import { InstabugRNConfig } from '../utils/config';
+import { Logger } from '../utils/logger';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -68,6 +71,10 @@ export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
 
+  if (Platform.OS === 'android') {
+    registerW3CFlagsListener();
+  }
+
   // Default networkInterceptionMode to JavaScript
   if (config.networkInterceptionMode == null) {
     config.networkInterceptionMode = NetworkInterceptionMode.javascript;
@@ -87,6 +94,8 @@ export const init = (config: InstabugConfig) => {
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
+
+  InstabugRNConfig.debugLogsLevel = config.debugLogsLevel ?? LogLevel.error;
 
   reportCurrentViewForAndroid(firstScreen);
   setTimeout(() => {
@@ -382,9 +391,10 @@ export const setReproStepsConfig = (config: ReproConfig) => {
  */
 export const setUserAttribute = (key: string, value: string) => {
   if (!key || typeof key !== 'string' || typeof value !== 'string') {
-    console.error(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    Logger.error(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
     return;
   }
+
   NativeInstabug.setUserAttribute(key, value);
 };
 
@@ -406,7 +416,7 @@ export const getUserAttribute = async (key: string): Promise<string | null> => {
  */
 export const removeUserAttribute = (key: string) => {
   if (!key || typeof key !== 'string') {
-    console.error(InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    Logger.error(InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
 
     return;
   }
@@ -633,6 +643,13 @@ export const willRedirectToStore = () => {
   NativeInstabug.willRedirectToStore();
 };
 
+/**
+ * This API has be called when changing the default Metro server port (8081) to exclude the DEV URL from network logging.
+ */
+export const setMetroDevServerPort = (port: number) => {
+  InstabugRNConfig.metroDevServerPort = port.toString();
+};
+
 export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
   if (_isFirstScreen) {
     _lastScreen = event.componentName;
@@ -643,4 +660,21 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
     NativeInstabug.reportScreenChange(event.componentName);
     _lastScreen = event.componentName;
   }
+};
+
+/**
+ * Sets listener to W3ExternalTraceID flag changes
+ * @param handler A callback that gets the update value of the flag
+ */
+export const _registerW3CFlagsChangeListener = (
+  handler: (payload: {
+    isW3ExternalTraceIDEnabled: boolean;
+    isW3ExternalGeneratedHeaderEnabled: boolean;
+    isW3CaughtHeaderEnabled: boolean;
+  }) => void,
+) => {
+  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANGE, (payload) => {
+    handler(payload);
+  });
+  NativeInstabug.registerW3CFlagsChangeListener();
 };
