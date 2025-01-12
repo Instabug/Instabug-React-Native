@@ -233,6 +233,10 @@ export const reportNetworkLog = (network: NetworkData) => {
   }
 };
 
+/**
+ * @internal
+ * This method is for internal use only.
+ */
 export function registerObfuscationListener() {
   NetworkLogger.registerNetworkLogsListener(
     NetworkListenerType.obfuscation,
@@ -246,6 +250,10 @@ export function registerObfuscationListener() {
   );
 }
 
+/**
+ * @internal
+ * This method is for internal use only.
+ */
 export function registerFilteringListener(filterExpression: string) {
   NetworkLogger.registerNetworkLogsListener(
     NetworkListenerType.filtering,
@@ -267,6 +275,10 @@ export function registerFilteringListener(filterExpression: string) {
   );
 }
 
+/**
+ * @internal
+ * This method is for internal use only.
+ */
 export function registerFilteringAndObfuscationListener(filterExpression: string) {
   NetworkLogger.registerNetworkLogsListener(NetworkListenerType.both, async (networkSnapshot) => {
     // eslint-disable-next-line no-new-func
@@ -292,6 +304,10 @@ export function registerFilteringAndObfuscationListener(filterExpression: string
   });
 }
 
+/**
+ * @internal
+ * This method is for internal use only.
+ */
 export function checkNetworkRequestHandlers() {
   const obfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
   const hasFilterExpression = NetworkLogger.hasRequestFilterExpression();
@@ -320,7 +336,11 @@ export function resetNativeObfuscationListener() {
   NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
 }
 
-function updateNetworkLogSnapshot(networkSnapshot: NetworkData) {
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function updateNetworkLogSnapshot(networkSnapshot: NetworkData) {
   NativeNetworkLogger.updateNetworkLogSnapshot(
     networkSnapshot.url,
     networkSnapshot.id,

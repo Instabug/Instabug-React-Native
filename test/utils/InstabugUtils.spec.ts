@@ -4,14 +4,19 @@ import { Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import * as Instabug from '../../src/modules/Instabug';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import { InvocationEvent, NetworkData, NonFatalErrorLevel } from '../../src';
 import InstabugUtils, {
   getStackTrace,
+  registerFilteringAndObfuscationListener,
+  registerFilteringListener,
+  registerObfuscationListener,
   reportNetworkLog,
   sendCrashReport,
 } from '../../src/utils/InstabugUtils';
-import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
+
+import { NativeNetworkLogger, NetworkListenerType } from '../../src/native/NativeNetworkLogger';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 import { NativeAPM } from '../../src/native/NativeAPM';
 
@@ -330,6 +335,45 @@ describe('reportNetworkLog', () => {
       network.duration,
       network.gqlQueryName,
       network.serverErrorMessage,
+    );
+  });
+});
+
+jest.mock('../../src/modules/NetworkLogger');
+
+describe('test registerNetworkLogsListener usage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks(); // Clear all mocks before each test
+  });
+  it('registerObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.obfuscation', () => {
+    registerObfuscationListener();
+
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.obfuscation,
+      expect.any(Function),
+    );
+  });
+
+  it('registerFilteringListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.filtering', () => {
+    const testText = 'true';
+    registerFilteringListener(testText);
+
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.filtering,
+      expect.any(Function),
+    );
+  });
+
+  it('registerFilteringAndObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.both', () => {
+    const testText = 'true';
+    registerFilteringAndObfuscationListener(testText);
+
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.both,
+      expect.any(Function),
     );
   });
 });
