@@ -663,14 +663,14 @@ public class RNInstabugReactnativeModuleTest {
         verify(promise).resolve(expected);
     }
     @Test
-    public void givenTrue$setTrackUserSteps_whenQuery_thenShouldCallNativeApi() {
+    public void TestEnablingSetTrackerUserSteps() {
         rnModule.setTrackUserSteps(true);
         verify(Instabug.class, times(1));
         Instabug.setTrackingUserStepsState(Feature.State.ENABLED);
     }
 
     @Test
-    public void givenFalse$setTrackUserSteps_whenQuery_thenShouldCallNativeApi() {
+    public void TestDesablingSetTrackerUserSteps() {
 
         rnModule.setTrackUserSteps(false);
         verify(Instabug.class, times(1));
