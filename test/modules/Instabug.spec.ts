@@ -375,18 +375,10 @@ describe('Instabug Module', () => {
   });
 
   it('should call the native method setTrackUserSteps', () => {
-    Platform.OS = 'ios';
     Instabug.setTrackUserSteps(true);
 
     expect(NativeInstabug.setTrackUserSteps).toBeCalledTimes(1);
     expect(NativeInstabug.setTrackUserSteps).toBeCalledWith(true);
-  });
-
-  it('should not call the native method setTrackUserSteps when platform is android', () => {
-    Platform.OS = 'android';
-    Instabug.setTrackUserSteps(true);
-
-    expect(NativeInstabug.setTrackUserSteps).not.toBeCalled();
   });
 
   it('should call the native method setIBGLogPrintsToConsole', () => {
