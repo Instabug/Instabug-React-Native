@@ -132,9 +132,7 @@ export const setUserData = (data: string) => {
  * @param isEnabled A boolean to set user steps tracking to being enabled or disabled.
  */
 export const setTrackUserSteps = (isEnabled: boolean) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.setTrackUserSteps(isEnabled);
-  }
+  NativeInstabug.setTrackUserSteps(isEnabled);
 };
 
 /**

@@ -662,4 +662,18 @@ public class RNInstabugReactnativeModuleTest {
         boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER);
         verify(promise).resolve(expected);
     }
+    @Test
+    public void givenTrue$setTrackUserSteps_whenQuery_thenShouldCallNativeApi() {
+        rnModule.setTrackUserSteps(true);
+        verify(Instabug.class, times(1));
+        Instabug.setTrackingUserStepsState(Feature.State.ENABLED);
+    }
+
+    @Test
+    public void givenFalse$setTrackUserSteps_whenQuery_thenShouldCallNativeApi() {
+
+        rnModule.setTrackUserSteps(false);
+        verify(Instabug.class, times(1));
+        Instabug.setTrackingUserStepsState(Feature.State.DISABLED);
+    }
 }
