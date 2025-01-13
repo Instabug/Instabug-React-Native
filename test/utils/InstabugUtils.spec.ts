@@ -13,12 +13,20 @@ import InstabugUtils, {
   registerFilteringListener,
   registerObfuscationListener,
   reportNetworkLog,
+  resetNativeObfuscationListener,
   sendCrashReport,
+  updateNetworkLogSnapshot,
 } from '../../src/utils/InstabugUtils';
 
-import { NativeNetworkLogger, NetworkListenerType } from '../../src/native/NativeNetworkLogger';
+import {
+  NativeNetworkLogger,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../../src/native/NativeNetworkLogger';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 import { NativeAPM } from '../../src/native/NativeAPM';
+
+jest.mock('../../src/modules/NetworkLogger');
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -339,15 +347,33 @@ describe('reportNetworkLog', () => {
   });
 });
 
-jest.mock('../../src/modules/NetworkLogger');
-
 describe('test registerNetworkLogsListener usage', () => {
   beforeEach(() => {
     jest.clearAllMocks(); // Clear all mocks before each test
   });
+
+  const network: NetworkLogger.NetworkData = {
+    id: '',
+    url: 'https://api.instabug.com',
+    requestBody: '',
+    requestHeaders: { 'content-type': 'application/json' },
+    method: 'GET',
+    responseBody: '',
+    responseCode: 200,
+    responseHeaders: { 'content-type': 'application/json' },
+    contentType: 'application/json',
+    duration: 0,
+    requestBodySize: 0,
+    responseBodySize: 0,
+    errorDomain: '',
+    errorCode: 0,
+    startTime: 0,
+    serverErrorMessage: '',
+    requestContentType: 'application/json',
+  };
+
   it('registerObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.obfuscation', () => {
     registerObfuscationListener();
-
     expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
     expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
       NetworkListenerType.obfuscation,
@@ -374,6 +400,37 @@ describe('test registerNetworkLogsListener usage', () => {
     expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
       NetworkListenerType.both,
       expect.any(Function),
+    );
+  });
+
+  it('should call NetworkLoggerEmitter.removeAllListeners when call resetNativeObfuscationListener', () => {
+    jest.spyOn(NetworkLoggerEmitter, 'removeAllListeners').mockImplementation();
+    resetNativeObfuscationListener();
+    expect(NetworkLoggerEmitter.removeAllListeners).toBeCalledTimes(1);
+  });
+
+  it('should call NativeNetworkLogger.resetNetworkLogsListener when call resetNativeObfuscationListener on android platform', () => {
+    Platform.OS = 'android';
+    jest.spyOn(NativeNetworkLogger, 'resetNetworkLogsListener').mockImplementation();
+    jest.spyOn(NetworkLoggerEmitter, 'removeAllListeners').mockImplementation();
+    resetNativeObfuscationListener();
+    expect(NativeNetworkLogger.resetNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLoggerEmitter.removeAllListeners).toBeCalledTimes(1);
+  });
+
+  it('should call  NativeNetworkLogger.updateNetworkLogSnapshot when call updateNetworkLogSnapshot with correct parameters', () => {
+    jest.spyOn(NativeNetworkLogger, 'updateNetworkLogSnapshot').mockImplementation();
+
+    updateNetworkLogSnapshot(network);
+    expect(NativeNetworkLogger.updateNetworkLogSnapshot).toBeCalledTimes(1);
+    expect(NativeNetworkLogger.updateNetworkLogSnapshot).toHaveBeenCalledWith(
+      network.url,
+      network.id,
+      network.requestBody,
+      network.responseBody,
+      network.responseCode ?? 200,
+      network.requestHeaders,
+      network.responseHeaders,
     );
   });
 });

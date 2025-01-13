@@ -6,7 +6,6 @@ let subscription: any = null;
 export const addAppStateListener = (handleAppStateChange: (state: AppStateStatus) => void) => {
   if (!subscription) {
     subscription = AppState.addEventListener('change', handleAppStateChange);
-    console.log('Andrew: AppState listener added');
   }
 };
 
@@ -16,6 +15,5 @@ export const removeAppStateListener = () => {
   if (subscription) {
     subscription.remove();
     subscription = null;
-    console.log('Andrew: AppState listener removed');
   }
 };
