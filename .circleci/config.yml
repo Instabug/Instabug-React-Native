@@ -176,30 +176,47 @@ commands:
       - run:
           name: Install Python3 and MITM Proxy
           command: |
-           # Detect OS and install requirements accordingly
-           if [ "$(uname)" == "Darwin" ]; then
-               echo "Running on macOS..."
-               if ! command -v brew &> /dev/null; then
-                   echo "Homebrew not found. Installing Homebrew..."
-                   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-               fi
-               brew install python3 openssl
-           else
-               echo "Running on Linux..."
-               sudo apt-get update
-               sudo apt-get install -y python3 python3-pip openssl
-           fi
-           
-           # Verify installations
-           python3 --version
-           pip3 --version
-           
-           # Upgrade pip to the latest version
-           pip3 install --upgrade pip
-           
-           # Install mitmproxy version 10.2.4
-           pip3 install mitmproxy==10.2.4
-           
+            # Detect OS and install requirements accordingly
+            if [ "$(uname)" == "Darwin" ]; then
+              echo "Running on macOS..."
+              brew install python3 openssl
+            else
+              echo "Running on Linux..."
+              sudo apt-get update
+              sudo apt-get install -y python3 python3-pip openssl
+            fi
+
+            # Verify installations
+            python3 --version
+            pip3 --version
+
+            # Upgrade pip and install mitmproxy
+            pip3 install --upgrade pip
+            pip3 install mitmproxy==10.2.4
+
+            # Start mitmdump
+            mitmdump --set block_global=false &
+            sleep 10
+
+            # Create mitmproxy directory
+            mkdir -p ~/.mitmproxy
+
+            # Wait for certificate generation
+            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
+              sleep 2
+            done
+
+            # Create all required certificate formats
+            cd ~/.mitmproxy
+            # Create .cer (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.cer
+            # Create .crt (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.crt
+            # Create .der format for iOS
+            openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
+
+            echo "MITM Proxy setup completed"
+
   setup_appium:
     steps:
       - run:
@@ -249,12 +266,18 @@ commands:
       - run:
           name: Configure DNS settings
           command: |
+            # First, detect the actual network interface name
+            INTERFACE=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -n1)
+            echo "Detected network interface: $INTERFACE"
+            
+            # Create resolver directory if needed
             if [ ! -w /etc ]; then
               sudo mkdir -p /etc/resolver || echo "Failed to create resolver directory"
             else
               mkdir -p /etc/resolver
             fi
             
+            # Configure resolver settings
             if [ -w /etc/resolver ]; then
               echo "nameserver 8.8.8.8" > /etc/resolver/mitm
               echo "nameserver 8.8.4.4" >> /etc/resolver/mitm
@@ -263,17 +286,33 @@ commands:
               echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
             fi
             
-            if command -v resolvectl &> /dev/null; then
-              sudo resolvectl dns eth0 8.8.8.8 8.8.4.4 || echo "Failed to set DNS via resolvectl"
+            # Try resolvectl if available
+            if command -v resolvectl &> /dev/null && [ ! -z "$INTERFACE" ]; then
+              echo "Setting DNS via resolvectl for interface $INTERFACE"
+              sudo resolvectl dns "$INTERFACE" 8.8.8.8 8.8.4.4 || {
+                echo "Failed to set DNS via resolvectl, falling back to resolv.conf"
+                echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+                echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
+              }
             else
-              echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
+              echo "Using direct resolv.conf configuration"
+              echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
               echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
             fi
             
+            # Verify DNS configuration
+            echo "Current DNS configuration:"
+            cat /etc/resolv.conf
+            
+            # Try to restart systemd-resolved if available
             if command -v systemctl &> /dev/null; then
-              sudo systemctl restart systemd-resolved || echo "Failed to restart systemd-resolved"
+              sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed (this is okay if not using systemd)"
             fi
-
+            
+            # Test DNS resolution
+            echo "Testing DNS resolution:"
+            ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
+            nslookup google.com || echo "DNS lookup failed"
       - run:
           name: Setup Android SDK and Emulator
           command: |
@@ -292,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8080
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --set dns_server=8.8.8.8 --set dns_over_tls=false
           background: true
 
       - run:
@@ -300,7 +339,7 @@ commands:
           background: true
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
-            -http-proxy http://localhost:8080 \
+            -http-proxy http://localhost:8082 \
             -dns-server 8.8.8.8 \
             -writable-system \
             -feature -Wifi    \
@@ -309,157 +348,69 @@ commands:
       - run:
           name: Wait for emulator and configure network
           command: |
-            # Function to check device status
-            check_device() {
-               for i in {1..10}; do
-                   if adb devices | grep -q "device$"; then
-                       return 0
-                   fi
-                   echo "Waiting for device to come online... ($i/10)"
-                   sleep 5
-               done
-               return 1
-            }
-            
-            # Function to execute adb command with retries
-            adb_retry() {
-               local cmd="$*"
-               local max_attempts=3
-               
-               for ((i=1; i<=max_attempts; i++)); do
-                   if eval "$cmd"; then
-                       return 0
-                   fi
-                   echo "Command failed, attempt $i of $max_attempts"
-                   sleep 5
-               done
-               return 1
-            }
-            
-            # Wait for emulator
-            echo "Waiting for emulator..."
             for i in $(seq 1 30); do
-               if adb devices | grep -q "emulator"; then
-                   break
-               fi
-               echo "Waiting for emulator to start... ($i/30)"
-               sleep 10
+              if adb devices | grep -q "emulator"; then
+                break
+              fi
+              echo "Waiting for emulator to start... ($i/30)"
+              sleep 10
             done
-            
-            # Wait for boot completion
-            echo "Waiting for boot completion..."
+            # Wait for emulator boot completion
             adb wait-for-device
             for i in $(seq 1 30); do
-               if adb shell getprop sys.boot_completed | grep -q "1"; then
-                   break
-               fi
-               echo "Waiting for boot to complete... ($i/30)"
-               sleep 10
+              if adb shell getprop sys.boot_completed | grep -q "1"; then
+                break
+              fi
+              echo "Waiting for boot to complete... ($i/30)"
+              sleep 10
             done
-            
-            # First root and disable verification
-            adb_retry "adb root"
+
+
+
+            # Final remount
+            adb root
             sleep 5
-            adb_retry "adb shell avbctl disable-verification"
-            sleep 2
-            
-            # First reboot
-            echo "First reboot..."
-            adb_retry "adb reboot"
-            sleep 30
-            check_device || { echo "Device offline after first reboot"; exit 1; }
-            
-            # Second root and disable verity
-            adb_retry "adb root"
-            sleep 5
-            adb_retry "adb shell setenforce 0"
-            adb_retry "adb disable-verity"
-            
-            # Second reboot
-            echo "Second reboot..."
-            adb_retry "adb reboot"
-            sleep 30
-            check_device || { echo "Device offline after second reboot"; exit 1; }
-            
-            # Final root and remount
-            adb_retry "adb root"
-            sleep 5
-            adb_retry "adb remount"
-            adb_retry "adb shell setprop net.eth0.dns1 8.8.8.8"
-            adb_retry "adb shell setprop net.eth0.dns2 8.8.4.4"
-            
-            # Certificate installation
+            adb remount
+            adb shell setprop net.eth0.dns1 8.8.8.8
+            adb shell setprop net.eth0.dns2 8.8.4.4
+            # Install MITM certificate
             echo "Installing certificate..."
             HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
-            echo "Using certificate hash: $HASH"
-            
-            adb_retry "adb shell 'mkdir -p /system/etc/security/cacerts'"
-            
-            if adb_retry "adb push ~/.mitmproxy/mitmproxy-ca-cert.pem /system/etc/security/cacerts/$HASH.0"; then
-               echo "Certificate pushed successfully"
-               adb_retry "adb shell 'chmod 644 /system/etc/security/cacerts/$HASH.0'"
-               
-               if adb shell "ls -l /system/etc/security/cacerts/$HASH.0"; then
-                   echo "Certificate installed successfully"
-               else
-                   echo "Failed to verify certificate installation"
-                   exit 1
-               fi
-            else
-               echo "Failed to push certificate"
-               exit 1
-            fi
-            
-            # Final reboot and proxy configuration
-            echo "Final reboot..."
-            adb_retry "adb reboot"
-            sleep 30
-            check_device || { echo "Device offline after final reboot"; exit 1; }
-            
-            echo "Configuring proxy settings..."
-            if ! adb_retry "adb shell settings put global global_http_proxy_host '127.0.0.1'"; then
-               echo "Failed to set proxy host"
-               exit 1
-            fi
-            
-            if ! adb_retry "adb shell settings put global global_http_proxy_port 8084"; then
-               echo "Failed to set proxy port"
-               exit 1
-            fi
-            
-            if ! adb_retry "adb shell settings put global http_proxy '127.0.0.1:8084'"; then
-               echo "Failed to set http proxy"
-               exit 1
-            fi
-            
-            echo "Testing network connection..."
-            adb_retry "adb shell ping -c 4 8.8.8.8"
-            
-            echo "Testing HTTPS connection..."
-            adb_retry "adb shell am start -a android.intent.action.VIEW -d https://google.com"
-            
-            echo "Setup completed successfully"
+            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
+            adb push $HASH.0 /system/etc/security/cacerts/ && \
+            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
 
+            echo "Waiting for network connectivity..."
+            for i in {1..30}; do
+              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                echo "Network is accessible"
+                break
+              fi
+              echo "Attempt $i/30: Network not ready yet..."
+              sleep 2
+            done
+
+            echo "Configuring proxy settings..."
+            adb shell settings put global global_http_proxy_host "127.0.0.1"
+            adb shell settings put global global_http_proxy_port 8082
+            adb shell settings put global http_proxy "127.0.0.1:8082"   
       - run:
-          name: install yarn and start app
-          working_directory: ~/project/examples/hybrid
-          command: |
-            npm cache clean --force
-            yarn install
-            yarn start & # Start metro in background
-            yarn android &> build-android.log # Run React Native app
+                      name: install yarn and start app
+                      working_directory: ~/project/examples/hybrid
+                      command: |
+                        npm cache clean --force
+                        yarn install
+                        yarn start & # Start metro in background
+                        yarn android &> build-android.log # Run React Native app 
+
   setup_ios_proxy:
     steps:
       - run:
           name: Start MITM Proxy
           background: true
           command: |
-            echo "Starting MITM Proxy on port 8082..."
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --listen-host 127.0.0.1 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
-            echo "MITM Proxy started."
-            curl -v --proxy 127.0.0.1:8082 http://mitm.it
-            lsof -iTCP:8082 -sTCP:LISTEN
       - run:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
@@ -469,14 +420,17 @@ commands:
             xcrun simctl boot "iPhone 11 Pro Max"
             echo "wait to boot..."
             sleep 5  # Wait for simulator to boot
-
+            networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
+            networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
             # Test proxy connection with verbose output
             echo "Testing proxy connection..."
             curl -v --proxy localhost:8082 'http://mitm.it' || {
-              echo "Proxy test failed"
-              echo "Running proxy processes:"
-              ps aux | grep mitm
-            # Set simulator proxy
+                echo "Proxy test failed"
+                echo "Running proxy processes:"
+                ps aux | grep mitm
+            }
+            
+            # Configure simulator proxy
             defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
               HTTPEnable 1 \
               HTTPPort 8082 \
@@ -538,65 +492,6 @@ commands:
             xcrun simctl shutdown all
             xcrun simctl boot "iPhone 11 Pro Max"
             sleep 5
-      - run:
-          name: Verify iOS Certificate Trust Status
-          command: |
-            # Get the simulator UDID
-            xcrun simctl boot "iPhone 11 Pro Max"
-            SIMULATOR_ID=$(xcrun simctl list devices | grep "iPhone 11 Pro Max" | grep -v "unavailable" | head -n 1 | sed -n 's/.*(\([^)]*\)).*/\1/p')
-            
-            echo "Using simulator: $SIMULATOR_ID"
-            
-            # Check installed profiles
-            echo "Checking installed profiles..."
-            xcrun simctl status_bar "$SIMULATOR_ID" list_profiles || true
-            
-            # Check certificate trust settings using security command
-            echo "Checking certificate trust settings..."
-            xcrun simctl spawn "$SIMULATOR_ID" security dump-trust-settings -d || true
-            
-            # Check system trusted certificates
-            echo "Checking system trust store..."
-            xcrun simctl spawn "$SIMULATOR_ID" security find-certificate -a /Library/Keychains/System.keychain | grep -A 5 "mitm" || true
-            
-            # Verify proxy settings are applied
-            echo "Checking proxy settings..."
-            xcrun simctl spawn "$SIMULATOR_ID" defaults read -globalDomain com.apple.internet.proxy || true
-            
-            # Test HTTPS connection to verify end-to-end trust
-            echo "Testing HTTPS connection through proxy..."
-            xcrun simctl spawn "$SIMULATOR_ID" curl -v --proxy 127.0.0.1:8082 https://google.com 2>&1 | tee curl_output.txt
-            
-            # Parse curl output for SSL verification
-            if grep -q "SSL certificate verify ok" curl_output.txt; then
-              echo "✅ Certificate is trusted"
-            else
-              echo "❌ Certificate trust verification failed"
-              # Don't exit with error as this might be expected in some test scenarios
-              # exit 1
-            fi
-            
-            # Additional check using nscurl (iOS specific SSL diagnostic tool)
-            echo "Running SSL diagnostic test..."
-            xcrun simctl spawn "$SIMULATOR_ID" nscurl --help https://google.com --help --debug || true
-            
-            # Print certificate status summary
-            echo "Certificate Trust Status Summary:"
-            echo "--------------------------------"
-            if [ -f curl_output.txt ]; then
-              if grep -q "SSL certificate verify ok" curl_output.txt; then
-                echo "- HTTPS Requests: Working"
-              else
-                echo "- HTTPS Requests: Failed"
-              fi
-            fi
-            
-            # Check if proxy is capturing HTTPS traffic
-            if ps aux | grep -q "[m]itmdump"; then
-              echo "- MITM Proxy: Running"
-            else
-              echo "- MITM Proxy: Not Running"
-            fi
       - run:
           name: Run React Native app
           working_directory: ~/project/examples/hybrid
@@ -1016,13 +911,6 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - run:
-          name: Start MITM Proxy
-          background: true
-          command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
-            sleep 10
-
       - setup_ios_proxy
       - setup_appium
       
@@ -1179,4 +1067,4 @@ workflows:
             branches:
               only: dream11
           prepare_steps:
-            - prepare_dream11
+            - 

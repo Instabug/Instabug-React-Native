@@ -25,15 +25,4 @@ afterAll(async () => {
     await client.deleteSession();
   }
 });
-// jest.setup.js or at the beginning of your test files
-const axios = require('axios');
 
-// Set default proxy settings
-axios.defaults.proxy = {
-  host: 'localhost',
-  port: 8080,
-};
-
-// Alternatively, set environment variables
-process.env.HTTP_PROXY = 'http://localhost:8080';
-process.env.HTTPS_PROXY = 'http://localhost:8080';
