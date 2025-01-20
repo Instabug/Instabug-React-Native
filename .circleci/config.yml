@@ -895,6 +895,14 @@ jobs:
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
       - run:
+          name: Clean and Install Pods
+          command: |
+            rm -rf ~/Library/Caches/CocoaPods
+            rm -rf Pods
+            rm -rf ~/Library/Developer/Xcode/DerivedData/*
+            pod cache clean --all
+            pod install --repo-update
+      - run:
           name: Install CocoaPods
           working_directory: <<parameters.working_directory>>/ios
           command: pod install
