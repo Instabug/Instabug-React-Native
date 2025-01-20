@@ -896,6 +896,7 @@ jobs:
           working_directory: << parameters.working_directory >>
       - run:
           name: Clean and Install Pods
+          working_directory: <<parameters.working_directory>>/ios
           command: |
             rm -rf ~/Library/Caches/CocoaPods
             rm -rf Pods
