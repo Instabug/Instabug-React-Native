@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command: mitmdump ~/project/examples/hybrid/e2e/proxy-server.py --set block_global=false --listen-host 0.0.0.0 --listen-port 8082 &
+          command:mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py --set block_global=false --listen-host 0.0.0.0 --listen-port 8082
 
           background: true
 
@@ -905,10 +905,10 @@ jobs:
       TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
-      - install_node_modules:
-          app-dir: << parameters.working_directory >>
-      - build_and_pack_sdk:
-          working_directory: << parameters.working_directory >>
+      - install_node_modules
+      - node/install-packages:
+          pkg-manager: yarn
+          app-dir: examples/hybrid
       - install_pods:
           working_directory: examples/hybrid/ios
       - run:
