@@ -331,7 +331,7 @@ commands:
 
       - run:
           name: Start MITM proxy with custom config
-          command:mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py --set block_global=false --listen-host 0.0.0.0 --listen-port 8082
+          command:mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py --set block_global=false --listen-host 0.0.0.0 --listen-port 8082 &
 
           background: true
 
