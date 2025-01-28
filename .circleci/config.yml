@@ -176,30 +176,47 @@ commands:
       - run:
           name: Install Python3 and MITM Proxy
           command: |
-           # Detect OS and install requirements accordingly
-           if [ "$(uname)" == "Darwin" ]; then
-               echo "Running on macOS..."
-               if ! command -v brew &> /dev/null; then
-                   echo "Homebrew not found. Installing Homebrew..."
-                   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-               fi
-               brew install python3 openssl
-           else
-               echo "Running on Linux..."
-               sudo apt-get update
-               sudo apt-get install -y python3 python3-pip openssl
-           fi
-           
-           # Verify installations
-           python3 --version
-           pip3 --version
-           
-           # Upgrade pip to the latest version
-           pip3 install --upgrade pip
-           
-           # Install mitmproxy version 10.2.4
-           pip3 install mitmproxy==10.2.4
-           
+            # Detect OS and install requirements accordingly
+            if [ "$(uname)" == "Darwin" ]; then
+              echo "Running on macOS..."
+              brew install python3 openssl
+            else
+              echo "Running on Linux..."
+              sudo apt-get update
+              sudo apt-get install -y python3 python3-pip openssl
+            fi
+
+            # Verify installations
+            python3 --version
+            pip3 --version
+
+            # Upgrade pip and install mitmproxy
+            pip3 install --upgrade pip
+            pip3 install mitmproxy==10.2.4
+
+            # Start mitmdump
+            mitmdump --set block_global=false &
+            sleep 10
+
+            # Create mitmproxy directory
+            mkdir -p ~/.mitmproxy
+
+            # Wait for certificate generation
+            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
+              sleep 2
+            done
+
+            # Create all required certificate formats
+            cd ~/.mitmproxy
+            # Create .cer (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.cer
+            # Create .crt (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.crt
+            # Create .der format for iOS
+            openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
+
+            echo "MITM Proxy setup completed"
+
   setup_appium:
     steps:
       - run:
@@ -892,10 +909,8 @@ jobs:
           app-dir: << parameters.working_directory >>
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
-      - run:
-          name: Install CocoaPods
-          working_directory: <<parameters.working_directory>>/ios
-          command: pod install
+      - install_pods:
+          working_directory: examples/hybrid/ios
       - run:
           name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
@@ -908,13 +923,6 @@ jobs:
                       build
       # Setup testing environment
       - setup_mitm_proxy
-      - run:
-          name: Start MITM Proxy
-          background: true
-          command: |
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
-            sleep 10
-
       - setup_ios_proxy
       - setup_appium
       
