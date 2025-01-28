@@ -14,7 +14,8 @@
     "driver:android": "appium driver install uiautomator2",
     "driver:ios": "appium driver install xcuitest",
     "doctor:android": "appium-doctor --android",
-    "doctor:ios": "appium-doctor --ios"
+    "doctor:ios": "appium-doctor --ios",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-community/cli": "^14.1.1",
@@ -56,6 +57,7 @@
     "babel-jest": "^29.6.3",
     "jest": "^29.6.3",
     "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "2.8.8",
     "react-test-renderer": "18.3.1",
     "typescript": "5.0.4",
