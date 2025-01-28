@@ -341,6 +341,7 @@ commands:
           command: |
             $ANDROID_HOME/emulator/emulator -avd test_device \
             -http-proxy http://localhost:8082 \
+            -dns-server 8.8.8.8 \
             -writable-system \
             -feature -Wifi    \
             -partition-size 2048
@@ -379,7 +380,6 @@ commands:
             cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
             adb push $HASH.0 /system/etc/security/cacerts/ && \
             adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
-            adb reboot
 
             echo "Waiting for network connectivity..."
             for i in {1..30}; do
@@ -419,12 +419,8 @@ commands:
           name: Start MITM Proxy
           background: true
           command: |
-            echo "Starting MITM Proxy on port 8082..."
-            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 --listen-host 127.0.0.1 &
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
             sleep 10
-            echo "MITM Proxy started."
-            curl -v --proxy 127.0.0.1:8082 http://mitm.it
-            lsof -iTCP:8082 -sTCP:LISTEN
       - run:
           name: Configure and Test Proxy Settings
           working_directory: ~/project/examples/hybrid
@@ -905,12 +901,14 @@ jobs:
       TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
-      - install_node_modules
-      - node/install-packages:
-          pkg-manager: yarn
-          app-dir: examples/hybrid
-      - install_pods:
-          working_directory: examples/hybrid/ios
+      - install_node_modules:
+          app-dir: << parameters.working_directory >>
+      - build_and_pack_sdk:
+          working_directory: << parameters.working_directory >>
+      - run:
+          name: Install CocoaPods
+          working_directory: <<parameters.working_directory>>/ios
+          command: pod install
       - run:
           name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
