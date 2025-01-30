@@ -170,6 +170,342 @@ commands:
       - run:
           command: yarn add file:../../InstabugSDK.tgz
           working_directory: <<parameters.working_directory>>
+  setup_mitm_proxy:
+    description: Install and configure MITM proxy
+    steps:
+      - run:
+          name: Install Python3 and MITM Proxy
+          command: |
+            # Detect OS and install requirements accordingly
+            if [ "$(uname)" == "Darwin" ]; then
+              echo "Running on macOS..."
+              brew install python3 openssl
+            else
+              echo "Running on Linux..."
+              sudo apt-get update
+              sudo apt-get install -y python3 python3-pip openssl
+            fi
+
+            # Verify installations
+            python3 --version
+            pip3 --version
+
+            # Upgrade pip and install mitmproxy
+            pip3 install --upgrade pip
+            pip3 install mitmproxy==10.2.4
+
+            # Start mitmdump
+            mitmdump --set block_global=false &
+            sleep 10
+
+            # Create mitmproxy directory
+            mkdir -p ~/.mitmproxy
+
+            # Wait for certificate generation
+            while [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; do
+              sleep 2
+            done
+
+            # Create all required certificate formats
+            cd ~/.mitmproxy
+            # Create .cer (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.cer
+            # Create .crt (PEM format)
+            cp mitmproxy-ca-cert.pem mitmproxy-ca-cert.crt
+            # Create .der format for iOS
+            openssl x509 -in mitmproxy-ca-cert.pem -outform DER -out mitmproxy-ca-cert.der
+
+            echo "MITM Proxy setup completed"
+
+  setup_appium:
+    steps:
+      - run:
+          name: Install and Setup Appium
+          command: |
+            npm install -g appium@2.12.1
+
+            # Install iOS and Android drivers
+            appium driver install uiautomator2@3.8.3
+            appium driver install xcuitest@7.32.0
+
+            # Install test dependencies
+            npm install --save-dev webdriverio@9.2.14
+            npm install --save-dev appium@2.11.4
+            npm install --save-dev jest@29.7.0
+            npm install --save-dev appium-uiautomator2-driver@3.8.3
+            npm install --save-dev appium-xcuitest-driver@7.32.0
+
+            # Verify installations
+            echo "Verifying installations..."
+            appium --version
+            appium driver list --installed
+
+      - run:
+          name: Start Appium Server
+          background: true
+          command: |
+            appium --port 4724  \
+              --log-timestamp \
+              --debug-log-spacing \
+              --allow-insecure chromedriver_autodownload \
+              --base-path / \
+              --log appium.log &
+
+            # Wait for server to start
+            for i in $(seq 1 30); do
+              if curl -s http://localhost:4723/status | grep -q "ready"; then
+                echo "Appium server is ready"
+                break
+              fi
+              echo "Waiting for Appium server... ($i/30)"
+              sleep 2
+            done
+  setup_android_proxy:
+    steps:
+
+      - run:
+          name: Configure DNS settings
+          command: |
+            # First, detect the actual network interface name
+            INTERFACE=$(ip -o link show | awk -F': ' '{print $2}' | grep -v "lo" | head -n1)
+            echo "Detected network interface: $INTERFACE"
+            
+            # Create resolver directory if needed
+            if [ ! -w /etc ]; then
+              sudo mkdir -p /etc/resolver || echo "Failed to create resolver directory"
+            else
+              mkdir -p /etc/resolver
+            fi
+            
+            # Configure resolver settings
+            if [ -w /etc/resolver ]; then
+              echo "nameserver 8.8.8.8" > /etc/resolver/mitm
+              echo "nameserver 8.8.4.4" >> /etc/resolver/mitm
+            else
+              echo "nameserver 8.8.8.8" | sudo tee /etc/resolver/mitm
+              echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolver/mitm
+            fi
+            
+            # Try resolvectl if available
+            if command -v resolvectl &> /dev/null && [ ! -z "$INTERFACE" ]; then
+              echo "Setting DNS via resolvectl for interface $INTERFACE"
+              sudo resolvectl dns "$INTERFACE" 8.8.8.8 8.8.4.4 || {
+                echo "Failed to set DNS via resolvectl, falling back to resolv.conf"
+                echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+                echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
+              }
+            else
+              echo "Using direct resolv.conf configuration"
+              echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+              echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
+            fi
+            
+            # Verify DNS configuration
+            echo "Current DNS configuration:"
+            cat /etc/resolv.conf
+            
+            # Try to restart systemd-resolved if available
+            if command -v systemctl &> /dev/null; then
+              sudo systemctl restart systemd-resolved || echo "Note: systemd-resolved restart failed (this is okay if not using systemd)"
+            fi
+            
+            # Test DNS resolution
+            echo "Testing DNS resolution:"
+            ping -c 1 8.8.8.8 || echo "Ping to 8.8.8.8 failed"
+            nslookup google.com || echo "DNS lookup failed"
+      - run:
+          name: Setup Android SDK and Emulator
+          command: |
+            sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "system-images;android-34;google_apis;x86_64"
+            echo "no" | avdmanager create avd -n test_device \
+            -k "system-images;android-34;google_apis;x86_64" \
+            -d "pixel" \
+            --force
+
+      - run:
+          name: Configure emulator networking
+          command: |
+            echo 'hw.cpu.ncore=2' >> ~/.android/avd/test_device.avd/config.ini
+            echo 'hw.ramSize=2048' >> ~/.android/avd/test_device.avd/config.ini
+            echo 'disk.dataPartition.size=2048M' >> ~/.android/avd/test_device.avd/config.ini
+
+      - run:
+          name: Start MITM proxy with custom config
+          command: mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py --set block_global=false --listen-host 0.0.0.0 --listen-port 8082 &
+
+          background: true
+
+      - run:
+          name: Start Emulator with System Writable
+          background: true
+          command: |
+            $ANDROID_HOME/emulator/emulator -avd test_device \
+            -http-proxy http://localhost:8082 \
+            -dns-server 8.8.8.8 \
+            -writable-system \
+            -feature -Wifi    \
+            -partition-size 2048
+
+      - run:
+          name: Wait for emulator and configure network
+          command: |
+            for i in $(seq 1 30); do
+              if adb devices | grep -q "emulator"; then
+                break
+              fi
+              echo "Waiting for emulator to start... ($i/30)"
+              sleep 10
+            done
+            # Wait for emulator boot completion
+            adb wait-for-device
+            for i in $(seq 1 30); do
+              if adb shell getprop sys.boot_completed | grep -q "1"; then
+                break
+              fi
+              echo "Waiting for boot to complete... ($i/30)"
+              sleep 10
+            done
+
+
+
+            # Final remount
+            adb root
+            sleep 5
+            adb remount
+            adb shell setprop net.eth0.dns1 8.8.8.8
+            adb shell setprop net.eth0.dns2 8.8.4.4
+            # Install MITM certificate
+            echo "Installing certificate..."
+            HASH=$(openssl x509 -inform PEM -subject_hash_old -in ~/.mitmproxy/mitmproxy-ca-cert.pem | head -1)
+            cp ~/.mitmproxy/mitmproxy-ca-cert.pem $HASH.0
+            adb push $HASH.0 /system/etc/security/cacerts/ && \
+            adb shell "chmod 644 /system/etc/security/cacerts/$HASH.0"
+
+            echo "Waiting for network connectivity..."
+            for i in {1..30}; do
+              if adb shell ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+                echo "Network is accessible"
+                break
+              fi
+              echo "Attempt $i/30: Network not ready yet..."
+              sleep 2
+            done
+
+            echo "Configuring proxy settings..."
+            adb shell settings put global global_http_proxy_host "127.0.0.1"
+            adb shell settings put global global_http_proxy_port 8082
+            adb shell settings put global http_proxy "127.0.0.1:8082"   
+      - run:
+                      name: install yarn and start app
+                      working_directory: ~/project/examples/hybrid
+                      command: |
+                        npm cache clean --force
+                        yarn install
+                        yarn start & # Start metro in background
+                        yarn android &> build-android.log # Run React Native app 
+      - run:
+         name: Test Proxy Connectivity
+         command: curl -x http://127.0.0.1:8082 https://fonts.gstatic.com
+      - run:
+         name: Restart DNS Services
+         command: |
+           if command -v systemctl &> /dev/null; then
+             sudo systemctl restart systemd-resolved || echo "systemd-resolved restart failed"
+           fi
+
+  setup_ios_proxy:
+    steps:
+      - run:
+          name: Start MITM Proxy
+          background: true
+          command: |
+            mitmdump -s ~/project/examples/hybrid/e2e/proxy-server.py -p 8082 &
+            sleep 10
+      - run:
+          name: Configure and Test Proxy Settings
+          working_directory: ~/project/examples/hybrid
+          command: |
+            # Boot simulator 
+            xcrun simctl shutdown all
+            xcrun simctl boot "iPhone 11 Pro Max"
+            echo "wait to boot..."
+            sleep 5  # Wait for simulator to boot
+            networksetup -setwebproxy "Wi-fi" 127.0.0.1 8082
+            networksetup -setsecurewebproxy "Wi-fi" 127.0.0.1 8082
+            # Test proxy connection with verbose output
+            echo "Testing proxy connection..."
+            curl -v --proxy localhost:8082 'http://mitm.it' || {
+                echo "Proxy test failed"
+                echo "Running proxy processes:"
+                ps aux | grep mitm
+            }
+            
+            # Configure simulator proxy
+            defaults write com.apple.iphonesimulator.plist HTTPProxy -dict \
+              HTTPEnable 1 \
+              HTTPPort 8082 \
+              HTTPProxy localhost \
+              HTTPSEnable 1 \
+              HTTPSPort 8082 \
+              HTTPSProxy localhost
+
+            # Restart simulator to apply changes
+            xcrun simctl shutdown all
+            sleep 2
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
+
+      - run:
+          name: Setup iOS MITM Certificate and Proxy
+          command: |
+            mkdir -p certs
+            openssl x509 -in ~/.mitmproxy/mitmproxy-ca-cert.pem -outform der -out certs/mitmproxy-ca-cert.der
+
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > certs/custom.mobileconfig
+            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> certs/custom.mobileconfig
+            echo '<plist version="1.0">' >> certs/custom.mobileconfig
+            echo '<dict>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '  <array>' >> certs/custom.mobileconfig
+            echo '    <dict>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadContent</key>' >> certs/custom.mobileconfig
+            echo '      <data>' >> certs/custom.mobileconfig
+            base64 certs/mitmproxy-ca-cert.der >> certs/custom.mobileconfig
+            echo '      </data>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo "      <string>com.apple.security.root.$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '      <string>com.apple.security.root</string>' >> certs/custom.mobileconfig
+            echo '      <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "      <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '      <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '      <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '    </dict>' >> certs/custom.mobileconfig
+            echo '  </array>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadDisplayName</key>' >> certs/custom.mobileconfig
+            echo '  <string>MITM Proxy CA</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadIdentifier</key>' >> certs/custom.mobileconfig
+            echo '  <string>com.mitmproxy</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadRemovalDisallowed</key>' >> certs/custom.mobileconfig
+            echo '  <false/>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadType</key>' >> certs/custom.mobileconfig
+            echo '  <string>Configuration</string>' >> certs/custom.mobileconfig
+            echo '  <key>PayloadUUID</key>' >> certs/custom.mobileconfig
+            echo "  <string>$(uuidgen)</string>" >> certs/custom.mobileconfig
+            echo '  <key>PayloadVersion</key>' >> certs/custom.mobileconfig
+            echo '  <integer>1</integer>' >> certs/custom.mobileconfig
+            echo '</dict>' >> certs/custom.mobileconfig
+            echo '</plist>' >> certs/custom.mobileconfig
+
+            xcrun simctl openurl booted file://$(pwd)/certs/custom.mobileconfig
+
+            xcrun simctl shutdown all
+            xcrun simctl boot "iPhone 11 Pro Max"
+            sleep 5
+      - run:
+          name: Run React Native app
+          working_directory: ~/project/examples/hybrid
+          command: yarn ios &> build-ios.log
 
 jobs:
   danger:
@@ -503,51 +839,99 @@ jobs:
           replace: $SNAPSHOT_VERSION
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
-  build_check_android:
+  appium_e2e_android:
     parameters:
       working_directory:
+        type: string
+      DOMAIN:
+        type: string
+      TOKEN:
         type: string
     executor:
       name: android/android-machine
       tag: '2024.01.1'
+      resource-class: large
+    environment:
+      DOMAIN: << parameters.DOMAIN >>
+      TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
+      - install_node_modules:
+          app-dir: << parameters.working_directory >>
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
+      # Build Android app
       - run:
           name: Build Android
           working_directory: <<parameters.working_directory>>/android
           command: ./gradlew assembleRelease
+      - store_artifacts:
+          path: <<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk
+          destination: app-release.apk
+      - run:
+          name: Export APK Path
+          command: |
+            echo "export APK_PATH=<<parameters.working_directory>>/android/app/build/outputs/apk/release/app-release.apk" >> $BASH_ENV
+            source $BASH_ENV
+      # Setup testing environment
+      - setup_mitm_proxy
+      - setup_android_proxy
+      - setup_appium
 
-  build_check_ios:
+      # Run tests
+      - run:
+          name: Run E2E Tests
+          working_directory: << parameters.working_directory >>
+          command: |
+            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
+          environment:
+            E2E_DEVICE: 'android'
+  appium_e2e_ios:
     parameters:
       working_directory:
         type: string
-      scheme:
+      DOMAIN:
         type: string
-      workspace_path:
+      TOKEN:
         type: string
     macos:
       xcode: 13.4.1
-    resource_class: macos.m1.medium.gen1
+    environment:
+      DOMAIN: << parameters.DOMAIN >>
+      TOKEN: << parameters.TOKEN >>
     steps:
       - advanced-checkout/shallow-checkout
+      - install_node_modules:
+          app-dir: << parameters.working_directory >>
       - build_and_pack_sdk:
           working_directory: << parameters.working_directory >>
-      - install_pods:
-          working_directory: <<parameters.working_directory>>/ios
       - run:
-          name: Build iOS
+          name: Install CocoaPods
+          working_directory: <<parameters.working_directory>>/ios
+          command: pod install
+      - run:
+          name: Build iOS App
           working_directory: <<parameters.working_directory>>/ios
           command: |
-            yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
-            rm -rf ~/Library/Developer/Xcode/DerivedData/*
-            xcodebuild -workspace <<parameters.workspace_path>>.xcworkspace \
-            -scheme <<parameters.scheme>> \
-            -configuration Release \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,OS=15.5,name=iPhone 11 Pro Max"
-
+            xcodebuild -workspace HybridSampleApp.xcworkspace \
+                      -scheme HybridSampleApp \
+                      -configuration Release \
+                      -sdk iphonesimulator \
+                      -destination "platform=iOS Simulator,name=iPhone 11 Pro Max,OS=15.5" \
+                      build
+      # Setup testing environment
+      - setup_mitm_proxy
+      - setup_ios_proxy
+      - setup_appium
+      
+      # Run tests
+      - run:
+          name: Run E2E Tests
+          working_directory: << parameters.working_directory >>
+          command: |
+            node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js
+          environment:
+            E2E_DEVICE: 'ios'
 workflows:
   publish:
     jobs:
@@ -667,37 +1051,27 @@ workflows:
           filters:
             branches:
               only: dream11
-      - hold_build_check:
+      - hold_appium_e2e:
           type: approval
-      - build_check_android:
-          name: build_check_android_default
-          working_directory: ~/project/examples/default
-          requires:
-            - hold_build_check
-      - build_check_ios:
-          name: build_check_ios_default
-          working_directory: ~/project/examples/default
-          scheme: InstabugExample
-          workspace_path: InstabugExample
-          requires:
-            - hold_build_check
-      - build_check_android:
-          name: build_check_android_hybrid
+      - appium_e2e_android:
+          name: Dream11_hybrid_android_e2e
           working_directory: ~/project/examples/hybrid
+          DOMAIN: ${DREAM11_DOMAIN}
+          TOKEN: ${DREAM11_TOKEN}
           requires:
-            - hold_build_check
-      - build_check_ios:
-          name: build_check_ios_hybrid
+            - hold_appium_e2e
+      - appium_e2e_ios:
+          name: Dream11_Hybrid_ios_e2e
           working_directory: ~/project/examples/hybrid
-          scheme: HybridSampleApp
-          workspace_path: HybridSampleApp
+          DOMAIN: ${DREAM11_DOMAIN}
+          TOKEN: ${DREAM11_TOKEN}
           requires:
-            - hold_build_check
+            - hold_appium_e2e
       - release_custom_package:
           name: release_dream11
           requires:
-            - build_check_android_hybrid
-            - build_check_ios_hybrid
+            - Dream11_hybrid_android_e2e
+            - Dream11_Hybrid_ios_e2e
             - hold_release_dream11
           filters:
             branches:
