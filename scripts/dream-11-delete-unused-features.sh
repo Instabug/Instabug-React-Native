@@ -59,4 +59,4 @@ node scripts/replace.js "return (major == 7 && minor >= 3) || major >= 8" "retur
 node scripts/replace.js "static boolean supportsNamespace() {" "$(printf "static boolean supportsNamespace() {\n  return false")" android/build.gradle
 
 # Add Dream11 custom iOS build podspec to Podfile
-node scripts/replace.js "target 'InstabugExample' do" "$(printf "target 'InstabugExample' do\n  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/dream11/Instabug.podspec'")" examples/default/ios/Podfile
+#node scripts/replace.js "target 'InstabugExample' do" "$(printf "target 'InstabugExample' do\n  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/dream11/Instabug.podspec'")" examples/default/ios/Podfile
