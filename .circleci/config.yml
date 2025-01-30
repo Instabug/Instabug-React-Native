@@ -419,7 +419,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - run:
           name: Publish new enterprise version
-          command: npm publish
+          command: npm publish --tag snapshot
 
   publish:
     macos:
@@ -613,15 +613,9 @@ workflows:
             - e2e_android_dream11
             - e2e_ios_dream11
           type: approval
-          filters:
-            branches:
-              only: dream11
       - release_custom_package:
           name: release_dream11
           requires:
             - hold_release_dream11
-          filters:
-            branches:
-              only: dream11
           prepare_steps:
             - prepare_dream11

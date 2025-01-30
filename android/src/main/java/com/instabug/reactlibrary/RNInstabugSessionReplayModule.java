@@ -1,6 +1,8 @@
 package com.instabug.reactlibrary;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -18,6 +20,7 @@ import com.instabug.library.sessionreplay.SessionReplay;
 import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -120,26 +123,26 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     }
 
-    public ReadableMap getSessionMetadataMap(SessionMetadata sessionMetadata){
+    public ReadableMap getSessionMetadataMap(SessionMetadata sessionMetadata) {
         WritableMap params = Arguments.createMap();
-        params.putString("appVersion",sessionMetadata.getAppVersion());
-        params.putString("OS",sessionMetadata.getOs());
-        params.putString("device",sessionMetadata.getDevice());
-        params.putDouble("sessionDurationInSeconds",(double)sessionMetadata.getSessionDurationInSeconds());
-        params.putBoolean("hasLinkToAppReview",sessionMetadata.getLinkedToReview());
-        params.putArray("networkLogs",getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
+        params.putString("appVersion", sessionMetadata.getAppVersion());
+        params.putString("OS", sessionMetadata.getOs());
+        params.putString("device", sessionMetadata.getDevice());
+        params.putDouble("sessionDurationInSeconds", (double) sessionMetadata.getSessionDurationInSeconds());
+        params.putBoolean("hasLinkToAppReview", sessionMetadata.getLinkedToReview());
+        params.putArray("networkLogs", getNetworkLogsArray(sessionMetadata.getNetworkLogs()));
 
         String launchType = sessionMetadata.getLaunchType();
         Long launchDuration = sessionMetadata.getLaunchDuration();
 
         if (launchType != null) {
-            params.putString("launchType",ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()) );
+            params.putString("launchType", ArgsRegistry.launchTypeReversed.get(sessionMetadata.getLaunchType()));
         } else {
-            params.putString("launchType",ArgsRegistry.launchType.get("unknown"));
+            params.putString("launchType", ArgsRegistry.launchType.get("unknown"));
         }
 
         if (launchDuration != null) {
-            params.putDouble("launchDuration", (double)launchDuration);
+            params.putDouble("launchDuration", (double) launchDuration);
         } else {
             params.putDouble("launchDuration", 0.0);
         }
@@ -147,7 +150,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
         return params;
     }
 
-    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList ) {
+    public ReadableArray getNetworkLogsArray(List<SessionMetadata.NetworkLog> networkLogList) {
         WritableArray networkLogs = Arguments.createArray();
 
         if (networkLogList != null) {
@@ -166,6 +169,7 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
 
     private boolean shouldSync = true;
     private CountDownLatch latch;
+
     @ReactMethod
     public void setSyncCallback() {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -176,22 +180,28 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
                         @Override
                         public boolean onSessionReadyToSync(@NonNull SessionMetadata sessionMetadata) {
 
-                            sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION,getSessionMetadataMap(sessionMetadata));
+                            Log.v("IBG-RN", "The android callback is called");
+
+                            sendEvent(Constants.IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, getSessionMetadataMap(sessionMetadata));
 
                             latch = new CountDownLatch(1);
 
                             try {
+                                Log.v("IBG-RN", "waiting for RN callback");
+
                                 latch.await();
+
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                                 return true;
                             }
 
+                            Log.v("IBG-RN", "The onSessionReadyToSync returned with " + shouldSync);
+
                             return shouldSync;
                         }
                     });
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -202,12 +212,12 @@ public class RNInstabugSessionReplayModule extends EventEmitterModule {
     @ReactMethod
     public void evaluateSync(boolean result) {
         shouldSync = result;
+        Log.v("IBG-RN", "The RN  evaluateSync returned with " + result);
 
         if (latch != null) {
             latch.countDown();
         }
     }
-
 
 
 }
