@@ -94,6 +94,7 @@ export const getSessionReplayLink = async (): Promise<string> => {
 export const setSyncCallback = async (
   handler: (payload: SessionMetadata) => boolean,
 ): Promise<void> => {
+  emitter.removeAllListeners(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION);
   emitter.addListener(NativeEvents.SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION, (payload) => {
     const result = handler(payload);
     const shouldSync = Boolean(result);
@@ -104,6 +105,7 @@ export const setSyncCallback = async (
       );
     }
 
+    console.warn('IBG-RN: The callback passed to SessionReplay.setSyncCallback');
     NativeSessionReplay.evaluateSync(shouldSync);
   });
 
