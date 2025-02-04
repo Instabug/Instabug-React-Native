@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (14.2.0)
+  - Instabug (14.1.0)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1768,7 +1768,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/feature-snapshot_by_date-base/14.2.0/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/feature-crashes-non_fatal_muting-base/14.1.0/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1866,7 +1866,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-08-15-RNv0.75.1-4b3bf912cc0f705b51b71ce1a5b8bd79b93a451b
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/feature-snapshot_by_date-base/14.2.0/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/feature-crashes-non_fatal_muting-base/14.1.0/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -2019,7 +2019,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 8755e2f56efe64fafb9f6537a10a5e9741fbbe34
+  Instabug: 2fa03629e872459fa6b06aa19bf66c7149ca350a
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
@@ -2094,6 +2094,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: f8a96bc08edf0b8bfc3ac8c1876cb823c05fa317
+PODFILE CHECKSUM: 643e534e7caa9467546dc5a4c623720c6eaffa5c
 
 COCOAPODS: 1.14.0
