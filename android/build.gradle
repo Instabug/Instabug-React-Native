@@ -85,11 +85,7 @@ rootProject.allprojects {
 		google()
 		jcenter()
 		maven {
-			url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
-			credentials {
-			  username "instabug"
-			  password System.getenv('INSTABUG_REPOSITORY_PASSWORD')
-			}
+			url 'https://oss.sonatype.org/content/repositories/snapshots'
 		}
 	}
 }
