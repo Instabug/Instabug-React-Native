@@ -2,6 +2,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 #import <Instabug/IBGTypes.h>
+#import <Instabug/IBGSessionReplay.h>
 
 @interface InstabugSessionReplayBridge : RCTEventEmitter <RCTBridgeModule>
 /*
@@ -19,6 +20,12 @@
 - (void)setUserStepsEnabled:(BOOL)isEnabled;
 
 - (void)getSessionReplayLink:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
+
+- (void)setSyncCallback;
+
+- (void)evaluateSync:(BOOL)result;
+
+@property (atomic, copy) SessionEvaluationCompletion sessionEvaluationCompletion;
 
 @end
 

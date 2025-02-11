@@ -28,6 +28,9 @@ import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 import { LegacyModeScreen } from '../screens/LegacyModeScreen';
 import { HttpScreen } from '../screens/apm/HttpScreen';
+import { WebViewsScreen } from '../screens/apm/webViews/WebViewsScreen';
+import { FullWebViewsScreen } from '../screens/apm/webViews/FullWebViewsScreen';
+import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -55,6 +58,9 @@ export type HomeStackParamList = {
   NetworkTraces: undefined;
   ExecutionTraces: undefined;
   AppFlows: undefined;
+  WebViews: undefined;
+  FullWebViews: undefined;
+  PartialWebViews: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -142,6 +148,21 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'LegacyMode' }}
       />
       <HomeStack.Screen name="HttpScreen" component={HttpScreen} options={{ title: 'HTTP' }} />
+      <HomeStack.Screen
+        name="WebViews"
+        component={WebViewsScreen}
+        options={{ title: 'WebViews' }}
+      />
+      <HomeStack.Screen
+        name="FullWebViews"
+        component={FullWebViewsScreen}
+        options={{ title: 'FullWebViews' }}
+      />
+      <HomeStack.Screen
+        name="PartialWebViews"
+        component={PartialWebViewsScreen}
+        options={{ title: 'PartialWebViews' }}
+      />
     </HomeStack.Navigator>
   );
 };

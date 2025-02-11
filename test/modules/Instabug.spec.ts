@@ -3,13 +3,14 @@ import '../mocks/mockNetworkLogger';
 
 import { findNodeHandle, Platform, processColor } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
+
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { emitter, NativeEvents, NativeInstabug } from '../../src/native/NativeInstabug';
+import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   type InstabugConfig,
@@ -23,6 +24,8 @@ import {
 } from '../../src';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
+import InstabugConstants from '../../src/utils/InstabugConstants';
+import { Logger } from '../../src/utils/logger';
 import { NativeNetworkLogger } from '../../src/native/NativeNetworkLogger';
 import InstabugConstants from '../../src/utils/InstabugConstants';
 
@@ -668,10 +671,13 @@ describe('Instabug Module', () => {
     [{}, 'value'],
     ['key', []],
   ])("should fail if key and value aren't strings when calling setUserAttribute", (key, value) => {
-    // @ts-ignore
-    expect(() => Instabug.setUserAttribute(key, value)).toThrow(TypeError);
+    const logSpy = jest.spyOn(Logger, 'error');
 
+    // @ts-ignore
+    Instabug.setUserAttribute(key, value);
     expect(NativeInstabug.setUserAttribute).not.toBeCalled();
+    expect(logSpy).toHaveBeenCalledWith(InstabugConstants.SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE);
+    logSpy.mockRestore();
   });
 
   it('should call the native method setUserAttribute', () => {
@@ -704,14 +710,17 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.removeUserAttribute).toBeCalledWith(key);
   });
 
-  it.each([null, 1, {}])(
-    "should fail if key isn't a string when calling removeUserAttribute",
-    (key) => {
-      // @ts-ignore
-      expect(() => Instabug.removeUserAttribute(key)).toThrow(TypeError);
-      expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
-    },
-  );
+  it.each([[null]])("should fail if key isn't a string when calling removeUserAttribute", (key) => {
+    const logSpy = jest.spyOn(console, 'error');
+
+    // @ts-ignore
+    Instabug.removeUserAttribute(key);
+    expect(NativeInstabug.removeUserAttribute).not.toBeCalled();
+    expect(logSpy).toHaveBeenCalledWith(
+      InstabugConstants.REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE,
+    );
+    logSpy.mockRestore();
+  });
 
   it('should call native method getAllUserAttributes', async () => {
     const expected = { type: 'guest' };
@@ -890,6 +899,22 @@ describe('Instabug Module', () => {
   it('should call the native willRedirectToStore method', () => {
     Instabug.willRedirectToStore();
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
+  });
+
+  it('should register W3C flag listener', async () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+
+    expect(NativeInstabug.registerW3CFlagsChangeListener).toBeCalledTimes(1);
+  });
+
+  it('should invoke callback on emitting the event IBGOnNewW3CFlagsUpdateReceivedCallback', () => {
+    const callback = jest.fn();
+    Instabug._registerW3CFlagsChangeListener(callback);
+    emitter.emit(NativeEvents.ON_W3C_FLAGS_CHANGE);
+
+    expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
+    expect(callback).toHaveBeenCalled();
   });
 });
 

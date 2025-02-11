@@ -10,6 +10,7 @@ import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ListTile } from '../../components/ListTile';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
@@ -119,6 +120,14 @@ export const NetworkScreen: React.FC<
   };
 
   const { data, isError, isSuccess, isLoading, refetch } = useQuery('helloQuery', fetchGraphQlData);
+  const simulateNetworkRequest = () => {
+    axios.get('https://httpbin.org/anything', {
+      headers: { traceparent: 'Caught Header Example' },
+    });
+  };
+  const simulateNetworkRequestWithoutHeader = () => {
+    axios.get('https://httpbin.org/anything');
+  };
 
   function generateUrls(count: number = 10) {
     const urls = [];
@@ -189,6 +198,15 @@ export const NetworkScreen: React.FC<
               title="Go HTTP Screen"
             />
 
+            <ListTile
+              title="Simulate Network Request With Header"
+              onPress={() => simulateNetworkRequest()}
+            />
+            <ListTile
+              title="Simulate Network Request"
+              onPress={() => simulateNetworkRequestWithoutHeader()}
+            />
+            <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}

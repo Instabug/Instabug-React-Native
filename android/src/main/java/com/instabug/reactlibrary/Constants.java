@@ -12,4 +12,9 @@ final class Constants {
 
     final static String IBG_ON_FEATURES_UPDATED_CALLBACK = "IBGOnFeatureUpdatedCallback";
     final static String IBG_NETWORK_LOGGER_HANDLER = "IBGNetworkLoggerHandler";
+
+    final static String IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK = "IBGOnNewW3CFlagsUpdateReceivedCallback";
+
+    final static String IBG_SESSION_REPLAY_ON_SYNC_CALLBACK_INVOCATION = "IBGSessionReplayOnSyncCallback";
+
 }

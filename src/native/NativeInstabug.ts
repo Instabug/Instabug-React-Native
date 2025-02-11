@@ -11,6 +11,7 @@ import type {
   WelcomeMessageMode,
 } from '../utils/Enums';
 import type { NativeConstants } from './NativeConstants';
+import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
 
 export interface InstabugNativeModule extends NativeModule {
@@ -67,6 +68,7 @@ export interface InstabugNativeModule extends NativeModule {
     duration: number,
     gqlQueryName: string | undefined,
     serverErrorMessage: string | undefined,
+    W3cExternalTraceAttributes: W3cExternalTraceAttributes,
   ): void;
 
   setNetworkLoggingEnabled(isEnabled: boolean): void;
@@ -141,6 +143,16 @@ export interface InstabugNativeModule extends NativeModule {
   addFileAttachmentWithDataToReport(data: string, filename?: string): void;
   willRedirectToStore(): void;
 
+  // W3C Feature Flags
+  isW3ExternalTraceIDEnabled(): Promise<boolean>;
+
+  isW3ExternalGeneratedHeaderEnabled(): Promise<boolean>;
+
+  isW3CaughtHeaderEnabled(): Promise<boolean>;
+
+  // W3C Feature Flags Listener for Android
+  registerW3CFlagsChangeListener(): void;
+
   setOnFeaturesUpdatedListener(handler?: (params: any) => void): void; // android only
 }
 
@@ -149,6 +161,7 @@ export const NativeInstabug = NativeModules.Instabug;
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
   IBG_ON_FEATURES_UPDATED_CALLBACK = 'IBGOnFeatureUpdatedCallback',
+  ON_W3C_FLAGS_CHANGE = 'IBGOnNewW3CFlagsUpdateReceivedCallback',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

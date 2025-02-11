@@ -16,6 +16,7 @@ import {
 } from '../../src/native/NativeNetworkLogger';
 import { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../../src';
 import { Platform } from 'react-native';
+import { Logger } from '../../src/utils/logger';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
@@ -42,6 +43,11 @@ describe('NetworkLogger Module', () => {
     startTime: 0,
     serverErrorMessage: '',
     requestContentType: 'application/json',
+    isW3cHeaderFound: null,
+    partialId: null,
+    networkStartTimeInSeconds: null,
+    w3cGeneratedHeader: null,
+    w3cCaughtHeader: null,
   };
 
   beforeEach(() => {
@@ -101,7 +107,7 @@ describe('NetworkLogger Module', () => {
 
   it('should not break if network data obfuscation fails', async () => {
     // Avoid the console.error to clutter the test log
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(Logger, 'error').mockImplementation(() => {});
 
     // Make a circular object, this should make JSON.stringify fail
     const handler = jest.fn(() => {
@@ -145,7 +151,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should not break if apollo handler throws an error', async () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(Logger, 'error').mockImplementation(() => {});
 
     const operation = {
       setContext: jest.fn(() => {
@@ -162,7 +168,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should omit request body if its content type is not allowed', () => {
-    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
     jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
 
     const networkData = {
@@ -187,7 +193,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should omit response body if its content type is not allowed', () => {
-    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
     jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
 
     const networkData = {
@@ -212,7 +218,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should omit request body if its size exceeds the maximum allowed size', () => {
-    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
 
     const networkData = {
       ...network,
@@ -251,7 +257,7 @@ describe('NetworkLogger Module', () => {
   });
 
   it('should omit response body if its size exceeds the maximum allowed size', () => {
-    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation();
+    const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
 
     const networkData = {
       ...network,

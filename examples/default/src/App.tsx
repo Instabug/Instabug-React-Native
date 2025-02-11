@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native";
 import Instabug, {
   CrashReporting,
   InvocationEvent,
@@ -10,7 +10,10 @@ import Instabug, {
   NetworkInterceptionMode,
   NetworkLogger,
   ReproStepsMode,
+  SessionReplay,
+  LaunchType,
 } from 'instabug-reactnative';
+import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -22,12 +25,29 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 export const App: React.FC = () => {
+  const shouldSyncSession = (data: SessionMetadata) => {
+    if (data.launchType === LaunchType.cold) {
+      return true;
+    }
+    if (data.sessionDurationInSeconds > 20) {
+      return true;
+    }
+    if (data.OS === 'OS Level 34') {
+      return true;
+    }
+    return false;
+  };
+
+  const navigationRef = useNavigationContainerRef();
+
   const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
 
   const initializeInstabug = async () => {
     try {
+      SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
+
       await Instabug.init({
-        token: '0fcc87b8bf731164828cc411eccc802a',
+        token: 'deb1910a7342814af4e4c9210c786f35',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
         networkInterceptionMode: NetworkInterceptionMode.native,
@@ -52,6 +72,12 @@ export const App: React.FC = () => {
       // NetworkLogger.setRequestFilterExpression('false');
     });
   }, []);
+
+  useEffect(() => {
+    const unregisterListener = Instabug.setNavigationListener(navigationRef);
+
+    return unregisterListener;
+  }, [navigationRef]);
 
   if (!isInstabugInitialized) {
     return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
