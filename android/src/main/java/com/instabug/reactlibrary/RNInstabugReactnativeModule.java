@@ -89,6 +89,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     //    private final Context appContext;
     private final AtomicBoolean initialized = new AtomicBoolean(false);
     private FrameRateProvider frameRateProvider;
+    private ScreenTrace screenTrace ;
+    private String screenTraceName = "/" ;
 
     /**
      * Instantiates a new Rn Instabug ReactNative module.
@@ -235,13 +237,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     private void initializeFrameTrackerUsingFrameMetricsAggregator() {
         final Activity currentActivity = reactContext.getCurrentActivity();
         if (currentActivity != null) {
-            final ScreenTrace screenTrace = new ScreenTrace(currentActivity, currentActivity.getLocalClassName());
-            screenTrace.recordScreenTrace();
+            screenTrace = new ScreenTrace(currentActivity, currentActivity.getLocalClassName());
+            screenTrace.recordScreenTrace(screenTraceName);
             reactContext.addLifecycleEventListener(new LifecycleEventListener() {
                 @Override
                 public void onHostResume() {
                     Log.w("Andrew", "onHostResume");
-                    screenTrace.recordScreenTrace();
+                    screenTrace.recordScreenTrace(screenTraceName);
                 }
 
                 @Override
@@ -255,6 +257,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     Log.w("Andrew", "onHostDestroy");
                     screenTrace.sendScreenTrace();
                 }
+
             });
         }
         Log.e("andrew", "Activity is null");
@@ -1090,6 +1093,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportCurrentViewChange", String.class);
                     if (method != null) {
                         method.invoke(null, screenName);
+                        screenTrace.sendScreenTrace();
+                        screenTraceName = screenName;
+                        screenTrace.recordScreenTrace(screenTraceName);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -31,10 +31,9 @@ public class ScreenTrace {
             "androidx.core.app.FrameMetricsAggregator";
 
     private final Activity activity;
-    private final String traceName;
+    private String traceName;
 
     private final FrameMetricsAggregator frameMetricsAggregator;
-
 
 
     public ScreenTrace(Activity activity, String tag) throws IllegalStateException {
@@ -60,11 +59,12 @@ public class ScreenTrace {
     /**
      * Starts recording the frame metrics for the screen traces.
      */
-    public void recordScreenTrace() {
+    public void recordScreenTrace(String screenName) {
+        traceName = screenName;
         Log.d(TAG, "Recording screen trace " + traceName);
 
-        frameMetricsAggregator.add(activity);
 
+        frameMetricsAggregator.add(activity);
     }
 
     /**
@@ -95,6 +95,8 @@ public class ScreenTrace {
                     if (frameTime > 700) {
                         // Frozen frames mean the app appear frozen. The recommended thresholds is 700ms
                         frozenFrames += numFrames;
+                        Log.e("AndrewAmin", "frozenFrameStacktrace");
+                        Thread.dumpStack();
                     }
 
                     if (frameTime > 16) {
