@@ -6,12 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import Instabug, {
   CrashReporting,
   InvocationEvent,
+  LaunchType,
   LogLevel,
   ReproStepsMode,
   SessionReplay,
-  LaunchType,
 } from 'instabug-reactnative';
-import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';

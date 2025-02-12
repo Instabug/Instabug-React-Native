@@ -3,14 +3,13 @@ import '../mocks/mockNetworkLogger';
 
 import { Platform, findNodeHandle, processColor } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
-
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
 
 import Report from '../../src/models/Report';
 import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
-import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
+import { emitter, NativeEvents, NativeInstabug } from '../../src/native/NativeInstabug';
 import {
   ColorTheme,
   InvocationEvent,
@@ -23,7 +22,6 @@ import {
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
-import InstabugConstants from '../../src/utils/InstabugConstants';
 import { Logger } from '../../src/utils/logger';
 
 describe('Instabug Module', () => {
