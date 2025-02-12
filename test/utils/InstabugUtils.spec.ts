@@ -389,6 +389,11 @@ describe('test registerNetworkLogsListener usage', () => {
     startTime: 0,
     serverErrorMessage: '',
     requestContentType: 'application/json',
+    isW3cHeaderFound: true,
+    networkStartTimeInSeconds: 0,
+    partialId: 0,
+    w3cCaughtHeader: '',
+    w3cGeneratedHeader: '',
   };
 
   it('registerObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.obfuscation', () => {

@@ -10,7 +10,6 @@ import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ListTile } from '../../components/ListTile';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
@@ -198,11 +197,11 @@ export const NetworkScreen: React.FC<
               title="Go HTTP Screen"
             />
 
-            <ListTile
+            <CustomButton
               title="Simulate Network Request With Header"
               onPress={() => simulateNetworkRequest()}
             />
-            <ListTile
+            <CustomButton
               title="Simulate Network Request"
               onPress={() => simulateNetworkRequestWithoutHeader()}
             />

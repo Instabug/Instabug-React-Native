@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native";
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import type { SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
   CrashReporting,
   InvocationEvent,
+  LaunchType,
   LogLevel,
   NetworkInterceptionMode,
   NetworkLogger,
   ReproStepsMode,
   SessionReplay,
-  LaunchType,
 } from 'instabug-reactnative';
-import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -71,7 +71,7 @@ export const App: React.FC = () => {
       });
       // NetworkLogger.setRequestFilterExpression('false');
     });
-  }, []);
+  });
 
   useEffect(() => {
     const unregisterListener = Instabug.setNavigationListener(navigationRef);

@@ -399,6 +399,11 @@ describe('_registerNetworkLogsListener', () => {
       startTime: 0,
       serverErrorMessage: '',
       requestContentType: '',
+      isW3cHeaderFound: true,
+      networkStartTimeInSeconds: 0,
+      partialId: 0,
+      w3cCaughtHeader: '',
+      w3cGeneratedHeader: '',
     };
 
     expect(handlerMock).toHaveBeenCalledWith(expectedNetworkData);
