@@ -24,7 +24,7 @@ export const setAppLaunchEnabled = (isEnabled: boolean) => {
 /**
  * To define when an app launch is complete,
  * such as when it's intractable, use the end app launch API.
- * You can then view this data with the automatic cold app launche.
+ * You can then view this data with the automatic cold app launch.
  */
 export const endAppLaunch = () => {
   NativeAPM.endAppLaunch();
