@@ -43,9 +43,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     }
 
     /**
-     * This method is exporting a method
-     * named `ibgSleep` to be accessible from JavaScript side. When this method is
-     * called from JavaScript, it (sleeps) the current thread for 3 seconds.
+     * Pauses the current thread for 3 seconds.
      */
     @ReactMethod
     public void ibgSleep() {
@@ -59,13 +57,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
 
     /**
      * Enables or disables APM.
-     *
-     * This function is exporting a method named
-     * [setEnabled] to be accessible from JavaScript side. When this method is
-     * called from JavaScript, it will set the `enabled` property of the [APM] class provided by the
-     * Instabug SDK to the value passed as the `isEnabled` parameter. This property controls whether the
-     * APM (Application Performance Monitoring) feature of Instabug is enabled or disabled based on the
-     * boolean value passed to it.
      *
      * @param isEnabled boolean indicating enabled or disabled.
      */
@@ -86,11 +77,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     /**
      * Enables or disables app launch tracking.
      *
-     * This function is exporting a method named
-     * `setAppLaunchEnabled` to be accessible from JavaScript side. When this
-     * method is called from JavaScript, it will set the `coldAppLaunchEnabled` property of the `IBGAPM`
-     * class provided by the Instabug SDK to the value passed as the `isEnabled` parameter.
-     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -108,10 +94,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     }
 
     /**
-     * This function is exporting a method named `endAppLaunch` to be
-     * accessible from JavaScript side. When this method is called from
-     * JavaScript, it will invoke the `endAppLaunch` method from the [APM] class provided by the
-     * Instabug SDK. This method is used to signal the end of the app launch process.
+     * This method is used to signal the end of the app launch process.
      */
     @ReactMethod
     public void endAppLaunch() {
@@ -129,14 +112,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
 
     /**
      * Enables or disables auto UI tracing
-     *
-     * This function is exporting a method named
-     * [setAutoUITraceEnabled] to be accessible from JavaScript side. When this
-     * method is called from JavaScript, it will set the `autoUITraceEnabled` property of the [APM]
-     * class provided by the Instabug SDK to the value passed as the `isEnabled` parameter. This property
-     * controls whether automatic tracing of UI interactions is enabled or disabled within the SDK. By
-     * toggling this property, you can control whether the SDK captures data related to user interface
-     * performance and behavior automatically.
      *
      * @param isEnabled boolean indicating enabled or disabled.
      */
@@ -310,11 +285,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     /**
      * Starts a UI trace
      *
-     * This function is exporting a method named
-     * [startUITrace] to be accessible from JavaScript side. When this method is
-     * called from JavaScript, it will invoke the [startUITrace] method from the [APM] class
-     * provided by the Instabug SDK to start a new UI trace.
-     *
      * @param name string name of the UI trace.
      */
     @ReactMethod
@@ -332,10 +302,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
     }
 
     /**
-     * This function is exporting a method named [endUITrace] to be
-     * accessible from JavaScript side. When this method is called from
-     * JavaScript, it will invoke the `endUITrace` method from the []APM] class provided by the Instabug
-     * SDK. This method is used to terminate the currently active UI trace.
+     * This method is used to terminate the currently active UI trace.
      */
     @ReactMethod
     public void endUITrace() {
