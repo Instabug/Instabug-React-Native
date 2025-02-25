@@ -3,9 +3,10 @@ import type { HomeStackParamList } from '../../navigation/HomeStack';
 import React, { useState } from 'react';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
-import { Text, Switch } from 'react-native';
+import { Switch, Text } from 'react-native';
 import { APM } from 'instabug-reactnative';
 import { showNotification } from '../../utils/showNotification';
+import CustomGap from '../../components/CustomGap';
 
 export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM'>> = ({
   navigation,
@@ -21,12 +22,15 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
   return (
     <Screen>
       <Text>Enable APM:</Text>
+      {CustomGap.smallV}
       <Switch onValueChange={toggleSwitch} value={isEnabled} />
+      {CustomGap.largeV}
       <ListTile title="End App launch" onPress={() => APM.endAppLaunch()} />
       <ListTile title="Network Screen" onPress={() => navigation.navigate('NetworkTraces')} />
       <ListTile title="Traces" onPress={() => navigation.navigate('ExecutionTraces')} />
       <ListTile title="Flows" onPress={() => navigation.navigate('AppFlows')} />
       <ListTile title="WebViews" onPress={() => navigation.navigate('WebViews')} />
+      <ListTile title="Complex Views" onPress={() => navigation.navigate('ComplexViews')} />
     </Screen>
   );
 };
