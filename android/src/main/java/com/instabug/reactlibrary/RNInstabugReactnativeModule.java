@@ -1274,4 +1274,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
         return constants;
     }
+     /**
+     * Sets the auto mask screenshots types.
+     * @param autoMaskingTypes The masking type to be applied.
+     */
+    @ReactMethod
+public void enableAutoMasking(@NonNull ReadableArray autoMaskingTypes) {
+    int[] autoMassingTypesArray = new int[autoMaskingTypes.size()];
+    for (int i=0;i< autoMaskingTypes.size();i++)
+    {
+        String key = autoMaskingTypes.getString(i);
+         
+        autoMassingTypesArray[i]= ArgsRegistry.autoMaskingTypes.get(key);
+        
+    }
+
+        Instabug.setAutoMaskScreenshotsTypes(autoMassingTypesArray);
+}
 }
