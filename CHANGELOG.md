@@ -18,6 +18,8 @@
 
 - Add support for tracing network requests from Instabug to services like Datadog and New Relic ([#1288](https://github.com/Instabug/Instabug-React-Native/pull/1288))
 
+Add support enable/disable screenshot auto masking. ([#1353](https://github.com/Instabug/Instabug-React-Native/pull/1353))
+
 ### Changed
 
 - Bump Instabug iOS SDK to v14.1.0 ([#1335](https://github.com/Instabug/Instabug-React-Native/pull/1335)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.1.0).
