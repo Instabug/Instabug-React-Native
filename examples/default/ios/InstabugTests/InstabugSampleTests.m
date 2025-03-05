@@ -610,19 +610,19 @@
 
 - (void)testEnableAutoMasking {
     id mock = OCMClassMock([Instabug class]);
-    
-     NSArray *autoMaskingTypes = [NSArray arrayWithObjects:
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionLabels],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionTextInputs],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMedia],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMaskNothing],
-        nil];
-    
-    OCMStub([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
-    
-    [self.instabugBridge enableAutoMasking:autoMaskingTypes];
-
-    OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+     
+    NSArray *autoMaskingTypes = [NSArray arrayWithObjects:
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionLabels],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionTextInputs],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMedia],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMaskNothing],
+         nil];
+     
+     OCMStub([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+     
+     [self.instabugBridge enableAutoMasking:autoMaskingTypes];
+ 
+     OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
 }
 
 @end

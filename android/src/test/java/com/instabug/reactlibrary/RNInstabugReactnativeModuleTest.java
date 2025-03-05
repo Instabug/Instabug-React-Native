@@ -672,7 +672,6 @@ public class RNInstabugReactnativeModuleTest {
             String maskMedia = "media";
             String maskNone = "none";
     
-    
             rnModule.enableAutoMasking(JavaOnlyArray.of(maskLabel, maskMedia, maskTextInputs,maskNone));
     
             mockInstabug.verify(() -> Instabug.setAutoMaskScreenshotsTypes(MaskingType.LABELS,MaskingType.MEDIA,MaskingType.TEXT_INPUTS,MaskingType.MASK_NOTHING));
