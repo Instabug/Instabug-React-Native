@@ -4,6 +4,7 @@ orbs:
   android: circleci/android@2.5.0
   advanced-checkout: vsco/advanced-checkout@1.1.0
   node: circleci/node@5.2.0
+  slack: circleci/slack@5.1.1
 
 references:
   release_dependencies: &release_dependencies
@@ -160,6 +161,32 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
+  
+  notify_slack_with_release:
+    steps:
+      - slack/notify:
+          channel: C08F3Q30U7Q
+          event: pass
+          custom: |
+            {
+            	"blocks": [
+            		{
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": ":flutter: Flutter `v$(./scripts/releases/get_sdk_version.sh)` is released by <@$(./scripts/releases/get_job_approver.sh)> 🚀"
+                        }
+                    },
+            		{
+                        "type": "section",
+                        "text": {
+                          "type": "mrkdwn",
+                          "text": "$(./scripts/releases/get_release_notes.sh)"
+                        }
+                    }
+                ]
+            }
+          debug: true
 
 jobs:
   danger:
@@ -494,6 +521,13 @@ jobs:
       - notify_github:
           data: "$(jq -Rcs '{ body: . }' scripts/snapshot-comment.md)"
 
+  release_slack_notification:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - advanced-checkout/shallow-checkout
+      - notify_slack_with_release
+
 workflows:
   publish:
     jobs:
@@ -622,3 +656,9 @@ workflows:
               only: dream11
           prepare_steps:
             - prepare_dream11
+      - hold_release_slack_notification:
+          type: approval
+      - release_slack_notification:
+          requires:
+            - hold_release_slack_notification
+          context: slack-app
