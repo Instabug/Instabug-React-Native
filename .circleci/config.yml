@@ -170,18 +170,25 @@ commands:
           custom: |
             {
             	"blocks": [
-            		{
+            		    {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": ":flutter: Flutter `v$(./scripts/releases/get_sdk_version.sh)` is released by <@$(./scripts/releases/get_job_approver.sh)> 🚀"
+                            "text": ":react: React Native `v$(./scripts/releases/get_sdk_version.sh)` is released by <@$(./scripts/releases/get_job_approver.sh)> 🚀"
                         }
                     },
-            		{
+            		    {
                         "type": "section",
                         "text": {
                           "type": "mrkdwn",
                           "text": "$(./scripts/releases/get_release_notes.sh)"
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                          "type": "mrkdwn",
+                          "text": "cc: <@U5697F4EL> <@support_team> <@ULDFCC09J>"
                         }
                     }
                 ]
@@ -616,6 +623,22 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
 
+          name: release_dream11
+          requires:
+            - hold_release_dream11
+          filters:
+            branches:
+              only: dream11
+          prepare_steps:
+            - prepare_dream11
+      
+      - hold_release_slack_notification:
+          type: approval
+      - release_slack_notification:
+          requires:
+            - hold_release_slack_notification
+          context: slack-app
+
       # Dream11 tests
       - hold_test_dream11:
           type: approval
@@ -648,17 +671,3 @@ workflows:
             branches:
               only: dream11
       - release_custom_package:
-          name: release_dream11
-          requires:
-            - hold_release_dream11
-          filters:
-            branches:
-              only: dream11
-          prepare_steps:
-            - prepare_dream11
-      - hold_release_slack_notification:
-          type: approval
-      - release_slack_notification:
-          requires:
-            - hold_release_slack_notification
-          context: slack-app
