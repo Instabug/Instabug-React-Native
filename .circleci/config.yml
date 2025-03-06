@@ -622,15 +622,6 @@ workflows:
                 npm_package: '@instabug/react-native-injazat'
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
-
-          name: release_dream11
-          requires:
-            - hold_release_dream11
-          filters:
-            branches:
-              only: dream11
-          prepare_steps:
-            - prepare_dream11
       
       - hold_release_slack_notification:
           type: approval
@@ -671,3 +662,11 @@ workflows:
             branches:
               only: dream11
       - release_custom_package:
+          name: release_dream11
+          requires:
+            - hold_release_dream11
+          filters:
+            branches:
+              only: dream11
+          prepare_steps:
+            - prepare_dream11
