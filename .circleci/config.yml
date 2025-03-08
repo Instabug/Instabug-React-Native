@@ -188,7 +188,7 @@ commands:
                         "type": "section",
                         "text": {
                           "type": "mrkdwn",
-                          "text": "cc: <@U5697F4EL> <@support_team> <@ULDFCC09J>"
+                          "text": "cc: <@U5697F4EL> @support_team <@ULDFCC09J>"
                         }
                     }
                 ]
