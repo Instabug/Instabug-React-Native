@@ -9,7 +9,6 @@ import {
   type SessionMetadata,
 } from 'instabug-reactnative';
 import Instabug, {
-  AutoMaskingType,
   CrashReporting,
   InvocationEvent,
   LaunchType,
