@@ -193,7 +193,6 @@ commands:
                     }
                 ]
             }
-          debug: true
 
 jobs:
   danger:
