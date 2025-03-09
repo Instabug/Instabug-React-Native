@@ -50,5 +50,6 @@
 - (void)setDisclaimerText:(NSString *)text;
 
 - (void)setCommentMinimumCharacterCount:(NSNumber *)limit reportTypes:(NSArray *)reportTypes;
+- (void)setProactiveReportingConfigurations:(BOOL)enabled gap:(NSNumber* )gap model:(NSNumber* )modal;
 
 @end

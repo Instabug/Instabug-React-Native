@@ -188,5 +188,29 @@
   OCMVerify([mock setCommentMinimumCharacterCountForReportTypes:reportTypes withLimit:limit.intValue]);
 }
 
+- (void) testSetProactiveReportingConfigurations {
+  id mock = OCMClassMock([IBGBugReporting class]);
+  BOOL enabled = true;
+  NSNumber* gap = @2;
+  NSNumber* delay = @4;
+  
+  IBGProactiveReportingConfigurations *configurations = [[IBGProactiveReportingConfigurations alloc] init];
+  configurations.enabled = enabled; //Enable/disable
+  configurations.gapBetweenModals = gap; // Time in seconds
+  configurations.modalDelayAfterDetection = delay; // Time in seconds
+  
+  OCMStub([mock setProactiveReportingConfigurations:OCMOCK_ANY]);
+
+  [self.instabugBridge setProactiveReportingConfigurations:enabled gap:gap model:delay];
+  
+  // Verify that the method is called with the correct properties (using OCMArg to match properties)
+  OCMVerify([mock setProactiveReportingConfigurations:[OCMArg checkWithBlock:^BOOL(id obj) {
+      IBGProactiveReportingConfigurations *config = (IBGProactiveReportingConfigurations *)obj;
+      return config.enabled == enabled &&
+             [config.gapBetweenModals isEqualToNumber:gap] &&
+             [config.modalDelayAfterDetection isEqualToNumber:delay];
+    }]]);
+}
+
 @end
 

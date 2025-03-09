@@ -3,15 +3,20 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {
+  BugReporting,
+  ProactiveReportingConfigs,
+  type SessionMetadata,
+} from 'instabug-reactnative';
 import Instabug, {
+  AutoMaskingType,
   CrashReporting,
   InvocationEvent,
+  LaunchType,
   LogLevel,
   ReproStepsMode,
   SessionReplay,
-  LaunchType,
 } from 'instabug-reactnative';
-import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -51,6 +56,14 @@ export const App: React.FC = () => {
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
     });
+
+    const config = new ProactiveReportingConfigs.Builder()
+      .setGapBetweenModals(5)
+      .setModalDelayAfterDetection(5)
+      .isEnabled(true)
+      .build();
+
+    BugReporting.setProactiveReportingConfigurations(config);
   }, []);
 
   useEffect(() => {

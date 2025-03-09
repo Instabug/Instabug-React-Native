@@ -10,6 +10,7 @@ import {
   RecordingButtonPosition,
   ReportType,
 } from '../../src/utils/Enums';
+import ProactiveReportingConfigs from '../../src/models/ProactiveReportingConfigs';
 
 describe('Testing BugReporting Module', () => {
   beforeEach(() => {
@@ -265,5 +266,18 @@ describe('Testing BugReporting Module', () => {
 
     expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledTimes(1);
     expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledWith(count, reportTypes);
+  });
+
+  it('should call the native method setProactiveReportingConfigurations', () => {
+    const configs = new ProactiveReportingConfigs.Builder()
+      .setGapBetweenModals(2)
+      .setModalDelayAfterDetection(20)
+      .isEnabled(true)
+      .build();
+
+    BugReporting.setProactiveReportingConfigurations(configs);
+
+    expect(NativeBugReporting.setProactiveReportingConfigurations).toBeCalledTimes(1);
+    expect(NativeBugReporting.setProactiveReportingConfigurations).toBeCalledWith(true, 2, 20);
   });
 });

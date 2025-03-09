@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
+import com.instabug.bug.ProactiveReportingConfigs;
 import com.instabug.bug.invocation.Option;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
@@ -49,6 +50,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
 
     /**
      * Enable or disable all BugReporting related features.
+     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -116,6 +118,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
 
     /**
      * Enables or disables view hierarchy in the dashboard.
+     *
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
@@ -160,10 +163,10 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
     /**
      * Sets whether attachments in bug reporting and in-app messaging are enabled or not.
      *
-     * @param  screenshot A boolean to enable or disable screenshot attachments.
-     * @param {boolean} extraScreenShot A boolean to enable or disable extra screenshot attachments.
-     * @param {boolean} galleryImage A boolean to enable or disable gallery image attachments.
-     * @param {boolean} screenRecording A boolean to enable or disable screen recording attachments.
+     * @param screenshot A boolean to enable or disable screenshot attachments.
+     * @param {boolean}  extraScreenShot A boolean to enable or disable extra screenshot attachments.
+     * @param {boolean}  galleryImage A boolean to enable or disable gallery image attachments.
+     * @param {boolean}  screenRecording A boolean to enable or disable screen recording attachments.
      */
     @ReactMethod
     public void setEnabledAttachmentTypes(final boolean screenshot, final boolean extraScreenshot, final boolean
@@ -235,7 +238,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
      * UI changes before the SDK's UI is shown.
      *
      * @param onInvokeHandler - A callback that gets executed before
-     *                             invoking the SDK
+     *                        invoking the SDK
      */
     @ReactMethod
     public void setOnInvokeHandler(final Callback onInvokeHandler) {
@@ -258,7 +261,8 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
 
     /**
      * Sets the position of the Instabug floating button on the screen.
-     * @param floatingButtonEdge left or right edge of the screen.
+     *
+     * @param floatingButtonEdge   left or right edge of the screen.
      * @param floatingButtonOffset integer offset from the left or right edge of the screen.
      */
     @ReactMethod
@@ -280,7 +284,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
      * UI changes after the SDK's UI is dismissed.
      *
      * @param handler - A callback to get executed after
-     *                              dismissing the SDK.
+     *                dismissing the SDK.
      */
     @ReactMethod
     public void setOnSDKDismissedHandler(final Callback handler) {
@@ -328,6 +332,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
 
     /**
      * Sets the enabled report types to be shown in the prompt. Bug or Feedback or both.
+     *
      * @param types
      * @see BugReporting.ReportType
      */
@@ -356,8 +361,9 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
 
     /**
      * Shows a bug or feedback report with optional options.
+     *
      * @param reportType Bug or Feedback.
-     * @param options array of options
+     * @param options    array of options
      * @see BugReporting.ReportType
      * @see Option
      */
@@ -375,11 +381,12 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
     }
 
     /**
-    * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
-    * @param text String text.
-    */
+     * Adds a disclaimer text within the bug reporting form, which can include hyperlinked text.
+     *
+     * @param text String text.
+     */
     @ReactMethod
-    public void setDisclaimerText(final String text){
+    public void setDisclaimerText(final String text) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -389,12 +396,13 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
     }
 
     /**
-    * Sets a minimum number of characters as a requirement for the comments field in the different report types.
-    * @param limit int number of characters.
-    * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
-    */
+     * Sets a minimum number of characters as a requirement for the comments field in the different report types.
+     *
+     * @param limit       int number of characters.
+     * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
+     */
     @ReactMethod
-    public void setCommentMinimumCharacterCount(final int limit, final ReadableArray reportTypes){
+    public void setCommentMinimumCharacterCount(final int limit, final ReadableArray reportTypes) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @SuppressLint("WrongConstant")
             @Override
@@ -412,6 +420,30 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+
+    /**
+     * prompts end users to submit their feedback after our SDK automatically detects a frustrating experience.
+     *
+     * @param enabled                  controls the state of the feature
+     * @param modalDelayAfterDetection controls the time gap between detecting a frustrating experience
+     * @param gapBetweenModals         controls the time gap between showing 2 proactive reporting dialogs in seconds
+     */
+    @ReactMethod
+    public void setProactiveReportingConfigurations(final boolean enabled, final int gapBetweenModals, final int modalDelayAfterDetection) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                ProactiveReportingConfigs configs = new ProactiveReportingConfigs.Builder()
+                        .setGapBetweenModals(gapBetweenModals) // Time in seconds
+                        .setModalDelayAfterDetection(modalDelayAfterDetection) // Time in seconds
+                        .isEnabled(enabled) //Enable/disable
+                        .build();
+                BugReporting.setProactiveReportingConfigurations(configs);
+
+
             }
         });
     }

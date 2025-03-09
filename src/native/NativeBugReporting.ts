@@ -14,17 +14,32 @@ import { NativeModules } from './NativePackage';
 export interface BugReportingNativeModule extends NativeModule {
   // Essential APIs //
   setEnabled(isEnabled: boolean): void;
+
   show(type: ReportType, options: InvocationOption[]): void;
 
   // Customization APIs //
   setInvocationEvents(events: InvocationEvent[]): void;
+
   setOptions(options: InvocationOption[]): void;
+
   setExtendedBugReportMode(mode: ExtendedBugReportMode): void;
+
   setReportTypes(types: ReportType[]): void;
+
   setDisclaimerText(text: string): void;
+
+  setProactiveReportingConfigurations(
+    enabled: boolean,
+    gapBetweenModals: number,
+    modalDelayAfterDetection: number,
+  ): void;
+
   setCommentMinimumCharacterCount(limit: number, reportTypes: ReportType[]): void;
+
   setFloatingButtonEdge(edge: FloatingButtonPosition, offset: number): void;
+
   setVideoRecordingFloatingButtonPosition(buttonPosition: RecordingButtonPosition): void;
+
   setEnabledAttachmentTypes(
     screenshot: boolean,
     extraScreenshot: boolean,
@@ -34,17 +49,23 @@ export interface BugReportingNativeModule extends NativeModule {
 
   // Screen Recording APIs //
   setAutoScreenRecordingEnabled(isEnabled: boolean): void;
+
   setAutoScreenRecordingDuration(maxDuration: number): void;
+
   setViewHierarchyEnabled(isEnabled: boolean): void;
 
   // Shaking Threshold APIs //
   setShakingThresholdForiPhone(threshold: number): void;
+
   setShakingThresholdForiPad(threshold: number): void;
+
   setShakingThresholdForAndroid(threshold: number): void;
 
   // Callbacks //
   setOnInvokeHandler(handler: () => void): void;
+
   setDidSelectPromptOptionHandler(handler: (promptOption: string) => void): void;
+
   setOnSDKDismissedHandler(
     handler: (dismissType: DismissType, reportType: ReportType) => void,
   ): void;

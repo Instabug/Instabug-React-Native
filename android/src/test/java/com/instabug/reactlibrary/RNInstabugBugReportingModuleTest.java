@@ -8,6 +8,7 @@ import com.facebook.react.bridge.JavaOnlyMap;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.instabug.bug.BugReporting;
+import com.instabug.bug.ProactiveReportingConfigs;
 import com.instabug.library.Feature;
 import com.instabug.library.OnSdkDismissCallback;
 import com.instabug.library.extendedbugreport.ExtendedBugReport;
@@ -21,6 +22,7 @@ import com.instabug.reactlibrary.utils.MainThreadHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.invocation.InvocationOnMock;
@@ -30,7 +32,10 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -45,9 +50,9 @@ public class RNInstabugBugReportingModuleTest {
 
     // Mock Objects
     private MockedStatic<Looper> mockLooper;
-    private MockedStatic <MainThreadHandler> mockMainThreadHandler;
-    private MockedStatic <BugReporting> mockBugReporting;
-    private MockedStatic <InstabugUtil> mockInstabugUtil;
+    private MockedStatic<MainThreadHandler> mockMainThreadHandler;
+    private MockedStatic<BugReporting> mockBugReporting;
+    private MockedStatic<InstabugUtil> mockInstabugUtil;
 
     @Before
     public void mockMainThreadHandler() throws Exception {
@@ -72,6 +77,7 @@ public class RNInstabugBugReportingModuleTest {
         doAnswer(handlerPostAnswer).when(MainThreadHandler.class);
         MainThreadHandler.runOnMainThread(any(Runnable.class));
     }
+
     @After
     public void tearDown() {
         // Remove static mocks
@@ -91,7 +97,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setShakingThresholdForAndroid(shakingThreshold);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
         BugReporting.setShakingThreshold(shakingThreshold);
     }
 
@@ -102,7 +108,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setEnabled(false);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setState(Feature.State.DISABLED);
     }
@@ -114,7 +120,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setEnabled(true);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setState(Feature.State.ENABLED);
     }
@@ -126,7 +132,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setAutoScreenRecordingEnabled(true);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setAutoScreenRecordingEnabled(true);
     }
@@ -138,7 +144,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setViewHierarchyEnabled(true);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setViewHierarchyState(Feature.State.ENABLED);
     }
@@ -150,7 +156,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setViewHierarchyEnabled(false);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setViewHierarchyState(Feature.State.DISABLED);
     }
@@ -162,7 +168,7 @@ public class RNInstabugBugReportingModuleTest {
         // when
         bugReportingModule.setEnabledAttachmentTypes(true, true, false, true);
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setAttachmentTypesEnabled(true, true, false, true);
     }
@@ -179,7 +185,7 @@ public class RNInstabugBugReportingModuleTest {
 
         // then
         for (ExtendedBugReport.State extendedBugReportMode : args.values()) {
-            verify(BugReporting.class,VerificationModeFactory.times(1));
+            verify(BugReporting.class, VerificationModeFactory.times(1));
             BugReporting.setExtendedBugReportState(extendedBugReportMode);
         }
     }
@@ -198,7 +204,7 @@ public class RNInstabugBugReportingModuleTest {
         bugReportingModule.setInvocationEvents(actualArray);
 
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
         BugReporting.setInvocationEvents(args.values().toArray(new InstabugInvocationEvent[0]));
     }
 
@@ -215,11 +221,11 @@ public class RNInstabugBugReportingModuleTest {
         bugReportingModule.setOptions(actualArray);
 
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
         int option1 = args.get(keysArray[0]);
         int option2 = args.get(keysArray[1]);
         BugReporting.setOptions(option1);
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
         BugReporting.setOptions(option2);
     }
 
@@ -255,7 +261,8 @@ public class RNInstabugBugReportingModuleTest {
                 ((OnSdkDismissCallback) invocation.getArguments()[0])
                         .call(OnSdkDismissCallback.DismissType.CANCEL, OnSdkDismissCallback.ReportType.BUG);
                 return null;
-            }});
+            }
+        });
         bugReportingModule.setOnSDKDismissedHandler(null);
 
         // then
@@ -280,7 +287,7 @@ public class RNInstabugBugReportingModuleTest {
         bugReportingModule.setReportTypes(actualArray);
 
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         int type1 = args.get(keysArray[0]);
         int type2 = args.get(keysArray[1]);
@@ -295,9 +302,9 @@ public class RNInstabugBugReportingModuleTest {
 
         // when
         bugReportingModule.setVideoRecordingFloatingButtonPosition(keysArray[0]);
-        
+
         // then
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
         InstabugVideoRecordingButtonPosition position = (InstabugVideoRecordingButtonPosition) args.get(keysArray[0]);
         BugReporting.setVideoRecordingFloatingButtonPosition(position);
     }
@@ -319,13 +326,13 @@ public class RNInstabugBugReportingModuleTest {
         // then
         int option1 = optionsArgs.get(keysArray[0]);
         int option2 = optionsArgs.get(keysArray[1]);
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setOptions(option1);
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.setOptions(option2);
-        verify(BugReporting.class,VerificationModeFactory.times(1));
+        verify(BugReporting.class, VerificationModeFactory.times(1));
 
         BugReporting.show(reportTypeArgs.get(reportTypeKeys[0]));
     }
@@ -359,7 +366,27 @@ public class RNInstabugBugReportingModuleTest {
         // then
         verify(BugReporting.class, VerificationModeFactory.times(1));
         int type1 = args.get(keysArray[0]);
-        
+
         BugReporting.setCommentMinimumCharacterCount(count, type1);
+    }
+
+    @Test
+    public void testSetProactiveReportingConfigurations() {
+        // given
+        boolean enabled = true;
+        int gapBetweekDialogs = 20;
+        int modeDelay = 30;
+
+        // when
+        bugReportingModule.setProactiveReportingConfigurations(enabled, gapBetweekDialogs, modeDelay);
+
+        // then
+        mockBugReporting.verify(() -> BugReporting.setProactiveReportingConfigurations(argThat(config ->
+                config.getModalsGap() == gapBetweekDialogs &&
+                        config.getDetectionGap() == modeDelay &&
+                        config.isEnabled() == enabled
+        )));
+
+
     }
 }
