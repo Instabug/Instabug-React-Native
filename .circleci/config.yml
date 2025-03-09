@@ -165,7 +165,7 @@ commands:
   notify_slack_with_release:
     steps:
       - slack/notify:
-          channel: C08F3Q30U7Q
+          channel: C8PDY2Q8H
           event: pass
           custom: |
             {
@@ -623,11 +623,11 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
       
-      - hold_release_slack_notification:
-          type: approval
+
       - release_slack_notification:
           requires:
-            - hold_release_slack_notification
+            - publish
+            - publish_new_namespace
           context: slack-app
 
       # Dream11 tests
