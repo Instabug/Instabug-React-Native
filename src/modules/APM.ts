@@ -13,7 +13,8 @@ export const setEnabled = (isEnabled: boolean) => {
 };
 
 /**
- * Enables or disables APM App Launch
+ * If APM is enabled, Instabug SDK starts collecting data about the app launch time by default.
+ * This API is used to give user more control over this behavior.
  * @param isEnabled
  */
 export const setAppLaunchEnabled = (isEnabled: boolean) => {
@@ -21,7 +22,9 @@ export const setAppLaunchEnabled = (isEnabled: boolean) => {
 };
 
 /**
- * Ends app launch
+ * To define when an app launch is complete,
+ * such as when it's intractable, use the end app launch API.
+ * You can then view this data with the automatic cold app launch.
  */
 export const endAppLaunch = () => {
   NativeAPM.endAppLaunch();
@@ -29,7 +32,7 @@ export const endAppLaunch = () => {
 
 /**
  * Enables or disables APM Network Metric
- * @param isEnabled
+ * @param isEnabled - a boolean indicates either iOS monitoring is enabled or disabled.
  */
 export const setNetworkEnabledIOS = (isEnabled: boolean) => {
   if (Platform.OS === 'ios') {
@@ -114,15 +117,17 @@ export const setFlowAttribute = (name: string, key: string, value?: string | nul
 };
 
 /**
- * Starts a custom trace
- * @param name
+ * Initiates a UI trace with the specified name using a native module.
+ * @param {string} name - The `name` parameter in the `startUITrace` function is a string that
+ * represents the name of the UI trace that you want to start. This name is used to identify and track
+ * the specific UI trace within the application.
  */
 export const startUITrace = (name: string) => {
   NativeAPM.startUITrace(name);
 };
 
 /**
- * Ends a custom trace
+ * Ends the currently running custom trace.
  */
 export const endUITrace = () => {
   NativeAPM.endUITrace();
