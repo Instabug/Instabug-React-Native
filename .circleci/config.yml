@@ -161,7 +161,7 @@ commands:
       - run:
           name: Post comment on GitHub
           command: ./scripts/notify-github.sh "<< parameters.data >>"
-  
+
   notify_slack_with_release:
     steps:
       - slack/notify:
@@ -621,7 +621,6 @@ workflows:
                 npm_package: '@instabug/react-native-injazat'
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
-      
 
       - release_slack_notification:
           requires:
