@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...dev)
+
+### Added
+
+- Add support for Network Spans in network logging module ([#1360](https://github.com/Instabug/Instabug-React-Native/pull/1360)).
+
 ## [14.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...v14.1.0) (January 2, 2025)
 
 ### Added
