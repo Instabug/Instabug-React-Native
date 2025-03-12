@@ -1,0 +1,18 @@
+{
+    "sourceFile": "examples/default/ios/Podfile",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1744018366442,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1744018366442,
+            "name": "Commit-0",
+            "content": "require_relative '../node_modules/react-native/scripts/react_native_pods'\n\nrequire_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'\n\nplatform :ios, '13.4'\nprepare_react_native_project!\n\nlinkage = ENV['USE_FRAMEWORKS']\nif linkage != nil\n  Pod::UI.puts \"Configuring Pod with #{linkage}ally linked Frameworks\".green\n  use_frameworks! :linkage => linkage.to_sym\nend\n\ntarget 'InstabugExample' do\n  config = use_native_modules!\n  rn_maps_path = '../node_modules/react-native-maps'\n  pod 'react-native-google-maps', :path => rn_maps_path\n  # Flags change depending on the env values.\n  flags = get_default_flags()\n\n  use_react_native!(\n    :path => config[:reactNativePath],\n    # Hermes is now enabled by default. Disable by setting this flag to false.\n    # Upcoming versions of React Native may rely on get_default_flags(), but\n    # we make it explicit here to aid in the React Native upgrade process.\n    :hermes_enabled => flags[:hermes_enabled],\n    :fabric_enabled => flags[:fabric_enabled],\n    # An absolute path to your application root.\n    :app_path => \"#{Pod::Config.instance.installation_root}/..\"\n  )\n\n  target 'InstabugTests' do\n    inherit! :complete\n    pod 'OCMock'\n    end\n\n  post_install do |installer|\n    react_native_post_install(\n      installer,\n      # Set `mac_catalyst_enabled` to `true` in order to apply patches\n      # necessary for Mac Catalyst builds\n      :mac_catalyst_enabled => false\n    )\n  end\nend\n"
+        }
+    ]
+}

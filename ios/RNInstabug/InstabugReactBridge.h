@@ -139,5 +139,6 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)removeFeatureFlags:(NSArray *)featureFlags;
 - (void)removeAllFeatureFlags;
 - (void)enableAutoMasking:(NSArray *)autoMaskingTypes;
+- (void)setNetworkLogBodyEnabled:(BOOL)isEnabled;
 
 @end

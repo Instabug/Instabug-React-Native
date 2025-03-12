@@ -623,6 +623,13 @@
      [self.instabugBridge enableAutoMasking:autoMaskingTypes];
  
      OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+- (void)testSetNetworkLogBodyEnabled {
+    id mock = OCMClassMock([IBGNetworkLogger class]);
+    BOOL isEnabled = YES;
+
+    OCMStub([mock setLogBodyEnabled:isEnabled]);
+    [self.instabugBridge setNetworkLogBodyEnabled:isEnabled];
+    OCMVerify([mock setLogBodyEnabled:isEnabled]);
 }
 
 @end

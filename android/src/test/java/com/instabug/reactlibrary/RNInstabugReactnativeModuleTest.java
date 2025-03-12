@@ -675,5 +675,15 @@ public class RNInstabugReactnativeModuleTest {
             rnModule.enableAutoMasking(JavaOnlyArray.of(maskLabel, maskMedia, maskTextInputs,maskNone));
     
             mockInstabug.verify(() -> Instabug.setAutoMaskScreenshotsTypes(MaskingType.LABELS,MaskingType.MEDIA,MaskingType.TEXT_INPUTS,MaskingType.MASK_NOTHING));
+    @Test
+    public void testSetNetworkLogBodyEnabled() {
+        rnModule.setNetworkLogBodyEnabled(true);
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(true));
+    }
+
+    @Test
+    public void testSetNetworkLogBodyDisables() {
+        rnModule.setNetworkLogBodyEnabled(false);
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
     }
 }
