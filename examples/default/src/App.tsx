@@ -10,6 +10,7 @@ import Instabug, {
   ReproStepsMode,
   SessionReplay,
   LaunchType,
+  AutoMaskingType,
 } from 'instabug-reactnative';
 import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -47,7 +48,7 @@ export const App: React.FC = () => {
       debugLogsLevel: LogLevel.verbose,
     });
     CrashReporting.setNDKCrashesEnabled(true);
-
+    Instabug.enableAutoMasking([AutoMaskingType.labels]);
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
     });
