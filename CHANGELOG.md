@@ -1,4 +1,3 @@
-
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...dev)
 
 ### Added
