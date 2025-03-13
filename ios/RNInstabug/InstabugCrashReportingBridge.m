@@ -40,6 +40,15 @@ RCT_EXPORT_METHOD(sendHandledJSCrash: (NSDictionary *)stackTrace
                   userAttributes:(nullable NSDictionary *)userAttributes fingerprint:(nullable NSString *)fingerprint nonFatalExceptionLevel:(IBGNonFatalLevel)nonFatalExceptionLevel
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+   
+    if([fingerprint isKindOfClass:NSNull.class]){
+        fingerprint = nil;
+    }
+   
+    if([userAttributes isKindOfClass:NSNull.class]){
+        userAttributes = nil;
+    }
+   
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
     dispatch_async(queue, ^{
         [IBGCrashReporting cp_reportNonFatalCrashWithStackTrace:stackTrace level:nonFatalExceptionLevel groupingString:fingerprint userAttributes:userAttributes];
