@@ -5,6 +5,11 @@ const InstabugConstants = {
   MAX_NETWORK_BODY_SIZE_IN_BYTES: 1024 * 10, // 10 KB
   MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE:
     'The response body has not been logged because it exceeds the maximum size of 10 Kb',
+  GAP_MODEL_ERROR_MESSAGE:
+    'gapBetweenModals must be a positive number. Using default value of 24 seconds.',
+  MODAL_DETECTION_ERROR_MESSAGE:
+    'modalDelayAfterDetection must be a positive number. Using default value of 20 seconds.',
+
   MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE:
     'The request body has not been logged because it exceeds the maximum size of 10 Kb',
   SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:

@@ -2,7 +2,10 @@
 import type { InstabugConfig } from './models/InstabugConfig';
 import Report from './models/Report';
 import Trace from './models/Trace';
-import ProactiveReportingConfigs from './models/ProactiveReportingConfigs';
+import {
+  createProactiveReportingConfig,
+  type ProactiveReportingConfigOptions,
+} from './models/ProactiveReportingConfigs';
 
 // Modules
 import * as APM from './modules/APM';
@@ -22,7 +25,8 @@ export * from './utils/Enums';
 export {
   Report,
   Trace,
-  ProactiveReportingConfigs,
+  ProactiveReportingConfigOptions,
+  createProactiveReportingConfig,
   APM,
   BugReporting,
   CrashReporting,

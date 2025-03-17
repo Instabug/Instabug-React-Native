@@ -3,11 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import {
-  BugReporting,
-  ProactiveReportingConfigs,
-  type SessionMetadata,
-} from 'instabug-reactnative';
+import { BugReporting, type SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
   CrashReporting,
   InvocationEvent,
@@ -23,6 +19,7 @@ import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { createProactiveReportingConfig } from 'instabug-reactnative';
 
 const queryClient = new QueryClient();
 
@@ -52,15 +49,15 @@ export const App: React.FC = () => {
     });
     CrashReporting.setNDKCrashesEnabled(true);
 
+    Instabug.setCodePushVersion('33');
+
+    Instabug.setCodePushVersion('33');
+
     Instabug.setReproStepsConfig({
       all: ReproStepsMode.enabled,
     });
 
-    const config = new ProactiveReportingConfigs.Builder()
-      .setGapBetweenModals(5)
-      .setModalDelayAfterDetection(5)
-      .isEnabled(true)
-      .build();
+    const config = createProactiveReportingConfig();
 
     BugReporting.setProactiveReportingConfigurations(config);
   }, []);

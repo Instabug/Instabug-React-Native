@@ -11,7 +11,7 @@ import type {
   RecordingButtonPosition,
   ReportType,
 } from '../utils/Enums';
-import type ProactiveReportingConfigs from '../models/ProactiveReportingConfigs';
+import type { ProactiveReportingConfigOptions } from '../models/ProactiveReportingConfigs';
 
 /**
  * Enables and disables manual invocation and prompt options for bug and feedback.
@@ -237,7 +237,7 @@ export const setCommentMinimumCharacterCount = (limit: number, reportTypes?: Rep
  ** prompts end users to submit their feedback after our SDK automatically detects a frustrating experience.
  * @param config configuration of proActive  bug report.
  */
-export const setProactiveReportingConfigurations = (config: ProactiveReportingConfigs) => {
+export const setProactiveReportingConfigurations = (config: ProactiveReportingConfigOptions) => {
   NativeBugReporting.setProactiveReportingConfigurations(
     config.enabled,
     config.gapBetweenModals,
