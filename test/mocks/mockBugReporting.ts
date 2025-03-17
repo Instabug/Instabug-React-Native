@@ -13,6 +13,7 @@ const mockBugReporting: BugReportingNativeModule = {
   setExtendedBugReportMode: jest.fn(),
   setReportTypes: jest.fn(),
   show: jest.fn(),
+  setProactiveReportingConfigurations: jest.fn(),
   setOnInvokeHandler: jest.fn(),
   setOnSDKDismissedHandler: jest.fn(),
   setAutoScreenRecordingEnabled: jest.fn(),

@@ -219,10 +219,20 @@ RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit repo
    [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
 }
 
+RCT_EXPORT_METHOD(setProactiveReportingConfigurations:(BOOL)enabled gap:(nonnull NSNumber* )gap model:(nonnull NSNumber* )modal) {
+    IBGProactiveReportingConfigurations *configurations = [[IBGProactiveReportingConfigurations alloc] init];
+    configurations.enabled = enabled; //Enable/disable
+    configurations.gapBetweenModals = gap; // Time in seconds
+    configurations.modalDelayAfterDetection = modal; // Time in seconds
+   [IBGBugReporting setProactiveReportingConfigurations:configurations];
+}
+
 @synthesize description;
 
 @synthesize hash;
 
 @synthesize superclass;
+
+
 
 @end

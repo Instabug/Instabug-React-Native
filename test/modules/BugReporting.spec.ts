@@ -9,7 +9,8 @@ import {
   InvocationOption,
   RecordingButtonPosition,
   ReportType,
-} from '../../src/utils/Enums';
+} from '../../src';
+import { createProactiveReportingConfig } from '../../src';
 
 describe('Testing BugReporting Module', () => {
   beforeEach(() => {
@@ -265,5 +266,14 @@ describe('Testing BugReporting Module', () => {
 
     expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledTimes(1);
     expect(NativeBugReporting.setCommentMinimumCharacterCount).toBeCalledWith(count, reportTypes);
+  });
+
+  it('should call the native method setProactiveReportingConfigurations', () => {
+    const configs = createProactiveReportingConfig();
+
+    BugReporting.setProactiveReportingConfigurations(configs);
+
+    expect(NativeBugReporting.setProactiveReportingConfigurations).toBeCalledTimes(1);
+    expect(NativeBugReporting.setProactiveReportingConfigurations).toBeCalledWith(true, 24, 20);
   });
 });
