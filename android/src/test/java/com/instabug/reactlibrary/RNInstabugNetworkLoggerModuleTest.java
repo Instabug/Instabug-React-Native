@@ -204,12 +204,4 @@ public class RNInstabugNetworkLoggerModuleTest {
             internalAPMMock.verify(() -> InternalAPM._registerNetworkLogSanitizer(any()));
         }
     }
-
-
-//    @Test
-//    public void testUpdateNetworkLogSnapshotInvalidJson() {
-//        String invalidJsonString = "{\"id\":\"testId\"";
-//
-//        assertThrows(RuntimeException.class, () -> rnInstabugNetworkLoggerModule.updateNetworkLogSnapshot(invalidJsonString));
-//    }
 }

@@ -172,7 +172,7 @@ export const resetNetworkListener = () => {
     _networkListener = null;
     NativeNetworkLogger.resetNetworkLogsListener();
   } else {
-    console.error(
+    Logger.error(
       `${InstabugConstants.IBG_APM_TAG}: The \`resetNetworkListener()\` method is intended solely for testing purposes.`,
     );
   }

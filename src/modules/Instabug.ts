@@ -192,7 +192,7 @@ const handleNetworkInterceptionMode = (config: InstabugConfig) => {
 function handleAndroidJSInterception() {
   if (isNativeInterceptionFeatureEnabled && hasAPMNetworkPlugin) {
     shouldEnableNativeInterception = true;
-    console.warn(
+    Logger.warn(
       InstabugConstants.IBG_APM_TAG + InstabugConstants.SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE,
     );
   }
@@ -206,11 +206,11 @@ function handleAndroidNativeInterception() {
   if (isNativeInterceptionFeatureEnabled) {
     shouldEnableNativeInterception = hasAPMNetworkPlugin;
     if (!hasAPMNetworkPlugin) {
-      console.error(InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE);
+      Logger.error(InstabugConstants.IBG_APM_TAG + InstabugConstants.PLUGIN_NOT_INSTALLED_MESSAGE);
     }
   } else {
     shouldEnableNativeInterception = false; // rollback to use JS interceptor for APM & Core.
-    console.error(
+    Logger.error(
       InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
     );
   }
@@ -256,7 +256,7 @@ const handleInterceptionModeForIOS = (config: InstabugConfig) => {
     } else {
       shouldEnableNativeInterception = false;
       NetworkLogger.setEnabled(true); // rollback to JS interceptor
-      console.error(
+      Logger.error(
         InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
       );
     }
