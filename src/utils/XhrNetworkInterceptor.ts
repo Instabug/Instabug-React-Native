@@ -315,7 +315,7 @@ export default {
         return; // Prevent sending the request if not opened
       }
 
-      originalXHRSend.apply(this, [data]); // This line is essential
+      originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;
   },
