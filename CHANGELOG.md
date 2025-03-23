@@ -6,9 +6,6 @@
 
 - Bump Instabug iOS SDK to v14.3.0 ([#1367](https://github.com/Instabug/Instabug-React-Native/pull/1367)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.3.0).
 
-
-- Add support enable/disable screenshot auto masking. ([#1353](https://github.com/Instabug/Instabug-React-Native/pull/1353))
-
 ## [14.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...v14.1.0) (January 2, 2025)
 
 ### Added
