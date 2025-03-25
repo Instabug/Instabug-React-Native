@@ -1274,4 +1274,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
         return constants;
     }
+    /**
+     * Enables or disables user steps tracking.
+     * @param isEnabled A boolean to enable/disable Instabug.
+     */
+    @ReactMethod
+    public void setTrackUserSteps(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setTrackingUserStepsState(isEnabled ? Feature.State.ENABLED : Feature.State.DISABLED);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
