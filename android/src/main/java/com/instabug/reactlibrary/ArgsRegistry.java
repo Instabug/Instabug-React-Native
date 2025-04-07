@@ -17,6 +17,7 @@ import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.MaskingType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ final class ArgsRegistry {
             putAll(locales);
             putAll(placeholders);
             putAll(launchType);
+            putAll(autoMaskingTypes);
         }};
     }
 
@@ -253,5 +255,10 @@ final class ArgsRegistry {
         put(SessionMetadata.LaunchType.COLD,"cold");
         put(SessionMetadata.LaunchType.WARM,"warm" );
     }};
-
+    public static final ArgsMap<Integer> autoMaskingTypes = new ArgsMap<Integer>() {{
+        put("labels", MaskingType.LABELS);
+        put("textInputs", MaskingType.TEXT_INPUTS);
+        put("media", MaskingType.MEDIA);
+        put("none", MaskingType.MASK_NOTHING);
+    }};
 }

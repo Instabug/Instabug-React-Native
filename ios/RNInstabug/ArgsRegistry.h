@@ -25,5 +25,6 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) launchType;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
++ (ArgsDictionary *)autoMaskingTypes;
 
 @end
