@@ -29,6 +29,14 @@ RCT_EXPORT_METHOD(setEnabled: (BOOL) isEnabled) {
 RCT_EXPORT_METHOD(sendJSCrash:(NSDictionary *)stackTrace
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
+
+    if([fingerprint isKindOfClass:NSNull.class]){
+        fingerprint = nil;
+    }
+
+    if([userAttributes isKindOfClass:NSNull.class]){
+        userAttributes = nil;
+    }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
         [IBGCrashReporting cp_reportFatalCrashWithStackTrace:stackTrace];
