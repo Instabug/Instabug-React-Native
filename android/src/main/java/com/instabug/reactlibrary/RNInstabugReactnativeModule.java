@@ -1294,4 +1294,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
         });
     }
+    /** 
+    * Enables or disables capturing network body.
+    * @param isEnabled A boolean to enable/disable capturing network body.
+    */
+   @ReactMethod
+   public void setNetworkLogBodyEnabled(final boolean isEnabled) {
+       MainThreadHandler.runOnMainThread(new Runnable() {
+           @Override
+           public void run() {
+               try {
+                   Instabug.setNetworkLogBodyEnabled(isEnabled);
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       });
+   }
 }

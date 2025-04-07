@@ -1,3 +1,9 @@
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...dev)
+
+### Added
+
+- Add support for enable/disable capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
+
 # Changelog
 
 ## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...dev)
