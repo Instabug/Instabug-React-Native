@@ -2,7 +2,7 @@
 
 ### Added
 
-- Add support enable/disable stop capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
+- Add support for enable/disable capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
 
 # Changelog
 
