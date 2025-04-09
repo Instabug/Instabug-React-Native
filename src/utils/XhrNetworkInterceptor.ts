@@ -7,6 +7,7 @@ export type ProgressCallback = (totalBytesSent: number, totalBytesExpectedToSend
 export type NetworkDataCallback = (data: NetworkData) => void;
 
 export interface NetworkData {
+  readonly id: string;
   url: string;
   method: string;
   requestBody: string;
@@ -43,6 +44,7 @@ let network: NetworkData;
 
 const _reset = () => {
   network = {
+    id: '',
     url: '',
     method: '',
     requestBody: '',

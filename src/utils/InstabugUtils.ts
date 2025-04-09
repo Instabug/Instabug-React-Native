@@ -8,10 +8,41 @@ import type { NavigationState as NavigationStateV5, PartialState } from '@react-
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
 import type { CrashData } from '../native/NativeCrashReporting';
-import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
+import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
 import { NativeAPM } from '../native/NativeAPM';
+import * as NetworkLogger from '../modules/NetworkLogger';
+import {
+  NativeNetworkLogger,
+  NativeNetworkLoggerEvent,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../native/NativeNetworkLogger';
+
+type ApmNetworkFlags = {
+  isNativeInterceptionFeatureEnabled: boolean;
+  hasAPMNetworkPlugin: boolean;
+  shouldEnableNativeInterception: boolean;
+};
+
+let apmFlags: ApmNetworkFlags = {
+  isNativeInterceptionFeatureEnabled: false,
+  hasAPMNetworkPlugin: false,
+  shouldEnableNativeInterception: false,
+};
+
+export function setApmNetworkFlagsIfChanged(flags: ApmNetworkFlags): boolean {
+  if (
+    flags.hasAPMNetworkPlugin === apmFlags.hasAPMNetworkPlugin &&
+    flags.isNativeInterceptionFeatureEnabled === apmFlags.isNativeInterceptionFeatureEnabled &&
+    flags.shouldEnableNativeInterception === apmFlags.shouldEnableNativeInterception
+  ) {
+    return false;
+  }
+  apmFlags = flags;
+  return true;
+}
 
 export const parseErrorStack = (error: ExtendedError): StackFrame[] => {
   return parseErrorStackLib(error);
@@ -178,7 +209,7 @@ export function isContentTypeNotAllowed(contentType: string) {
   return allowed.every((type) => !contentType.includes(type));
 }
 
-export function reportNetworkLog(network: NetworkData) {
+export const reportNetworkLog = (network: NetworkData) => {
   if (Platform.OS === 'android') {
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
@@ -193,32 +224,37 @@ export function reportNetworkLog(network: NetworkData) {
       responseHeaders,
       network.duration,
     );
-
-    NativeAPM.networkLogAndroid(
-      network.startTime,
-      network.duration,
-      requestHeaders,
-      network.requestBody,
-      network.requestBodySize,
-      network.method,
-      network.url,
-      network.requestContentType,
-      responseHeaders,
-      network.responseBody,
-      network.responseBodySize,
-      network.responseCode,
-      network.contentType,
-      network.errorDomain,
-      {
-        isW3cHeaderFound: network.isW3cHeaderFound,
-        partialId: network.partialId,
-        networkStartTimeInSeconds: network.networkStartTimeInSeconds,
-        w3cGeneratedHeader: network.w3cGeneratedHeader,
-        w3cCaughtHeader: network.w3cCaughtHeader,
-      },
-      network.gqlQueryName,
-      network.serverErrorMessage,
-    );
+    if (
+      !apmFlags.isNativeInterceptionFeatureEnabled ||
+      !apmFlags.hasAPMNetworkPlugin ||
+      !apmFlags.shouldEnableNativeInterception
+    ) {
+      NativeAPM.networkLogAndroid(
+        network.startTime,
+        network.duration,
+        requestHeaders,
+        network.requestBody,
+        network.requestBodySize,
+        network.method,
+        network.url,
+        network.requestContentType,
+        responseHeaders,
+        network.responseBody,
+        network.responseBodySize,
+        network.responseCode,
+        network.contentType,
+        network.errorDomain,
+        {
+          isW3cHeaderFound: network.isW3cHeaderFound,
+          partialId: network.partialId,
+          networkStartTimeInSeconds: network.networkStartTimeInSeconds,
+          w3cGeneratedHeader: network.w3cGeneratedHeader,
+          w3cCaughtHeader: network.w3cCaughtHeader,
+        },
+        network.gqlQueryName,
+        network.serverErrorMessage,
+      );
+    }
   } else {
     NativeInstabug.networkLogIOS(
       network.url,
@@ -246,6 +282,125 @@ export function reportNetworkLog(network: NetworkData) {
       },
     );
   }
+};
+
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function registerObfuscationListener() {
+  NetworkLogger.registerNetworkLogsListener(
+    NetworkListenerType.obfuscation,
+    async (networkSnapshot) => {
+      const _networkDataObfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+      if (_networkDataObfuscationHandler) {
+        networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+      }
+      updateNetworkLogSnapshot(networkSnapshot);
+    },
+  );
+}
+
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function registerFilteringListener(filterExpression: string) {
+  NetworkLogger.registerNetworkLogsListener(
+    NetworkListenerType.filtering,
+    async (networkSnapshot) => {
+      // eslint-disable-next-line no-new-func
+      const predicate = Function('network', 'return ' + filterExpression);
+      const value = predicate(networkSnapshot);
+      if (Platform.OS === 'ios') {
+        // For iOS True == Request will be saved, False == will be ignored
+        NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
+      } else {
+        // For Android Setting the [url] to an empty string will ignore the request;
+        if (value) {
+          networkSnapshot.url = '';
+          updateNetworkLogSnapshot(networkSnapshot);
+        }
+      }
+    },
+  );
+}
+
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function registerFilteringAndObfuscationListener(filterExpression: string) {
+  NetworkLogger.registerNetworkLogsListener(NetworkListenerType.both, async (networkSnapshot) => {
+    // eslint-disable-next-line no-new-func
+    const predicate = Function('network', 'return ' + filterExpression);
+    const value = predicate(networkSnapshot);
+    if (Platform.OS === 'ios') {
+      // For iOS True == Request will be saved, False == will be ignored
+      NativeNetworkLogger.setNetworkLoggingRequestFilterPredicateIOS(networkSnapshot.id, !value);
+    } else {
+      // For Android Setting the [url] to an empty string will ignore the request;
+      if (value) {
+        networkSnapshot.url = '';
+        updateNetworkLogSnapshot(networkSnapshot);
+      }
+    }
+    if (!value) {
+      const _networkDataObfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+      if (_networkDataObfuscationHandler) {
+        networkSnapshot = await _networkDataObfuscationHandler(networkSnapshot);
+      }
+      updateNetworkLogSnapshot(networkSnapshot);
+    }
+  });
+}
+
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function checkNetworkRequestHandlers() {
+  const obfuscationHandler = NetworkLogger.getNetworkDataObfuscationHandler();
+  const hasFilterExpression = NetworkLogger.hasRequestFilterExpression();
+
+  if (hasFilterExpression && obfuscationHandler) {
+    // Register listener that handles both (Filtering & Obfuscation)
+    registerFilteringAndObfuscationListener(NetworkLogger.getRequestFilterExpression());
+    return;
+  }
+  if (obfuscationHandler) {
+    // Register listener that handles only (Obfuscation)
+    registerObfuscationListener();
+    return;
+  }
+
+  if (hasFilterExpression) {
+    // Register listener that handles only (Filtering)
+    registerFilteringListener(NetworkLogger.getRequestFilterExpression());
+    return;
+  }
+}
+export function resetNativeObfuscationListener() {
+  if (Platform.OS === 'android') {
+    NativeNetworkLogger.resetNetworkLogsListener();
+  }
+  NetworkLoggerEmitter.removeAllListeners(NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER);
+}
+
+/**
+ * @internal
+ * This method is for internal use only.
+ */
+export function updateNetworkLogSnapshot(networkSnapshot: NetworkData) {
+  NativeNetworkLogger.updateNetworkLogSnapshot(
+    networkSnapshot.url,
+    networkSnapshot.id,
+    networkSnapshot.requestBody,
+    networkSnapshot.responseBody,
+    networkSnapshot.responseCode ?? 200,
+    networkSnapshot.requestHeaders,
+    networkSnapshot.responseHeaders,
+  );
 }
 
 export default {
@@ -256,6 +411,7 @@ export default {
   getStackTrace,
   stringifyIfNotString,
   sendCrashReport,
+  reportNetworkLog,
   generateTracePartialId,
   generateW3CHeader,
 };

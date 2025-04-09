@@ -75,6 +75,7 @@ const mockInstabug: InstabugNativeModule = {
   registerW3CFlagsChangeListener: jest.fn(),
   enableAutoMasking: jest.fn(),
   setNetworkLogBodyEnabled: jest.fn(),
+  setOnFeaturesUpdatedListener: jest.fn(),
 };
 
 export default mockInstabug;
