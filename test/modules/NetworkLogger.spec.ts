@@ -17,6 +17,7 @@ import {
 import { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../../src';
 import { Platform } from 'react-native';
 import { Logger } from '../../src/utils/logger';
+import { NativeInstabug } from '../../src/native/NativeInstabug';
 
 const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
@@ -293,6 +294,13 @@ describe('NetworkLogger Module', () => {
     NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
+  });
+
+  it('should call the native method setNetworkLogBodyEnabled', () => {
+    NetworkLogger.setNetworkLogBodyEnabled(true);
+
+    expect(NativeInstabug.setNetworkLogBodyEnabled).toBeCalledTimes(1);
+    expect(NativeInstabug.setNetworkLogBodyEnabled).toBeCalledWith(true);
   });
 
   it('Instabug.init should call NativeNetworkLogger.isNativeInterceptionEnabled and not call NativeNetworkLogger.hasAPMNetworkPlugin with iOS', async () => {

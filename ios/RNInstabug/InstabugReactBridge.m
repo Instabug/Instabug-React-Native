@@ -451,4 +451,7 @@ RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
     [Instabug setAutoMaskScreenshots: autoMaskingOptions];
 
 };
+RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.logBodyEnabled = isEnabled;
+}
 @end
