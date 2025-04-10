@@ -42,7 +42,7 @@ describe('FeatureFlags and registerW3CFlagsListener', () => {
     expect(listenerMock).toHaveBeenCalledTimes(1);
   });
 
-  it('should update the FeatureFlags methods using the listener response', async () => {
+  it('should update the FeatureFlags methods using the listener', async () => {
     const mockResponse = {
       isW3ExternalTraceIDEnabled: true,
       isW3ExternalGeneratedHeaderEnabled: false,
