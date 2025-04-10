@@ -1768,7 +1768,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/feature-support_cp_network_filtering_obfuscation-remove_completion_delay/14.3.0/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/rollout-rn-auto-masking-14.3.0/14.3.0/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1866,7 +1866,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-08-15-RNv0.75.1-4b3bf912cc0f705b51b71ce1a5b8bd79b93a451b
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/feature-support_cp_network_filtering_obfuscation-remove_completion_delay/14.3.0/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/rollout-rn-auto-masking-14.3.0/14.3.0/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -2094,6 +2094,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: 43b420a9b6b648457602a0b6172e1f2ff9ef8727
+PODFILE CHECKSUM: 2ffa4095aa9dad9b0bfa6d2f48cb77bfcd7c28a9
 
 COCOAPODS: 1.14.0
