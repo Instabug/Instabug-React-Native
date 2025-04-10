@@ -11,6 +11,7 @@ import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { emitter, NativeEvents, NativeInstabug } from '../../src/native/NativeInstabug';
 import {
+  AutoMaskingType,
   ColorTheme,
   type InstabugConfig,
   InvocationEvent,
@@ -1098,5 +1099,11 @@ describe('Instabug Android initialization tests', () => {
         InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
       );
     });
+  });
+
+  it('should call the native method enableAutoMasking', () => {
+    Instabug.enableAutoMasking([AutoMaskingType.labels]);
+
+    expect(NativeInstabug.enableAutoMasking).toBeCalledTimes(1);
   });
 });
