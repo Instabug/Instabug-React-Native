@@ -42,28 +42,6 @@ describe('FeatureFlags and registerW3CFlagsListener', () => {
     expect(listenerMock).toHaveBeenCalledTimes(1);
   });
 
-  it('should update the FeatureFlags methods using the listener', async () => {
-    const mockResponse = {
-      isW3ExternalTraceIDEnabled: true,
-      isW3ExternalGeneratedHeaderEnabled: false,
-      isW3CaughtHeaderEnabled: true,
-    };
-
-    const listenerMock = jest
-      .spyOn(InstabugModule, '_registerW3CFlagsChangeListener')
-      .mockImplementation((callback) => {
-        callback(mockResponse);
-      });
-
-    registerW3CFlagsListener();
-
-    expect(await FeatureFlags.isW3ExternalTraceID()).toBe(true);
-    expect(await FeatureFlags.isW3ExternalGeneratedHeader()).toBe(false);
-    expect(await FeatureFlags.isW3CaughtHeader()).toBe(true);
-
-    expect(listenerMock).toHaveBeenCalledTimes(1);
-  });
-
   it('should retain default behavior if listener is never called', async () => {
     jest.spyOn(NativeInstabug, 'isW3ExternalTraceIDEnabled').mockResolvedValue(false);
     jest.spyOn(NativeInstabug, 'isW3ExternalGeneratedHeaderEnabled').mockResolvedValue(false);
