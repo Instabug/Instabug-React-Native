@@ -29,7 +29,6 @@ public class RNInstabugReactnativePackage implements ReactPackage {
         modules.add(new RNInstabugRepliesModule(reactContext));
         modules.add(new RNInstabugAPMModule(reactContext));
         modules.add(new RNInstabugSessionReplayModule(reactContext));
-        modules.add(new RNInstabugNetworkLoggerModule(reactContext));
         return modules;
     }
 

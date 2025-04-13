@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import type { SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
   CrashReporting,
   InvocationEvent,
-  LaunchType,
   LogLevel,
-  NetworkInterceptionMode,
-  NetworkLogger,
   ReproStepsMode,
   SessionReplay,
+  LaunchType,
 } from 'instabug-reactnative';
+import type { SessionMetadata } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
 import { RootTabNavigator } from './navigation/RootTab';
@@ -40,38 +38,20 @@ export const App: React.FC = () => {
 
   const navigationRef = useNavigationContainerRef();
 
-  const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
-
-  const initializeInstabug = async () => {
-    try {
-      SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
-
-      await Instabug.init({
-        token: 'deb1910a7342814af4e4c9210c786f35',
-        invocationEvents: [InvocationEvent.floatingButton],
-        debugLogsLevel: LogLevel.verbose,
-        networkInterceptionMode: NetworkInterceptionMode.native,
-      });
-
-      CrashReporting.setNDKCrashesEnabled(true);
-      Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
-
-      setIsInstabugInitialized(true); // Set to true after initialization
-    } catch (error) {
-      console.error('Instabug initialization failed:', error);
-      setIsInstabugInitialized(true); // Proceed even if initialization fails
-    }
-  };
-
   useEffect(() => {
-    initializeInstabug().then(() => {
-      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-        networkData.url = `${networkData.url}/JS/Obfuscated`;
-        return networkData;
-      });
-      // NetworkLogger.setRequestFilterExpression('false');
+    SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
+
+    Instabug.init({
+      token: 'deb1910a7342814af4e4c9210c786f35',
+      invocationEvents: [InvocationEvent.floatingButton],
+      debugLogsLevel: LogLevel.verbose,
     });
-  });
+    CrashReporting.setNDKCrashesEnabled(true);
+
+    Instabug.setReproStepsConfig({
+      all: ReproStepsMode.enabled,
+    });
+  }, []);
 
   useEffect(() => {
     const unregisterListener = Instabug.setNavigationListener(navigationRef);
@@ -79,15 +59,11 @@ export const App: React.FC = () => {
     return unregisterListener;
   }, [navigationRef]);
 
-  if (!isInstabugInitialized) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
-  }
-
   return (
     <GestureHandlerRootView style={styles.root}>
       <NativeBaseProvider theme={nativeBaseTheme}>
         <QueryClientProvider client={queryClient}>
-          <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
+          <NavigationContainer theme={navigationTheme} ref={navigationRef}>
             <RootTabNavigator />
           </NavigationContainer>
         </QueryClientProvider>
@@ -99,10 +75,5 @@ export const App: React.FC = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

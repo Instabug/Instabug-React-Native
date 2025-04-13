@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, atomic, assign) BOOL w3ExternalGeneratedHeaderEnabled;
 @property (class, atomic, assign) BOOL w3CaughtHeaderEnabled;
 
-@property (class, atomic, assign) BOOL isNativeNetworkInterceptionFeatureEnabled;
 
 + (void)disableAutomaticCapturingOfNetworkLogs;
 + (void)addNetworkLogWithUrl:(NSString *_Nonnull)url
@@ -54,13 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
                    timestamp:(NSNumber * _Nullable)timestamp
      generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
       caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
-
-+ (void)forceStartNetworkLogging;
-+ (void)forceStopNetworkLogging;
-
-+ (void)setCPRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
-+ (void)setCPRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
-+ (void)setCPResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
 
 @end
 
