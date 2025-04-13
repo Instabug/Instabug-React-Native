@@ -8,7 +8,6 @@ import type { InstabugNativeModule } from './NativeInstabug';
 import type { RepliesNativeModule } from './NativeReplies';
 import type { SurveysNativeModule } from './NativeSurveys';
 import type { SessionReplayNativeModule } from './NativeSessionReplay';
-import type { NetworkLoggerNativeModule } from './NativeNetworkLogger';
 
 export interface InstabugNativePackage {
   IBGAPM: ApmNativeModule;
@@ -19,7 +18,6 @@ export interface InstabugNativePackage {
   IBGReplies: RepliesNativeModule;
   IBGSurveys: SurveysNativeModule;
   IBGSessionReplay: SessionReplayNativeModule;
-  IBGNetworkLogger: NetworkLoggerNativeModule;
 }
 
 export const NativeModules = ReactNativeModules as InstabugNativePackage;

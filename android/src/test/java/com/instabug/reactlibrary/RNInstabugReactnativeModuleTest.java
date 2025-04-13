@@ -25,7 +25,6 @@ import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-import com.instabug.library.MaskingType;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -664,19 +663,7 @@ public class RNInstabugReactnativeModuleTest {
         verify(promise).resolve(expected);
     }
 
-    @Test
-    public void testEnableAutoMasking(){
-
-            String maskLabel = "labels";
-            String maskTextInputs = "textInputs";
-            String maskMedia = "media";
-            String maskNone = "none";
-    
-            rnModule.enableAutoMasking(JavaOnlyArray.of(maskLabel, maskMedia, maskTextInputs,maskNone));
-    
-            mockInstabug.verify(() -> Instabug.setAutoMaskScreenshotsTypes(MaskingType.LABELS,MaskingType.MEDIA,MaskingType.TEXT_INPUTS,MaskingType.MASK_NOTHING));
-    }
-    
+   
     @Test
     public void testSetNetworkLogBodyEnabled() {
         rnModule.setNetworkLogBodyEnabled(true);

@@ -73,9 +73,7 @@ const mockInstabug: InstabugNativeModule = {
   isW3ExternalGeneratedHeaderEnabled: jest.fn(),
   isW3CaughtHeaderEnabled: jest.fn(),
   registerW3CFlagsChangeListener: jest.fn(),
-  enableAutoMasking: jest.fn(),
   setNetworkLogBodyEnabled: jest.fn(),
-  setOnFeaturesUpdatedListener: jest.fn(),
 };
 
 export default mockInstabug;
