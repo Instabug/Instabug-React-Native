@@ -440,16 +440,6 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
 
-   IBGAutoMaskScreenshotOption autoMaskingOptions = 0;
-
-    for (NSNumber *event in autoMaskingTypes) {
-
-        autoMaskingOptions |= [event intValue];
-    }
-
-    [Instabug setAutoMaskScreenshots: autoMaskingOptions];
-
-};
 RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
     IBGNetworkLogger.logBodyEnabled = isEnabled;
 }
