@@ -241,9 +241,3 @@ export enum LaunchType {
    */
   warm = constants.warm,
 }
-export enum AutoMaskingType {
-  labels = constants.labels,
-  textInputs = constants.textInputs,
-  media = constants.media,
-  none = constants.none,
-}

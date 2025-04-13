@@ -120,7 +120,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    if (isEnabled)
+                    if(isEnabled)
                         Instabug.enable();
                     else
                         Instabug.disable();
@@ -133,11 +133,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Initializes the SDK.
-     *
-     * @param token                 The token that identifies the app. You can find it on your dashboard.
+     * @param token The token that identifies the app. You can find it on your dashboard.
      * @param invocationEventValues The events that invoke the SDK's UI.
-     * @param logLevel              The level of detail in logs that you want to print.
-     * @param codePushVersion       The Code Push version to be used for all reports.
+     * @param logLevel The level of detail in logs that you want to print.
+     * @param codePushVersion The Code Push version to be used for all reports.
      */
     @ReactMethod
     public void init(
@@ -163,8 +162,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
 
-                if (codePushVersion != null) {
-                    if (Instabug.isBuilt()) {
+                if(codePushVersion != null) {
+                    if(Instabug.isBuilt()) {
                         Instabug.setCodePushVersion(codePushVersion);
                     } else {
                         builder.setCodePushVersion(codePushVersion);
@@ -330,7 +329,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      *
      * @param userEmail User's default email
      * @param userName  Username.
-     * @param userId    User's ID
+     * @param userId User's ID
      */
     @ReactMethod
     public void identifyUser(
@@ -750,15 +749,15 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     private WritableMap convertFromHashMapToWriteableMap(HashMap hashMap) {
         WritableMap writableMap = new WritableNativeMap();
-        for (int i = 0; i < hashMap.size(); i++) {
+        for(int i = 0; i < hashMap.size(); i++) {
             Object key = hashMap.keySet().toArray()[i];
             Object value = hashMap.get(key);
-            writableMap.putString((String) key, (String) value);
+            writableMap.putString((String) key,(String) value);
         }
         return writableMap;
     }
 
-    private static JSONObject objectToJSONObject(Object object) {
+    private static JSONObject objectToJSONObject(Object object){
         Object json = null;
         JSONObject jsonObject = null;
         try {
@@ -775,12 +774,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     private WritableArray convertArrayListToWritableArray(List arrayList) {
         WritableArray writableArray = new WritableNativeArray();
 
-        for (int i = 0; i < arrayList.size(); i++) {
+        for(int i = 0; i < arrayList.size(); i++) {
             Object object = arrayList.get(i);
 
-            if (object instanceof String) {
+            if(object instanceof String) {
                 writableArray.pushString((String) object);
-            } else {
+            }
+            else {
                 JSONObject jsonObject = objectToJSONObject(object);
                 writableArray.pushMap((WritableMap) jsonObject);
             }
@@ -836,7 +836,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Shows the welcome message in a specific mode.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-     *                           live, or beta.
+      *                          live, or beta.
      */
     @ReactMethod
     public void showWelcomeMessageWithMode(final String welcomeMessageMode) {
@@ -858,7 +858,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Sets the welcome message mode to live, beta or disabled.
      *
      * @param welcomeMessageMode An enum to set the welcome message mode to
-     *                           live, beta or disabled.
+      *                          live, beta or disabled.
      */
     @ReactMethod
     public void setWelcomeMessageMode(final String welcomeMessageMode) {
@@ -993,6 +993,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen name been changed (Current View).
      *
      * @param screenName string containing the screen name
+     *
      */
     @ReactMethod
     public void reportCurrentViewChange(final String screenName) {
@@ -1015,6 +1016,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Reports that the screen has been changed (Repro Steps) the screen sent to this method will be the 'current view' on the dashboard
      *
      * @param screenName string containing the screen name
+     *
      */
     @ReactMethod
     public void reportScreenChange(final String screenName) {
@@ -1024,7 +1026,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Method method = getMethod(Class.forName("com.instabug.library.Instabug"), "reportScreenChange", Bitmap.class, String.class);
                     if (method != null) {
-                        method.invoke(null, null, screenName);
+                        method.invoke(null , null, screenName);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1118,7 +1120,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             @Override
             public void run() {
                 try {
-                    ArrayList<String> stringArray = ArrayUtil.parseReadableArrayOfStrings(featureFlags);
+                   ArrayList<String> stringArray = ArrayUtil.parseReadableArrayOfStrings(featureFlags);
                     Instabug.removeFeatureFlag(stringArray);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1154,12 +1156,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-
     /**
      * Register a listener for W3C flags value change
      */
     @ReactMethod
-    public void registerW3CFlagsChangeListener() {
+    public void registerW3CFlagsChangeListener(){
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -1176,7 +1177,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                             sendEvent(Constants.IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
                         }
                     });
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -1187,17 +1189,18 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
 
     /**
-     * Get first time Value of W3ExternalTraceID flag
+     *  Get first time Value of W3ExternalTraceID flag
      */
     @ReactMethod
-    public void isW3ExternalTraceIDEnabled(Promise promise) {
+    public void isW3ExternalTraceIDEnabled(Promise promise){
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_EXTERNAL_TRACE_ID));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
                 }
@@ -1209,17 +1212,18 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
 
     /**
-     * Get first time Value of W3ExternalGeneratedHeader flag
+     *  Get first time Value of W3ExternalGeneratedHeader flag
      */
     @ReactMethod
-    public void isW3ExternalGeneratedHeaderEnabled(Promise promise) {
+    public void isW3ExternalGeneratedHeaderEnabled(Promise promise){
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_GENERATED_HEADER));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
                 }
@@ -1230,17 +1234,18 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * Get first time Value of W3CaughtHeader flag
+     *  Get first time Value of W3CaughtHeader flag
      */
     @ReactMethod
-    public void isW3CaughtHeaderEnabled(Promise promise) {
+    public void isW3CaughtHeaderEnabled(Promise promise){
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
                 }

@@ -25,7 +25,6 @@ import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-import com.instabug.library.MaskingType;
 
 import org.junit.After;
 import org.junit.Assert;

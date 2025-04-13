@@ -2,7 +2,6 @@ import { NativeEventEmitter, NativeModule, ProcessedColorValue } from 'react-nat
 
 import type Report from '../models/Report';
 import type {
-  AutoMaskingType,
   ColorTheme,
   InvocationEvent,
   Locale,
@@ -154,7 +153,6 @@ export interface InstabugNativeModule extends NativeModule {
 
   // W3C Feature Flags Listener for Android
   registerW3CFlagsChangeListener(): void;
-  enableAutoMasking(autoMaskingTypes: AutoMaskingType[]): void;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
