@@ -6,7 +6,6 @@
 
 - Add support for enable/disable capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
 
-
 ### Changed
 
 - Bump Instabug iOS SDK to v14.3.0 ([#1367](https://github.com/Instabug/Instabug-React-Native/pull/1367)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.3.0).
