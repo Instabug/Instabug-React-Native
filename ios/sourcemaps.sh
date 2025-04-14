@@ -1,3 +1,5 @@
+export SOURCEMAP_FILE="$TMPDIR/$(md5 -qs "$CONFIGURATION_BUILD_DIR")-main.jsbundle.map"
+
 #!/bin/sh
 
 main() {
@@ -41,15 +43,23 @@ main() {
   local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' "$PROJECT_DIR/$INFOPLIST_FILE")
   local version_code=$(resolve_var "Version Code" "INSTABUG_APP_VERSION_CODE" "$inferred_code" | tail -n 1)
 
+  if [ -n "$source_map_file" ]; then
   node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
       --file $source_map_file \
       --token $app_token \
       --name $version_name \
       --code $version_code
+  fi
 }
 
 generate_sourcemaps() {
+
+
+   if [[ -f "$SOURCEMAP_FILE" ]]; then
+    echo $SOURCEMAP_FILE
+  else
+
   local react_native_dir=$(dirname $(node -p "require.resolve('react-native/package.json')"))
 
   # Fixes an issue with react-native prior to v0.67.0
@@ -67,6 +77,7 @@ generate_sourcemaps() {
   fi
 
   echo $SOURCEMAP_FILE
+  fi
 }
 
 resolve_var() {
