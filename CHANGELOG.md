@@ -6,10 +6,9 @@
 
 - Add support for enable/disable capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
 
+### Changed
 
-### Added
-
-- Add support for Network Spans in network logging module ([#1360](https://github.com/Instabug/Instabug-React-Native/pull/1360)).
+- Bump Instabug iOS SDK to v14.3.0 ([#1367](https://github.com/Instabug/Instabug-React-Native/pull/1367)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.3.0).
 
 - Bump Instabug Android SDK to v14.3.0 ([#1375](https://github.com/Instabug/Instabug-React-Native/pull/1375)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v14.3.0).
 

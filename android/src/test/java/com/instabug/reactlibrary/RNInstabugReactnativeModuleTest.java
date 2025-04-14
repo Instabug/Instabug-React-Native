@@ -662,4 +662,19 @@ public class RNInstabugReactnativeModuleTest {
         boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER);
         verify(promise).resolve(expected);
     }
+
+   
+    @Test
+    public void testSetNetworkLogBodyEnabled() {
+        rnModule.setNetworkLogBodyEnabled(true);
+    
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(true));
+    }
+
+    @Test
+    public void testSetNetworkLogBodyDisabled() {
+        rnModule.setNetworkLogBodyEnabled(false);
+    
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
+    }
 }

@@ -126,12 +126,6 @@
    serverErrorMessage:(NSString * _Nullable)serverErrorMessage
 w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 
-// - (void) registerNetworkLogsListener;
-//
-// - (void) updateNetworkLogSnapshot: (NSString * _Nonnull)jsonString;
-//
-// - (void) setNetworkLoggingRequestFilterPredicateIOS:(BOOL)value;
-
 /*
  +------------------------------------------------------------------------+
  |                              Experiments                               |
@@ -144,4 +138,6 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)addFeatureFlags:(NSDictionary *)featureFlagsMap;
 - (void)removeFeatureFlags:(NSArray *)featureFlags;
 - (void)removeAllFeatureFlags;
+- (void)setNetworkLogBodyEnabled:(BOOL)isEnabled;
+
 @end

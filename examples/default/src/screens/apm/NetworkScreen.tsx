@@ -125,40 +125,6 @@ export const NetworkScreen: React.FC<
     axios.get('https://httpbin.org/anything');
   };
 
-  function generateUrls(count: number = 10) {
-    const urls = [];
-    for (let i = 1; i <= count; i++) {
-      urls.push(defaultRequestBaseUrl + i);
-    }
-    return urls;
-  }
-
-  async function makeSequentialApiCalls(urls: string[]): Promise<any[]> {
-    // const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
-    const results: any[] = [];
-
-    try {
-      for (let i = 0; i < urls.length; i++) {
-        await fetch(urls[i]);
-        results.push(results[i]);
-      }
-      return results;
-    } catch (error) {
-      console.error('Error making parallel API calls:', error);
-      throw error;
-    }
-  }
-  async function makeParallelApiCalls(urls: string[]): Promise<any[]> {
-    const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
-
-    try {
-      return await Promise.all(fetchPromises);
-    } catch (error) {
-      console.error('Error making parallel API calls:', error);
-      throw error;
-    }
-  }
-
   return (
     <ScrollView>
       <Screen>
@@ -183,7 +149,7 @@ export const NetworkScreen: React.FC<
               title="Simulate Network Request With Header"
               onPress={() => simulateNetworkRequest()}
             />
-            <CustomButton
+            <ListTile
               title="Simulate Network Request"
               onPress={() => simulateNetworkRequestWithoutHeader()}
             />

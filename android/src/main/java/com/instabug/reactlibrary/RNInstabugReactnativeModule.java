@@ -1154,6 +1154,105 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+    /**
+     * Register a listener for W3C flags value change
+     */
+    @ReactMethod
+    public void registerW3CFlagsChangeListener(){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InternalCore.INSTANCE._setFeaturesStateListener(new FeaturesStateListener() {
+                        @Override
+                        public void invoke(@NonNull CoreFeaturesState featuresState) {
+                            WritableMap params = Arguments.createMap();
+                            params.putBoolean("isW3ExternalTraceIDEnabled", featuresState.isW3CExternalTraceIdEnabled());
+                            params.putBoolean("isW3ExternalGeneratedHeaderEnabled", featuresState.isAttachingGeneratedHeaderEnabled());
+                            params.putBoolean("isW3CaughtHeaderEnabled", featuresState.isAttachingCapturedHeaderEnabled());
+
+                            sendEvent(Constants.IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
+    }
+
+
+    /**
+     *  Get first time Value of W3ExternalTraceID flag
+     */
+    @ReactMethod
+    public void isW3ExternalTraceIDEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_EXTERNAL_TRACE_ID));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+
+        });
+    }
+
+
+    /**
+     *  Get first time Value of W3ExternalGeneratedHeader flag
+     */
+    @ReactMethod
+    public void isW3ExternalGeneratedHeaderEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_GENERATED_HEADER));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+
+        });
+    }
+
+    /**
+     *  Get first time Value of W3CaughtHeader flag
+     */
+    @ReactMethod
+    public void isW3CaughtHeaderEnabled(Promise promise){
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalCore.INSTANCE._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+
+            }
+
+        });
+    }
+
 
     /**
      * Register a listener for W3C flags value change
@@ -1270,56 +1369,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         return constants;
     }
 
-    //        private final ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>> callbackMap = new ConcurrentHashMap<Integer, OnCompleteCallback<NetworkLogSnapshot>>();
-    //
-    //         @ReactMethod
-    //         public void registerNetworkLogsListener() {
-    //             MainThreadHandler.runOnMainThread(new Runnable() {
-    //                 @Override
-    //                 public void run() {
-    //                     InternalAPM._registerNetworkLogSanitizer(new VoidSanitizer<NetworkLogSnapshot>() {
-    //                         @Override
-    //                         public void sanitize(NetworkLogSnapshot networkLogSnapshot, @NonNull OnCompleteCallback<NetworkLogSnapshot> onCompleteCallback) {
-    //                             final int id = onCompleteCallback.hashCode();
-    //                             callbackMap.put(id, onCompleteCallback);
-    //
-    //                             WritableMap networkSnapshotParams = Arguments.createMap();
-    //                             networkSnapshotParams.putInt("id", id);
-    //                             networkSnapshotParams.putString("url", networkLogSnapshot.getUrl());
-    //                             networkSnapshotParams.putInt("responseCode", networkLogSnapshot.getResponseCode());
-    //
-    //                             sendEvent("IBGNetworkLoggerHandler", networkSnapshotParams);
-    //
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //
-    //         @ReactMethod
-    //         protected void updateNetworkLogSnapshot(String jsonString) {
-    //
-    //             JSONObject newJSONObject = null;
-    //             try {
-    //                 newJSONObject = new JSONObject(jsonString);
-    //             } catch (JSONException e) {
-    //                 throw new RuntimeException(e);
-    //             }
-    //             final Integer ID = newJSONObject.optInt("id");
-    //             final NetworkLogSnapshot modifiedSnapshot = new NetworkLogSnapshot(
-    //                     newJSONObject.optString("url"),
-    //                     null,
-    //                     null,
-    //                     null,
-    //                     null,
-    //                     newJSONObject.optInt("responseCode")
-    //             );
-    //
-    //             final OnCompleteCallback<NetworkLogSnapshot> callback = callbackMap.get(ID);
-    //             if (callback != null) {
-    //                 callback.onComplete(null);
-    //             }
-    //             callbackMap.remove(ID);
-    //
-    //         }
+  /** 
+    * Enables or disables capturing network body.
+    * @param isEnabled A boolean to enable/disable capturing network body.
+    */
+   @ReactMethod
+   public void setNetworkLogBodyEnabled(final boolean isEnabled) {
+       MainThreadHandler.runOnMainThread(new Runnable() {
+           @Override
+           public void run() {
+               try {
+                   Instabug.setNetworkLogBodyEnabled(isEnabled);
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       });
+   }
 }
