@@ -22,6 +22,7 @@ import {
 } from '../../src/utils/Enums';
 import InstabugUtils from '../../src/utils/InstabugUtils';
 import type { FeatureFlag } from '../../src/models/FeatureFlag';
+import InstabugConstants from '../../src/utils/InstabugConstants';
 import { Logger } from '../../src/utils/logger';
 
 describe('Instabug Module', () => {

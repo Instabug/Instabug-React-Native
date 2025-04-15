@@ -608,21 +608,14 @@
     OCMVerify([mock w3CaughtHeaderEnabled]);
 }
 
-- (void)testEnableAutoMasking {
-    id mock = OCMClassMock([Instabug class]);
-    
-     NSArray *autoMaskingTypes = [NSArray arrayWithObjects:
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionLabels],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionTextInputs],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMedia],
-        [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMaskNothing],
-        nil];
-    
-    OCMStub([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
-    
-    [self.instabugBridge enableAutoMasking:autoMaskingTypes];
 
-    OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+- (void)testSetNetworkLogBodyEnabled {
+    id mock = OCMClassMock([IBGNetworkLogger class]);
+    BOOL isEnabled = YES;
+
+    OCMStub([mock setLogBodyEnabled:isEnabled]);
+    [self.instabugBridge setNetworkLogBodyEnabled:isEnabled];
+    OCMVerify([mock setLogBodyEnabled:isEnabled]);
 }
 
 @end
