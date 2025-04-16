@@ -4409,10 +4409,6 @@ inline-style-prefixer@^6.0.1:
     css-in-js-utils "^3.1.0"
     fast-loops "^1.1.3"
 
-"instabug-reactnative-ndk@github:https://github.com/Instabug/Instabug-React-Native-NDK":
-  version "0.1.0"
-  resolved "https://codeload.github.com/Instabug/Instabug-React-Native-NDK/tar.gz/f1c06b354156d7ea301a361d3f246b38dc2aea51"
-
 "instabug-reactnative@link:../..":
   version "0.0.0"
   uid ""
