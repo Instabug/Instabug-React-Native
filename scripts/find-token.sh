@@ -1,14 +1,27 @@
 #!/bin/sh
 
 # Searches for app token within source files.
+JSON_APP_TOKEN=$(
+    grep "app_token" -r -A 1 -m 1 --exclude-dir={node_modules,ios,android} --include=instabug.json ./ |
+    sed 's/[[:space:]]//g' |
+    grep -o ":[\"\'][0-9a-zA-Z]*[\"\']" |
+    cut -d ":" -f 2 |
+    cut -d "\"" -f 2 |
+    cut -d "'" -f 2
+)
+
+if [ ! -z "${JSON_APP_TOKEN}" ]; then
+    echo $JSON_APP_TOKEN
+    exit 0
+fi
 
 INIT_APP_TOKEN=$(
     grep "Instabug.init({" -r -A 6 -m 1 --exclude-dir={node_modules,ios,android} --include=\*.{js,ts,jsx,tsx} ./ |
-    grep "token:[[:space:]]*[\"\'][0-9a-zA-Z]*[\"\']" |
+    grep "token[[:space:]]*:[[:space:]]*[\"\'][0-9a-zA-Z]*[\"\']" |
     grep -o "[\"\'][0-9a-zA-Z]*[\"\']" |
     cut -d "\"" -f 2 |
     cut -d "'" -f 2
-) 
+)
 
 if [ ! -z "${INIT_APP_TOKEN}" ]; then
     echo $INIT_APP_TOKEN
@@ -20,10 +33,36 @@ START_APP_TOKEN=$(
     grep -o "[\"\'][0-9a-zA-Z]*[\"\']" |
     cut -d "\"" -f 2 |
     cut -d "'" -f 2
-) 
+)
 
 if [ ! -z "${START_APP_TOKEN}" ]; then
     echo $START_APP_TOKEN
+    exit 0
+fi
+
+ENV_APP_TOKEN=$(
+    grep "INSTABUG_APP_TOKEN" -r -A 1 -m 1 --exclude-dir={node_modules,ios,android} --include=\*.env ./ |
+    sed 's/[[:space:]]//g' |
+    grep -o "INSTABUG_APP_TOKEN=.*" |
+    cut -d "=" -f 2
+)
+
+if [ ! -z "${ENV_APP_TOKEN}" ]; then
+    echo $ENV_APP_TOKEN
+    exit 0
+fi
+
+CONSTANTS_APP_TOKEN=$(
+    grep "INSTABUG_APP_TOKEN" -r -A 1 -m 1 --exclude-dir={node_modules,ios,android} --include=\*.{js,ts,jsx,tsx} ./ |
+    sed 's/[[:space:]]//g' |
+    grep -o "=[\"\'][0-9a-zA-Z]*[\"\']" |
+    cut -d "=" -f 2 |
+    cut -d "\"" -f 2 |
+    cut -d "'" -f 2
+)
+
+if [ ! -z "${CONSTANTS_APP_TOKEN}" ]; then
+    echo $CONSTANTS_APP_TOKEN
     exit 0
 fi
 
