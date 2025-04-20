@@ -8,6 +8,7 @@ import type {
   InvocationOption,
   RecordingButtonPosition,
   ReportType,
+  userConsentActionTye,
 } from '../utils/Enums';
 import { NativeModules } from './NativePackage';
 
@@ -47,6 +48,14 @@ export interface BugReportingNativeModule extends NativeModule {
   setDidSelectPromptOptionHandler(handler: (promptOption: string) => void): void;
   setOnSDKDismissedHandler(
     handler: (dismissType: DismissType, reportType: ReportType) => void,
+  ): void;
+
+  addUserConsent(
+    key: string,
+    description: string,
+    mandatory: boolean,
+    checked: boolean,
+    actionType?: userConsentActionTye,
   ): void;
 }
 

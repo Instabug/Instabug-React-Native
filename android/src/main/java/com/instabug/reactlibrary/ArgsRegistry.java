@@ -60,6 +60,7 @@ final class ArgsRegistry {
             putAll(locales);
             putAll(placeholders);
             putAll(launchType);
+            putAll(userConsentActionType);
         }};
     }
 
@@ -140,6 +141,12 @@ final class ArgsRegistry {
         put("reproStepsEnabledWithNoScreenshots", ReproMode.EnableWithNoScreenshots);
         put("reproStepsEnabled", ReproMode.EnableWithScreenshots);
         put("reproStepsDisabled", ReproMode.Disable);
+    }};
+
+    static final ArgsMap<String> userConsentActionType = new ArgsMap<String>() {{
+        put("dropAutoCapturedMedia",  com.instabug.bug.userConsent.ActionType.DROP_AUTO_CAPTURED_MEDIA);
+        put("dropLogs",  com.instabug.bug.userConsent.ActionType.DROP_LOGS);
+        put("noChat",  com.instabug.bug.userConsent.ActionType.NO_CHAT);
     }};
 
     static final ArgsMap<Integer> sdkLogLevels = new ArgsMap<Integer>() {{

@@ -13,7 +13,8 @@ export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeLocale &
   NativeNonFatalErrorLevel &
   NativeStringKey &
-  NativeLaunchType;
+  NativeLaunchType &
+  NativeUserConsentActionTye;
 
 interface NativeSdkDebugLogsLevel {
   sdkDebugLogsLevelVerbose: any;
@@ -21,7 +22,11 @@ interface NativeSdkDebugLogsLevel {
   sdkDebugLogsLevelError: any;
   sdkDebugLogsLevelNone: any;
 }
-
+interface NativeUserConsentActionTye {
+  dropAutoCapturedMedia: any;
+  dropLogs: any;
+  noChat: any;
+}
 interface NativeInvocationEvent {
   invocationEventNone: any;
   invocationEventShake: any;

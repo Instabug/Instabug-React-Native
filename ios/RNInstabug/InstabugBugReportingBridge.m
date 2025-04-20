@@ -219,6 +219,31 @@ RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit repo
    [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
 }
 
+RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
+                  description:(NSString *)description
+                  mandatory:(BOOL)mandatory
+                  checked:(BOOL)checked
+                  actionType:(NSString *)actionType) {
+    
+    IBGActionType mappedActionType = IBGActionTypeNoChat; 
+    NSLog(@"[Instabug] Received actionType string: %@", actionType);
+
+    if ([actionType isEqualToString:@"dropAutoCapturedMedia"]) {
+        mappedActionType = IBGActionTypeDropAutoCapturedMedia;
+    } else if ([actionType isEqualToString:@"dropLogs"]) {
+        mappedActionType = IBGActionTypeDropLogs;
+    } else if ([actionType isEqualToString:@"noChat"]) {
+        mappedActionType = IBGActionTypeNoChat;
+    }
+
+    [IBGBugReporting addUserConsentWithKey:key
+                               description:description
+                                 mandatory:mandatory
+                                   checked:checked
+                                actionType:mappedActionType];
+}
+
+
 @synthesize description;
 
 @synthesize hash;

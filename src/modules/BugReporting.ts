@@ -10,6 +10,7 @@ import type {
   InvocationOption,
   RecordingButtonPosition,
   ReportType,
+  userConsentActionTye,
 } from '../utils/Enums';
 
 /**
@@ -169,6 +170,23 @@ export const setViewHierarchyEnabled = (isEnabled: boolean) => {
   NativeBugReporting.setViewHierarchyEnabled(isEnabled);
 };
 
+/**
+ * Adds a user consent item to the bug reporting form.
+ * @param key A unique identifier string for the consent item.
+ * @param description The text shown to the user describing the consent item.
+ * @param mandatory Whether the user must agree to this item before submitting a report.
+ * @param checked Whether the consent checkbox is pre-selected.
+ * @param actionType A string representing the action type to map to SDK behavior.
+ */
+export const addUserConsent = (
+  key: string,
+  description: string,
+  mandatory: boolean,
+  checked: boolean,
+  actionType?: userConsentActionTye,
+) => {
+  NativeBugReporting.addUserConsent(key, description, mandatory, checked, actionType);
+};
 /**
  * Sets a block of code to be executed when a prompt option is selected.
  * @param handler - A callback that gets executed when a prompt option is selected.

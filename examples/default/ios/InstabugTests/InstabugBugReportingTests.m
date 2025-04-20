@@ -187,6 +187,32 @@
   [self.instabugBridge setCommentMinimumCharacterCount:limit reportTypes:reportTypesArr];
   OCMVerify([mock setCommentMinimumCharacterCountForReportTypes:reportTypes withLimit:limit.intValue]);
 }
+- (void)testAddUserConsentWithKey {
+  id mock = OCMClassMock([IBGBugReporting class]);
 
+  NSString *key = @"testKey";
+  NSString *description = @"Consent description";
+  BOOL mandatory = YES;
+  BOOL checked = NO;
+  NSString *actionTypeString = @"dropLogs";
+
+  OCMStub([mock addUserConsent:key
+                                       description:description
+                                         mandatory:mandatory
+                                           checked:checked
+                                        actionType:actionTypeString]);
+
+  [self.instabugBridge addUserConsent:key
+                                  description:description
+                                    mandatory:mandatory
+                                      checked:checked
+                                   actionType:actionTypeString];
+
+  OCMVerify([mock addUserConsentWithKey:key
+                                        description:description
+                                          mandatory:mandatory
+                                            checked:checked
+                                         actionType:actionTypeString]);
+}
 @end
 
