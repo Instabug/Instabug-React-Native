@@ -223,18 +223,8 @@ RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
                   description:(NSString *)description
                   mandatory:(BOOL)mandatory
                   checked:(BOOL)checked
-                  actionType:(NSString *)actionType) {
-    
-    IBGActionType mappedActionType = IBGActionTypeNoChat; 
-    NSLog(@"[Instabug] Received actionType string: %@", actionType);
-
-    if ([actionType isEqualToString:@"dropAutoCapturedMedia"]) {
-        mappedActionType = IBGActionTypeDropAutoCapturedMedia;
-    } else if ([actionType isEqualToString:@"dropLogs"]) {
-        mappedActionType = IBGActionTypeDropLogs;
-    } else if ([actionType isEqualToString:@"noChat"]) {
-        mappedActionType = IBGActionTypeNoChat;
-    }
+                  actionType:(nonnull NSNumber *)actionType) {
+    IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
 
     [IBGBugReporting addUserConsentWithKey:key
                                description:description

@@ -194,25 +194,20 @@
   NSString *description = @"Consent description";
   BOOL mandatory = YES;
   BOOL checked = NO;
-  NSString *actionTypeString = @"dropLogs";
-
-  OCMStub([mock addUserConsent:key
-                                       description:description
-                                         mandatory:mandatory
-                                           checked:checked
-                                        actionType:actionTypeString]);
+  NSNumber *actionType = @2;
+  IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
 
   [self.instabugBridge addUserConsent:key
                                   description:description
                                     mandatory:mandatory
                                       checked:checked
-                                   actionType:actionTypeString];
+                                   actionType:actionType];
 
   OCMVerify([mock addUserConsentWithKey:key
                                         description:description
                                           mandatory:mandatory
                                             checked:checked
-                                         actionType:actionTypeString]);
+                                         actionType:mappedActionType]);
 }
 @end
 

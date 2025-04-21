@@ -55,6 +55,6 @@
                   description:(NSString *)description
                     mandatory:(BOOL)mandatory
                       checked:(BOOL)checked
-                   actionType:(NSString *)actionType;
+                   actionType:(NSNumber *)actionType;
 
 @end
