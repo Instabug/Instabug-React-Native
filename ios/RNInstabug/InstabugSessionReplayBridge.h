@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <Instabug/IBGTypes.h>
-#import <Instabug/IBGSessionReplay.h>
+#import <InstabugSDK/IBGTypes.h>
+#import <InstabugSDK/IBGSessionReplay.h>
 
 @interface InstabugSessionReplayBridge : RCTEventEmitter <RCTBridgeModule>
 /*
