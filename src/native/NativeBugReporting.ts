@@ -8,7 +8,7 @@ import type {
   InvocationOption,
   RecordingButtonPosition,
   ReportType,
-  userConsentActionTye,
+  userConsentActionType,
 } from '../utils/Enums';
 import { NativeModules } from './NativePackage';
 
@@ -55,7 +55,7 @@ export interface BugReportingNativeModule extends NativeModule {
     description: string,
     mandatory: boolean,
     checked: boolean,
-    actionType?: userConsentActionTye,
+    actionType?: userConsentActionType,
   ): void;
 }
 

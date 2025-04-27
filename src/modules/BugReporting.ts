@@ -10,7 +10,7 @@ import type {
   InvocationOption,
   RecordingButtonPosition,
   ReportType,
-  userConsentActionTye,
+  userConsentActionType,
 } from '../utils/Enums';
 
 /**
@@ -183,9 +183,9 @@ export const addUserConsent = (
   description: string,
   mandatory: boolean,
   checked: boolean,
-  actionType?: userConsentActionTye,
+  actionType?: userConsentActionType,
 ) => {
-  NativeBugReporting.addUserConsent(key, description, mandatory, checked, actionType);
+  NativeBugReporting.addUserConsent(key, description, mandatory, checked, actionType ?? -1);
 };
 /**
  * Sets a block of code to be executed when a prompt option is selected.

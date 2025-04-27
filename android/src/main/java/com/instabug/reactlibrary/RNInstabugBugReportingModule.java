@@ -432,9 +432,6 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
             public void run() {
             try {
             String mappedActionType = ArgsRegistry.userConsentActionType.get(actionType);
-            if (mappedActionType == null) {
-                mappedActionType = ActionType.NO_CHAT;
-            }
         BugReporting.addUserConsent(key, description, mandatory, checked, mappedActionType);
             } catch (Exception e) {
                 e.printStackTrace();

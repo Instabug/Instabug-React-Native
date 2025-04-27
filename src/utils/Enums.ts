@@ -16,7 +16,7 @@ export enum LogLevel {
  * Enum representing the available user consent action types.
  *
  */
-export enum userConsentActionTye {
+export enum userConsentActionType {
   dropAutoCapturedMedia = constants.dropAutoCapturedMedia,
   dropLogs = constants.dropLogs,
   noChat = constants.noChat,
