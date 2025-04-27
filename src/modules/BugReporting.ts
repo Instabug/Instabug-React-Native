@@ -185,7 +185,7 @@ export const addUserConsent = (
   checked: boolean,
   actionType?: userConsentActionType,
 ) => {
-  NativeBugReporting.addUserConsent(key, description, mandatory, checked, actionType ?? -1);
+  NativeBugReporting.addUserConsent(key, description, mandatory, checked, actionType);
 };
 /**
  * Sets a block of code to be executed when a prompt option is selected.

@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -426,7 +427,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
     * @param actionType A string representing the action type to map to SDK behavior.
     */
     @ReactMethod
-    public void addUserConsent(String key, String description, boolean mandatory, boolean checked, String actionType) {
+    public void addUserConsent(String key, String description, boolean mandatory, boolean checked, @Nullable String actionType) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

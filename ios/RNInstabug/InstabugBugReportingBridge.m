@@ -223,7 +223,7 @@ RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
                   description:(NSString *)description
                   mandatory:(BOOL)mandatory
                   checked:(BOOL)checked
-                  actionType:(nonnull NSNumber *)actionType) {
+                  actionType:(NSString * _Nullable )actionType) {
     IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
 
     [IBGBugReporting addUserConsentWithKey:key
