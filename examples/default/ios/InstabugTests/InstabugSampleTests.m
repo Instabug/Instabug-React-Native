@@ -7,7 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-#import "Instabug/Instabug.h"
+#import "InstabugSDK/InstabugSDK.h"
 #import "InstabugReactBridge.h"
 #import <InstabugSDK/IBGTypes.h>
 #import "IBGConstants.h"

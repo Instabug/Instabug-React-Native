@@ -10,7 +10,7 @@
 #import "OCMock/OCMock.h"
 #import "InstabugBugReportingBridge.h"
 #import <InstabugSDK/IBGTypes.h>
-#import "Instabug/Instabug.h"
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 
 @interface InstabugBugReportingTests : XCTestCase
