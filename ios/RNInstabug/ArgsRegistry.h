@@ -23,6 +23,7 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) locales;
 + (ArgsDictionary *)nonFatalExceptionLevel;
 + (ArgsDictionary *) launchType;
++ (ArgsDictionary *) userConsentActionTypes;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
 

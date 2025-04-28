@@ -51,4 +51,10 @@
 
 - (void)setCommentMinimumCharacterCount:(NSNumber *)limit reportTypes:(NSArray *)reportTypes;
 
+- (void)addUserConsent:(NSString *)key
+                  description:(NSString *)description
+                    mandatory:(BOOL)mandatory
+                      checked:(BOOL)checked
+                   actionType:(id)actionType;
+
 @end

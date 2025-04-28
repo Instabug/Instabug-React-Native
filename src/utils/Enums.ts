@@ -12,6 +12,15 @@ export enum LogLevel {
   error = constants.sdkDebugLogsLevelError,
   none = constants.sdkDebugLogsLevelNone,
 }
+/**
+ * Enum representing the available user consent action types.
+ *
+ */
+export enum userConsentActionType {
+  dropAutoCapturedMedia = constants.dropAutoCapturedMedia,
+  dropLogs = constants.dropLogs,
+  noChat = constants.noChat,
+}
 
 /**
  * The event used to invoke the feedback form.

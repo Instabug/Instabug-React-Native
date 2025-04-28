@@ -219,6 +219,21 @@ RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit repo
    [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
 }
 
+RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
+                  description:(NSString *)description
+                  mandatory:(BOOL)mandatory
+                  checked:(BOOL)checked
+                  actionType:(id)actionType) {
+    IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
+
+    [IBGBugReporting addUserConsentWithKey:key
+                               description:description
+                                 mandatory:mandatory
+                                   checked:checked
+                                actionType:mappedActionType];
+}
+
+
 @synthesize description;
 
 @synthesize hash;

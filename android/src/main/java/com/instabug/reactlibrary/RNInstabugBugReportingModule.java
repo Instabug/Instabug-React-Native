@@ -2,6 +2,7 @@ package com.instabug.reactlibrary;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -21,6 +22,7 @@ import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.bug.userConsent.ActionType;
 
 import java.util.ArrayList;
 
@@ -415,4 +417,30 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
             }
         });
     }
+
+    /**
+    * Adds a user consent item to the bug reporting
+    * @param key A unique identifier string for the consent item.
+    * @param description The text shown to the user describing the consent item.
+    * @param mandatory Whether the user must agree to this item before submitting a report.
+    * @param checked Whether the consent checkbox is pre-selected.
+    * @param actionType A string representing the action type to map to SDK behavior.
+    */
+    @ReactMethod
+    public void addUserConsent(String key, String description, boolean mandatory, boolean checked, @Nullable String actionType) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+            try {
+            String mappedActionType = ArgsRegistry.userConsentActionType.get(actionType);
+        BugReporting.addUserConsent(key, description, mandatory, checked, mappedActionType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    
+    }
+    
+
 }
