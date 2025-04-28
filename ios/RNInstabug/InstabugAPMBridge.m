@@ -1,12 +1,12 @@
 
 
 #import "InstabugAPMBridge.h"
-#import <Instabug/IBGAPM.h>
-#import <Instabug/IBGExecutionTrace.h>
+#import <InstabugSDK/IBGAPM.h>
+#import <InstabugSDK/IBGExecutionTrace.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import <React/RCTUIManager.h>
 #import "Util/IBGAPM+PrivateAPIs.h"
 

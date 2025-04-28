@@ -1,5 +1,5 @@
 #import <XCTest/XCTest.h>
-#import "Instabug/Instabug.h"
+#import "InstabugSDK/InstabugSDK.h"
 #import "InstabugCrashReportingBridge.h"
 #import "OCMock/OCMock.h"
 #import "Util/IBGCrashReporting+CP.h"
@@ -19,10 +19,10 @@
 }
 
 - (void)testSetEnabled {
- 
+
   [self.bridge setEnabled:NO];
   XCTAssertFalse(IBGCrashReporting.enabled);
-  
+
   [self.bridge setEnabled:YES];
   XCTAssertTrue(IBGCrashReporting.enabled);
 
@@ -37,7 +37,7 @@
     [expectation fulfill];
   };
   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
-  
+
   [self.bridge sendJSCrash:stackTrace resolver:resolve rejecter:reject];
 
   [self waitForExpectations:@[expectation] timeout:1];
@@ -52,9 +52,9 @@
   NSDictionary *userAttributes = @{ @"key" : @"value",  };
   IBGNonFatalLevel ibgNonFatalLevel = IBGNonFatalLevelInfo;
 
-  
+
   [self.bridge sendHandledJSCrash:jsonCrash userAttributes:userAttributes  fingerprint:fingerPrint nonFatalExceptionLevel:ibgNonFatalLevel resolver:resolve rejecter:reject];
-    
+
     OCMVerify([self.mCrashReporting cp_reportNonFatalCrashWithStackTrace:jsonCrash
            level:IBGNonFatalLevelInfo
          groupingString:fingerPrint

@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <Instabug/Instabug.h>
-#import <Instabug/IBGBugReporting.h>
-#import <Instabug/IBGCrashReporting.h>
-#import <Instabug/IBGLog.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/InstabugSDK.h>
+#import <InstabugSDK/IBGBugReporting.h>
+#import <InstabugSDK/IBGCrashReporting.h>
+#import <InstabugSDK/IBGLog.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "ArgsRegistry.h"
 
 @interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>

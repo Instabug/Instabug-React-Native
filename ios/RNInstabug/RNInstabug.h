@@ -1,7 +1,7 @@
 #ifndef RNInstabug_h
 #define RNInstabug_h
 
-#import <Instabug/Instabug.h>
+#import <InstabugSDK/InstabugSDK.h>
 
 @interface RNInstabug : NSObject
 
@@ -18,11 +18,11 @@ useNativeNetworkInterception:(BOOL)useNativeNetworkInterception;
 
 /**
  @brief Set codePush version before starting the SDK.
- 
+
  @discussion Sets Code Push version to be used for all reports.
  should be called from `-[UIApplicationDelegate application:didFinishLaunchingWithOptions:]`
  and before `startWithToken`.
- 
+
  @param codePushVersion the Code Push version to be used for all reports.
  */
 + (void)setCodePushVersion:(NSString *)codePushVersion;

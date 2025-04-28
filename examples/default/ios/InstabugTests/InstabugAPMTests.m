@@ -9,9 +9,9 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugAPMBridge.h"
-#import <Instabug/IBGTypes.h>
-#import <Instabug/IBGAPM.h>
-#import "Instabug/Instabug.h"
+#import <InstabugSDK/IBGTypes.h>
+#import <InstabugSDK/IBGAPM.h>
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 #import "RNInstabug/IBGAPM+PrivateAPIs.h"
 
