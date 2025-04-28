@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugRepliesBridge.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "Instabug/Instabug.h"
 #import "IBGConstants.h"
 
@@ -53,12 +53,12 @@
   OCMStub([mock show]);
   [self.instabugBridge show];
   XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
+
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock show]);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
@@ -67,7 +67,7 @@
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
   [partialMock setOnNewReplyReceivedHandler:callback];
   XCTAssertNotNil(IBGReplies.didReceiveReplyHandler);
-  
+
   OCMStub([partialMock sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil]);
   IBGReplies.didReceiveReplyHandler();
   OCMVerify([partialMock sendEventWithName:@"IBGOnNewReplyReceivedCallback" body:nil]);
@@ -90,7 +90,7 @@
 - (void)testSetPushNotificationsEnabled {
   id mock = OCMClassMock([IBGReplies class]);
   BOOL isPushNotificationEnabled = true;
-  
+
   OCMStub([mock setPushNotificationsEnabled:isPushNotificationEnabled]);
   [self.instabugBridge setPushNotificationsEnabled:isPushNotificationEnabled];
   OCMVerify([mock setPushNotificationsEnabled:isPushNotificationEnabled]);

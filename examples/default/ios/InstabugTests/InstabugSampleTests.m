@@ -9,7 +9,7 @@
 #import "OCMock/OCMock.h"
 #import "Instabug/Instabug.h"
 #import "InstabugReactBridge.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "IBGConstants.h"
 #import "RNInstabug.h"
 #import <RNInstabug/IBGNetworkLogger+CP.h>

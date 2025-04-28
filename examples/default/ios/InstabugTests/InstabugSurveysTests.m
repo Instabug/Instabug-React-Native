@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugSurveysBridge.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "Instabug/Instabug.h"
 #import "IBGConstants.h"
 
@@ -45,7 +45,7 @@
 - (void)testShowingSurvey {
   id mock = OCMClassMock([IBGSurveys class]);
   NSString *token = @"token";
-  
+
   OCMStub([mock showSurveyWithToken:token]);
   [self.instabugBridge showSurvey:token];
   OCMVerify([mock showSurveyWithToken:token]);
@@ -54,7 +54,7 @@
 
 - (void) testShowSurveyIfAvailable {
   id mock = OCMClassMock([IBGSurveys class]);
-  
+
   OCMStub([mock showSurveyIfAvailable]);
   [self.instabugBridge showSurveysIfAvailable];
   OCMVerify([mock showSurveyIfAvailable]);
@@ -63,7 +63,7 @@
 - (void) testAutoShowingSurveysEnabled {
   id mock = OCMClassMock([IBGSurveys class]);
   BOOL isEnabled = YES;
-  
+
   OCMStub([mock setAutoShowingEnabled:isEnabled]);
   [self.instabugBridge setAutoShowingEnabled:isEnabled];
   OCMVerify([mock setAutoShowingEnabled:isEnabled]);
@@ -72,7 +72,7 @@
 - (void) testSetShouldShowSurveysWelcomeScreen {
   id mock = OCMClassMock([IBGSurveys class]);
   BOOL isEnabled = YES;
-  
+
   OCMStub([mock setShouldShowWelcomeScreen:isEnabled]);
   [self.instabugBridge setShouldShowWelcomeScreen:isEnabled];
   OCMVerify([mock setShouldShowWelcomeScreen:isEnabled]);
@@ -80,7 +80,7 @@
 
 - (void) testSetSurveysEnabled {
   BOOL isEnabled = YES;
-  
+
   [self.instabugBridge setEnabled:isEnabled];
   XCTAssertTrue(IBGSurveys.enabled);
 }
@@ -95,7 +95,7 @@
     [expectation fulfill];
   };
   RCTPromiseRejectBlock reject = ^(NSString *code, NSString *message, NSError *error) {};
-  
+
   OCMStub([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg invokeBlock]]);
   [self.instabugBridge hasRespondedToSurvey:surveyToken :resolve :reject];
   OCMVerify([mock hasRespondedToSurveyWithToken:surveyToken completionHandler:[OCMArg isNotNil]]);
@@ -136,7 +136,7 @@
 
 - (void) testSetAppStoreURL {
   NSString *appStoreURL = @"http://test";
-  
+
   [self.instabugBridge setAppStoreURL:appStoreURL];
   XCTAssertEqual(IBGSurveys.appStoreURL, appStoreURL);
 }
