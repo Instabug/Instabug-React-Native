@@ -28,8 +28,8 @@ allprojects {
 
         maven {
             credentials {
-                username System.getenv("DREAM11_MAVEN_USERNAME")
-                password System.getenv("DREAM11_MAVEN_PASSWORD")
+                username "dream11"
+                password "wyx8ZEA*krw8zea6hbr"
             }
             url "https://mvn.instabug.com/nexus/repository/dream-11"
         }
