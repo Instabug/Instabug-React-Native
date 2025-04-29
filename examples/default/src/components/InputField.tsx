@@ -21,6 +21,7 @@ interface InputFieldProps {
   maxLength?: number;
   accessibilityLabel?: string;
   flex?: number;
+  testID?: string;
 }
 
 export const InputField = forwardRef<TextInput, InputFieldProps>(
@@ -34,6 +35,7 @@ export const InputField = forwardRef<TextInput, InputFieldProps>(
       maxLength,
       keyboardType,
       errorText,
+      testID,
       ...restProps
     },
     ref,
@@ -45,9 +47,11 @@ export const InputField = forwardRef<TextInput, InputFieldProps>(
           placeholder={placeholder}
           style={[styles.textInput, style]}
           maxLength={maxLength}
+          accessible={true}
           accessibilityLabel={accessibilityLabel}
           keyboardType={keyboardType}
           value={value}
+          testID={testID}
           onChangeText={onChangeText}
           {...restProps}
         />
