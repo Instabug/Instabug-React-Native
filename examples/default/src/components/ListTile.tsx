@@ -5,15 +5,18 @@ import { Box, HStack, Pressable, Text } from 'native-base';
 interface ListTileProps extends PropsWithChildren {
   title: string;
   onPress?: () => void;
+  testID?: string;
 }
 
-export const ListTile: React.FC<ListTileProps> = ({ title, onPress, children }) => {
+export const ListTile: React.FC<ListTileProps> = ({ title, onPress, children, testID }) => {
   return (
     <Pressable
       onPress={onPress}
       p="4"
       rounded="2"
+      testID={testID}
       shadow="1"
+      accessible={true}
       borderBottomWidth="1"
       borderColor="coolGray.300"
       bg="coolGray.100"
