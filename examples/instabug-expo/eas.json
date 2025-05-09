@@ -1,0 +1,49 @@
+{
+  "cli": {
+    "version": ">= 10.2.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "APP_VERSION": "2.0.0",
+        "VERSION_CODE": "2",
+        "APPLICATION_TOKEN": "7400f4c6b0cfafbec456b232d9ba56c6",
+        "INSTABUG_APP_TOKEN": "7400f4c6b0cfafbec456b232d9ba56c6"
+      }
+    },
+
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease",
+        "buildType": "apk"
+      },
+      "ios": {
+        "buildConfiguration": "Release",
+        "simulator": true
+      },
+      "env": {
+        "entryPoint": "expo-router/entry.js",
+        "APP_VERSION": "7.0.0",
+        "VERSION_CODE": "7",
+        "APPLICATION_TOKEN": "7400f4c6b0cfafbec456b232d9ba56c6",
+        "INSTABUG_APP_TOKEN": "7400f4c6b0cfafbec456b232d9ba56c6"
+      }
+    }
+  },
+
+  "submit": {
+    "production": {}
+  }
+}

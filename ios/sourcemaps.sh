@@ -52,6 +52,10 @@ main() {
 generate_sourcemaps() {
   local react_native_dir=$(dirname $(node -p "require.resolve('react-native/package.json')"))
 
+
+  # USE THE SCRIPT FEOM EXPO TO SUPPORT EAS BUILD
+  # local react_native_dir=$(dirname $(node -p "require.resolve('expo/package.json')"))
+
   # Fixes an issue with react-native prior to v0.67.0
   # For more info: https://github.com/facebook/react-native/issues/32168
   export RN_DIR=$react_native_dir

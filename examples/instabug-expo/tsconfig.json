@@ -1,0 +1,18 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "packages/plugin/withInstabugIOS.js",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}
