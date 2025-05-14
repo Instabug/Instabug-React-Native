@@ -71,8 +71,8 @@ public class ApmNetworkLoggerHelper {
                     (long) responseBodySize,
                     (int) statusCode,
                     responseContentType,
-                    errorMessage,
                     gqlQueryName,
+                    errorMessage,
                     serverErrorMessage
             );
 
