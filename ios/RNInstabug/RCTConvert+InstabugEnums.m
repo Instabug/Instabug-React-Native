@@ -109,4 +109,10 @@ RCT_ENUM_CONVERTER(
   integerValue
 );
 
+RCT_ENUM_CONVERTER(
+  IBGAutoMaskScreenshotOption,
+  ArgsRegistry.autoMaskingTypes,
+  IBGAutoMaskScreenshotOptionMaskNothing,
+  integerValue
+);
 @end

@@ -443,4 +443,17 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
 RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
     IBGNetworkLogger.logBodyEnabled = isEnabled;
 }
+
+RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
+
+   IBGAutoMaskScreenshotOption autoMaskingOptions = 0;
+
+    for (NSNumber *event in autoMaskingTypes) {
+
+        autoMaskingOptions |= [event intValue];
+    }
+
+    [Instabug setAutoMaskScreenshots: autoMaskingOptions];
+
+};
 @end
