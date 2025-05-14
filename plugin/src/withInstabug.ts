@@ -33,7 +33,7 @@ const withInstabugPlugin: ConfigPlugin<PluginProps | void> = (config, props) => 
 const instabugPackage: {
   name: string;
   version: string;
-} = require('../package.json');
+} = require('../../package.json');
 
 const withInstabug = createRunOncePlugin(
   withInstabugPlugin,
