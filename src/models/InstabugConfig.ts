@@ -1,4 +1,5 @@
 import type { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../utils/Enums';
+import type { OverAirUpdate } from './OverAirUpdate';
 
 export interface InstabugConfig {
   /**
@@ -29,4 +30,9 @@ export interface InstabugConfig {
    * @default NetworkInterceptionMode.javascript
    */
   networkInterceptionMode?: NetworkInterceptionMode;
+
+  /**
+   * An optional over air service update version to be used for all reports.
+   */
+  overAirVersion?: OverAirUpdate;
 }

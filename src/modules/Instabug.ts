@@ -29,6 +29,7 @@ import type { FeatureFlag } from '../models/FeatureFlag';
 import InstabugConstants from '../utils/InstabugConstants';
 import { InstabugRNConfig } from '../utils/config';
 import { Logger } from '../utils/logger';
+import type { OverAirUpdate } from '../models/OverAirUpdate';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -90,6 +91,7 @@ export const init = (config: InstabugConfig) => {
     config.debugLogsLevel ?? LogLevel.error,
     config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
+    config.overAirVersion,
   );
 
   _isFirstScreen = true;
@@ -109,9 +111,20 @@ export const init = (config: InstabugConfig) => {
 /**
  * Sets the Code Push version to be sent with each report.
  * @param version the Code Push version.
+ *
+ * @deprecated Use {@link setOverAirVersion} instead.
  */
 export const setCodePushVersion = (version: string) => {
   NativeInstabug.setCodePushVersion(version);
+};
+
+/**
+ * Sets over air update version to be sent with each report.
+ * @param version the OTA version.
+ *
+ */
+export const setOverAirVersion = (OTAserviceVersion: OverAirUpdate) => {
+  NativeInstabug.setOverAirVersion(OTAserviceVersion);
 };
 
 /**

@@ -13,7 +13,8 @@ export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeLocale &
   NativeNonFatalErrorLevel &
   NativeStringKey &
-  NativeLaunchType;
+  NativeLaunchType &
+  NativeOverAirUpdateServices;
 
 interface NativeSdkDebugLogsLevel {
   sdkDebugLogsLevelVerbose: any;
@@ -194,4 +195,9 @@ interface NativeLaunchType {
   cold: any;
   warm: any;
   unknown: any;
+}
+
+interface NativeOverAirUpdateServices {
+  expo: any;
+  codePush: any;
 }

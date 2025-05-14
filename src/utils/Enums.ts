@@ -241,3 +241,11 @@ export enum LaunchType {
    */
   warm = constants.warm,
 }
+
+/**
+ * Over Air Update Service
+ */
+export enum OverAirUpdateServices {
+  codePush = constants.codePush,
+  expo = constants.expo,
+}

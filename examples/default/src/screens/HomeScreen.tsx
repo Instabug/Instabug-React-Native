@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import Instabug, { OverAirUpdateServices } from 'instabug-reactnative';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import type { HomeStackParamList } from '../navigation/HomeStack';
@@ -11,6 +11,12 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
 }) => {
   return (
     <Screen>
+      <ListTile
+        title="Set Over Air Version"
+        onPress={() =>
+          Instabug.setOverAirVersion({ service: OverAirUpdateServices.expo, version: '2.0' })
+        }
+      />
       <ListTile title="Bug Reporting" onPress={() => navigation.navigate('BugReporting')} />
       <ListTile title="Crash Reporting" onPress={() => navigation.navigate('CrashReporting')} />
       <ListTile title="Feature Requests" onPress={() => navigation.navigate('FeatureRequests')} />

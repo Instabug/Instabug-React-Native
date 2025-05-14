@@ -13,6 +13,7 @@ import type {
 import type { NativeConstants } from './NativeConstants';
 import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
+import type { OverAirUpdate } from '../models/OverAirUpdate';
 
 export interface InstabugNativeModule extends NativeModule {
   getConstants(): NativeConstants;
@@ -25,11 +26,13 @@ export interface InstabugNativeModule extends NativeModule {
     debugLogsLevel: LogLevel,
     useNativeNetworkInterception: boolean,
     codePushVersion?: string,
+    overAirVersion?: OverAirUpdate,
   ): void;
   show(): void;
 
   // Misc APIs //
   setCodePushVersion(version: string): void;
+  setOverAirVersion(OTAserviceVersion: OverAirUpdate): void;
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
 
