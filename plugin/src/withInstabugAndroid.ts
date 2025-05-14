@@ -3,13 +3,16 @@ import { withAppBuildGradle } from 'expo/config-plugins';
 import type { PluginProps } from './withInstabug';
 
 export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) => {
-  return withAppBuildGradle(config, (config) => {
-    if (config.modResults.language === 'groovy') {
-      config.modResults.contents = modifyAppGradleFile(config.modResults.contents, props.name!);
+  return withAppBuildGradle(config, (configAndroid) => {
+    if (configAndroid.modResults.language === 'groovy') {
+      configAndroid.modResults.contents = modifyAppGradleFile(
+        configAndroid.modResults.contents,
+        props.name!,
+      );
     } else {
       throw new Error('Cannot configure Instabug because the build.gradle is not groovy');
     }
-    return config;
+    return configAndroid;
   });
 };
 

@@ -1,13 +1,9 @@
 {
-  "include": [
-    "src/**/*",
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "jsx": "react-native",
     "moduleResolution": "node",
     "skipLibCheck": true,
