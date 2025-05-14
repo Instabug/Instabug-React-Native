@@ -439,8 +439,19 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
 + (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
+RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
 
 RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
     IBGNetworkLogger.logBodyEnabled = isEnabled;
 }
+   IBGAutoMaskScreenshotOption autoMaskingOptions = 0;
+
+    for (NSNumber *event in autoMaskingTypes) {
+
+        autoMaskingOptions |= [event intValue];
+    }
+
+    [Instabug setAutoMaskScreenshots: autoMaskingOptions];
+
+};
 @end
