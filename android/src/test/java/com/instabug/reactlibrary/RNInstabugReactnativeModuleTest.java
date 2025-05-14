@@ -677,6 +677,8 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.setNetworkLogBodyEnabled(false);
     
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
+    }
+    
     @Test
     public void testEnableAutoMasking(){
 
