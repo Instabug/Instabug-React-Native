@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -x -e
 
 export SOURCEMAP_FILE="$DERIVED_FILE_DIR/main.jsbundle.map"
 
