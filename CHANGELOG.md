@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+
+### Added
+
+- Add support for capturing the spans of network requests ([#1390](https://github.com/Instabug/Instabug-React-Native/pull/1390))
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
