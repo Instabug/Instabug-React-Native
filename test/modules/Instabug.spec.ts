@@ -17,6 +17,7 @@ import {
   Locale,
   LogLevel,
   NetworkInterceptionMode,
+  OverAirUpdateServices,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -281,6 +282,10 @@ describe('Instabug Module', () => {
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
     const usesNativeNetworkInterception = false;
 
@@ -294,6 +299,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      instabugConfig.overAirVersion,
     );
   });
 
@@ -306,6 +312,18 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
   });
 
+  it('setOverAirVersion should call native method setOverAirVersion', () => {
+    const OTAversion = {
+      service: OverAirUpdateServices.expo,
+      version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+    };
+
+    Instabug.setOverAirVersion(OTAversion);
+
+    expect(NativeInstabug.setOverAirVersion).toBeCalledTimes(1);
+    expect(NativeInstabug.setOverAirVersion).toBeCalledWith(OTAversion);
+  });
+
   it('init should disable JavaScript interceptor when using native interception mode', () => {
     const instabugConfig = {
       token: 'some-token',
@@ -313,6 +331,10 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
 
     Instabug.init(instabugConfig);
@@ -326,6 +348,7 @@ describe('Instabug Module', () => {
       // usesNativeNetworkInterception should be true when using native interception mode
       true,
       instabugConfig.codePushVersion,
+      instabugConfig.overAirVersion,
     );
   });
 
