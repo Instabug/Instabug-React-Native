@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-gradle.projectsEvaluated {
+project.afterEvaluate {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
     def suffix = 'ReleaseJsAndAssets'
     def bundleTasks = project(':app').tasks.findAll {
@@ -15,11 +15,13 @@ gradle.projectsEvaluated {
         def flavor = name.substring(start, end).uncapitalize()
         def defaultVersion = getDefaultVersion(flavor)
 
-        task.finalizedBy createUploadSourcemapsTask(flavor, defaultVersion.name, defaultVersion.code)
+
+
+        task.finalizedBy createUploadSourcemapsTask(flavor, defaultVersion.name, defaultVersion.code,task)
     }
 }
 
-Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String defaultVersionCode) {
+Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String defaultVersionCode, Task task) {
     def name = 'uploadSourcemaps' + flavor.capitalize()
 
     // Don't recreate the task if it already exists.
@@ -39,7 +41,7 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def sourceMapFile = getSourceMapFile(appDir, flavor)
+                def sourceMapFile = getSourceMapFile(appDir, flavor,task)
 
                 def jsProjectDir = rootDir.parentFile
                 def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
@@ -74,10 +76,22 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
     return provider.get()
 }
 
-File getSourceMapFile(File appDir, String flavor) {
+File getSourceMapFile(File appDir, String flavor,Task task) {
     def defaultFlavorPath = flavor.empty ? 'release' : "${flavor}Release"
     def defaultSourceMapDest = "build/generated/sourcemaps/react/${defaultFlavorPath}/index.android.bundle.map"
     def defaultSourceMapFile = new File(appDir, defaultSourceMapDest)
+    def props = task.getProperties()
+    def bundleAssetName = props.bundleAssetName?.get()
+    def outputSourceMap = new File(props.jsSourceMapsDir.get().asFile.absolutePath, "${bundleAssetName}.map")
+    def packagerOutputSourceMap = new File(props.jsIntermediateSourceMapsDir.get().asFile.absolutePath, "${bundleAssetName}.packager.map")
+
+    if (outputSourceMap.exists()) {
+        return outputSourceMap
+    }
+
+    if (packagerOutputSourceMap.exists()) {
+               return packagerOutputSourceMap
+     }
 
     if (defaultSourceMapFile.exists()) {
         return defaultSourceMapFile

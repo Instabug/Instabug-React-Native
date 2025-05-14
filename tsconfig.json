@@ -1,22 +1,24 @@
 {
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*",
+    "plugin/**/*"
+  ],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "jsx": "react-native",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "outDir": "dist",
-
     // Interop
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
     // Emit
     "declaration": true,
     "importsNotUsedAsValues": "error",
-
     // Code Style
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
