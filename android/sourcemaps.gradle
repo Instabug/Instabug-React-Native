@@ -47,8 +47,8 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
                 def jsProjectDir = rootDir.parentFile
                 def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
 
-                def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
-                def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
+              def tokenJsFile = new File(instabugDir, 'scripts/find-token.js')
+              def inferredToken = executeNodeScript(tokenJsFile, jsProjectDir)
 
                 if (!inferredToken) {
                     throw new GradleException("❌ Unable to infer Instabug token from script: ${tokenShellFile.absolutePath}")
@@ -177,6 +177,35 @@ String resolveVar(String name, String envKey, String defaultValue) {
     }
 
     return value
+}
+
+static String executeNodeScript(File script, File workingDir) {
+    if (!script.exists()) {
+        println "Script not found: ${script.absolutePath}"
+        return null
+    }
+
+    def output = new StringBuffer()
+    def error = new StringBuffer()
+
+    try {
+        def process = ['node', script.getAbsolutePath()].execute(null, workingDir)
+        process.waitForProcessOutput(output, error)
+
+        if (process.exitValue() != 0) {
+            println "Script failed with exit code ${process.exitValue()}"
+            println "Standard Error:\n${error.toString().trim()}"
+            println "Standard Output:\n${output.toString().trim()}"
+            return null
+        }
+
+        return output.toString().trim()
+
+    } catch (Exception e) {
+        println "Exception while executing Node.js script: ${e.message}"
+        e.printStackTrace()
+        return null
+    }
 }
 
 static String executeShellScript(File script, File workingDir) {
