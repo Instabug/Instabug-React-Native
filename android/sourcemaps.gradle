@@ -42,6 +42,7 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
                 def sourceMapFile = getSourceMapFile(appDir, flavor,task)
+                println "✅ Resolved sourcemap file path: ${sourceMapFile.absolutePath}"
 
                 def jsProjectDir = rootDir.parentFile
                 def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
@@ -49,10 +50,16 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
                 def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
                 def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
 
+                if (!inferredToken) {
+                    throw new GradleException("❌ Unable to infer Instabug token from script: ${tokenShellFile.absolutePath}")
+                }
+
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
 
                 def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', defaultVersionName)
                 def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', defaultVersionCode)
+
+                println "📦 Uploading with versionName=${versionName}, versionCode=${versionCode}, appToken=${appToken.take(5)}..."
 
                 exec {
                     def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
@@ -70,6 +77,8 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
             } catch (exception) {
                 project.logger.error "Failed to upload source map file.\n" +
                         "Reason: ${exception.message}"
+                           throw exception
+
             }
         }
     }
