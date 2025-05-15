@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+
+## Fixed
+
+- Intercept incomplete network Requests ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
