@@ -17,4 +17,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'React-Core'
   use_instabug!(s)
+
 end

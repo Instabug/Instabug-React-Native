@@ -5,6 +5,7 @@ import xhr, { NetworkData, ProgressCallback } from '../utils/XhrNetworkIntercept
 import { isContentTypeNotAllowed, reportNetworkLog } from '../utils/InstabugUtils';
 import { InstabugRNConfig } from '../utils/config';
 import { Logger } from '../utils/logger';
+import { NativeInstabug } from '../native/NativeInstabug';
 
 export type { NetworkData };
 
@@ -113,4 +114,12 @@ export const apolloLinkRequestHandler: RequestHandler = (operation, forward) => 
   }
 
   return forward(operation);
+};
+
+/**
+ * Sets whether network body logs will be captured or not.
+ * @param isEnabled
+ */
+export const setNetworkLogBodyEnabled = (isEnabled: boolean) => {
+  NativeInstabug.setNetworkLogBodyEnabled(isEnabled);
 };
