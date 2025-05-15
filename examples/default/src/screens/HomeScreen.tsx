@@ -11,12 +11,6 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
 }) => {
   return (
     <Screen>
-      <ListTile
-        title="Set Over Air Version"
-        onPress={() =>
-          Instabug.setOverAirVersion({ service: OverAirUpdateServices.expo, version: '2.0' })
-        }
-      />
       <ListTile title="Bug Reporting" onPress={() => navigation.navigate('BugReporting')} />
       <ListTile title="Crash Reporting" onPress={() => navigation.navigate('CrashReporting')} />
       <ListTile title="Feature Requests" onPress={() => navigation.navigate('FeatureRequests')} />
