@@ -24,6 +24,7 @@ import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.util.overairversion.OverAirVersionType;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
 
 import org.junit.After;
@@ -211,6 +212,21 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.setCodePushVersion(codePushVersion);
 
         mockInstabug.verify(() -> Instabug.setCodePushVersion(codePushVersion));
+    }
+
+    @Test
+    public void testSetOverAirVersion() {
+        WritableMap mockMap = mock(WritableMap.class);
+
+        String version="D0A12345-6789-4B3C-A123-4567ABCDEF0";
+
+        when(mockMap.getString("version")).thenReturn(version);
+        when(mockMap.getString("service")).thenReturn("expo");
+
+        rnModule.setOverAirVersion(mockMap);
+
+        mockInstabug.verify(() -> Instabug.setOverAirVersion(
+                version, OverAirVersionType.EXPO));
     }
 
     @Test
@@ -663,18 +679,18 @@ public class RNInstabugReactnativeModuleTest {
         verify(promise).resolve(expected);
     }
 
-   
+
     @Test
     public void testSetNetworkLogBodyEnabled() {
         rnModule.setNetworkLogBodyEnabled(true);
-    
+
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(true));
     }
 
     @Test
     public void testSetNetworkLogBodyDisabled() {
         rnModule.setNetworkLogBodyEnabled(false);
-    
+
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
     }
 }

@@ -21,6 +21,7 @@
     [all addEntriesFromDictionary:ArgsRegistry.nonFatalExceptionLevel];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
     [all addEntriesFromDictionary:ArgsRegistry.launchType];
+    [all addEntriesFromDictionary:ArgsRegistry.overAirServices];
 
     return all;
 }
@@ -246,6 +247,12 @@
     return @{
         @"cold": @(LaunchTypeCold),
         @"unknown":@(LaunchTypeUnknown)
+    };
+}
++ (ArgsDictionary *) overAirServices {
+    return @{
+        @"expo":@(IBGOverAirTypeExpo) ,
+        @"codePush":@(IBGOverAirTypeCodePush),
     };
 }
 

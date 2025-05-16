@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-#import "Instabug/Instabug.h"
-#import <Instabug/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
+#import <InstabugSDK/IBGTypes.h>
 #import "RNInstabug.h"
 #import "RNInstabug/Instabug+CP.h"
 #import "RNInstabug/IBGNetworkLogger+CP.h"
@@ -71,6 +71,28 @@
   [RNInstabug setCodePushVersion:codePushVersion];
 
   OCMVerify([self.mInstabug setCodePushVersion:codePushVersion]);
+}
+
+- (void)testSetOverAirVersionExpo {
+  NSDictionary *overAirVersion = @{
+    @"service":@"expo",
+    @"version":@"D0A12345-6789-4B3C-A123-4567ABCDEF01"
+  };
+  
+  [RNInstabug setOverAirVersion:overAirVersion];
+
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:IBGOverAirTypeExpo]);
+}
+
+- (void)testSetOverAirVersionCodepush {
+  NSDictionary *overAirVersion = @{
+    @"service":@"codePush",
+    @"version":@"2.0.0"
+  };
+  
+  [RNInstabug setOverAirVersion:overAirVersion];
+
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:IBGOverAirTypeCodePush]);
 }
 
 @end

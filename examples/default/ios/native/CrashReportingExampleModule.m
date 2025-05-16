@@ -1,6 +1,6 @@
 #import "CrashReportingExampleModule.h"
-#import <Instabug/IBGCrashReporting.h>
-#import <Instabug/Instabug.h>
+#import <InstabugSDK/IBGCrashReporting.h>
+#import <InstabugSDK/InstabugSDK.h>
 
 @interface CrashReportingExampleModule()
 @property (nonatomic, strong) NSMutableArray *oomBelly;

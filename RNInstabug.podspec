@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.homepage     = package["homepage"]
   s.source       = { :git => "https://github.com/Instabug/Instabug-React-Native.git", :tag => 'v' + package["version"] }
 
-  s.platform     = :ios, "9.0"
+  s.platform     = :ios, "13.0"
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency 'React-Core'

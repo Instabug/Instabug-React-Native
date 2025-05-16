@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.instabug.apm.APM;
 import com.instabug.library.Instabug;
 import com.instabug.library.LogLevel;
@@ -157,6 +158,11 @@ public class RNInstabug {
         private String codePushVersion;
 
         /**
+         * The overAirUpdate Version to be used for all reports.
+         */
+       private ReadableMap overAirVersion;
+
+        /**
          * The events that trigger the SDK's user interface.
          */
         private InstabugInvocationEvent[] invocationEvents;
@@ -210,6 +216,16 @@ public class RNInstabug {
             return this;
         }
 
+       /**
+        * Sets over air update version to be used for all reports.
+        *
+        * @param overAirVersion the over air update version and service map.
+        */
+       public Builder setOverAirVersion(ReadableMap overAirVersion) {
+           this.overAirVersion = overAirVersion;
+           return this;
+       }
+
         /**
          * Sets the invocation triggering events for the SDK's user interface
          *
@@ -236,6 +252,17 @@ public class RNInstabug {
                 if (codePushVersion != null) {
                     instabugBuilder.setCodePushVersion(codePushVersion);
                 }
+
+               if (overAirVersion != null ) {
+                   if (overAirVersion.hasKey("service") && overAirVersion.hasKey("version"))
+                   {
+                       if (overAirVersion.getString("service")!=null && overAirVersion.getString("version")!=null)
+                       {
+                           instabugBuilder.setOverAirVersion(overAirVersion.getString("version"),
+                               ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+                       }
+                   }
+               }
 
                 instabugBuilder.build();
 

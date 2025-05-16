@@ -144,7 +144,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final ReadableArray invocationEventValues,
             final String logLevel,
             final boolean useNativeNetworkInterception,
-            @Nullable final String codePushVersion
+            @Nullable final String codePushVersion,
+            @Nullable final ReadableMap overAirVersion
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -169,6 +170,16 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         builder.setCodePushVersion(codePushVersion);
                     }
                 }
+
+                if(overAirVersion != null ) {
+                    if(Instabug.isBuilt()) {
+                        Instabug.setOverAirVersion(overAirVersion.getString("version"),
+                                ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+                    } else {
+                        builder.setOverAirVersion(overAirVersion);
+                    }
+                }
+
                 builder.build();
             }
         });
@@ -182,6 +193,23 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     Instabug.setCodePushVersion(version);
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setOverAirVersion(@Nullable final ReadableMap overAirVersion) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setOverAirVersion(overAirVersion.getString("version"),
+                            ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+
+                } catch (Exception e) {
+                    System.out.println("Exception caught "+ e);
                     e.printStackTrace();
                 }
             }

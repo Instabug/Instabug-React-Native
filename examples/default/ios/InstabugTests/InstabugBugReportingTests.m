@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugBugReportingBridge.h"
-#import <Instabug/IBGTypes.h>
-#import "Instabug/Instabug.h"
+#import <InstabugSDK/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 
 @interface InstabugBugReportingTests : XCTestCase
@@ -39,7 +39,7 @@
 - (void) testgivenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs {
   NSArray *invocationEventsArr;
   invocationEventsArr = [NSArray arrayWithObjects:  @(IBGInvocationEventScreenshot), nil];
-  
+
   [self.instabugBridge setInvocationEvents:invocationEventsArr];
   IBGInvocationEvent invocationEvents = 0;
   for (NSNumber *boxedValue in invocationEventsArr) {
@@ -76,7 +76,7 @@
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
   [partialMock setOnSDKDismissedHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  
+
   NSDictionary *result = @{ @"dismissType": @"SUBMIT",
                             @"reportType": @"feedback"};
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
@@ -137,14 +137,14 @@
   }
   OCMStub([mock showWithReportType:reportType options:parsedOptions]);
   [self.instabugBridge show:reportType options:options];
-  
+
   XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
+
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock showWithReportType:reportType options:parsedOptions]);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 

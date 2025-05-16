@@ -17,6 +17,7 @@ import com.instabug.library.invocation.util.InstabugFloatingButtonEdge;
 import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition;
 import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
+import com.instabug.library.util.overairversion.OverAirVersionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ final class ArgsRegistry {
             putAll(locales);
             putAll(placeholders);
             putAll(launchType);
+            putAll(overAirUpdateService);
         }};
     }
 
@@ -245,6 +247,11 @@ final class ArgsRegistry {
         put("cold", SessionMetadata.LaunchType.COLD);
         put("warm",SessionMetadata.LaunchType.WARM );
         put("unknown","unknown");
+    }};
+
+    public static ArgsMap<Integer> overAirUpdateService = new ArgsMap<Integer>() {{
+        put("expo", OverAirVersionType.EXPO);
+        put("codePush",OverAirVersionType.CODE_PUSH );
     }};
     
 // Temporary workaround to be removed in future release
