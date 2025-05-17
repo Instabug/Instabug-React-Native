@@ -37,13 +37,13 @@ local sourcemap_file=""
   if [[ -f "$SOURCEMAP_FILE" ]]; then
     sourcemap_file="$SOURCEMAP_FILE"
   else
-   source_map_file=$(generate_sourcemaps | tail -n 1)
+   sourcemap_file=$(generate_sourcemaps | tail -n 1)
 fi
 
   local js_project_dir="$PROJECT_DIR/.."
   local instabug_dir=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
-  local inferred_token=$(node "$instabug_dir/scripts/find-token.js" "$js_project_dir")
-  local app_token=$(node "App Token" "INSTABUG_APP_TOKEN" "$inferred_token" | tail -n 1)
+  local inferred_token=$(cd $js_project_dir && node $instabug_dir/scripts/find-token.js)
+  local app_token=$(resolve_var "App Token" "INSTABUG_APP_TOKEN" "$inferred_token" | tail -n 1)
 
   local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' "$PROJECT_DIR/$INFOPLIST_FILE")
   local version_name=$(resolve_var "Version Name" "INSTABUG_APP_VERSION_NAME" "$inferred_name" | tail -n 1)
@@ -53,7 +53,7 @@ fi
 
   node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
-      --file $source_map_file \
+      --file $sourcemap_file \
       --token $app_token \
       --name $version_name \
       --code $version_code
