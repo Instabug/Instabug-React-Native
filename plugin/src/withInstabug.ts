@@ -10,6 +10,9 @@ export interface PluginProps {
 
 const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props) => {
   let cfg = config;
+  if (props.enable === null) {
+    props.enable = false;
+  }
   if (props.enable === true) {
     try {
       cfg = withInstabugAndroid(cfg, {
@@ -19,14 +22,14 @@ const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props) => {
     } catch (e) {
       console.warn(`There was a problem with configuring your native Android project: ${e}`);
     }
-    try {
-      cfg = withInstabugIOS(cfg, {
-        ...props,
-        name: instabugPackage.name,
-      });
-    } catch (e) {
-      console.warn(`There was a problem with configuring your native iOS project: ${e}`);
-    }
+  }
+  try {
+    cfg = withInstabugIOS(cfg, {
+      ...props,
+      name: instabugPackage.name,
+    });
+  } catch (e) {
+    console.warn(`There was a problem with configuring your native iOS project: ${e}`);
   }
 
   return cfg;

@@ -34,7 +34,7 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
     // Add Instabug build phase if not present
     const instabugPhase = findPhaseByName(INSTABUG_BUILD_PHASE);
 
-    if (instabugPhase == null) {
+    if (instabugPhase == null && props.enable) {
       const packagePath = require.resolve(`${props.name}/package.json`);
       const packageDir = path.dirname(packagePath);
       const sourcemapsPath = path.join(packageDir, 'ios/sourcemaps.sh');
