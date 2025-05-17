@@ -5,26 +5,28 @@ import { withInstabugIOS } from './withInstabugIOS';
 
 export interface PluginProps {
   name?: string;
+  enable?: boolean;
 }
 
-const withInstabugPlugin: ConfigPlugin<PluginProps | void> = (config, props) => {
+const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props) => {
   let cfg = config;
-  try {
-    cfg = withInstabugAndroid(cfg, {
-      ...props,
-      name: instabugPackage.name,
-    });
-  } catch (e) {
-    console.warn(`There was a problem with configuring your native Android project: ${e}`);
-  }
-
-  try {
-    cfg = withInstabugIOS(cfg, {
-      ...props,
-      name: instabugPackage.name,
-    });
-  } catch (e) {
-    console.warn(`There was a problem with configuring your native iOS project: ${e}`);
+  if (props.enable === true) {
+    try {
+      cfg = withInstabugAndroid(cfg, {
+        ...props,
+        name: instabugPackage.name,
+      });
+    } catch (e) {
+      console.warn(`There was a problem with configuring your native Android project: ${e}`);
+    }
+    try {
+      cfg = withInstabugIOS(cfg, {
+        ...props,
+        name: instabugPackage.name,
+      });
+    } catch (e) {
+      console.warn(`There was a problem with configuring your native iOS project: ${e}`);
+    }
   }
 
   return cfg;
