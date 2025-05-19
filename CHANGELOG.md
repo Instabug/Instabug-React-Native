@@ -5,6 +5,7 @@
 ### Added
 
 - Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
+- Add support for expo updates versioning ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
 
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
