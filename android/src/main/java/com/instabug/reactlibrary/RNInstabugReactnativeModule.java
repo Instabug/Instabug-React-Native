@@ -209,7 +209,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                             ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
 
                 } catch (Exception e) {
-                    System.out.println("Exception caught "+ e);
                     e.printStackTrace();
                 }
             }
