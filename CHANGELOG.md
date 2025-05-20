@@ -6,6 +6,8 @@
 
 - Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
 
+- Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
+
 ### Fixed
 
 - Not sending the inComplete xhrRequest. ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
