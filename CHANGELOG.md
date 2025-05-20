@@ -8,6 +8,7 @@
 
 - Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
 
+- Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
