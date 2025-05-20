@@ -11,12 +11,16 @@ import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ListTile } from '../../components/ListTile';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
 > = ({ navigation }) => {
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
+
+  const { isConnected } = useNetInfo();
+
   const defaultRequestUrl = 'https://jsonplaceholder.typicode.com/posts/1';
   const imageUrls = [
     'https://fastly.picsum.photos/id/57/200/300.jpg?hmac=l908G1qVr4r7dP947-tak2mY8Vvic_vEYzCXUCKKskY',
@@ -129,6 +133,7 @@ export const NetworkScreen: React.FC<
             />
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
+              <Text>{isConnected ? 'Network is Connected' : 'Network is not connected'}</Text>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}
               {isError && <Text>Error!</Text>}
