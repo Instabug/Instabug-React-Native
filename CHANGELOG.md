@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
