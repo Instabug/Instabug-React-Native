@@ -1,10 +1,14 @@
 # Changelog
 
-## [Unreleased]
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
 
 ### Added
 
 - Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
+
+### Fixed
+
+- Not sending the inComplete xhrRequest. ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
 
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
