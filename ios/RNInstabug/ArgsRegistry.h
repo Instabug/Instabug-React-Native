@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <Instabug/IBGTypes.h>
-#import <Instabug/Instabug.h>
+#import <InstabugSDK/IBGTypes.h>
+#import <InstabugSDK/InstabugSDK.h>
 
 typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 
@@ -23,6 +23,7 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) locales;
 + (ArgsDictionary *)nonFatalExceptionLevel;
 + (ArgsDictionary *) launchType;
++ (ArgsDictionary *) userConsentActionTypes;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
 + (ArgsDictionary *)autoMaskingTypes;

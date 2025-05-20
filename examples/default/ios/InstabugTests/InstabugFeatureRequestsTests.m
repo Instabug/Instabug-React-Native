@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugFeatureRequestsBridge.h"
-#import <Instabug/IBGTypes.h>
-#import "Instabug/Instabug.h"
+#import <InstabugSDK/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 
 @interface InstabugFeatureRequestsTests : XCTestCase
@@ -48,12 +48,12 @@
   OCMStub([mock show]);
   [self.instabugBridge show];
   XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
+
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock show]);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 

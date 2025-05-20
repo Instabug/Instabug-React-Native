@@ -6,6 +6,10 @@
 
 - Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
 
+- Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
+
+- Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added

@@ -22,8 +22,8 @@
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
     [all addEntriesFromDictionary:ArgsRegistry.launchType];
     [all addEntriesFromDictionary:ArgsRegistry.autoMaskingTypes];
-
-
+    [all addEntriesFromDictionary:ArgsRegistry.userConsentActionTypes];
+    
     return all;
 }
 
@@ -112,7 +112,13 @@
         @"addCommentToFeature": @(IBGActionAddCommentToFeature),
     };
 }
-
++ (ArgsDictionary *) userConsentActionTypes {
+    return @{
+        @"dropAutoCapturedMedia": @(IBGActionTypeDropAutoCapturedMedia),
+        @"dropLogs": @(IBGActionTypeDropLogs),
+        @"noChat": @(IBGActionTypeNoChat)
+    };
+}
 + (ArgsDictionary *) extendedBugReportStates {
     return @{
         @"enabledWithRequiredFields": @(IBGExtendedBugReportModeEnabledWithRequiredFields),

@@ -7,7 +7,7 @@
 //
 
 #import "RCTConvert+InstabugEnums.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 
 @implementation RCTConvert (InstabugEnums)
 
@@ -115,4 +115,13 @@ RCT_ENUM_CONVERTER(
   IBGAutoMaskScreenshotOptionMaskNothing,
   integerValue
 );
+
+RCT_ENUM_CONVERTER(
+  IBGActionType,
+  ArgsRegistry.userConsentActionTypes,
+  IBGActionTypeNoChat,
+  integerValue
+);
+
 @end
+

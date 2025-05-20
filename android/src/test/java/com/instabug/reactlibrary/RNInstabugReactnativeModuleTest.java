@@ -664,18 +664,18 @@ public class RNInstabugReactnativeModuleTest {
         verify(promise).resolve(expected);
     }
 
-   
+
     @Test
     public void testSetNetworkLogBodyEnabled() {
         rnModule.setNetworkLogBodyEnabled(true);
-    
+
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(true));
     }
 
     @Test
     public void testSetNetworkLogBodyDisabled() {
         rnModule.setNetworkLogBodyEnabled(false);
-    
+
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
     }
     
