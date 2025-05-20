@@ -440,4 +440,7 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
 
+RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.logBodyEnabled = isEnabled;
+}
 @end

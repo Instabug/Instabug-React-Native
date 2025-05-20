@@ -1,11 +1,22 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...dev)
+## [Unreleased]
 
-## Fixed
+### Added
 
-- Intercept incomplete network Requests ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
+- Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
 
+## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
+
+### Added
+
+- Add support for enable/disable capturing network body. ([#1362](https://github.com/Instabug/Instabug-React-Native/pull/1362))
+
+### Changed
+
+- Bump Instabug iOS SDK to v14.3.0 ([#1367](https://github.com/Instabug/Instabug-React-Native/pull/1367)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/14.3.0).
+
+- Bump Instabug Android SDK to v14.3.0 ([#1375](https://github.com/Instabug/Instabug-React-Native/pull/1375)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v14.3.0).
 
 ## [14.1.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.0...v14.1.0) (January 2, 2025)
 
