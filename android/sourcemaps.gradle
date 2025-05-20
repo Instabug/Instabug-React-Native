@@ -86,39 +86,48 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
     return provider.get()
 }
 
-File getSourceMapFile(File appDir, String flavor,Task task) {
+File getSourceMapFile(File appDir, String flavor, Task task) {
     def defaultFlavorPath = flavor.empty ? 'release' : "${flavor}Release"
     def defaultSourceMapDest = "build/generated/sourcemaps/react/${defaultFlavorPath}/index.android.bundle.map"
     def defaultSourceMapFile = new File(appDir, defaultSourceMapDest)
     def props = task.getProperties()
-    def bundleAssetName = props.bundleAssetName?.get()
-    def outputSourceMap = new File(props.jsSourceMapsDir.get().asFile.absolutePath, "${bundleAssetName}.map")
-    def packagerOutputSourceMap = new File(props.jsIntermediateSourceMapsDir.get().asFile.absolutePath, "${bundleAssetName}.packager.map")
 
-    if (outputSourceMap.exists()) {
-        return outputSourceMap
+    def bundleAssetName = props.containsKey("bundleAssetName") ? props.bundleAssetName?.getOrNull() : null
+    def jsSourceMapsDir = props.containsKey("jsSourceMapsDir") ? props.jsSourceMapsDir?.getOrNull() : null
+    def jsIntermediateSourceMapsDir = props.containsKey("jsIntermediateSourceMapsDir") ? props.jsIntermediateSourceMapsDir?.getOrNull() : null
+
+    if (bundleAssetName && jsSourceMapsDir) {
+        def outputSourceMap = new File(jsSourceMapsDir.asFile.absolutePath, "${bundleAssetName}.map")
+        if (outputSourceMap.exists()) {
+            return outputSourceMap
+        }
     }
 
-    if (packagerOutputSourceMap.exists()) {
-               return packagerOutputSourceMap
-     }
+    if (bundleAssetName && jsIntermediateSourceMapsDir) {
+        def packagerOutputSourceMap = new File(jsIntermediateSourceMapsDir.asFile.absolutePath, "${bundleAssetName}.packager.map")
+        if (packagerOutputSourceMap.exists()) {
+            return packagerOutputSourceMap
+        }
+    }
 
     if (defaultSourceMapFile.exists()) {
         return defaultSourceMapFile
     }
 
     if (flavor.empty) {
-        throw new InvalidUserDataException("Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.")
+         println"Source map file not found at: ${defaultSourceMapFile.absolutePath}. Skipping."
+        return null
     }
 
     def fallbackSourceMapDest = "build/generated/sourcemaps/react/${flavor}/release/index.android.bundle.map"
     def fallbackSourceMapFile = new File(appDir, fallbackSourceMapDest)
 
-    project.logger.info "Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.\n" +
+  println "Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.\n" +
             "Falling back to ${fallbackSourceMapFile.absolutePath}."
 
     if (!fallbackSourceMapFile.exists()) {
-        throw new InvalidUserDataException("Unable to find source map file at: ${fallbackSourceMapFile.absolutePath} either.")
+    println "Fallback source map file not found at: ${fallbackSourceMapFile.absolutePath}. Skipping."
+        return null
     }
 
     return fallbackSourceMapFile

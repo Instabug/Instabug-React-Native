@@ -32,6 +32,14 @@ export default [
     plugins: [...commonPlugins, typescript({ tsconfig: './plugin/tsconfig.json' })],
   },
   {
+    input: ['hooks/src/index.ts'],
+    output: {
+      dir: 'hooks/build',
+      format: 'cjs',
+    },
+    plugins: [...commonPlugins, typescript({ tsconfig: './hooks/tsconfig.json' })],
+  },
+  {
     input: ['cli/upload/index.ts'],
     output: {
       dir: 'upload',
