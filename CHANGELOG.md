@@ -1,8 +1,10 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+## [Unreleased]
 
 ### Added
+
+- Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
 
 - Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
 
