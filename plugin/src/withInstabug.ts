@@ -5,15 +5,20 @@ import { withInstabugIOS } from './withInstabugIOS';
 
 export interface PluginProps {
   name?: string;
-  enable?: boolean;
+  forceUploadSourceMaps?: boolean;
+  enableMediaUploadBugReporting?: boolean;
 }
 
 const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props) => {
   let cfg = config;
-  if (props.enable === null) {
-    props.enable = false;
+  if (props.forceUploadSourceMaps === null) {
+    props.forceUploadSourceMaps = false;
   }
-  if (props.enable === true) {
+
+  if (props.enableMediaUpload === null) {
+    props.enableMediaUpload = true;
+  }
+  if (props.forceUploadSourceMaps === true) {
     try {
       cfg = withInstabugAndroid(cfg, {
         ...props,

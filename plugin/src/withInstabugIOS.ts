@@ -1,5 +1,5 @@
 import type { ConfigPlugin, XcodeProject } from 'expo/config-plugins';
-import { withXcodeProject } from 'expo/config-plugins';
+import { withXcodeProject, withInfoPlist } from 'expo/config-plugins';
 import type { PluginProps } from './withInstabug';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -9,7 +9,7 @@ const PHASE_COMMENT = 'Bundle React Native code and images';
 const INSTABUG_BUILD_PHASE = '[instabug-reactnative] Upload Sourcemap';
 
 export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
-  return withXcodeProject(config, (configXcode) => {
+  let cfg = withXcodeProject(config, (configXcode) => {
     const xcodeProject: XcodeProject = configXcode.modResults;
     const buildPhases = xcodeProject.hash.project.objects[BUILD_PHASE];
 
@@ -34,7 +34,7 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
     // Add Instabug build phase if not present
     const instabugPhase = findPhaseByName(INSTABUG_BUILD_PHASE);
 
-    if (instabugPhase == null && props.enable) {
+    if (instabugPhase == null && props.forceUploadSourceMaps) {
       const packagePath = require.resolve(`${props.name}/package.json`);
       const packageDir = path.dirname(packagePath);
       const sourcemapsPath = path.join(packageDir, 'ios/sourcemaps.sh');
@@ -57,6 +57,25 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
 
     return configXcode;
   });
+  if (props.enableMediaUploadBugReporting) {
+    const instabugConfig = config?.extra?.instabug || {}; // Read custom configuration from extra.instabug
+
+    const microphonePermission =
+      instabugConfig.microphonePermission || 'This app needs access to your microphone.';
+    const photoLibraryPermission =
+      instabugConfig.photoLibraryPermission || 'This app needs access to your photos.';
+
+    // Modify Info.plist for iOS
+    cfg = withInfoPlist(config, (configXcode) => {
+      configXcode.ios.infoPlist = {
+        ...configXcode.ios.infoPlist,
+        NSMicrophoneUsageDescription: microphonePermission,
+        NSPhotoLibraryUsageDescription: photoLibraryPermission,
+      };
+      return config;
+    });
+  }
+  return cfg;
 };
 
 function addSourceMapExport(script: string): string {
