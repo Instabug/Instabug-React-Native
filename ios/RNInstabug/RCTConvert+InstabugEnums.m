@@ -109,4 +109,19 @@ RCT_ENUM_CONVERTER(
   integerValue
 );
 
+RCT_ENUM_CONVERTER(
+  IBGAutoMaskScreenshotOption,
+  ArgsRegistry.autoMaskingTypes,
+  IBGAutoMaskScreenshotOptionMaskNothing,
+  integerValue
+);
+
+RCT_ENUM_CONVERTER(
+  IBGActionType,
+  ArgsRegistry.userConsentActionTypes,
+  IBGActionTypeNoChat,
+  integerValue
+);
+
 @end
+

@@ -24,7 +24,9 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *)nonFatalExceptionLevel;
 + (ArgsDictionary *) launchType;
 + (ArgsDictionary *) overAirServices;
++ (ArgsDictionary *) userConsentActionTypes;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
++ (ArgsDictionary *)autoMaskingTypes;
 
 @end

@@ -12,6 +12,7 @@ import * as Instabug from '../../src/modules/Instabug';
 import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeEvents, NativeInstabug, emitter } from '../../src/native/NativeInstabug';
 import {
+  AutoMaskingType,
   ColorTheme,
   InvocationEvent,
   Locale,
@@ -909,5 +910,12 @@ describe('Instabug Module', () => {
 
     expect(emitter.listenerCount(NativeEvents.ON_W3C_FLAGS_CHANGE)).toBe(1);
     expect(callback).toHaveBeenCalled();
+  });
+
+  it('should call the native method enableAutoMasking', () => {
+    Instabug.enableAutoMasking([AutoMaskingType.labels]);
+
+    expect(NativeInstabug.enableAutoMasking).toBeCalledTimes(1);
+    expect(NativeInstabug.enableAutoMasking).toBeCalledWith([AutoMaskingType.labels]);
   });
 });

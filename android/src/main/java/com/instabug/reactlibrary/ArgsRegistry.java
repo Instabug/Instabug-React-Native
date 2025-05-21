@@ -18,6 +18,7 @@ import com.instabug.library.invocation.util.InstabugVideoRecordingButtonPosition
 import com.instabug.library.sessionreplay.model.SessionMetadata;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.library.util.overairversion.OverAirVersionType;
+import com.instabug.library.MaskingType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +63,8 @@ final class ArgsRegistry {
             putAll(placeholders);
             putAll(launchType);
             putAll(overAirUpdateService);
+            putAll(autoMaskingTypes);
+            putAll(userConsentActionType);
         }};
     }
 
@@ -142,6 +145,12 @@ final class ArgsRegistry {
         put("reproStepsEnabledWithNoScreenshots", ReproMode.EnableWithNoScreenshots);
         put("reproStepsEnabled", ReproMode.EnableWithScreenshots);
         put("reproStepsDisabled", ReproMode.Disable);
+    }};
+
+    static final ArgsMap<String> userConsentActionType = new ArgsMap<String>() {{
+        put("dropAutoCapturedMedia",  com.instabug.bug.userConsent.ActionType.DROP_AUTO_CAPTURED_MEDIA);
+        put("dropLogs",  com.instabug.bug.userConsent.ActionType.DROP_LOGS);
+        put("noChat",  com.instabug.bug.userConsent.ActionType.NO_CHAT);
     }};
 
     static final ArgsMap<Integer> sdkLogLevels = new ArgsMap<Integer>() {{
@@ -260,5 +269,10 @@ final class ArgsRegistry {
         put(SessionMetadata.LaunchType.COLD,"cold");
         put(SessionMetadata.LaunchType.WARM,"warm" );
     }};
-
+    public static final ArgsMap<Integer> autoMaskingTypes = new ArgsMap<Integer>() {{
+        put("labels", MaskingType.LABELS);
+        put("textInputs", MaskingType.TEXT_INPUTS);
+        put("media", MaskingType.MEDIA);
+        put("none", MaskingType.MASK_NOTHING);
+    }};
 }
