@@ -37,13 +37,6 @@ export default [
       dir: 'upload',
       format: 'cjs',
     },
-    plugins: [
-      ...commonPlugins,
-      babel({
-        babelHelpers: 'bundled',
-        exclude: 'node_modules/**', // <--- important
-      }),
-      typescript({ tsconfig: './tsconfig.upload.json' }),
-    ],
+    plugins: [...commonPlugins, typescript({ tsconfig: './tsconfig.upload.json' })],
   },
 ];
