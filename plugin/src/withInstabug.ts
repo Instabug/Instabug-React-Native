@@ -1,5 +1,6 @@
 import type { ConfigPlugin } from 'expo/config-plugins';
 import { createRunOncePlugin } from 'expo/config-plugins';
+
 import { withInstabugAndroid } from './withInstabugAndroid';
 import { withInstabugIOS } from './withInstabugIOS';
 
@@ -9,46 +10,47 @@ export interface PluginProps {
   enableMediaUploadBugReporting?: boolean;
 }
 
-const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props) => {
-  let cfg = config;
-  if (props.forceUploadSourceMaps === null) {
-    props.forceUploadSourceMaps = false;
-  }
-
-  if (props.enableMediaUpload === null) {
-    props.enableMediaUpload = true;
-  }
-  if (props.forceUploadSourceMaps === true) {
-    try {
-      cfg = withInstabugAndroid(cfg, {
-        ...props,
-        name: instabugPackage.name,
-      });
-    } catch (e) {
-      console.warn(`There was a problem with configuring your native Android project: ${e}`);
-    }
-  }
-  try {
-    cfg = withInstabugIOS(cfg, {
-      ...props,
-      name: instabugPackage.name,
-    });
-  } catch (e) {
-    console.warn(`There was a problem with configuring your native iOS project: ${e}`);
-  }
-
-  return cfg;
-};
-
-const instabugPackage: {
+const instabugPackage = require('../../package.json') as {
   name: string;
   version: string;
-} = require('../../package.json');
+};
 
-const withInstabug = createRunOncePlugin(
+const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props = {}) => {
+  const { forceUploadSourceMaps = false, enableMediaUploadBugReporting = false } = props;
+
+  const sharedProps = {
+    ...props,
+    name: instabugPackage.name,
+    forceUploadSourceMaps,
+    enableMediaUploadBugReporting,
+  };
+
+  let updatedConfig = config;
+
+  // Android configuration (only if source maps are enabled)
+  if (forceUploadSourceMaps) {
+    try {
+      updatedConfig = withInstabugAndroid(updatedConfig, sharedProps);
+    } catch (err) {
+      console.warn(
+        '[Instabug] Failed to configure Android project:',
+        (err as Error).message ?? err,
+      );
+    }
+  }
+
+  // iOS configuration
+  try {
+    updatedConfig = withInstabugIOS(updatedConfig, sharedProps);
+  } catch (err) {
+    console.warn('[Instabug] Failed to configure iOS project:', (err as Error).message ?? err);
+  }
+
+  return updatedConfig;
+};
+
+export const withInstabug = createRunOncePlugin(
   withInstabugPlugin,
   instabugPackage.name,
   instabugPackage.version,
 );
-
-export { withInstabug };

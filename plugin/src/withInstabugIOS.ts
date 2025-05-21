@@ -9,8 +9,8 @@ const PHASE_COMMENT = 'Bundle React Native code and images';
 const INSTABUG_BUILD_PHASE = '[instabug-reactnative] Upload Sourcemap';
 
 export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
-  let cfg = withXcodeProject(config, (configXcode) => {
-    const xcodeProject: XcodeProject = configXcode.modResults;
+  let updatedConfig = withXcodeProject(config, (configXcode) => {
+    const xcodeProject = configXcode.modResults;
     const buildPhases = xcodeProject.hash.project.objects[BUILD_PHASE];
 
     if (!buildPhases) {
@@ -18,75 +18,89 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
       return configXcode;
     }
 
-    const findPhaseByName = (targetName: string) => {
-      return Object.entries(buildPhases).find(([, phase]: any) => {
-        const rawName = phase?.name ?? '';
-        const cleanName = rawName
-          .toLowerCase()
-          .replace('[cp-user] ', '')
-          .replace(/^"+|"+$/g, '')
-          .trim();
-        const target = targetName.toLowerCase().trim();
-        return cleanName === target;
-      })?.[1];
-    };
+    // Add Instabug build phase if not already present
+    const hasInstabugPhase = Boolean(findBuildPhase(buildPhases, INSTABUG_BUILD_PHASE));
 
-    // Add Instabug build phase if not present
-    const instabugPhase = findPhaseByName(INSTABUG_BUILD_PHASE);
-
-    if (instabugPhase == null && props.forceUploadSourceMaps) {
-      const packagePath = require.resolve(`${props.name}/package.json`);
-      const packageDir = path.dirname(packagePath);
-      const sourcemapsPath = path.join(packageDir, 'ios/sourcemaps.sh');
-
-      if (fs.existsSync(sourcemapsPath)) {
-        xcodeProject.addBuildPhase([], BUILD_PHASE, INSTABUG_BUILD_PHASE, null, {
-          shellPath: '/bin/sh',
-          shellScript: '/bin/sh ' + sourcemapsPath,
-        });
-      } else {
-        console.warn(`Could not find sourcemaps.sh at path: ${sourcemapsPath}`);
-      }
+    if (!hasInstabugPhase && props.forceUploadSourceMaps) {
+      addInstabugBuildPhase(xcodeProject, props.name);
     }
 
-    const bundleReactNativePhase = xcodeProject.pbxItemByComment(PHASE_COMMENT, BUILD_PHASE);
-
-    if (bundleReactNativePhase?.shellScript) {
-      bundleReactNativePhase.shellScript = addSourceMapExport(bundleReactNativePhase.shellScript);
+    // Patch bundle React Native phase with source map export
+    const bundlePhase = xcodeProject.pbxItemByComment(PHASE_COMMENT, BUILD_PHASE);
+    if (bundlePhase?.shellScript) {
+      bundlePhase.shellScript = injectSourceMapExport(bundlePhase.shellScript);
     }
 
     return configXcode;
   });
+
+  // Add media permissions to Info.plist if enabled
   if (props.enableMediaUploadBugReporting) {
-    const instabugConfig = config?.extra?.instabug || {}; // Read custom configuration from extra.instabug
+    const instabugConfig = config.extra?.instabug ?? {};
 
     const microphonePermission =
       instabugConfig.microphonePermission || 'This app needs access to your microphone.';
     const photoLibraryPermission =
       instabugConfig.photoLibraryPermission || 'This app needs access to your photos.';
 
-    // Modify Info.plist for iOS
-    cfg = withInfoPlist(config, (configXcode) => {
-      configXcode.ios.infoPlist = {
-        ...configXcode.ios.infoPlist,
-        NSMicrophoneUsageDescription: microphonePermission,
-        NSPhotoLibraryUsageDescription: photoLibraryPermission,
-      };
-      return config;
+    updatedConfig = withInfoPlist(updatedConfig, (configXcode) => {
+      const plist = configXcode.ios.infoPlist ?? {};
+
+      if (!plist.NSMicrophoneUsageDescription) {
+        plist.NSMicrophoneUsageDescription = microphonePermission;
+      }
+
+      if (!plist.NSPhotoLibraryUsageDescription) {
+        plist.NSPhotoLibraryUsageDescription = photoLibraryPermission;
+      }
+
+      configXcode.ios.infoPlist = plist;
+      return configXcode;
     });
   }
-  return cfg;
+
+  return updatedConfig;
 };
 
-function addSourceMapExport(script: string): string {
+// Find a build phase by its clean name
+function findBuildPhase(buildPhases: any, targetName: string): any | undefined {
+  const target = targetName.toLowerCase().trim();
+  return Object.values(buildPhases).find((phase: any) => {
+    const rawName = phase?.name ?? '';
+    const cleanName = rawName
+      .toLowerCase()
+      .replace('[cp-user] ', '')
+      .replace(/^"+|"+$/g, '')
+      .trim();
+    return cleanName === target;
+  });
+}
+
+// Inject Instabug shell script phase
+function addInstabugBuildPhase(xcodeProject: XcodeProject, packageName: string): void {
+  try {
+    const packagePath = require.resolve(`${packageName}/package.json`);
+    const sourcemapScriptPath = path.join(path.dirname(packagePath), 'ios/sourcemaps.sh');
+
+    if (!fs.existsSync(sourcemapScriptPath)) {
+      console.warn(`[Instabug] sourcemaps.sh not found at: ${sourcemapScriptPath}`);
+      return;
+    }
+
+    xcodeProject.addBuildPhase([], BUILD_PHASE, INSTABUG_BUILD_PHASE, null, {
+      shellPath: '/bin/sh',
+      shellScript: `/bin/sh ${sourcemapScriptPath}`,
+    });
+  } catch (err) {
+    console.warn(`[Instabug] Failed to resolve package path for "${packageName}":`, err);
+  }
+}
+
+// Inject source map export line into the shell script
+function injectSourceMapExport(script: string): string {
   const exportLine = 'export SOURCEMAP_FILE="$DERIVED_FILE_DIR/main.jsbundle.map"';
   const escapedLine = exportLine.replace(/\$/g, '\\$').replace(/"/g, '\\"');
-
   const injectedLine = `${escapedLine}\\n`;
 
-  if (script.includes(escapedLine)) {
-    return script;
-  }
-
-  return script.replace(/^"/, `"${injectedLine}`);
+  return script.includes(escapedLine) ? script : script.replace(/^"/, `"${injectedLine}`);
 }
