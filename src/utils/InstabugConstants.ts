@@ -12,6 +12,13 @@ const InstabugConstants = {
   REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
     'IBG-RN: Expected key and value passed to removeUserAttribute to be of type string',
   DEFAULT_METRO_PORT: '8081',
+  IBG_APM_TAG: 'IBG-APM: ',
+  SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE:
+    'Android Plugin Detected. Switched to Native Interception.',
+  PLUGIN_NOT_INSTALLED_MESSAGE:
+    'Network Spans will not be captured as Android Plugin is not installed. Disabling Native Interception to minimize data loss.',
+  NATIVE_INTERCEPTION_DISABLED_MESSAGE:
+    'Network Spans capture is disabled by Instabug. Disabling native interception to avoid data loss.',
 };
 
 export default InstabugConstants;
