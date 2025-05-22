@@ -12,6 +12,8 @@
 
 - Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
 
+- Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
+
 ### Fixed
 
 - Not sending the inComplete xhrRequest. ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))

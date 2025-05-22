@@ -12,12 +12,19 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+            credentials {
+                username "instabug"
+                password System.getenv("INSTABUG_REPOSITORY_PASSWORD")
+            }
+        }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.1.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.instabug.library:instabug-plugin:14.3.0.6745894-SNAPSHOT")
+        classpath("com.instabug.library:instabug-plugin:14.1.0.6273967-SNAPSHOT")
     }
 }
 
@@ -27,6 +34,13 @@ allprojects {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
 
+        maven {
+            url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
+            credentials {
+                username "instabug"
+                password System.getenv("INSTABUG_REPOSITORY_PASSWORD")
+            }
+        }
         maven {
             credentials {
                 username System.getenv("DREAM11_MAVEN_USERNAME")
