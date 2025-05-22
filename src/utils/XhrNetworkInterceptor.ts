@@ -87,7 +87,7 @@ const getTraceparentHeader = async (networkData: NetworkData) => {
   });
 };
 
-export const injectHeaders = async (
+export const injectHeaders = (
   networkData: NetworkData,
   featureFlags: {
     isW3cExternalTraceIDEnabled: boolean;
@@ -115,10 +115,7 @@ export const injectHeaders = async (
   return injectionMethodology;
 };
 
-const identifyCaughtHeader = async (
-  networkData: NetworkData,
-  isW3cCaughtHeaderEnabled: boolean,
-) => {
+const identifyCaughtHeader = (networkData: NetworkData, isW3cCaughtHeaderEnabled: boolean) => {
   if (isW3cCaughtHeaderEnabled) {
     networkData.w3cCaughtHeader = networkData.requestHeaders.traceparent;
     return networkData.requestHeaders.traceparent;
@@ -316,6 +313,10 @@ export default {
       if (traceparent) {
         this.setRequestHeader('Traceparent', traceparent);
       }
+      if (this.readyState === this.UNSENT) {
+        return; // Prevent sending the request if not opened
+      }
+
       originalXHRSend.apply(this, [data]);
     };
     isInterceptorEnabled = true;

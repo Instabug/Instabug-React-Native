@@ -26,5 +26,6 @@ typedef NSDictionary<NSString*, NSNumber*> ArgsDictionary;
 + (ArgsDictionary *) userConsentActionTypes;
 
 + (NSDictionary<NSString *, NSString *> *) placeholders;
++ (ArgsDictionary *)autoMaskingTypes;
 
 @end

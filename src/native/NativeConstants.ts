@@ -14,6 +14,7 @@ export type NativeConstants = NativeSdkDebugLogsLevel &
   NativeNonFatalErrorLevel &
   NativeStringKey &
   NativeLaunchType &
+  NativeAutoMaskingType &
   NativeUserConsentActionType;
 
 interface NativeSdkDebugLogsLevel {
@@ -199,4 +200,11 @@ interface NativeLaunchType {
   cold: any;
   warm: any;
   unknown: any;
+}
+
+interface NativeAutoMaskingType {
+  labels: any;
+  textInputs: any;
+  media: any;
+  none: any;
 }

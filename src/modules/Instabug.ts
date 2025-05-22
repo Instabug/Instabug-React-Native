@@ -18,6 +18,7 @@ import Report from '../models/Report';
 import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
 import { registerW3CFlagsListener } from '../utils/FeatureFlags';
 import {
+  AutoMaskingType,
   ColorTheme,
   Locale,
   LogLevel,
@@ -884,4 +885,12 @@ export const _registerW3CFlagsChangeListener = (
     handler(payload);
   });
   NativeInstabug.registerW3CFlagsChangeListener();
+};
+
+/**
+ * Sets the auto mask screenshots types.
+ * @param autoMaskingTypes The masking type to be applied.
+ */
+export const enableAutoMasking = (autoMaskingTypes: AutoMaskingType[]) => {
+  NativeInstabug.enableAutoMasking(autoMaskingTypes);
 };

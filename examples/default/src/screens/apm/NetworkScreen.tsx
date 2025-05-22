@@ -10,12 +10,15 @@ import { CustomButton } from '../../components/CustomButton';
 import axios from 'axios';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
 > = ({ navigation }) => {
   const [endpointUrl, setEndpointUrl] = useState('');
   const { width, height } = useWindowDimensions();
+
+  const { isConnected } = useNetInfo();
   const defaultRequestBaseUrl = 'https://jsonplaceholder.typicode.com/posts/';
   const shortenLink = 'https://shorturl.at/3Ufj3';
   const defaultRequestUrl = `${defaultRequestBaseUrl}1`;
@@ -207,6 +210,7 @@ export const NetworkScreen: React.FC<
             />
             <CustomButton onPress={() => refetch} title="Reload GraphQL" />
             <View>
+              <Text>{isConnected ? 'Network is Connected' : 'Network is not connected'}</Text>
               {isLoading && <Text>Loading...</Text>}
               {isSuccess && <Text>GraphQL Data: {data.country.emoji}</Text>}
               {isError && <Text>Error!</Text>}
