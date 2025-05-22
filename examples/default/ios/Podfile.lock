@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (15.0.0)
+  - Instabug (15.0.1)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1626,7 +1626,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - RNInstabug (14.3.0):
-    - Instabug (= 15.0.0)
+    - Instabug
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
@@ -1770,7 +1770,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/fix-main-thread-warning/15.0.0/Instabug.podspec`)
+  - Instabug (from `https://ios-releases.instabug.com/custom/sanity/15.0.1/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1869,7 +1869,7 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-08-15-RNv0.75.1-4b3bf912cc0f705b51b71ce1a5b8bd79b93a451b
   Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/fix-main-thread-warning/15.0.0/Instabug.podspec
+    :podspec: https://ios-releases.instabug.com/custom/sanity/15.0.1/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -2024,7 +2024,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 3b1db5a683e85ec5a02946aa2b3314036f9022be
+  Instabug: 9e81b71be68626dafc74759f3458f7c5894dd2e1
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
