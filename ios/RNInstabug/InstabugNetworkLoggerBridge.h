@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 
 typedef void (^ IBGURLRequestAsyncObfuscationCompletedHandler)(NSURLRequest * _Nonnull request);
 typedef void (^IBGURLRequestResponseAsyncFilteringCompletedHandler)(BOOL keep);
