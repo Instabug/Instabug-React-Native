@@ -8,15 +8,12 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "outDir": "dist",
-
     // Interop
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
     // Emit
     "declaration": true,
     "importsNotUsedAsValues": "error",
-
     // Code Style
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
