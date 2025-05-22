@@ -41,7 +41,9 @@ RCT_EXPORT_METHOD(init:(NSString *)token
           invocationEvents:(NSArray *)invocationEventsArray
           debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
           useNativeNetworkInterception:(BOOL)useNativeNetworkInterception
-          codePushVersion:(NSString *)codePushVersion) {
+          codePushVersion:(NSString *)codePushVersion
+          overAirVersion :(NSDictionary *)overAirVersion
+                  ) {
     IBGInvocationEvent invocationEvents = 0;
 
     for (NSNumber *boxedValue in invocationEventsArray) {
@@ -50,6 +52,9 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
     [Instabug setCodePushVersion:codePushVersion];
 
+    IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:service];
+    
     [RNInstabug initWithToken:token
              invocationEvents:invocationEvents
                debugLogsLevel:sdkDebugLogsLevel
@@ -58,6 +63,11 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
 RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
     [Instabug setCodePushVersion:version];
+}
+
+RCT_EXPORT_METHOD(setOverAirVersion:(NSDictionary *)overAirVersion) {
+    IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:service];
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
