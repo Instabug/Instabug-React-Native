@@ -22,7 +22,7 @@ const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props = {}) => {
     ...props,
     name: instabugPackage.name,
     forceUploadSourceMaps,
-    enableMediaUploadBugReporting,
+    addMediaUploadBugReportingPermission,
   };
 
   let updatedConfig = config;
