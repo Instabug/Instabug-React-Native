@@ -35,7 +35,7 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
   });
 
   // Add media permissions to Info.plist if enabled
-  if (props.enableMediaUploadBugReporting) {
+  if (props.addMediaUploadBugReportingPermission) {
     const instabugConfig = config.extra?.instabug ?? {};
 
     const microphonePermission =

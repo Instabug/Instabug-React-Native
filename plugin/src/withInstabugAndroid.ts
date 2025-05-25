@@ -1,9 +1,9 @@
 import type { ConfigPlugin } from 'expo/config-plugins';
-import { withAppBuildGradle } from 'expo/config-plugins';
+import { withAppBuildGradle, withAndroidManifest } from 'expo/config-plugins';
 import type { PluginProps } from './withInstabug';
 
 export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) => {
-  return withAppBuildGradle(config, (configAndroid) => {
+  config = withAppBuildGradle(config, (configAndroid) => {
     const gradle = configAndroid.modResults;
     const packageName = props.name;
 
@@ -24,7 +24,36 @@ export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) =>
 
     return configAndroid;
   });
+
+  // Inject the permission if requested
+  if (props.addMediaUploadBugReportingPermission) {
+    config = withAndroidManifest(config, (configAndroid) => {
+      const manifest = configAndroid.modResults;
+
+      const permissionName = 'android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION';
+      const alreadyExists = manifest.manifest['uses-permission']?.some(
+        (permission: any) => permission.$?.['android:name'] === permissionName,
+      );
+
+      if (!alreadyExists) {
+        manifest.manifest['uses-permission'] = [
+          ...(manifest.manifest['uses-permission'] || []),
+          {
+            $: {
+              'android:name': permissionName,
+            },
+          },
+        ];
+      }
+
+      return configAndroid;
+    });
+  }
+
+  return config;
 };
+
+// --- Helper Functions ---
 
 function injectGroovyScript(buildGradle: string, packageName: string): string {
   if (buildGradle.includes('sourcemaps.gradle')) {
