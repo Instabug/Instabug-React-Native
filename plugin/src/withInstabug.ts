@@ -28,15 +28,10 @@ const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props = {}) => {
   let updatedConfig = config;
 
   // Android configuration (only if source maps are enabled)
-  if (forceUploadSourceMaps) {
-    try {
-      updatedConfig = withInstabugAndroid(updatedConfig, sharedProps);
-    } catch (err) {
-      console.warn(
-        '[Instabug] Failed to configure Android project:',
-        (err as Error).message ?? err,
-      );
-    }
+  try {
+    updatedConfig = withInstabugAndroid(updatedConfig, sharedProps);
+  } catch (err) {
+    console.warn('[Instabug] Failed to configure Android project:', (err as Error).message ?? err);
   }
 
   // iOS configuration

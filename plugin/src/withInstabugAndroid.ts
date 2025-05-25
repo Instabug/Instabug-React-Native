@@ -4,24 +4,25 @@ import type { PluginProps } from './withInstabug';
 
 export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) => {
   config = withAppBuildGradle(config, (configAndroid) => {
-    const gradle = configAndroid.modResults;
-    const packageName = props.name;
+    if (props.forceUploadSourceMaps) {
+      const gradle = configAndroid.modResults;
+      const packageName = props.name;
 
-    if (!packageName) {
-      console.warn('[Instabug] Missing "name" in plugin props. Skipping Android configuration.');
-      return configAndroid;
+      if (!packageName) {
+        console.warn('[Instabug] Missing "name" in plugin props. Skipping Android configuration.');
+        return configAndroid;
+      }
+
+      if (gradle.language === 'groovy') {
+        gradle.contents = injectGroovyScript(gradle.contents, packageName);
+      } else if (gradle.language === 'kt') {
+        gradle.contents = injectKotlinScript(gradle.contents, packageName);
+      } else {
+        throw new Error(
+          '[Instabug] Unsupported Gradle language. Only Groovy and Kotlin DSL are supported.',
+        );
+      }
     }
-
-    if (gradle.language === 'groovy') {
-      gradle.contents = injectGroovyScript(gradle.contents, packageName);
-    } else if (gradle.language === 'kt') {
-      gradle.contents = injectKotlinScript(gradle.contents, packageName);
-    } else {
-      throw new Error(
-        '[Instabug] Unsupported Gradle language. Only Groovy and Kotlin DSL are supported.',
-      );
-    }
-
     return configAndroid;
   });
 
