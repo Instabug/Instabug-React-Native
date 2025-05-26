@@ -1626,7 +1626,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - RNInstabug (14.3.0):
-    - Instabug (= 15.0.1)
+    - Instabug 
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
