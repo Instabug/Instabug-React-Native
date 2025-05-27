@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Bump Instabug Android SDK to v14.0.5 ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389)). [See release notes](https://instabug.atlassian.net/wiki/spaces/SWAT/pages/5001379841/D11+-+Android+14.0.5+-+Public+Release+Notes).
+- Bump Instabug Android SDK to v14.0.5 ([#1398](https://github.com/Instabug/Instabug-React-Native/pull/1398)). [See release notes](https://instabug.atlassian.net/wiki/spaces/SWAT/pages/5001379841/D11+-+Android+14.0.5+-+Public+Release+Notes).
 
 ## [14.0.4](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.3...14.0.4) (May 1, 2025)
 
