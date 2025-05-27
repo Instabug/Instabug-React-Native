@@ -460,4 +460,7 @@ RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
     IBGNetworkLogger.logBodyEnabled = isEnabled;
 }
 
+RCT_EXPORT_METHOD(getNetworkBodyMaxSize:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.getNetworkBodyMaxSize));
+}
 @end
