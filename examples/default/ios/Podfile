@@ -16,8 +16,7 @@ target 'InstabugExample' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   # add this line
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/fix-main-thread-warning/15.0.0/Instabug.podspec'
-
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-expose_network_limit-expose_body_limit/15.0.1/Instabug.podspec'
   # Flags change depending on the env values.
   flags = get_default_flags()
 
