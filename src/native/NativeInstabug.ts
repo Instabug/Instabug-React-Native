@@ -155,6 +155,7 @@ export interface InstabugNativeModule extends NativeModule {
   // W3C Feature Flags Listener for Android
   registerW3CFlagsChangeListener(): void;
   enableAutoMasking(autoMaskingTypes: AutoMaskingType[]): void;
+  getNetworkBodyMaxSize(): Promise<number>;
 }
 
 export const NativeInstabug = NativeModules.Instabug;

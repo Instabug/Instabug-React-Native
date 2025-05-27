@@ -5,6 +5,7 @@ export const FeatureFlags = {
   isW3ExternalTraceID: () => NativeInstabug.isW3ExternalTraceIDEnabled(),
   isW3ExternalGeneratedHeader: () => NativeInstabug.isW3ExternalGeneratedHeaderEnabled(),
   isW3CaughtHeader: () => NativeInstabug.isW3CaughtHeaderEnabled(),
+  networkLogLimit: () => NativeInstabug.getNetworkBodyMaxSize(),
 };
 
 export const registerW3CFlagsListener = () => {

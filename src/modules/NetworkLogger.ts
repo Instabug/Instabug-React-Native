@@ -29,7 +29,9 @@ export const setEnabled = (isEnabled: boolean) => {
     xhr.setOnDoneCallback(async (network) => {
       // eslint-disable-next-line no-new-func
       const predicate = Function('network', 'return ' + _requestFilterExpression);
+
       if (!predicate(network)) {
+        const MAX_NETWORK_BODY_SIZE_IN_BYTES = await NativeInstabug.getNetworkBodyMaxSize();
         try {
           if (_networkDataObfuscationHandler) {
             network = await _networkDataObfuscationHandler(network);
@@ -41,14 +43,28 @@ export const setEnabled = (isEnabled: boolean) => {
               return;
             }
           }
-          if (network.requestBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
-            network.requestBody = InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE;
-            Logger.warn('IBG-RN:', InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE);
+          if (network.requestBodySize > MAX_NETWORK_BODY_SIZE_IN_BYTES) {
+            network.requestBody = `${InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE}${
+              MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+            } Kb`;
+            Logger.warn(
+              'IBG-RN:',
+              `${InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE}${
+                MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+              } Kb`,
+            );
           }
 
-          if (network.responseBodySize > InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES) {
-            network.responseBody = InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE;
-            Logger.warn('IBG-RN:', InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE);
+          if (network.responseBodySize > MAX_NETWORK_BODY_SIZE_IN_BYTES) {
+            network.responseBody = `${InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE}${
+              MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+            } Kb`;
+            Logger.warn(
+              'IBG-RN:',
+              `${InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE}${
+                MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+              } Kb`,
+            );
           }
 
           if (network.requestBody && isContentTypeNotAllowed(network.requestContentType)) {
