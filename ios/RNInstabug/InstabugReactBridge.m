@@ -23,7 +23,7 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[@"IBGpreSendingHandler" , @"IBGNetworkLoggerHandler"];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -440,10 +440,6 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
 
-RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
-    IBGNetworkLogger.logBodyEnabled = isEnabled;
-}
-
 RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
 
    IBGAutoMaskScreenshotOption autoMaskingOptions = 0;
@@ -454,10 +450,14 @@ RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
     }
 
     [Instabug setAutoMaskScreenshots: autoMaskingOptions];
-
 };
 
 RCT_EXPORT_METHOD(getNetworkBodyMaxSize:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     resolve(@(IBGNetworkLogger.getNetworkBodyMaxSize));
 }
+
+RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.logBodyEnabled = isEnabled;
+}
+
 @end

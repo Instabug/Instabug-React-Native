@@ -74,6 +74,7 @@ const mockInstabug: InstabugNativeModule = {
   isW3CaughtHeaderEnabled: jest.fn(),
   registerW3CFlagsChangeListener: jest.fn(),
   setNetworkLogBodyEnabled: jest.fn(),
+  setOnFeaturesUpdatedListener: jest.fn(),
   enableAutoMasking: jest.fn(),
   getNetworkBodyMaxSize: jest.fn().mockResolvedValue(10240), // 10 KB
 };

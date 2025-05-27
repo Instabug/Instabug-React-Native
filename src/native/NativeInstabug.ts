@@ -154,6 +154,8 @@ export interface InstabugNativeModule extends NativeModule {
 
   // W3C Feature Flags Listener for Android
   registerW3CFlagsChangeListener(): void;
+
+  setOnFeaturesUpdatedListener(handler?: (params: any) => void): void; // android only
   enableAutoMasking(autoMaskingTypes: AutoMaskingType[]): void;
   getNetworkBodyMaxSize(): Promise<number>;
 }
@@ -162,6 +164,7 @@ export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
+  IBG_ON_FEATURES_UPDATED_CALLBACK = 'IBGOnFeatureUpdatedCallback',
   ON_W3C_FLAGS_CHANGE = 'IBGOnNewW3CFlagsUpdateReceivedCallback',
 }
 

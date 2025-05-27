@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, atomic, assign) BOOL w3ExternalGeneratedHeaderEnabled;
 @property (class, atomic, assign) BOOL w3CaughtHeaderEnabled;
 
+@property (class, atomic, assign) BOOL isNativeNetworkInterceptionFeatureEnabled;
 
 + (void)disableAutomaticCapturingOfNetworkLogs;
 + (void)addNetworkLogWithUrl:(NSString *_Nonnull)url
