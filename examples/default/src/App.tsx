@@ -50,7 +50,7 @@ export const App: React.FC = () => {
         token: 'deb1910a7342814af4e4c9210c786f35',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
-        networkInterceptionMode: NetworkInterceptionMode.native,
+        networkInterceptionMode: NetworkInterceptionMode.javascript,
       });
 
       CrashReporting.setNDKCrashesEnabled(true);

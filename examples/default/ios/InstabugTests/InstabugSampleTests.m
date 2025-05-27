@@ -634,4 +634,23 @@
     OCMVerify([mock setLogBodyEnabled:isEnabled]);
 }
 
+- (void)testGetNetworkBodyMaxSize {
+    id mock = OCMClassMock([IBGNetworkLogger class]);
+    double expectedValue = 10240.0;
+
+    OCMStub([mock getNetworkBodyMaxSize]).andReturn(expectedValue);
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Call resolve block"];
+    RCTPromiseResolveBlock resolve = ^(NSNumber *result) {
+        XCTAssertEqual(result.doubleValue, expectedValue);
+        [expectation fulfill];
+    };
+
+    [self.instabugBridge getNetworkBodyMaxSize:resolve :nil];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+
+    OCMVerify(ClassMethod([mock getNetworkBodyMaxSize]));
+}
+
+
 @end
