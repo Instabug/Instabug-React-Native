@@ -54,6 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
      generatedW3CTraceparent:(NSString * _Nullable)generatedW3CTraceparent
       caughtedW3CTraceparent:(NSString * _Nullable)caughtedW3CTraceparent;
 
++ (void)forceStartNetworkLogging;
++ (void)forceStopNetworkLogging;
+
++ (void)setCPRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
++ (void)setCPRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
++ (void)setCPResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
++ (double)getNetworkBodyMaxSize;
+
 @end
 
 NS_ASSUME_NONNULL_END

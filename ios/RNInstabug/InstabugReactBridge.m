@@ -456,4 +456,8 @@ RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
     [Instabug setAutoMaskScreenshots: autoMaskingOptions];
 
 };
+
+RCT_EXPORT_METHOD(getNetworkBodyMaxSize:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
+    resolve(@(IBGNetworkLogger.getNetworkBodyMaxSize));
+}
 @end
