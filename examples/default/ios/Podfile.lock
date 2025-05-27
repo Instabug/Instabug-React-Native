@@ -1626,7 +1626,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - RNInstabug (14.3.0):
-    - Instabug 
+    - Instabug
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
@@ -2024,7 +2024,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 0361d294a630f64f4d6f43a5b14b752c05ed33bd
+  Instabug: ba6587d15ad5e3ffa265afc8174ff83af4eed29d
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
