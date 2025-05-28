@@ -19,12 +19,15 @@ export interface UploadEasUpdatesSourcemapsOptions {
 
 function getMapFile(folderPath: string): string | null {
   try {
-    const files = fs.readdirSync(folderPath);
-    const mapFile = files.find((file) => file.endsWith('.map'));
-    if (!mapFile) {
-      return null;
+    if (fs.existsSync(folderPath)) {
+      const files = fs.readdirSync(folderPath);
+      const mapFile = files.find((file) => file.endsWith('.map'));
+      if (!mapFile) {
+        return null;
+      }
+      return path.join(folderPath, mapFile);
     }
-    return path.join(folderPath, mapFile);
+    return null;
   } catch (err) {
     console.error('Failed to read folder:', err);
     return null;

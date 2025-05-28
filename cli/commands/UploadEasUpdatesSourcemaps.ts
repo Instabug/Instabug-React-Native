@@ -5,7 +5,11 @@ export const uploadEasUpdatesSourcemapsCommand = new Command();
 
 uploadEasUpdatesSourcemapsCommand
   .name('upload-eas-updates-sourcemaps')
-  .addOption(new Option('-f, --file <path>', 'The path of eas update folder').makeOptionMandatory())
+  .addOption(
+    new Option('-f, --file <path>', 'The path of eas update folder')
+      .makeOptionMandatory()
+      .default('dist'),
+  )
   .addOption(
     new Option('-t, --token <value>', 'Your App Token')
       .env('INSTABUG_APP_TOKEN')
@@ -24,7 +28,6 @@ uploadEasUpdatesSourcemapsCommand
   .addOption(
     new Option('--androidUpdateId <value>', "The CodePush label if it's a CodePush release"),
   )
-
   .addOption(new Option('--iosUpdateId <value>', "The CodePush label if it's a CodePush release"))
   .action(function (this: Command) {
     const options = this.opts<UploadEasUpdatesSourcemapsOptions>();
