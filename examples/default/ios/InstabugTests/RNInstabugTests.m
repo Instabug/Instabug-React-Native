@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-#import "Instabug/Instabug.h"
-#import <Instabug/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
+#import <InstabugSDK/IBGTypes.h>
 #import "RNInstabug.h"
 #import "RNInstabug/Instabug+CP.h"
 #import "RNInstabug/IBGNetworkLogger+CP.h"

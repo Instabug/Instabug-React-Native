@@ -5,11 +5,11 @@
 //  Created by Yousef Hamza on 9/29/16.
 
 #import "InstabugReactBridge.h"
-#import <Instabug/Instabug.h>
-#import <Instabug/IBGBugReporting.h>
-#import <Instabug/IBGCrashReporting.h>
-#import <Instabug/IBGLog.h>
-#import <Instabug/IBGAPM.h>
+#import <InstabugSDK/InstabugSDK.h>
+#import <InstabugSDK/IBGBugReporting.h>
+#import <InstabugSDK/IBGCrashReporting.h>
+#import <InstabugSDK/IBGLog.h>
+#import <InstabugSDK/IBGAPM.h>
 #import <asl.h>
 #import <os/log.h>
 #import <React/RCTUIManager.h>
@@ -23,7 +23,7 @@
 @implementation InstabugReactBridge
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"IBGpreSendingHandler"];
+    return @[@"IBGpreSendingHandler" , @"IBGNetworkLoggerHandler"];
 }
 
 RCT_EXPORT_MODULE(Instabug)
@@ -439,5 +439,21 @@ RCT_EXPORT_METHOD(isW3CaughtHeaderEnabled:(RCTPromiseResolveBlock)resolve :(RCTP
 + (BOOL)iOSVersionIsLessThan:(NSString *)iOSVersion {
     return [iOSVersion compare:[UIDevice currentDevice].systemVersion options:NSNumericSearch] == NSOrderedDescending;
 };
+
+RCT_EXPORT_METHOD(enableAutoMasking:(NSArray *)autoMaskingTypes) {
+
+   IBGAutoMaskScreenshotOption autoMaskingOptions = 0;
+
+    for (NSNumber *event in autoMaskingTypes) {
+
+        autoMaskingOptions |= [event intValue];
+    }
+
+    [Instabug setAutoMaskScreenshots: autoMaskingOptions];
+};
+
+RCT_EXPORT_METHOD(setNetworkLogBodyEnabled:(BOOL)isEnabled) {
+    IBGNetworkLogger.logBodyEnabled = isEnabled;
+}
 
 @end

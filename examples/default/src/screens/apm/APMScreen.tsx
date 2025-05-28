@@ -3,9 +3,10 @@ import type { HomeStackParamList } from '../../navigation/HomeStack';
 import React, { useState } from 'react';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
-import { Switch, Text } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 import { APM } from 'instabug-reactnative';
 import { showNotification } from '../../utils/showNotification';
+import CustomGap from '../../components/CustomGap';
 
 export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM'>> = ({
   navigation,
@@ -17,11 +18,20 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
     APM.setEnabled(value);
     showNotification('APM status', 'APM enabled set to ' + value);
   };
+  const styles = StyleSheet.create({
+    switch: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+  });
 
   return (
     <Screen>
-      <Text>Enable APM:</Text>
-      <Switch onValueChange={toggleSwitch} value={isEnabled} />
+      <View style={styles.switch}>
+        <Text>Enable APM:</Text>
+        <Switch onValueChange={toggleSwitch} value={isEnabled} />
+      </View>
+      {CustomGap.smallV}
       <ListTile title="End App launch" onPress={() => APM.endAppLaunch()} />
       <ListTile title="Network Screen" onPress={() => navigation.navigate('NetworkTraces')} />
       <ListTile title="Traces" onPress={() => navigation.navigate('ExecutionTraces')} />

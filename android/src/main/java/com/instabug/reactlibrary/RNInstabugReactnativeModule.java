@@ -1,5 +1,7 @@
 package com.instabug.reactlibrary;
 
+import static com.instabug.apm.configuration.cp.APMFeature.APM_NETWORK_PLUGIN_INSTALLED;
+import static com.instabug.apm.configuration.cp.APMFeature.CP_NATIVE_INTERCEPTION_ENABLED;
 import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.app.Activity;
@@ -39,6 +41,8 @@ import com.instabug.library.internal.crossplatform.CoreFeaturesState;
 import com.instabug.library.internal.crossplatform.FeaturesStateListener;
 import com.instabug.library.internal.crossplatform.InternalCore;
 import com.instabug.library.featuresflags.model.IBGFeatureFlag;
+import com.instabug.library.internal.crossplatform.InternalCore;
+import com.instabug.library.internal.crossplatform.OnFeaturesUpdatedListener;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
@@ -1362,5 +1366,64 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
 
         return constants;
+    }
+
+
+    @ReactMethod
+    public void setOnFeaturesUpdatedListener() {
+        InternalCore.INSTANCE._setOnFeaturesUpdatedListener(new OnFeaturesUpdatedListener() {
+            @Override
+            public void invoke() {
+                final boolean cpNativeInterceptionEnabled = InternalAPM._isFeatureEnabledCP(CP_NATIVE_INTERCEPTION_ENABLED, "");
+                final boolean hasAPMPlugin = InternalAPM._isFeatureEnabledCP(APM_NETWORK_PLUGIN_INSTALLED, "");
+
+                WritableMap params = Arguments.createMap();
+                params.putBoolean("cpNativeInterceptionEnabled", cpNativeInterceptionEnabled);
+                params.putBoolean("hasAPMPlugin", hasAPMPlugin);
+                sendEvent(Constants.IBG_ON_FEATURES_UPDATED_CALLBACK, params);
+            }
+        });
+    }
+    /**
+    * Enables or disables capturing network body.
+    * @param isEnabled A boolean to enable/disable capturing network body.
+    */
+   @ReactMethod
+   public void setNetworkLogBodyEnabled(final boolean isEnabled) {
+       MainThreadHandler.runOnMainThread(new Runnable() {
+           @Override
+           public void run() {
+               try {
+                   Instabug.setNetworkLogBodyEnabled(isEnabled);
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       });
+   }
+     /**
+    /**
+     * Sets the auto mask screenshots types.
+     *
+     * @param autoMaskingTypes The masking type to be applied.
+     */
+    @ReactMethod
+    public void enableAutoMasking(@NonNull ReadableArray autoMaskingTypes) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+
+            @Override
+            public void run() {
+                int[] autoMassingTypesArray = new int[autoMaskingTypes.size()];
+                for (int i = 0; i < autoMaskingTypes.size(); i++) {
+                    String key = autoMaskingTypes.getString(i);
+
+                    autoMassingTypesArray[i] = ArgsRegistry.autoMaskingTypes.get(key);
+
+                }
+
+                Instabug.setAutoMaskScreenshotsTypes(autoMassingTypesArray);
+            }
+
+        });
     }
 }

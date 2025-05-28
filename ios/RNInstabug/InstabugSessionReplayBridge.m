@@ -1,9 +1,9 @@
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import <React/RCTUIManager.h>
-#import <Instabug/IBGSessionReplay.h>
+#import <InstabugSDK/IBGSessionReplay.h>
 #import "InstabugSessionReplayBridge.h"
 
 @implementation InstabugSessionReplayBridge
@@ -50,11 +50,11 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
 - (NSArray<NSDictionary *> *)getNetworkLogsArray:
      (NSArray<IBGSessionMetadataNetworkLogs *>*) networkLogs {
      NSMutableArray<NSDictionary *> *networkLogsArray = [NSMutableArray array];
-    
+
     for (IBGSessionMetadataNetworkLogs* log in networkLogs) {
           NSDictionary *nLog = @{@"url": log.url, @"statusCode": @(log.statusCode), @"duration": @(log.duration)};
           [networkLogsArray addObject:nLog];
-    }   
+    }
     return networkLogsArray;
 }
 
@@ -76,22 +76,22 @@ RCT_EXPORT_METHOD(getSessionReplayLink:
 
 RCT_EXPORT_METHOD(setSyncCallback) {
     [IBGSessionReplay setSyncCallbackWithHandler:^(IBGSessionMetadata * _Nonnull metadataObject, SessionEvaluationCompletion  _Nonnull completion) {
-        
+
         [self sendEventWithName:@"IBGSessionReplayOnSyncCallback"
                            body:[self getMetadataObjectMap:metadataObject]];
-        
+
         self.sessionEvaluationCompletion = completion;
     }];
 }
 
 RCT_EXPORT_METHOD(evaluateSync:(BOOL)result) {
-    
+
     if (self.sessionEvaluationCompletion) {
-        
+
         self.sessionEvaluationCompletion(result);
-        
+
         self.sessionEvaluationCompletion = nil;
-        
+
     }
 }
 
