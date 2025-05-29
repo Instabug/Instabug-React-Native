@@ -12,6 +12,8 @@
 
 - Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
 
+- Add support for uploading sourcemap files in expo apps. ([#1392](https://github.com/Instabug/Instabug-React-Native/pull/1392))
+
 ### Fixed
 
 - Not sending the inComplete xhrRequest. ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
