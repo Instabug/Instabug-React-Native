@@ -1,8 +1,8 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugSessionReplayBridge.h"
-#import <Instabug/IBGTypes.h>
-#import "Instabug/Instabug.h"
+#import <InstabugSDK/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 
 @interface InstabugSessionReplayTests : XCTestCase

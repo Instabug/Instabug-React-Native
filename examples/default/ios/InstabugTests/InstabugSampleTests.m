@@ -7,9 +7,9 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
-#import "Instabug/Instabug.h"
+#import "InstabugSDK/InstabugSDK.h"
 #import "InstabugReactBridge.h"
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "IBGConstants.h"
 #import "RNInstabug.h"
 #import <RNInstabug/IBGNetworkLogger+CP.h>
@@ -608,6 +608,22 @@
     OCMVerify([mock w3CaughtHeaderEnabled]);
 }
 
+- (void)testEnableAutoMasking {
+    id mock = OCMClassMock([Instabug class]);
+     
+    NSArray *autoMaskingTypes = [NSArray arrayWithObjects:
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionLabels],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionTextInputs],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMedia],
+         [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMaskNothing],
+         nil];
+     
+     OCMStub([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+     
+     [self.instabugBridge enableAutoMasking:autoMaskingTypes];
+ 
+     OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
+}
 
 - (void)testSetNetworkLogBodyEnabled {
     id mock = OCMClassMock([IBGNetworkLogger class]);

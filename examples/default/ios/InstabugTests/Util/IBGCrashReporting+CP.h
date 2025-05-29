@@ -1,4 +1,4 @@
-#import <Instabug/Instabug.h>
+#import <InstabugSDK/InstabugSDK.h>
 
 
 @interface IBGCrashReporting (CP)
