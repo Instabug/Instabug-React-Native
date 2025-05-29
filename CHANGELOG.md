@@ -20,7 +20,6 @@
 
 - Added more search capabilities to the find-token.sh script. e.g., searching in .env file for react config. [#1366](https://github.com/Instabug/Instabug-React-Native/pull/1366)
 
-
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
