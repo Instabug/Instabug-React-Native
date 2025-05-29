@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+
+### Added
+
+- Add support for uploading sourcemap files in expo apps. ([#1392](https://github.com/Instabug/Instabug-React-Native/pull/1392))
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added
