@@ -7,7 +7,7 @@ import { withInstabugIOS } from './withInstabugIOS';
 export interface PluginProps {
   name?: string;
   forceUploadSourceMaps?: boolean;
-  addMediaUploadBugReportingPermission?: boolean;
+  addScreenRecordingBugReportingPermission?: boolean;
 }
 
 const instabugPackage = require('../../package.json') as {
@@ -16,13 +16,13 @@ const instabugPackage = require('../../package.json') as {
 };
 
 const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props = {}) => {
-  const { forceUploadSourceMaps = false, addMediaUploadBugReportingPermission = false } = props;
+  const { forceUploadSourceMaps = false, addScreenRecordingBugReportingPermission = false } = props;
 
   const sharedProps = {
     ...props,
     name: instabugPackage.name,
     forceUploadSourceMaps,
-    addMediaUploadBugReportingPermission,
+    addScreenRecordingBugReportingPermission,
   };
 
   let updatedConfig = config;

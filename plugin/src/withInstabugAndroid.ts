@@ -27,7 +27,7 @@ export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) =>
   });
 
   // Inject the permission if requested
-  if (props.addMediaUploadBugReportingPermission) {
+  if (props.addScreenRecordingBugReportingPermission) {
     config = withAndroidManifest(config, (configAndroid) => {
       const manifest = configAndroid.modResults;
 
