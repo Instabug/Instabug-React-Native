@@ -2,7 +2,11 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { BugReportingScreen } from '../screens/BugReportingScreen';
+import { BugReportingScreen } from '../screens/bug-reporting/BugReportingScreen';
+import {
+  BugReportingStateScreen,
+  type BugReportingStateScreenProp,
+} from '../screens/bug-reporting/BugReportingStateScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
 import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -35,6 +39,7 @@ import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsSc
 export type HomeStackParamList = {
   Home: undefined;
   BugReporting: undefined;
+  BugReportingState: BugReportingStateScreenProp;
   CrashReporting: undefined;
   FeatureRequests: undefined;
   Replies: undefined;
@@ -73,6 +78,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="BugReporting"
         component={BugReportingScreen}
         options={{ title: 'Bug Reporting' }}
+      />
+      <HomeStack.Screen
+        name="BugReportingState"
+        component={BugReportingStateScreen}
+        options={{ title: 'Bug Reporting State' }}
       />
       <HomeStack.Screen
         name="CrashReporting"
