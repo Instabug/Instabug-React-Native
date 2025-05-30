@@ -9,16 +9,33 @@ import Instabug, {
   InvocationEvent,
 } from 'instabug-reactnative';
 
-import { ListTile } from '../components/ListTile';
-import { Screen } from '../components/Screen';
-import { useToast, Checkbox, Box, Text, VStack, Button, ScrollView, HStack } from 'native-base';
-import { Section } from '../components/Section';
-import { InputField } from '../components/InputField';
+import { ListTile } from '../../components/ListTile';
+import { Screen } from '../../components/Screen';
+import {
+  useToast,
+  Checkbox,
+  Box,
+  Text,
+  VStack,
+  Button,
+  ScrollView,
+  HStack,
+  Divider,
+  Spacer,
+} from 'native-base';
+import { Section } from '../../components/Section';
+import { InputField } from '../../components/InputField';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
+import { BugReportingState } from './BugReportingStateScreen';
 
-export const BugReportingScreen: React.FC = () => {
+export const BugReportingScreen: React.FC<
+  NativeStackScreenProps<HomeStackParamList, 'BugReporting'>
+> = ({ navigation }) => {
   const toast = useToast();
   const [reportTypes, setReportTypes] = useState<string[]>([]);
   const [invocationOptions, setInvocationOptions] = useState<string[]>([]);
+  const [isBugReportingEnabled, setIsBugReportingEnabled] = useState<boolean>(true);
 
   const [disclaimerText, setDisclaimerText] = useState<string>('');
 
@@ -70,19 +87,26 @@ export const BugReportingScreen: React.FC = () => {
   return (
     <ScrollView flex={1} bg="gray.100">
       <Screen>
-        <ListTile title="Show" onPress={() => Instabug.show()} />
-
         <ListTile
-          title="Enable"
-          onPress={() => BugReporting.setEnabled(true)}
-          testID="id_br_enable"
-        />
-        <ListTile
-          title="Disabled"
-          onPress={() => BugReporting.setEnabled(false)}
-          testID="id_br_disable"
+          title="Bug Reporting State"
+          subtitle={isBugReportingEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('BugReportingState', {
+              state: isBugReportingEnabled ? BugReportingState.Enabled : BugReportingState.Disabled,
+              setState: (newState: BugReportingState) => {
+                const isEnabled = newState === BugReportingState.Enabled;
+                setIsBugReportingEnabled(isEnabled);
+                BugReporting.setEnabled(isEnabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_br_state"
         />
 
+        <Divider my={5} />
+
+        <ListTile title="Show" onPress={() => Instabug.show()} testID="id_br_show_button" />
         <ListTile title="Send Bug Report" onPress={() => BugReporting.show(ReportType.bug, [])} />
         <ListTile
           title="Send Feedback"
@@ -94,6 +118,9 @@ export const BugReportingScreen: React.FC = () => {
           title="Ask a Question"
           onPress={() => BugReporting.show(ReportType.question, [])}
         />
+
+        <Divider my={5} />
+
         <ListTile
           title="Enable extended bug report with required fields"
           onPress={() =>
