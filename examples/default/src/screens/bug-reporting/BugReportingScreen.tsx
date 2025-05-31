@@ -11,78 +11,30 @@ import Instabug, {
 
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
-import {
-  useToast,
-  Checkbox,
-  Box,
-  Text,
-  VStack,
-  Button,
-  ScrollView,
-  HStack,
-  Divider,
-  Spacer,
-} from 'native-base';
+import { useToast, ScrollView, Divider } from 'native-base';
 import { Section } from '../../components/Section';
-import { InputField } from '../../components/InputField';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import { BugReportingState } from './BugReportingStateScreen';
+import { ExtendedBugReportState } from './ExtendedBugReportStateScreen';
 
 export const BugReportingScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'BugReporting'>
 > = ({ navigation }) => {
   const toast = useToast();
-  const [reportTypes, setReportTypes] = useState<string[]>([]);
+  const [reportTypes, setReportTypes] = useState<ReportType[]>([
+    ReportType.bug,
+    ReportType.feedback,
+    ReportType.question,
+  ]);
+  const [invocationEvents, setInvocationEvents] = useState<string[]>(['floatingButton']);
   const [invocationOptions, setInvocationOptions] = useState<string[]>([]);
   const [isBugReportingEnabled, setIsBugReportingEnabled] = useState<boolean>(true);
-
+  const [extendedBugReportState, setExtendedBugReportState] = useState<ExtendedBugReportState>(
+    ExtendedBugReportState.Disabled,
+  );
   const [disclaimerText, setDisclaimerText] = useState<string>('');
-
-  const toggleCheckbox = (value: string, setData: Dispatch<SetStateAction<string[]>>) => {
-    setData((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
-    );
-  };
-
-  const handleSetReportTypesButtonPress = () => {
-    const selectedEnums: ReportType[] = reportTypes.map((val) => {
-      switch (val) {
-        case 'bug':
-          return ReportType.bug;
-        case 'feedback':
-          return ReportType.feedback;
-        case 'question':
-          return ReportType.question;
-        default:
-          throw new Error('Invalid report type selected');
-      }
-    });
-    BugReporting.setReportTypes(selectedEnums);
-  };
-  const handleSetInvocationOptionsButtonPress = () => {
-    const selectedEnums: InvocationEvent[] = invocationOptions.map((val) => {
-      switch (val) {
-        case 'floatingButton':
-          return InvocationEvent.floatingButton;
-        case 'twoFingersSwipe':
-          return InvocationEvent.twoFingersSwipe;
-        case 'screenshot':
-          return InvocationEvent.screenshot;
-        case 'shake':
-          return InvocationEvent.shake;
-
-        default:
-          throw new Error('Invalid report type selected');
-      }
-    });
-    BugReporting.setInvocationEvents(selectedEnums);
-  };
-
-  const handleSetDisclamirTextPress = () => {
-    BugReporting.setDisclaimerText(disclaimerText);
-    setDisclaimerText('');
-  };
+  const [isSessionProfilerEnabled, setIsSessionProfilerEnabled] = useState<boolean>(true);
 
   return (
     <ScrollView flex={1} bg="gray.100">
@@ -104,39 +56,166 @@ export const BugReportingScreen: React.FC<
           testID="id_br_state"
         />
 
+        <ListTile
+          title="Extended Bug Report State"
+          subtitle={extendedBugReportState}
+          onPress={() => {
+            navigation.navigate('ExtendedBugReportState', {
+              state: extendedBugReportState,
+              setState: (newState: ExtendedBugReportState) => {
+                setExtendedBugReportState(newState);
+                switch (newState) {
+                  case ExtendedBugReportState.Disabled:
+                    BugReporting.setExtendedBugReportMode(ExtendedBugReportMode.disabled);
+                    break;
+                  case ExtendedBugReportState.EnabledWithRequiredFields:
+                    BugReporting.setExtendedBugReportMode(
+                      ExtendedBugReportMode.enabledWithRequiredFields,
+                    );
+                    break;
+                  case ExtendedBugReportState.EnabledWithOptionalFields:
+                    BugReporting.setExtendedBugReportMode(
+                      ExtendedBugReportMode.enabledWithOptionalFields,
+                    );
+                    break;
+                }
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_extended_br_state"
+        />
+
+        <ListTile
+          title="Bug Reporting Types"
+          subtitle={reportTypes.length > 0 ? reportTypes.join(', ') : 'None selected'}
+          onPress={() => {
+            navigation.navigate('BugReportingTypes', {
+              selectedTypes: reportTypes,
+              setSelectedTypes: (types: ReportType[]) => {
+                setReportTypes(types);
+                BugReporting.setReportTypes(types);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_br_types"
+        />
+
+        <ListTile
+          title="Disclaimer Text"
+          subtitle={disclaimerText || 'Not set'}
+          truncateSubtitle={true}
+          onPress={() => {
+            navigation.navigate('DisclaimerText', {
+              initialText: disclaimerText,
+              setText: (text: string) => {
+                setDisclaimerText(text);
+              },
+            });
+          }}
+          testID="id_disclaimer_text"
+        />
+
+        <ListTile
+          title="Invocation Events"
+          subtitle={invocationEvents.length > 0 ? invocationEvents.join(', ') : 'None selected'}
+          onPress={() => {
+            navigation.navigate('InvocationEvents', {
+              selectedEvents: invocationEvents,
+              setSelectedEvents: (events: string[]) => {
+                setInvocationEvents(events);
+                const selectedEnums: InvocationEvent[] = events.map((val) => {
+                  switch (val) {
+                    case 'floatingButton':
+                      return InvocationEvent.floatingButton;
+                    case 'twoFingersSwipe':
+                      return InvocationEvent.twoFingersSwipe;
+                    case 'screenshot':
+                      return InvocationEvent.screenshot;
+                    case 'shake':
+                      return InvocationEvent.shake;
+                    default:
+                      throw new Error('Invalid invocation event selected');
+                  }
+                });
+                BugReporting.setInvocationEvents(selectedEnums);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_invocation_events"
+        />
+
+        <ListTile
+          title="Invocation Options"
+          subtitle={invocationOptions.length > 0 ? invocationOptions.join(', ') : 'None selected'}
+          onPress={() => {
+            navigation.navigate('InvocationOptions', {
+              selectedOptions: invocationOptions,
+              setSelectedOptions: (options: string[]) => {
+                setInvocationOptions(options);
+                const selectedEnums: InvocationOption[] = options.map((val) => {
+                  switch (val) {
+                    case 'commentFieldRequired':
+                      return InvocationOption.commentFieldRequired;
+                    case 'emailFieldHidden':
+                      return InvocationOption.emailFieldHidden;
+                    case 'emailFieldOptional':
+                      return InvocationOption.emailFieldOptional;
+                    case 'disablePostSendingDialog':
+                      return InvocationOption.disablePostSendingDialog;
+                    default:
+                      throw new Error('Invalid invocation option selected');
+                  }
+                });
+                BugReporting.setOptions(selectedEnums);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_invocation_options"
+        />
+
+        <ListTile
+          title="Session Profiler"
+          subtitle={isSessionProfilerEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('SessionProfiler', {
+              isEnabled: isSessionProfilerEnabled,
+              setIsEnabled: (enabled: boolean) => {
+                setIsSessionProfilerEnabled(enabled);
+                Instabug.setSessionProfilerEnabled(enabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_session_profiler"
+        />
+
         <Divider my={5} />
 
-        <ListTile title="Show" onPress={() => Instabug.show()} testID="id_br_show_button" />
-        <ListTile title="Send Bug Report" onPress={() => BugReporting.show(ReportType.bug, [])} />
+        <ListTile title="Show" onPress={() => Instabug.show()} testID="id_show_button" />
+        <ListTile
+          title="Send Bug Report"
+          onPress={() => BugReporting.show(ReportType.bug, [])}
+          testID="id_send_bug_report"
+        />
         <ListTile
           title="Send Feedback"
           onPress={() =>
             BugReporting.show(ReportType.feedback, [InvocationOption.emailFieldHidden])
           }
+          testID="id_send_feedback"
         />
         <ListTile
           title="Ask a Question"
           onPress={() => BugReporting.show(ReportType.question, [])}
+          testID="id_send_question"
         />
 
         <Divider my={5} />
 
-        <ListTile
-          title="Enable extended bug report with required fields"
-          onPress={() =>
-            BugReporting.setExtendedBugReportMode(ExtendedBugReportMode.enabledWithRequiredFields)
-          }
-        />
-        <ListTile
-          title="Enable extended bug report with optional fields"
-          onPress={() =>
-            BugReporting.setExtendedBugReportMode(ExtendedBugReportMode.enabledWithOptionalFields)
-          }
-        />
-        <ListTile
-          title="Disable session profiler"
-          onPress={() => Instabug.setSessionProfilerEnabled(true)}
-        />
         <ListTile
           title="Welcome message Beta"
           onPress={() => Instabug.showWelcomeMessage(WelcomeMessageMode.beta)}
@@ -146,135 +225,7 @@ export const BugReportingScreen: React.FC<
           onPress={() => Instabug.showWelcomeMessage(WelcomeMessageMode.live)}
         />
 
-        <Box justifyContent="center" alignItems="center" p={4} bg="coolGray.100" marginY={2}>
-          <Text fontSize="md" mb={4} bold alignSelf="start" textAlign="start">
-            Bug Reporting Types
-          </Text>
-
-          <VStack space={2} w="90%">
-            <HStack space={6} justifyContent="center">
-              <Checkbox
-                isChecked={reportTypes.includes('bug')}
-                onChange={() => toggleCheckbox('bug', setReportTypes)}
-                value="bug"
-                accessible={true}
-                testID="id_br_report_type_bug"
-                size="md">
-                Bug
-              </Checkbox>
-
-              <Checkbox
-                isChecked={reportTypes.includes('feedback')}
-                onChange={() => toggleCheckbox('feedback', setReportTypes)}
-                value="feedback"
-                testID="id_br_report_type_feedback"
-                size="md">
-                Feedback
-              </Checkbox>
-
-              <Checkbox
-                isChecked={reportTypes.includes('question')}
-                onChange={() => toggleCheckbox('question', setReportTypes)}
-                value="question"
-                testID="id_br_report_type_question"
-                size="md">
-                Question
-              </Checkbox>
-            </HStack>
-
-            <Button
-              onPress={handleSetReportTypesButtonPress}
-              mt={4}
-              colorScheme="primary"
-              accessible={true}
-              testID="id_br_report_type_btn">
-              Set Bug Reporting Types
-            </Button>
-          </VStack>
-        </Box>
-
-        <Box justifyContent="center" alignItems="center" p={4} bg="coolGray.100" marginY={2}>
-          <Text fontSize="md" mb={4} bold alignSelf="start" textAlign="start">
-            Set the disclaimer text
-          </Text>
-
-          <VStack space={2} w="90%">
-            <InputField
-              placeholder="disclaimer text"
-              onChangeText={setDisclaimerText}
-              testID="id_br_disclaimer_input"
-              value={disclaimerText}
-            />
-
-            <Button
-              onPress={handleSetDisclamirTextPress}
-              mt={4}
-              colorScheme="primary"
-              testID="id_br_disclaimer_btn"
-              accessible={true}>
-              Set Disclaimer text
-            </Button>
-          </VStack>
-        </Box>
-
-        <Box justifyContent="center" alignItems="center" p={4} bg="coolGray.100" marginY={2}>
-          <Text fontSize="md" mb={4} bold alignSelf="start" textAlign="start">
-            Invocation Events
-          </Text>
-
-          <VStack space={2} w="90%">
-            <HStack space={6} justifyContent="center">
-              <Checkbox
-                isChecked={invocationOptions.includes('floatingButton')}
-                onChange={() => toggleCheckbox('floatingButton', setInvocationOptions)}
-                value="floatingButton"
-                testID="id_br_invoicetion_options_floatingButton"
-                accessible={true}
-                size="md">
-                Floating button
-              </Checkbox>
-
-              <Checkbox
-                isChecked={invocationOptions.includes('twoFingersSwipe')}
-                onChange={() => toggleCheckbox('twoFingersSwipe', setInvocationOptions)}
-                value="twoFingersSwipe"
-                testID="id_br_invoicetion_options_twoFingersSwipe"
-                accessible={true}
-                size="md">
-                Two Fingers Swipe
-              </Checkbox>
-            </HStack>
-            <HStack space={6} justifyContent="center">
-              <Checkbox
-                isChecked={invocationOptions.includes('screenshot')}
-                onChange={() => toggleCheckbox('screenshot', setInvocationOptions)}
-                value="screenshot"
-                testID="id_br_invoicetion_options_screenshot"
-                accessible={true}
-                size="md">
-                Screenshot
-              </Checkbox>
-              <Checkbox
-                isChecked={invocationOptions.includes('shake')}
-                onChange={() => toggleCheckbox('shake', setInvocationOptions)}
-                testID="id_br_invoicetion_options_shake"
-                accessible={true}
-                value="shake"
-                size="md">
-                Shake
-              </Checkbox>
-            </HStack>
-
-            <Button
-              onPress={handleSetInvocationOptionsButtonPress}
-              mt={4}
-              colorScheme="primary"
-              testID="id_br_invoicetion_options_btn"
-              accessible={true}>
-              Set Invocation Events
-            </Button>
-          </VStack>
-        </Box>
+        <Divider my={5} />
 
         <Section title="Handlers">
           <ListTile
