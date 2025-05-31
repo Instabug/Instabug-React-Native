@@ -7,6 +7,7 @@ interface ListTileProps extends PropsWithChildren {
   subtitle?: string;
   onPress?: () => void;
   testID?: string;
+  truncateSubtitle?: boolean;
 }
 
 export const ListTile: React.FC<ListTileProps> = ({
@@ -15,6 +16,7 @@ export const ListTile: React.FC<ListTileProps> = ({
   onPress,
   children,
   testID,
+  truncateSubtitle = false,
 }) => {
   return (
     <Pressable
@@ -32,7 +34,11 @@ export const ListTile: React.FC<ListTileProps> = ({
         <VStack space={2}>
           <Text>{title}</Text>
           {subtitle && (
-            <Text fontSize="xs" color="coolGray.500">
+            <Text
+              fontSize="xs"
+              color="coolGray.500"
+              numberOfLines={truncateSubtitle ? 1 : undefined}
+              ellipsizeMode={truncateSubtitle ? 'tail' : undefined}>
               {subtitle}
             </Text>
           )}

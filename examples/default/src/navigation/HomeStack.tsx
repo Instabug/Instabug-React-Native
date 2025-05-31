@@ -7,6 +7,22 @@ import {
   BugReportingStateScreen,
   type BugReportingStateScreenProp,
 } from '../screens/bug-reporting/BugReportingStateScreen';
+import {
+  ExtendedBugReportStateScreen,
+  type ExtendedBugReportStateScreenProp,
+} from '../screens/bug-reporting/ExtendedBugReportStateScreen';
+import {
+  BugReportingTypesScreen,
+  type BugReportingTypesScreenProp,
+} from '../screens/bug-reporting/BugReportingTypesScreen';
+import {
+  DisclaimerTextScreen,
+  type DisclaimerTextScreenProp,
+} from '../screens/bug-reporting/DisclaimerTextScreen';
+import {
+  InvocationOptionsScreen,
+  type InvocationOptionsScreenProp,
+} from '../screens/bug-reporting/InvocationOptionsScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
 import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -35,11 +51,28 @@ import { HttpScreen } from '../screens/apm/HttpScreen';
 import { WebViewsScreen } from '../screens/apm/webViews/WebViewsScreen';
 import { FullWebViewsScreen } from '../screens/apm/webViews/FullWebViewsScreen';
 import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsScreen';
+import {
+  InvocationEventsScreen,
+  type InvocationEventsScreenProp,
+} from '../screens/bug-reporting/InvocationEventsScreen';
+import {
+  SessionProfilerScreen,
+  type SessionProfilerScreenProp,
+} from '../screens/bug-reporting/SessionProfilerScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
+
+  // Bug Reporting //
   BugReporting: undefined;
   BugReportingState: BugReportingStateScreenProp;
+  ExtendedBugReportState: ExtendedBugReportStateScreenProp;
+  BugReportingTypes: BugReportingTypesScreenProp;
+  DisclaimerText: DisclaimerTextScreenProp;
+  InvocationEvents: InvocationEventsScreenProp;
+  SessionProfiler: SessionProfilerScreenProp;
+  InvocationOptions: InvocationOptionsScreenProp;
+
   CrashReporting: undefined;
   FeatureRequests: undefined;
   Replies: undefined;
@@ -74,6 +107,8 @@ export const HomeStackNavigator: React.FC = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+
+      {/* Bug Reporting */}
       <HomeStack.Screen
         name="BugReporting"
         component={BugReportingScreen}
@@ -84,6 +119,37 @@ export const HomeStackNavigator: React.FC = () => {
         component={BugReportingStateScreen}
         options={{ title: 'Bug Reporting State' }}
       />
+      <HomeStack.Screen
+        name="ExtendedBugReportState"
+        component={ExtendedBugReportStateScreen}
+        options={{ title: 'Extended Bug Report State' }}
+      />
+      <HomeStack.Screen
+        name="BugReportingTypes"
+        component={BugReportingTypesScreen}
+        options={{ title: 'Bug Reporting Types' }}
+      />
+      <HomeStack.Screen
+        name="DisclaimerText"
+        component={DisclaimerTextScreen}
+        options={{ title: 'Disclaimer Text' }}
+      />
+      <HomeStack.Screen
+        name="InvocationEvents"
+        component={InvocationEventsScreen}
+        options={{ title: 'Invocation Events' }}
+      />
+      <HomeStack.Screen
+        name="SessionProfiler"
+        component={SessionProfilerScreen}
+        options={{ title: 'Session Profiler' }}
+      />
+      <HomeStack.Screen
+        name="InvocationOptions"
+        component={InvocationOptionsScreen}
+        options={{ title: 'Invocation Options' }}
+      />
+
       <HomeStack.Screen
         name="CrashReporting"
         component={CrashReportingScreen}

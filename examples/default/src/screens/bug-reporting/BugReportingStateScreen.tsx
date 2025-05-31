@@ -23,13 +23,15 @@ export const BugReportingStateScreen: React.FC<
     <Screen>
       <ListTile
         title="Enabled"
-        testID="id_br_enabled"
+        testID="id_enabled"
         onPress={() => setState(BugReportingState.Enabled)}
+        subtitle={state === BugReportingState.Enabled ? 'Selected' : undefined}
       />
       <ListTile
         title="Disabled"
-        testID="id_br_disabled"
+        testID="id_disabled"
         onPress={() => setState(BugReportingState.Disabled)}
+        subtitle={state === BugReportingState.Disabled ? 'Selected' : undefined}
       />
     </Screen>
   );
