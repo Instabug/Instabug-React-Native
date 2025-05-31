@@ -7,6 +7,7 @@ import Instabug, {
   ExtendedBugReportMode,
   WelcomeMessageMode,
   InvocationEvent,
+  Replies,
 } from 'instabug-reactnative';
 
 import { ListTile } from '../../components/ListTile';
@@ -35,6 +36,8 @@ export const BugReportingScreen: React.FC<
   );
   const [disclaimerText, setDisclaimerText] = useState<string>('');
   const [isSessionProfilerEnabled, setIsSessionProfilerEnabled] = useState<boolean>(true);
+  const [isViewHierarchyEnabled, setIsViewHierarchyEnabled] = useState<boolean>(false);
+  const [isRepliesEnabled, setIsRepliesEnabled] = useState<boolean>(true);
 
   return (
     <ScrollView flex={1} bg="gray.100">
@@ -193,6 +196,38 @@ export const BugReportingScreen: React.FC<
           testID="id_session_profiler"
         />
 
+        <ListTile
+          title="View Hierarchy"
+          subtitle={isViewHierarchyEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('ViewHierarchy', {
+              isEnabled: isViewHierarchyEnabled,
+              setIsEnabled: (enabled: boolean) => {
+                setIsViewHierarchyEnabled(enabled);
+                BugReporting.setViewHierarchyEnabled(enabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_view_hierarchy"
+        />
+
+        <ListTile
+          title="Replies"
+          subtitle={isRepliesEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('RepliesState', {
+              isEnabled: isRepliesEnabled,
+              setIsEnabled: (enabled: boolean) => {
+                setIsRepliesEnabled(enabled);
+                Replies.setEnabled(enabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_replies"
+        />
+
         <Divider my={5} />
 
         <ListTile title="Show" onPress={() => Instabug.show()} testID="id_show_button" />
@@ -213,8 +248,6 @@ export const BugReportingScreen: React.FC<
           onPress={() => BugReporting.show(ReportType.question, [])}
           testID="id_send_question"
         />
-
-        <Divider my={5} />
 
         <ListTile
           title="Welcome message Beta"

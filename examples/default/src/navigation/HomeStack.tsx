@@ -23,6 +23,14 @@ import {
   InvocationOptionsScreen,
   type InvocationOptionsScreenProp,
 } from '../screens/bug-reporting/InvocationOptionsScreen';
+import {
+  ViewHierarchyScreen,
+  type ViewHierarchyScreenProp,
+} from '../screens/bug-reporting/ViewHierarchyScreen';
+import {
+  RepliesStateScreen,
+  type RepliesStateScreenProp,
+} from '../screens/bug-reporting/RepliesStateScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
 import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -72,6 +80,8 @@ export type HomeStackParamList = {
   InvocationEvents: InvocationEventsScreenProp;
   SessionProfiler: SessionProfilerScreenProp;
   InvocationOptions: InvocationOptionsScreenProp;
+  ViewHierarchy: ViewHierarchyScreenProp;
+  RepliesState: RepliesStateScreenProp;
 
   CrashReporting: undefined;
   FeatureRequests: undefined;
@@ -148,6 +158,16 @@ export const HomeStackNavigator: React.FC = () => {
         name="InvocationOptions"
         component={InvocationOptionsScreen}
         options={{ title: 'Invocation Options' }}
+      />
+      <HomeStack.Screen
+        name="ViewHierarchy"
+        component={ViewHierarchyScreen}
+        options={{ title: 'View Hierarchy' }}
+      />
+      <HomeStack.Screen
+        name="RepliesState"
+        component={RepliesStateScreen}
+        options={{ title: 'Replies State' }}
       />
 
       <HomeStack.Screen
