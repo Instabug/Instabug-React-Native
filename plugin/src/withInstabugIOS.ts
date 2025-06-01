@@ -35,13 +35,16 @@ export const withInstabugIOS: ConfigPlugin<PluginProps> = (config, props) => {
   });
 
   // Add media permissions to Info.plist if enabled
-  if (props.addScreenRecordingBugReportingPermission) {
+  if (props.addBugReportingIosMediaPermission) {
     const instabugConfig = config.extra?.instabug ?? {};
 
     const microphonePermission =
-      instabugConfig.microphonePermission || 'This app needs access to your microphone.';
+      instabugConfig.microphonePermission ||
+      'This needs access to your microphone so you can attach voice notes.';
+
     const photoLibraryPermission =
-      instabugConfig.photoLibraryPermission || 'This app needs access to your photos.';
+      instabugConfig.photoLibraryPermission ||
+      'This needs access to your photo library so you can attach images.';
 
     updatedConfig = withInfoPlist(updatedConfig, (configXcode) => {
       const plist = configXcode.ios.infoPlist ?? {};
