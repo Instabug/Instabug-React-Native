@@ -32,7 +32,6 @@ public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaM
         final IBGNonFatalException exception = new IBGNonFatalException.Builder(new IllegalStateException("Test exception"))
                 .build();
         CrashReporting.report(exception);
-
     }
 
     @ReactMethod

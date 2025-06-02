@@ -45,6 +45,7 @@ export const InputField = forwardRef<TextInput, InputFieldProps>(
         <TextInput
           ref={ref}
           placeholder={placeholder}
+          placeholderTextColor={'gray'}
           style={[styles.textInput, style]}
           maxLength={maxLength}
           accessible={true}
@@ -67,9 +68,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 10,
-    paddingHorizontal: 24,
-    fontSize: 16,
+    paddingHorizontal: 16,
+    fontSize: 12,
     borderRadius: 5,
+    color: 'black',
   },
   errorText: {
     color: '#ff0000',
