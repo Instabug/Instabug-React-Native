@@ -32,6 +32,10 @@ import {
   type RepliesStateScreenProp,
 } from '../screens/bug-reporting/RepliesStateScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
+import {
+  CrashReportingStateScreen,
+  type CrashReportingStateScreenProp,
+} from '../screens/crash-reporting/CrashReportingStateScreen';
 import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
@@ -67,6 +71,12 @@ import {
   SessionProfilerScreen,
   type SessionProfilerScreenProp,
 } from '../screens/bug-reporting/SessionProfilerScreen';
+import {
+  NDKCrashesStateScreen,
+  type NDKCrashesStateScreenProp,
+} from '../screens/crash-reporting/NDKCrashesStateScreen';
+import { NonFatalCrashesScreen } from '../screens/crash-reporting/NonFatalCrashesScreen';
+import { FatalCrashesScreen } from '../screens/crash-reporting/FatalCrashesScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -83,7 +93,13 @@ export type HomeStackParamList = {
   ViewHierarchy: ViewHierarchyScreenProp;
   RepliesState: RepliesStateScreenProp;
 
+  // Crash Reporting //
   CrashReporting: undefined;
+  CrashReportingState: CrashReportingStateScreenProp;
+  NDKCrashesState: NDKCrashesStateScreenProp;
+  NonFatalCrashes: undefined;
+  FatalCrashes: undefined;
+
   FeatureRequests: undefined;
   Replies: undefined;
   Surveys: undefined;
@@ -170,11 +186,33 @@ export const HomeStackNavigator: React.FC = () => {
         options={{ title: 'Replies State' }}
       />
 
+      {/* Crash Reporting */}
       <HomeStack.Screen
         name="CrashReporting"
         component={CrashReportingScreen}
         options={{ title: 'Crash Reporting' }}
       />
+      <HomeStack.Screen
+        name="CrashReportingState"
+        component={CrashReportingStateScreen}
+        options={{ title: 'Crash Reporting State' }}
+      />
+      <HomeStack.Screen
+        name="NDKCrashesState"
+        component={NDKCrashesStateScreen}
+        options={{ title: 'NDK Crashes State' }}
+      />
+      <HomeStack.Screen
+        name="NonFatalCrashes"
+        component={NonFatalCrashesScreen}
+        options={{ title: 'Non-Fatal Crashes' }}
+      />
+      <HomeStack.Screen
+        name="FatalCrashes"
+        component={FatalCrashesScreen}
+        options={{ title: 'Fatal Crashes' }}
+      />
+
       <HomeStack.Screen
         name="FeatureRequests"
         component={FeatureRequestsScreen}
