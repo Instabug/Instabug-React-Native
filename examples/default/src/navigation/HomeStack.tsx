@@ -31,6 +31,7 @@ import {
   RepliesStateScreen,
   type RepliesStateScreenProp,
 } from '../screens/bug-reporting/RepliesStateScreen';
+import { UserConsentScreen } from '../screens/bug-reporting/UserConsentScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
 import {
   CrashReportingStateScreen,
@@ -92,6 +93,7 @@ export type HomeStackParamList = {
   InvocationOptions: InvocationOptionsScreenProp;
   ViewHierarchy: ViewHierarchyScreenProp;
   RepliesState: RepliesStateScreenProp;
+  UserConsent: undefined;
 
   // Crash Reporting //
   CrashReporting: undefined;
@@ -184,6 +186,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="RepliesState"
         component={RepliesStateScreen}
         options={{ title: 'Replies State' }}
+      />
+      <HomeStack.Screen
+        name="UserConsent"
+        component={UserConsentScreen}
+        options={{ title: 'User Consent' }}
       />
 
       {/* Crash Reporting */}

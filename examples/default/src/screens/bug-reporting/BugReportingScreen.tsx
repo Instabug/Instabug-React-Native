@@ -228,6 +228,13 @@ export const BugReportingScreen: React.FC<
           testID="id_replies"
         />
 
+
+        <ListTile
+          title="User Consent"
+          onPress={() => navigation.navigate('UserConsent')}
+          testID="id_user_consent"
+        />
+
         <Divider my={5} />
 
         <ListTile title="Show" onPress={() => Instabug.show()} testID="id_show_button" />
