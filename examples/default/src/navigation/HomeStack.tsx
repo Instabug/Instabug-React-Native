@@ -2,8 +2,41 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { BugReportingScreen } from '../screens/BugReportingScreen';
+import { BugReportingScreen } from '../screens/bug-reporting/BugReportingScreen';
+import {
+  BugReportingStateScreen,
+  type BugReportingStateScreenProp,
+} from '../screens/bug-reporting/BugReportingStateScreen';
+import {
+  ExtendedBugReportStateScreen,
+  type ExtendedBugReportStateScreenProp,
+} from '../screens/bug-reporting/ExtendedBugReportStateScreen';
+import {
+  BugReportingTypesScreen,
+  type BugReportingTypesScreenProp,
+} from '../screens/bug-reporting/BugReportingTypesScreen';
+import {
+  DisclaimerTextScreen,
+  type DisclaimerTextScreenProp,
+} from '../screens/bug-reporting/DisclaimerTextScreen';
+import {
+  InvocationOptionsScreen,
+  type InvocationOptionsScreenProp,
+} from '../screens/bug-reporting/InvocationOptionsScreen';
+import {
+  ViewHierarchyScreen,
+  type ViewHierarchyScreenProp,
+} from '../screens/bug-reporting/ViewHierarchyScreen';
+import {
+  RepliesStateScreen,
+  type RepliesStateScreenProp,
+} from '../screens/bug-reporting/RepliesStateScreen';
+import { UserConsentScreen } from '../screens/bug-reporting/UserConsentScreen';
 import { CrashReportingScreen } from '../screens/CrashReportingScreen';
+import {
+  CrashReportingStateScreen,
+  type CrashReportingStateScreenProp,
+} from '../screens/crash-reporting/CrashReportingStateScreen';
 import { FeatureRequestsScreen } from '../screens/FeatureRequestsScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { RepliesScreen } from '../screens/RepliesScreen';
@@ -31,11 +64,44 @@ import { HttpScreen } from '../screens/apm/HttpScreen';
 import { WebViewsScreen } from '../screens/apm/webViews/WebViewsScreen';
 import { FullWebViewsScreen } from '../screens/apm/webViews/FullWebViewsScreen';
 import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsScreen';
+import {
+  InvocationEventsScreen,
+  type InvocationEventsScreenProp,
+} from '../screens/bug-reporting/InvocationEventsScreen';
+import {
+  SessionProfilerScreen,
+  type SessionProfilerScreenProp,
+} from '../screens/bug-reporting/SessionProfilerScreen';
+import {
+  NDKCrashesStateScreen,
+  type NDKCrashesStateScreenProp,
+} from '../screens/crash-reporting/NDKCrashesStateScreen';
+import { NonFatalCrashesScreen } from '../screens/crash-reporting/NonFatalCrashesScreen';
+import { FatalCrashesScreen } from '../screens/crash-reporting/FatalCrashesScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
+
+  // Bug Reporting //
   BugReporting: undefined;
+  BugReportingState: BugReportingStateScreenProp;
+  ExtendedBugReportState: ExtendedBugReportStateScreenProp;
+  BugReportingTypes: BugReportingTypesScreenProp;
+  DisclaimerText: DisclaimerTextScreenProp;
+  InvocationEvents: InvocationEventsScreenProp;
+  SessionProfiler: SessionProfilerScreenProp;
+  InvocationOptions: InvocationOptionsScreenProp;
+  ViewHierarchy: ViewHierarchyScreenProp;
+  RepliesState: RepliesStateScreenProp;
+  UserConsent: undefined;
+
+  // Crash Reporting //
   CrashReporting: undefined;
+  CrashReportingState: CrashReportingStateScreenProp;
+  NDKCrashesState: NDKCrashesStateScreenProp;
+  NonFatalCrashes: undefined;
+  FatalCrashes: undefined;
+
   FeatureRequests: undefined;
   Replies: undefined;
   Surveys: undefined;
@@ -69,16 +135,91 @@ export const HomeStackNavigator: React.FC = () => {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={HomeScreen} />
+
+      {/* Bug Reporting */}
       <HomeStack.Screen
         name="BugReporting"
         component={BugReportingScreen}
         options={{ title: 'Bug Reporting' }}
       />
       <HomeStack.Screen
+        name="BugReportingState"
+        component={BugReportingStateScreen}
+        options={{ title: 'Bug Reporting State' }}
+      />
+      <HomeStack.Screen
+        name="ExtendedBugReportState"
+        component={ExtendedBugReportStateScreen}
+        options={{ title: 'Extended Bug Report State' }}
+      />
+      <HomeStack.Screen
+        name="BugReportingTypes"
+        component={BugReportingTypesScreen}
+        options={{ title: 'Bug Reporting Types' }}
+      />
+      <HomeStack.Screen
+        name="DisclaimerText"
+        component={DisclaimerTextScreen}
+        options={{ title: 'Disclaimer Text' }}
+      />
+      <HomeStack.Screen
+        name="InvocationEvents"
+        component={InvocationEventsScreen}
+        options={{ title: 'Invocation Events' }}
+      />
+      <HomeStack.Screen
+        name="SessionProfiler"
+        component={SessionProfilerScreen}
+        options={{ title: 'Session Profiler' }}
+      />
+      <HomeStack.Screen
+        name="InvocationOptions"
+        component={InvocationOptionsScreen}
+        options={{ title: 'Invocation Options' }}
+      />
+      <HomeStack.Screen
+        name="ViewHierarchy"
+        component={ViewHierarchyScreen}
+        options={{ title: 'View Hierarchy' }}
+      />
+      <HomeStack.Screen
+        name="RepliesState"
+        component={RepliesStateScreen}
+        options={{ title: 'Replies State' }}
+      />
+      <HomeStack.Screen
+        name="UserConsent"
+        component={UserConsentScreen}
+        options={{ title: 'User Consent' }}
+      />
+
+      {/* Crash Reporting */}
+      <HomeStack.Screen
         name="CrashReporting"
         component={CrashReportingScreen}
         options={{ title: 'Crash Reporting' }}
       />
+      <HomeStack.Screen
+        name="CrashReportingState"
+        component={CrashReportingStateScreen}
+        options={{ title: 'Crash Reporting State' }}
+      />
+      <HomeStack.Screen
+        name="NDKCrashesState"
+        component={NDKCrashesStateScreen}
+        options={{ title: 'NDK Crashes State' }}
+      />
+      <HomeStack.Screen
+        name="NonFatalCrashes"
+        component={NonFatalCrashesScreen}
+        options={{ title: 'Non-Fatal Crashes' }}
+      />
+      <HomeStack.Screen
+        name="FatalCrashes"
+        component={FatalCrashesScreen}
+        options={{ title: 'Fatal Crashes' }}
+      />
+
       <HomeStack.Screen
         name="FeatureRequests"
         component={FeatureRequestsScreen}

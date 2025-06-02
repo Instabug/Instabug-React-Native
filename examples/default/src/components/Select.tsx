@@ -6,15 +6,17 @@ interface SelectItem<T> {
   label: string;
   value: T;
   isInitial?: boolean;
+  testID?: string;
 }
 
 interface SelectProps<T> {
   label: string;
   items: SelectItem<T>[];
   onValueChange: (value: T) => void;
+  testID?: string;
 }
 
-export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
+export function Select<T>({ label, items, onValueChange, testID }: SelectProps<T>) {
   const initialItem = items.find((i) => i.isInitial) ?? items[0];
   const [selectedItem, setSelectedItem] = useState(initialItem);
 
@@ -35,7 +37,7 @@ export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
         endIcon: <CheckIcon size="4" />,
       }}>
       {items.map((item) => (
-        <NativeBaseSelect.Item key={item.label} label={item.label} value={item.label} />
+        <NativeBaseSelect.Item key={item.label} label={item.label} value={item.label} testID={testID} />
       ))}
     </NativeBaseSelect>
   );
