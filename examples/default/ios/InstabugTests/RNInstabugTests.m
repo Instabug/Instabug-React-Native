@@ -81,7 +81,7 @@
   
   [RNInstabug setOverAirVersion:overAirVersion];
 
-  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:IBGOverAirTypeExpo]);
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
 }
 
 - (void)testSetOverAirVersionCodepush {
@@ -92,7 +92,7 @@
   
   [RNInstabug setOverAirVersion:overAirVersion];
 
-  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:IBGOverAirTypeCodePush]);
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
 }
 
 @end
