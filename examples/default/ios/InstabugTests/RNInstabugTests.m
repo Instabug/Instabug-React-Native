@@ -75,7 +75,7 @@
 
 - (void)testSetOverAirVersionExpo {
   NSDictionary *overAirVersion = @{
-    @"service":@"expo",
+    @"service":@(IBGOverAirTypeExpo),
     @"version":@"D0A12345-6789-4B3C-A123-4567ABCDEF01"
   };
   
@@ -86,7 +86,7 @@
 
 - (void)testSetOverAirVersionCodepush {
   NSDictionary *overAirVersion = @{
-    @"service":@"codePush",
+    @"service":@(IBGOverAirTypeCodePush),
     @"version":@"2.0.0"
   };
   
