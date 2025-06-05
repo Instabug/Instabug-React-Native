@@ -1,7 +1,6 @@
 import React from 'react';
 
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import type { HomeStackParamList } from '../navigation/HomeStack';

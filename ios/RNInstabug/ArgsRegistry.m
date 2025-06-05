@@ -21,6 +21,8 @@
     [all addEntriesFromDictionary:ArgsRegistry.nonFatalExceptionLevel];
     [all addEntriesFromDictionary:ArgsRegistry.placeholders];
     [all addEntriesFromDictionary:ArgsRegistry.launchType];
+    [all addEntriesFromDictionary:ArgsRegistry.overAirServices];
+
     [all addEntriesFromDictionary:ArgsRegistry.autoMaskingTypes];
     [all addEntriesFromDictionary:ArgsRegistry.userConsentActionTypes];
     
@@ -254,6 +256,12 @@
     return @{
         @"cold": @(LaunchTypeCold),
         @"unknown":@(LaunchTypeUnknown)
+    };
+}
++ (ArgsDictionary *) overAirServices {
+    return @{
+        @"expo":@(IBGOverAirTypeExpo) ,
+        @"codePush":@(IBGOverAirTypeCodePush),
     };
 }
 

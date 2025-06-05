@@ -18,6 +18,7 @@ import {
   Locale,
   LogLevel,
   NetworkInterceptionMode,
+  OverAirUpdateServices,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -289,6 +290,10 @@ describe('Instabug Module', () => {
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
     const usesNativeNetworkInterception = false;
 
@@ -302,6 +307,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      instabugConfig.overAirVersion,
     );
   });
 
@@ -314,6 +320,18 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
   });
 
+  it('setOverAirVersion should call native method setOverAirVersion', () => {
+    const OTAversion = {
+      service: OverAirUpdateServices.expo,
+      version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+    };
+
+    Instabug.setOverAirVersion(OTAversion);
+
+    expect(NativeInstabug.setOverAirVersion).toBeCalledTimes(1);
+    expect(NativeInstabug.setOverAirVersion).toBeCalledWith(OTAversion);
+  });
+
   it('init should disable JavaScript interceptor when using native interception mode', async () => {
     const instabugConfig = {
       token: 'some-token',
@@ -321,6 +339,10 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
 
     // Stubbing Network feature flags
@@ -342,6 +364,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be false when using native interception mode with Android
         false,
         instabugConfig.codePushVersion,
+        instabugConfig.overAirVersion,
       );
     } else {
       expect(NativeInstabug.init).toBeCalledTimes(1);
@@ -353,6 +376,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
+        instabugConfig.overAirVersion,
       );
     }
   });
@@ -934,6 +958,10 @@ describe('Instabug iOS initialization tests', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
     // Fast-forward until all timers have been executed
     jest.advanceTimersByTime(1000);
@@ -952,6 +980,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      config.overAirVersion,
     );
   });
 
@@ -970,6 +999,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       true, // Enable native interception
       config.codePushVersion,
+      config.overAirVersion,
     );
   });
 
@@ -988,6 +1018,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      config.overAirVersion,
     );
   });
 
@@ -1017,6 +1048,10 @@ describe('Instabug Android initialization tests', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.javascript,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
   });
 
@@ -1032,6 +1067,7 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
+        config.overAirVersion,
       );
     });
   });
