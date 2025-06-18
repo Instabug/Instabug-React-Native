@@ -412,11 +412,17 @@ jobs:
           name: Build the SDK
           command: yarn build
       - run:
+          name: Get snapshot version
+          command: |
+            source scripts/snapshot-version.sh
+            echo "export SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> "$BASH_ENV"
+      - run:
           name: Authorize with NPM
           command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run: npm version $SNAPSHOT_VERSION --no-git-tag-version
       - run:
           name: Publish new enterprise version
-          command: npm publish
+          command: npm publish --tag snapshot
 
   publish:
     macos:
@@ -547,16 +553,10 @@ workflows:
       - hold_release_nn:
           requires: *release_dependencies
           type: approval
-          filters:
-            branches:
-              only: master
       - release_custom_package:
           name: release_nn
           requires:
             - hold_release_nn
-          filters:
-            branches:
-              only: master
           prepare_steps:
             - prepare_custom_package:
                 npm_package: '@instabug/react-native-nn'
