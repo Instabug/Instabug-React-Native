@@ -16,6 +16,10 @@ import InstabugUtils, {
   resetNativeObfuscationListener,
   sendCrashReport,
   updateNetworkLogSnapshot,
+  setApmNetworkFlagsIfChanged,
+  generateTracePartialId,
+  generateW3CHeader,
+  isContentTypeNotAllowed,
 } from '../../src/utils/InstabugUtils';
 
 import {
@@ -456,5 +460,42 @@ describe('test registerNetworkLogsListener usage', () => {
       network.requestHeaders,
       network.responseHeaders,
     );
+  });
+});
+
+describe('InstabugUtils - Additional Coverage', () => {
+  it('setApmNetworkFlagsIfChanged should return true if flags change', () => {
+    const flags = {
+      isNativeInterceptionFeatureEnabled: true,
+      hasAPMNetworkPlugin: true,
+      shouldEnableNativeInterception: true,
+    };
+    expect(setApmNetworkFlagsIfChanged(flags)).toBe(true);
+    expect(setApmNetworkFlagsIfChanged(flags)).toBe(false);
+  });
+
+  it('generateTracePartialId should return a non-zero hex string and number', () => {
+    const { numberPartilId, hexStringPartialId } = generateTracePartialId();
+    expect(hexStringPartialId).toMatch(/^[0-9a-f]{8}$/);
+    expect(hexStringPartialId).not.toBe('00000000');
+    expect(typeof numberPartilId).toBe('number');
+    expect(numberPartilId).not.toBe(0);
+  });
+
+  it('generateW3CHeader should return a valid w3c header object', () => {
+    const now = Date.now();
+    const result = generateW3CHeader(now);
+    expect(result).toHaveProperty('timestampInSeconds');
+    expect(result).toHaveProperty('partialId');
+    expect(result).toHaveProperty('w3cHeader');
+    expect(typeof result.w3cHeader).toBe('string');
+    expect(result.w3cHeader.split('-').length).toBe(4);
+  });
+
+  it('isContentTypeNotAllowed should return false for allowed types and true for not allowed', () => {
+    expect(isContentTypeNotAllowed('application/json')).toBe(false);
+    expect(isContentTypeNotAllowed('text/plain')).toBe(false);
+    expect(isContentTypeNotAllowed('image/png')).toBe(true);
+    expect(isContentTypeNotAllowed('application/pdf')).toBe(true);
   });
 });
