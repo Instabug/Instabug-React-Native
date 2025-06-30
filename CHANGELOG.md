@@ -12,7 +12,7 @@
 
 - Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
 
-- Add respect backend network body limit. ([#1397](https://github.com/Instabug/Instabug-React-Native/pull/1397))
+- Add respect to backend network body limit. ([#1397](https://github.com/Instabug/Instabug-React-Native/pull/1397))
 
 ### Fixed
 
