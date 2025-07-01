@@ -61,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setCPRequestAsyncObfuscationHandler:(void (^)(NSURLRequest * requestToBeObfuscated, void (^ completion)(NSURLRequest * obfuscatedRequest)))asyncObfuscationHandler;
 + (void)setCPRequestFilteringHandler:(void (^)(NSURLRequest * request, void (^completion)(BOOL keep)))requestFilteringHandler;
 + (void)setCPResponseFilteringHandler:(void (^)(NSURLResponse * response, void (^comppletion)(BOOL keep)))responseFilteringHandler;
++ (double)getNetworkBodyMaxSize;
 
 @end
 
