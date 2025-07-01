@@ -23,6 +23,7 @@ const mockBugReporting: BugReportingNativeModule = {
   setVideoRecordingFloatingButtonPosition: jest.fn(),
   setDisclaimerText: jest.fn(),
   setCommentMinimumCharacterCount: jest.fn(),
+  addUserConsent: jest.fn(),
 };
 
 export default mockBugReporting;

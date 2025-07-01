@@ -1,5 +1,25 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+
+### Added
+
+- Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
+
+- Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))
+
+- Add support for xCode 16. ([#1370](https://github.com/Instabug/Instabug-React-Native/pull/1370))
+
+- Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
+
+- Add respect to backend network body limit. ([#1397](https://github.com/Instabug/Instabug-React-Native/pull/1397))
+
+### Fixed
+
+- Not sending the inComplete xhrRequest. ([#1365](https://github.com/Instabug/Instabug-React-Native/pull/1365))
+
+- Added more search capabilities to the find-token.sh script. e.g., searching in .env file for react config. [#1366](https://github.com/Instabug/Instabug-React-Native/pull/1366)
+
 ## [14.3.0](https://github.com/Instabug/Instabug-React-Native/compare/v14.1.0...14.3.0)
 
 ### Added

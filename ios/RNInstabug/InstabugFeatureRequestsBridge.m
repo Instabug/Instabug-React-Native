@@ -7,11 +7,11 @@
 //
 
 #import "InstabugFeatureRequestsBridge.h"
-#import <Instabug/IBGFeatureRequests.h>
+#import <InstabugSDK/IBGFeatureRequests.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import <React/RCTUIManager.h>
 
 @implementation InstabugFeatureRequestsBridge
@@ -38,11 +38,11 @@ RCT_EXPORT_METHOD(show) {
 RCT_EXPORT_METHOD(setEmailFieldRequiredForFeatureRequests:(BOOL)isEmailFieldRequired
                   forAction:(NSArray *)actionTypesArray) {
     IBGAction actionTypes = 0;
-    
+
     for (NSNumber *boxedValue in actionTypesArray) {
         actionTypes |= [boxedValue intValue];
     }
-    
+
     [IBGFeatureRequests setEmailFieldRequired:isEmailFieldRequired forAction:actionTypes];
 }
 

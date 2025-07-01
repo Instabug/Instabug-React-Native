@@ -12,6 +12,15 @@ export enum LogLevel {
   error = constants.sdkDebugLogsLevelError,
   none = constants.sdkDebugLogsLevelNone,
 }
+/**
+ * Enum representing the available user consent action types.
+ *
+ */
+export enum userConsentActionType {
+  dropAutoCapturedMedia = constants.dropAutoCapturedMedia,
+  dropLogs = constants.dropLogs,
+  noChat = constants.noChat,
+}
 
 /**
  * The event used to invoke the feedback form.
@@ -240,4 +249,10 @@ export enum LaunchType {
    *  Android only
    */
   warm = constants.warm,
+}
+export enum AutoMaskingType {
+  labels = constants.labels,
+  textInputs = constants.textInputs,
+  media = constants.media,
+  none = constants.none,
 }
