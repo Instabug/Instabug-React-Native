@@ -686,9 +686,22 @@ public class RNInstabugReactnativeModuleTest {
             String maskTextInputs = "textInputs";
             String maskMedia = "media";
             String maskNone = "none";
-    
+
             rnModule.enableAutoMasking(JavaOnlyArray.of(maskLabel, maskMedia, maskTextInputs,maskNone));
-    
+
             mockInstabug.verify(() -> Instabug.setAutoMaskScreenshotsTypes(MaskingType.LABELS,MaskingType.MEDIA,MaskingType.TEXT_INPUTS,MaskingType.MASK_NOTHING));
     }
+
+    @Test
+    public void testGetNetworkBodyMaxSize_resolvesPromiseWithExpectedValue() {
+        Promise promise = mock(Promise.class);
+        InternalCore internalAPM = mock(InternalCore.class);
+        int expected = 10240;
+        when(internalAPM.get_networkLogCharLimit()).thenReturn(expected);
+
+        rnModule.getNetworkBodyMaxSize(promise);
+
+        verify(promise).resolve(expected);
+    }
+
 }
