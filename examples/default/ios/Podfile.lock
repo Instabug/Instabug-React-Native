@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (15.0.1)
+  - Instabug (15.1.1)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1296,8 +1296,6 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-netinfo (11.4.1):
-    - React-Core
   - react-native-safe-area-context (4.12.0):
     - React-Core
   - react-native-slider (4.5.5):
@@ -1770,7 +1768,6 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - Instabug (from `https://ios-releases.instabug.com/custom/feature-expose_network_limit-expose_body_limit/15.0.1/Instabug.podspec`)
   - instabug-reactnative-ndk (from `../node_modules/instabug-reactnative-ndk`)
   - OCMock
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1808,7 +1805,6 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
-  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -1851,6 +1847,7 @@ SPEC REPOS:
   trunk:
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - Instabug
     - OCMock
     - SocketRocket
 
@@ -1868,8 +1865,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-08-15-RNv0.75.1-4b3bf912cc0f705b51b71ce1a5b8bd79b93a451b
-  Instabug:
-    :podspec: https://ios-releases.instabug.com/custom/feature-expose_network_limit-expose_body_limit/15.0.1/Instabug.podspec
   instabug-reactnative-ndk:
     :path: "../node_modules/instabug-reactnative-ndk"
   RCT-Folly:
@@ -1938,8 +1933,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
-  react-native-netinfo:
-    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:

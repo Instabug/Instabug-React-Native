@@ -19,7 +19,8 @@ public class RNInstabug {
 
     private static RNInstabug instance;
 
-    private RNInstabug() {}
+    private RNInstabug() {
+    }
 
 
     public static RNInstabug getInstance() {
@@ -36,14 +37,13 @@ public class RNInstabug {
     /**
      * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
      *
-     * @param application The application context.
+     * @param application      The application context.
      * @param applicationToken The app's identifying token, available on your dashboard.
-     * @param logLevel The level of detail in logs that you want to print.
-     *      <p>Pick one of the log levels described in {@link LogLevel}.
-     *      default logLevel is {@link LogLevel#ERROR}</p>
-     * @param InvocationEvent The events that trigger the SDK's user interface.
-     *      Choose from the available events listed in {@link InstabugInvocationEvent}.
-     *
+     * @param logLevel         The level of detail in logs that you want to print.
+     *                         <p>Pick one of the log levels described in {@link LogLevel}.
+     *                         default logLevel is {@link LogLevel#ERROR}</p>
+     * @param InvocationEvent  The events that trigger the SDK's user interface.
+     *                         Choose from the available events listed in {@link InstabugInvocationEvent}.
      * @example <p>Here's an example usage: </p>
      * <blockquote><pre>
      * RNInstabug.getInstance().init(
@@ -59,17 +59,29 @@ public class RNInstabug {
             @NonNull Application application,
             @NonNull String applicationToken,
             int logLevel,
+            String codePushVersion,
+            String appVariant,
             @NonNull InstabugInvocationEvent... InvocationEvent
+
+
     ) {
         try {
 
             setBaseUrlForDeprecationLogs();
             setCurrentPlatform();
 
-            new Instabug.Builder(application, applicationToken)
+           Instabug.Builder builder= new Instabug.Builder(application, applicationToken)
                     .setInvocationEvents(InvocationEvent)
-                    .setSdkDebugLogsLevel(logLevel)
-                    .build();
+                    .setSdkDebugLogsLevel(logLevel);
+
+           if(codePushVersion!=null){
+               builder.setCodePushVersion(codePushVersion);
+           }
+           if(appVariant!=null)
+               builder.setAppVariant(appVariant);
+
+
+           builder.build();
 
             // Temporarily disabling APM hot launches
             APM.setHotAppLaunchEnabled(false);
@@ -80,15 +92,13 @@ public class RNInstabug {
     }
 
 
-
     /**
      * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
      *
-     * @param application The application context.
+     * @param application      The application context.
      * @param applicationToken The app's identifying token, available on your dashboard.
-     * @param invocationEvent The events that trigger the SDK's user interface.
-     *      Choose from the available events listed in {@link InstabugInvocationEvent}.
-     *
+     * @param invocationEvent  The events that trigger the SDK's user interface.
+     *                         Choose from the available events listed in {@link InstabugInvocationEvent}.
      * @example <p>Here's an example usage: </p>
      * <blockquote><pre>
      * RNInstabug.getInstance().init(
@@ -102,9 +112,11 @@ public class RNInstabug {
     public void init(
             @NonNull Application application,
             @NonNull String applicationToken,
+            String codePushVersion,
+            String appVariant,
             @NonNull InstabugInvocationEvent... invocationEvent
     ) {
-        init(application, applicationToken, LogLevel.ERROR, invocationEvent);
+        init(application, applicationToken, LogLevel.ERROR,codePushVersion,appVariant, invocationEvent);
     }
 
     @VisibleForTesting
@@ -160,6 +172,10 @@ public class RNInstabug {
          * The events that trigger the SDK's user interface.
          */
         private InstabugInvocationEvent[] invocationEvents;
+        /**
+         * The App variant name to be used for all reports.
+         */
+        private String appVariant;
 
 
         /**
@@ -222,6 +238,16 @@ public class RNInstabug {
         }
 
         /**
+         * Sets the invocation triggering events for the SDK's user interface
+         *
+         * @param appVariant the current App variant to work with.
+         */
+        public Builder setAppVariant(String appVariant) {
+            this.appVariant = appVariant;
+            return this;
+        }
+
+        /**
          * Builds the Instabug instance with the provided configurations.
          */
         public void build() {
@@ -235,6 +261,9 @@ public class RNInstabug {
 
                 if (codePushVersion != null) {
                     instabugBuilder.setCodePushVersion(codePushVersion);
+                }
+                if(appVariant!=null){
+                    instabugBuilder.setAppVariant(appVariant);
                 }
 
                 instabugBuilder.build();

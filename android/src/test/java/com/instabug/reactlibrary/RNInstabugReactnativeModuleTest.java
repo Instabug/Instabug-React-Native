@@ -631,6 +631,16 @@ public class RNInstabugReactnativeModuleTest {
         mockInstabug.verify(() -> Instabug.removeAllFeatureFlags());
     }
 
+      @Test
+        public void testSetAppVariant() {
+              String appVariant="App-variant";
+            // when
+            rnModule.setAppVariant(appVariant);
+
+            // then
+            mockInstabug.verify(() -> Instabug.setAppVariant(appVariant));
+        }
+
     @Test
     public void testWillRedirectToStore() {
         // when
@@ -678,7 +688,7 @@ public class RNInstabugReactnativeModuleTest {
 
         mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
     }
-    
+
     @Test
     public void testEnableAutoMasking(){
 

@@ -65,7 +65,7 @@ public class RNInstabugTest {
                     when(mock.setInvocationEvents(any())).thenReturn(mock);
                 });
 
-        sut.init(mContext, token, logLevel, invocationEvents);
+        sut.init(mContext, token, logLevel, null, null, invocationEvents);
 
         Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
 
@@ -73,7 +73,6 @@ public class RNInstabugTest {
         verify(builder).setSdkDebugLogsLevel(LogLevel.VERBOSE);
         verify(builder).setInvocationEvents(invocationEvents);
         verify(builder).build();
-
 
 
         verify(sut).setBaseUrlForDeprecationLogs();
@@ -86,16 +85,19 @@ public class RNInstabugTest {
         final InstabugInvocationEvent[] invocationEvents = new InstabugInvocationEvent[]{InstabugInvocationEvent.FLOATING_BUTTON};
         final String token = "fde....";
         final int defaultLogLevel = LogLevel.ERROR;
+        final String appVariant = "app-variant";
 
         MockedConstruction<Instabug.Builder> mInstabugBuilder = mockConstruction(
                 Instabug.Builder.class, (mock, context) -> {
                     when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
                     when(mock.setInvocationEvents(any())).thenReturn(mock);
+                    when(mock.setAppVariant(any())).thenReturn(mock);
+
                 });
 
-        sut.init(mContext, token, invocationEvents);
+        sut.init(mContext, token, null, appVariant, invocationEvents);
 
-        verify(sut).init(mContext, token, defaultLogLevel, invocationEvents);
+        verify(sut).init(mContext, token, defaultLogLevel, null, appVariant, invocationEvents);
         mInstabugBuilder.close();
     }
 

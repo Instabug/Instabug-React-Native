@@ -302,6 +302,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      undefined,
     );
   });
 
@@ -353,6 +354,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
+        undefined,
       );
     }
   });
@@ -952,6 +954,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      undefined,
     );
   });
 
@@ -970,6 +973,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       true, // Enable native interception
       config.codePushVersion,
+      undefined,
     );
   });
 
@@ -988,6 +992,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      undefined,
     );
   });
 
@@ -1032,6 +1037,7 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
+        undefined,
       );
     });
   });
@@ -1104,6 +1110,22 @@ describe('Instabug Android initialization tests', () => {
       expect(logSpy).toBeCalledTimes(1);
       expect(logSpy).toBeCalledWith(
         InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    });
+  });
+
+  it('should initialize correctly with App variant', async () => {
+    config.appVariant = 'App Variant';
+    await Instabug.init(config);
+    fakeTimer(() => {
+      expect(NativeInstabug.setOnFeaturesUpdatedListener).toHaveBeenCalled();
+      expect(NativeInstabug.init).toHaveBeenCalledWith(
+        config.token,
+        config.invocationEvents,
+        config.debugLogsLevel,
+        true,
+        config.codePushVersion,
+        config.appVariant,
       );
     });
   });

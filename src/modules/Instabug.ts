@@ -127,6 +127,14 @@ export const init = async (config: InstabugConfig) => {
 };
 
 /**
+ * Set Current App Variant.
+ * @param appVariant the current App variant name
+ */
+export const setAppVariant = (appVariant: string) => {
+  NativeInstabug.setAppVariant(appVariant);
+};
+
+/**
  * Handles app state changes and updates APM network flags if necessary.
  */
 const handleAppStateChange = async (nextAppState: AppStateStatus, config: InstabugConfig) => {
@@ -275,6 +283,7 @@ const initializeNativeInstabug = (config: InstabugConfig) => {
     shouldEnableNativeInterception &&
       config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
+    config.appVariant,
   );
 };
 
