@@ -1296,6 +1296,8 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
+  - react-native-netinfo (11.4.1):
+    - React-Core
   - react-native-safe-area-context (4.12.0):
     - React-Core
   - react-native-slider (4.5.5):
@@ -1805,6 +1807,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -1933,6 +1936,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -2017,8 +2022,8 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: ba6587d15ad5e3ffa265afc8174ff83af4eed29d
-  instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
+  Instabug: 3e7af445c14d7823fcdecba223f09b5f7c0c6ce1
+  instabug-reactnative-ndk: e6f3fd45d6426aa7d37f479f153b5c2bdc1f5eb9
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
@@ -2075,8 +2080,6 @@ SPEC CHECKSUMS:
   React-rendererconsistency: f620c6e003e3c4593e6349d8242b8aeb3d4633f0
   React-rendererdebug: e697680f4dd117becc5daf9ea9800067abcee91c
   React-rncore: c22bd84cc2f38947f0414fab6646db22ff4f80cd
-  React-RuntimeApple: de0976836b90b484305638616898cbc665c67c13
-  React-RuntimeCore: 3c4a5aa63d9e7a3c17b7fb23f32a72a8bcfccf57
   React-runtimeexecutor: ea90d8e3a9e0f4326939858dafc6ab17c031a5d3
   React-RuntimeHermes: c6b0afdf1f493621214eeb6517fb859ce7b21b81
   React-runtimescheduler: 84f0d876d254bce6917a277b3930eb9bc29df6c7

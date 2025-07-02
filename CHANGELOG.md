@@ -4,7 +4,7 @@
 
 ### Added
 
-- Add support for App variant. ([#1392](https://github.com/Instabug/Instabug-React-Native/pull/1392))
+- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
 
 - Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
 
