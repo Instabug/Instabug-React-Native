@@ -74,7 +74,7 @@ export const getActiveRouteName = (navigationState: NavigationStateV4): string |
   return route.routeName;
 };
 
-function getFullRoute(state: NavigationStateV5 | PartialState<NavigationStateV5>): string {
+export function getFullRoute(state: NavigationStateV5 | PartialState<NavigationStateV5>): string {
   try {
     if (!state.routes[state.index!].state) {
       return state.routes[state.index!].name;
