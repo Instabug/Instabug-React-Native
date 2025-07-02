@@ -2023,7 +2023,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
   Instabug: 3e7af445c14d7823fcdecba223f09b5f7c0c6ce1
-  instabug-reactnative-ndk: e6f3fd45d6426aa7d37f479f153b5c2bdc1f5eb9
+  instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
@@ -2058,7 +2058,7 @@ SPEC CHECKSUMS:
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-google-maps: 1bcc1f9f13f798fcf230db7fe476f3566d0bc0a3
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
+  react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-safe-area-context: 142fade490cbebbe428640b8cbdb09daf17e8191
   react-native-slider: 4a0f3386a38fc3d2d955efc515aef7096f7d1ee4
   react-native-webview: c0b91a4598bd54e9fbc70353aebf1e9bab2e5bb9
@@ -2080,6 +2080,8 @@ SPEC CHECKSUMS:
   React-rendererconsistency: f620c6e003e3c4593e6349d8242b8aeb3d4633f0
   React-rendererdebug: e697680f4dd117becc5daf9ea9800067abcee91c
   React-rncore: c22bd84cc2f38947f0414fab6646db22ff4f80cd
+  React-RuntimeApple: de0976836b90b484305638616898cbc665c67c13
+  React-RuntimeCore: 3c4a5aa63d9e7a3c17b7fb23f32a72a8bcfccf57
   React-runtimeexecutor: ea90d8e3a9e0f4326939858dafc6ab17c031a5d3
   React-RuntimeHermes: c6b0afdf1f493621214eeb6517fb859ce7b21b81
   React-runtimescheduler: 84f0d876d254bce6917a277b3930eb9bc29df6c7
@@ -2096,6 +2098,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: f7f8d2b03a0b566cb0f5b4b422469af0a1a278b1
+PODFILE CHECKSUM: 42f74b36b91ffedd1a4b69bf9b72165f04090424
 
 COCOAPODS: 1.14.0
