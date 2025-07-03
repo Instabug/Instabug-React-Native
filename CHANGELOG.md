@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...dev)
+## [15.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...v15.0.1)
 
 ### Added
 
@@ -13,6 +13,12 @@
 - Add support for network spans. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
 
 - Add respect to backend network body limit. ([#1397](https://github.com/Instabug/Instabug-React-Native/pull/1397))
+
+### Changed
+
+- Bump Instabug iOS SDK to v15.1.1 ([#1402](https://github.com/Instabug/Instabug-React-Native/pull/1402)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/15.1.1).
+
+- Bump Instabug Android SDK to v15.0.1 ([#1402](https://github.com/Instabug/Instabug-React-Native/pull/1402)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v15.0.1).
 
 ### Fixed
 
