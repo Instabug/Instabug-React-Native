@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "OCMock/OCMock.h"
 #import "InstabugBugReportingBridge.h"
-#import <Instabug/IBGTypes.h>
-#import "Instabug/Instabug.h"
+#import <InstabugSDK/IBGTypes.h>
+#import "InstabugSDK/InstabugSDK.h"
 #import "IBGConstants.h"
 
 @interface InstabugBugReportingTests : XCTestCase
@@ -39,7 +39,7 @@
 - (void) testgivenInvocationEvent$setInvocationEvents_whenQuery_thenShouldCallNativeApiWithArgs {
   NSArray *invocationEventsArr;
   invocationEventsArr = [NSArray arrayWithObjects:  @(IBGInvocationEventScreenshot), nil];
-  
+
   [self.instabugBridge setInvocationEvents:invocationEventsArr];
   IBGInvocationEvent invocationEvents = 0;
   for (NSNumber *boxedValue in invocationEventsArr) {
@@ -76,7 +76,7 @@
   RCTResponseSenderBlock callback = ^(NSArray *response) {};
   [partialMock setOnSDKDismissedHandler:callback];
   XCTAssertNotNil(IBGBugReporting.didDismissHandler);
-  
+
   NSDictionary *result = @{ @"dismissType": @"SUBMIT",
                             @"reportType": @"feedback"};
   OCMStub([partialMock sendEventWithName:@"IBGpostInvocationHandler" body:result]);
@@ -137,14 +137,14 @@
   }
   OCMStub([mock showWithReportType:reportType options:parsedOptions]);
   [self.instabugBridge show:reportType options:options];
-  
+
   XCTestExpectation *expectation = [self expectationWithDescription:@"Test ME PLX"];
-  
+
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock showWithReportType:reportType options:parsedOptions]);
     [expectation fulfill];
   }];
-  
+
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
@@ -187,6 +187,27 @@
   [self.instabugBridge setCommentMinimumCharacterCount:limit reportTypes:reportTypesArr];
   OCMVerify([mock setCommentMinimumCharacterCountForReportTypes:reportTypes withLimit:limit.intValue]);
 }
+- (void)testAddUserConsentWithKey {
+  id mock = OCMClassMock([IBGBugReporting class]);
 
+  NSString *key = @"testKey";
+  NSString *description = @"Consent description";
+  BOOL mandatory = YES;
+  BOOL checked = NO;
+  NSNumber *actionType = @2;
+  IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
+
+  [self.instabugBridge addUserConsent:key
+                                  description:description
+                                    mandatory:mandatory
+                                      checked:checked
+                                   actionType:actionType];
+
+  OCMVerify([mock addUserConsentWithKey:key
+                                        description:description
+                                          mandatory:mandatory
+                                            checked:checked
+                                         actionType:mappedActionType]);
+}
 @end
 

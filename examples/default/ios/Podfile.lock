@@ -31,7 +31,7 @@ PODS:
   - hermes-engine (0.75.4):
     - hermes-engine/Pre-built (= 0.75.4)
   - hermes-engine/Pre-built (0.75.4)
-  - Instabug (14.3.0)
+  - Instabug (15.1.1)
   - instabug-reactnative-ndk (0.1.0):
     - DoubleConversion
     - glog
@@ -1296,6 +1296,8 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
+  - react-native-netinfo (11.4.1):
+    - React-Core
   - react-native-safe-area-context (4.12.0):
     - React-Core
   - react-native-slider (4.5.5):
@@ -1623,8 +1625,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNInstabug (14.3.0):
-    - Instabug (= 14.3.0)
+  - RNInstabug (15.0.1):
+    - Instabug (= 15.1.1)
     - React-Core
   - RNReanimated (3.16.1):
     - DoubleConversion
@@ -1805,6 +1807,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -1933,6 +1936,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -2017,7 +2022,7 @@ SPEC CHECKSUMS:
   Google-Maps-iOS-Utils: f77eab4c4326d7e6a277f8e23a0232402731913a
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
-  Instabug: 97a4e694731f46bbc02dbe49ab29cc552c5e2f41
+  Instabug: 3e7af445c14d7823fcdecba223f09b5f7c0c6ce1
   instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
@@ -2053,6 +2058,7 @@ SPEC CHECKSUMS:
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-google-maps: 1bcc1f9f13f798fcf230db7fe476f3566d0bc0a3
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
+  react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-safe-area-context: 142fade490cbebbe428640b8cbdb09daf17e8191
   react-native-slider: 4a0f3386a38fc3d2d955efc515aef7096f7d1ee4
   react-native-webview: c0b91a4598bd54e9fbc70353aebf1e9bab2e5bb9
@@ -2084,7 +2090,7 @@ SPEC CHECKSUMS:
   ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
   RNCClipboard: 2821ac938ef46f736a8de0c8814845dde2dcbdfb
   RNGestureHandler: 511250b190a284388f9dd0d2e56c1df76f14cfb8
-  RNInstabug: c55b6c697b39d3cbe51b1ab9b729f0b55ed619f1
+  RNInstabug: f17d4e6c679fbc921f2692c223a1c21395589cc5
   RNReanimated: f42a5044d121d68e91680caacb0293f4274228eb
   RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
   RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
@@ -2092,6 +2098,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: 63bf073bef3872df95ea45e7c9c023a331ebb3c3
+PODFILE CHECKSUM: 837b933596e1616ff02cc206bb17dee4f611fdbc
 
 COCOAPODS: 1.14.0

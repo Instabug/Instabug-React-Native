@@ -4,14 +4,21 @@ const InstabugConstants = {
   // TODO: dyanmically get the max size from the native SDK and update the error message to reflect the dynamic size.
   MAX_NETWORK_BODY_SIZE_IN_BYTES: 1024 * 10, // 10 KB
   MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE:
-    'The response body has not been logged because it exceeds the maximum size of 10 Kb',
+    'The response body has not been logged because it exceeds the maximum size of ',
   MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE:
-    'The request body has not been logged because it exceeds the maximum size of 10 Kb',
+    'The request body has not been logged because it exceeds the maximum size of ',
   SET_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
     'IBG-RN: Expected key and value passed to setUserAttribute to be of type string',
   REMOVE_USER_ATTRIBUTES_ERROR_TYPE_MESSAGE:
     'IBG-RN: Expected key and value passed to removeUserAttribute to be of type string',
   DEFAULT_METRO_PORT: '8081',
+  IBG_APM_TAG: 'IBG-APM: ',
+  SWITCHED_TO_NATIVE_INTERCEPTION_MESSAGE:
+    'Android Plugin Detected. Switched to Native Interception.',
+  PLUGIN_NOT_INSTALLED_MESSAGE:
+    'Network Spans will not be captured as Android Plugin is not installed. Disabling Native Interception to minimize data loss.',
+  NATIVE_INTERCEPTION_DISABLED_MESSAGE:
+    'Network Spans capture is disabled by Instabug. Disabling native interception to avoid data loss.',
 };
 
 export default InstabugConstants;

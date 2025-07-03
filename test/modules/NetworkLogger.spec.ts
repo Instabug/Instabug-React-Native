@@ -7,6 +7,15 @@ import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import Interceptor from '../../src/utils/XhrNetworkInterceptor';
 import { isContentTypeNotAllowed, reportNetworkLog } from '../../src/utils/InstabugUtils';
 import InstabugConstants from '../../src/utils/InstabugConstants';
+import * as Instabug from '../../src/modules/Instabug';
+import {
+  NativeNetworkLogger,
+  NativeNetworkLoggerEvent,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../../src/native/NativeNetworkLogger';
+import { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../../src';
+import { Platform } from 'react-native';
 import { Logger } from '../../src/utils/logger';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 
@@ -14,8 +23,11 @@ const clone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
 
+jest.mock('../../src/native/NativeNetworkLogger');
+
 describe('NetworkLogger Module', () => {
   const network: NetworkLogger.NetworkData = {
+    id: '',
     url: 'https://api.instabug.com',
     requestBody: '',
     requestHeaders: { 'content-type': 'application/json' },
@@ -65,22 +77,23 @@ describe('NetworkLogger Module', () => {
     expect(Interceptor.disableInterception).toBeCalledTimes(1);
   });
 
-  it('should report the network log', () => {
+  it('should report the network log', async () => {
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(clone(network)));
+      .mockImplementation(async (callback) => await callback(clone(network)));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toBeCalledTimes(1);
     expect(reportNetworkLog).toBeCalledWith(network);
+    expect(NativeInstabug.getNetworkBodyMaxSize).toBeCalledTimes(1);
   });
 
   it('should send log network when setNetworkDataObfuscationHandler is set', async () => {
     const randomString = '28930q938jqhd';
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(clone(network)));
+      .mockImplementation(async (callback) => await callback(clone(network)));
     NetworkLogger.setNetworkDataObfuscationHandler((networkData) => {
       networkData.requestHeaders.token = randomString;
       return Promise.resolve(networkData);
@@ -156,7 +169,7 @@ describe('NetworkLogger Module', () => {
     consoleSpy.mockRestore();
   });
 
-  it('should omit request body if its content type is not allowed', () => {
+  it('should omit request body if its content type is not allowed', async () => {
     const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
     jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
 
@@ -167,9 +180,9 @@ describe('NetworkLogger Module', () => {
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith({
       ...networkData,
@@ -181,7 +194,7 @@ describe('NetworkLogger Module', () => {
     consoleWarn.mockRestore();
   });
 
-  it('should omit response body if its content type is not allowed', () => {
+  it('should omit response body if its content type is not allowed', async () => {
     const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
     jest.mocked(isContentTypeNotAllowed).mockReturnValueOnce(true);
 
@@ -192,9 +205,9 @@ describe('NetworkLogger Module', () => {
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith({
       ...networkData,
@@ -206,23 +219,26 @@ describe('NetworkLogger Module', () => {
     consoleWarn.mockRestore();
   });
 
-  it('should omit request body if its size exceeds the maximum allowed size', () => {
+  it('should omit request body if its size exceeds the maximum allowed size', async () => {
     const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
+    const MAX_NETWORK_BODY_SIZE_IN_BYTES = await NativeInstabug.getNetworkBodyMaxSize();
 
     const networkData = {
       ...network,
-      requestBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
+      requestBodySize: MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
     };
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith({
       ...networkData,
-      requestBody: InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE,
+      requestBody: `${InstabugConstants.MAX_REQUEST_BODY_SIZE_EXCEEDED_MESSAGE}${
+        MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+      } Kb`,
     });
 
     expect(consoleWarn).toBeCalledTimes(1);
@@ -230,38 +246,43 @@ describe('NetworkLogger Module', () => {
     consoleWarn.mockRestore();
   });
 
-  it('should not omit request body if its size does not exceed the maximum allowed size', () => {
+  it('should not omit request body if its size does not exceed the maximum allowed size', async () => {
+    const MAX_NETWORK_BODY_SIZE_IN_BYTES = await NativeInstabug.getNetworkBodyMaxSize();
+
     const networkData = {
       ...network,
-      requestBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES,
+      requestBodySize: MAX_NETWORK_BODY_SIZE_IN_BYTES,
     };
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
   });
 
-  it('should omit response body if its size exceeds the maximum allowed size', () => {
+  it('should omit response body if its size exceeds the maximum allowed size', async () => {
     const consoleWarn = jest.spyOn(Logger, 'warn').mockImplementation();
+    const MAX_NETWORK_BODY_SIZE_IN_BYTES = await NativeInstabug.getNetworkBodyMaxSize();
 
     const networkData = {
       ...network,
-      responseBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
+      responseBodySize: MAX_NETWORK_BODY_SIZE_IN_BYTES + 1,
     };
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith({
       ...networkData,
-      responseBody: InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE,
+      responseBody: `${InstabugConstants.MAX_RESPONSE_BODY_SIZE_EXCEEDED_MESSAGE}${
+        MAX_NETWORK_BODY_SIZE_IN_BYTES / 1024
+      } Kb`,
     });
 
     expect(consoleWarn).toBeCalledTimes(1);
@@ -269,17 +290,19 @@ describe('NetworkLogger Module', () => {
     consoleWarn.mockRestore();
   });
 
-  it('should not omit response body if its size does not exceed the maximum allowed size', () => {
+  it('should not omit response body if its size does not exceed the maximum allowed size', async () => {
+    const MAX_NETWORK_BODY_SIZE_IN_BYTES = await NativeInstabug.getNetworkBodyMaxSize();
+
     const networkData = {
       ...network,
-      responseBodySize: InstabugConstants.MAX_NETWORK_BODY_SIZE_IN_BYTES,
+      responseBodySize: MAX_NETWORK_BODY_SIZE_IN_BYTES,
     };
 
     Interceptor.setOnDoneCallback = jest
       .fn()
-      .mockImplementation((callback) => callback(networkData));
+      .mockImplementation(async (callback) => await callback(networkData));
 
-    NetworkLogger.setEnabled(true);
+    await NetworkLogger.setEnabled(true);
 
     expect(reportNetworkLog).toHaveBeenCalledWith(networkData);
   });
@@ -289,5 +312,119 @@ describe('NetworkLogger Module', () => {
 
     expect(NativeInstabug.setNetworkLogBodyEnabled).toBeCalledTimes(1);
     expect(NativeInstabug.setNetworkLogBodyEnabled).toBeCalledWith(true);
+  });
+
+  it('Instabug.init should call NativeNetworkLogger.isNativeInterceptionEnabled and not call NativeNetworkLogger.hasAPMNetworkPlugin with iOS', async () => {
+    Platform.OS = 'ios';
+    const config = {
+      token: 'some-token',
+      invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
+      debugLogsLevel: LogLevel.debug,
+      networkInterceptionMode: NetworkInterceptionMode.native,
+      codePushVersion: '1.1.0',
+    };
+    await Instabug.init(config);
+
+    expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
+    expect(NativeNetworkLogger.hasAPMNetworkPlugin).not.toHaveBeenCalled();
+  });
+});
+
+describe('_registerNetworkLogsListener', () => {
+  let handlerMock: jest.Mock;
+  let type: NetworkListenerType;
+
+  beforeEach(() => {
+    handlerMock = jest.fn();
+    type = NetworkListenerType.both;
+    jest.resetAllMocks(); // Reset mock implementation and calls
+    NetworkLogger.resetNetworkListener(); // Clear only calls, keeping implementation intact
+  });
+
+  it('should remove old listeners if they exist', () => {
+    Platform.OS = 'ios';
+
+    // Simulate that there are existing listeners
+    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(2);
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    expect(NetworkLoggerEmitter.removeAllListeners).toHaveBeenCalledWith(
+      NativeNetworkLoggerEvent.NETWORK_LOGGER_HANDLER,
+    );
+  });
+
+  it('should set the new listener if _networkListener is null', () => {
+    Platform.OS = 'ios';
+    // No existing listener
+    jest.spyOn(NetworkLoggerEmitter, 'listenerCount').mockReturnValue(0);
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalled();
+    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledWith(type);
+  });
+
+  it('should attach a new listener to the existing one if _networkListener is set', () => {
+    Platform.OS = 'ios';
+
+    type = NetworkListenerType.filtering;
+    const newType = NetworkListenerType.both;
+
+    // First call to set the listener
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    // Second call with a different type to trigger setting to `both`
+    NetworkLogger.registerNetworkLogsListener(newType, handlerMock);
+
+    expect(NetworkLoggerEmitter.addListener).toHaveBeenCalledTimes(2);
+    expect(NativeNetworkLogger.registerNetworkLogsListener).toHaveBeenCalledWith(
+      NetworkListenerType.both,
+    );
+  });
+
+  it('should map networkSnapshot data correctly and call handler', () => {
+    const mockNetworkSnapshot = {
+      id: '123',
+      url: 'http://example.com',
+      requestHeader: {},
+      requestBody: 'test request body',
+      responseHeader: {},
+      response: 'test response',
+      responseCode: 200,
+    };
+
+    (NetworkLoggerEmitter.addListener as jest.Mock).mockImplementation((_, callback) => {
+      callback(mockNetworkSnapshot);
+    });
+
+    NetworkLogger.registerNetworkLogsListener(type, handlerMock);
+
+    const expectedNetworkData: NetworkLogger.NetworkData = {
+      id: '123',
+      url: 'http://example.com',
+      requestBody: 'test request body',
+      requestHeaders: {},
+      method: '',
+      responseBody: 'test response',
+      responseCode: 200,
+      responseHeaders: {},
+      contentType: '',
+      duration: 0,
+      requestBodySize: 0,
+      responseBodySize: 0,
+      errorDomain: '',
+      errorCode: 0,
+      startTime: 0,
+      serverErrorMessage: '',
+      requestContentType: '',
+      isW3cHeaderFound: true,
+      networkStartTimeInSeconds: 0,
+      partialId: 0,
+      w3cCaughtHeader: '',
+      w3cGeneratedHeader: '',
+    };
+
+    expect(handlerMock).toHaveBeenCalledWith(expectedNetworkData);
   });
 });

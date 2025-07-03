@@ -25,6 +25,7 @@ import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
+import com.instabug.library.MaskingType;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -662,4 +663,45 @@ public class RNInstabugReactnativeModuleTest {
         boolean expected=internalAPM._isFeatureEnabled(CoreFeature.W3C_ATTACHING_CAPTURED_HEADER);
         verify(promise).resolve(expected);
     }
+
+
+    @Test
+    public void testSetNetworkLogBodyEnabled() {
+        rnModule.setNetworkLogBodyEnabled(true);
+
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(true));
+    }
+
+    @Test
+    public void testSetNetworkLogBodyDisabled() {
+        rnModule.setNetworkLogBodyEnabled(false);
+
+        mockInstabug.verify(() -> Instabug.setNetworkLogBodyEnabled(false));
+    }
+    
+    @Test
+    public void testEnableAutoMasking(){
+
+            String maskLabel = "labels";
+            String maskTextInputs = "textInputs";
+            String maskMedia = "media";
+            String maskNone = "none";
+
+            rnModule.enableAutoMasking(JavaOnlyArray.of(maskLabel, maskMedia, maskTextInputs,maskNone));
+
+            mockInstabug.verify(() -> Instabug.setAutoMaskScreenshotsTypes(MaskingType.LABELS,MaskingType.MEDIA,MaskingType.TEXT_INPUTS,MaskingType.MASK_NOTHING));
+    }
+
+    @Test
+    public void testGetNetworkBodyMaxSize_resolvesPromiseWithExpectedValue() {
+        Promise promise = mock(Promise.class);
+        InternalCore internalAPM = mock(InternalCore.class);
+        int expected = 10240;
+        when(internalAPM.get_networkLogCharLimit()).thenReturn(expected);
+
+        rnModule.getNetworkBodyMaxSize(promise);
+
+        verify(promise).resolve(expected);
+    }
+
 }
