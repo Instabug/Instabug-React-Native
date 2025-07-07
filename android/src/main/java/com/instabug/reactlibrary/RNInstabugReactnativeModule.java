@@ -6,9 +6,13 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+
+import com.facebook.react.bridge.ReactApplicationContext;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -45,6 +49,7 @@ import com.instabug.library.internal.crossplatform.OnFeaturesUpdatedListener;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
+import com.instabug.library.model.IBGTheme;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
@@ -1347,6 +1352,205 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
+                }
+            }
+        });
+    }
+    /**
+     * Sets the theme for Instabug using a configuration object.
+     *
+     * @param themeConfig A ReadableMap containing theme properties such as colors, fonts, and text styles.
+     */
+    @ReactMethod
+    public void setTheme(final ReadableMap themeConfig) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    com.instabug.library.model.IBGTheme.Builder builder = new com.instabug.library.model.IBGTheme.Builder();
+
+                    if (themeConfig.hasKey("primaryColor")) {
+                        builder.setPrimaryColor(getColor(themeConfig, "primaryColor"));
+                    }
+                    if (themeConfig.hasKey("secondaryTextColor")) {
+                        builder.setSecondaryTextColor(getColor(themeConfig, "secondaryTextColor"));
+                    }
+                    if (themeConfig.hasKey("primaryTextColor")) {
+                        builder.setPrimaryTextColor(getColor(themeConfig, "primaryTextColor"));
+                    }
+                    if (themeConfig.hasKey("titleTextColor")) {
+                        builder.setTitleTextColor(getColor(themeConfig, "titleTextColor"));
+                    }
+                    if (themeConfig.hasKey("backgroundColor")) {
+                        builder.setBackgroundColor(getColor(themeConfig, "backgroundColor"));
+                    }
+
+                    if (themeConfig.hasKey("primaryTextStyle")) {
+                        builder.setPrimaryTextStyle(getTextStyle(themeConfig, "primaryTextStyle"));
+                    }
+                    if (themeConfig.hasKey("secondaryTextStyle")) {
+                        builder.setSecondaryTextStyle(getTextStyle(themeConfig, "secondaryTextStyle"));
+                    }
+                    if (themeConfig.hasKey("ctaTextStyle")) {
+                        builder.setCtaTextStyle(getTextStyle(themeConfig, "ctaTextStyle"));
+                    }
+                    if (themeConfig.hasKey("primaryFontPath") || themeConfig.hasKey("primaryFontAsset")) {
+                        Typeface primaryTypeface = getTypeface(themeConfig, "primaryFontPath", "primaryFontAsset");
+                        if (primaryTypeface != null) {
+                            builder.setPrimaryTextFont(primaryTypeface);
+                        } else {
+                            Log.e("InstabugModule", "Failed to load primary font");
+                        }
+                    }
+
+                    if (themeConfig.hasKey("secondaryFontPath") || themeConfig.hasKey("secondaryFontAsset")) {
+                        Typeface secondaryTypeface = getTypeface(themeConfig, "secondaryFontPath", "secondaryFontAsset");
+                        if (secondaryTypeface != null) {
+                            builder.setSecondaryTextFont(secondaryTypeface);
+                        } else {
+                            Log.e("InstabugModule", "Failed to load secondary font");
+                        }
+                    }
+
+                    if (themeConfig.hasKey("ctaFontPath") || themeConfig.hasKey("ctaFontAsset")) {
+                        Typeface ctaTypeface = getTypeface(themeConfig, "ctaFontPath", "ctaFontAsset");
+                        if (ctaTypeface != null) {
+                            builder.setCtaTextFont(ctaTypeface);
+                        } else {
+                            Log.e("InstabugModule", "Failed to load CTA font");
+                        }
+                    }
+
+                    IBGTheme theme = builder.build();
+                    Instabug.setTheme(theme);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    /**
+     * Retrieves a color value from the ReadableMap.
+     * 
+     * @param map The ReadableMap object.
+     * @param key The key to look for.
+     * @return The parsed color as an integer, or black if missing or invalid.
+     */
+    private int getColor(ReadableMap map, String key) {
+        try {
+            if (map != null && map.hasKey(key) && !map.isNull(key)) {
+                String colorString = map.getString(key);
+                return Color.parseColor(colorString);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Color.BLACK;
+    }
+    
+    /**
+     * Retrieves a text style from the ReadableMap.
+     * 
+     * @param map The ReadableMap object.
+     * @param key The key to look for.
+     * @return The corresponding Typeface style, or Typeface.NORMAL if missing or invalid.
+     */
+    private int getTextStyle(ReadableMap map, String key) {
+        try {
+            if (map != null && map.hasKey(key) && !map.isNull(key)) {
+                String style = map.getString(key);
+                switch (style.toLowerCase()) {
+                    case "bold":
+                        return Typeface.BOLD;
+                    case "italic":
+                        return Typeface.ITALIC;
+                    case "bold_italic":
+                        return Typeface.BOLD_ITALIC;
+                    case "normal":
+                    default:
+                        return Typeface.NORMAL;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Typeface.NORMAL; 
+    }
+    
+private Typeface getTypeface(ReadableMap map, String fileKey, String assetKey) {
+    try {
+        if (fileKey != null && map.hasKey(fileKey) && !map.isNull(fileKey)) {
+            String fontPath = map.getString(fileKey);
+            String fileName = getFileName(fontPath);
+            
+            try {
+                Typeface typeface = Typeface.create(fileName, Typeface.NORMAL);
+                if (typeface != null && !typeface.equals(Typeface.DEFAULT)) {
+                    return typeface;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try {
+                Typeface typeface = Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
+                return typeface;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (assetKey != null && map.hasKey(assetKey) && !map.isNull(assetKey)) {
+            String assetPath = map.getString(assetKey);
+            String fileName = getFileName(assetPath);
+            try {
+                Typeface typeface = Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
+                return typeface;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return Typeface.DEFAULT;
+}
+
+/**
+ * Extracts the filename from a path, removing any directory prefixes.
+ * 
+ * @param path The full path to the file
+ * @return Just the filename with extension
+ */
+private String getFileName(String path) {
+    if (path == null || path.isEmpty()) {
+        return path;
+    }
+    
+    int lastSeparator = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
+    if (lastSeparator >= 0 && lastSeparator < path.length() - 1) {
+        return path.substring(lastSeparator + 1);
+    }
+    
+    return path;
+}
+
+ /**
+     * Enables or disables displaying in full-screen mode, hiding the status and navigation bars.
+     * @param isEnabled A boolean to enable/disable setFullscreen.
+     */
+    @ReactMethod
+    public void setFullscreen(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                        Instabug.setFullscreen(isEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

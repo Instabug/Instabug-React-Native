@@ -704,4 +704,75 @@ public class RNInstabugReactnativeModuleTest {
         verify(promise).resolve(expected);
     }
 
+    @Test
+    public void testEnablSetFullScreen() {
+        boolean isEnabled = true;
+
+        // when
+        rnModule.setFullscreen(isEnabled);
+
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.setFullscreen(isEnabled);
+    }
+
+    @Test
+    public void testDisableSetFullScreen() {
+        // given
+        boolean isEnabled = false;
+
+        // when
+        rnModule.setFullscreen(isEnabled);
+
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.setFullscreen(isEnabled);
+    }
+
+    @Test
+    public void testSetTheme() {
+        // given
+        JavaOnlyMap themeConfig = new JavaOnlyMap();
+        themeConfig.putString("primaryColor", "#FF0000");
+        themeConfig.putString("primaryTextColor", "#00FF00");
+        themeConfig.putString("secondaryTextColor", "#0000FF");
+        themeConfig.putString("titleTextColor", "#FFFF00");
+        themeConfig.putString("backgroundColor", "#FF00FF");
+        themeConfig.putString("primaryTextStyle", "bold");
+        themeConfig.putString("secondaryTextStyle", "italic");
+        themeConfig.putString("ctaTextStyle", "bold");
+        themeConfig.putString("primaryFontPath", "TestFont.ttf");
+        themeConfig.putString("secondaryFontPath", "fonts/AnotherFont.ttf");
+        themeConfig.putString("ctaFontPath", "./assets/fonts/CTAFont.ttf");
+
+        // Mock IBGTheme.Builder
+        com.instabug.library.model.IBGTheme.Builder mockBuilder = mock(com.instabug.library.model.IBGTheme.Builder.class);
+        com.instabug.library.model.IBGTheme mockTheme = mock(com.instabug.library.model.IBGTheme.class);
+        
+        try (MockedConstruction<com.instabug.library.model.IBGTheme.Builder> mockedBuilder = mockConstruction(
+                com.instabug.library.model.IBGTheme.Builder.class,
+                (mock, context) -> {
+                    when(mock.setPrimaryColor(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setSecondaryTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setTitleTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setBackgroundColor(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setSecondaryTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setCtaTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextFont(any())).thenReturn(mock);
+                    when(mock.setSecondaryTextFont(any())).thenReturn(mock);
+                    when(mock.setCtaTextFont(any())).thenReturn(mock);
+                    when(mock.build()).thenReturn(mockTheme);
+                })) {
+
+            // when
+            rnModule.setTheme(themeConfig);
+
+            // then
+            verify(Instabug.class, times(1));
+            Instabug.setTheme(mockTheme);
+        }
+    }
+
 }

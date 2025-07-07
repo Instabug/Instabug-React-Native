@@ -173,6 +173,167 @@ RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
         Instabug.tintColor = color;
 }
 
+RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
+    IBGTheme *theme = [[IBGTheme alloc] init];
+    
+    if (themeConfig[@"primaryColor"]) {
+        NSString *colorString = themeConfig[@"primaryColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.primaryColor = color;
+        }
+    }
+    
+    if (themeConfig[@"backgroundColor"]) {
+        NSString *colorString = themeConfig[@"backgroundColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.backgroundColor = color;
+        }
+    }
+    
+    if (themeConfig[@"titleTextColor"]) {
+        NSString *colorString = themeConfig[@"titleTextColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.titleTextColor = color;
+        }
+    }
+    
+    if (themeConfig[@"subtitleTextColor"]) {
+        NSString *colorString = themeConfig[@"subtitleTextColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.subtitleTextColor = color;
+        }
+    }
+    
+    if (themeConfig[@"primaryTextColor"]) {
+        NSString *colorString = themeConfig[@"primaryTextColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.primaryTextColor = color;
+        }
+    }
+    
+    if (themeConfig[@"secondaryTextColor"]) {
+        NSString *colorString = themeConfig[@"secondaryTextColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.secondaryTextColor = color;
+        }
+    }
+    
+    if (themeConfig[@"callToActionTextColor"]) {
+        NSString *colorString = themeConfig[@"callToActionTextColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.callToActionTextColor = color;
+        }
+    }
+    
+    if (themeConfig[@"headerBackgroundColor"]) {
+        NSString *colorString = themeConfig[@"headerBackgroundColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.headerBackgroundColor = color;
+        }
+    }
+    
+    if (themeConfig[@"footerBackgroundColor"]) {
+        NSString *colorString = themeConfig[@"footerBackgroundColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.footerBackgroundColor = color;
+        }
+    }
+    
+    if (themeConfig[@"rowBackgroundColor"]) {
+        NSString *colorString = themeConfig[@"rowBackgroundColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.rowBackgroundColor = color;
+        }
+    }
+    
+    if (themeConfig[@"selectedRowBackgroundColor"]) {
+        NSString *colorString = themeConfig[@"selectedRowBackgroundColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.selectedRowBackgroundColor = color;
+        }
+    }
+    
+    if (themeConfig[@"rowSeparatorColor"]) {
+        NSString *colorString = themeConfig[@"rowSeparatorColor"];
+        UIColor *color = [self colorFromHexString:colorString];
+        if (color) {
+            theme.rowSeparatorColor = color;
+        }
+    }
+    
+    // Set fonts
+    if (themeConfig[@"primaryFontPath"]) {
+        NSString *fontName = themeConfig[@"primaryFontPath"];
+        NSString *fileName = [fontName lastPathComponent];
+        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
+        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
+        if (font) {
+            theme.primaryTextFont = font;
+        }
+    }
+    
+    if (themeConfig[@"secondaryFontPath"]) {
+        NSString *fontName = themeConfig[@"secondaryFontPath"];
+        NSString *fileName = [fontName lastPathComponent];
+        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
+        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
+        if (font) {
+            theme.secondaryTextFont = font;
+        }
+    }
+    
+    if (themeConfig[@"ctaFontPath"]) {
+        NSString *fontName = themeConfig[@"ctaFontPath"];
+        NSString *fileName = [fontName lastPathComponent];
+        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
+        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
+        if (font) {
+            theme.callToActionTextFont = font;
+        }
+    }
+    
+    Instabug.theme = theme;
+}
+
+- (UIColor *)colorFromHexString:(NSString *)hexString {
+    NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    
+    if (cleanString.length == 6) {
+        unsigned int rgbValue = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:cleanString];
+        [scanner scanHexInt:&rgbValue];
+        
+        return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16) / 255.0
+                               green:((rgbValue & 0xFF00) >> 8) / 255.0
+                                blue:(rgbValue & 0xFF) / 255.0
+                               alpha:1.0];
+    } else if (cleanString.length == 8) {
+        unsigned int rgbaValue = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:cleanString];
+        [scanner scanHexInt:&rgbaValue];
+        
+        return [UIColor colorWithRed:((rgbaValue & 0xFF000000) >> 24) / 255.0
+                               green:((rgbaValue & 0xFF0000) >> 16) / 255.0
+                                blue:((rgbaValue & 0xFF00) >> 8) / 255.0
+                               alpha:(rgbaValue & 0xFF) / 255.0];
+    }
+    
+    return [UIColor blackColor];
+}
+
+
+
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
     [Instabug appendTags:tags];
 }
