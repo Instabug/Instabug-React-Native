@@ -741,7 +741,6 @@ public class RNInstabugReactnativeModuleTest {
         themeConfig.putString("primaryTextStyle", "bold");
         themeConfig.putString("secondaryTextStyle", "italic");
         themeConfig.putString("ctaTextStyle", "bold");
-        // Note: Not including font paths to avoid getReactApplicationContext() call in test
 
         // Mock IBGTheme.Builder
         com.instabug.library.model.IBGTheme.Builder mockBuilder = mock(com.instabug.library.model.IBGTheme.Builder.class);
