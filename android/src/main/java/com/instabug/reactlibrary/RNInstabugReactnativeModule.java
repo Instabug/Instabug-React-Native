@@ -168,7 +168,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setLogLevel(parsedLogLevel);
 
                  if(ignoreFlagSecure!=null){
-                     builder.ignoreFlagSecure(ignoreFlagSecure)
+                     builder.ignoreFlagSecure(ignoreFlagSecure);
                 }
 
                 if (codePushVersion != null) {
