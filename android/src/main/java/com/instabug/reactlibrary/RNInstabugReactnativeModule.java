@@ -1394,32 +1394,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     if (themeConfig.hasKey("ctaTextStyle")) {
                         builder.setCtaTextStyle(getTextStyle(themeConfig, "ctaTextStyle"));
                     }
-                    if (themeConfig.hasKey("primaryFontPath") || themeConfig.hasKey("primaryFontAsset")) {
-                        Typeface primaryTypeface = getTypeface(themeConfig, "primaryFontPath", "primaryFontAsset");
-                        if (primaryTypeface != null) {
-                            builder.setPrimaryTextFont(primaryTypeface);
-                        } else {
-                            Log.e("InstabugModule", "Failed to load primary font");
-                        }
-                    }
-
-                    if (themeConfig.hasKey("secondaryFontPath") || themeConfig.hasKey("secondaryFontAsset")) {
-                        Typeface secondaryTypeface = getTypeface(themeConfig, "secondaryFontPath", "secondaryFontAsset");
-                        if (secondaryTypeface != null) {
-                            builder.setSecondaryTextFont(secondaryTypeface);
-                        } else {
-                            Log.e("InstabugModule", "Failed to load secondary font");
-                        }
-                    }
-
-                    if (themeConfig.hasKey("ctaFontPath") || themeConfig.hasKey("ctaFontAsset")) {
-                        Typeface ctaTypeface = getTypeface(themeConfig, "ctaFontPath", "ctaFontAsset");
-                        if (ctaTypeface != null) {
-                            builder.setCtaTextFont(ctaTypeface);
-                        } else {
-                            Log.e("InstabugModule", "Failed to load CTA font");
-                        }
-                    }
+                    setFontIfPresent(themeConfig, builder, "primaryFontPath", "primaryFontAsset", "primary");
+                    setFontIfPresent(themeConfig, builder, "secondaryFontPath", "secondaryFontAsset", "secondary");
+                    setFontIfPresent(themeConfig, builder, "ctaFontPath", "ctaFontAsset", "CTA");
 
                     IBGTheme theme = builder.build();
                     Instabug.setTheme(theme);
@@ -1477,6 +1454,37 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             e.printStackTrace();
         }
         return Typeface.NORMAL; 
+    }
+    
+    /**
+     * Sets a font on the theme builder if the font configuration is present in the theme config.
+     * 
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param fileKey The key for font file path
+     * @param assetKey The key for font asset path
+     * @param fontType The type of font (for logging purposes)
+     */
+    private void setFontIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+                                 String fileKey, String assetKey, String fontType) {
+        if (themeConfig.hasKey(fileKey) || themeConfig.hasKey(assetKey)) {
+            Typeface typeface = getTypeface(themeConfig, fileKey, assetKey);
+            if (typeface != null) {
+                switch (fontType) {
+                    case "primary":
+                        builder.setPrimaryTextFont(typeface);
+                        break;
+                    case "secondary":
+                        builder.setSecondaryTextFont(typeface);
+                        break;
+                    case "CTA":
+                        builder.setCtaTextFont(typeface);
+                        break;
+                }
+            } else {
+                Log.e("InstabugModule", "Failed to load " + fontType + " font");
+            }
+        }
     }
     
 private Typeface getTypeface(ReadableMap map, String fileKey, String assetKey) {

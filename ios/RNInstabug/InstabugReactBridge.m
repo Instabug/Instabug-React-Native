@@ -176,134 +176,54 @@ RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
 RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
     IBGTheme *theme = [[IBGTheme alloc] init];
     
-    if (themeConfig[@"primaryColor"]) {
-        NSString *colorString = themeConfig[@"primaryColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.primaryColor = color;
+    NSDictionary *colorMapping = @{
+        @"primaryColor": ^(UIColor *color) { theme.primaryColor = color; },
+        @"backgroundColor": ^(UIColor *color) { theme.backgroundColor = color; },
+        @"titleTextColor": ^(UIColor *color) { theme.titleTextColor = color; },
+        @"subtitleTextColor": ^(UIColor *color) { theme.subtitleTextColor = color; },
+        @"primaryTextColor": ^(UIColor *color) { theme.primaryTextColor = color; },
+        @"secondaryTextColor": ^(UIColor *color) { theme.secondaryTextColor = color; },
+        @"callToActionTextColor": ^(UIColor *color) { theme.callToActionTextColor = color; },
+        @"headerBackgroundColor": ^(UIColor *color) { theme.headerBackgroundColor = color; },
+        @"footerBackgroundColor": ^(UIColor *color) { theme.footerBackgroundColor = color; },
+        @"rowBackgroundColor": ^(UIColor *color) { theme.rowBackgroundColor = color; },
+        @"selectedRowBackgroundColor": ^(UIColor *color) { theme.selectedRowBackgroundColor = color; },
+        @"rowSeparatorColor": ^(UIColor *color) { theme.rowSeparatorColor = color; }
+    };
+    
+    for (NSString *key in colorMapping) {
+        if (themeConfig[key]) {
+            NSString *colorString = themeConfig[key];
+            UIColor *color = [self colorFromHexString:colorString];
+            if (color) {
+                void (^setter)(UIColor *) = colorMapping[key];
+                setter(color);
+            }
         }
     }
     
-    if (themeConfig[@"backgroundColor"]) {
-        NSString *colorString = themeConfig[@"backgroundColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.backgroundColor = color;
-        }
-    }
-    
-    if (themeConfig[@"titleTextColor"]) {
-        NSString *colorString = themeConfig[@"titleTextColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.titleTextColor = color;
-        }
-    }
-    
-    if (themeConfig[@"subtitleTextColor"]) {
-        NSString *colorString = themeConfig[@"subtitleTextColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.subtitleTextColor = color;
-        }
-    }
-    
-    if (themeConfig[@"primaryTextColor"]) {
-        NSString *colorString = themeConfig[@"primaryTextColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.primaryTextColor = color;
-        }
-    }
-    
-    if (themeConfig[@"secondaryTextColor"]) {
-        NSString *colorString = themeConfig[@"secondaryTextColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.secondaryTextColor = color;
-        }
-    }
-    
-    if (themeConfig[@"callToActionTextColor"]) {
-        NSString *colorString = themeConfig[@"callToActionTextColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.callToActionTextColor = color;
-        }
-    }
-    
-    if (themeConfig[@"headerBackgroundColor"]) {
-        NSString *colorString = themeConfig[@"headerBackgroundColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.headerBackgroundColor = color;
-        }
-    }
-    
-    if (themeConfig[@"footerBackgroundColor"]) {
-        NSString *colorString = themeConfig[@"footerBackgroundColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.footerBackgroundColor = color;
-        }
-    }
-    
-    if (themeConfig[@"rowBackgroundColor"]) {
-        NSString *colorString = themeConfig[@"rowBackgroundColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.rowBackgroundColor = color;
-        }
-    }
-    
-    if (themeConfig[@"selectedRowBackgroundColor"]) {
-        NSString *colorString = themeConfig[@"selectedRowBackgroundColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.selectedRowBackgroundColor = color;
-        }
-    }
-    
-    if (themeConfig[@"rowSeparatorColor"]) {
-        NSString *colorString = themeConfig[@"rowSeparatorColor"];
-        UIColor *color = [self colorFromHexString:colorString];
-        if (color) {
-            theme.rowSeparatorColor = color;
-        }
-    }
-    
-    // Set fonts
-    if (themeConfig[@"primaryFontPath"]) {
-        NSString *fontName = themeConfig[@"primaryFontPath"];
-        NSString *fileName = [fontName lastPathComponent];
-        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
-        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
-        if (font) {
-            theme.primaryTextFont = font;
-        }
-    }
-    
-    if (themeConfig[@"secondaryFontPath"]) {
-        NSString *fontName = themeConfig[@"secondaryFontPath"];
-        NSString *fileName = [fontName lastPathComponent];
-        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
-        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
-        if (font) {
-            theme.secondaryTextFont = font;
-        }
-    }
-    
-    if (themeConfig[@"ctaFontPath"]) {
-        NSString *fontName = themeConfig[@"ctaFontPath"];
-        NSString *fileName = [fontName lastPathComponent];
-        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
-        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
-        if (font) {
-            theme.callToActionTextFont = font;
-        }
-    }
+    [self setFontIfPresent:themeConfig[@"primaryFontPath"] forTheme:theme type:@"primary"];
+    [self setFontIfPresent:themeConfig[@"secondaryFontPath"] forTheme:theme type:@"secondary"];
+    [self setFontIfPresent:themeConfig[@"ctaFontPath"] forTheme:theme type:@"cta"];
     
     Instabug.theme = theme;
+}
+
+- (void)setFontIfPresent:(NSString *)fontPath forTheme:(IBGTheme *)theme type:(NSString *)type {
+    if (fontPath) {
+        NSString *fileName = [fontPath lastPathComponent];
+        NSString *nameWithoutExtension = [fileName stringByDeletingPathExtension];
+        UIFont *font = [UIFont fontWithName:nameWithoutExtension size:17.0];
+        if (font) {
+            if ([type isEqualToString:@"primary"]) {
+                theme.primaryTextFont = font;
+            } else if ([type isEqualToString:@"secondary"]) {
+                theme.secondaryTextFont = font;
+            } else if ([type isEqualToString:@"cta"]) {
+                theme.callToActionTextFont = font;
+            }
+        }
+    }
 }
 
 - (UIColor *)colorFromHexString:(NSString *)hexString {
