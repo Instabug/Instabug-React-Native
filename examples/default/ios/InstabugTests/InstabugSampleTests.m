@@ -75,7 +75,9 @@
 
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion
+    ignoreAndroidSecureFlag:nil
+  ];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);

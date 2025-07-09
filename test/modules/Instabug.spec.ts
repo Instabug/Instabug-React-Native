@@ -289,6 +289,7 @@ describe('Instabug Module', () => {
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
+      ignoreAndroidSecureFlag: true,
     };
     const usesNativeNetworkInterception = false;
 
@@ -302,6 +303,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      instabugConfig.ignoreAndroidSecureFlag,
     );
   });
 

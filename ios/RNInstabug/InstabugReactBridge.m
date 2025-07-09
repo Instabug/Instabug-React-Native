@@ -41,7 +41,9 @@ RCT_EXPORT_METHOD(init:(NSString *)token
           invocationEvents:(NSArray *)invocationEventsArray
           debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
           useNativeNetworkInterception:(BOOL)useNativeNetworkInterception
-          codePushVersion:(NSString *)codePushVersion) {
+          codePushVersion:(NSString *)codePushVersion
+                  ignoreAndroidSecureFlag:(nullable NSNumber *)ignoreAndroidSecureFlag
+ ) {
     IBGInvocationEvent invocationEvents = 0;
 
     for (NSNumber *boxedValue in invocationEventsArray) {

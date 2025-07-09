@@ -26,6 +26,7 @@ export interface InstabugNativeModule extends NativeModule {
     debugLogsLevel: LogLevel,
     useNativeNetworkInterception: boolean,
     codePushVersion?: string,
+    ignoreAndroidSecureFlag?: boolean,
   ): void;
   show(): void;
 
