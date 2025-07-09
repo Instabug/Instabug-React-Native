@@ -275,7 +275,11 @@ const initializeNativeInstabug = (config: InstabugConfig) => {
     shouldEnableNativeInterception &&
       config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
-    config.ignoreAndroidSecureFlag ?? true,
+    config.ignoreAndroidSecureFlag != null
+      ? {
+          ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag,
+        }
+      : undefined,
   );
 };
 
