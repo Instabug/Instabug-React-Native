@@ -149,7 +149,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final String logLevel,
             final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion,
-            final Boolean ignoreFlagSecure
+            final boolean ignoreFlagSecure
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
