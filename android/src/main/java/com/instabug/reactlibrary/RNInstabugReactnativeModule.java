@@ -165,8 +165,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
                 RNInstabug.Builder builder = new RNInstabug.Builder(application, token)
                         .setInvocationEvents(invocationEvents)
-                        .ignoreFlagSecure(ignoreFlagSecure)
                         .setLogLevel(parsedLogLevel);
+
+                 if(ignoreFlagSecure!=null){
+                     builder.ignoreFlagSecure(ignoreFlagSecure)
+                }
 
                 if (codePushVersion != null) {
                     if (Instabug.isBuilt()) {
