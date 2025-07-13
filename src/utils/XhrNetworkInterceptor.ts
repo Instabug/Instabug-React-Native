@@ -157,17 +157,11 @@ export default {
     originalXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
     // An error code that signifies an issue with the RN client.
     const clientErrorCode = 9876;
-    XMLHttpRequest.prototype.open = function (
-      method: string,
-      url: string | URL,
-      async?: boolean,
-      username?: string | null,
-      password?: string | null,
-    ): void {
+    XMLHttpRequest.prototype.open = function (method, url, ...args) {
       _reset();
-      network.url = url.toString();
+      network.url = url;
       network.method = method;
-      originalXHROpen.call(this, method, url.toString(), async, username, password);
+      originalXHROpen.apply(this, [method, url, ...args]);
     };
 
     XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
