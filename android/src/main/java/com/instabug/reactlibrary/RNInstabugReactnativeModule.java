@@ -1044,7 +1044,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * @deprecated see {@link #addFeatureFlags(ReadableMap)}
+     * @deprecated see {@link #addFeatureFlags(ReadableArray)}
      */
     @ReactMethod
     public void addExperiments(final ReadableArray experiments) {

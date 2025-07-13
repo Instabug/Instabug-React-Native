@@ -238,7 +238,7 @@ public class RNInstabug {
         }
 
         /**
-         * Sets the invocation triggering events for the SDK's user interface
+         * Sets the the current App variant
          *
          * @param appVariant the current App variant to work with.
          */
