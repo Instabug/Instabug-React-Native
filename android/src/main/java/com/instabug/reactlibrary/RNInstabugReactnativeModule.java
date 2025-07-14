@@ -1186,10 +1186,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     }
 
     /**
-     * Register a listener for W3C flags value change
+     * Register a listener for feature flags value change
      */
     @ReactMethod
-    public void registerW3CFlagsChangeListener() {
+    public void registerFeatureFlagsChangeListener() {
 
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -1202,8 +1202,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                             params.putBoolean("isW3ExternalTraceIDEnabled", featuresState.isW3CExternalTraceIdEnabled());
                             params.putBoolean("isW3ExternalGeneratedHeaderEnabled", featuresState.isAttachingGeneratedHeaderEnabled());
                             params.putBoolean("isW3CaughtHeaderEnabled", featuresState.isAttachingCapturedHeaderEnabled());
+                            params.putInt("networkBodyLimit",featuresState.getNetworkLogCharLimit());
 
-                            sendEvent(Constants.IBG_ON_NEW_W3C_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
+                            sendEvent(Constants.IBG_ON_FEATURE_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
                         }
                     });
                 } catch (Exception e) {
@@ -1333,7 +1334,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
            }
        });
    }
-     /**
+
     /**
      * Sets the auto mask screenshots types.
      *
@@ -1356,6 +1357,25 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 Instabug.setAutoMaskScreenshotsTypes(autoMassingTypesArray);
             }
 
+        });
+    }
+
+    /**
+     * Get network body size limit
+     */
+    @ReactMethod
+    public void getNetworkBodyMaxSize(Promise promise) {
+
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    promise.resolve(InternalCore.INSTANCE.get_networkLogCharLimit());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+            }
         });
     }
 }

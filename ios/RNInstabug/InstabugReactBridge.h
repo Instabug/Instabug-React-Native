@@ -142,5 +142,6 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)removeAllFeatureFlags;
 - (void)setNetworkLogBodyEnabled:(BOOL)isEnabled;
 - (void)enableAutoMasking:(NSArray *)autoMaskingTypes;
+- (void)getNetworkBodyMaxSize:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 
 @end

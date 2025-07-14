@@ -16,7 +16,7 @@ import type { NavigationAction, NavigationState as NavigationStateV4 } from 'rea
 import type { InstabugConfig } from '../models/InstabugConfig';
 import Report from '../models/Report';
 import { emitter, NativeEvents, NativeInstabug } from '../native/NativeInstabug';
-import { registerW3CFlagsListener } from '../utils/FeatureFlags';
+import { registerFeatureFlagsListener } from '../utils/FeatureFlags';
 import {
   AutoMaskingType,
   ColorTheme,
@@ -88,7 +88,7 @@ function reportCurrentViewForAndroid(screenName: string | null) {
 export const init = async (config: InstabugConfig) => {
   if (Platform.OS === 'android') {
     // Add android feature flags listener for android
-    registerW3CFlagsListener();
+    registerFeatureFlagsListener();
     addOnFeatureUpdatedListener(config);
   } else {
     isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
@@ -884,20 +884,21 @@ export const componentDidAppearListener = (event: ComponentDidAppearEvent) => {
 };
 
 /**
- * Sets listener to W3ExternalTraceID flag changes
+ * Sets listener to feature flag changes
  * @param handler A callback that gets the update value of the flag
  */
-export const _registerW3CFlagsChangeListener = (
+export const _registerFeatureFlagsChangeListener = (
   handler: (payload: {
     isW3ExternalTraceIDEnabled: boolean;
     isW3ExternalGeneratedHeaderEnabled: boolean;
     isW3CaughtHeaderEnabled: boolean;
+    networkBodyLimit: number;
   }) => void,
 ) => {
-  emitter.addListener(NativeEvents.ON_W3C_FLAGS_CHANGE, (payload) => {
+  emitter.addListener(NativeEvents.ON_FEATURE_FLAGS_CHANGE, (payload) => {
     handler(payload);
   });
-  NativeInstabug.registerW3CFlagsChangeListener();
+  NativeInstabug.registerFeatureFlagsChangeListener();
 };
 
 /**
