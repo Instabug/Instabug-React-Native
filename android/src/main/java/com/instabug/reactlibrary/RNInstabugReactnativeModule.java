@@ -1369,31 +1369,17 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     com.instabug.library.model.IBGTheme.Builder builder = new com.instabug.library.model.IBGTheme.Builder();
 
-                    if (themeConfig.hasKey("primaryColor")) {
-                        builder.setPrimaryColor(getColor(themeConfig, "primaryColor"));
-                    }
-                    if (themeConfig.hasKey("secondaryTextColor")) {
-                        builder.setSecondaryTextColor(getColor(themeConfig, "secondaryTextColor"));
-                    }
-                    if (themeConfig.hasKey("primaryTextColor")) {
-                        builder.setPrimaryTextColor(getColor(themeConfig, "primaryTextColor"));
-                    }
-                    if (themeConfig.hasKey("titleTextColor")) {
-                        builder.setTitleTextColor(getColor(themeConfig, "titleTextColor"));
-                    }
-                    if (themeConfig.hasKey("backgroundColor")) {
-                        builder.setBackgroundColor(getColor(themeConfig, "backgroundColor"));
-                    }
+                    // Apply colors
+                    applyColorIfPresent(themeConfig, builder, "primaryColor", (b, color) -> b.setPrimaryColor(color));
+                    applyColorIfPresent(themeConfig, builder, "secondaryTextColor", (b, color) -> b.setSecondaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "primaryTextColor", (b, color) -> b.setPrimaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "titleTextColor", (b, color) -> b.setTitleTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "backgroundColor", (b, color) -> b.setBackgroundColor(color));
 
-                    if (themeConfig.hasKey("primaryTextStyle")) {
-                        builder.setPrimaryTextStyle(getTextStyle(themeConfig, "primaryTextStyle"));
-                    }
-                    if (themeConfig.hasKey("secondaryTextStyle")) {
-                        builder.setSecondaryTextStyle(getTextStyle(themeConfig, "secondaryTextStyle"));
-                    }
-                    if (themeConfig.hasKey("ctaTextStyle")) {
-                        builder.setCtaTextStyle(getTextStyle(themeConfig, "ctaTextStyle"));
-                    }
+                    // Apply text styles
+                    applyTextStyleIfPresent(themeConfig, builder, "primaryTextStyle", (b, style) -> b.setPrimaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "secondaryTextStyle", (b, style) -> b.setSecondaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "ctaTextStyle", (b, style) -> b.setCtaTextStyle(style));
                     setFontIfPresent(themeConfig, builder, "primaryFontPath", "primaryFontAsset", "primary");
                     setFontIfPresent(themeConfig, builder, "secondaryFontPath", "secondaryFontAsset", "secondary");
                     setFontIfPresent(themeConfig, builder, "ctaFontPath", "ctaFontAsset", "CTA");
@@ -1456,6 +1442,40 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         return Typeface.NORMAL; 
     }
     
+
+
+    /**
+     * Applies a color to the theme builder if present in the configuration.
+     * 
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param key The configuration key
+     * @param setter The color setter function
+     */
+    private void applyColorIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+                                   String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
+        if (themeConfig.hasKey(key)) {
+            int color = getColor(themeConfig, key);
+            setter.accept(builder, color);
+        }
+    }
+
+    /**
+     * Applies a text style to the theme builder if present in the configuration.
+     * 
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param key The configuration key
+     * @param setter The text style setter function
+     */
+    private void applyTextStyleIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+                                       String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
+        if (themeConfig.hasKey(key)) {
+            int style = getTextStyle(themeConfig, key);
+            setter.accept(builder, style);
+        }
+    }
+
     /**
      * Sets a font on the theme builder if the font configuration is present in the theme config.
      * 
@@ -1487,45 +1507,69 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
     }
     
-private Typeface getTypeface(ReadableMap map, String fileKey, String assetKey) {
-    try {
-        if (fileKey != null && map.hasKey(fileKey) && !map.isNull(fileKey)) {
-            String fontPath = map.getString(fileKey);
-            String fileName = getFileName(fontPath);
-            
-            try {
-                Typeface typeface = Typeface.create(fileName, Typeface.NORMAL);
-                if (typeface != null && !typeface.equals(Typeface.DEFAULT)) {
-                    return typeface;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            try {
-                Typeface typeface = Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
+    /**
+     * Loads a Typeface from a file path.
+     * 
+     * @param fileName The filename to load
+     * @return The loaded Typeface or null if failed
+     */
+    private Typeface loadTypefaceFromFile(String fileName) {
+        try {
+            Typeface typeface = Typeface.create(fileName, Typeface.NORMAL);
+            if (typeface != null && !typeface.equals(Typeface.DEFAULT)) {
                 return typeface;
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (assetKey != null && map.hasKey(assetKey) && !map.isNull(assetKey)) {
-            String assetPath = map.getString(assetKey);
-            String fileName = getFileName(assetPath);
-            try {
-                Typeface typeface = Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
-                return typeface;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
 
-    return Typeface.DEFAULT;
-}
+    /**
+     * Loads a Typeface from assets.
+     * 
+     * @param fileName The filename in assets/fonts/ directory
+     * @return The loaded Typeface or null if failed
+     */
+    private Typeface loadTypefaceFromAssets(String fileName) {
+        try {
+            return Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Typeface getTypeface(ReadableMap map, String fileKey, String assetKey) {
+        try {
+            if (fileKey != null && map.hasKey(fileKey) && !map.isNull(fileKey)) {
+                String fontPath = map.getString(fileKey);
+                String fileName = getFileName(fontPath);
+                
+                // Try loading from file first
+                Typeface typeface = loadTypefaceFromFile(fileName);
+                if (typeface != null) {
+                    return typeface;
+                }
+                
+                // Try loading from assets
+                typeface = loadTypefaceFromAssets(fileName);
+                if (typeface != null) {
+                    return typeface;
+                }
+            }
+
+            if (assetKey != null && map.hasKey(assetKey) && !map.isNull(assetKey)) {
+                String assetPath = map.getString(assetKey);
+                String fileName = getFileName(assetPath);
+                return loadTypefaceFromAssets(fileName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Typeface.DEFAULT;
+    }
 
 /**
  * Extracts the filename from a path, removing any directory prefixes.
