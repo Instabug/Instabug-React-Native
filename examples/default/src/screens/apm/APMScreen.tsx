@@ -37,6 +37,31 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
       <ListTile title="Flows" onPress={() => navigation.navigate('AppFlows')} />
       <ListTile title="WebViews" onPress={() => navigation.navigate('WebViews')} />
       <ListTile title="Complex Views" onPress={() => navigation.navigate('ComplexViews')} />
+        
+      <ListTile
+        title="Simulate Slow Frames"
+        onPress={() => {
+          // Simulate slow rendering
+          const heavyComputation = () => {
+            for (let i = 0; i < 1000000; i++) {
+              Math.random() * Math.random();
+            }
+          };
+          heavyComputation();
+          showNotification('Slow Frames', 'Heavy computation executed to simulate slow frames');
+        }}
+      />
+      <ListTile
+        title="Simulate Frozen Frames"
+        onPress={() => {
+          const freezeDuration = 3000; // 3 seconds
+          const start = Date.now();
+          while (Date.now() - start < freezeDuration) {
+            // Busy wait to block JS thread
+          }
+          showNotification('Frozen Frames', `UI frozen for ${freezeDuration / 1000} seconds`);
+        }}
+      />
     </Screen>
   );
 };
