@@ -5,7 +5,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import type { SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
-  APM,
   CrashReporting,
   InvocationEvent,
   LaunchType,
@@ -70,7 +69,7 @@ export const App: React.FC = () => {
         networkData.url = `${networkData.url}/JS/Obfuscated`;
         return networkData;
       });
-      APM.setScreenRenderEnabled(false);
+      // APM.setScreenRenderEnabled(true);
     });
   });
 
