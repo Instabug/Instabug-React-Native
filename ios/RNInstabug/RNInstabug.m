@@ -61,9 +61,8 @@ useNativeNetworkInterception:(BOOL)useNativeNetworkInterception {
     [Instabug setCodePushVersion:codePushVersion];
 }
 
-+ (void)setOverAirVersion:(NSDictionary *)overAirVersion {    
-    IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
-    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:service];
++ (void)setOverAirVersion:(NSDictionary *)overAirVersion {
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]];
 }
 
 
