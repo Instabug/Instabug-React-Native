@@ -84,8 +84,9 @@
   [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion overAirVersion:overAirVersion];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
   
-  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:service]);
-  
+  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
+ 
+
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
 
@@ -109,7 +110,7 @@
   
   IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
   
-  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:service]);
+  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
 }
 
 - (void)testSetUserData {
