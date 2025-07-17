@@ -135,7 +135,7 @@ export const CrashReportingScreen: React.FC = () => {
             title="Throw Handled Native Exception"
             onPress={() => NativeExampleCrashReporting.sendNativeNonFatal()}
           />
-          <VerticalListTile title="Throw Handeld crash">
+          <VerticalListTile title="Throw Handeld crash" disabled={true}>
             <VStack>
               <View style={styles.inputWrapper}>
                 <InputField

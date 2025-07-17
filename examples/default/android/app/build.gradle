@@ -88,7 +88,7 @@ android {
     defaultConfig {
         applicationId "com.instabug.react.example"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
