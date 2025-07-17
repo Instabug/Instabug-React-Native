@@ -13,6 +13,7 @@ import Instabug, {
   NetworkLogger,
   ReproStepsMode,
   SessionReplay,
+  OverAirUpdateServices,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
 
@@ -50,7 +51,8 @@ export const App: React.FC = () => {
         token: 'deb1910a7342814af4e4c9210c786f35',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
-        networkInterceptionMode: NetworkInterceptionMode.javascript,
+        networkInterceptionMode: NetworkInterceptionMode.native,
+        overAirVersion: { service: OverAirUpdateServices.codePush, version: '1.0.0' },
       });
 
       CrashReporting.setNDKCrashesEnabled(true);
