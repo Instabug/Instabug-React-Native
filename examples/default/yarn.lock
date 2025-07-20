@@ -2148,11 +2148,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.5.7.tgz#523178779f302aa162b0d57211842f81522e8ece"
   integrity sha512-WMDDZjNF2Bd8M8TrSqKf5xhM9ikdfCHtSPur64Ow3bB/OVrKufUQZ59NmYdNZNeGPvcHHTsafuYTY8zfZfbchQ==
 
-"@react-native-picker/picker@^2.11.1":
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.11.1.tgz#d8884440abc5f75579d82f9888e50ca047c9ec14"
-  integrity sha512-ThklnkK4fV3yynnIIRBkxxjxR4IFbdMNJVF6tlLdOJ/zEFUEFUEdXY0KmH0iYzMwY8W4/InWsLiA7AkpAbnexA==
-
 "@react-native/assets-registry@0.77.2":
   version "0.77.2"
   resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.77.2.tgz#effabe93078a34c198f6496c9bf8eb8b92f423a7"
@@ -7528,7 +7523,7 @@ react-native-config@^1.5.3:
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.5.5.tgz#5977db58ff20b6fe9dd6fb28c815a9ba43d018d2"
   integrity sha512-dGdLnBU0cd5xL5bF0ROTmHYbsstZnQKOEPfglvZi1vStvAjpld14X25K6mY3KGPTMWAzx6TbjKeq5dR+ILuMMA==
 
-react-native-gesture-handler@^2.27.1:
+react-native-gesture-handler@^2.13.4:
   version "2.27.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.27.1.tgz#8865b2345f4c65536517f20cedc420481fc72d49"
   integrity sha512-57TUWerhdz589OcDD21e/YlL923Ma4OIpyWsP0hy7gItBCPm5d7qIUW7Yo/cS2wo1qDdOhJaNlvlBD1lDou1fA==
@@ -7542,11 +7537,6 @@ react-native-is-edge-to-edge@1.1.7:
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.7.tgz#28947688f9fafd584e73a4f935ea9603bd9b1939"
   integrity sha512-EH6i7E8epJGIcu7KpfXYXiV2JFIYITtq+rVS8uEb+92naMRBdxhTuS8Wn2Q7j9sqyO0B+Xbaaf9VdipIAmGW4w==
 
-react-native-is-edge-to-edge@^1.1.7:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz#64e10851abd9d176cbf2b40562f751622bde3358"
-  integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
-
 react-native-maps@1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.10.3.tgz#a669ee3a8baa01d30c5c7af7bdc498428d0e8284"
@@ -7554,7 +7544,7 @@ react-native-maps@1.10.3:
   dependencies:
     "@types/geojson" "^7946.0.13"
 
-react-native-reanimated@^3.18.0:
+react-native-reanimated@^3.16.1:
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.18.0.tgz#0a246eab38a9e807887fe561a2868cfe85351f3c"
   integrity sha512-eVcNcqeOkMW+BUWAHdtvN3FKgC8J8wiEJkX6bNGGQaLS7m7e4amTfjIcqf/Ta+lerZLurmDaQ0lICI1CKPrb1Q==
@@ -7577,13 +7567,12 @@ react-native-safe-area-context@^4.12.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.14.1.tgz#980c3c9db02a2314fa8ceb07f614728802320367"
   integrity sha512-+tUhT5WBl8nh5+P+chYhAjR470iCByf9z5EYdCEbPaAK3Yfzw+o8VRPnUgmPAKlSccOgQBxx3NOl/Wzckn9ujg==
 
-react-native-screens@^4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-4.12.0.tgz#9ee3da954dbbfcaa6fd69a21e736a2265b73395b"
-  integrity sha512-T2KL6RcDSYDRZswh9glRe600Hvaeq240U21eaqv0uxCNmJz05UeFc4YGQgbFPI8XsakPKx3HjNonItxElFy+QA==
+react-native-screens@^3.35.0:
+  version "3.37.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.37.0.tgz#836ef8f8012d288bc6130857c4fca2ea1ba24bfc"
+  integrity sha512-vEi4qZqWYoGuVGuHTv1K2XA90rgSydksmR5+tb5uhL93whl6Bch6EEXzC+8eEfj4SimiCgXBPY7r/xTXJxvnUg==
   dependencies:
     react-freeze "^1.0.0"
-    react-native-is-edge-to-edge "^1.1.7"
     warn-once "^0.1.0"
 
 react-native-svg@^15.8.0:
@@ -8668,10 +8657,10 @@ typed-array-length@^1.0.7:
     possible-typed-array-names "^1.0.0"
     reflect.getprototypeof "^1.0.6"
 
-typescript@5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
-  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+typescript@5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.6.tgz#02f8ac202b6dad2c0dd5e0913745b47a37998274"
+  integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
 
 unbox-primitive@^1.1.0:
   version "1.1.0"
