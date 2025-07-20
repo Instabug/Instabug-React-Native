@@ -1370,16 +1370,16 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                     com.instabug.library.model.IBGTheme.Builder builder = new com.instabug.library.model.IBGTheme.Builder();
 
                     // Apply colors
-                    applyColorIfPresent(themeConfig, builder, "primaryColor", (b, color) -> b.setPrimaryColor(color));
-                    applyColorIfPresent(themeConfig, builder, "secondaryTextColor", (b, color) -> b.setSecondaryTextColor(color));
-                    applyColorIfPresent(themeConfig, builder, "primaryTextColor", (b, color) -> b.setPrimaryTextColor(color));
-                    applyColorIfPresent(themeConfig, builder, "titleTextColor", (b, color) -> b.setTitleTextColor(color));
-                    applyColorIfPresent(themeConfig, builder, "backgroundColor", (b, color) -> b.setBackgroundColor(color));
+                    applyColorIfPresent(themeConfig, builder, "primaryColor", (themeBuilder, color) -> themeBuilder.setPrimaryColor(color));
+                    applyColorIfPresent(themeConfig, builder, "secondaryTextColor", (themeBuilder, color) -> themeBuilder.setSecondaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "primaryTextColor", (themeBuilder, color) -> themeBuilder.setPrimaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "titleTextColor", (themeBuilder, color) -> themeBuilder.setTitleTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "backgroundColor", (themeBuilder, color) -> themeBuilder.setBackgroundColor(color));
 
                     // Apply text styles
-                    applyTextStyleIfPresent(themeConfig, builder, "primaryTextStyle", (b, style) -> b.setPrimaryTextStyle(style));
-                    applyTextStyleIfPresent(themeConfig, builder, "secondaryTextStyle", (b, style) -> b.setSecondaryTextStyle(style));
-                    applyTextStyleIfPresent(themeConfig, builder, "ctaTextStyle", (b, style) -> b.setCtaTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "primaryTextStyle", (themeBuilder, style) -> themeBuilder.setPrimaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "secondaryTextStyle", (themeBuilder, style) -> themeBuilder.setSecondaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "ctaTextStyle", (themeBuilder, style) -> themeBuilder.setCtaTextStyle(style));
                     setFontIfPresent(themeConfig, builder, "primaryFontPath", "primaryFontAsset", "primary");
                     setFontIfPresent(themeConfig, builder, "secondaryFontPath", "secondaryFontAsset", "secondary");
                     setFontIfPresent(themeConfig, builder, "ctaFontPath", "ctaFontAsset", "CTA");
