@@ -170,7 +170,6 @@ export const HomeStackNavigator: React.FC = () => {
         component={ScreenRender}
         options={{ title: 'ScreenRender' }}
       />
-      
     </HomeStack.Navigator>
   );
 };
