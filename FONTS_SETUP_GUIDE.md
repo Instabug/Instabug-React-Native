@@ -16,6 +16,7 @@ This guide covers all ways to use fonts with the `setTheme` function in Instabug
 ## Overview
 
 The Instabug React Native bridge supports font loading from multiple sources:
+
 - **App Bundle**: Fonts included in your app assets
 - **System Fonts**: Built-in platform fonts
 - **Custom Fonts**: Any TTF/OTF font files
@@ -24,14 +25,17 @@ The Instabug React Native bridge supports font loading from multiple sources:
 ## Font Types Supported
 
 ### 1. Google Fonts
+
 - Download TTF files from [Google Fonts](https://fonts.google.com/)
 - Examples: Roboto, Inter, Nunito, Open Sans, Lato
 
 ### 2. Custom Fonts
+
 - Any TTF/OTF font files
 - Commercial fonts, free fonts, custom designs
 
 ### 3. System Fonts
+
 - Platform default fonts
 - No setup required
 - Examples: San Francisco (iOS), Roboto (Android)
@@ -41,6 +45,7 @@ The Instabug React Native bridge supports font loading from multiple sources:
 ### Method 1: Bundle Fonts (Recommended)
 
 #### Step 1: Download Font Files
+
 ```bash
 # Create fonts directory
 mkdir fonts
@@ -51,6 +56,7 @@ mkdir fonts
 ```
 
 #### Step 2: Add to Android
+
 ```bash
 # Create assets/fonts directory
 mkdir -p android/app/src/main/assets/fonts
@@ -60,13 +66,16 @@ cp fonts/*.ttf android/app/src/main/assets/fonts/
 ```
 
 #### Step 3: Add to iOS
+
 1. **Add to Xcode Project:**
+
    - Open your iOS project in Xcode
    - Right-click on your project → "Add Files to [ProjectName]"
    - Select your TTF files
    - Make sure "Add to target" is checked
 
 2. **Update Info.plist:**
+
 ```xml
 <key>UIAppFonts</key>
 <array>
@@ -78,6 +87,7 @@ cp fonts/*.ttf android/app/src/main/assets/fonts/
 ```
 
 #### Step 4: Use with setTheme
+
 ```typescript
 import Instabug from 'instabug-reactnative';
 import { Platform } from 'react-native';
@@ -88,19 +98,19 @@ const applyCustomTheme = () => {
     primaryColor: '#2196F3',
     backgroundColor: '#FFFFFF',
     primaryTextColor: '#333333',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // Fonts - Android (use font paths)
     ...(Platform.OS === 'android' && {
       primaryFontPath: '/data/user/0/com.yourapp/files/fonts/Roboto-Regular.ttf',
       secondaryFontPath: '/data/user/0/com.yourapp/files/fonts/Roboto-Light.ttf',
       ctaFontPath: '/data/user/0/com.yourapp/files/fonts/Roboto-Bold.ttf',
     }),
-    
+
     // Fonts - iOS (use font paths, not assets)
     ...(Platform.OS === 'ios' && {
       primaryFontPath: 'fonts/Roboto-Regular.ttf',
@@ -112,6 +122,7 @@ const applyCustomTheme = () => {
 ```
 
 ### Method 2: System Fonts Only
+
 ```typescript
 import Instabug from 'instabug-reactnative';
 
@@ -123,12 +134,12 @@ const applySystemTheme = () => {
     primaryTextColor: '#333333',
     secondaryTextColor: '#666666',
     titleTextColor: '#000000',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // No font paths = uses system fonts
   });
 };
@@ -139,11 +150,13 @@ const applySystemTheme = () => {
 ### Method 1: Expo Fonts (Recommended for Expo)
 
 #### Step 1: Install Expo Fonts
+
 ```bash
 npx expo install expo-font
 ```
 
 #### Step 2: Download and Add Fonts
+
 ```bash
 # Create fonts directory
 mkdir fonts
@@ -153,6 +166,7 @@ mkdir fonts
 ```
 
 #### Step 3: Configure app.json
+
 ```json
 {
   "expo": {
@@ -175,6 +189,7 @@ mkdir fonts
 ```
 
 #### Step 4: Load Fonts in Your App
+
 ```typescript
 import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
@@ -203,6 +218,7 @@ export default function App() {
 ```
 
 #### Step 5: Use with setTheme
+
 ```typescript
 import Instabug from 'instabug-reactnative';
 import { Platform } from 'react-native';
@@ -213,12 +229,12 @@ const applyExpoTheme = () => {
     primaryColor: '#2196F3',
     backgroundColor: '#FFFFFF',
     primaryTextColor: '#333333',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // Fonts - use font paths for both platforms
     primaryFontPath: 'fonts/Roboto-Regular.ttf',
     secondaryFontPath: 'fonts/Inter-Regular.ttf',
@@ -228,16 +244,19 @@ const applyExpoTheme = () => {
 ```
 
 ### Method 2: Expo with Bundle Fonts
+
 Same as Regular React Native Method 1, but fonts are automatically included in the Expo build.
 
 ## Asset Linking Options
 
 ### Option 1: Manual Copy (Current Method)
+
 - Copy TTF files to native directories
 - Update Info.plist manually
 - Works with all setups
 
 ### Option 2: React Native CLI Linking
+
 ```bash
 # Create a react-native.config.js file
 module.exports = {
@@ -246,11 +265,13 @@ module.exports = {
 ```
 
 Then run:
+
 ```bash
 npx react-native link
 ```
 
 ### Option 3: Expo Asset Linking
+
 ```json
 {
   "expo": {
@@ -265,11 +286,13 @@ npx react-native link
 ```
 
 ### Option 4: Metro Asset Plugin
+
 ```bash
 npm install --save-dev react-native-asset
 ```
 
 Create `react-native.config.js`:
+
 ```javascript
 module.exports = {
   assets: ['./fonts/'],
@@ -279,6 +302,7 @@ module.exports = {
 ## Usage Examples
 
 ### Example 1: Google Fonts (Roboto)
+
 ```typescript
 // Download: Roboto-Regular.ttf, Roboto-Bold.ttf, Roboto-Light.ttf
 // Add to project using any method above
@@ -290,12 +314,12 @@ const applyRobotoTheme = () => {
     primaryTextColor: '#212121',
     secondaryTextColor: '#757575',
     titleTextColor: '#000000',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // Font paths for both platforms
     primaryFontPath: 'fonts/Roboto-Regular.ttf',
     secondaryFontPath: 'fonts/Roboto-Light.ttf',
@@ -305,6 +329,7 @@ const applyRobotoTheme = () => {
 ```
 
 ### Example 2: Custom Fonts (Inter)
+
 ```typescript
 // Download: Inter-Regular.ttf, Inter-Bold.ttf, Inter-Medium.ttf
 // Add to project using any method above
@@ -316,12 +341,12 @@ const applyInterTheme = () => {
     primaryTextColor: '#1F2937',
     secondaryTextColor: '#6B7280',
     titleTextColor: '#111827',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // Font paths for both platforms
     primaryFontPath: 'fonts/Inter-Regular.ttf',
     secondaryFontPath: 'fonts/Inter-Medium.ttf',
@@ -331,6 +356,7 @@ const applyInterTheme = () => {
 ```
 
 ### Example 3: System Fonts Only
+
 ```typescript
 const applySystemTheme = () => {
   Instabug.setTheme({
@@ -339,7 +365,7 @@ const applySystemTheme = () => {
     primaryTextColor: '#000000',
     secondaryTextColor: '#8E8E93',
     titleTextColor: '#000000',
-    
+
     // Text styles (Android only) - no font paths = uses system fonts
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
@@ -349,6 +375,7 @@ const applySystemTheme = () => {
 ```
 
 ### Example 4: Mixed Approach
+
 ```typescript
 const applyMixedTheme = () => {
   Instabug.setTheme({
@@ -357,12 +384,12 @@ const applyMixedTheme = () => {
     primaryTextColor: '#2D3436',
     secondaryTextColor: '#636E72',
     titleTextColor: '#2D3436',
-    
+
     // Text styles (Android only)
     primaryTextStyle: 'normal',
     secondaryTextStyle: 'normal',
     ctaTextStyle: 'bold',
-    
+
     // Custom font only for CTA - rest use system fonts
     ctaFontPath: 'fonts/Roboto-Bold.ttf',
   });
@@ -408,8 +435,10 @@ Instabug.setTheme({
 ### Common Issues
 
 #### 1. Font Not Loading
+
 **Symptoms:** Font appears as system font or doesn't change
 **Solutions:**
+
 - Check font filename matches exactly (case-sensitive)
 - Verify font is added to both Android and iOS
 - For iOS, check Info.plist entries
@@ -417,22 +446,28 @@ Instabug.setTheme({
 - **iOS users**: Make sure you're using `*FontPath` properties, not `*FontAsset`
 
 #### 2. Font Loading in Expo
+
 **Symptoms:** Font works in development but not in production
 **Solutions:**
+
 - Use `expo-font` to load fonts before app starts
 - Ensure fonts are included in app.json
 - Test with `expo build` or EAS Build
 
 #### 3. Font File Issues
+
 **Symptoms:** App crashes or font doesn't load
 **Solutions:**
+
 - Verify TTF file is not corrupted
 - Check file size (should be reasonable, not 0 bytes)
 - Ensure font file is valid TTF/OTF format
 
 #### 4. Performance Issues
+
 **Symptoms:** App slow to start or font loading delays
 **Solutions:**
+
 - Use system fonts for better performance
 - Limit number of custom fonts
 - Preload fonts in app initialization
@@ -440,12 +475,14 @@ Instabug.setTheme({
 ### Debug Steps
 
 1. **Check Font Loading:**
+
 ```typescript
 // Add this to debug font loading
 console.log('Available fonts:', Instabug.getAvailableFonts()); // If available
 ```
 
 2. **Verify File Paths:**
+
 ```bash
 # Check if fonts are in the right place
 ls -la android/app/src/main/assets/fonts/
@@ -453,6 +490,7 @@ ls -la ios/YourApp/
 ```
 
 3. **Test with System Fonts First:**
+
 ```typescript
 // Test with system fonts to ensure setTheme works
 Instabug.setTheme({
@@ -469,7 +507,7 @@ Instabug.setTheme({
 4. **Test on Both Platforms:** Fonts may behave differently on iOS vs Android
 5. **Use Standard Font Weights:** Regular, Bold, Light are most reliable
 6. **Keep Font Files Small:** Optimize TTF files for mobile
-7. **Use *FontPath Properties:** Ensures compatibility with both platforms
+7. **Use \*FontPath Properties:** Ensures compatibility with both platforms
 
 ## Summary
 
@@ -481,4 +519,4 @@ Instabug.setTheme({
 - **System Fonts:** No setup required, best performance
 - **Platform Compatibility:** Use `*FontPath` properties for both platforms
 
-The native bridge handles all font loading automatically once fonts are properly added to your project! 
+The native bridge handles all font loading automatically once fonts are properly added to your project!
