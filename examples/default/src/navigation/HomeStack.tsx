@@ -30,6 +30,7 @@ import { HttpScreen } from '../screens/apm/HttpScreen';
 import { WebViewsScreen } from '../screens/apm/webViews/WebViewsScreen';
 import { FullWebViewsScreen } from '../screens/apm/webViews/FullWebViewsScreen';
 import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsScreen';
+import ScreenRender from '../screens/apm/ScreenRender';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -60,6 +61,7 @@ export type HomeStackParamList = {
   WebViews: undefined;
   FullWebViews: undefined;
   PartialWebViews: undefined;
+  ScreenRender: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -161,6 +163,12 @@ export const HomeStackNavigator: React.FC = () => {
         component={PartialWebViewsScreen}
         options={{ title: 'PartialWebViews' }}
       />
+      <HomeStack.Screen
+        name="ScreenRender"
+        component={ScreenRender}
+        options={{ title: 'ScreenRender' }}
+      />
+      
     </HomeStack.Navigator>
   );
 };

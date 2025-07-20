@@ -101,4 +101,11 @@ describe('APM Module', () => {
     expect(NativeAPM.ibgSleep).toBeCalledTimes(1);
     expect(NativeAPM.ibgSleep).toBeCalledWith();
   });
+
+  it('should call the native method setScreenRenderEnabled', () => {
+    APM.setScreenRenderEnabled(true);
+
+    expect(NativeAPM.setScreenRenderEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.setScreenRenderEnabled).toBeCalledWith(true);
+  });
 });
