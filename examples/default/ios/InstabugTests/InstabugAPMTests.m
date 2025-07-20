@@ -176,7 +176,32 @@
   [self.instabugBridge endUITrace];
   OCMVerify([mock endUITrace]);
 }
+//
+//- (void) testSetScreenRenderEnabled {
+//  id mock = OCMClassMock([IBGAPM class]);
+//  BOOL isEnabled = YES;
+//
+//  OCMStub([mock enabled:isEnabled]);
+//  [self.instabugBridge setScreenRenderEnabled:isEnabled];
+//  OCMVerify([mock setScreenRenderEnabled:isEnabled]);
+//}
 
+- (void) testSetScreenRenderEnabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    NSNumber *isEnabled = @1;
 
+    [self.instabugBridge setScreenRenderEnabled:isEnabled];
+
+    OCMVerify([mock setScreenRenderingEnabled:YES]);
+}
+
+- (void) testSetScreenRenderDisabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    NSNumber *isEnabled = @0;
+
+    [self.instabugBridge setScreenRenderEnabled:isEnabled];
+
+    OCMVerify([mock setScreenRenderingEnabled:NO]);
+}
 
 @end
