@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -112,7 +113,9 @@ const AnimatedBox: React.FC<{ isBlocking: boolean; blockingIntensity: number }> 
 
   // Generate many layout-heavy elements to stress native thread
   const generateHeavyNativeElements = () => {
-    if (!isBlocking) return null;
+    if (!isBlocking) {
+      return null;
+    }
 
     const elementCount = blockingIntensity === 1 ? 50 : 200; // More elements = more native work
 
@@ -440,6 +443,3 @@ const styles = StyleSheet.create({
 });
 
 export default ScreenRenderPage;
-
-// Export the screen name constant for navigation
-export const SCREEN_NAME = 'ScreenRender';
