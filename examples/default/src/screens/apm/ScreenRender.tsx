@@ -1,18 +1,18 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useEffect, useRef } from 'react';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
   Animated,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { HomeStackParamList } from '../../navigation/HomeStack';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
 import { APM } from 'instabug-reactnative';
 
-// CustomComponents
+// Custom Components
 const ScreenRenderSwitch: React.FC = () => {
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -31,46 +31,45 @@ const ScreenRenderSwitch: React.FC = () => {
   );
 };
 
-const AnimatedBox: React.FC<{ isBlocking: boolean }> = ({ isBlocking }) => {
+const AnimatedBox: React.FC<{ isBlocking: boolean; blockingIntensity: number }> = ({
+  isBlocking,
+  blockingIntensity,
+}) => {
   const [counter, setCounter] = useState(0);
+  const [layoutThrasher, setLayoutThrasher] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Continuous animation
+  // Continuous animation - Use native driver for native thread work
   useEffect(() => {
     const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(animatedValue, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: true, // Native driver for native thread
         }),
         Animated.timing(animatedValue, {
           toValue: 0,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: true, // Native driver for native thread
         }),
       ]),
     );
     animation.start();
 
     return () => animation.stop();
-  }, []);
+  }, [animatedValue]);
 
-  // High frequency counter updates to force re-renders
+  // High frequency counter updates
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setCounter((prev) => {
-        // This is where we block if isBlocking is true
-        if (isBlocking) {
-          const startTime = Date.now();
-          // Block for 100ms every render cycle
-          while (Date.now() - startTime < 100) {
-            // Busy wait - this will cause visible frozen frames
-          }
-        }
-        return prev + 1;
-      });
+      setCounter((prev) => prev + 1);
+
+      // Layout thrashing to block native thread
+      if (isBlocking) {
+        setLayoutThrasher((prev) => prev + 1);
+      }
     }, 16); // ~60fps updates
 
     return () => {
@@ -85,19 +84,121 @@ const AnimatedBox: React.FC<{ isBlocking: boolean }> = ({ isBlocking }) => {
     outputRange: [0, 100],
   });
 
+  const getStatusText = () => {
+    if (!isBlocking) {
+      return 'Running Smoothly';
+    }
+    if (blockingIntensity === 1) {
+      return 'SLOW NATIVE RENDERING!';
+    }
+    if (blockingIntensity === 2) {
+      return 'FROZEN NATIVE THREAD!';
+    }
+    return 'BLOCKING NATIVE THREAD!';
+  };
+
+  const getBoxColor = () => {
+    if (!isBlocking) {
+      return '#4ECDC4';
+    }
+    if (blockingIntensity === 1) {
+      return '#FFB347';
+    } // Orange for slow
+    if (blockingIntensity === 2) {
+      return '#FF6B6B';
+    } // Red for frozen
+    return '#FF6B6B';
+  };
+
+  // Generate many layout-heavy elements to stress native thread
+  const generateHeavyNativeElements = () => {
+    if (!isBlocking) return null;
+
+    const elementCount = blockingIntensity === 1 ? 50 : 200; // More elements = more native work
+
+    return Array.from({ length: elementCount }, (_, i) => (
+      <View
+        key={`heavy-${i}-${layoutThrasher}`} // Force remount on layout thrash
+        style={{
+          position: 'absolute',
+          left: (i * 3) % 300,
+          top: (i * 2) % 200,
+          width: 20 + (layoutThrasher % 30), // Constantly changing dimensions
+          height: 20 + ((layoutThrasher * 2) % 30),
+          backgroundColor: `hsl(${(i * 10 + layoutThrasher) % 360}, 70%, 60%)`,
+          borderRadius: 5 + (layoutThrasher % 10), // Constantly changing border radius
+          transform: [
+            { rotate: `${(layoutThrasher * 5 + i * 10) % 360}deg` },
+            { scale: 0.5 + (layoutThrasher % 10) / 20 }, // Constantly changing scale
+          ],
+          opacity: 0.3 + (layoutThrasher % 40) / 100, // Constantly changing opacity
+          borderWidth: 1 + (layoutThrasher % 3), // Force layout recalculation
+          borderColor: `hsl(${(layoutThrasher * 7) % 360}, 50%, 40%)`,
+        }}
+      />
+    ));
+  };
+
   return (
     <View style={styles.animatedContainer}>
       <Text style={styles.counterText}>Frame Counter: {counter}</Text>
-      <Animated.View
-        style={[
-          styles.animatedBox,
-          {
+      <Text style={[styles.statusText, isBlocking && styles.statusTextAlert]}>
+        Status: {getStatusText()}
+      </Text>
+
+      {/* Native thread heavy work area */}
+      <View style={styles.nativeWorkArea}>
+        <Animated.View
+          style={{
+            backgroundColor: getBoxColor(),
             transform: [{ translateX }],
-            backgroundColor: isBlocking ? '#FF6B6B' : '#4ECDC4',
-          },
-        ]}>
-        <Text style={styles.animatedBoxText}>{isBlocking ? 'FROZEN!' : 'Smooth'}</Text>
-      </Animated.View>
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.animatedBoxText}>
+            {blockingIntensity === 1 ? 'Slow!' : blockingIntensity === 2 ? 'Frozen!' : 'Smooth'}
+          </Text>
+        </Animated.View>
+
+        {/* Heavy native rendering elements */}
+        {generateHeavyNativeElements()}
+      </View>
+
+      {/* Additional native-heavy components */}
+      {isBlocking && (
+        <View style={styles.heavyNativeSection}>
+          {/* Multiple ScrollViews to stress native scrolling */}
+          <ScrollView
+            style={styles.miniScrollView}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ height: 1000 }}>
+            {Array.from({ length: 100 }, (_, i) => (
+              <View
+                key={`scroll-${i}-${layoutThrasher}`}
+                style={{
+                  height: 10,
+                  backgroundColor: `hsl(${(i * 20 + layoutThrasher) % 360}, 60%, 70%)`,
+                  marginVertical: 1,
+                }}
+              />
+            ))}
+          </ScrollView>
+
+          {/* Text that forces layout recalculation */}
+          <Text
+            style={{
+              fontSize: 8 + (layoutThrasher % 10),
+              color: `hsl(${layoutThrasher % 360}, 70%, 50%)`,
+              textAlign: 'center',
+              lineHeight: 12 + (layoutThrasher % 8),
+            }}>
+            Layout Thrashing Text: {layoutThrasher}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -124,24 +225,12 @@ const ScreenRenderPage: React.FC<NativeStackScreenProps<HomeStackParamList, 'Scr
   navigation,
 }) => {
   const [isBlocking, setIsBlocking] = useState(false);
+  const [blockingIntensity, setBlockingIntensity] = useState(0); // 0 = none, 1 = slow, 2 = frozen
   const blockingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const triggerSlowFrames = (): void => {
-    setIsBlocking(true);
-
-    // Clear any existing timeout
-    if (blockingTimeoutRef.current) {
-      clearTimeout(blockingTimeoutRef.current);
-    }
-
-    // Stop blocking after 3 seconds
-    blockingTimeoutRef.current = setTimeout(() => {
-      setIsBlocking(false);
-    }, 500);
-  };
 
   const triggerFrozenFrames = (): void => {
     setIsBlocking(true);
+    setBlockingIntensity(2); // Frozen frames mode
 
     // Clear any existing timeout
     if (blockingTimeoutRef.current) {
@@ -151,7 +240,8 @@ const ScreenRenderPage: React.FC<NativeStackScreenProps<HomeStackParamList, 'Scr
     // Stop blocking after 5 seconds
     blockingTimeoutRef.current = setTimeout(() => {
       setIsBlocking(false);
-    }, 3000);
+      setBlockingIntensity(0);
+    }, 5000);
   };
 
   const navigateToComplexPage = (): void => {
@@ -174,19 +264,13 @@ const ScreenRenderPage: React.FC<NativeStackScreenProps<HomeStackParamList, 'Scr
 
         <View style={styles.spacer} />
 
-        <AnimatedBox isBlocking={isBlocking} />
+        <AnimatedBox isBlocking={isBlocking} blockingIntensity={blockingIntensity} />
 
         <View style={styles.largeSpacer} />
 
         <View style={styles.buttonContainer}>
           <InstabugButton
-            text={isBlocking ? 'Frames are Delayed! (Wait...)' : 'Trigger Slow Frames (500ms)'}
-            onPress={triggerSlowFrames}
-            disabled={isBlocking}
-          />
-
-          <InstabugButton
-            text={isBlocking ? 'Frames are Delayed! (Wait...)' : 'Trigger Frozen Frames (3000ms)'}
+            text={isBlocking ? 'Frames are Delayed! (Wait...)' : 'Trigger Frozen Frames (5s)'}
             onPress={triggerFrozenFrames}
             disabled={isBlocking}
           />
@@ -308,6 +392,50 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  statusText: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
+  },
+  statusTextAlert: {
+    color: '#FF6B6B', // Red for alert
+    fontWeight: 'bold',
+  },
+  additionalElements: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  smallBox: {
+    width: 30,
+    height: 30,
+    margin: 5,
+    borderRadius: 15,
+  },
+  nativeWorkArea: {
+    position: 'relative',
+    width: 200,
+    height: 200,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  heavyNativeSection: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  miniScrollView: {
+    width: '100%',
+    height: 100,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 8,
+    marginBottom: 10,
   },
 });
 
