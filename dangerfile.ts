@@ -6,7 +6,7 @@ const hasModulesChanges = danger.git.modified_files.some((file) => file.startsWi
 const declaredTrivial =
   !hasSourceChanges || danger.github.issue.labels.some((label) => label.name === 'trivial');
 
-// Make sure PR has a description and ca;;ing example.
+// Make sure PR has a description and calling example.
 async function hasDescription() {
   const linesOfCode = (await danger.git.linesOfCode()) ?? 0;
   const hasNoDiscription = danger.github.pr.body.includes('> Description goes here');
