@@ -11,10 +11,20 @@ export interface CrashData {
   os: (typeof Platform)['OS'];
   platform: 'react_native';
   exception: StackFrame[];
+  cause_crash?: CauseCrashData;
+}
+
+export interface CauseCrashData {
+  message: string;
+  e_message: string;
+  e_name: string;
+  exception: StackFrame[];
+  cause_crash?: CauseCrashData;
 }
 
 export interface CrashReportingNativeModule extends NativeModule {
   setEnabled(isEnabled: boolean): void;
+
   sendJSCrash(data: CrashData | string): Promise<void>;
 
   sendHandledJSCrash(
@@ -23,6 +33,7 @@ export interface CrashReportingNativeModule extends NativeModule {
     fingerprint?: string | null,
     nonFatalExceptionLevel?: NonFatalErrorLevel | null,
   ): Promise<void>;
+
   setNDKCrashesEnabled(isEnabled: boolean): Promise<void>;
 }
 

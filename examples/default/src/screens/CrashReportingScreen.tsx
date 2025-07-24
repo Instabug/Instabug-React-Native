@@ -62,6 +62,32 @@ export const CrashReportingScreen: React.FC = () => {
       throw error;
     }
   }
+
+  function throwUnhandledChainingException(error: Error, isPromise: boolean = false) {
+    const appName = 'Instabug Test App';
+    const rejectionType = isPromise ? 'Promise Rejection ' : '';
+    const errorMessage = `Unhandled ${rejectionType}${error.name} from ${appName}`;
+
+    if (!error.message) {
+      console.log(`IBG-CRSH | Error message: ${error.message}`);
+      error.message = errorMessage;
+    }
+
+    if (isPromise) {
+      console.log('IBG-CRSH | Promise');
+      Promise.reject(error).then(() =>
+        Alert.alert(`Promise Rejection Crash report for ${error.name} is Sent!`),
+      );
+    } else {
+      try {
+        throw ReferenceError();
+      } catch (e) {
+        error.cause = e;
+        throw error;
+      }
+    }
+  }
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   const [userAttributeKey, setUserAttributeKey] = useState('');
@@ -215,6 +241,10 @@ export const CrashReportingScreen: React.FC = () => {
           <ListTile
             title="Throw Unhandled Syntax Exception"
             onPress={() => throwUnhandledException(new SyntaxError())}
+          />
+          <ListTile
+            title="Throw Unhandled Chaining Exception"
+            onPress={() => throwUnhandledChainingException(new SyntaxError('level 1 SyntaxError2'))}
           />
           <ListTile
             title="Throw Unhandled Range Exception"
