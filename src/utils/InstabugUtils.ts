@@ -7,7 +7,7 @@ import parseErrorStackLib, {
 import type { NavigationState as NavigationStateV5, PartialState } from '@react-navigation/native';
 import type { NavigationState as NavigationStateV4 } from 'react-navigation';
 
-import type { CrashData } from '../native/NativeCrashReporting';
+import type { CauseCrashData, CrashData } from '../native/NativeCrashReporting';
 import { NativeCrashReporting } from '../native/NativeCrashReporting';
 import type { NetworkData } from './XhrNetworkInterceptor';
 import { NativeInstabug } from '../native/NativeInstabug';
@@ -59,6 +59,23 @@ export const getCrashDataFromError = (error: Error) => {
     platform: 'react_native',
     exception: jsStackTrace,
   };
+  // Recursively attach inner_crash objects (up to 3 levels)
+  let currentError: any = error;
+  let level = 0;
+  let parentCrash: CauseCrashData | CrashData = jsonObject;
+  while (currentError.cause && level < 3) {
+    const cause = currentError.cause as Error;
+    const innerCrash: CauseCrashData = {
+      message: `${cause.name} - ${cause.message}`,
+      e_message: cause.message,
+      e_name: cause.name,
+      exception: getStackTrace(cause),
+    };
+    parentCrash.cause_crash = innerCrash;
+    parentCrash = innerCrash;
+    currentError = cause;
+    level++;
+  }
   return jsonObject;
 };
 

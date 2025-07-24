@@ -243,6 +243,65 @@ describe('Instabug Utils', () => {
       NonFatalErrorLevel.error,
     );
   });
+  it('getCrashDataFromError should include one level of cause crash', () => {
+    const causeError = new TypeError('Cause error');
+    const rootError = new Error('Root error');
+    (rootError as any).cause = causeError;
+
+    const crashData = InstabugUtils.getCrashDataFromError(rootError);
+    const jsStackTraceRootError = InstabugUtils.getStackTrace(rootError);
+    const jsStackTraceCauseError = InstabugUtils.getStackTrace(causeError);
+
+    expect(crashData.message).toBe('Error - Root error');
+    expect(crashData.e_message).toBe('Root error');
+    expect(crashData.e_name).toBe('Error');
+    expect(crashData.platform).toBe('react_native');
+    expect(crashData.exception).toEqual(jsStackTraceRootError);
+    expect(crashData.cause_crash).toBeDefined();
+    expect(crashData.cause_crash?.message).toBe('TypeError - Cause error');
+    expect(crashData.cause_crash?.e_name).toBe('TypeError');
+    expect(crashData.cause_crash?.exception).toEqual(jsStackTraceCauseError);
+  });
+
+  it('getCrashDataFromError should include up to 3 levels of cause crash', () => {
+    const errorLevel3 = new Error('Third level error');
+    const errorLevel2 = new Error('Second level error');
+    const errorLevel1 = new Error('First level error');
+    const rootError = new Error('Root error');
+
+    (errorLevel2 as any).cause = errorLevel3;
+    (errorLevel1 as any).cause = errorLevel2;
+    (rootError as any).cause = errorLevel1;
+
+    const crashData = InstabugUtils.getCrashDataFromError(rootError);
+
+    expect(crashData.message).toBe('Error - Root error');
+    expect(crashData.cause_crash?.message).toBe('Error - First level error');
+    expect(crashData.cause_crash?.cause_crash?.message).toBe('Error - Second level error');
+    expect(crashData.cause_crash?.cause_crash?.cause_crash?.message).toBe(
+      'Error - Third level error',
+    );
+    expect(crashData.cause_crash?.cause_crash?.cause_crash?.cause_crash).toBeUndefined();
+  });
+
+  it('getCrashDataFromError should stop at 3 levels even if more causes exist', () => {
+    const errorLevel4 = new Error('Fourth level error');
+    const errorLevel3 = new Error('Third level error');
+    const errorLevel2 = new Error('Second level error');
+    const errorLevel1 = new Error('First level error');
+    const rootError = new Error('Root error');
+
+    (errorLevel3 as any).cause = errorLevel4;
+    (errorLevel2 as any).cause = errorLevel3;
+    (errorLevel1 as any).cause = errorLevel2;
+    (rootError as any).cause = errorLevel1;
+
+    const crashData = InstabugUtils.getCrashDataFromError(rootError);
+
+    const thirdLevel = crashData.cause_crash?.cause_crash?.cause_crash;
+    expect(thirdLevel?.message).toBe('Error - Third level error');
+    expect(thirdLevel?.cause_crash).toBeUndefined(); // should not include 4th level
+  });
 });
 
 describe('reportNetworkLog', () => {
