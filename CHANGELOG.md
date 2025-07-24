@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.01...dev)
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.1...dev)
 
 ### Added
 

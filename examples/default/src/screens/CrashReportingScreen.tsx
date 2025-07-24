@@ -244,7 +244,7 @@ export const CrashReportingScreen: React.FC = () => {
           />
           <ListTile
             title="Throw Unhandled Chaining Exception"
-            onPress={() => throwUnhandledChainingException(new SyntaxError('level 1 SyntaxError2'))}
+            onPress={() => throwUnhandledChainingException(new SyntaxError('level 1 SyntaxError'))}
           />
           <ListTile
             title="Throw Unhandled Range Exception"
