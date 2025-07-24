@@ -4,7 +4,7 @@
 
 ### Added
 
-- Add support for chaining errors . ([#1396](https://github.com/Instabug/Instabug-React-Native/pull/1396))
+- Add support for chaining errors . ([#1417](https://github.com/Instabug/Instabug-React-Native/pull/1417))
 
 ## [15.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...v15.0.1)
 
