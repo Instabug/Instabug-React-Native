@@ -160,33 +160,33 @@ export const CrashReportingScreen: React.FC = () => {
                   />
                 </View>
               </View>
-              <View style={styles.inputWrapper}>
-                <Select
-                  label="Select Error Level"
-                  items={[
-                    {
-                      label: 'Error',
-                      value: NonFatalErrorLevel.error,
-                      isInitial: true,
-                    },
-                    {
-                      label: 'Info',
-                      value: NonFatalErrorLevel.info,
-                    },
-                    {
-                      label: 'Critical',
-                      value: NonFatalErrorLevel.critical,
-                    },
-                    {
-                      label: 'Warning',
-                      value: NonFatalErrorLevel.warning,
-                    },
-                  ]}
-                  onValueChange={(value) => {
-                    setCrashLevelValue(value);
-                  }}
-                />
-              </View>
+              {/*<View style={styles.inputWrapper}>*/}
+              {/*  <Select*/}
+              {/*    label="Select Error Level"*/}
+              {/*    items={[*/}
+              {/*      {*/}
+              {/*        label: 'Error',*/}
+              {/*        value: NonFatalErrorLevel.error,*/}
+              {/*        isInitial: true,*/}
+              {/*      },*/}
+              {/*      {*/}
+              {/*        label: 'Info',*/}
+              {/*        value: NonFatalErrorLevel.info,*/}
+              {/*      },*/}
+              {/*      {*/}
+              {/*        label: 'Critical',*/}
+              {/*        value: NonFatalErrorLevel.critical,*/}
+              {/*      },*/}
+              {/*      {*/}
+              {/*        label: 'Warning',*/}
+              {/*        value: NonFatalErrorLevel.warning,*/}
+              {/*      },*/}
+              {/*    ]}*/}
+              {/*    onValueChange={(value) => {*/}
+              {/*      setCrashLevelValue(value);*/}
+              {/*    }}*/}
+              {/*  />*/}
+              {/*</View>*/}
 
               <View style={styles.inputWrapper}>
                 <InputField
