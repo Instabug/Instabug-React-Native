@@ -248,7 +248,7 @@ const ScreenRenderPage: React.FC<NativeStackScreenProps<HomeStackParamList, 'Scr
   };
 
   const navigateToComplexPage = (): void => {
-    navigation.navigate('ComplexViews');
+    navigation.navigate('ComplexViews', { initialDepth: 10, initialBreadth: 2 });
   };
 
   // Cleanup timeout on unmount
@@ -273,7 +273,7 @@ const ScreenRenderPage: React.FC<NativeStackScreenProps<HomeStackParamList, 'Scr
 
         <View style={styles.buttonContainer}>
           <InstabugButton
-            text={isBlocking ? 'Frames are Delayed! (Wait...)' : 'Trigger Frozen Frames (5s)'}
+            text={isBlocking ? 'Frames are Delayed! (Wait...)' : 'Trigger Delayed Frames (5s)'}
             onPress={triggerFrozenFrames}
             disabled={isBlocking}
           />

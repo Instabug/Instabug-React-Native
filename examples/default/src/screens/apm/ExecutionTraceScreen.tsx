@@ -8,7 +8,7 @@ import { InputField } from '../../components/InputField';
 import { CustomButton } from '../../components/CustomButton';
 import BackgroundTimer from 'react-native-background-timer';
 
-export const TracesScreen: React.FC = () => {
+export const ExecutionTraceScreen: React.FC = () => {
   const [traceName, setTraceName] = useState<string>('');
   const [traceAttributeKey, setTraceAttributeKey] = useState<string>('');
   const [traceAttributeValue, setTraceAttributeValue] = useState<string>('');
