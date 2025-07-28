@@ -64,7 +64,7 @@ apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -114,6 +114,9 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+            if (enableProguardInReleaseBuilds) {
+                proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            }
         }
     }
     externalNativeBuild {
@@ -145,4 +148,40 @@ dependencies {
     implementation "androidx.annotation:annotation:1.1.0"
     androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
+}
+task generateMappingFiles {
+    doLast {
+        def rawDir = file("src/main/res/raw")
+        rawDir.mkdirs()
+        
+        // Generate Proguard/R8 mapping.txt (Java obfuscation mapping)
+        def proguardMappingFile = file("build/outputs/mapping/release/mapping.txt")
+        if (proguardMappingFile.exists()) {
+            def mappingFile = file("src/main/res/raw/mapping.txt")
+            mappingFile.text = proguardMappingFile.text
+            println "Generated Proguard mapping.txt in res/raw directory"
+            println "File size: ${mappingFile.length()} bytes"
+        } else {
+            println "Warning: Proguard mapping file not found at ${proguardMappingFile.absolutePath}"
+            // Create a basic Proguard mapping structure as fallback
+            def mappingFile = file("src/main/res/raw/mapping.txt")
+            mappingFile.text = """# compiler: R8
+# compiler_version: 1.6.82
+# min_api: 23
+# pg_map_id: generated
+# common_typos_disable
+# Generated mapping file for React Native app
+"""
+        }
+        
+        // Generate android_test_mapping.txt (empty file for now)
+        file("src/main/res/raw/android_test_mapping.txt").text = ""
+    }
+}
+
+// Make the task run after the build
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('assembleRelease')) {
+        task.dependsOn generateMappingFiles
+    }
 }
