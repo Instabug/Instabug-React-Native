@@ -94,22 +94,39 @@ public class RNInstabugCrashReportingModule extends ReactContextBaseJavaModule {
         try {
             final JSONObject jsonObject = new JSONObject(exceptionObject);
             MainThreadHandler.runOnMainThread(new Runnable() {
-                @Override
-                public void run() {
+                @ReactMethod
+                public void sendNativeNonFatal(@Nullable ReadableMap params) {
+                    if (params == null) {
+                        // Optionally log or handle the missing argument case gracefully
+                        return;
+                    }
                     try {
-                        Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class,
-                                Map.class, JSONObject.class, IBGNonFatalException.Level.class);
+                        JSONObject jsonObject = new JSONObject(params.hasKey("jsonObject") ? params.getString("jsonObject") : "{}");
+                        IBGNonFatalException.Level nonFatalExceptionLevel = IBGNonFatalException.Level.ERROR;
+                        if (params.hasKey("level")) {
+                            String level = params.getString("level");
+                            if (ArgsRegistry.nonFatalExceptionLevel != null) {
+                                nonFatalExceptionLevel = ArgsRegistry.nonFatalExceptionLevel.getOrDefault(level, IBGNonFatalException.Level.ERROR);
+                            }
+                        }
+                        Map<String, Object> userAttributesMap = null;
+                        if (params.hasKey("userAttributes")) {
+                            ReadableMap userAttributes = params.getMap("userAttributes");
+                            userAttributesMap = userAttributes != null ? userAttributes.toHashMap() : null;
+                        }
+                        JSONObject fingerprintObj = null;
+                        if (params.hasKey("fingerprint")) {
+                            String fingerprint = params.getString("fingerprint");
+                            if (fingerprint != null) {
+                                fingerprintObj = CrashReporting.getFingerprintObject(fingerprint);
+                            }
+                        }
+                        Method method = getMethod(Class.forName("com.instabug.crash.CrashReporting"), "reportException", JSONObject.class, boolean.class, Map.class, JSONObject.class, IBGNonFatalException.Level.class);
                         if (method != null) {
-                            IBGNonFatalException.Level nonFatalExceptionLevel = ArgsRegistry.nonFatalExceptionLevel.getOrDefault(level, IBGNonFatalException.Level.ERROR);
-                            Map<String, Object> userAttributesMap = userAttributes == null ? null : userAttributes.toHashMap();
-                            JSONObject fingerprintObj = fingerprint == null ? null : CrashReporting.getFingerprintObject(fingerprint);
-
                             method.invoke(null, jsonObject, true, userAttributesMap, fingerprintObj, nonFatalExceptionLevel);
-
                             RNInstabugReactnativeModule.clearCurrentReport();
                         }
-                    } catch (ClassNotFoundException | IllegalAccessException |
-                             InvocationTargetException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
