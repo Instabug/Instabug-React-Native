@@ -88,10 +88,10 @@ android {
     defaultConfig {
         applicationId "com.instabug.react.example"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-        multiDexEnabled true
+        		targetSdkVersion rootProject.ext.targetSdkVersion
+		versionCode 1
+		versionName "1.0.0-1"
+		multiDexEnabled true
         testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
