@@ -47,7 +47,7 @@ export const App: React.FC = () => {
       SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
 
       await Instabug.init({
-        token: 'deb1910a7342814af4e4c9210c786f35',
+        token: '85f60fbf3d9170336499829dd78dad31',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
         networkInterceptionMode: NetworkInterceptionMode.javascript,
