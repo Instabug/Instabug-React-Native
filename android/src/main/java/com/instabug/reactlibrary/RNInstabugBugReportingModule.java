@@ -409,8 +409,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
                         typesInts[i] = types.get(i);
                     }
 
-                    BugReporting.setCommentMinimumCharacterCount(limit, typesInts);
-                } catch (Exception e) {
+                    BugReporting.setCommentMinimumCharacterCountForBugReportType(limit, typesInts);                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

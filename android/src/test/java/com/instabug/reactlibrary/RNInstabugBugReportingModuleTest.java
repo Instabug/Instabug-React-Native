@@ -360,7 +360,7 @@ public class RNInstabugBugReportingModuleTest {
         verify(BugReporting.class, VerificationModeFactory.times(1));
         int type1 = args.get(keysArray[0]);
 
-        BugReporting.setCommentMinimumCharacterCount(count, type1);
+        BugReporting.setCommentMinimumCharacterCountForBugReportType(count, type1);
     }
     @Test
     public void TestAddUserConsent() {
