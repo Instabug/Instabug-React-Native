@@ -226,7 +226,7 @@
   [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
 }
 
