@@ -455,7 +455,8 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setColorTheme).toBeCalledWith(theme);
   });
 
-  it('should call the native method setPrimaryColor', () => {
+  it('should call the native method setPrimaryColor on iOS', () => {
+    Platform.OS = 'ios';
     const color = '#fff';
     Instabug.setPrimaryColor(color);
 
