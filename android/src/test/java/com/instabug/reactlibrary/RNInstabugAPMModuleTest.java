@@ -145,34 +145,6 @@ public class RNInstabugAPMModuleTest {
         mockAPM.verifyNoMoreInteractions();
     }
 
-    // @Test
-    // public void givenString$setExecutionTraceAttribute_whenQuery_thenShouldCallNativeApiWithIntArgs() {
-    //     // given
-    //     PowerMockito.mockStatic(APM.class);
-    //     ExecutionTrace trace = mock(ExecutionTrace.class);
-    //     Callback callback = mock(Callback.class);
-    //     // when
-    //     PowerMockito.whenNew(ExecutionTrace.class).withArguments("trace").thenReturn(trace);
-    //     apmModule.startExecutionTrace("trace", "1", callback);
-    //     apmModule.setExecutionTraceAttribute("trace", "key", "value");
-    //     // then
-    //     verify(trace).setAttribute("key", "value");
-    // }
-
-    // @Test
-    // public void givenTrace$endExecutionTrace_whenQuery_thenShouldCallNativeApiWithIntArgs() {
-    //     // given
-    //     PowerMockito.mockStatic(APM.class);
-    //     ExecutionTrace trace = mock(ExecutionTrace.class);
-    //     Callback callback = mock(Callback.class);
-    //     // when
-    //     PowerMockito.whenNew(ExecutionTrace.class).withArguments("trace").thenReturn(trace);
-    //     apmModule.startExecutionTrace("trace", "1", callback);
-    //     apmModule.endExecutionTrace("1");
-    //     // then
-    //     verify(trace).end();
-    // }
-
     @Test
     public void givenString$startUITrace_whenQuery_thenShouldCallNativeApiWithEnabled() {
 

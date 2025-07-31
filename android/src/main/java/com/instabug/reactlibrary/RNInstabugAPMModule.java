@@ -12,7 +12,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.instabug.apm.APM;
-import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
@@ -33,8 +32,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
         super(reactApplicationContext);
     }
 
-    @Deprecated
-    HashMap<String, ExecutionTrace> traces = new HashMap<String, ExecutionTrace>();
 
     @Nonnull
     @Override
