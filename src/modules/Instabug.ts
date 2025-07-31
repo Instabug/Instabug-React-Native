@@ -42,6 +42,7 @@ import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 import InstabugConstants from '../utils/InstabugConstants';
 import { InstabugRNConfig } from '../utils/config';
 import { Logger } from '../utils/logger';
+import type { ThemeConfig } from '../models/ThemeConfig';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -868,4 +869,51 @@ export const _registerFeatureFlagsChangeListener = (
  */
 export const enableAutoMasking = (autoMaskingTypes: AutoMaskingType[]) => {
   NativeInstabug.enableAutoMasking(autoMaskingTypes);
+};
+
+/**
+ * Sets a custom theme for Instabug UI elements.
+ *
+ * This method provides comprehensive theming support. It will automatically use IBGTheme
+ * if available in the SDK version, otherwise falls back to individual theming methods.
+ *
+ * @param theme - Configuration object containing theme properties
+ *
+ * @example
+ * ```typescript
+ * // Basic usage with primary color (always supported)
+ * Instabug.setTheme({
+ *   primaryColor: '#FF6B6B'
+ * });
+ *
+ * // Comprehensive theming (uses IBGTheme when available)
+ * Instabug.setTheme({
+ *   primaryColor: '#FF6B6B',
+ *   secondaryTextColor: '#666666',
+ *   primaryTextColor: '#333333',
+ *   titleTextColor: '#000000',
+ *   backgroundColor: '#FFFFFF',
+ *   primaryTextStyle: 'bold',
+ *   secondaryTextStyle: 'normal',
+ *   titleTextStyle: 'bold',
+ *   ctaTextStyle: 'bold',
+ *   primaryFontPath: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   secondaryFontPath: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   ctaTextType: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   primaryFontAsset: 'fonts/YourFont.ttf',
+ *   secondaryFontAsset: 'fonts/YourFont.ttf'
+ * });
+ * ```
+ */
+export const setTheme = (theme: ThemeConfig) => {
+  NativeInstabug.setTheme(theme);
+};
+/**
+ * Enables or disables displaying in full-screen mode, hiding the status and navigation bars.
+ * @param isEnabled A boolean to enable/disable setFullscreen.
+ */
+export const setFullscreen = (isEnabled: boolean) => {
+  if (Platform.OS === 'android') {
+    NativeInstabug.setFullscreen(isEnabled);
+  }
 };

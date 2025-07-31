@@ -614,6 +614,73 @@
 
     OCMVerify(ClassMethod([mock getNetworkBodyMaxSize]));
 }
+- (void)testSetTheme {
+    id mock = OCMClassMock([Instabug class]);
+    id mockTheme = OCMClassMock([IBGTheme class]);
+    
+    // Create theme configuration dictionary
+    NSDictionary *themeConfig = @{
+        @"primaryColor": @"#FF0000",
+        @"backgroundColor": @"#00FF00",
+        @"titleTextColor": @"#0000FF",
+        @"subtitleTextColor": @"#FFFF00",
+        @"primaryTextColor": @"#FF00FF",
+        @"secondaryTextColor": @"#00FFFF",
+        @"callToActionTextColor": @"#800080",
+        @"headerBackgroundColor": @"#808080",
+        @"footerBackgroundColor": @"#C0C0C0",
+        @"rowBackgroundColor": @"#FFFFFF",
+        @"selectedRowBackgroundColor": @"#E6E6FA",
+        @"rowSeparatorColor": @"#D3D3D3",
+        @"primaryFontPath": @"TestFont.ttf",
+        @"secondaryFontPath": @"fonts/AnotherFont.ttf",
+        @"ctaFontPath": @"./assets/fonts/CTAFont.ttf"
+    };
+
+    // Mock IBGTheme creation and configuration
+    OCMStub([mockTheme primaryColor]).andReturn([UIColor redColor]);
+    OCMStub([mockTheme backgroundColor]).andReturn([UIColor greenColor]);
+    OCMStub([mockTheme titleTextColor]).andReturn([UIColor blueColor]);
+    OCMStub([mockTheme subtitleTextColor]).andReturn([UIColor yellowColor]);
+    OCMStub([mockTheme primaryTextColor]).andReturn([UIColor magentaColor]);
+    OCMStub([mockTheme secondaryTextColor]).andReturn([UIColor cyanColor]);
+    OCMStub([mockTheme callToActionTextColor]).andReturn([UIColor purpleColor]);
+    OCMStub([mockTheme headerBackgroundColor]).andReturn([UIColor grayColor]);
+    OCMStub([mockTheme footerBackgroundColor]).andReturn([UIColor lightGrayColor]);
+    OCMStub([mockTheme rowBackgroundColor]).andReturn([UIColor whiteColor]);
+    OCMStub([mockTheme selectedRowBackgroundColor]).andReturn([UIColor redColor]);
+    OCMStub([mockTheme rowSeparatorColor]).andReturn([UIColor lightGrayColor]);
+    OCMStub([mockTheme primaryTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+    OCMStub([mockTheme secondaryTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+    OCMStub([mockTheme callToActionTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+
+    // Mock theme property setting
+    OCMStub([mockTheme setPrimaryColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setTitleTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSubtitleTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setPrimaryTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSecondaryTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setCallToActionTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setHeaderBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setFooterBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setRowBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSelectedRowBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setRowSeparatorColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setPrimaryTextFont:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSecondaryTextFont:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setCallToActionTextFont:[OCMArg any]]).andReturn(mockTheme);
+
+    // Mock Instabug.theme property
+    OCMStub([mock theme]).andReturn(mockTheme);
+    OCMStub([mock setTheme:[OCMArg any]]);
+
+    // Call the method
+    [self.instabugBridge setTheme:themeConfig];
+
+    // Verify that setTheme was called
+    OCMVerify([mock setTheme:[OCMArg any]]);
+}
 
 
 @end

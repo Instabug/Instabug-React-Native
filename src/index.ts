@@ -1,6 +1,7 @@
 // Models
 import type { InstabugConfig } from './models/InstabugConfig';
 import Report from './models/Report';
+import type { ThemeConfig } from './models/ThemeConfig';
 // Modules
 import * as APM from './modules/APM';
 import * as BugReporting from './modules/BugReporting';
@@ -27,6 +28,13 @@ export {
   Replies,
   Surveys,
 };
-export type { InstabugConfig, Survey, NetworkData, NetworkDataObfuscationHandler, SessionMetadata };
+export type {
+  InstabugConfig,
+  Survey,
+  NetworkData,
+  NetworkDataObfuscationHandler,
+  SessionMetadata,
+  ThemeConfig,
+};
 
 export default Instabug;
