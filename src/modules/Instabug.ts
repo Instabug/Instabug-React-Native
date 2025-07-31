@@ -1,10 +1,4 @@
-import {
-  AppState,
-  type AppStateStatus,
-  findNodeHandle,
-  Platform,
-  processColor,
-} from 'react-native';
+import { AppState, type AppStateStatus, findNodeHandle, Platform } from 'react-native';
 
 import type {
   NavigationContainerRefWithCurrent,
@@ -393,9 +387,7 @@ export const setColorTheme = (sdkTheme: ColorTheme) => {
  * @platform iOS
  */
 export const setPrimaryColor = (color: string) => {
-  if (Platform.OS === 'ios') {
-    NativeInstabug.setPrimaryColor(processColor(color));
-  }
+  NativeInstabug.setTheme({ primaryColor: color });
 };
 
 /**

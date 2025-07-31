@@ -205,18 +205,16 @@ RCT_EXPORT_METHOD(setDisclaimerText:(NSString*)text) {
 }
 
 RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit reportTypes:(NSArray *)reportTypes) {
-    IBGBugReportingReportType parsedReportTypes = 0;
-
+    IBGBugReportingType parsedReportTypes = 0;
     if (![reportTypes count]) {
-        parsedReportTypes = @(IBGBugReportingReportTypeBug).integerValue | @(IBGBugReportingReportTypeFeedback).integerValue | @(IBGBugReportingReportTypeQuestion).integerValue;
+        parsedReportTypes = @(IBGBugReportingTypeBug).integerValue | @(IBGBugReportingTypeFeedback).integerValue | @(IBGBugReportingTypeQuestion).integerValue;
     }
     else {
         for (NSNumber *reportType in reportTypes) {
             parsedReportTypes |= [reportType intValue];
         }
     }
-
-   [IBGBugReporting setCommentMinimumCharacterCount:limit.intValue forBugReportType:parsedReportTypes];
+   [IBGBugReporting setCommentMinimumCharacterCount:[limit integerValue] forBugReportType:parsedReportTypes];
 }
 
 RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
