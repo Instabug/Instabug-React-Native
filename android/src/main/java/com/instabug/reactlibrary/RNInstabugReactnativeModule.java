@@ -281,26 +281,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Set the primary color that the SDK will use to tint certain UI elements in the SDK
-     *
-     * @param primaryColor The value of the primary color ,
-     *                     whatever this color was parsed from a resource color or hex color
-     *                     or RGB color values
-     */
-    @ReactMethod
-    public void setPrimaryColor(final int primaryColor) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.setPrimaryColor(primaryColor);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Gets tags.
@@ -1036,60 +1016,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * @deprecated see {@link #addFeatureFlags(ReadableArray)}
-     */
-    @ReactMethod
-    public void addExperiments(final ReadableArray experiments) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Object[] objectArray = ArrayUtil.toArray(experiments);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    Instabug.addExperiments(Arrays.asList(stringArray));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * @deprecated see {@link #removeFeatureFlags(ReadableArray)}
-     */
-    @ReactMethod
-    public void removeExperiments(final ReadableArray experiments) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Object[] objectArray = ArrayUtil.toArray(experiments);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    Instabug.removeExperiments(Arrays.asList(stringArray));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * @deprecated see {@link #removeAllFeatureFlags()}
-     */
-    @ReactMethod
-    public void clearAllExperiments() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.clearAllExperiments();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    
 
     @ReactMethod
     public void addFeatureFlags(final ReadableMap featureFlagsMap) {
