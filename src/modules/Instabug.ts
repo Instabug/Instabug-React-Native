@@ -384,7 +384,7 @@ export const setColorTheme = (sdkTheme: ColorTheme) => {
  * To use, import processColor and pass to it with argument the color hex
  * as argument.
  * @param color A color to set the UI elements of the SDK to.
- * @platform iOS
+ * @deprecated Please migrate to the new UI customization API: {@link setTheme}
  */
 export const setPrimaryColor = (color: string) => {
   NativeInstabug.setTheme({ primaryColor: color });

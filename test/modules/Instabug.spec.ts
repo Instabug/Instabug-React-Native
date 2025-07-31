@@ -1,7 +1,7 @@
 import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
-import { findNodeHandle, Platform, processColor } from 'react-native';
+import { findNodeHandle, Platform } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -458,10 +458,10 @@ describe('Instabug Module', () => {
   it('should call the native method setPrimaryColor on iOS', () => {
     Platform.OS = 'ios';
     const color = '#fff';
-    Instabug.setPrimaryColor(color);
+    Instabug.setTheme({ primaryColor: color });
 
-    expect(NativeInstabug.setPrimaryColor).toBeCalledTimes(1);
-    expect(NativeInstabug.setPrimaryColor).toBeCalledWith(processColor(color));
+    expect(NativeInstabug.setTheme).toBeCalledTimes(1);
+    expect(NativeInstabug.setTheme).toBeCalledWith({ primaryColor: color });
   });
 
   it('should call the native method appendTags', () => {
