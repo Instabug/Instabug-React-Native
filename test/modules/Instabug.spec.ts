@@ -825,25 +825,6 @@ describe('Instabug Module', () => {
     expect(emitter.listenerCount(NativeEvents.PRESENDING_HANDLER)).toBe(1);
   });
 
-  it('should call native addExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.addExperiments(experiments);
-    expect(NativeInstabug.addExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.addExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native removeExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.removeExperiments(experiments);
-    expect(NativeInstabug.removeExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.removeExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native clearAllExperiments method', () => {
-    Instabug.clearAllExperiments();
-    expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
-  });
-
   it('should call native addFeatureFlags method', () => {
     const featureFlags: Array<FeatureFlag> = [
       {
