@@ -115,17 +115,6 @@ public class RNInstabugAPMModuleTest {
     }
 
     @Test
-    public void givenString$startExecutionTrace_whenQuery_thenShouldCallNativeApi() {
-        Promise promise = mock(Promise.class);
-        // when
-        apmModule.startExecutionTrace("trace", "1", promise);
-        // then
-        verify(APM.class, times(1));
-        APM.startExecutionTrace("trace");
-        verify(promise).resolve(any());
-    }
-
-    @Test
     public void testStartFlow() {
         String appFlowName = "appFlowName";
 

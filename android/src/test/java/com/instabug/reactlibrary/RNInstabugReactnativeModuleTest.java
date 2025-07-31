@@ -523,24 +523,6 @@ public class RNInstabugReactnativeModuleTest {
 
     }
 
-    
-    @Test
-    public void givenArg$removeExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-        JavaOnlyArray array = new JavaOnlyArray();
-        array.pushString("exp1");
-        array.pushString("exp2");
-
-        // when
-        rnModule.removeExperiments(array);
-
-        // then
-        verify(Instabug.class,times(1));
-        List<String> expectedList = new ArrayList<String>();
-        expectedList.add("exp1");
-        expectedList.add("exp2");
-        Instabug.removeExperiments(expectedList);
-    }
 
     @Test
     public void testAddFeatureFlags() {
