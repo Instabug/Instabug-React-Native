@@ -216,7 +216,7 @@ RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit repo
         }
     }
 
-   [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
+   [IBGBugReporting setCommentMinimumCharacterCount:limit.intValue forBugReportType:parsedReportTypes];
 }
 
 RCT_EXPORT_METHOD(addUserConsent:(NSString *)key

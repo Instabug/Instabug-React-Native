@@ -170,7 +170,7 @@ RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-        Instabug.tintColor = color;
+        Instabug.theme.primaryColor = color;
 }
 
 RCT_EXPORT_METHOD(appendTags:(NSArray *)tags) {
@@ -353,18 +353,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
         [inv setArgument:&(screenName) atIndex:2];
         [inv invoke];
     }
-}
-
-RCT_EXPORT_METHOD(addExperiments:(NSArray *)experiments) {
-    [Instabug addExperiments:experiments];
-}
-
-RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
-    [Instabug removeExperiments:experiments];
-}
-
-RCT_EXPORT_METHOD(clearAllExperiments) {
-    [Instabug clearAllExperiments];
 }
 
 RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {

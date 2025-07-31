@@ -389,9 +389,12 @@ export const setColorTheme = (sdkTheme: ColorTheme) => {
  * To use, import processColor and pass to it with argument the color hex
  * as argument.
  * @param color A color to set the UI elements of the SDK to.
+ * @platform iOS
  */
 export const setPrimaryColor = (color: string) => {
-  NativeInstabug.setPrimaryColor(processColor(color));
+  if (Platform.OS === 'ios') {
+    NativeInstabug.setPrimaryColor(processColor(color));
+  }
 };
 
 /**
@@ -773,35 +776,6 @@ export const setNavigationListener = (
 
 export const reportScreenChange = (screenName: string) => {
   NativeInstabug.reportScreenChange(screenName);
-};
-
-/**
- * Add experiments to next report.
- * @param experiments An array of experiments to add to the next report.
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link addFeatureFlags}.
- */
-export const addExperiments = (experiments: string[]) => {
-  NativeInstabug.addExperiments(experiments);
-};
-
-/**
- * Remove experiments from next report.
- * @param experiments An array of experiments to remove from the next report.
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link removeFeatureFlags}.
- */
-export const removeExperiments = (experiments: string[]) => {
-  NativeInstabug.removeExperiments(experiments);
-};
-
-/**
- * Clear all experiments
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link removeAllFeatureFlags}.
- */
-export const clearAllExperiments = () => {
-  NativeInstabug.clearAllExperiments();
 };
 
 /**
