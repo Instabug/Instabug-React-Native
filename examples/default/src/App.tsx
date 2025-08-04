@@ -54,24 +54,24 @@ export const App: React.FC = () => {
       debugLogsLevel: LogLevel.verbose,
       networkInterceptionMode: NetworkInterceptionMode.javascript,
     })
-    .then(() => {
-      // Post-initialization setup
-      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-        networkData.url = `${networkData.url}/JS/Obfuscated`;
-        return networkData;
+      .then(() => {
+        // Post-initialization setup
+        NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+          networkData.url = `${networkData.url}/JS/Obfuscated`;
+          return networkData;
+        });
+        APM.setScreenRenderEnabled(true);
+        setIsInstabugInitialized(true);
+      })
+      .catch((error) => {
+        console.error('Instabug initialization failed:', error);
+        setIsInstabugInitialized(true); // Proceed even if initialization fails
       });
-      APM.setScreenRenderEnabled(true);
-      setIsInstabugInitialized(true);
-    })
-    .catch((error) => {
-      console.error('Instabug initialization failed:', error);
-      setIsInstabugInitialized(true); // Proceed even if initialization fails
-    });
 
     // Synchronous configuration that doesn't depend on init completion
     CrashReporting.setNDKCrashesEnabled(true);
     Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
-    
+
     // Set initialized immediately to show UI - initialization continues in background
     setIsInstabugInitialized(true);
   };
