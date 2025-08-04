@@ -92,9 +92,6 @@ export const init = (config: InstabugConfig) => {
   } else {
     isNativeInterceptionFeatureEnabled = NativeNetworkLogger.isNativeInterceptionEnabled();
 
-    console.log(
-      'Andrew: isNativeInterceptionFeatureEnabled: ' + isNativeInterceptionFeatureEnabled,
-    );
     // Add app state listener to handle background/foreground transitions
     addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
 
