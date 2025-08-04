@@ -78,7 +78,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     initializeInstabug();
-  }, []);
+  });
 
   useEffect(() => {
     // @ts-ignore
