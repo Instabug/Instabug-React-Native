@@ -903,7 +903,7 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.willRedirectToStore).toBeCalledTimes(1);
   });
 
-  it('should register feature flag listener', async () => {
+  it('should register feature flag listener', () => {
     const callback = jest.fn();
     Instabug._registerFeatureFlagsChangeListener(callback);
 
@@ -942,10 +942,10 @@ describe('Instabug iOS initialization tests', () => {
     jest.advanceTimersByTime(1000);
   });
 
-  it('should initialize correctly with javascript interception mode', async () => {
+  it('should initialize correctly with javascript interception mode', () => {
     config.networkInterceptionMode = NetworkInterceptionMode.javascript;
 
-    await Instabug.init(config);
+    Instabug.init(config);
 
     expect(NativeNetworkLogger.isNativeInterceptionEnabled).toHaveBeenCalled();
     expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(true);
@@ -958,7 +958,7 @@ describe('Instabug iOS initialization tests', () => {
     );
   });
 
-  it('should initialize correctly with native interception mode when [isNativeInterceptionEnabled] == ture', async () => {
+  it('should initialize correctly with native interception mode when [isNativeInterceptionEnabled] == ture', () => {
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(true);
 
     Instabug.init(config);
@@ -974,7 +974,7 @@ describe('Instabug iOS initialization tests', () => {
     );
   });
 
-  it('should disable native interception mode when user sets networkInterceptionMode to native and [isNativeInterceptionEnabled] == false', async () => {
+  it('should disable native interception mode when user sets networkInterceptionMode to native and [isNativeInterceptionEnabled] == false', () => {
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
 
     Instabug.init(config);
@@ -990,7 +990,7 @@ describe('Instabug iOS initialization tests', () => {
     );
   });
 
-  it('should display error message when user sets networkInterceptionMode to native and [isNativeInterceptionEnabled] == false', async () => {
+  it('should display error message when user sets networkInterceptionMode to native and [isNativeInterceptionEnabled] == false', () => {
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
     const logSpy = jest.spyOn(global.console, 'error');
 
@@ -1017,9 +1017,9 @@ describe('Instabug Android initialization tests', () => {
     };
   });
 
-  it('should initialize correctly with native interception enabled', async () => {
+  it('should initialize correctly with native interception enabled', () => {
     config.networkInterceptionMode = NetworkInterceptionMode.native;
-    await Instabug.init(config);
+    Instabug.init(config);
     fakeTimer(() => {
       expect(NativeInstabug.setOnFeaturesUpdatedListener).toHaveBeenCalled();
       expect(NetworkLogger.setEnabled).toHaveBeenCalledWith(true);
@@ -1033,7 +1033,7 @@ describe('Instabug Android initialization tests', () => {
     });
   });
 
-  it('should show warning message when networkInterceptionMode == javascript and user added APM plugin', async () => {
+  it('should show warning message when networkInterceptionMode == javascript and user added APM plugin', () => {
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(true);
     jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(true));
     const logSpy = jest.spyOn(global.console, 'warn');
@@ -1047,7 +1047,7 @@ describe('Instabug Android initialization tests', () => {
     });
   });
 
-  it('should show error message when networkInterceptionMode == native and user did not add APM plugin', async () => {
+  it('should show error message when networkInterceptionMode == native and user did not add APM plugin', () => {
     config.networkInterceptionMode = NetworkInterceptionMode.native;
 
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(true);
@@ -1064,7 +1064,7 @@ describe('Instabug Android initialization tests', () => {
     });
   });
 
-  it('should show error message when networkInterceptionMode == native and user did not add APM plugin and the isNativeInterceptionEnabled is disabled', async () => {
+  it('should show error message when networkInterceptionMode == native and user did not add APM plugin and the isNativeInterceptionEnabled is disabled', () => {
     config.networkInterceptionMode = NetworkInterceptionMode.native;
 
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
@@ -1081,7 +1081,7 @@ describe('Instabug Android initialization tests', () => {
     });
   });
 
-  it('should show error message when networkInterceptionMode == native and the isNativeInterceptionEnabled is disabled', async () => {
+  it('should show error message when networkInterceptionMode == native and the isNativeInterceptionEnabled is disabled', () => {
     config.networkInterceptionMode = NetworkInterceptionMode.native;
     jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
     jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(true));
