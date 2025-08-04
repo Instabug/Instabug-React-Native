@@ -84,33 +84,30 @@ function reportCurrentViewForAndroid(screenName: string | null) {
  * Should be called in constructor of the AppRegistry component
  * @param config SDK configurations. See {@link InstabugConfig} for more info.
  */
-export const init = async (config: InstabugConfig) => {
-  if (Platform.OS === 'android') {
-    // Add android feature flags listener for android
-    registerFeatureFlagsListener();
-    addOnFeatureUpdatedListener(config);
-  } else {
-    isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
-
-    // Add app state listener to handle background/foreground transitions
-    addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
-
-    handleNetworkInterceptionMode(config);
-
-    //Set APM networking flags for the first time
-    setApmNetworkFlagsIfChanged({
-      isNativeInterceptionFeatureEnabled: isNativeInterceptionFeatureEnabled,
-      hasAPMNetworkPlugin: hasAPMNetworkPlugin,
-      shouldEnableNativeInterception: shouldEnableNativeInterception,
-    });
-  }
-
-  // call Instabug native init method
-  initializeNativeInstabug(config);
-
-  // Set up error capturing and rejection handling
+export const init = (config: InstabugConfig) => {
   InstabugUtils.captureJsErrors();
   captureUnhandledRejections();
+
+  if (Platform.OS === 'android') {
+    registerFeatureFlagsListener();
+  }
+
+  // Default networkInterceptionMode to JavaScript
+  if (config.networkInterceptionMode == null) {
+    config.networkInterceptionMode = NetworkInterceptionMode.javascript;
+  }
+
+  if (config.networkInterceptionMode === NetworkInterceptionMode.javascript) {
+    NetworkLogger.setEnabled(true);
+  }
+
+  NativeInstabug.init(
+    config.token,
+    config.invocationEvents,
+    config.debugLogsLevel ?? LogLevel.error,
+    config.networkInterceptionMode === NetworkInterceptionMode.native,
+    config.codePushVersion,
+  );
 
   _isFirstScreen = true;
   _currentScreen = firstScreen;
