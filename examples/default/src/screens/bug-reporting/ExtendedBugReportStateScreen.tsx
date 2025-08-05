@@ -33,13 +33,17 @@ export const ExtendedBugReportStateScreen: React.FC<
         title="Enabled with Required Fields"
         testID="id_enabled_required"
         onPress={() => setState(ExtendedBugReportState.EnabledWithRequiredFields)}
-        subtitle={state === ExtendedBugReportState.EnabledWithRequiredFields ? 'Selected' : undefined}
+        subtitle={
+          state === ExtendedBugReportState.EnabledWithRequiredFields ? 'Selected' : undefined
+        }
       />
       <ListTile
         title="Enabled with Optional Fields"
         testID="id_enabled_optional"
         onPress={() => setState(ExtendedBugReportState.EnabledWithOptionalFields)}
-        subtitle={state === ExtendedBugReportState.EnabledWithOptionalFields ? 'Selected' : undefined}
+        subtitle={
+          state === ExtendedBugReportState.EnabledWithOptionalFields ? 'Selected' : undefined
+        }
       />
     </Screen>
   );

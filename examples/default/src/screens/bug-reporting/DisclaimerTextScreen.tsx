@@ -37,10 +37,7 @@ export const DisclaimerTextScreen: React.FC<
         <Button onPress={handleSave} testID="id_disclaimer_save">
           Save
         </Button>
-        <Button
-          colorScheme="danger"
-          onPress={() => setLocalText('')}
-          testID="id_disclaimer_clear">
+        <Button colorScheme="danger" onPress={() => setLocalText('')} testID="id_disclaimer_clear">
           Clear
         </Button>
       </VStack>

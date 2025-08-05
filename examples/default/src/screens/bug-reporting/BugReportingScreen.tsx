@@ -228,7 +228,6 @@ export const BugReportingScreen: React.FC<
           testID="id_replies"
         />
 
-
         <ListTile
           title="User Consent"
           onPress={() => navigation.navigate('UserConsent')}

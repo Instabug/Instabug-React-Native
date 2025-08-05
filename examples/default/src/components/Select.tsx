@@ -37,7 +37,12 @@ export function Select<T>({ label, items, onValueChange, testID }: SelectProps<T
         endIcon: <CheckIcon size="4" />,
       }}>
       {items.map((item) => (
-        <NativeBaseSelect.Item key={item.label} label={item.label} value={item.label} testID={testID} />
+        <NativeBaseSelect.Item
+          key={item.label}
+          label={item.label}
+          value={item.label}
+          testID={testID}
+        />
       ))}
     </NativeBaseSelect>
   );
