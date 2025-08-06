@@ -2023,7 +2023,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   hermes-engine: ea92f60f37dba025e293cbe4b4a548fd26b610a0
   Instabug: 3e7af445c14d7823fcdecba223f09b5f7c0c6ce1
-  instabug-reactnative-ndk: d765ac289d56e8896398d02760d9abf2562fc641
+  instabug-reactnative-ndk: e6f3fd45d6426aa7d37f479f153b5c2bdc1f5eb9
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   RCT-Folly: 34124ae2e667a0e5f0ea378db071d27548124321
   RCTDeprecation: 726d24248aeab6d7180dac71a936bbca6a994ed1
@@ -2083,21 +2083,21 @@ SPEC CHECKSUMS:
   React-RuntimeApple: 71160e6c02efa07d198b84ef5c3a52a7d9d0399d
   React-RuntimeCore: f88f79ec995c12af56a265d7505c7630733d9d82
   React-runtimeexecutor: ea90d8e3a9e0f4326939858dafc6ab17c031a5d3
-  React-RuntimeHermes: c6b0afdf1f493621214eeb6517fb859ce7b21b81
-  React-runtimescheduler: 84f0d876d254bce6917a277b3930eb9bc29df6c7
-  React-utils: cbe8b8b3d7b2ac282e018e46f0e7b25cdc87c5a0
-  ReactCodegen: 4bcb34e6b5ebf6eef5cee34f55aa39991ea1c1f1
-  ReactCommon: 6a952e50c2a4b694731d7682aaa6c79bc156e4ad
-  RNCClipboard: 2821ac938ef46f736a8de0c8814845dde2dcbdfb
-  RNGestureHandler: 511250b190a284388f9dd0d2e56c1df76f14cfb8
-  RNInstabug: f17d4e6c679fbc921f2692c223a1c21395589cc5
-  RNReanimated: f42a5044d121d68e91680caacb0293f4274228eb
-  RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
-  RNSVG: 8b1a777d54096b8c2a0fd38fc9d5a454332bbb4d
-  RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
+  React-RuntimeHermes: 49f86328914021f50fd5a5b9756685f5f6d8b4da
+  React-runtimescheduler: fed70991b942c6df752a59a22081e45fc811b11c
+  React-utils: 02526ea15628a768b8db9517b6017a1785c734d2
+  ReactCodegen: 8b5341ecb61898b8bd40a73ebc443c6bf2d14423
+  ReactCommon: 36d48f542b4010786d6b2bcee615fe5f906b7105
+  RNCClipboard: 7c3e3b5f71d84ef61690ad377b6c50cf27864ff5
+  RNGestureHandler: 27a63f2218affdf1a426d56682f9b174904838b3
+  RNInstabug: 0a8c24545f28e1e4491c5028d94f835d94b913cb
+  RNReanimated: 8bf536bd3964d10a9bacabf179897e79f6bea34f
+  RNScreens: 35bb8e81aeccf111baa0ea01a54231390dbbcfd9
+  RNSVG: 8542aa11770b27563714bbd8494a8436385fc85f
+  RNVectorIcons: 182892e7d1a2f27b52d3c627eca5d2665a22ee28
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
 PODFILE CHECKSUM: 837b933596e1616ff02cc206bb17dee4f611fdbc
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.14.0
