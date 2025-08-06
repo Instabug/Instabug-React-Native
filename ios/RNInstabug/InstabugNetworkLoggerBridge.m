@@ -69,9 +69,11 @@ bool hasListeners = NO;
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
-RCT_EXPORT_METHOD(isNativeInterceptionEnabled:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
-    resolve(@(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled));
-}
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isNativeInterceptionEnabled) {
+    return @(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled);
+}   
+
+
 
 RCT_EXPORT_METHOD(registerNetworkLogsListener: (NetworkListenerType) listenerType) {
     switch (listenerType) {
