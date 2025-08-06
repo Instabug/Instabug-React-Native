@@ -294,6 +294,7 @@ describe('Instabug Module', () => {
       invocationEvents: [InvocationEvent.floatingButton, InvocationEvent.shake],
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
+      ignoreAndroidSecureFlag: true,
     };
     const usesNativeNetworkInterception = false;
 
@@ -307,6 +308,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
     );
   });
 
@@ -326,6 +328,7 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
+      ignoreAndroidSecureFlag: true,
     };
 
     // Stubbing Network feature flags
@@ -356,6 +359,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
+        { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
       );
     }
   });
@@ -955,6 +959,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      config.ignoreAndroidSecureFlag,
     );
   });
 
@@ -971,6 +976,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       true, // Enable native interception
       config.codePushVersion,
+      config.ignoreAndroidSecureFlag,
     );
   });
 
@@ -987,6 +993,7 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       false, // Disable native interception
       config.codePushVersion,
+      config.ignoreAndroidSecureFlag,
     );
   });
 
@@ -1029,6 +1036,7 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
+        { ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag },
       );
     });
   });

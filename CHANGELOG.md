@@ -1,6 +1,10 @@
 # Changelog
 
-## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.1...v15.0.2)
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.1.0...dev)
+
+### Added
+
+- Add support for ignoreFlagSecure to bypass SDK screenshot security protocols on Android. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
 
 - Rollout support for network spans. ([#1427](https://github.com/Instabug/Instabug-React-Native/pull/1427))
 
