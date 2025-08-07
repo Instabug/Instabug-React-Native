@@ -245,7 +245,10 @@ export const setDisclaimerText = (text: string) => {
  * Sets a minimum number of characters as a requirement for the comments field in the different report types.
  * @param limit int number of characters.
  * @param reportTypes (Optional) Array of reportType. If it's not passed, the limit will apply to all report types.
+ * @platform iOS
  */
 export const setCommentMinimumCharacterCount = (limit: number, reportTypes?: ReportType[]) => {
-  NativeBugReporting.setCommentMinimumCharacterCount(limit, reportTypes ?? []);
+  if (Platform.OS === 'ios') {
+    NativeBugReporting.setCommentMinimumCharacterCount(limit, reportTypes ?? []);
+  }
 };

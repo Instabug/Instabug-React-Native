@@ -141,19 +141,6 @@
   [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
 }
 
-- (void)testSetPrimaryColor {
-  UIColor *color = [UIColor whiteColor];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug setPrimaryColor]"];
-
-  [self.instabugBridge setPrimaryColor:color];
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    XCTAssertEqualObjects(Instabug.tintColor, color);
-    [expectation fulfill];
-  }];
-
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
 - (void)testAppendTags {
   id mock = OCMClassMock([Instabug class]);
   NSArray *tags = @[@"tag1", @"tag2"];
@@ -239,7 +226,7 @@
   [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
 }
 
@@ -486,30 +473,6 @@
   OCMVerify([mock clearAllLogs]);
 }
 
-- (void)testAddExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  NSArray *experiments = @[@"exp1", @"exp2"];
-
-  OCMStub([mock addExperiments:experiments]);
-  [self.instabugBridge addExperiments:experiments];
-  OCMVerify([mock addExperiments:experiments]);
-}
-
-- (void)testRemoveExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  NSArray *experiments = @[@"exp1", @"exp2"];
-
-  OCMStub([mock removeExperiments:experiments]);
-  [self.instabugBridge removeExperiments:experiments];
-  OCMVerify([mock removeExperiments:experiments]);
-}
-
-- (void)testClearAllExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  OCMStub([mock clearAllExperiments]);
-  [self.instabugBridge clearAllExperiments];
-  OCMVerify([mock clearAllExperiments]);
-}
 
 - (void)testAddFeatureFlags {
   id mock = OCMClassMock([Instabug class]);

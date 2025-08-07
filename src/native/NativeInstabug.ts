@@ -119,10 +119,6 @@ export interface InstabugNativeModule extends NativeModule {
   getTags(): Promise<string[]>;
 
   // Experiments APIs //
-  addExperiments(experiments: string[]): void;
-  removeExperiments(experiments: string[]): void;
-  clearAllExperiments(): void;
-
   addFeatureFlags(featureFlags: Record<string, string | undefined>): void;
 
   removeFeatureFlags(featureFlags: string[]): void;

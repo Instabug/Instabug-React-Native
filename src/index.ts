@@ -1,7 +1,6 @@
 // Models
 import type { InstabugConfig } from './models/InstabugConfig';
 import Report from './models/Report';
-import Trace from './models/Trace';
 import type { ThemeConfig } from './models/ThemeConfig';
 // Modules
 import * as APM from './modules/APM';
@@ -20,7 +19,6 @@ import type { SessionMetadata } from './models/SessionMetadata';
 export * from './utils/Enums';
 export {
   Report,
-  Trace,
   APM,
   BugReporting,
   CrashReporting,

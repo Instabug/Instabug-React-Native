@@ -194,18 +194,6 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArg$setPrimaryColor_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-
-        int color = 3902;
-        // when
-        rnModule.setPrimaryColor(color);
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.setPrimaryColor(color);
-    }
-
-    @Test
     public void testSetCodePushVersion() {
         String codePushVersion = "123";
 
@@ -535,51 +523,6 @@ public class RNInstabugReactnativeModuleTest {
 
     }
 
-    @Test
-    public void givenArg$addExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-        JavaOnlyArray array = new JavaOnlyArray();
-        array.pushString("exp1");
-        array.pushString("exp2");
-
-        // when
-        rnModule.addExperiments(array);
-
-        // then
-        verify(Instabug.class,times(1));
-        List<String> expectedList = new ArrayList<String>();
-        expectedList.add("exp1");
-        expectedList.add("exp2");
-        Instabug.addExperiments(expectedList);
-    }
-
-    @Test
-    public void givenArg$removeExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-        JavaOnlyArray array = new JavaOnlyArray();
-        array.pushString("exp1");
-        array.pushString("exp2");
-
-        // when
-        rnModule.removeExperiments(array);
-
-        // then
-        verify(Instabug.class,times(1));
-        List<String> expectedList = new ArrayList<String>();
-        expectedList.add("exp1");
-        expectedList.add("exp2");
-        Instabug.removeExperiments(expectedList);
-    }
-
-    @Test
-    public void given$clearAllExperiments_whenQuery_thenShouldCallNativeApi() {
-        // when
-        rnModule.clearAllExperiments();
-
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.clearAllExperiments();
-    }
 
     @Test
     public void testAddFeatureFlags() {

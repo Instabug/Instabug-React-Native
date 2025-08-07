@@ -62,8 +62,8 @@ RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {
     [Instabug setReproStepsFor:IBGIssueTypeBug withMode:bugMode];
-    [Instabug setReproStepsFor:IBGIssueTypeCrash withMode:crashMode];
-   [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
+    [Instabug setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode];
+    [Instabug setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode];
 }
 
 RCT_EXPORT_METHOD(setFileAttachment:(NSString *)fileLocation) {
@@ -434,18 +434,6 @@ RCT_EXPORT_METHOD(reportScreenChange:(NSString *)screenName) {
         [inv setArgument:&(screenName) atIndex:2];
         [inv invoke];
     }
-}
-
-RCT_EXPORT_METHOD(addExperiments:(NSArray *)experiments) {
-    [Instabug addExperiments:experiments];
-}
-
-RCT_EXPORT_METHOD(removeExperiments:(NSArray *)experiments) {
-    [Instabug removeExperiments:experiments];
-}
-
-RCT_EXPORT_METHOD(clearAllExperiments) {
-    [Instabug clearAllExperiments];
 }
 
 RCT_EXPORT_METHOD(addFeatureFlags:(NSDictionary *)featureFlagsMap) {
