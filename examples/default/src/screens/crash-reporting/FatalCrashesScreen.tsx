@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Text } from 'react-native';
 import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';

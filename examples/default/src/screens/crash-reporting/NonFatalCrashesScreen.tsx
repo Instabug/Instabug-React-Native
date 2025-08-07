@@ -5,7 +5,6 @@ import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';
 import { NativeExampleCrashReporting } from '../../native/NativeCrashReporting';
-import { VerticalListTile } from '../../components/VerticalListTile';
 import { Button, Divider, VStack } from 'native-base';
 import { InputField } from '../../components/InputField';
 import { Select } from '../../components/Select';

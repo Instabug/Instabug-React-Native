@@ -3,7 +3,6 @@ import { Screen } from '../../components/Screen';
 import { ListTile } from '../../components/ListTile';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
-import Instabug from 'instabug-reactnative';
 
 export interface SessionProfilerScreenProp {
   isEnabled: boolean;
@@ -12,7 +11,7 @@ export interface SessionProfilerScreenProp {
 
 export const SessionProfilerScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'SessionProfiler'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { isEnabled, setIsEnabled } = route.params;
 
   return (

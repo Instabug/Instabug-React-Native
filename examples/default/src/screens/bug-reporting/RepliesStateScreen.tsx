@@ -11,7 +11,7 @@ export interface RepliesStateScreenProp {
 
 export const RepliesStateScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'RepliesState'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { isEnabled, setIsEnabled } = route.params;
 
   return (

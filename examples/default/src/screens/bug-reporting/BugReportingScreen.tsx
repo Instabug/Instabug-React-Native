@@ -1,4 +1,4 @@
-import React, { type Dispatch, type SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 
 import Instabug, {
   BugReporting,

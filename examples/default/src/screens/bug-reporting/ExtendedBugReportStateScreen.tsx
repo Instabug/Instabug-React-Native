@@ -4,7 +4,6 @@ import { ListTile } from '../../components/ListTile';
 import { Screen } from '../../components/Screen';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
-import { ExtendedBugReportMode } from 'instabug-reactnative';
 
 export enum ExtendedBugReportState {
   Disabled = 'Disabled',
@@ -19,7 +18,7 @@ export interface ExtendedBugReportStateScreenProp {
 
 export const ExtendedBugReportStateScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'ExtendedBugReportState'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { state, setState } = route.params;
   return (
     <Screen>

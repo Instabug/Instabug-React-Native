@@ -11,7 +11,7 @@ export interface InvocationOptionsScreenProp {
 
 export const InvocationOptionsScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'InvocationOptions'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { selectedOptions, setSelectedOptions } = route.params;
 
   const isSelected = (options: string[]) => {

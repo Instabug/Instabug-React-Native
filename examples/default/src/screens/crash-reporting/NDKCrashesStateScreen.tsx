@@ -11,7 +11,7 @@ export interface NDKCrashesStateScreenProp {
 
 export const NDKCrashesStateScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NDKCrashesState'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { isEnabled, setIsEnabled } = route.params;
 
   return (

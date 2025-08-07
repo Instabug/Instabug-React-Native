@@ -17,7 +17,7 @@ export interface BugReportingStateScreenProp {
 
 export const BugReportingStateScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'BugReportingState'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { state, setState } = route.params;
   return (
     <Screen>

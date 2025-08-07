@@ -13,7 +13,7 @@ export interface BugReportingTypesScreenProp {
 
 export const BugReportingTypesScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'BugReportingTypes'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { selectedTypes, setSelectedTypes } = route.params;
 
   const isSelected = (types: ReportType[]) => {

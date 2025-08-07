@@ -11,7 +11,7 @@ export interface CrashReportingStateScreenProp {
 
 export const CrashReportingStateScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'CrashReportingState'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { isEnabled, setIsEnabled } = route.params;
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 
 import { Screen } from '../../components/Screen';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -16,11 +15,11 @@ export const DisclaimerTextScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'DisclaimerText'>
 > = ({ navigation, route }) => {
   const { initialText, setText } = route.params;
-  const [text, setLocalText] = useState(initialText);
+  const [localText, setLocalText] = useState(initialText);
 
   const handleSave = () => {
-    setText(text);
-    BugReporting.setDisclaimerText(text);
+    setText(localText);
+    BugReporting.setDisclaimerText(localText);
     navigation.goBack();
   };
 
@@ -30,7 +29,7 @@ export const DisclaimerTextScreen: React.FC<
         <Input
           placeholder="Enter disclaimer text"
           onChangeText={setLocalText}
-          value={text}
+          value={localText}
           testID="id_disclaimer_input"
           multiline={true}
         />

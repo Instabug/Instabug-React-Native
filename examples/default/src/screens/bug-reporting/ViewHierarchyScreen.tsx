@@ -11,7 +11,7 @@ export interface ViewHierarchyScreenProp {
 
 export const ViewHierarchyScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'ViewHierarchy'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { isEnabled, setIsEnabled } = route.params;
 
   return (

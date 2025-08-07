@@ -11,7 +11,7 @@ export interface InvocationEventsScreenProp {
 
 export const InvocationEventsScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'InvocationEvents'>
-> = ({ navigation, route }) => {
+> = ({ route }) => {
   const { selectedEvents, setSelectedEvents } = route.params;
 
   const isSelected = (events: string[]) => {
