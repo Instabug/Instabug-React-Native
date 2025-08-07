@@ -139,3 +139,11 @@ export const endUITrace = () => {
 export const _ibgSleep = () => {
   NativeAPM.ibgSleep();
 };
+
+/**
+ * Enables or disables Screen Render feature
+ * @param isEnabled
+ */
+export const setScreenRenderEnabled = (isEnabled: boolean) => {
+  NativeAPM.setScreenRenderEnabled(isEnabled);
+};

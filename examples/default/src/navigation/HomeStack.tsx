@@ -22,7 +22,8 @@ import {
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { APMScreen } from '../screens/apm/APMScreen';
-import { TracesScreen } from '../screens/apm/TracesScreen';
+import { ExecutionTraceScreen } from '../screens/apm/ExecutionTraceScreen';
+import { CustomUITraceScreen } from '../screens/apm/CustomUITraceScreen';
 import { NetworkScreen } from '../screens/apm/NetworkScreen';
 import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
@@ -31,6 +32,7 @@ import { HttpScreen } from '../screens/apm/HttpScreen';
 import { WebViewsScreen } from '../screens/apm/webViews/WebViewsScreen';
 import { FullWebViewsScreen } from '../screens/apm/webViews/FullWebViewsScreen';
 import { PartialWebViewsScreen } from '../screens/apm/webViews/PartialWebViewsScreen';
+import ScreenRender from '../screens/apm/ScreenRender';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -43,7 +45,7 @@ export type HomeStackParamList = {
   BasicComponents: undefined;
   ScrollView: undefined;
   FlatList: undefined;
-  ComplexViews: undefined;
+  ComplexViews: { initialDepth?: number; initialBreadth?: number } | undefined;
   SectionList: undefined;
   Gestures: undefined;
   GoogleMapsScreen: undefined;
@@ -57,10 +59,12 @@ export type HomeStackParamList = {
   APM: undefined;
   NetworkTraces: undefined;
   ExecutionTraces: undefined;
+  CustomUITraces: undefined;
   AppFlows: undefined;
   WebViews: undefined;
   FullWebViews: undefined;
   PartialWebViews: undefined;
+  ScreenRender: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -140,7 +144,8 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
       <HomeStack.Screen name="APM" component={APMScreen} />
       <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
-      <HomeStack.Screen name="ExecutionTraces" component={TracesScreen} />
+      <HomeStack.Screen name="ExecutionTraces" component={ExecutionTraceScreen} />
+      <HomeStack.Screen name="CustomUITraces" component={CustomUITraceScreen} />
       <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
       <HomeStack.Screen
         name="LegacyMode"
@@ -162,6 +167,11 @@ export const HomeStackNavigator: React.FC = () => {
         name="PartialWebViews"
         component={PartialWebViewsScreen}
         options={{ title: 'PartialWebViews' }}
+      />
+      <HomeStack.Screen
+        name="ScreenRender"
+        component={ScreenRender}
+        options={{ title: 'ScreenRender' }}
       />
     </HomeStack.Navigator>
   );

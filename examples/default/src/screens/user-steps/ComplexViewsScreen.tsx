@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
 
 import { Screen } from '../../components/Screen';
 import { Section } from '../../components/Section';
@@ -7,10 +9,11 @@ import { Button } from 'react-native';
 import { ScrollView, VStack } from 'native-base';
 import { InputField } from '../../components/InputField';
 
-export const ComplexViewsScreen: React.FC = () => {
-  const initialDepth = 10;
-  const initialBreadth = 2;
-
+export const ComplexViewsScreen: React.FC<
+  NativeStackScreenProps<HomeStackParamList, 'ComplexViews'>
+> = ({ route }) => {
+  const initialDepth = route.params?.initialDepth ?? 10;
+  const initialBreadth = route.params?.initialBreadth ?? 2;
   const depthRef = useRef(initialDepth);
   const breadthRef = useRef(initialBreadth);
 

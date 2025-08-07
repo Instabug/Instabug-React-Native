@@ -177,6 +177,22 @@
   OCMVerify([mock endUITrace]);
 }
 
+- (void) testSetScreenRenderEnabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    BOOL isEnabled = YES;
 
+    [self.instabugBridge setScreenRenderEnabled:isEnabled];
+
+    OCMVerify([mock setScreenRenderingEnabled:YES]);
+}
+
+- (void) testSetScreenRenderDisabled {
+    id mock = OCMClassMock([IBGAPM class]);
+    BOOL isEnabled = NO;
+
+    [self.instabugBridge setScreenRenderEnabled:isEnabled];
+
+    OCMVerify([mock setScreenRenderingEnabled:NO]);
+}
 
 @end

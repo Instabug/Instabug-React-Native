@@ -26,7 +26,6 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.InternalAPM;
-import com.instabug.apm.configuration.cp.APMFeature;
 import com.instabug.library.Feature;
 import com.instabug.library.Instabug;
 import com.instabug.library.InstabugColorTheme;
@@ -35,11 +34,10 @@ import com.instabug.library.IssueType;
 import com.instabug.library.LogLevel;
 import com.instabug.library.ReproConfigurations;
 import com.instabug.library.core.InstabugCore;
+import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.crossplatform.CoreFeature;
 import com.instabug.library.internal.crossplatform.CoreFeaturesState;
 import com.instabug.library.internal.crossplatform.FeaturesStateListener;
-import com.instabug.library.internal.crossplatform.InternalCore;
-import com.instabug.library.featuresflags.model.IBGFeatureFlag;
 import com.instabug.library.internal.crossplatform.InternalCore;
 import com.instabug.library.internal.crossplatform.OnFeaturesUpdatedListener;
 import com.instabug.library.internal.module.InstabugLocale;
@@ -48,11 +46,9 @@ import com.instabug.library.logging.InstabugLog;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
-import com.instabug.library.util.InstabugSDKLogger;
 import com.instabug.reactlibrary.utils.ArrayUtil;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
 import com.instabug.reactlibrary.utils.MainThreadHandler;
-
 import com.instabug.reactlibrary.utils.RNTouchedViewExtractor;
 
 import org.json.JSONException;
@@ -115,6 +111,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Enables or disables Instabug functionality.
+     *
      * @param isEnabled A boolean to enable/disable Instabug.
      */
     @ReactMethod
@@ -1175,7 +1172,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                             params.putBoolean("isW3ExternalTraceIDEnabled", featuresState.isW3CExternalTraceIdEnabled());
                             params.putBoolean("isW3ExternalGeneratedHeaderEnabled", featuresState.isAttachingGeneratedHeaderEnabled());
                             params.putBoolean("isW3CaughtHeaderEnabled", featuresState.isAttachingCapturedHeaderEnabled());
-                            params.putInt("networkBodyLimit",featuresState.getNetworkLogCharLimit());
+                            params.putInt("networkBodyLimit", featuresState.getNetworkLogCharLimit());
 
                             sendEvent(Constants.IBG_ON_FEATURE_FLAGS_UPDATE_RECEIVED_CALLBACK, params);
                         }
@@ -1259,7 +1256,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
      * Map between the exported JS constant and the arg key in {@link ArgsRegistry}.
      * The constant name and the arg key should match to be able to resolve the
      * constant with its actual value from the {@link ArgsRegistry} maps.
-     *
+     * <p>
      * This is a workaround, because RN cannot resolve enums in the constants map.
      */
     @Override
@@ -1290,23 +1287,25 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
     /**
-    * Enables or disables capturing network body.
-    * @param isEnabled A boolean to enable/disable capturing network body.
-    */
-   @ReactMethod
-   public void setNetworkLogBodyEnabled(final boolean isEnabled) {
-       MainThreadHandler.runOnMainThread(new Runnable() {
-           @Override
-           public void run() {
-               try {
-                   Instabug.setNetworkLogBodyEnabled(isEnabled);
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-       });
-   }
+     * Enables or disables capturing network body.
+     *
+     * @param isEnabled A boolean to enable/disable capturing network body.
+     */
+    @ReactMethod
+    public void setNetworkLogBodyEnabled(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setNetworkLogBodyEnabled(isEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     /**
      * Sets the auto mask screenshots types.
