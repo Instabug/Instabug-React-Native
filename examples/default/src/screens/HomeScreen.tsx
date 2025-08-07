@@ -5,6 +5,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ListTile } from '../components/ListTile';
 import { Screen } from '../components/Screen';
 import type { HomeStackParamList } from '../navigation/HomeStack';
+import { NativeExampleCrashReporting } from '../native/NativeCrashReporting';
 
 export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Home'>> = ({
   navigation,
@@ -20,6 +21,12 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
       <ListTile title="APM" onPress={() => navigation.navigate('APM')} />
       <ListTile title="Session Replay" onPress={() => navigation.navigate('SessionReplay')} />
       <ListTile title="Legacy Mode" onPress={() => navigation.navigate('LegacyMode')} />
+      <ListTile
+        title="Second native Screen"
+        onPress={() => {
+          NativeExampleCrashReporting.secondScreen();
+        }}
+      />
     </Screen>
   );
 };

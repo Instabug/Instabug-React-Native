@@ -49,6 +49,7 @@ export const App: React.FC = () => {
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
         networkInterceptionMode: NetworkInterceptionMode.javascript,
+        ignoreAndroidSecureFlag: true,
       });
 
       CrashReporting.setNDKCrashesEnabled(true);

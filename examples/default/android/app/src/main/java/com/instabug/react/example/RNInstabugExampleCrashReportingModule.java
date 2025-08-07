@@ -1,6 +1,7 @@
 package com.instabug.react.example;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -43,6 +44,12 @@ public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaM
     @ReactMethod
     public void sendANR() {
         sendHang(20000);
+    }
+
+
+    @ReactMethod
+    public void secondScreen() {
+        getCurrentActivity().startActivity(new Intent(getCurrentActivity(), MainActivity2.class));
     }
 
     @ReactMethod

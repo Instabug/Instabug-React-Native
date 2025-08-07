@@ -167,8 +167,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
 
-                if (map!=null&&map.hasKey("ignoreFlagSecure")) {
-                    builder.ignoreFlagSecure(map.getBoolean("ignoreFlagSecure"));
+                if (map!=null&&map.hasKey("ignoreAndroidSecureFlag")) {
+                    builder.ignoreFlagSecure(map.getBoolean("ignoreAndroidSecureFlag"));
                 }
 
                 if (codePushVersion != null) {

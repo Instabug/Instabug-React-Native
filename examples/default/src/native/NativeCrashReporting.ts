@@ -12,6 +12,7 @@ export interface CrashReportingExampleNativeModule extends NativeModule {
   sendNDKCrash(): Promise<void>;
 
   causeSIGSEGVCrash(): Promise<void>;
+  secondScreen(): Promise<void>;
 
   causeSIGABRTCrash(): Promise<void>;
 
