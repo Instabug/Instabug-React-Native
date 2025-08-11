@@ -37,9 +37,18 @@ public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaM
 
     @ReactMethod
     public void sendNativeFatalCrash() {
-        throw new IllegalStateException("Unhandled IllegalStateException from Instabug Test App");
+        try {
+            throw new IllegalStateException("Unhandled IllegalStateException from Instabug Test App");
+        } catch (IllegalStateException e) {
+    @ReactMethod
+    public void sendNativeFatalCrash() {
+        try {
+            throw new IllegalStateException("Unhandled IllegalStateException from Instabug Test App");
+        } catch (IllegalStateException e) {
+            // Report the exception using CrashReporting or log it, instead of crashing the app
+            CrashReporting.report(e);
+        }
     }
-
     @ReactMethod
     public void sendANR() {
         sendHang(20000);
