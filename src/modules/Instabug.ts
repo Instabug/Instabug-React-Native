@@ -84,13 +84,13 @@ function reportCurrentViewForAndroid(screenName: string | null) {
  * Should be called in constructor of the AppRegistry component
  * @param config SDK configurations. See {@link InstabugConfig} for more info.
  */
-export const init = async (config: InstabugConfig) => {
+export const init = (config: InstabugConfig) => {
   if (Platform.OS === 'android') {
     // Add android feature flags listener for android
     registerFeatureFlagsListener();
     addOnFeatureUpdatedListener(config);
   } else {
-    isNativeInterceptionFeatureEnabled = await NativeNetworkLogger.isNativeInterceptionEnabled();
+    isNativeInterceptionFeatureEnabled = NativeNetworkLogger.isNativeInterceptionEnabled();
 
     // Add app state listener to handle background/foreground transitions
     addAppStateListener(async (nextAppState) => handleAppStateChange(nextAppState, config));
@@ -133,7 +133,6 @@ const handleAppStateChange = async (nextAppState: AppStateStatus, config: Instab
   // Checks if  the app has come to the foreground
   if (['inactive', 'background'].includes(_currentAppState) && nextAppState === 'active') {
     const isUpdated = await fetchApmNetworkFlags();
-
     if (isUpdated) {
       refreshAPMNetworkConfigs(config);
     }
@@ -147,8 +146,7 @@ const handleAppStateChange = async (nextAppState: AppStateStatus, config: Instab
  */
 const fetchApmNetworkFlags = async () => {
   let isUpdated = false;
-  const newNativeInterceptionFeatureEnabled =
-    await NativeNetworkLogger.isNativeInterceptionEnabled();
+  const newNativeInterceptionFeatureEnabled = NativeNetworkLogger.isNativeInterceptionEnabled();
   if (isNativeInterceptionFeatureEnabled !== newNativeInterceptionFeatureEnabled) {
     isNativeInterceptionFeatureEnabled = newNativeInterceptionFeatureEnabled;
     isUpdated = true;
@@ -275,6 +273,11 @@ const initializeNativeInstabug = (config: InstabugConfig) => {
     shouldEnableNativeInterception &&
       config.networkInterceptionMode === NetworkInterceptionMode.native,
     config.codePushVersion,
+    config.ignoreAndroidSecureFlag != null
+      ? {
+          ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag,
+        }
+      : undefined,
   );
 };
 
