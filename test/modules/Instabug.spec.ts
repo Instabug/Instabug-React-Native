@@ -308,8 +308,8 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
-      { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
       undefined,
+      { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
     );
   });
 
@@ -360,8 +360,8 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
-        { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
         undefined,
+        { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
       );
     }
   });
@@ -1041,8 +1041,8 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
-        { ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag },
         undefined,
+        { ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag },
       );
     });
   });
@@ -1122,8 +1122,8 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         true,
         config.codePushVersion,
-        undefined,
         config.appVariant,
+        undefined,
       );
     });
   });

@@ -77,10 +77,7 @@
 
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion
-    options:nil
-    appVariant:appVariant
-  ];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion appVariant:appVariant  options:nil ];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
 
   XCTAssertEqual(Instabug.appVariant, appVariant);
