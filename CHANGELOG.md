@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.2...dev)
+
+### Added
+
+- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
+
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
 ### Added
@@ -13,8 +19,6 @@
 ## [15.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...v15.0.1)
 
 ### Added
-
-- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
 
 - Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
 
