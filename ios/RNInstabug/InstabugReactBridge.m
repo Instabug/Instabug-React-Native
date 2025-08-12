@@ -43,6 +43,8 @@ RCT_EXPORT_METHOD(init:(NSString *)token
           useNativeNetworkInterception:(BOOL)useNativeNetworkInterception
           codePushVersion:(NSString *)codePushVersion
           appVariant:(NSString *)appVariant
+          options:(nullable NSDictionary *)options
+
           ) {
 
            if(appVariant != nil){

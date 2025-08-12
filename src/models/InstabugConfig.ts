@@ -20,6 +20,11 @@ export interface InstabugConfig {
   codePushVersion?: string;
 
   /**
+   * An optional flag to override SDK screenshot security behavior.
+   */
+  ignoreAndroidSecureFlag?: boolean;
+
+  /**
    * An optional current App variant to be used for filtering data.
    */
   appVariant?: string;

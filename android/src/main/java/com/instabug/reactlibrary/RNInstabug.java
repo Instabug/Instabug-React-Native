@@ -61,10 +61,11 @@ public class RNInstabug {
             int logLevel,
             String codePushVersion,
             String appVariant,
+            Boolean ignoreSecureFlag,
             @NonNull InstabugInvocationEvent... InvocationEvent
 
 
-    ) {
+            ) {
         try {
 
             setBaseUrlForDeprecationLogs();
@@ -81,7 +82,13 @@ public class RNInstabug {
                builder.setAppVariant(appVariant);
 
 
-           builder.build();
+
+            if (ignoreSecureFlag != null) {
+                builder.ignoreFlagSecure(ignoreSecureFlag);
+            }
+
+            builder.build();
+
 
             // Temporarily disabling APM hot launches
             APM.setHotAppLaunchEnabled(false);
@@ -116,7 +123,7 @@ public class RNInstabug {
             String appVariant,
             @NonNull InstabugInvocationEvent... invocationEvent
     ) {
-        init(application, applicationToken, LogLevel.ERROR,codePushVersion,appVariant, invocationEvent);
+        init(application, applicationToken, LogLevel.ERROR,codePushVersion,appVariant, null,invocationEvent);
     }
 
     @VisibleForTesting
@@ -177,6 +184,8 @@ public class RNInstabug {
          */
         private String appVariant;
 
+        private Boolean ignoreFlagSecure;
+
 
         /**
          * Initialize Instabug SDK with application token
@@ -227,6 +236,16 @@ public class RNInstabug {
         }
 
         /**
+         * Sets flag to override SDK screenshot security behavior.
+         *
+         * @param ignoreFlagSecure flag to override SDK screenshot security behavior.
+         */
+        public Builder ignoreFlagSecure(boolean ignoreFlagSecure) {
+            this.ignoreFlagSecure = ignoreFlagSecure;
+            return this;
+        }
+
+        /**
          * Sets the invocation triggering events for the SDK's user interface
          *
          * @param invocationEvents The events that trigger the SDK's user interface.
@@ -264,6 +283,10 @@ public class RNInstabug {
                 }
                 if(appVariant!=null){
                     instabugBuilder.setAppVariant(appVariant);
+                }
+
+                if (ignoreFlagSecure != null) {
+                    instabugBuilder.ignoreFlagSecure(ignoreFlagSecure);
                 }
 
                 instabugBuilder.build();
