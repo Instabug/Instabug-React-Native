@@ -24,10 +24,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UIManager;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.InternalAPM;
 import com.instabug.apm.configuration.cp.APMFeature;
@@ -945,14 +947,22 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     @UiThread
     @Nullable
     private View resolveReactView(final int reactTag) {
+        try {
         final ReactApplicationContext reactContext = getReactApplicationContext();
         final UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
 
         if (uiManagerModule == null) {
+                UIManager uiNewManagerModule = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag);
+                if (uiNewManagerModule != null) {
+                    return uiNewManagerModule.resolveView(reactTag);
+                }
             return null;
         }
 
         return uiManagerModule.resolveView(reactTag);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
@@ -964,7 +974,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     final View view = resolveReactView(reactTag);
 
+                    if(view !=null){
                     Instabug.addPrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -979,8 +991,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     final View view = resolveReactView(reactTag);
+                    if(view !=null){
 
                     Instabug.removePrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

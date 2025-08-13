@@ -12,6 +12,10 @@
 
 - **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
 
+### Fixed
+
+- Masking private views on newer React native Versions ([#1403](https://github.com/Instabug/Instabug-React-Native/pull/1403))
+
 
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 

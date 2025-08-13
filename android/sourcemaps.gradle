@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-gradle.projectsEvaluated {
+project.afterEvaluate {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
     def suffix = 'ReleaseJsAndAssets'
     def bundleTasks = project(':app').tasks.findAll {
