@@ -989,7 +989,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     final View view = resolveReactView(reactTag);
 
+                    if(view !=null){
                     Instabug.addPrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1004,8 +1006,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     final View view = resolveReactView(reactTag);
+                    if(view !=null){
 
                     Instabug.removePrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
