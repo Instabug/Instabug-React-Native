@@ -182,13 +182,10 @@ RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
         [Instabug setColorTheme:colorTheme];
 }
 
-RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-        Instabug.tintColor = color;
-}
 
 RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
     IBGTheme *theme = [[IBGTheme alloc] init];
-    
+
     NSDictionary *colorMapping = @{
         @"primaryColor": ^(UIColor *color) { theme.primaryColor = color; },
         @"backgroundColor": ^(UIColor *color) { theme.backgroundColor = color; },
@@ -203,7 +200,7 @@ RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
         @"selectedRowBackgroundColor": ^(UIColor *color) { theme.selectedRowBackgroundColor = color; },
         @"rowSeparatorColor": ^(UIColor *color) { theme.rowSeparatorColor = color; }
     };
-    
+
     for (NSString *key in colorMapping) {
         if (themeConfig[key]) {
             NSString *colorString = themeConfig[key];
@@ -214,11 +211,11 @@ RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
             }
         }
     }
-    
+
     [self setFontIfPresent:themeConfig[@"primaryFontPath"] forTheme:theme type:@"primary"];
     [self setFontIfPresent:themeConfig[@"secondaryFontPath"] forTheme:theme type:@"secondary"];
     [self setFontIfPresent:themeConfig[@"ctaFontPath"] forTheme:theme type:@"cta"];
-    
+
     Instabug.theme = theme;
 }
 
@@ -241,12 +238,12 @@ RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
 
 - (UIColor *)colorFromHexString:(NSString *)hexString {
     NSString *cleanString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    
+
     if (cleanString.length == 6) {
         unsigned int rgbValue = 0;
         NSScanner *scanner = [NSScanner scannerWithString:cleanString];
         [scanner scanHexInt:&rgbValue];
-        
+
         return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16) / 255.0
                                green:((rgbValue & 0xFF00) >> 8) / 255.0
                                 blue:(rgbValue & 0xFF) / 255.0
@@ -255,13 +252,13 @@ RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {
         unsigned int rgbaValue = 0;
         NSScanner *scanner = [NSScanner scannerWithString:cleanString];
         [scanner scanHexInt:&rgbaValue];
-        
+
         return [UIColor colorWithRed:((rgbaValue & 0xFF000000) >> 24) / 255.0
                                green:((rgbaValue & 0xFF0000) >> 16) / 255.0
                                 blue:((rgbaValue & 0xFF00) >> 8) / 255.0
                                alpha:(rgbaValue & 0xFF) / 255.0];
     }
-    
+
     return [UIColor blackColor];
 }
 
