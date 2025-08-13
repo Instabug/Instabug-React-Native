@@ -26,6 +26,7 @@ export interface InstabugNativeModule extends NativeModule {
     debugLogsLevel: LogLevel,
     useNativeNetworkInterception: boolean,
     codePushVersion?: string,
+    appVariant?: string,
     options?: {
       ignoreAndroidSecureFlag?: boolean;
     },
@@ -34,6 +35,7 @@ export interface InstabugNativeModule extends NativeModule {
 
   // Misc APIs //
   setCodePushVersion(version: string): void;
+  setAppVariant(appVariant: string): void;
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.2...dev)
+
+### Added
+
+- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
+
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
 ### Added

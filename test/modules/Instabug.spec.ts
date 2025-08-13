@@ -308,6 +308,7 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      undefined,
       { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
     );
   });
@@ -359,6 +360,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
+        undefined,
         { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
       );
     }
@@ -960,6 +962,7 @@ describe('Instabug iOS initialization tests', () => {
       false, // Disable native interception
       config.codePushVersion,
       config.ignoreAndroidSecureFlag,
+      undefined,
     );
   });
 
@@ -977,6 +980,7 @@ describe('Instabug iOS initialization tests', () => {
       true, // Enable native interception
       config.codePushVersion,
       config.ignoreAndroidSecureFlag,
+      undefined,
     );
   });
 
@@ -994,6 +998,7 @@ describe('Instabug iOS initialization tests', () => {
       false, // Disable native interception
       config.codePushVersion,
       config.ignoreAndroidSecureFlag,
+      undefined,
     );
   });
 
@@ -1036,6 +1041,7 @@ describe('Instabug Android initialization tests', () => {
         config.debugLogsLevel,
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
+        undefined,
         { ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag },
       );
     });
@@ -1101,6 +1107,23 @@ describe('Instabug Android initialization tests', () => {
       expect(logSpy).toBeCalledTimes(1);
       expect(logSpy).toBeCalledWith(
         InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    });
+  });
+
+  it('should initialize correctly with App variant', async () => {
+    config.appVariant = 'App Variant';
+    await Instabug.init(config);
+    fakeTimer(() => {
+      expect(NativeInstabug.setOnFeaturesUpdatedListener).toHaveBeenCalled();
+      expect(NativeInstabug.init).toHaveBeenCalledWith(
+        config.token,
+        config.invocationEvents,
+        config.debugLogsLevel,
+        true,
+        config.codePushVersion,
+        config.appVariant,
+        undefined,
       );
     });
   });

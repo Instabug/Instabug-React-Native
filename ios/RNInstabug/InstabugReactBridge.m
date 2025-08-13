@@ -42,8 +42,15 @@ RCT_EXPORT_METHOD(init:(NSString *)token
           debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel
           useNativeNetworkInterception:(BOOL)useNativeNetworkInterception
           codePushVersion:(NSString *)codePushVersion
-                options:(nullable NSDictionary *)options
- ) {
+          appVariant:(NSString *)appVariant
+          options:(nullable NSDictionary *)options
+
+          ) {
+
+           if(appVariant != nil){
+                  Instabug.appVariant = appVariant;
+              }
+
     IBGInvocationEvent invocationEvents = 0;
 
     for (NSNumber *boxedValue in invocationEventsArray) {
@@ -60,6 +67,10 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
 RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
     [Instabug setCodePushVersion:version];
+}
+
+RCT_EXPORT_METHOD(setAppVariant:(NSString *)appVariant) {
+    Instabug.appVariant = appVariant;
 }
 
 RCT_EXPORT_METHOD(setReproStepsConfig:(IBGUserStepsMode)bugMode :(IBGUserStepsMode)crashMode:(IBGUserStepsMode)sessionReplayMode) {

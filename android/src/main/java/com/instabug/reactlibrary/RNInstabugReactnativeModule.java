@@ -149,6 +149,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final String logLevel,
             final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion,
+            @Nullable final String appVariant,
             final ReadableMap map
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
@@ -178,6 +179,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         builder.setCodePushVersion(codePushVersion);
                     }
                 }
+                 if (appVariant != null) {
+                            builder.setAppVariant(appVariant);
+                    }
                 builder.build();
             }
         });
@@ -504,6 +508,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
+
 
     /**
      * Removes user attribute if exists.
@@ -1356,4 +1362,19 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
+     /**
+         * Sets current App variant
+         *
+         * @param appVariant The app variant name .
+         */
+       @ReactMethod
+        public void setAppVariant(@NonNull String appVariant) {
+            try {
+                Instabug.setAppVariant(appVariant);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 }
