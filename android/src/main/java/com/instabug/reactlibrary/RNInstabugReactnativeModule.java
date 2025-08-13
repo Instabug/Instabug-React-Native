@@ -153,7 +153,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final ReadableArray invocationEventValues,
             final String logLevel,
             final boolean useNativeNetworkInterception,
-            @Nullable final String codePushVersion
+            @Nullable final String codePushVersion,
+            @Nullable final String appVariant,
+            final ReadableMap map
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -171,6 +173,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
 
+                if (map!=null&&map.hasKey("ignoreAndroidSecureFlag")) {
+                    builder.ignoreFlagSecure(map.getBoolean("ignoreAndroidSecureFlag"));
+                }
+
                 if (codePushVersion != null) {
                     if (Instabug.isBuilt()) {
                         Instabug.setCodePushVersion(codePushVersion);
@@ -178,6 +184,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         builder.setCodePushVersion(codePushVersion);
                     }
                 }
+                 if (appVariant != null) {
+                            builder.setAppVariant(appVariant);
+                    }
                 builder.build();
             }
         });
@@ -484,6 +493,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
+
 
     /**
      * Removes user attribute if exists.
@@ -1021,7 +1032,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    
+
 
     @ReactMethod
     public void addFeatureFlags(final ReadableMap featureFlagsMap) {
@@ -1283,6 +1294,21 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
+     /**
+         * Sets current App variant
+         *
+         * @param appVariant The app variant name .
+         */
+       @ReactMethod
+        public void setAppVariant(@NonNull String appVariant) {
+            try {
+                Instabug.setAppVariant(appVariant);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     /**
      * Sets the theme for Instabug using a configuration object.
      *
@@ -1320,10 +1346,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
-    
+
     /**
      * Retrieves a color value from the ReadableMap.
-     * 
+     *
      * @param map The ReadableMap object.
      * @param key The key to look for.
      * @return The parsed color as an integer, or black if missing or invalid.
@@ -1339,10 +1365,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         }
         return Color.BLACK;
     }
-    
+
     /**
      * Retrieves a text style from the ReadableMap.
-     * 
+     *
      * @param map The ReadableMap object.
      * @param key The key to look for.
      * @return The corresponding Typeface style, or Typeface.NORMAL if missing or invalid.
@@ -1366,20 +1392,20 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Typeface.NORMAL; 
+        return Typeface.NORMAL;
     }
-    
+
 
 
     /**
      * Applies a color to the theme builder if present in the configuration.
-     * 
+     *
      * @param themeConfig The theme configuration map
      * @param builder The theme builder
      * @param key The configuration key
      * @param setter The color setter function
      */
-    private void applyColorIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+    private void applyColorIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
                                    String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
         if (themeConfig.hasKey(key)) {
             int color = getColor(themeConfig, key);
@@ -1389,13 +1415,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Applies a text style to the theme builder if present in the configuration.
-     * 
+     *
      * @param themeConfig The theme configuration map
      * @param builder The theme builder
      * @param key The configuration key
      * @param setter The text style setter function
      */
-    private void applyTextStyleIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+    private void applyTextStyleIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
                                        String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
         if (themeConfig.hasKey(key)) {
             int style = getTextStyle(themeConfig, key);
@@ -1405,14 +1431,14 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Sets a font on the theme builder if the font configuration is present in the theme config.
-     * 
+     *
      * @param themeConfig The theme configuration map
      * @param builder The theme builder
      * @param fileKey The key for font file path
      * @param assetKey The key for font asset path
      * @param fontType The type of font (for logging purposes)
      */
-    private void setFontIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder, 
+    private void setFontIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
                                  String fileKey, String assetKey, String fontType) {
         if (themeConfig.hasKey(fileKey) || themeConfig.hasKey(assetKey)) {
             Typeface typeface = getTypeface(themeConfig, fileKey, assetKey);
@@ -1433,10 +1459,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         }
     }
-    
+
     /**
      * Loads a Typeface from a file path.
-     * 
+     *
      * @param fileName The filename to load
      * @return The loaded Typeface or null if failed
      */
@@ -1454,7 +1480,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
     /**
      * Loads a Typeface from assets.
-     * 
+     *
      * @param fileName The filename in assets/fonts/ directory
      * @return The loaded Typeface or null if failed
      */
@@ -1472,13 +1498,13 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             if (fileKey != null && map.hasKey(fileKey) && !map.isNull(fileKey)) {
                 String fontPath = map.getString(fileKey);
                 String fileName = getFileName(fontPath);
-                
+
                 // Try loading from file first
                 Typeface typeface = loadTypefaceFromFile(fileName);
                 if (typeface != null) {
                     return typeface;
                 }
-                
+
                 // Try loading from assets
                 typeface = loadTypefaceFromAssets(fileName);
                 if (typeface != null) {
@@ -1500,7 +1526,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
 
 /**
  * Extracts the filename from a path, removing any directory prefixes.
- * 
+ *
  * @param path The full path to the file
  * @return Just the filename with extension
  */
@@ -1508,12 +1534,12 @@ private String getFileName(String path) {
     if (path == null || path.isEmpty()) {
         return path;
     }
-    
+
     int lastSeparator = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
     if (lastSeparator >= 0 && lastSeparator < path.length() - 1) {
         return path.substring(lastSeparator + 1);
     }
-    
+
     return path;
 }
 

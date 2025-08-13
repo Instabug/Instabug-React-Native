@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, NetworkListenerType) {
  +------------------------------------------------------------------------+
  */
 
-- (void)isNativeInterceptionEnabled:(RCTPromiseResolveBlock _Nullable )resolve :(RCTPromiseRejectBlock _Nullable )reject;
+- (BOOL)isNativeInterceptionEnabled;
 
 - (void) registerNetworkLogsListener:(NetworkListenerType)listenerType;
 

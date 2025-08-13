@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
@@ -40,36 +40,30 @@ export const App: React.FC = () => {
 
   const navigationRef = useNavigationContainerRef();
 
-  const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
-
-  const initializeInstabug = async () => {
+  const initializeInstabug = () => {
     try {
       SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
 
-      await Instabug.init({
+      Instabug.init({
         token: 'deb1910a7342814af4e4c9210c786f35',
         invocationEvents: [InvocationEvent.floatingButton],
         debugLogsLevel: LogLevel.verbose,
         networkInterceptionMode: NetworkInterceptionMode.javascript,
+        appVariant: 'App variant',
       });
 
       CrashReporting.setNDKCrashesEnabled(true);
       Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
-
-      setIsInstabugInitialized(true); // Set to true after initialization
     } catch (error) {
       console.error('Instabug initialization failed:', error);
-      setIsInstabugInitialized(true); // Proceed even if initialization fails
     }
   };
 
   useEffect(() => {
-    initializeInstabug().then(() => {
-      NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-        networkData.url = `${networkData.url}/JS/Obfuscated`;
-        return networkData;
-      });
-      // NetworkLogger.setRequestFilterExpression('false');
+    initializeInstabug();
+    NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+      networkData.url = `${networkData.url}/JS/Obfuscated`;
+      return networkData;
     });
   });
 
@@ -79,10 +73,6 @@ export const App: React.FC = () => {
 
     return unregisterListener;
   }, [navigationRef]);
-
-  if (!isInstabugInitialized) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
-  }
 
   return (
     <GestureHandlerRootView style={styles.root}>

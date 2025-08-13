@@ -1,14 +1,27 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.1...dev)
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.2...dev)
+
+### Added
+
+- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
+
+- Add Support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
 
 ### Changed
 
 - **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
 
+
+## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
+
 ### Added
 
-- Add Support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
+- Add support for ignoreFlagSecure to bypass SDK screenshot security protocols on Android. ([#1394](https://github.com/Instabug/Instabug-React-Native/pull/1394))
+
+### Fixed
+
+- async initialization. ([#1427](https://github.com/Instabug/Instabug-React-Native/pull/1427))
 
 ## [15.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...v15.0.1)
 

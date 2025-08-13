@@ -19,7 +19,8 @@ public class RNInstabug {
 
     private static RNInstabug instance;
 
-    private RNInstabug() {}
+    private RNInstabug() {
+    }
 
 
     public static RNInstabug getInstance() {
@@ -36,14 +37,13 @@ public class RNInstabug {
     /**
      * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
      *
-     * @param application The application context.
+     * @param application      The application context.
      * @param applicationToken The app's identifying token, available on your dashboard.
-     * @param logLevel The level of detail in logs that you want to print.
-     *      <p>Pick one of the log levels described in {@link LogLevel}.
-     *      default logLevel is {@link LogLevel#ERROR}</p>
-     * @param InvocationEvent The events that trigger the SDK's user interface.
-     *      Choose from the available events listed in {@link InstabugInvocationEvent}.
-     *
+     * @param logLevel         The level of detail in logs that you want to print.
+     *                         <p>Pick one of the log levels described in {@link LogLevel}.
+     *                         default logLevel is {@link LogLevel#ERROR}</p>
+     * @param InvocationEvent  The events that trigger the SDK's user interface.
+     *                         Choose from the available events listed in {@link InstabugInvocationEvent}.
      * @example <p>Here's an example usage: </p>
      * <blockquote><pre>
      * RNInstabug.getInstance().init(
@@ -59,17 +59,36 @@ public class RNInstabug {
             @NonNull Application application,
             @NonNull String applicationToken,
             int logLevel,
+            String codePushVersion,
+            String appVariant,
+            Boolean ignoreSecureFlag,
             @NonNull InstabugInvocationEvent... InvocationEvent
-    ) {
+
+
+            ) {
         try {
 
             setBaseUrlForDeprecationLogs();
             setCurrentPlatform();
 
-            new Instabug.Builder(application, applicationToken)
+           Instabug.Builder builder= new Instabug.Builder(application, applicationToken)
                     .setInvocationEvents(InvocationEvent)
-                    .setSdkDebugLogsLevel(logLevel)
-                    .build();
+                    .setSdkDebugLogsLevel(logLevel);
+
+           if(codePushVersion!=null){
+               builder.setCodePushVersion(codePushVersion);
+           }
+           if(appVariant!=null)
+               builder.setAppVariant(appVariant);
+
+
+
+            if (ignoreSecureFlag != null) {
+                builder.ignoreFlagSecure(ignoreSecureFlag);
+            }
+
+            builder.build();
+
 
             // Temporarily disabling APM hot launches
             APM.setHotAppLaunchEnabled(false);
@@ -80,15 +99,13 @@ public class RNInstabug {
     }
 
 
-
     /**
      * Initializes the SDK on the native side, which is useful for capturing startup issues specific to the native part of the app.
      *
-     * @param application The application context.
+     * @param application      The application context.
      * @param applicationToken The app's identifying token, available on your dashboard.
-     * @param invocationEvent The events that trigger the SDK's user interface.
-     *      Choose from the available events listed in {@link InstabugInvocationEvent}.
-     *
+     * @param invocationEvent  The events that trigger the SDK's user interface.
+     *                         Choose from the available events listed in {@link InstabugInvocationEvent}.
      * @example <p>Here's an example usage: </p>
      * <blockquote><pre>
      * RNInstabug.getInstance().init(
@@ -102,9 +119,11 @@ public class RNInstabug {
     public void init(
             @NonNull Application application,
             @NonNull String applicationToken,
+            String codePushVersion,
+            String appVariant,
             @NonNull InstabugInvocationEvent... invocationEvent
     ) {
-        init(application, applicationToken, LogLevel.ERROR, invocationEvent);
+        init(application, applicationToken, LogLevel.ERROR,codePushVersion,appVariant, null,invocationEvent);
     }
 
     @VisibleForTesting
@@ -160,6 +179,12 @@ public class RNInstabug {
          * The events that trigger the SDK's user interface.
          */
         private InstabugInvocationEvent[] invocationEvents;
+        /**
+         * The App variant name to be used for all reports.
+         */
+        private String appVariant;
+
+        private Boolean ignoreFlagSecure;
 
 
         /**
@@ -211,6 +236,16 @@ public class RNInstabug {
         }
 
         /**
+         * Sets flag to override SDK screenshot security behavior.
+         *
+         * @param ignoreFlagSecure flag to override SDK screenshot security behavior.
+         */
+        public Builder ignoreFlagSecure(boolean ignoreFlagSecure) {
+            this.ignoreFlagSecure = ignoreFlagSecure;
+            return this;
+        }
+
+        /**
          * Sets the invocation triggering events for the SDK's user interface
          *
          * @param invocationEvents The events that trigger the SDK's user interface.
@@ -218,6 +253,16 @@ public class RNInstabug {
          */
         public Builder setInvocationEvents(InstabugInvocationEvent... invocationEvents) {
             this.invocationEvents = invocationEvents;
+            return this;
+        }
+
+        /**
+         * Sets the the current App variant
+         *
+         * @param appVariant the current App variant to work with.
+         */
+        public Builder setAppVariant(String appVariant) {
+            this.appVariant = appVariant;
             return this;
         }
 
@@ -235,6 +280,13 @@ public class RNInstabug {
 
                 if (codePushVersion != null) {
                     instabugBuilder.setCodePushVersion(codePushVersion);
+                }
+                if(appVariant!=null){
+                    instabugBuilder.setAppVariant(appVariant);
+                }
+
+                if (ignoreFlagSecure != null) {
+                    instabugBuilder.ignoreFlagSecure(ignoreFlagSecure);
                 }
 
                 instabugBuilder.build();

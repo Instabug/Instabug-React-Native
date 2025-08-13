@@ -42,6 +42,7 @@ const mockInstabug: InstabugNativeModule = {
   clearAllUserAttributes: jest.fn(),
   showWelcomeMessageWithMode: jest.fn(),
   setWelcomeMessageMode: jest.fn(),
+  setAppVariant: jest.fn(),
   setFileAttachment: jest.fn(),
   addPrivateView: jest.fn(),
   removePrivateView: jest.fn(),

@@ -69,14 +69,18 @@
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSString *codePushVersion = @"1.0.0(1)";
+  NSString *appVariant = @"variant 1";
+
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
 
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion appVariant:appVariant  options:nil ];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
+
+  XCTAssertEqual(Instabug.appVariant, appVariant);
 
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
@@ -97,6 +101,14 @@
   OCMStub([mock setUserData:userData]);
   [self.instabugBridge setUserData:userData];
   OCMVerify([mock setUserData:userData]);
+}
+
+- (void)testSetAppVariant {
+  id mock = OCMClassMock([Instabug class]);
+  NSString *appVariant = @"appVariant";
+
+  [self.instabugBridge setAppVariant: appVariant];
+  XCTAssertEqual(Instabug.appVariant, appVariant);
 }
 
 - (void)testSetTrackUserSteps {
@@ -573,18 +585,18 @@
 
 - (void)testEnableAutoMasking {
     id mock = OCMClassMock([Instabug class]);
-     
+
     NSArray *autoMaskingTypes = [NSArray arrayWithObjects:
          [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionLabels],
          [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionTextInputs],
          [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMedia],
          [NSNumber numberWithInteger:IBGAutoMaskScreenshotOptionMaskNothing],
          nil];
-     
+
      OCMStub([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
-     
+
      [self.instabugBridge enableAutoMasking:autoMaskingTypes];
- 
+
      OCMVerify([mock setAutoMaskScreenshots:IBGAutoMaskScreenshotOptionLabels | IBGAutoMaskScreenshotOptionTextInputs | IBGAutoMaskScreenshotOptionMedia | IBGAutoMaskScreenshotOptionMaskNothing]);
 }
 
