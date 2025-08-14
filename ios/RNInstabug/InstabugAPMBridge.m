@@ -29,7 +29,6 @@ RCT_EXPORT_MODULE(IBGAPM)
 - (id) init
 {
     self = [super init];
-    traces = [[NSMutableDictionary alloc] init];
     return self;
 }
 
