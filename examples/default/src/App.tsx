@@ -60,7 +60,7 @@ export const App: React.FC = () => {
           networkData.url = `${networkData.url}/JS/Obfuscated`;
           return networkData;
         });
-        APM.setScreenRenderEnabled(true);
+        APM.setScreenRenderingEnabled(true);
         setIsInstabugInitialized(true);
       })
       .catch((error) => {

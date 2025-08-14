@@ -120,6 +120,6 @@ export const _ibgSleep = () => {
  * Enables or disables Screen Render feature
  * @param isEnabled
  */
-export const setScreenRenderEnabled = (isEnabled: boolean) => {
+export const setScreenRenderingEnabled = (isEnabled: boolean) => {
   NativeAPM.setScreenRenderEnabled(isEnabled);
 };
