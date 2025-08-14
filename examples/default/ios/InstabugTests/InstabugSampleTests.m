@@ -69,16 +69,18 @@
   IBGInvocationEvent floatingButtonInvocationEvent = IBGInvocationEventFloatingButton;
   NSString *appToken = @"app_token";
   NSString *codePushVersion = @"1.0.0(1)";
+  NSString *appVariant = @"variant 1";
+
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
 
   OCMStub([mock setCodePushVersion:codePushVersion]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion
-    options:nil
-  ];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion appVariant:appVariant  options:nil ];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
+
+  XCTAssertEqual(Instabug.appVariant, appVariant);
 
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
@@ -99,6 +101,14 @@
   OCMStub([mock setUserData:userData]);
   [self.instabugBridge setUserData:userData];
   OCMVerify([mock setUserData:userData]);
+}
+
+- (void)testSetAppVariant {
+  id mock = OCMClassMock([Instabug class]);
+  NSString *appVariant = @"appVariant";
+
+  [self.instabugBridge setAppVariant: appVariant];
+  XCTAssertEqual(Instabug.appVariant, appVariant);
 }
 
 - (void)testSetTrackUserSteps {
@@ -137,19 +147,6 @@
 
   [[NSRunLoop mainRunLoop] performBlock:^{
     OCMVerify([mock setColorTheme:colorTheme]);
-    [expectation fulfill];
-  }];
-
-  [self waitForExpectationsWithTimeout:EXPECTATION_TIMEOUT handler:nil];
-}
-
-- (void)testSetPrimaryColor {
-  UIColor *color = [UIColor whiteColor];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"Testing [Instabug setPrimaryColor]"];
-
-  [self.instabugBridge setPrimaryColor:color];
-  [[NSRunLoop mainRunLoop] performBlock:^{
-    XCTAssertEqualObjects(Instabug.tintColor, color);
     [expectation fulfill];
   }];
 
@@ -199,7 +196,7 @@
   NSString *email = @"em@il.com";
   NSString *name = @"this is my name";
 
-  OCMStub([mock identifyUserWithEmail:email name:name]);
+  OCMStub([mock identifyUserWithID:nil email:email name:name]);
   [self.instabugBridge identifyUser:email name:name userId:nil];
   OCMVerify([mock identifyUserWithID:nil email:email name:name]);
 }
@@ -241,7 +238,7 @@
   [self.instabugBridge setReproStepsConfig:bugMode :crashMode :sessionReplayMode];
 
   OCMVerify([mock setReproStepsFor:IBGIssueTypeBug withMode:bugMode]);
-  OCMVerify([mock setReproStepsFor:IBGIssueTypeCrash withMode:crashMode]);
+  OCMVerify([mock setReproStepsFor:IBGIssueTypeAllCrashes withMode:crashMode]);
  OCMVerify([mock setReproStepsFor:IBGIssueTypeSessionReplay withMode:sessionReplayMode]);
 }
 
@@ -488,30 +485,6 @@
   OCMVerify([mock clearAllLogs]);
 }
 
-- (void)testAddExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  NSArray *experiments = @[@"exp1", @"exp2"];
-
-  OCMStub([mock addExperiments:experiments]);
-  [self.instabugBridge addExperiments:experiments];
-  OCMVerify([mock addExperiments:experiments]);
-}
-
-- (void)testRemoveExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  NSArray *experiments = @[@"exp1", @"exp2"];
-
-  OCMStub([mock removeExperiments:experiments]);
-  [self.instabugBridge removeExperiments:experiments];
-  OCMVerify([mock removeExperiments:experiments]);
-}
-
-- (void)testClearAllExperiments {
-  id mock = OCMClassMock([Instabug class]);
-  OCMStub([mock clearAllExperiments]);
-  [self.instabugBridge clearAllExperiments];
-  OCMVerify([mock clearAllExperiments]);
-}
 
 - (void)testAddFeatureFlags {
   id mock = OCMClassMock([Instabug class]);
@@ -652,6 +625,73 @@
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 
     OCMVerify(ClassMethod([mock getNetworkBodyMaxSize]));
+}
+- (void)testSetTheme {
+    id mock = OCMClassMock([Instabug class]);
+    id mockTheme = OCMClassMock([IBGTheme class]);
+
+    // Create theme configuration dictionary
+    NSDictionary *themeConfig = @{
+        @"primaryColor": @"#FF0000",
+        @"backgroundColor": @"#00FF00",
+        @"titleTextColor": @"#0000FF",
+        @"subtitleTextColor": @"#FFFF00",
+        @"primaryTextColor": @"#FF00FF",
+        @"secondaryTextColor": @"#00FFFF",
+        @"callToActionTextColor": @"#800080",
+        @"headerBackgroundColor": @"#808080",
+        @"footerBackgroundColor": @"#C0C0C0",
+        @"rowBackgroundColor": @"#FFFFFF",
+        @"selectedRowBackgroundColor": @"#E6E6FA",
+        @"rowSeparatorColor": @"#D3D3D3",
+        @"primaryFontPath": @"TestFont.ttf",
+        @"secondaryFontPath": @"fonts/AnotherFont.ttf",
+        @"ctaFontPath": @"./assets/fonts/CTAFont.ttf"
+    };
+
+    // Mock IBGTheme creation and configuration
+    OCMStub([mockTheme primaryColor]).andReturn([UIColor redColor]);
+    OCMStub([mockTheme backgroundColor]).andReturn([UIColor greenColor]);
+    OCMStub([mockTheme titleTextColor]).andReturn([UIColor blueColor]);
+    OCMStub([mockTheme subtitleTextColor]).andReturn([UIColor yellowColor]);
+    OCMStub([mockTheme primaryTextColor]).andReturn([UIColor magentaColor]);
+    OCMStub([mockTheme secondaryTextColor]).andReturn([UIColor cyanColor]);
+    OCMStub([mockTheme callToActionTextColor]).andReturn([UIColor purpleColor]);
+    OCMStub([mockTheme headerBackgroundColor]).andReturn([UIColor grayColor]);
+    OCMStub([mockTheme footerBackgroundColor]).andReturn([UIColor lightGrayColor]);
+    OCMStub([mockTheme rowBackgroundColor]).andReturn([UIColor whiteColor]);
+    OCMStub([mockTheme selectedRowBackgroundColor]).andReturn([UIColor redColor]);
+    OCMStub([mockTheme rowSeparatorColor]).andReturn([UIColor lightGrayColor]);
+    OCMStub([mockTheme primaryTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+    OCMStub([mockTheme secondaryTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+    OCMStub([mockTheme callToActionTextFont]).andReturn([UIFont systemFontOfSize:17.0]);
+
+    // Mock theme property setting
+    OCMStub([mockTheme setPrimaryColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setTitleTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSubtitleTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setPrimaryTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSecondaryTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setCallToActionTextColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setHeaderBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setFooterBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setRowBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSelectedRowBackgroundColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setRowSeparatorColor:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setPrimaryTextFont:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setSecondaryTextFont:[OCMArg any]]).andReturn(mockTheme);
+    OCMStub([mockTheme setCallToActionTextFont:[OCMArg any]]).andReturn(mockTheme);
+
+    // Mock Instabug.theme property
+    OCMStub([mock theme]).andReturn(mockTheme);
+    OCMStub([mock setTheme:[OCMArg any]]);
+
+    // Call the method
+    [self.instabugBridge setTheme:themeConfig];
+
+    // Verify that setTheme was called
+    OCMVerify([mock setTheme:[OCMArg any]]);
 }
 
 

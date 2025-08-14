@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+export SOURCEMAP_FILE="$DERIVED_FILE_DIR/main.jsbundle.map"
+
 main() {
   # Read environment variables from ios/.xcode.env if it exists
   env_path="$PODS_ROOT/../.xcode.env"
@@ -28,7 +31,14 @@ main() {
     exit 0
   fi
 
-  local source_map_file=$(generate_sourcemaps | tail -n 1)
+
+local sourcemap_file=""
+  # Use existing sourcemap if available
+  if [[ -f "$SOURCEMAP_FILE" ]]; then
+    sourcemap_file="$SOURCEMAP_FILE"
+  else
+   sourcemap_file=$(generate_sourcemaps | tail -n 1)
+fi
 
   local js_project_dir="$PROJECT_DIR/.."
   local instabug_dir=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
@@ -41,12 +51,14 @@ main() {
   local inferred_code=$(/usr/libexec/PlistBuddy -c 'print CFBundleVersion' "$PROJECT_DIR/$INFOPLIST_FILE")
   local version_code=$(resolve_var "Version Code" "INSTABUG_APP_VERSION_CODE" "$inferred_code" | tail -n 1)
 
+if [ -n "$sourcemap_file" ]; then
   node $instabug_dir/bin/index.js upload-sourcemaps \
       --platform ios \
-      --file $source_map_file \
+      --file $sourcemap_file \
       --token $app_token \
       --name $version_name \
       --code $version_code
+      fi
 }
 
 generate_sourcemaps() {

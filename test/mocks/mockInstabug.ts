@@ -42,6 +42,7 @@ const mockInstabug: InstabugNativeModule = {
   clearAllUserAttributes: jest.fn(),
   showWelcomeMessageWithMode: jest.fn(),
   setWelcomeMessageMode: jest.fn(),
+  setAppVariant: jest.fn(),
   setFileAttachment: jest.fn(),
   addPrivateView: jest.fn(),
   removePrivateView: jest.fn(),
@@ -49,9 +50,6 @@ const mockInstabug: InstabugNativeModule = {
   setPreSendingHandler: jest.fn(),
   reportScreenChange: jest.fn(),
   reportCurrentViewChange: jest.fn(),
-  addExperiments: jest.fn(),
-  removeExperiments: jest.fn(),
-  clearAllExperiments: jest.fn(),
   networkLogIOS: jest.fn(),
   networkLogAndroid: jest.fn(),
   addFeatureFlags: jest.fn(),
@@ -77,6 +75,8 @@ const mockInstabug: InstabugNativeModule = {
   setOnFeaturesUpdatedListener: jest.fn(),
   enableAutoMasking: jest.fn(),
   getNetworkBodyMaxSize: jest.fn().mockResolvedValue(10240), // 10 KB
+  setTheme: jest.fn(),
+  setFullscreen: jest.fn(),
 };
 
 export default mockInstabug;

@@ -12,7 +12,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.instabug.apm.APM;
-import com.instabug.apm.model.ExecutionTrace;
 import com.instabug.apm.networking.APMNetworkLogger;
 import com.instabug.apm.networkinterception.cp.APMCPNetworkLog;
 import com.instabug.reactlibrary.utils.EventEmitterModule;
@@ -33,8 +32,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
         super(reactApplicationContext);
     }
 
-    @Deprecated
-    HashMap<String, ExecutionTrace> traces = new HashMap<String, ExecutionTrace>();
 
     @Nonnull
     @Override
@@ -200,81 +197,6 @@ public class RNInstabugAPMModule extends EventEmitterModule {
             public void run() {
                 try {
                     APM.endFlow(name);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Starts an execution trace
-     *
-     * @param name string name of the trace.
-     *
-     * @deprecated see {@link #startFlow(String)}
-     */
-    @Deprecated
-    @ReactMethod
-    public void startExecutionTrace(final String name, final String id, final Promise promise) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String result = "";
-                    ExecutionTrace trace = APM.startExecutionTrace(name);
-                    if (trace != null) {
-                        result = id;
-                        traces.put(id, trace);
-                    }
-                    promise.resolve(result);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(null);
-                }
-            }
-        });
-    }
-
-    /**
-     * Adds a new attribute to trace
-     *
-     * @param id    String id of the trace.
-     * @param key   attribute key
-     * @param value attribute value. Null to remove attribute
-     *
-     * @deprecated see {@link #setFlowAttribute}
-     */
-    @Deprecated
-    @ReactMethod
-    public void setExecutionTraceAttribute(final String id, final String key, final String value) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    traces.get(id).setAttribute(key, value);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Ends a trace
-     *
-     * @param id string id of the trace.
-     *
-     * @deprecated see {@link #endFlow}
-     */
-    @Deprecated
-    @ReactMethod
-    public void endExecutionTrace(final String id) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    traces.get(id).end();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

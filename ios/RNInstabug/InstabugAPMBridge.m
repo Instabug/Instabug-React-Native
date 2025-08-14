@@ -2,7 +2,6 @@
 
 #import "InstabugAPMBridge.h"
 #import <InstabugSDK/IBGAPM.h>
-#import <InstabugSDK/IBGExecutionTrace.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -27,12 +26,9 @@
 
 RCT_EXPORT_MODULE(IBGAPM)
 
-NSMutableDictionary *traces;
-
 - (id) init
 {
     self = [super init];
-    traces = [[NSMutableDictionary alloc] init];
     return self;
 }
 
@@ -59,41 +55,6 @@ RCT_EXPORT_METHOD(endAppLaunch) {
 // Controls whether automatic tracing of UI interactions is enabled or disabled within the SDK.
 RCT_EXPORT_METHOD(setAutoUITraceEnabled:(BOOL)isEnabled) {
     IBGAPM.autoUITraceEnabled = isEnabled;
-}
-
-// Starts new execution trace with the specified `name`.
-//
-// Deprecated see [startFlow: (NSString *)name]
-RCT_EXPORT_METHOD(startExecutionTrace:(NSString *)name :(NSString *)id
-                                     :(RCTPromiseResolveBlock)resolve
-                                     :(RCTPromiseRejectBlock)reject) {
-    IBGExecutionTrace *trace = [IBGAPM startExecutionTraceWithName:name];
-    if (trace != nil) {
-        [traces setObject: trace forKey: id];
-        resolve(id);
-    } else {
-        resolve([NSNull null]);
-    }
-}
-
-//  Sets a user defined attribute for the execution trace.
-//
-// Deprecated see [setFlowAttribute:(NSString *)name :(NSString *)key :(NSString *_Nullable)value]
-RCT_EXPORT_METHOD(setExecutionTraceAttribute:(NSString *)id :(NSString *)key :(NSString *)value) {
-    IBGExecutionTrace *trace = [traces objectForKey:id];
-    if (trace != nil) {
-        [trace setAttributeWithKey:key value:value];
-    }
-}
-
-// Ends execution trace with the specified `name`.
-//
-// Deprecated see [endFlow: (NSString *)name]
-RCT_EXPORT_METHOD(endExecutionTrace:(NSString *)id) {
-    IBGExecutionTrace *trace = [traces objectForKey:id];
-    if (trace != nil) {
-        [trace end];
-    }
 }
 
 // Starts a flow trace with the specified `name`,
