@@ -7,7 +7,7 @@
 //
 
 #import "InstabugBugReportingBridge.h"
-#import <Instabug/IBGBugReporting.h>
+#import <InstabugSDK/IBGBugReporting.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(setOnInvokeHandler:(RCTResponseSenderBlock)callBack) {
 RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
         IBGBugReporting.didDismissHandler = ^(IBGDismissType dismissType, IBGReportType reportType) {
-            
+
             //parse dismiss type enum
             NSString* dismissTypeString;
             if (dismissType == IBGDismissTypeCancel) {
@@ -69,7 +69,7 @@ RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
             } else if (dismissType == IBGDismissTypeAddAttachment) {
                 dismissTypeString = @"ADD_ATTACHMENT";
             }
-            
+
             //parse report type enum
             NSString* reportTypeString;
             if (reportType == IBGReportTypeBug) {
@@ -90,9 +90,9 @@ RCT_EXPORT_METHOD(setOnSDKDismissedHandler:(RCTResponseSenderBlock)callBack) {
 
 RCT_EXPORT_METHOD(setDidSelectPromptOptionHandler:(RCTResponseSenderBlock)callBack) {
     if (callBack != nil) {
-        
+
         IBGBugReporting.didSelectPromptOptionHandler = ^(IBGPromptOption promptOption) {
-            
+
             NSString *promptOptionString;
             if (promptOption == IBGPromptOptionBug) {
                 promptOptionString = @"bug";
@@ -103,7 +103,7 @@ RCT_EXPORT_METHOD(setDidSelectPromptOptionHandler:(RCTResponseSenderBlock)callBa
             } else {
                 promptOptionString = @"none";
             }
-            
+
             [self sendEventWithName:@"IBGDidSelectPromptOptionHandler" body:@{
                                                                               @"promptOption": promptOptionString
                                                                               }];
@@ -123,11 +123,11 @@ RCT_EXPORT_METHOD(setInvocationEvents:(NSArray*)invocationEventsArray) {
 
 RCT_EXPORT_METHOD(setOptions:(NSArray*)invocationOptionsArray) {
     IBGBugReportingOption invocationOptions = 0;
-    
+
     for (NSNumber *boxedValue in invocationOptionsArray) {
         invocationOptions |= [boxedValue intValue];
     }
-    
+
     IBGBugReporting.bugReportingOptions = invocationOptions;
 }
 
@@ -157,7 +157,7 @@ RCT_EXPORT_METHOD(setEnabledAttachmentTypes:(BOOL)screenShot
     if(screenRecording) {
         attachmentTypes |= IBGAttachmentTypeScreenRecording;
     }
-    
+
     IBGBugReporting.enabledAttachmentTypes = attachmentTypes;
 }
 
@@ -218,6 +218,21 @@ RCT_EXPORT_METHOD(setCommentMinimumCharacterCount:(nonnull NSNumber *)limit repo
 
    [IBGBugReporting setCommentMinimumCharacterCountForReportTypes:parsedReportTypes withLimit:limit.intValue];
 }
+
+RCT_EXPORT_METHOD(addUserConsent:(NSString *)key
+                  description:(NSString *)description
+                  mandatory:(BOOL)mandatory
+                  checked:(BOOL)checked
+                  actionType:(id)actionType) {
+    IBGActionType mappedActionType = (IBGActionType)[actionType integerValue];
+
+    [IBGBugReporting addUserConsentWithKey:key
+                               description:description
+                                 mandatory:mandatory
+                                   checked:checked
+                                actionType:mappedActionType];
+}
+
 
 @synthesize description;
 

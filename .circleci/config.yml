@@ -401,22 +401,33 @@ jobs:
       prepare_steps:
         type: steps
         default: []
+      api_endpoint:
+        type: string
+      dashboard_token_env:
+        type: string
     working_directory: ~/project
     executor:
       name: node/default
     steps:
       - advanced-checkout/shallow-checkout
+      - run: git clone git@github.com:Instabug/Escape.git
+      - run:
+          working_directory: Escape
+          command: swift build -c release
+      - run:
+          working_directory: Escape/.build/release
+          command: cp -f Escape /usr/local/bin/escape
       - steps: << parameters.prepare_steps >>
       - install_node_modules
       - run:
           name: Build the SDK
           command: yarn build
       - run:
-          name: Authorize with NPM
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - run:
-          name: Publish new enterprise version
-          command: npm publish
+          name: Publish Custom Package with Escape
+          command: Escape react-native publish-custompackage
+          environment:
+            DASHBOARD_TOKEN: << parameters.dashboard_token_env >>
+            DASHBOARD_API_ENDPOINT: << parameters.api_endpoint >>
 
   publish:
     macos:
@@ -438,8 +449,11 @@ jobs:
           working_directory: project
           command: yarn build
       - run:
+          name: Publish Official Package with Escape
           working_directory: project
           command: Escape react-native publish
+          environment:
+            DASHBOARD_API_ENDPOINT: api.instabug.com
   publish_new_namespace:
     working_directory: ~/project
     executor:
@@ -562,6 +576,8 @@ workflows:
                 npm_package: '@instabug/react-native-nn'
                 android_package: nn
                 api_endpoint: st001009nn.instabug.com
+          api_endpoint: st001009nn.instabug.com
+          dashboard_token_env: ${NN_TOKEN}
 
       - hold_release_injazat:
           requires: *release_dependencies
@@ -581,6 +597,8 @@ workflows:
                 npm_package: '@instabug/react-native-injazat'
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
+          api_endpoint: st001013mec1.instabug.com
+          dashboard_token_env: ${INJAZAT_TOKEN}
 
       # Dream11 tests
       - hold_test_dream11:
@@ -622,3 +640,5 @@ workflows:
               only: dream11
           prepare_steps:
             - prepare_dream11
+          api_endpoint: st001012dream11.instabug.com
+          dashboard_token_env: ${DREAM11_TOKEN}

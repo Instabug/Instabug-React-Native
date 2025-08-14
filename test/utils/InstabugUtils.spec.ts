@@ -4,15 +4,20 @@ import { Platform } from 'react-native';
 import parseErrorStackLib from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 import * as Instabug from '../../src/modules/Instabug';
+import * as NetworkLogger from '../../src/modules/NetworkLogger';
 import { NativeCrashReporting } from '../../src/native/NativeCrashReporting';
 import { InvocationEvent, NetworkData, NonFatalErrorLevel } from '../../src';
-import InstabugUtils, {
-  getStackTrace,
-  reportNetworkLog,
-  sendCrashReport,
-} from '../../src/utils/InstabugUtils';
+import * as InstabugUtils from '../../src/utils/InstabugUtils';
+
+import {
+  NativeNetworkLogger,
+  NetworkListenerType,
+  NetworkLoggerEmitter,
+} from '../../src/native/NativeNetworkLogger';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
 import { NativeAPM } from '../../src/native/NativeAPM';
+
+jest.mock('../../src/modules/NetworkLogger');
 
 describe('Test global error handler', () => {
   beforeEach(() => {
@@ -189,9 +194,9 @@ describe('Instabug Utils', () => {
     const remoteSenderCallback = NativeCrashReporting.sendHandledJSCrash;
     Platform.OS = 'android';
     const errorMock = new TypeError('Invalid type');
-    const jsStackTrace = getStackTrace(errorMock);
+    const jsStackTrace = InstabugUtils.getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, (data) =>
+    InstabugUtils.sendCrashReport(errorMock, (data) =>
       remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
     );
 
@@ -217,9 +222,9 @@ describe('Instabug Utils', () => {
     const remoteSenderCallback = NativeCrashReporting.sendHandledJSCrash;
     Platform.OS = 'ios';
     const errorMock = new TypeError('Invalid type');
-    const jsStackTrace = getStackTrace(errorMock);
+    const jsStackTrace = InstabugUtils.getStackTrace(errorMock);
 
-    sendCrashReport(errorMock, (data) =>
+    InstabugUtils.sendCrashReport(errorMock, (data) =>
       remoteSenderCallback(data, null, null, NonFatalErrorLevel.error),
     );
     const expectedMap = {
@@ -242,6 +247,7 @@ describe('Instabug Utils', () => {
 
 describe('reportNetworkLog', () => {
   const network: NetworkData = {
+    id: 'id',
     url: 'https://api.instabug.com',
     method: 'GET',
     requestBody: 'requestBody',
@@ -265,13 +271,15 @@ describe('reportNetworkLog', () => {
     w3cCaughtHeader: null,
   };
 
-  it('reportNetworkLog should send network logs to native with the correct parameters on Android', () => {
+  it('reportNetworkLog should send network logs to native with the correct parameters on Android', async () => {
     Platform.OS = 'android';
+    jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
+    jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(false));
+    Instabug.init({ token: '', invocationEvents: [InvocationEvent.none] });
 
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
-
-    reportNetworkLog(network);
+    InstabugUtils.reportNetworkLog(network);
 
     expect(NativeInstabug.networkLogAndroid).toHaveBeenCalledTimes(1);
     expect(NativeInstabug.networkLogAndroid).toHaveBeenCalledWith(
@@ -316,7 +324,7 @@ describe('reportNetworkLog', () => {
   it('reportNetworkLog should send network logs to native with the correct parameters on iOS', () => {
     Platform.OS = 'ios';
 
-    reportNetworkLog(network);
+    InstabugUtils.reportNetworkLog(network);
 
     expect(NativeInstabug.networkLogIOS).toHaveBeenCalledTimes(1);
     expect(NativeInstabug.networkLogIOS).toHaveBeenCalledWith(
@@ -344,5 +352,193 @@ describe('reportNetworkLog', () => {
         w3cCaughtHeader: null,
       },
     );
+  });
+});
+
+describe('test registerNetworkLogsListener usage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks(); // Clear all mocks before each test
+  });
+
+  const network: NetworkLogger.NetworkData = {
+    id: '',
+    url: 'https://api.instabug.com',
+    requestBody: '',
+    requestHeaders: { 'content-type': 'application/json' },
+    method: 'GET',
+    responseBody: '',
+    responseCode: 200,
+    responseHeaders: { 'content-type': 'application/json' },
+    contentType: 'application/json',
+    duration: 0,
+    requestBodySize: 0,
+    responseBodySize: 0,
+    errorDomain: '',
+    errorCode: 0,
+    startTime: 0,
+    serverErrorMessage: '',
+    requestContentType: 'application/json',
+    isW3cHeaderFound: true,
+    networkStartTimeInSeconds: 0,
+    partialId: 0,
+    w3cCaughtHeader: '',
+    w3cGeneratedHeader: '',
+  };
+
+  it('registerObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.obfuscation', () => {
+    InstabugUtils.registerObfuscationListener();
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.obfuscation,
+      expect.any(Function),
+    );
+  });
+
+  it('registerFilteringListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.filtering', () => {
+    const testText = 'true';
+    InstabugUtils.registerFilteringListener(testText);
+
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.filtering,
+      expect.any(Function),
+    );
+  });
+
+  it('registerFilteringAndObfuscationListener should call NetworkLogger.registerNetworkLogsListener() with  NetworkListenerType = NetworkListenerType.both', () => {
+    const testText = 'true';
+    InstabugUtils.registerFilteringAndObfuscationListener(testText);
+
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLogger.registerNetworkLogsListener).toBeCalledWith(
+      NetworkListenerType.both,
+      expect.any(Function),
+    );
+  });
+
+  it('should call NetworkLoggerEmitter.removeAllListeners when call resetNativeObfuscationListener', () => {
+    jest.spyOn(NetworkLoggerEmitter, 'removeAllListeners').mockImplementation();
+    InstabugUtils.resetNativeObfuscationListener();
+    expect(NetworkLoggerEmitter.removeAllListeners).toBeCalledTimes(1);
+  });
+
+  it('should call NativeNetworkLogger.resetNetworkLogsListener when call resetNativeObfuscationListener on android platform', () => {
+    Platform.OS = 'android';
+    jest.spyOn(NativeNetworkLogger, 'resetNetworkLogsListener').mockImplementation();
+    jest.spyOn(NetworkLoggerEmitter, 'removeAllListeners').mockImplementation();
+    InstabugUtils.resetNativeObfuscationListener();
+    expect(NativeNetworkLogger.resetNetworkLogsListener).toBeCalledTimes(1);
+    expect(NetworkLoggerEmitter.removeAllListeners).toBeCalledTimes(1);
+  });
+
+  it('should call  NativeNetworkLogger.updateNetworkLogSnapshot when call updateNetworkLogSnapshot with correct parameters', () => {
+    jest.spyOn(NativeNetworkLogger, 'updateNetworkLogSnapshot').mockImplementation();
+
+    InstabugUtils.updateNetworkLogSnapshot(network);
+    expect(NativeNetworkLogger.updateNetworkLogSnapshot).toBeCalledTimes(1);
+    expect(NativeNetworkLogger.updateNetworkLogSnapshot).toHaveBeenCalledWith(
+      network.url,
+      network.id,
+      network.requestBody,
+      network.responseBody,
+      network.responseCode ?? 200,
+      network.requestHeaders,
+      network.responseHeaders,
+    );
+  });
+});
+
+describe('InstabugUtils', () => {
+  it('setApmNetworkFlagsIfChanged should return true if flags change', () => {
+    const flags = {
+      isNativeInterceptionFeatureEnabled: true,
+      hasAPMNetworkPlugin: true,
+      shouldEnableNativeInterception: true,
+    };
+    expect(InstabugUtils.setApmNetworkFlagsIfChanged(flags)).toBe(true);
+    expect(InstabugUtils.setApmNetworkFlagsIfChanged(flags)).toBe(false);
+  });
+
+  it('generateTracePartialId should return a non-zero hex string and number', () => {
+    const { numberPartilId, hexStringPartialId } = InstabugUtils.generateTracePartialId();
+    expect(hexStringPartialId).toMatch(/^[0-9a-f]{8}$/);
+    expect(hexStringPartialId).not.toBe('00000000');
+    expect(typeof numberPartilId).toBe('number');
+    expect(numberPartilId).not.toBe(0);
+  });
+
+  it('generateW3CHeader should return a valid w3c header object', () => {
+    const now = Date.now();
+    const result = InstabugUtils.generateW3CHeader(now);
+    expect(result).toHaveProperty('timestampInSeconds');
+    expect(result).toHaveProperty('partialId');
+    expect(result).toHaveProperty('w3cHeader');
+    expect(typeof result.w3cHeader).toBe('string');
+    expect(result.w3cHeader.split('-').length).toBe(4);
+  });
+
+  it('isContentTypeNotAllowed should return false for allowed types and true for not allowed', () => {
+    expect(InstabugUtils.isContentTypeNotAllowed('application/json')).toBe(false);
+    expect(InstabugUtils.isContentTypeNotAllowed('text/plain')).toBe(false);
+    expect(InstabugUtils.isContentTypeNotAllowed('image/png')).toBe(true);
+    expect(InstabugUtils.isContentTypeNotAllowed('application/pdf')).toBe(true);
+  });
+});
+
+describe('checkNetworkRequestHandlers', () => {
+  let registerNetworkLogsListenerSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    registerNetworkLogsListenerSpy = jest
+      .spyOn(NetworkLogger, 'registerNetworkLogsListener')
+      .mockImplementation(jest.fn());
+  });
+
+  it('should register for both if obfuscation handler and filter expression exist', () => {
+    jest.spyOn(NetworkLogger, 'getNetworkDataObfuscationHandler').mockReturnValue(jest.fn());
+    jest.spyOn(NetworkLogger, 'hasRequestFilterExpression').mockReturnValue(true);
+    jest.spyOn(NetworkLogger, 'getRequestFilterExpression').mockReturnValue('true');
+
+    InstabugUtils.checkNetworkRequestHandlers();
+
+    expect(registerNetworkLogsListenerSpy).toHaveBeenCalledWith(
+      NetworkListenerType.both,
+      expect.any(Function),
+    );
+  });
+
+  it('should register for obfuscation only if only obfuscation handler exists', () => {
+    jest.spyOn(NetworkLogger, 'getNetworkDataObfuscationHandler').mockReturnValue(jest.fn());
+    jest.spyOn(NetworkLogger, 'hasRequestFilterExpression').mockReturnValue(false);
+
+    InstabugUtils.checkNetworkRequestHandlers();
+
+    expect(registerNetworkLogsListenerSpy).toHaveBeenCalledWith(
+      NetworkListenerType.obfuscation,
+      expect.any(Function),
+    );
+  });
+
+  it('should register for filtering only if only filter expression exists', () => {
+    jest.spyOn(NetworkLogger, 'getNetworkDataObfuscationHandler').mockReturnValue(undefined);
+    jest.spyOn(NetworkLogger, 'hasRequestFilterExpression').mockReturnValue(true);
+    jest.spyOn(NetworkLogger, 'getRequestFilterExpression').mockReturnValue('true');
+
+    InstabugUtils.checkNetworkRequestHandlers();
+
+    expect(registerNetworkLogsListenerSpy).toHaveBeenCalledWith(
+      NetworkListenerType.filtering,
+      expect.any(Function),
+    );
+  });
+
+  it('should not register any listener if neither exist', () => {
+    jest.spyOn(NetworkLogger, 'getNetworkDataObfuscationHandler').mockReturnValue(undefined);
+    jest.spyOn(NetworkLogger, 'hasRequestFilterExpression').mockReturnValue(false);
+
+    InstabugUtils.checkNetworkRequestHandlers();
+
+    expect(registerNetworkLogsListenerSpy).not.toHaveBeenCalled();
   });
 });

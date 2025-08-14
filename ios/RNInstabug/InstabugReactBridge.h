@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <Instabug/Instabug.h>
-#import <Instabug/IBGBugReporting.h>
-#import <Instabug/IBGCrashReporting.h>
-#import <Instabug/IBGLog.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/InstabugSDK.h>
+#import <InstabugSDK/IBGBugReporting.h>
+#import <InstabugSDK/IBGCrashReporting.h>
+#import <InstabugSDK/IBGLog.h>
+#import <InstabugSDK/IBGTypes.h>
 #import "ArgsRegistry.h"
 
 @interface InstabugReactBridge : RCTEventEmitter <RCTBridgeModule>
@@ -26,7 +26,8 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 
-- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion;
+- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion
+options:(nullable NSDictionary *)options;
 
 - (void)setCodePushVersion:(NSString *)version;
 
@@ -139,5 +140,7 @@ w3cExternalTraceAttributes:(NSDictionary * _Nullable)w3cExternalTraceAttributes;
 - (void)removeFeatureFlags:(NSArray *)featureFlags;
 - (void)removeAllFeatureFlags;
 - (void)setNetworkLogBodyEnabled:(BOOL)isEnabled;
+- (void)enableAutoMasking:(NSArray *)autoMaskingTypes;
+- (void)getNetworkBodyMaxSize:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject;
 
 @end

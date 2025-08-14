@@ -1,4 +1,4 @@
-#import <Instabug/Instabug.h>
+#import <InstabugSDK/InstabugSDK.h>
 #import <React/RCTLog.h>
 #import "RNInstabug.h"
 #import "Util/IBGNetworkLogger+CP.h"

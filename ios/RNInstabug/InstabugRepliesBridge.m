@@ -8,11 +8,11 @@
 //
 
 #import "InstabugRepliesBridge.h"
-#import <Instabug/IBGReplies.h>
+#import <InstabugSDK/IBGReplies.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
-#import <Instabug/IBGTypes.h>
+#import <InstabugSDK/IBGTypes.h>
 #import <React/RCTUIManager.h>
 
 @implementation InstabugRepliesBridge
@@ -39,7 +39,7 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL) isEnabled) {
 RCT_EXPORT_METHOD(hasChats:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {
     BOOL hasChats = IBGReplies.hasChats;
     resolve(@(hasChats));
-    
+
 }
 
 RCT_EXPORT_METHOD(show) {
@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(setOnNewReplyReceivedHandler:(RCTResponseSenderBlock) callback
     } else {
         IBGReplies.didReceiveReplyHandler = nil;
     }
-    
+
 }
 
 RCT_EXPORT_METHOD(getUnreadRepliesCount:(RCTPromiseResolveBlock)resolve :(RCTPromiseRejectBlock)reject) {

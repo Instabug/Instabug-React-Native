@@ -2,6 +2,7 @@ import { NativeEventEmitter, NativeModule, ProcessedColorValue } from 'react-nat
 
 import type Report from '../models/Report';
 import type {
+  AutoMaskingType,
   ColorTheme,
   InvocationEvent,
   Locale,
@@ -25,6 +26,9 @@ export interface InstabugNativeModule extends NativeModule {
     debugLogsLevel: LogLevel,
     useNativeNetworkInterception: boolean,
     codePushVersion?: string,
+    options?: {
+      ignoreAndroidSecureFlag?: boolean;
+    },
   ): void;
   show(): void;
 
@@ -151,15 +155,20 @@ export interface InstabugNativeModule extends NativeModule {
 
   isW3CaughtHeaderEnabled(): Promise<boolean>;
 
-  // W3C Feature Flags Listener for Android
-  registerW3CFlagsChangeListener(): void;
+  // Feature Flags Listener for Android
+  registerFeatureFlagsChangeListener(): void;
+
+  setOnFeaturesUpdatedListener(handler?: (params: any) => void): void; // android only
+  enableAutoMasking(autoMaskingTypes: AutoMaskingType[]): void;
+  getNetworkBodyMaxSize(): Promise<number>;
 }
 
 export const NativeInstabug = NativeModules.Instabug;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',
-  ON_W3C_FLAGS_CHANGE = 'IBGOnNewW3CFlagsUpdateReceivedCallback',
+  IBG_ON_FEATURES_UPDATED_CALLBACK = 'IBGOnFeatureUpdatedCallback',
+  ON_FEATURE_FLAGS_CHANGE = 'IBGOnNewFeatureFlagsUpdateReceivedCallback',
 }
 
 export const emitter = new NativeEventEmitter(NativeInstabug);

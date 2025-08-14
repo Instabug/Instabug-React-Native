@@ -13,11 +13,11 @@ if [ ! -f $instabug_plist ]; then
   exit 1
 fi
 
-for dir in examples/default/ios/Pods/Instabug/Instabug.xcframework/ios-*/
+for dir in examples/default/ios/Pods/Instabug/InstabugSDK.xcframework/ios-*/
 do
   echo "Replacing Config.plist in $dir"
 
-  config_path=$dir/Instabug.framework/InstabugResources.bundle/Config.plist
+  config_path=$dir/InstabugSDK.framework/InstabugResources.bundle/Config.plist
 
   if [ ! -f $config_path ]; then
     echo "Config.plist not found in $dir"

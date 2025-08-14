@@ -4,6 +4,7 @@ package com.instabug.reactlibrary;
 import static com.instabug.reactlibrary.util.GlobalMocks.reflected;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
@@ -62,18 +63,20 @@ public class RNInstabugTest {
                     // Initializes Instabug with the correct token
                     assertEquals(token, actualToken);
                     when(mock.setSdkDebugLogsLevel(anyInt())).thenReturn(mock);
+                    when(mock.ignoreFlagSecure(anyBoolean())).thenReturn(mock);
                     when(mock.setInvocationEvents(any())).thenReturn(mock);
                 });
 
-        sut.init(mContext, token, logLevel, invocationEvents);
+        sut.init(mContext, token, logLevel, true, invocationEvents);
 
         Instabug.Builder builder = mInstabugBuilder.constructed().get(0);
 
         // Here we check that it has changed to verbose value of the `logLevel` property
         verify(builder).setSdkDebugLogsLevel(LogLevel.VERBOSE);
         verify(builder).setInvocationEvents(invocationEvents);
-        verify(builder).build();
+        verify(builder).ignoreFlagSecure(true);
 
+        verify(builder).build();
 
 
         verify(sut).setBaseUrlForDeprecationLogs();
@@ -95,7 +98,7 @@ public class RNInstabugTest {
 
         sut.init(mContext, token, invocationEvents);
 
-        verify(sut).init(mContext, token, defaultLogLevel, invocationEvents);
+        verify(sut).init(mContext, token, defaultLogLevel, null,invocationEvents);
         mInstabugBuilder.close();
     }
 
