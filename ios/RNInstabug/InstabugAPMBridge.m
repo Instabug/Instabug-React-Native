@@ -2,7 +2,6 @@
 
 #import "InstabugAPMBridge.h"
 #import <InstabugSDK/IBGAPM.h>
-#import <InstabugSDK/IBGExecutionTrace.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
@@ -27,12 +26,9 @@
 
 RCT_EXPORT_MODULE(IBGAPM)
 
-NSMutableDictionary *traces;
-
 - (id) init
 {
     self = [super init];
-    traces = [[NSMutableDictionary alloc] init];
     return self;
 }
 
