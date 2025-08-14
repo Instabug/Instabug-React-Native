@@ -8,16 +8,15 @@ interface ListTileProps extends PropsWithChildren {
   onPress?: () => void;
   testID?: string;
   truncateSubtitle?: boolean;
+  testID?: string;
 }
 
-export const ListTile: React.FC<ListTileProps> = ({
-  title,
-  subtitle,
-  onPress,
-  children,
-  testID,
-  truncateSubtitle = false,
-}) => {
+export const ListTile: React.FC<ListTileProps> = ({ title,
+                                                    subtitle,
+                                                    onPress,
+                                                    children,
+                                                    testID,
+                                                    truncateSubtitle = false, }) => {
   return (
     <Pressable
       onPress={onPress}
