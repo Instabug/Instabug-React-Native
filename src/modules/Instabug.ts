@@ -1,10 +1,4 @@
-import {
-  AppState,
-  type AppStateStatus,
-  findNodeHandle,
-  Platform,
-  processColor,
-} from 'react-native';
+import { AppState, type AppStateStatus, findNodeHandle, Platform } from 'react-native';
 
 import type {
   NavigationContainerRefWithCurrent,
@@ -42,6 +36,7 @@ import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 import InstabugConstants from '../utils/InstabugConstants';
 import { InstabugRNConfig } from '../utils/config';
 import { Logger } from '../utils/logger';
+import type { ThemeConfig } from '../models/ThemeConfig';
 
 let _currentScreen: string | null = null;
 let _lastScreen: string | null = null;
@@ -401,9 +396,10 @@ export const setColorTheme = (sdkTheme: ColorTheme) => {
  * To use, import processColor and pass to it with argument the color hex
  * as argument.
  * @param color A color to set the UI elements of the SDK to.
+ * @deprecated Please migrate to the new UI customization API: {@link setTheme}
  */
 export const setPrimaryColor = (color: string) => {
-  NativeInstabug.setPrimaryColor(processColor(color));
+  NativeInstabug.setTheme({ primaryColor: color });
 };
 
 /**
@@ -788,35 +784,6 @@ export const reportScreenChange = (screenName: string) => {
 };
 
 /**
- * Add experiments to next report.
- * @param experiments An array of experiments to add to the next report.
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link addFeatureFlags}.
- */
-export const addExperiments = (experiments: string[]) => {
-  NativeInstabug.addExperiments(experiments);
-};
-
-/**
- * Remove experiments from next report.
- * @param experiments An array of experiments to remove from the next report.
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link removeFeatureFlags}.
- */
-export const removeExperiments = (experiments: string[]) => {
-  NativeInstabug.removeExperiments(experiments);
-};
-
-/**
- * Clear all experiments
- *
- * @deprecated Please migrate to the new Feature Flags APIs: {@link removeAllFeatureFlags}.
- */
-export const clearAllExperiments = () => {
-  NativeInstabug.clearAllExperiments();
-};
-
-/**
  * Add feature flags to the next report.
  * @param featureFlags An array of feature flags to add to the next report.
  */
@@ -906,4 +873,51 @@ export const _registerFeatureFlagsChangeListener = (
  */
 export const enableAutoMasking = (autoMaskingTypes: AutoMaskingType[]) => {
   NativeInstabug.enableAutoMasking(autoMaskingTypes);
+};
+
+/**
+ * Sets a custom theme for Instabug UI elements.
+ *
+ * This method provides comprehensive theming support. It will automatically use IBGTheme
+ * if available in the SDK version, otherwise falls back to individual theming methods.
+ *
+ * @param theme - Configuration object containing theme properties
+ *
+ * @example
+ * ```typescript
+ * // Basic usage with primary color (always supported)
+ * Instabug.setTheme({
+ *   primaryColor: '#FF6B6B'
+ * });
+ *
+ * // Comprehensive theming (uses IBGTheme when available)
+ * Instabug.setTheme({
+ *   primaryColor: '#FF6B6B',
+ *   secondaryTextColor: '#666666',
+ *   primaryTextColor: '#333333',
+ *   titleTextColor: '#000000',
+ *   backgroundColor: '#FFFFFF',
+ *   primaryTextStyle: 'bold',
+ *   secondaryTextStyle: 'normal',
+ *   titleTextStyle: 'bold',
+ *   ctaTextStyle: 'bold',
+ *   primaryFontPath: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   secondaryFontPath: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   ctaTextType: '/data/user/0/com.yourapp/files/fonts/YourFont.ttf',
+ *   primaryFontAsset: 'fonts/YourFont.ttf',
+ *   secondaryFontAsset: 'fonts/YourFont.ttf'
+ * });
+ * ```
+ */
+export const setTheme = (theme: ThemeConfig) => {
+  NativeInstabug.setTheme(theme);
+};
+/**
+ * Enables or disables displaying in full-screen mode, hiding the status and navigation bars.
+ * @param isEnabled A boolean to enable/disable setFullscreen.
+ */
+export const setFullscreen = (isEnabled: boolean) => {
+  if (Platform.OS === 'android') {
+    NativeInstabug.setFullscreen(isEnabled);
+  }
 };

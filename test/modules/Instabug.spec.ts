@@ -1,7 +1,7 @@
 import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
-import { findNodeHandle, Platform, processColor } from 'react-native';
+import { findNodeHandle, Platform } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -464,12 +464,13 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setColorTheme).toBeCalledWith(theme);
   });
 
-  it('should call the native method setPrimaryColor', () => {
+  it('should call the native method setPrimaryColor on iOS', () => {
+    Platform.OS = 'ios';
     const color = '#fff';
-    Instabug.setPrimaryColor(color);
+    Instabug.setTheme({ primaryColor: color });
 
-    expect(NativeInstabug.setPrimaryColor).toBeCalledTimes(1);
-    expect(NativeInstabug.setPrimaryColor).toBeCalledWith(processColor(color));
+    expect(NativeInstabug.setTheme).toBeCalledTimes(1);
+    expect(NativeInstabug.setTheme).toBeCalledWith({ primaryColor: color });
   });
 
   it('should call the native method appendTags', () => {
@@ -832,25 +833,6 @@ describe('Instabug Module', () => {
     emitter.emit(NativeEvents.PRESENDING_HANDLER, report);
 
     expect(emitter.listenerCount(NativeEvents.PRESENDING_HANDLER)).toBe(1);
-  });
-
-  it('should call native addExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.addExperiments(experiments);
-    expect(NativeInstabug.addExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.addExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native removeExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.removeExperiments(experiments);
-    expect(NativeInstabug.removeExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.removeExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native clearAllExperiments method', () => {
-    Instabug.clearAllExperiments();
-    expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
   });
 
   it('should call native addFeatureFlags method', () => {
