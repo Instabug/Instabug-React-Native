@@ -196,7 +196,7 @@
   NSString *email = @"em@il.com";
   NSString *name = @"this is my name";
 
-  OCMStub([mock identifyUserWithEmail:email name:name]);
+  OCMStub([mock identifyUserWithID:nil email:email name:name]);
   [self.instabugBridge identifyUser:email name:name userId:nil];
   OCMVerify([mock identifyUserWithID:nil email:email name:name]);
 }
@@ -629,7 +629,7 @@
 - (void)testSetTheme {
     id mock = OCMClassMock([Instabug class]);
     id mockTheme = OCMClassMock([IBGTheme class]);
-    
+
     // Create theme configuration dictionary
     NSDictionary *themeConfig = @{
         @"primaryColor": @"#FF0000",
