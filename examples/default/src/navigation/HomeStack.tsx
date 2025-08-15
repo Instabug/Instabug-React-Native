@@ -56,7 +56,7 @@ import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { APMScreen } from '../screens/apm/APMScreen';
 import { TracesScreen } from '../screens/apm/TracesScreen';
-import { NetworkScreen } from '../screens/apm/NetworkScreen';
+import { NetworkScreen } from '../screens/apm/network/NetworkScreen';
 import { FlowsScreen } from '../screens/apm/FlowsScreen';
 import { SessionReplayScreen } from '../screens/SessionReplayScreen';
 import { LegacyModeScreen } from '../screens/LegacyModeScreen';
@@ -78,6 +78,15 @@ import {
 } from '../screens/crash-reporting/NDKCrashesStateScreen';
 import { NonFatalCrashesScreen } from '../screens/crash-reporting/NonFatalCrashesScreen';
 import { FatalCrashesScreen } from '../screens/crash-reporting/FatalCrashesScreen';
+import CallbackScreen from '../screens/CallbackHandlersScreen';
+import {
+  NetworkStateScreen,
+  type NetworkStateScreenProp,
+} from '../screens/apm/network/NetworkStateScreen';
+import {
+  UserStepsStateScreen,
+  type UserStepsStateScreenProp,
+} from '../screens/settings/UserStepsStateScreen';
 
 export type HomeStackParamList = {
   Home: undefined;
@@ -127,6 +136,10 @@ export type HomeStackParamList = {
   WebViews: undefined;
   FullWebViews: undefined;
   PartialWebViews: undefined;
+  NetworkState: NetworkStateScreenProp;
+  UserStepsState: UserStepsStateScreenProp;
+
+  CallbackScreen: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -303,6 +316,22 @@ export const HomeStackNavigator: React.FC = () => {
         name="PartialWebViews"
         component={PartialWebViewsScreen}
         options={{ title: 'PartialWebViews' }}
+      />
+      <HomeStack.Screen
+        name="CallbackScreen"
+        component={CallbackScreen}
+        options={{ title: 'callbackHandler' }}
+      />
+
+      <HomeStack.Screen
+        name="NetworkState"
+        component={NetworkStateScreen}
+        options={{ title: 'Network State' }}
+      />
+      <HomeStack.Screen
+        name="UserStepsState"
+        component={UserStepsStateScreen}
+        options={{ title: 'User Steps State' }}
       />
     </HomeStack.Navigator>
   );

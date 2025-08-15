@@ -5,18 +5,25 @@ import Instabug, {
   ColorTheme,
   InvocationEvent,
   Locale,
+  NetworkLogger,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
 
-import { ListTile } from '../components/ListTile';
-import { Screen } from '../components/Screen';
-import { Select } from '../components/Select';
+import { ListTile } from '../../components/ListTile';
+import { Screen } from '../../components/Screen';
+import { Select } from '../../components/Select';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { VerticalListTile } from '../components/VerticalListTile';
-import { InputField } from '../components/InputField';
+import { VerticalListTile } from '../../components/VerticalListTile';
+import { InputField } from '../../components/InputField';
+import { useCallbackHandlers } from '../../contexts/callbackContext';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { HomeStackParamList } from '../../navigation/HomeStack';
+import { UserStepsState } from './UserStepsStateScreen';
 
-export const SettingsScreen: React.FC = () => {
+export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Home'>> = ({
+  navigation,
+}) => {
   const [color, setColor] = useState('1D82DC');
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
@@ -25,10 +32,12 @@ export const SettingsScreen: React.FC = () => {
   const [userAttributeValue, setUserAttributeValue] = useState('');
   const [featureFlagName, setFeatureFlagName] = useState('');
   const [featureFlagVariant, setfeatureFlagVariant] = useState('');
+  const [isUserStepEnabled, setIsUserStepEnabled] = useState<boolean>(true);
 
   const toast = useToast();
   const [userAttributesFormError, setUserAttributesFormError] = useState<any>({});
   const [featureFlagFormError, setFeatureFlagFormError] = useState<any>({});
+  const { addItem } = useCallbackHandlers();
 
   const validateUserAttributeForm = () => {
     const errors: any = {};
@@ -46,6 +55,7 @@ export const SettingsScreen: React.FC = () => {
     if (featureFlagName.length === 0) {
       errors.featureFlagName = 'Value is required';
     }
+
     setFeatureFlagFormError(errors);
     return Object.keys(errors).length === 0;
   };
@@ -182,7 +192,22 @@ export const SettingsScreen: React.FC = () => {
             />
           </InputGroup>
         </ListTile>
-
+        <ListTile
+          title="User Steps"
+          subtitle={isUserStepEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('UserStepsState', {
+              state: isUserStepEnabled ? UserStepsState.Enabled : UserStepsState.Disabled,
+              setState: (newState: UserStepsState) => {
+                const isEnabled = newState === UserStepsState.Enabled;
+                setIsUserStepEnabled(isEnabled);
+                Instabug.setTrackUserSteps(isEnabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_user_steps_state"
+        />
         <ListTile title="Theme">
           <Select
             label="Select Theme"
@@ -321,6 +346,99 @@ export const SettingsScreen: React.FC = () => {
             <Button mt="4" colorScheme="red" onPress={removeAllFeatureFlags}>
               remove all Feature Flag
             </Button>
+          </VStack>
+        </VerticalListTile>
+
+        <VerticalListTile title="Report submit Handler">
+          <VStack>
+            <ListTile
+              testID="enable_report_submit_handler"
+              title="Enable Report submit Callback Handler"
+              onPress={() =>
+                Instabug.onReportSubmitHandler(function (report) {
+                  addItem('onReportSubmitHandler', {
+                    id: `event-${Math.random()}`,
+                    fields: [
+                      { key: 'Date', value: new Date().toLocaleString() },
+                      { key: 'userData', value: report.userAttributes.toString() },
+                      { key: 'tags', value: report.tags.toString() },
+                      { key: 'console Logs', value: report.consoleLogs.toString() },
+                      { key: 'file Attachments', value: report.fileAttachments.toString() },
+                      { key: 'Instabug Logs', value: report.instabugLogs.toString() },
+                    ],
+                  });
+
+                  report.logDebug('debug message from on report submit handler');
+                  report.logVerbose('on report submit handler callback is triggered');
+                  report.logWarn('warning message from on report submit handler');
+                  report.logInfo('info message from on report submit handler');
+                  report.logError('error message from on report submit handler');
+                })
+              }
+            />
+
+            <ListTile
+              testID="disable_report_submit_handler"
+              title="Disable Report submit Callback Handler"
+              onPress={() => Instabug.onReportSubmitHandler(function () {})}
+            />
+
+            <ListTile
+              testID="crashing_report_submit_handler"
+              title="Crashing Report submit Callback Handler"
+              onPress={() =>
+                Instabug.onReportSubmitHandler(function (report) {
+                  addItem('onReportSubmitHandler', {
+                    id: `event-${Math.random()}`,
+                    fields: [
+                      { key: 'Date', value: new Date().toLocaleString() },
+                      { key: 'userData', value: report.userAttributes.toString() },
+                      { key: 'tags', value: report.tags.toString() },
+                      { key: 'console Logs', value: report.consoleLogs.toString() },
+                      { key: 'file Attachments', value: report.fileAttachments.toString() },
+                      { key: 'Instabug Logs', value: report.instabugLogs.toString() },
+                    ],
+                  });
+
+                  report.logDebug('debug message from on report submit handler');
+                  report.logVerbose('on report submit handler callback is triggered');
+                  report.logWarn('warning message from on report submit handler');
+                  report.logInfo('info message from on report submit handler');
+                  report.logError('error message from on report submit handler');
+
+                  throw new Error('report submit handler callback is triggered');
+                })
+              }
+            />
+          </VStack>
+        </VerticalListTile>
+        <VerticalListTile title="Logs Section ">
+          <VStack>
+            <ListTile
+              testID="log_verbose"
+              title="Log Verbose message"
+              onPress={() => Instabug.logVerbose('log Verbose message')}
+            />
+            <ListTile
+              testID="log_debug"
+              title="Log Debug message"
+              onPress={() => Instabug.logDebug('log Debug message')}
+            />
+            <ListTile
+              testID="log_warn"
+              title="Log Warn message"
+              onPress={() => Instabug.logWarn('log Warn message')}
+            />
+            <ListTile
+              testID="log_error"
+              title="Log Error message"
+              onPress={() => Instabug.logError('log Error message')}
+            />
+            <ListTile
+              testID="log_info"
+              title="Log Info message"
+              onPress={() => Instabug.logInfo('log Info message')}
+            />
           </VStack>
         </VerticalListTile>
       </Screen>

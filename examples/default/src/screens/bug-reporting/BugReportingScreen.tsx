@@ -18,6 +18,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../../navigation/HomeStack';
 import { BugReportingState } from './BugReportingStateScreen';
 import { ExtendedBugReportState } from './ExtendedBugReportStateScreen';
+import { useCallbackHandlers } from '../../contexts/callbackContext';
 
 export const BugReportingScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'BugReporting'>
@@ -38,6 +39,7 @@ export const BugReportingScreen: React.FC<
   const [isSessionProfilerEnabled, setIsSessionProfilerEnabled] = useState<boolean>(true);
   const [isViewHierarchyEnabled, setIsViewHierarchyEnabled] = useState<boolean>(false);
   const [isRepliesEnabled, setIsRepliesEnabled] = useState<boolean>(true);
+  const { addItem } = useCallbackHandlers();
 
   return (
     <ScrollView flex={1} bg="gray.100">
@@ -268,29 +270,74 @@ export const BugReportingScreen: React.FC<
 
         <Section title="Handlers">
           <ListTile
-            title="On invocation add tag"
+            testID="enable_on_invoke_handler"
+            title="Enable on Invoke Callback Handler"
             onPress={() =>
               BugReporting.onInvokeHandler(function () {
-                Instabug.appendTags(['Invocation Handler tag1']);
-              })
-            }
-          />
-          <ListTile
-            title="On submission show toast message"
-            testID="id_br_submission_show_toast_btn"
-            onPress={() =>
-              Instabug.onReportSubmitHandler(() => {
                 toast.show({
-                  description: 'Submission succeeded',
+                  description: 'Invoke Callback Handler',
+                });
+
+                addItem('Invoke Handler', {
+                  id: `event-${Math.random()}`,
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
                 });
               })
             }
           />
+
           <ListTile
-            title="On dismissing turn floating to red"
+            testID="disable_on_invoke_handler"
+            title="Disable on Invoke Callback Handler"
+            onPress={() => BugReporting.onInvokeHandler(function () {})}
+          />
+
+          <ListTile
+            testID="crash_on_invoke_handler"
+            title="Crashing on Invoke Callback Handler"
+            onPress={() =>
+              BugReporting.onInvokeHandler(function () {
+                addItem('Invoke Handler', {
+                  id: `event-${Math.random()}`,
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
+                });
+                throw new Error('💥 Crash inside onInvokeHandler');
+              })
+            }
+          />
+          <ListTile
+            testID="enable_on_dismiss_handler"
+            title="Enable on Did-Dismiss Callback Handler"
             onPress={() =>
               BugReporting.onSDKDismissedHandler(function () {
-                Instabug.setPrimaryColor('#FF0000');
+                toast.show({
+                  description: 'onSDKDismissedHandler Callback Handler',
+                });
+                addItem('onSDKDismissedHandler', {
+                  id: `event-${Math.random()}`,
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
+                });
+              })
+            }
+          />
+
+          <ListTile
+            testID="disable_on_dismiss_handler"
+            title="Disable on Did-Dismiss Callback Handler"
+            onPress={() => BugReporting.onSDKDismissedHandler(function () {})}
+          />
+
+          <ListTile
+            testID="crashing_on_dismiss_handler"
+            title="Crashing on Did-Dismiss Callback Handler"
+            onPress={() =>
+              BugReporting.onSDKDismissedHandler(function () {
+                addItem('onSDKDismissedHandler', {
+                  id: `event-${Math.random()}`,
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
+                });
+
+                throw new Error('💥 Crash inside onSDKDismissedHandler');
               })
             }
           />
