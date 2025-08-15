@@ -156,12 +156,12 @@ export const HttpScreen: React.FC = () => {
   return (
     <Screen>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      <ListTile title="GET" onPress={makeGetCall} />
-      <ListTile title="POST" onPress={makePostCall} />
-      <ListTile title="DELETE" onPress={makeDeleteCall} />
-      <ListTile title="PUT" onPress={makePutCall} />
-      <ListTile title="PATCH" onPress={makePatchCall} />
-      <ListTile title="Download Image" onPress={makeDownloadImageCall} />
+      <ListTile title="GET" onPress={makeGetCall} testID="http_get_request" />
+      <ListTile title="POST" onPress={makePostCall} testID="http_post_request" />
+      <ListTile title="DELETE" onPress={makeDeleteCall} testID="http_delete_request" />
+      <ListTile title="PUT" onPress={makePutCall} testID="http_put_request" />
+      <ListTile title="PATCH" onPress={makePatchCall} testID="http_patch_request" />
+      <ListTile title="Download Image" onPress={makeDownloadImageCall} testID="http_download_request" />
     </Screen>
   );
 };

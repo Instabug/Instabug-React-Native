@@ -20,6 +20,7 @@ export const HomeScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'Ho
       <ListTile title="APM" onPress={() => navigation.navigate('APM')} />
       <ListTile title="Session Replay" onPress={() => navigation.navigate('SessionReplay')} />
       <ListTile title="Legacy Mode" onPress={() => navigation.navigate('LegacyMode')} />
+      <ListTile title="Callback Handler" onPress={() => navigation.navigate('CallbackScreen')} />
     </Screen>
   );
 };

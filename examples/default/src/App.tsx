@@ -21,6 +21,7 @@ import { nativeBaseTheme } from './theme/nativeBaseTheme';
 import { navigationTheme } from './theme/navigationTheme';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { CallbackHandlersProvider } from './contexts/callbackContext';
 
 const queryClient = new QueryClient();
 
@@ -78,7 +79,9 @@ export const App: React.FC = () => {
       <NativeBaseProvider theme={nativeBaseTheme}>
         <QueryClientProvider client={queryClient}>
           <NavigationContainer onStateChange={Instabug.onStateChange} theme={navigationTheme}>
-            <RootTabNavigator />
+            <CallbackHandlersProvider>
+              <RootTabNavigator />
+            </CallbackHandlersProvider>
           </NavigationContainer>
         </QueryClientProvider>
       </NativeBaseProvider>

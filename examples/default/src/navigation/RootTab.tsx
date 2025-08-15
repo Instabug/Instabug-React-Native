@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { SettingsScreen } from '../screens/SettingsScreen';
+import { SettingsScreen } from '../screens/settings/SettingsScreen';
 import { HomeStackNavigator } from './HomeStack';
 import { Platform } from 'react-native';
 
