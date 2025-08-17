@@ -150,7 +150,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final ReadableArray invocationEventValues,
             final String logLevel,
             final boolean useNativeNetworkInterception,
-            @Nullable final String codePushVersion
+            @Nullable final String codePushVersion,
+            final ReadableMap map
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -167,6 +168,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 RNInstabug.Builder builder = new RNInstabug.Builder(application, token)
                         .setInvocationEvents(invocationEvents)
                         .setLogLevel(parsedLogLevel);
+
+                if (map!=null&&map.hasKey("ignoreAndroidSecureFlag")) {
+                    builder.ignoreFlagSecure(map.getBoolean("ignoreAndroidSecureFlag"));
+                }
 
                 if (codePushVersion != null) {
                     if (Instabug.isBuilt()) {

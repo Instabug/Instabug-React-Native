@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import type { SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
-  APM,
   CrashReporting,
   InvocationEvent,
   LaunchType,
@@ -12,7 +12,6 @@ import Instabug, {
   NetworkInterceptionMode,
   NetworkLogger,
   ReproStepsMode,
-  type SessionMetadata,
   SessionReplay,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -41,43 +40,30 @@ export const App: React.FC = () => {
 
   const navigationRef = useNavigationContainerRef();
 
-  const [isInstabugInitialized, setIsInstabugInitialized] = useState(false);
-
   const initializeInstabug = () => {
-    // Synchronous setup
-    SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
+    try {
+      SessionReplay.setSyncCallback((data) => shouldSyncSession(data));
 
-    // Start async initialization but don't block rendering
-    Instabug.init({
-      token: 'deb1910a7342814af4e4c9210c786f35',
-      invocationEvents: [InvocationEvent.floatingButton],
-      debugLogsLevel: LogLevel.verbose,
-      networkInterceptionMode: NetworkInterceptionMode.javascript,
-    })
-      .then(() => {
-        // Post-initialization setup
-        NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
-          networkData.url = `${networkData.url}/JS/Obfuscated`;
-          return networkData;
-        });
-        APM.setScreenRenderingEnabled(true);
-        setIsInstabugInitialized(true);
-      })
-      .catch((error) => {
-        console.error('Instabug initialization failed:', error);
-        setIsInstabugInitialized(true); // Proceed even if initialization fails
+      Instabug.init({
+        token: 'deb1910a7342814af4e4c9210c786f35',
+        invocationEvents: [InvocationEvent.floatingButton],
+        debugLogsLevel: LogLevel.verbose,
+        networkInterceptionMode: NetworkInterceptionMode.javascript,
       });
 
-    // Synchronous configuration that doesn't depend on init completion
-    CrashReporting.setNDKCrashesEnabled(true);
-    Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
-
-    // Set initialized immediately to show UI - initialization continues in background
-    setIsInstabugInitialized(true);
+      CrashReporting.setNDKCrashesEnabled(true);
+      Instabug.setReproStepsConfig({ all: ReproStepsMode.enabled });
+    } catch (error) {
+      console.error('Instabug initialization failed:', error);
+    }
   };
 
   useEffect(() => {
     initializeInstabug();
+    NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+      networkData.url = `${networkData.url}/JS/Obfuscated`;
+      return networkData;
+    });
   });
 
   useEffect(() => {
@@ -86,10 +72,6 @@ export const App: React.FC = () => {
 
     return unregisterListener;
   }, [navigationRef]);
-
-  if (!isInstabugInitialized) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
-  }
 
   return (
     <GestureHandlerRootView style={styles.root}>
