@@ -143,7 +143,7 @@
     id mock = OCMClassMock([IBGAPM class]);
     BOOL isEnabled = NO;
 
-    [self.instabugBridge setScreenRenderEnabled:isEnabled];
+    [self.instabugBridge setScreenRenderingEnabled:isEnabled];
 
     OCMVerify([mock setScreenRenderingEnabled:NO]);
 }
