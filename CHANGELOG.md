@@ -10,6 +10,8 @@
 
 - Add support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
 
+- Add screen rendering monitoring functionality within the APM product. ([#1416](https://github.com/Instabug/Instabug-React-Native/pull/1416))
+
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
 ### Added

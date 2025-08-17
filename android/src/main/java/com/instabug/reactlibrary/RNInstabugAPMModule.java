@@ -396,7 +396,7 @@ public class RNInstabugAPMModule extends EventEmitterModule {
      * @param isEnabled boolean indicating enabled or disabled.
      */
     @ReactMethod
-    public void setScreenRenderEnabled(boolean isEnabled) {
+    public void setScreenRenderingEnabled(boolean isEnabled) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
             public void run() {

@@ -121,5 +121,5 @@ export const _ibgSleep = () => {
  * @param isEnabled
  */
 export const setScreenRenderingEnabled = (isEnabled: boolean) => {
-  NativeAPM.setScreenRenderEnabled(isEnabled);
+  NativeAPM.setScreenRenderingEnabled(isEnabled);
 };

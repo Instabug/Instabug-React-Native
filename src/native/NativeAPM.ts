@@ -46,7 +46,7 @@ export interface ApmNativeModule extends NativeModule {
   ibgSleep(): void;
 
   // Screen Rendering //
-  setScreenRenderEnabled(isEnabled: boolean): void;
+  setScreenRenderingEnabled(isEnabled: boolean): void;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

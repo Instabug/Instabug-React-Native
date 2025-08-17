@@ -90,7 +90,7 @@ RCT_EXPORT_METHOD(endUITrace) {
 }
 
 // Enables or disables screen render.
-RCT_EXPORT_METHOD(setScreenRenderEnabled:(BOOL)isEnabled) {
+RCT_EXPORT_METHOD(setScreenRenderingEnabled:(BOOL)isEnabled) {
     IBGAPM.screenRenderingEnabled = isEnabled;
 }
 

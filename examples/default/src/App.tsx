@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import type { SessionMetadata } from 'instabug-reactnative';
 import Instabug, {
+  APM,
   CrashReporting,
   InvocationEvent,
   LaunchType,
@@ -12,6 +12,7 @@ import Instabug, {
   NetworkInterceptionMode,
   NetworkLogger,
   ReproStepsMode,
+  type SessionMetadata,
   SessionReplay,
 } from 'instabug-reactnative';
 import { NativeBaseProvider } from 'native-base';
@@ -60,6 +61,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     initializeInstabug();
+    APM.setScreenRenderingEnabled(true);
     NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
       networkData.url = `${networkData.url}/JS/Obfuscated`;
       return networkData;

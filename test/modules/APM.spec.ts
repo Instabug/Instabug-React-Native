@@ -105,7 +105,7 @@ describe('APM Module', () => {
   it('should call the native method setScreenRenderEnabled', () => {
     APM.setScreenRenderingEnabled(true);
 
-    expect(NativeAPM.setScreenRenderEnabled).toBeCalledTimes(1);
-    expect(NativeAPM.setScreenRenderEnabled).toBeCalledWith(true);
+    expect(NativeAPM.setScreenRenderingEnabled).toBeCalledTimes(1);
+    expect(NativeAPM.setScreenRenderingEnabled).toBeCalledWith(true);
   });
 });
