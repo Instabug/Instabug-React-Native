@@ -8,6 +8,8 @@
 
 - Add Support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
 
+- Add Support Eas updates. ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
+
 ### Changed
 
 - **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
