@@ -273,11 +273,9 @@ describe('reportNetworkLog', () => {
 
   it('reportNetworkLog should send network logs to native with the correct parameters on Android', async () => {
     Platform.OS = 'android';
-    jest
-      .spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled')
-      .mockReturnValue(Promise.resolve(false));
+    jest.spyOn(NativeNetworkLogger, 'isNativeInterceptionEnabled').mockReturnValue(false);
     jest.spyOn(NativeNetworkLogger, 'hasAPMNetworkPlugin').mockReturnValue(Promise.resolve(false));
-    await Instabug.init({ token: '', invocationEvents: [InvocationEvent.none] });
+    Instabug.init({ token: '', invocationEvents: [InvocationEvent.none] });
 
     const requestHeaders = JSON.stringify(network.requestHeaders);
     const responseHeaders = JSON.stringify(network.responseHeaders);
