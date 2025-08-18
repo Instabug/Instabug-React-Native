@@ -990,6 +990,9 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       true, // Enable native interception
       config.codePushVersion,
+      undefined,
+      undefined,
+      config.overAirVersion,
     );
   });
 

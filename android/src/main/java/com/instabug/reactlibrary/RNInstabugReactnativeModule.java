@@ -157,8 +157,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion,
             @Nullable final String appVariant,
-            final ReadableMap map
-                @Nullable final ReadableMap overAirVersion
+            final ReadableMap map,
+            @Nullable final ReadableMap overAirVersion
 
 
     ) {
