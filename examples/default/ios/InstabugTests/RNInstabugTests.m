@@ -73,4 +73,26 @@
   OCMVerify([self.mInstabug setCodePushVersion:codePushVersion]);
 }
 
+- (void)testSetOverAirVersionExpo {
+  NSDictionary *overAirVersion = @{
+    @"service":@(IBGOverAirTypeExpo),
+    @"version":@"D0A12345-6789-4B3C-A123-4567ABCDEF01"
+  };
+  
+  [RNInstabug setOverAirVersion:overAirVersion];
+
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
+}
+
+- (void)testSetOverAirVersionCodepush {
+  NSDictionary *overAirVersion = @{
+    @"service":@(IBGOverAirTypeCodePush),
+    @"version":@"2.0.0"
+  };
+  
+  [RNInstabug setOverAirVersion:overAirVersion];
+
+  OCMVerify([self.mInstabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
+}
+
 @end

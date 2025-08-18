@@ -34,6 +34,8 @@
 
 ### Added
 
+- Add support for expo updates versioning ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
+
 - Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
 
 - Add support for BugReporting user consents. ([#1383](https://github.com/Instabug/Instabug-React-Native/pull/1383))

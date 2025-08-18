@@ -26,9 +26,11 @@
 
 - (void)setEnabled:(BOOL)isEnabled;
 
-- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion appVariant:(NSString *)appVariant options:(nullable NSDictionary *)options;
+- (void)init:(NSString *)token invocationEvents:(NSArray *)invocationEventsArray debugLogsLevel:(IBGSDKDebugLogsLevel)sdkDebugLogsLevel useNativeNetworkInterception:(BOOL)useNativeNetworkInterception codePushVersion:(NSString *)codePushVersion appVariant:(NSString *)appVariant options:(nullable NSDictionary *)options  overAirVersion:(NSDictionary *)overAirVersion;
 
 - (void)setCodePushVersion:(NSString *)version;
+
+- (void)setOverAirVersion:(NSDictionary *)overAirVersion;
 
 - (void)setUserData:(NSString *)userData;
 

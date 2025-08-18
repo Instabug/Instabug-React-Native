@@ -72,26 +72,49 @@
   NSString *appVariant = @"variant 1";
 
   NSArray *invocationEvents = [NSArray arrayWithObjects:[NSNumber numberWithInteger:floatingButtonInvocationEvent], nil];
+  NSDictionary *overAirVersion = @{
+    @"service":@"expo",
+    @"version":@"D0A12345-6789-4B3C-A123-4567ABCDEF01"
+  };
   BOOL useNativeNetworkInterception = YES;
   IBGSDKDebugLogsLevel sdkDebugLogsLevel = IBGSDKDebugLogsLevelDebug;
+  IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
 
   OCMStub([mock setCodePushVersion:codePushVersion]);
+  OCMStub([mock setOverAirVersion:overAirVersion[@"version"] withType:service]);
 
-  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion appVariant:appVariant  options:nil ];
+  [self.instabugBridge init:appToken invocationEvents:invocationEvents debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception codePushVersion:codePushVersion appVariant:appVariant  options:nil  overAirVersion:overAirVersion ];
   OCMVerify([mock setCodePushVersion:codePushVersion]);
+
+  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
+
 
   XCTAssertEqual(Instabug.appVariant, appVariant);
 
   OCMVerify([self.mRNInstabug initWithToken:appToken invocationEvents:floatingButtonInvocationEvent debugLogsLevel:sdkDebugLogsLevel useNativeNetworkInterception:useNativeNetworkInterception]);
 }
 
-- (void)testSetCodePushVersion {
+- (void)test {
   id mock = OCMClassMock([Instabug class]);
   NSString *codePushVersion = @"123";
 
   [self.instabugBridge setCodePushVersion:codePushVersion];
 
   OCMVerify([mock setCodePushVersion:codePushVersion]);
+}
+
+- (void)testSetOverAirVersion {
+  id mock = OCMClassMock([Instabug class]);
+  NSDictionary *overAirVersion = @{
+    @"service":@"expo",
+    @"version":@"D0A12345-6789-4B3C-A123-4567ABCDEF01"
+  };
+
+  [self.instabugBridge setOverAirVersion:overAirVersion];
+
+  IBGOverAirType service = [ArgsRegistry.overAirServices[overAirVersion[@"service"]] intValue];
+
+  OCMVerify([mock setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]]);
 }
 
 - (void)testSetUserData {

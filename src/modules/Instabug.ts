@@ -36,6 +36,7 @@ import { NativeNetworkLogger } from '../native/NativeNetworkLogger';
 import InstabugConstants from '../utils/InstabugConstants';
 import { InstabugRNConfig } from '../utils/config';
 import { Logger } from '../utils/logger';
+import type { OverAirUpdate } from '../models/OverAirUpdate';
 import type { ThemeConfig } from '../models/ThemeConfig';
 
 let _currentScreen: string | null = null;
@@ -282,6 +283,7 @@ const initializeNativeInstabug = (config: InstabugConfig) => {
           ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag,
         }
       : undefined,
+    config.overAirVersion,
   );
 };
 
@@ -324,9 +326,20 @@ function addOnFeatureUpdatedListener(config: InstabugConfig) {
 /**
  * Sets the Code Push version to be sent with each report.
  * @param version the Code Push version.
+ *
+ * @deprecated Use {@link setOverAirVersion} instead.
  */
 export const setCodePushVersion = (version: string) => {
   NativeInstabug.setCodePushVersion(version);
+};
+
+/**
+ * Sets over air update version to be sent with each report.
+ * @param version the OTA version.
+ *
+ */
+export const setOverAirVersion = (OTAserviceVersion: OverAirUpdate) => {
+  NativeInstabug.setOverAirVersion(OTAserviceVersion);
 };
 
 /**

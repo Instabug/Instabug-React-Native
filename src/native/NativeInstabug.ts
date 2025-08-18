@@ -14,6 +14,7 @@ import type {
 import type { NativeConstants } from './NativeConstants';
 import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
+import type { OverAirUpdate } from '../models/OverAirUpdate';
 import type { ThemeConfig } from '../models/ThemeConfig';
 
 export interface InstabugNativeModule extends NativeModule {
@@ -31,11 +32,13 @@ export interface InstabugNativeModule extends NativeModule {
     options?: {
       ignoreAndroidSecureFlag?: boolean;
     },
+    overAirVersion?: OverAirUpdate,
   ): void;
   show(): void;
 
   // Misc APIs //
   setCodePushVersion(version: string): void;
+  setOverAirVersion(OTAserviceVersion: OverAirUpdate): void;
   setAppVariant(appVariant: string): void;
   setIBGLogPrintsToConsole(printsToConsole: boolean): void;
   setSessionProfilerEnabled(isEnabled: boolean): void;
