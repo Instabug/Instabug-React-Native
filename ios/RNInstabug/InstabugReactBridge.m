@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(init:(NSString *)token
           codePushVersion:(NSString *)codePushVersion
           appVariant:(NSString *)appVariant
           options:(nullable NSDictionary *)options
-
+          overAirVersion :(NSDictionary *)overAirVersion
           ) {
 
            if(appVariant != nil){
@@ -59,6 +59,8 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
     [Instabug setCodePushVersion:codePushVersion];
 
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]];
+
     [RNInstabug initWithToken:token
              invocationEvents:invocationEvents
                debugLogsLevel:sdkDebugLogsLevel
@@ -67,6 +69,10 @@ RCT_EXPORT_METHOD(init:(NSString *)token
 
 RCT_EXPORT_METHOD(setCodePushVersion:(NSString *)version) {
     [Instabug setCodePushVersion:version];
+}
+
+RCT_EXPORT_METHOD(setOverAirVersion:(NSDictionary *)overAirVersion) {
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]];
 }
 
 RCT_EXPORT_METHOD(setAppVariant:(NSString *)appVariant) {

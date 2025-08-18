@@ -14,6 +14,7 @@ const mockInstabug: InstabugNativeModule = {
   setEnabled: jest.fn(),
   init: jest.fn(),
   setCodePushVersion: jest.fn(),
+  setOverAirVersion: jest.fn(),
   setUserData: jest.fn(),
   setTrackUserSteps: jest.fn(),
   setIBGLogPrintsToConsole: jest.fn(),
