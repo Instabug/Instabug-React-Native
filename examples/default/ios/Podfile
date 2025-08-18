@@ -17,7 +17,6 @@ target 'InstabugExample' do
   pod 'react-native-google-maps', :path => rn_maps_path
 
   # add this line
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/feature-support_expo_updates-remove_caching/15.1.1/Instabug.podspec'  # Flags change depending on the env values.
   flags = get_default_flags()
 
   use_react_native!(
