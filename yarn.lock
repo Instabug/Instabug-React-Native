@@ -5587,10 +5587,10 @@ expect@^29.0.0, expect@^29.6.2:
     jest-message-util "^29.6.2"
     jest-util "^29.6.2"
 
-expo-module-scripts@3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/expo-module-scripts/-/expo-module-scripts-3.4.2.tgz#2d33441dcb79a99e6d165120eacdbd552303eff5"
-  integrity sha512-f6J/ZdvG6IDujW0zwadwddiNpxZ/UJFF4uxZvxaF5BuhG8APHds30jGrVMBiQqZDPEyUSFzNUKyEC9vmnMVXUA==
+expo-module-scripts@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/expo-module-scripts/-/expo-module-scripts-3.4.1.tgz#e3dd944d81b6daf9f6f0bde2329b7cf15336a397"
+  integrity sha512-06VQMqcj39kvvkIsllDZ/nvzAy7YRp05nx+x1nR6AW1kYvwYQkQCeHckaZL8szxoZieYSWDG3NFk+c0b0G5cTg==
   dependencies:
     "@babel/cli" "^7.1.2"
     "@babel/plugin-proposal-export-namespace-from" "^7.18.9"
