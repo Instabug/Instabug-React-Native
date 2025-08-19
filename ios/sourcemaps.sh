@@ -42,7 +42,7 @@ fi
 
   local js_project_dir="$PROJECT_DIR/.."
   local instabug_dir=$(dirname $(node -p "require.resolve('instabug-reactnative/package.json')"))
-  local inferred_token=$(cd $js_project_dir && source $instabug_dir/scripts/find-token.sh)
+  local inferred_token=$(cd $js_project_dir && node $instabug_dir/scripts/find-token.js)
   local app_token=$(resolve_var "App Token" "INSTABUG_APP_TOKEN" "$inferred_token" | tail -n 1)
 
   local inferred_name=$(/usr/libexec/PlistBuddy -c 'print CFBundleShortVersionString' "$PROJECT_DIR/$INFOPLIST_FILE")

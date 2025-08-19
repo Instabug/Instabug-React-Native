@@ -10,6 +10,8 @@
 
 - Add Support Eas updates. ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
 
+- Add support for uploading sourcemap files in expo apps. ([#1392](https://github.com/Instabug/Instabug-React-Native/pull/1392))
+
 ### Changed
 
 - **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
@@ -35,8 +37,6 @@
 ## [15.0.1](https://github.com/Instabug/Instabug-React-Native/compare/v14.3.0...v15.0.1)
 
 ### Added
-
-- Add support for expo updates versioning ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
 
 - Add support enable/disable screenshot auto masking. ([#1389](https://github.com/Instabug/Instabug-React-Native/pull/1389))
 
