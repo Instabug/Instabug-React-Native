@@ -8,7 +8,7 @@ interface ListTileProps extends PropsWithChildren {
   onPress?: () => void;
   testID?: string;
   truncateSubtitle?: boolean;
-  testID?: string;
+  accessibilityLabel?: string;
 }
 
 export const ListTile: React.FC<ListTileProps> = ({ title,
@@ -16,13 +16,15 @@ export const ListTile: React.FC<ListTileProps> = ({ title,
                                                     onPress,
                                                     children,
                                                     testID,
-                                                    truncateSubtitle = false, }) => {
+                                                    truncateSubtitle = false,
+                                                    accessibilityLabel, }) => {
   return (
     <Pressable
       onPress={onPress}
       p="4"
       rounded="2"
       testID={testID}
+      accessibilityLabel={accessibilityLabel ?? testID}
       shadow="1"
       accessible={true}
       borderBottomWidth="1"

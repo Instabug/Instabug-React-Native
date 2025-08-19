@@ -50,6 +50,7 @@ export const UserConsentScreen: React.FC<
                 onChangeText={setKey}
                 value={key}
                 testID="id_consent_key"
+                accessibilityLabel="id_consent_key"
               />
             </View>
             <View style={styles.inputWrapper}>
@@ -59,6 +60,7 @@ export const UserConsentScreen: React.FC<
                 onChangeText={setDescription}
                 value={description}
                 testID="id_consent_description"
+                accessibilityLabel="id_consent_description"
               />
             </View>
             <View style={styles.inputWrapper}>
@@ -134,7 +136,7 @@ export const UserConsentScreen: React.FC<
                 onValueChange={setActionType}
               />
             </View>
-            <Button mt="4" onPress={handleSubmit} testID="id_submit_consent">
+            <Button mt="4" onPress={handleSubmit} testID="id_submit_consent" accessibilityLabel="id_submit_consent">
               Add User Consent
             </Button>
           </VStack>

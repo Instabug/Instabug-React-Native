@@ -8,6 +8,7 @@ interface PlatformListTileProps extends PropsWithChildren {
   onPress?: () => void;
   platform?: 'ios' | 'android';
   testID?: string;
+  accessibilityLabel?: string;
 }
 
 export const PlatformListTile: React.FC<PlatformListTileProps> = ({
@@ -16,6 +17,7 @@ export const PlatformListTile: React.FC<PlatformListTileProps> = ({
   platform,
   children,
   testID,
+  accessibilityLabel,
 }) => {
   if (Platform.OS === platform || !platform) {
     return (
@@ -28,7 +30,8 @@ export const PlatformListTile: React.FC<PlatformListTileProps> = ({
         borderColor="coolGray.300"
         bg="coolGray.100"
         _pressed={{ bg: 'coolGray.200' }}
-        testID={testID}>
+        testID={testID}
+        accessibilityLabel={accessibilityLabel ?? testID}>
         <HStack justifyContent="space-between" alignItems="center">
           <Text>{title}</Text>
           <Box width={160}>{children}</Box>
