@@ -26,7 +26,21 @@ For more info, visit [Instabug.com](https://www.instabug.com).
    yarn add instabug-reactnative
    ```
 
-2. CocoaPods on iOS needs this extra step:
+2. if you are using expo you need to add `instabug-reactnative` plugin to `app.json`:
+
+   ```json
+      "plugins" : [
+         [
+           "instabug-reactnative",
+           {
+              // optional that add Mic,Photo permission on iOS and FOREGROUND_SERVICE_MEDIA_PROJECTION on android
+             "addScreenRecordingBugReportingPermission": true
+           }
+         ]
+   ]
+   ```
+
+3. CocoaPods on iOS needs this extra step:
 
    ```bash
    cd ios && pod install && cd ..
