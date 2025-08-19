@@ -1,4 +1,5 @@
 import type { InvocationEvent, LogLevel, NetworkInterceptionMode } from '../utils/Enums';
+import type { OverAirUpdate } from './OverAirUpdate';
 
 export interface InstabugConfig {
   /**
@@ -20,6 +21,16 @@ export interface InstabugConfig {
   codePushVersion?: string;
 
   /**
+   * An optional flag to override SDK screenshot security behavior.
+   */
+  ignoreAndroidSecureFlag?: boolean;
+
+  /**
+   * An optional current App variant to be used for filtering data.
+   */
+  appVariant?: string;
+
+  /**
    * An optional network interception mode, this determines whether network interception
    * is done in the JavaScript side or in the native Android and iOS SDK side.
    *
@@ -29,4 +40,9 @@ export interface InstabugConfig {
    * @default NetworkInterceptionMode.javascript
    */
   networkInterceptionMode?: NetworkInterceptionMode;
+
+  /**
+   * An optional over air service update version to be used for all reports.
+   */
+  overAirVersion?: OverAirUpdate;
 }
