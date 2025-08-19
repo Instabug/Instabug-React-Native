@@ -1,4 +1,4 @@
-import { OverAirUpdateServices } from '../utils/Enums';
+import type { OverAirUpdateServices } from '../utils/Enums';
 export interface OverAirUpdate {
   /**
    * the name of OTA service
