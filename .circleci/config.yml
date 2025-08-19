@@ -14,9 +14,6 @@ references:
     - validate_shell_files
     - sync_generated_files
     - test_ios
-    - e2e_ios
-    - e2e_android
-
   dream11_prepare_config: &dream11_prepare_config
     prepare_steps:
       - prepare_dream11
