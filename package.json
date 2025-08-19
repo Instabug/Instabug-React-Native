@@ -55,7 +55,7 @@
     "@types/node": "^20.4.8",
     "@types/react-native": "^0.72.2",
     "axios": "^1.2.2",
-    "expo-module-scripts": "3.1.0",
+    "@expo/config-plugins": "7.8.4",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^29.6.2",
     "commander": "^11.0.0",
