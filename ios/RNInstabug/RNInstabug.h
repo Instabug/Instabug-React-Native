@@ -2,6 +2,7 @@
 #define RNInstabug_h
 
 #import <InstabugSDK/InstabugSDK.h>
+#import "ArgsRegistry.h"
 
 @interface RNInstabug : NSObject
 
@@ -26,6 +27,8 @@ useNativeNetworkInterception:(BOOL)useNativeNetworkInterception;
  @param codePushVersion the Code Push version to be used for all reports.
  */
 + (void)setCodePushVersion:(NSString *)codePushVersion;
+
++ (void)setOverAirVersion:(NSDictionary *)overAirVersion;
 
 @end
 

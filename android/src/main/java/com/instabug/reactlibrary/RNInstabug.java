@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.facebook.react.bridge.ReadableMap;
 import com.instabug.apm.APM;
 import com.instabug.library.Instabug;
 import com.instabug.library.LogLevel;
@@ -59,17 +60,29 @@ public class RNInstabug {
             @NonNull Application application,
             @NonNull String applicationToken,
             int logLevel,
+            String codePushVersion,
+            String appVariant,
             Boolean ignoreSecureFlag,
             @NonNull InstabugInvocationEvent... InvocationEvent
+
+
             ) {
         try {
 
             setBaseUrlForDeprecationLogs();
             setCurrentPlatform();
 
-            Instabug.Builder builder = new Instabug.Builder(application, applicationToken)
+           Instabug.Builder builder= new Instabug.Builder(application, applicationToken)
                     .setInvocationEvents(InvocationEvent)
                     .setSdkDebugLogsLevel(logLevel);
+
+           if(codePushVersion!=null){
+               builder.setCodePushVersion(codePushVersion);
+           }
+           if(appVariant!=null)
+               builder.setAppVariant(appVariant);
+
+
 
             if (ignoreSecureFlag != null) {
                 builder.ignoreFlagSecure(ignoreSecureFlag);
@@ -107,9 +120,11 @@ public class RNInstabug {
     public void init(
             @NonNull Application application,
             @NonNull String applicationToken,
+            String codePushVersion,
+            String appVariant,
             @NonNull InstabugInvocationEvent... invocationEvent
     ) {
-        init(application, applicationToken, LogLevel.ERROR,null, invocationEvent);
+        init(application, applicationToken, LogLevel.ERROR,codePushVersion,appVariant, null,invocationEvent);
     }
 
     @VisibleForTesting
@@ -162,9 +177,19 @@ public class RNInstabug {
         private String codePushVersion;
 
         /**
+         * The overAirUpdate Version to be used for all reports.
+         */
+       private ReadableMap overAirVersion;
+
+        /**
          * The events that trigger the SDK's user interface.
          */
         private InstabugInvocationEvent[] invocationEvents;
+        /**
+         * The App variant name to be used for all reports.
+         */
+        private String appVariant;
+
         private Boolean ignoreFlagSecure;
 
 
@@ -216,6 +241,16 @@ public class RNInstabug {
             return this;
         }
 
+       /**
+        * Sets over air update version to be used for all reports.
+        *
+        * @param overAirVersion the over air update version and service map.
+        */
+       public Builder setOverAirVersion(ReadableMap overAirVersion) {
+           this.overAirVersion = overAirVersion;
+           return this;
+       }
+
         /**
          * Sets flag to override SDK screenshot security behavior.
          *
@@ -238,6 +273,16 @@ public class RNInstabug {
         }
 
         /**
+         * Sets the the current App variant
+         *
+         * @param appVariant the current App variant to work with.
+         */
+        public Builder setAppVariant(String appVariant) {
+            this.appVariant = appVariant;
+            return this;
+        }
+
+        /**
          * Builds the Instabug instance with the provided configurations.
          */
         public void build() {
@@ -252,10 +297,24 @@ public class RNInstabug {
                 if (codePushVersion != null) {
                     instabugBuilder.setCodePushVersion(codePushVersion);
                 }
+                if(appVariant!=null){
+                    instabugBuilder.setAppVariant(appVariant);
+                }
 
                 if (ignoreFlagSecure != null) {
                     instabugBuilder.ignoreFlagSecure(ignoreFlagSecure);
                 }
+
+               if (overAirVersion != null ) {
+                   if (overAirVersion.hasKey("service") && overAirVersion.hasKey("version"))
+                   {
+                       if (overAirVersion.getString("service")!=null && overAirVersion.getString("version")!=null)
+                       {
+                           instabugBuilder.setOverAirVersion(overAirVersion.getString("version"),
+                               ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+                       }
+                   }
+               }
 
                 instabugBuilder.build();
 

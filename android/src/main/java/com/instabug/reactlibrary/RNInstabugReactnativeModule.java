@@ -6,9 +6,13 @@ import static com.instabug.reactlibrary.utils.InstabugUtil.getMethod;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+
+import com.facebook.react.bridge.ReactApplicationContext;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -20,10 +24,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UIManager;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.instabug.apm.InternalAPM;
 import com.instabug.apm.configuration.cp.APMFeature;
@@ -45,6 +51,7 @@ import com.instabug.library.internal.crossplatform.OnFeaturesUpdatedListener;
 import com.instabug.library.internal.module.InstabugLocale;
 import com.instabug.library.invocation.InstabugInvocationEvent;
 import com.instabug.library.logging.InstabugLog;
+import com.instabug.library.model.IBGTheme;
 import com.instabug.library.model.NetworkLog;
 import com.instabug.library.model.Report;
 import com.instabug.library.ui.onboarding.WelcomeMessage;
@@ -149,7 +156,11 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             final String logLevel,
             final boolean useNativeNetworkInterception,
             @Nullable final String codePushVersion,
-            final ReadableMap map
+            @Nullable final String appVariant,
+            final ReadableMap map,
+            @Nullable final ReadableMap overAirVersion
+
+
     ) {
         MainThreadHandler.runOnMainThread(new Runnable() {
             @Override
@@ -178,6 +189,19 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                         builder.setCodePushVersion(codePushVersion);
                     }
                 }
+                 if (appVariant != null) {
+                            builder.setAppVariant(appVariant);
+                    }
+
+                if(overAirVersion != null ) {
+                    if(Instabug.isBuilt()) {
+                        Instabug.setOverAirVersion(overAirVersion.getString("version"),
+                                ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+                    } else {
+                        builder.setOverAirVersion(overAirVersion);
+                    }
+                }
+
                 builder.build();
             }
         });
@@ -190,6 +214,22 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     Instabug.setCodePushVersion(version);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void setOverAirVersion(@Nullable final ReadableMap overAirVersion) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Instabug.setOverAirVersion(overAirVersion.getString("version"),
+                            ArgsRegistry.overAirUpdateService.get(overAirVersion.getString("service")));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -286,26 +326,6 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * Set the primary color that the SDK will use to tint certain UI elements in the SDK
-     *
-     * @param primaryColor The value of the primary color ,
-     *                     whatever this color was parsed from a resource color or hex color
-     *                     or RGB color values
-     */
-    @ReactMethod
-    public void setPrimaryColor(final int primaryColor) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.setPrimaryColor(primaryColor);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Gets tags.
@@ -504,6 +524,8 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             }
         });
     }
+
+
 
     /**
      * Removes user attribute if exists.
@@ -954,14 +976,22 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
     @UiThread
     @Nullable
     private View resolveReactView(final int reactTag) {
+        try {
         final ReactApplicationContext reactContext = getReactApplicationContext();
         final UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
 
         if (uiManagerModule == null) {
+                UIManager uiNewManagerModule = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag);
+                if (uiNewManagerModule != null) {
+                    return uiNewManagerModule.resolveView(reactTag);
+                }
             return null;
         }
 
         return uiManagerModule.resolveView(reactTag);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
@@ -973,7 +1003,9 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 try {
                     final View view = resolveReactView(reactTag);
 
+                    if(view !=null){
                     Instabug.addPrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -988,8 +1020,10 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
             public void run() {
                 try {
                     final View view = resolveReactView(reactTag);
+                    if(view !=null){
 
                     Instabug.removePrivateViews(view);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1041,60 +1075,7 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
         });
     }
 
-    /**
-     * @deprecated see {@link #addFeatureFlags(ReadableArray)}
-     */
-    @ReactMethod
-    public void addExperiments(final ReadableArray experiments) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Object[] objectArray = ArrayUtil.toArray(experiments);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    Instabug.addExperiments(Arrays.asList(stringArray));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
-    /**
-     * @deprecated see {@link #removeFeatureFlags(ReadableArray)}
-     */
-    @ReactMethod
-    public void removeExperiments(final ReadableArray experiments) {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Object[] objectArray = ArrayUtil.toArray(experiments);
-                    String[] stringArray = Arrays.copyOf(objectArray, objectArray.length, String[].class);
-                    Instabug.removeExperiments(Arrays.asList(stringArray));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * @deprecated see {@link #removeAllFeatureFlags()}
-     */
-    @ReactMethod
-    public void clearAllExperiments() {
-        MainThreadHandler.runOnMainThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Instabug.clearAllExperiments();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     @ReactMethod
     public void addFeatureFlags(final ReadableMap featureFlagsMap) {
@@ -1352,6 +1333,272 @@ public class RNInstabugReactnativeModule extends EventEmitterModule {
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
+                }
+            }
+        });
+    }
+
+     /**
+         * Sets current App variant
+         *
+         * @param appVariant The app variant name .
+         */
+       @ReactMethod
+        public void setAppVariant(@NonNull String appVariant) {
+            try {
+                Instabug.setAppVariant(appVariant);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    /**
+     * Sets the theme for Instabug using a configuration object.
+     *
+     * @param themeConfig A ReadableMap containing theme properties such as colors, fonts, and text styles.
+     */
+    @ReactMethod
+    public void setTheme(final ReadableMap themeConfig) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    com.instabug.library.model.IBGTheme.Builder builder = new com.instabug.library.model.IBGTheme.Builder();
+
+                    // Apply colors
+                    applyColorIfPresent(themeConfig, builder, "primaryColor", (themeBuilder, color) -> themeBuilder.setPrimaryColor(color));
+                    applyColorIfPresent(themeConfig, builder, "secondaryTextColor", (themeBuilder, color) -> themeBuilder.setSecondaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "primaryTextColor", (themeBuilder, color) -> themeBuilder.setPrimaryTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "titleTextColor", (themeBuilder, color) -> themeBuilder.setTitleTextColor(color));
+                    applyColorIfPresent(themeConfig, builder, "backgroundColor", (themeBuilder, color) -> themeBuilder.setBackgroundColor(color));
+
+                    // Apply text styles
+                    applyTextStyleIfPresent(themeConfig, builder, "primaryTextStyle", (themeBuilder, style) -> themeBuilder.setPrimaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "secondaryTextStyle", (themeBuilder, style) -> themeBuilder.setSecondaryTextStyle(style));
+                    applyTextStyleIfPresent(themeConfig, builder, "ctaTextStyle", (themeBuilder, style) -> themeBuilder.setCtaTextStyle(style));
+                    setFontIfPresent(themeConfig, builder, "primaryFontPath", "primaryFontAsset", "primary");
+                    setFontIfPresent(themeConfig, builder, "secondaryFontPath", "secondaryFontAsset", "secondary");
+                    setFontIfPresent(themeConfig, builder, "ctaFontPath", "ctaFontAsset", "CTA");
+
+                    IBGTheme theme = builder.build();
+                    Instabug.setTheme(theme);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Retrieves a color value from the ReadableMap.
+     *
+     * @param map The ReadableMap object.
+     * @param key The key to look for.
+     * @return The parsed color as an integer, or black if missing or invalid.
+     */
+    private int getColor(ReadableMap map, String key) {
+        try {
+            if (map != null && map.hasKey(key) && !map.isNull(key)) {
+                String colorString = map.getString(key);
+                return Color.parseColor(colorString);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Color.BLACK;
+    }
+
+    /**
+     * Retrieves a text style from the ReadableMap.
+     *
+     * @param map The ReadableMap object.
+     * @param key The key to look for.
+     * @return The corresponding Typeface style, or Typeface.NORMAL if missing or invalid.
+     */
+    private int getTextStyle(ReadableMap map, String key) {
+        try {
+            if (map != null && map.hasKey(key) && !map.isNull(key)) {
+                String style = map.getString(key);
+                switch (style.toLowerCase()) {
+                    case "bold":
+                        return Typeface.BOLD;
+                    case "italic":
+                        return Typeface.ITALIC;
+                    case "bold_italic":
+                        return Typeface.BOLD_ITALIC;
+                    case "normal":
+                    default:
+                        return Typeface.NORMAL;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Typeface.NORMAL;
+    }
+
+
+
+    /**
+     * Applies a color to the theme builder if present in the configuration.
+     *
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param key The configuration key
+     * @param setter The color setter function
+     */
+    private void applyColorIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
+                                   String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
+        if (themeConfig.hasKey(key)) {
+            int color = getColor(themeConfig, key);
+            setter.accept(builder, color);
+        }
+    }
+
+    /**
+     * Applies a text style to the theme builder if present in the configuration.
+     *
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param key The configuration key
+     * @param setter The text style setter function
+     */
+    private void applyTextStyleIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
+                                       String key, java.util.function.BiConsumer<com.instabug.library.model.IBGTheme.Builder, Integer> setter) {
+        if (themeConfig.hasKey(key)) {
+            int style = getTextStyle(themeConfig, key);
+            setter.accept(builder, style);
+        }
+    }
+
+    /**
+     * Sets a font on the theme builder if the font configuration is present in the theme config.
+     *
+     * @param themeConfig The theme configuration map
+     * @param builder The theme builder
+     * @param fileKey The key for font file path
+     * @param assetKey The key for font asset path
+     * @param fontType The type of font (for logging purposes)
+     */
+    private void setFontIfPresent(ReadableMap themeConfig, com.instabug.library.model.IBGTheme.Builder builder,
+                                 String fileKey, String assetKey, String fontType) {
+        if (themeConfig.hasKey(fileKey) || themeConfig.hasKey(assetKey)) {
+            Typeface typeface = getTypeface(themeConfig, fileKey, assetKey);
+            if (typeface != null) {
+                switch (fontType) {
+                    case "primary":
+                        builder.setPrimaryTextFont(typeface);
+                        break;
+                    case "secondary":
+                        builder.setSecondaryTextFont(typeface);
+                        break;
+                    case "CTA":
+                        builder.setCtaTextFont(typeface);
+                        break;
+                }
+            } else {
+                Log.e("InstabugModule", "Failed to load " + fontType + " font");
+            }
+        }
+    }
+
+    /**
+     * Loads a Typeface from a file path.
+     *
+     * @param fileName The filename to load
+     * @return The loaded Typeface or null if failed
+     */
+    private Typeface loadTypefaceFromFile(String fileName) {
+        try {
+            Typeface typeface = Typeface.create(fileName, Typeface.NORMAL);
+            if (typeface != null && !typeface.equals(Typeface.DEFAULT)) {
+                return typeface;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Loads a Typeface from assets.
+     *
+     * @param fileName The filename in assets/fonts/ directory
+     * @return The loaded Typeface or null if failed
+     */
+    private Typeface loadTypefaceFromAssets(String fileName) {
+        try {
+            return Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/" + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Typeface getTypeface(ReadableMap map, String fileKey, String assetKey) {
+        try {
+            if (fileKey != null && map.hasKey(fileKey) && !map.isNull(fileKey)) {
+                String fontPath = map.getString(fileKey);
+                String fileName = getFileName(fontPath);
+
+                // Try loading from file first
+                Typeface typeface = loadTypefaceFromFile(fileName);
+                if (typeface != null) {
+                    return typeface;
+                }
+
+                // Try loading from assets
+                typeface = loadTypefaceFromAssets(fileName);
+                if (typeface != null) {
+                    return typeface;
+                }
+            }
+
+            if (assetKey != null && map.hasKey(assetKey) && !map.isNull(assetKey)) {
+                String assetPath = map.getString(assetKey);
+                String fileName = getFileName(assetPath);
+                return loadTypefaceFromAssets(fileName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Typeface.DEFAULT;
+    }
+
+/**
+ * Extracts the filename from a path, removing any directory prefixes.
+ *
+ * @param path The full path to the file
+ * @return Just the filename with extension
+ */
+private String getFileName(String path) {
+    if (path == null || path.isEmpty()) {
+        return path;
+    }
+
+    int lastSeparator = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
+    if (lastSeparator >= 0 && lastSeparator < path.length() - 1) {
+        return path.substring(lastSeparator + 1);
+    }
+
+    return path;
+}
+
+ /**
+     * Enables or disables displaying in full-screen mode, hiding the status and navigation bars.
+     * @param isEnabled A boolean to enable/disable setFullscreen.
+     */
+    @ReactMethod
+    public void setFullscreen(final boolean isEnabled) {
+        MainThreadHandler.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                        Instabug.setFullscreen(isEnabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

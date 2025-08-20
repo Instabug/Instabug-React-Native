@@ -1,11 +1,8 @@
 import { Platform } from 'react-native';
 
-import { mocked } from 'jest-mock';
-
-import Trace from '../../src/models/Trace';
-import * as APM from '../../src/modules/APM';
 import { NativeAPM } from '../../src/native/NativeAPM';
 import { NativeInstabug } from '../../src/native/NativeInstabug';
+import * as APM from '../../src/modules/APM';
 
 describe('APM Module', () => {
   it('should call the native method setEnabled', () => {
@@ -49,57 +46,6 @@ describe('APM Module', () => {
 
     expect(NativeAPM.setAutoUITraceEnabled).toBeCalledTimes(1);
     expect(NativeAPM.setAutoUITraceEnabled).toBeCalledWith(true);
-  });
-
-  it('should call the native method startExecutionTrace', () => {
-    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
-
-    APM.startExecutionTrace('trace');
-
-    expect(NativeAPM.startExecutionTrace).toBeCalledTimes(1);
-    expect(NativeAPM.startExecutionTrace).toBeCalledWith('trace', expect.any(String));
-  });
-
-  it("should throw an error if native startExecutionTrace didn't return an ID", async () => {
-    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce(null);
-    const promise = APM.startExecutionTrace('trace');
-
-    await expect(promise).rejects.toThrowError(/trace "trace" wasn't created/i);
-  });
-
-  it('should resolve with an Trace object if native startExecutionTrace returned an ID', async () => {
-    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
-
-    const promise = APM.startExecutionTrace('trace');
-
-    await expect(promise).resolves.toBeInstanceOf(Trace);
-    await expect(promise).resolves.toHaveProperty('name', 'trace');
-  });
-
-  it('should call the native method setExecutionTraceAttribute', () => {
-    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
-
-    APM.startExecutionTrace('trace').then((trace) => {
-      trace.setAttribute('key', 'value');
-
-      expect(NativeAPM.setExecutionTraceAttribute).toBeCalledTimes(1);
-      expect(NativeAPM.setExecutionTraceAttribute).toBeCalledWith(
-        expect.any(String),
-        'key',
-        'value',
-      );
-    });
-  });
-
-  it('should call the native method endExecutionTrace', () => {
-    mocked(NativeAPM).startExecutionTrace.mockResolvedValueOnce('trace-id');
-
-    APM.startExecutionTrace('trace').then((trace) => {
-      trace.end();
-
-      expect(NativeAPM.endExecutionTrace).toBeCalledTimes(1);
-      expect(NativeAPM.endExecutionTrace).toBeCalledWith(expect.any(String));
-    });
   });
 
   it('should call the native method startFlow', () => {

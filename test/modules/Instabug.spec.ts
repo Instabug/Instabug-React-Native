@@ -1,7 +1,7 @@
 import '../mocks/mockInstabugUtils';
 import '../mocks/mockNetworkLogger';
 
-import { findNodeHandle, Platform, processColor } from 'react-native';
+import { findNodeHandle, Platform } from 'react-native';
 import type { NavigationContainerRefWithCurrent } from '@react-navigation/native'; // Import the hook
 import { mocked } from 'jest-mock';
 import waitForExpect from 'wait-for-expect';
@@ -18,6 +18,7 @@ import {
   Locale,
   LogLevel,
   NetworkInterceptionMode,
+  OverAirUpdateServices,
   ReproStepsMode,
   StringKey,
   WelcomeMessageMode,
@@ -295,6 +296,10 @@ describe('Instabug Module', () => {
       debugLogsLevel: LogLevel.debug,
       codePushVersion: '1.1.0',
       ignoreAndroidSecureFlag: true,
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
     const usesNativeNetworkInterception = false;
 
@@ -308,7 +313,9 @@ describe('Instabug Module', () => {
       instabugConfig.debugLogsLevel,
       usesNativeNetworkInterception,
       instabugConfig.codePushVersion,
+      undefined,
       { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
+      instabugConfig.overAirVersion,
     );
   });
 
@@ -321,6 +328,18 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setCodePushVersion).toBeCalledWith(codePushVersion);
   });
 
+  it('setOverAirVersion should call native method setOverAirVersion', () => {
+    const OTAversion = {
+      service: OverAirUpdateServices.expo,
+      version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+    };
+
+    Instabug.setOverAirVersion(OTAversion);
+
+    expect(NativeInstabug.setOverAirVersion).toBeCalledTimes(1);
+    expect(NativeInstabug.setOverAirVersion).toBeCalledWith(OTAversion);
+  });
+
   it('init should disable JavaScript interceptor when using native interception mode', () => {
     const instabugConfig = {
       token: 'some-token',
@@ -329,6 +348,10 @@ describe('Instabug Module', () => {
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
       ignoreAndroidSecureFlag: true,
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
 
     // Stubbing Network feature flags
@@ -348,6 +371,7 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be false when using native interception mode with Android
         false,
         instabugConfig.codePushVersion,
+        instabugConfig.overAirVersion,
       );
     } else {
       expect(NativeInstabug.init).toBeCalledTimes(1);
@@ -359,7 +383,9 @@ describe('Instabug Module', () => {
         // usesNativeNetworkInterception should be true when using native interception mode with iOS
         true,
         instabugConfig.codePushVersion,
+        undefined,
         { ignoreAndroidSecureFlag: instabugConfig.ignoreAndroidSecureFlag },
+        instabugConfig.overAirVersion,
       );
     }
   });
@@ -462,12 +488,13 @@ describe('Instabug Module', () => {
     expect(NativeInstabug.setColorTheme).toBeCalledWith(theme);
   });
 
-  it('should call the native method setPrimaryColor', () => {
+  it('should call the native method setPrimaryColor on iOS', () => {
+    Platform.OS = 'ios';
     const color = '#fff';
-    Instabug.setPrimaryColor(color);
+    Instabug.setTheme({ primaryColor: color });
 
-    expect(NativeInstabug.setPrimaryColor).toBeCalledTimes(1);
-    expect(NativeInstabug.setPrimaryColor).toBeCalledWith(processColor(color));
+    expect(NativeInstabug.setTheme).toBeCalledTimes(1);
+    expect(NativeInstabug.setTheme).toBeCalledWith({ primaryColor: color });
   });
 
   it('should call the native method appendTags', () => {
@@ -832,25 +859,6 @@ describe('Instabug Module', () => {
     expect(emitter.listenerCount(NativeEvents.PRESENDING_HANDLER)).toBe(1);
   });
 
-  it('should call native addExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.addExperiments(experiments);
-    expect(NativeInstabug.addExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.addExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native removeExperiments method', () => {
-    const experiments = ['exp1', 'exp2'];
-    Instabug.removeExperiments(experiments);
-    expect(NativeInstabug.removeExperiments).toBeCalledTimes(1);
-    expect(NativeInstabug.removeExperiments).toBeCalledWith(experiments);
-  });
-
-  it('should call native clearAllExperiments method', () => {
-    Instabug.clearAllExperiments();
-    expect(NativeInstabug.clearAllExperiments).toBeCalledTimes(1);
-  });
-
   it('should call native addFeatureFlags method', () => {
     const featureFlags: Array<FeatureFlag> = [
       {
@@ -941,6 +949,10 @@ describe('Instabug iOS initialization tests', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.native,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
     // Fast-forward until all timers have been executed
     jest.advanceTimersByTime(1000);
@@ -960,6 +972,8 @@ describe('Instabug iOS initialization tests', () => {
       false, // Disable native interception
       config.codePushVersion,
       config.ignoreAndroidSecureFlag,
+      undefined,
+      config.overAirVersion,
     );
   });
 
@@ -976,7 +990,9 @@ describe('Instabug iOS initialization tests', () => {
       config.debugLogsLevel,
       true, // Enable native interception
       config.codePushVersion,
-      config.ignoreAndroidSecureFlag,
+      undefined,
+      undefined,
+      config.overAirVersion,
     );
   });
 
@@ -994,6 +1010,8 @@ describe('Instabug iOS initialization tests', () => {
       false, // Disable native interception
       config.codePushVersion,
       config.ignoreAndroidSecureFlag,
+      undefined,
+      config.overAirVersion,
     );
   });
 
@@ -1021,6 +1039,10 @@ describe('Instabug Android initialization tests', () => {
       debugLogsLevel: LogLevel.debug,
       networkInterceptionMode: NetworkInterceptionMode.javascript,
       codePushVersion: '1.1.0',
+      overAirVersion: {
+        service: OverAirUpdateServices.expo,
+        version: 'D0A12345-6789-4B3C-A123-4567ABCDEF01',
+      },
     };
   });
 
@@ -1037,6 +1059,8 @@ describe('Instabug Android initialization tests', () => {
         false, // always disable native interception to insure sending network logs to core (Bugs & Crashes).
         config.codePushVersion,
         { ignoreAndroidSecureFlag: config.ignoreAndroidSecureFlag },
+        undefined,
+        config.overAirVersion,
       );
     });
   });
@@ -1101,6 +1125,24 @@ describe('Instabug Android initialization tests', () => {
       expect(logSpy).toBeCalledTimes(1);
       expect(logSpy).toBeCalledWith(
         InstabugConstants.IBG_APM_TAG + InstabugConstants.NATIVE_INTERCEPTION_DISABLED_MESSAGE,
+      );
+    });
+  });
+
+  it('should initialize correctly with App variant', async () => {
+    config.appVariant = 'App Variant';
+    await Instabug.init(config);
+    fakeTimer(() => {
+      expect(NativeInstabug.setOnFeaturesUpdatedListener).toHaveBeenCalled();
+      expect(NativeInstabug.init).toHaveBeenCalledWith(
+        config.token,
+        config.invocationEvents,
+        config.debugLogsLevel,
+        true,
+        config.codePushVersion,
+        config.appVariant,
+        undefined,
+        config.overAirVersion,
       );
     });
   });
