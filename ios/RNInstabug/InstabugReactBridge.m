@@ -172,7 +172,7 @@ RCT_EXPORT_METHOD(setColorTheme:(IBGColorTheme)colorTheme) {
 }
 
 RCT_EXPORT_METHOD(setPrimaryColor:(UIColor *)color) {
-        Instabug.tintColor = color;
+//        Instabug.tintColor = color;
 }
 
 RCT_EXPORT_METHOD(setTheme:(NSDictionary *)themeConfig) {

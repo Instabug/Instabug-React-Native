@@ -2,7 +2,7 @@
 
 #import "InstabugAPMBridge.h"
 #import <InstabugSDK/IBGAPM.h>
-#import <InstabugSDK/IBGExecutionTrace.h>
+//#import <InstabugSDK/IBGExecutionTrace.h>
 #import <asl.h>
 #import <React/RCTLog.h>
 #import <os/log.h>
