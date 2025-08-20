@@ -15,7 +15,7 @@ target 'InstabugExample' do
   config = use_native_modules!
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/faeture-screen_rendering-release/15.1.26/Instabug.podspec'
+  pod 'Instabug', :podspec => 'https://ios-releases.instabug.com/custom/faeture-screen_rendering-release/15.1.31/Instabug.podspec'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

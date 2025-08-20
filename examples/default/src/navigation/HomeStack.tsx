@@ -22,7 +22,6 @@ import {
 import { GoogleMapsScreen } from '../screens/user-steps/GoogleMapsScreen';
 import { LargeImageListScreen } from '../screens/user-steps/LargeImageListScreen';
 import { APMScreen } from '../screens/apm/APMScreen';
-import { ExecutionTraceScreen } from '../screens/apm/ExecutionTraceScreen';
 import { CustomUITraceScreen } from '../screens/apm/CustomUITraceScreen';
 import { NetworkScreen } from '../screens/apm/NetworkScreen';
 import { FlowsScreen } from '../screens/apm/FlowsScreen';
@@ -58,7 +57,6 @@ export type HomeStackParamList = {
   // APM //
   APM: undefined;
   NetworkTraces: undefined;
-  ExecutionTraces: undefined;
   CustomUITraces: undefined;
   AppFlows: undefined;
   WebViews: undefined;
@@ -144,7 +142,6 @@ export const HomeStackNavigator: React.FC = () => {
       <HomeStack.Screen name="Gestures" component={GesturesScreen} />
       <HomeStack.Screen name="APM" component={APMScreen} />
       <HomeStack.Screen name="NetworkTraces" component={NetworkScreen} />
-      <HomeStack.Screen name="ExecutionTraces" component={ExecutionTraceScreen} />
       <HomeStack.Screen name="CustomUITraces" component={CustomUITraceScreen} />
       <HomeStack.Screen name="AppFlows" component={FlowsScreen} />
       <HomeStack.Screen

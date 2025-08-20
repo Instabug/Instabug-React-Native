@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 
-import Trace from '../models/Trace';
 import { NativeAPM } from '../native/NativeAPM';
 import { NativeInstabug } from '../native/NativeInstabug';
 
@@ -46,29 +45,6 @@ export const setNetworkEnabledIOS = (isEnabled: boolean) => {
  */
 export const setAutoUITraceEnabled = (isEnabled: boolean) => {
   NativeAPM.setAutoUITraceEnabled(isEnabled);
-};
-
-/**
- * Starts a custom execution trace.
- *
- * Returns a promise which resolves with the trace reference if APM is enabled; otherwise, the promise is rejected.
- *
- * @param name - The name of the trace to start.
- * @returns A promise that resolves with a Trace object.
- *
- * @deprecated Please migrate to the App Flows APIs: {@link startFlow}, {@link endFlow}, and {@link setFlowAttribute}.
- */
-export const startExecutionTrace = async (name: string): Promise<Trace> => {
-  const TRACE_NOT_STARTED_APM_NOT_ENABLED = `Execution trace "${name}" wasn't created. Please make sure to enable APM first by following the instructions at this link: https://docs.instabug.com/reference#enable-or-disable-apm`;
-  const timestamp = Date.now() + '';
-
-  const id = await NativeAPM.startExecutionTrace(name, timestamp);
-
-  if (!id) {
-    throw new Error(TRACE_NOT_STARTED_APM_NOT_ENABLED);
-  }
-
-  return new Trace(id, name);
 };
 
 /**
@@ -144,6 +120,6 @@ export const _ibgSleep = () => {
  * Enables or disables Screen Render feature
  * @param isEnabled
  */
-export const setScreenRenderEnabled = (isEnabled: boolean) => {
-  NativeAPM.setScreenRenderEnabled(isEnabled);
+export const setScreenRenderingEnabled = (isEnabled: boolean) => {
+  NativeAPM.setScreenRenderingEnabled(isEnabled);
 };

@@ -24,7 +24,7 @@ const ScreenRenderSwitch: React.FC = () => {
         style={[styles.switch, isEnabled && styles.switchEnabled]}
         onPress={() => {
           setIsEnabled(!isEnabled);
-          APM.setScreenRenderEnabled(isEnabled);
+          APM.setScreenRenderingEnabled(isEnabled);
         }}>
         <View style={[styles.switchThumb, isEnabled && styles.switchThumbEnabled]} />
       </TouchableOpacity>
