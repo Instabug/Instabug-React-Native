@@ -16,7 +16,7 @@
 
 - **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
 
-- Bump Instabug iOS SDK to v16.0.1 ([#1436](https://github.com/Instabug/Instabug-React-Native/pull/1436)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/16.0.1).
+- Bump Instabug iOS SDK to v16.0.2 ([#1436](https://github.com/Instabug/Instabug-React-Native/pull/1436)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/16.0.1).
 
 - Bump Instabug Android SDK to v16.0.0 ([#1436](https://github.com/Instabug/Instabug-React-Native/pull/1436)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v16.0.1).
 
