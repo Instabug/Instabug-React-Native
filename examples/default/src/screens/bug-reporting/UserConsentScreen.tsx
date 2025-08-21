@@ -136,7 +136,11 @@ export const UserConsentScreen: React.FC<
                 onValueChange={setActionType}
               />
             </View>
-            <Button mt="4" onPress={handleSubmit} testID="id_submit_consent" accessibilityLabel="id_submit_consent">
+            <Button
+              mt="4"
+              onPress={handleSubmit}
+              testID="id_submit_consent"
+              accessibilityLabel="id_submit_consent">
               Add User Consent
             </Button>
           </VStack>

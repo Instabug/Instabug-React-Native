@@ -161,7 +161,11 @@ export const HttpScreen: React.FC = () => {
       <ListTile title="DELETE" onPress={makeDeleteCall} testID="http_delete_request" />
       <ListTile title="PUT" onPress={makePutCall} testID="http_put_request" />
       <ListTile title="PATCH" onPress={makePatchCall} testID="http_patch_request" />
-      <ListTile title="Download Image" onPress={makeDownloadImageCall} testID="http_download_request" />
+      <ListTile
+        title="Download Image"
+        onPress={makeDownloadImageCall}
+        testID="http_download_request"
+      />
     </Screen>
   );
 };

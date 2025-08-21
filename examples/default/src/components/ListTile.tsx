@@ -11,13 +11,15 @@ interface ListTileProps extends PropsWithChildren {
   accessibilityLabel?: string;
 }
 
-export const ListTile: React.FC<ListTileProps> = ({ title,
-                                                    subtitle,
-                                                    onPress,
-                                                    children,
-                                                    testID,
-                                                    truncateSubtitle = false,
-                                                    accessibilityLabel, }) => {
+export const ListTile: React.FC<ListTileProps> = ({
+  title,
+  subtitle,
+  onPress,
+  children,
+  testID,
+  truncateSubtitle = false,
+  accessibilityLabel,
+}) => {
   return (
     <Pressable
       onPress={onPress}

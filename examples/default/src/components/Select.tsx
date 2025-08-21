@@ -18,7 +18,13 @@ interface SelectProps<T> {
   accessibilityLabel?: string;
 }
 
-export function Select<T>({ label, items, onValueChange, testID, accessibilityLabel }: SelectProps<T>) {
+export function Select<T>({
+  label,
+  items,
+  onValueChange,
+  testID,
+  accessibilityLabel,
+}: SelectProps<T>) {
   const initialItem = items.find((i) => i.isInitial) ?? items[0];
   const [selectedItem, setSelectedItem] = useState(initialItem);
 
