@@ -115,17 +115,6 @@ public class RNInstabugAPMModuleTest {
     }
 
     @Test
-    public void givenString$startExecutionTrace_whenQuery_thenShouldCallNativeApi() {
-        Promise promise = mock(Promise.class);
-        // when
-        apmModule.startExecutionTrace("trace", "1", promise);
-        // then
-        verify(APM.class, times(1));
-        APM.startExecutionTrace("trace");
-        verify(promise).resolve(any());
-    }
-
-    @Test
     public void testStartFlow() {
         String appFlowName = "appFlowName";
 
@@ -156,34 +145,6 @@ public class RNInstabugAPMModuleTest {
         mockAPM.verifyNoMoreInteractions();
     }
 
-    // @Test
-    // public void givenString$setExecutionTraceAttribute_whenQuery_thenShouldCallNativeApiWithIntArgs() {
-    //     // given
-    //     PowerMockito.mockStatic(APM.class);
-    //     ExecutionTrace trace = mock(ExecutionTrace.class);
-    //     Callback callback = mock(Callback.class);
-    //     // when
-    //     PowerMockito.whenNew(ExecutionTrace.class).withArguments("trace").thenReturn(trace);
-    //     apmModule.startExecutionTrace("trace", "1", callback);
-    //     apmModule.setExecutionTraceAttribute("trace", "key", "value");
-    //     // then
-    //     verify(trace).setAttribute("key", "value");
-    // }
-
-    // @Test
-    // public void givenTrace$endExecutionTrace_whenQuery_thenShouldCallNativeApiWithIntArgs() {
-    //     // given
-    //     PowerMockito.mockStatic(APM.class);
-    //     ExecutionTrace trace = mock(ExecutionTrace.class);
-    //     Callback callback = mock(Callback.class);
-    //     // when
-    //     PowerMockito.whenNew(ExecutionTrace.class).withArguments("trace").thenReturn(trace);
-    //     apmModule.startExecutionTrace("trace", "1", callback);
-    //     apmModule.endExecutionTrace("1");
-    //     // then
-    //     verify(trace).end();
-    // }
-
     @Test
     public void givenString$startUITrace_whenQuery_thenShouldCallNativeApiWithEnabled() {
 
@@ -203,6 +164,14 @@ public class RNInstabugAPMModuleTest {
         // then
         verify(APM.class, times(1));
         APM.endUITrace();
+    }
+
+    @Test
+    public void given$setScreenRenderEnabled_whenQuery_thenShouldCallNativeApiWithEnabled() {
+        apmModule.setScreenRenderingEnabled(true);
+        // then
+        verify(APM.class, times(1));
+        APM.setScreenRenderingEnabled(true);
     }
 
 

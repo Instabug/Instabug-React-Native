@@ -14,6 +14,7 @@ import type {
 import type { NativeConstants } from './NativeConstants';
 import type { W3cExternalTraceAttributes } from '../models/W3cExternalTraceAttributes';
 import { NativeModules } from './NativePackage';
+import type { ThemeConfig } from '../models/ThemeConfig';
 
 export interface InstabugNativeModule extends NativeModule {
   getConstants(): NativeConstants;
@@ -121,10 +122,6 @@ export interface InstabugNativeModule extends NativeModule {
   getTags(): Promise<string[]>;
 
   // Experiments APIs //
-  addExperiments(experiments: string[]): void;
-  removeExperiments(experiments: string[]): void;
-  clearAllExperiments(): void;
-
   addFeatureFlags(featureFlags: Record<string, string | undefined>): void;
 
   removeFeatureFlags(featureFlags: string[]): void;
@@ -161,9 +158,12 @@ export interface InstabugNativeModule extends NativeModule {
   setOnFeaturesUpdatedListener(handler?: (params: any) => void): void; // android only
   enableAutoMasking(autoMaskingTypes: AutoMaskingType[]): void;
   getNetworkBodyMaxSize(): Promise<number>;
+
+  setTheme(theme: ThemeConfig): void;
+  setFullscreen(isEnabled: boolean): void;
 }
 
-export const NativeInstabug = NativeModules.Instabug;
+export const NativeInstabug = NativeModules.Instabug as InstabugNativeModule;
 
 export enum NativeEvents {
   PRESENDING_HANDLER = 'IBGpreSendingHandler',

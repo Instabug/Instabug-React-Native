@@ -43,6 +43,8 @@ options:(nullable NSDictionary *)options;
 
 - (void)setPrimaryColor:(UIColor *)color;
 
+- (void)setTheme:(NSDictionary *)themeConfig;
+
 - (void)appendTags:(NSArray *)tags;
 
 - (void)resetTags;

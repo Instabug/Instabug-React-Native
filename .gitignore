@@ -69,3 +69,6 @@ android/keystores/debug.keystore
 
 # .idea run configurations
 /.run/*
+.yarn/
+examples/default/.yarn/
+examples/default/ios/.xcode.env.local

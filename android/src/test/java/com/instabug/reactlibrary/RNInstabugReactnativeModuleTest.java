@@ -194,18 +194,6 @@ public class RNInstabugReactnativeModuleTest {
     }
 
     @Test
-    public void givenArg$setPrimaryColor_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-
-        int color = 3902;
-        // when
-        rnModule.setPrimaryColor(color);
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.setPrimaryColor(color);
-    }
-
-    @Test
     public void testSetCodePushVersion() {
         String codePushVersion = "123";
 
@@ -535,51 +523,6 @@ public class RNInstabugReactnativeModuleTest {
 
     }
 
-    @Test
-    public void givenArg$addExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-        JavaOnlyArray array = new JavaOnlyArray();
-        array.pushString("exp1");
-        array.pushString("exp2");
-
-        // when
-        rnModule.addExperiments(array);
-
-        // then
-        verify(Instabug.class,times(1));
-        List<String> expectedList = new ArrayList<String>();
-        expectedList.add("exp1");
-        expectedList.add("exp2");
-        Instabug.addExperiments(expectedList);
-    }
-
-    @Test
-    public void givenArg$removeExperiments_whenQuery_thenShouldCallNativeApiWithArg() {
-        // given
-        JavaOnlyArray array = new JavaOnlyArray();
-        array.pushString("exp1");
-        array.pushString("exp2");
-
-        // when
-        rnModule.removeExperiments(array);
-
-        // then
-        verify(Instabug.class,times(1));
-        List<String> expectedList = new ArrayList<String>();
-        expectedList.add("exp1");
-        expectedList.add("exp2");
-        Instabug.removeExperiments(expectedList);
-    }
-
-    @Test
-    public void given$clearAllExperiments_whenQuery_thenShouldCallNativeApi() {
-        // when
-        rnModule.clearAllExperiments();
-
-        // then
-        verify(Instabug.class,times(1));
-        Instabug.clearAllExperiments();
-    }
 
     @Test
     public void testAddFeatureFlags() {
@@ -702,6 +645,74 @@ public class RNInstabugReactnativeModuleTest {
         rnModule.getNetworkBodyMaxSize(promise);
 
         verify(promise).resolve(expected);
+    }
+
+    @Test
+    public void testEnablSetFullScreen() {
+        boolean isEnabled = true;
+
+        // when
+        rnModule.setFullscreen(isEnabled);
+
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.setFullscreen(isEnabled);
+    }
+
+    @Test
+    public void testDisableSetFullScreen() {
+        // given
+        boolean isEnabled = false;
+
+        // when
+        rnModule.setFullscreen(isEnabled);
+
+        // then
+        verify(Instabug.class, times(1));
+        Instabug.setFullscreen(isEnabled);
+    }
+
+    @Test
+    public void testSetTheme() {
+        // given
+        JavaOnlyMap themeConfig = new JavaOnlyMap();
+        themeConfig.putString("primaryColor", "#FF0000");
+        themeConfig.putString("primaryTextColor", "#00FF00");
+        themeConfig.putString("secondaryTextColor", "#0000FF");
+        themeConfig.putString("titleTextColor", "#FFFF00");
+        themeConfig.putString("backgroundColor", "#FF00FF");
+        themeConfig.putString("primaryTextStyle", "bold");
+        themeConfig.putString("secondaryTextStyle", "italic");
+        themeConfig.putString("ctaTextStyle", "bold");
+
+        // Mock IBGTheme.Builder
+        com.instabug.library.model.IBGTheme.Builder mockBuilder = mock(com.instabug.library.model.IBGTheme.Builder.class);
+        com.instabug.library.model.IBGTheme mockTheme = mock(com.instabug.library.model.IBGTheme.class);
+        
+        try (MockedConstruction<com.instabug.library.model.IBGTheme.Builder> mockedBuilder = mockConstruction(
+                com.instabug.library.model.IBGTheme.Builder.class,
+                (mock, context) -> {
+                    when(mock.setPrimaryColor(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setSecondaryTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setTitleTextColor(anyInt())).thenReturn(mock);
+                    when(mock.setBackgroundColor(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setSecondaryTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setCtaTextStyle(anyInt())).thenReturn(mock);
+                    when(mock.setPrimaryTextFont(any())).thenReturn(mock);
+                    when(mock.setSecondaryTextFont(any())).thenReturn(mock);
+                    when(mock.setCtaTextFont(any())).thenReturn(mock);
+                    when(mock.build()).thenReturn(mockTheme);
+                })) {
+
+            // when
+            rnModule.setTheme(themeConfig);
+
+            // then
+            verify(Instabug.class, times(1));
+            Instabug.setTheme(mockTheme);
+        }
     }
 
 }

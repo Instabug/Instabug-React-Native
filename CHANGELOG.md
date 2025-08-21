@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.1...dev)
+
+### Changed
+
+- **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
+
+### Added
+
+- Add support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
+
+- Add screen rendering monitoring functionality within the APM product. ([#1416](https://github.com/Instabug/Instabug-React-Native/pull/1416))
+
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
 ### Added

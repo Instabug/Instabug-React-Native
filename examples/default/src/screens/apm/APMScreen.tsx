@@ -34,10 +34,11 @@ export const APMScreen: React.FC<NativeStackScreenProps<HomeStackParamList, 'APM
       {CustomGap.smallV}
       <ListTile title="End App launch" onPress={() => APM.endAppLaunch()} />
       <ListTile title="Network Screen" onPress={() => navigation.navigate('NetworkTraces')} />
-      <ListTile title="Traces" onPress={() => navigation.navigate('ExecutionTraces')} />
+      <ListTile title="Custom UI Traces" onPress={() => navigation.navigate('CustomUITraces')} />
       <ListTile title="Flows" onPress={() => navigation.navigate('AppFlows')} />
       <ListTile title="WebViews" onPress={() => navigation.navigate('WebViews')} />
       <ListTile title="Complex Views" onPress={() => navigation.navigate('ComplexViews')} />
+      <ListTile title="Screen Rendering" onPress={() => navigation.navigate('ScreenRender')} />
     </Screen>
   );
 };

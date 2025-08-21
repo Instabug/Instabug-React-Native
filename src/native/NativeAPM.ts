@@ -34,10 +34,6 @@ export interface ApmNativeModule extends NativeModule {
   endAppLaunch(): void;
 
   // Execution Traces APIs //
-  startExecutionTrace(name: string, timestamp: string): Promise<string | null>;
-  setExecutionTraceAttribute(id: string, key: string, value: string): void;
-  endExecutionTrace(id: string): void;
-
   // App Flows APIs //
   startFlow(name: string): void;
   endFlow(name: string): void;
@@ -48,6 +44,9 @@ export interface ApmNativeModule extends NativeModule {
   startUITrace(name: string): void;
   endUITrace(): void;
   ibgSleep(): void;
+
+  // Screen Rendering //
+  setScreenRenderingEnabled(isEnabled: boolean): void;
 }
 
 export const NativeAPM = NativeModules.IBGAPM;

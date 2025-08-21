@@ -389,7 +389,6 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
             }
         });
     }
-
     /**
     * Sets a minimum number of characters as a requirement for the comments field in the different report types.
     * @param limit int number of characters.
@@ -410,8 +409,7 @@ public class RNInstabugBugReportingModule extends EventEmitterModule {
                         typesInts[i] = types.get(i);
                     }
 
-                    BugReporting.setCommentMinimumCharacterCount(limit, typesInts);
-                } catch (Exception e) {
+                    BugReporting.setCommentMinimumCharacterCountForBugReportType(limit, typesInts);                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
