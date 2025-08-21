@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## [14.0.6](https://github.com/Instabug/Instabug-React-Native/compare/v14.0.4...14.0.5) (May 26, 2025)
 
 ### Changed
