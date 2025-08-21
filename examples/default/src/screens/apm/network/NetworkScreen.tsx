@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { Section } from '../../components/Section';
-import { Screen } from '../../components/Screen';
-import { ClipboardTextInput } from '../../components/ClipboardTextInput';
+import { Section } from '../../../components/Section';
+import { Screen } from '../../../components/Screen';
+import { ClipboardTextInput } from '../../../components/ClipboardTextInput';
 import { useQuery } from 'react-query';
 import { HStack, VStack } from 'native-base';
 import { gql, GraphQLClient } from 'graphql-request';
-import { CustomButton } from '../../components/CustomButton';
+import { CustomButton } from '../../../components/CustomButton';
 import axios from 'axios';
-import type { HomeStackParamList } from '../../navigation/HomeStack';
+import type { HomeStackParamList } from '../../../navigation/HomeStack';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { ListTile } from '../../../components/ListTile';
+import { NetworkLogger } from 'instabug-reactnative';
+import { NetworkState } from './NetworkStateScreen';
+import { useCallbackHandlers } from '../../../contexts/callbackContext';
 
 export const NetworkScreen: React.FC<
   NativeStackScreenProps<HomeStackParamList, 'NetworkTraces'>
@@ -27,6 +31,7 @@ export const NetworkScreen: React.FC<
     'https://fastly.picsum.photos/id/57/200/300.jpg?hmac=l908G1qVr4r7dP947-tak2mY8Vvic_vEYzCXUCKKskY',
     'https://fastly.picsum.photos/id/619/200/300.jpg?hmac=WqBGwlGjuY9RCdpzRaG9G-rc9Fi7TGUINX_-klAL2kA',
   ];
+  const { addItem } = useCallbackHandlers();
 
   async function sendRequestToUrl() {
     let urlToSend: string;
@@ -153,6 +158,7 @@ export const NetworkScreen: React.FC<
       throw error;
     }
   }
+
   async function makeParallelApiCalls(urls: string[]): Promise<any[]> {
     const fetchPromises = urls.map((url) => fetch(url).then((response) => response.json()));
 
@@ -164,9 +170,27 @@ export const NetworkScreen: React.FC<
     }
   }
 
+  const [isNetworkEnabled, setIsNetworkEnabled] = useState<boolean>(true);
+
   return (
     <ScrollView>
       <Screen>
+        <ListTile
+          title="Network Enable State"
+          subtitle={isNetworkEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('NetworkState', {
+              state: isNetworkEnabled ? NetworkState.Enabled : NetworkState.Disabled,
+              setState: (newState: NetworkState) => {
+                const isEnabled = newState === NetworkState.Enabled;
+                setIsNetworkEnabled(isEnabled);
+                NetworkLogger.setEnabled(isEnabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_network_state"
+        />
         <Section title="Network Requests">
           <VStack space="xs">
             <ClipboardTextInput
@@ -229,6 +253,52 @@ export const NetworkScreen: React.FC<
               />
             ))}
           </HStack>
+        </Section>
+
+        <Section title="Handlers">
+          <ListTile
+            testID="enable_network_obfuscation_handler"
+            title="Enable on network Obfuscation Handler"
+            onPress={() =>
+              NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+                addItem('Network Obfuscated', {
+                  id: `event-${Math.random()}`,
+                  fields: [
+                    { key: 'Date', value: new Date().toLocaleString() },
+                    { key: 'Url', value: networkData.url },
+                    { key: 'Method', value: networkData.method },
+                    { key: 'Request Body', value: networkData.requestBody },
+                    { key: 'Response', value: networkData.responseBody?.toString() ?? '' },
+                    { key: 'Request  Headers', value: networkData.requestHeaders.toString() },
+                    { key: 'Response Headers', value: networkData.requestHeaders.toString() },
+                  ],
+                });
+                return networkData;
+              })
+            }
+          />
+
+          <ListTile
+            testID="crash_network_obfuscation_handler"
+            title="Crashing on network Obfuscation Handler"
+            onPress={() =>
+              NetworkLogger.setNetworkDataObfuscationHandler(async (networkData) => {
+                addItem('Network Obfuscated', {
+                  id: `event-${Math.random()}`,
+                  fields: [
+                    { key: 'Date', value: new Date().toLocaleString() },
+                    { key: 'Url', value: networkData.url },
+                    { key: 'Method', value: networkData.method },
+                    { key: 'Request Body', value: networkData.requestBody },
+                    { key: 'Response', value: networkData.responseBody?.toString() ?? '' },
+                    { key: 'Request  Headers', value: networkData.requestHeaders.toString() },
+                    { key: 'Response Headers', value: networkData.requestHeaders.toString() },
+                  ],
+                });
+                throw Error(' Error from Network Obfuscated');
+              })
+            }
+          />
         </Section>
       </Screen>
     </ScrollView>

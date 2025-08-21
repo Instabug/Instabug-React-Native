@@ -6,15 +6,25 @@ interface SelectItem<T> {
   label: string;
   value: T;
   isInitial?: boolean;
+  testID?: string;
+  accessibilityLabel?: string;
 }
 
 interface SelectProps<T> {
   label: string;
   items: SelectItem<T>[];
   onValueChange: (value: T) => void;
+  testID?: string;
+  accessibilityLabel?: string;
 }
 
-export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
+export function Select<T>({
+  label,
+  items,
+  onValueChange,
+  testID,
+  accessibilityLabel,
+}: SelectProps<T>) {
   const initialItem = items.find((i) => i.isInitial) ?? items[0];
   const [selectedItem, setSelectedItem] = useState(initialItem);
 
@@ -22,7 +32,7 @@ export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
     <NativeBaseSelect
       height="10"
       placeholder={label}
-      accessibilityLabel={label}
+      accessibilityLabel={accessibilityLabel ?? testID}
       selectedValue={selectedItem.label}
       onValueChange={(value) => {
         const item = items.find((i) => i.label === value)!;
@@ -35,7 +45,12 @@ export function Select<T>({ label, items, onValueChange }: SelectProps<T>) {
         endIcon: <CheckIcon size="4" />,
       }}>
       {items.map((item) => (
-        <NativeBaseSelect.Item key={item.label} label={item.label} value={item.label} />
+        <NativeBaseSelect.Item
+          key={item.label}
+          label={item.label}
+          value={item.label}
+          testID={testID}
+        />
       ))}
     </NativeBaseSelect>
   );
