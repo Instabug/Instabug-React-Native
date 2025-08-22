@@ -1,6 +1,6 @@
 # Changelog
 
-## [15.0.3](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev)  (August 21, 2025)
+## [15.0.3](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev)  (August 22, 2025)
 
 ### Changed
 
