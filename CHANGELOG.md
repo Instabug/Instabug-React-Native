@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Bump Instabug iOS SDK to v15.1.2 ([#1480](https://github.com/Instabug/Instabug-React-Native/pull/1480)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/15.1.2).
+- Bump Instabug iOS SDK to v15.1.2 ([#1440](https://github.com/Instabug/Instabug-React-Native/pull/1440)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/15.1.2).
 
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
