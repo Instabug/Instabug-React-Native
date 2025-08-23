@@ -281,8 +281,8 @@ jobs:
         type: boolean
         default: false
     macos:
-      xcode: 15.4.0
-    resource_class: macos.m1.medium.gen1
+      xcode: 26.0.0
+    resource_class: m4pro.medium
     working_directory: ~/project/examples/default
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
@@ -321,8 +321,8 @@ jobs:
         type: steps
         default: []
     macos:
-      xcode: 15.4.0
-    resource_class: macos.m1.medium.gen1
+      xcode: 26.0.0
+    resource_class: m4pro.medium
     environment:
       INSTABUG_SOURCEMAPS_UPLOAD_DISABLE: true
     steps:
