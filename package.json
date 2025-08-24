@@ -10,6 +10,7 @@
   "main": "dist/index",
   "types": "dist/index.d.ts",
   "react-native": "src/index.ts",
+  "expo": "./expo-plugin/index.js",
   "bin": {
     "instabug": "bin/index.js"
   },

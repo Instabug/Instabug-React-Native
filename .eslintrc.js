@@ -13,6 +13,17 @@ module.exports = {
       },
     },
     {
+      // CLI Overrides
+      files: ['cli/**'],
+      env: {
+        node: true,
+      },
+      parserOptions: {
+        project: './tsconfig.cli.json',
+        tsconfigRootDir: __dirname,
+      },
+    },
+    {
       // Node Scripts Overrides
       files: ['scripts/**'],
       env: {
