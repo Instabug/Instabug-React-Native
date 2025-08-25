@@ -40,8 +40,8 @@ npx instabug init --token YOUR_APP_TOKEN --entry App.tsx
 # 2) Ensure build properties plugin is installed in your project
 npm i -D expo-build-properties
 
-# 3) Run on iOS (set CI to auto-accept alternate port if 8081 is busy)
-CI=1 npx expo start --ios
+# 3) Run the app (set CI to auto-accept alternate port if 8081 is busy)
+CI=1 npx expo start --ios | android
 ```
 
 - Notes:
@@ -55,12 +55,6 @@ CI=1 npx expo start --ios
 
 ```bash
 npx instabug --help
-```
-
-- When developing this repo locally, you can invoke the built CLI directly:
-
-```bash
-node bin/index.js --help
 ```
 
 ### Commands
