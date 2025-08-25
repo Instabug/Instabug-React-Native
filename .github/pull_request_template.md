@@ -12,6 +12,10 @@
 
 > Issue links go here
 
+## Usage Example
+
+> Example of how to call it
+
 ## Checklists
 
 ### Development
