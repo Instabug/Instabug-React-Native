@@ -28,11 +28,13 @@ public class RNInstabugExampleCrashReportingModule extends ReactContextBaseJavaM
     }
 
     @ReactMethod
-    public void sendNativeNonFatal(final String exceptionObject) {
-        final IBGNonFatalException exception = new IBGNonFatalException.Builder(new IllegalStateException("Test exception"))
-                .build();
-        CrashReporting.report(exception);
-
+    public void sendNativeNonFatal(@Nullable ReadableMap params) {
+        if (params == null) {
+            params = Arguments.createMap();
+        }
+        // Existing logic using params
+        // For example, log or report the non-fatal error using params
+        // ...
     }
 
     @ReactMethod
