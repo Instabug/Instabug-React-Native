@@ -53,25 +53,25 @@ RCT_ENUM_CONVERTER(NetworkListenerType, (@{
 }
 RCT_EXPORT_MODULE(IBGNetworkLogger)
 
-bool hasListeners = NO;
+bool ibg_hasListeners = NO;
 
 
 
 // Will be called when this module's first listener is added.
 -(void)startObserving {
-    hasListeners = YES;
+    ibg_hasListeners = YES;
     // Set up any upstream listeners or background tasks as necessary
 }
 
 // Will be called when this module's last listener is removed, or on dealloc.
 -(void)stopObserving {
-    hasListeners = NO;
+    ibg_hasListeners = NO;
     // Remove upstream listeners, stop unnecessary background tasks
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isNativeInterceptionEnabled) {
     return @(IBGNetworkLogger.isNativeNetworkInterceptionFeatureEnabled);
-}   
+}
 
 
 
@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(updateNetworkLogSnapshot:(NSString * _Nonnull)url
 
     // Initialize the NSMutableURLRequest
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:requestURL];
-    
+
     // Set the HTTP body if provided
     if (requestBody && [requestBody isKindOfClass:[NSString class]]) {
         request.HTTPBody = [requestBody dataUsingEncoding:NSUTF8StringEncoding];
@@ -157,7 +157,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
         self.requestFilteringCompletionDictionary[callbackID] = completion;
 
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        if(hasListeners){
+        if(ibg_hasListeners){
             [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
         }
 
@@ -172,7 +172,7 @@ RCT_EXPORT_METHOD(setNetworkLoggingRequestFilterPredicateIOS: (NSString * _Nonnu
 
 
         NSDictionary *dict = [self createNetworkRequestDictForRequest:request callbackID:callbackID];
-        if (hasListeners) {
+        if (ibg_hasListeners) {
             [self sendEventWithName:@"IBGNetworkLoggerHandler" body:dict];
         }
 
