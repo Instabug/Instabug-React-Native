@@ -411,7 +411,7 @@ jobs:
     working_directory: ~/project
     steps:
       - advanced-checkout/shallow-checkout
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -437,7 +437,7 @@ jobs:
     working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -465,7 +465,7 @@ jobs:
           files: package.json
           search: instabug-reactnative
           replace: '@instabug/react-native'
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -560,7 +560,6 @@ workflows:
               only: master
 
       - hold_release_nn:
-          requires: *release_dependencies
           type: approval
       - release_custom_package:
           name: release_nn
@@ -575,7 +574,6 @@ workflows:
           dashboard_token_env: ${NN_TOKEN}
 
       - hold_release_injazat:
-          requires: *release_dependencies
           type: approval
       - release_custom_package:
           name: release_injazat
