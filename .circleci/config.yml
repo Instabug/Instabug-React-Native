@@ -512,22 +512,22 @@ jobs:
 workflows:
   publish:
     jobs:
-#      - danger:
-#          requires:
-#            - test_module
-#            - test_android
-#            - test_ios
-#      - lint
-#      - test_module:
-#          collect_coverage: true
-#      - test_android:
-#          collect_coverage: true
-#      - test_ios:
-#          collect_coverage: true
-#      - validate_shell_files
-#      - sync_generated_files
-#      - e2e_ios
-#      - e2e_android
+      - danger:
+          requires:
+            - test_module
+            - test_android
+            - test_ios
+      - lint
+      - test_module:
+          collect_coverage: true
+      - test_android:
+          collect_coverage: true
+      - test_ios:
+          collect_coverage: true
+      - validate_shell_files
+      - sync_generated_files
+      - e2e_ios
+      - e2e_android
       - hold_generate_snapshot:
           type: approval
           requires: *release_dependencies
