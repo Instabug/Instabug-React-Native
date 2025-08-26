@@ -512,11 +512,11 @@ jobs:
 workflows:
   publish:
     jobs:
-      - danger:
-          requires:
-            - test_module
-            - test_android
-            - test_ios
+#      - danger:
+#          requires:
+#            - test_module
+#            - test_android
+#            - test_ios
 #      - lint
 #      - test_module:
 #          collect_coverage: true
