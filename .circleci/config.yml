@@ -427,7 +427,7 @@ jobs:
           name: Publish Custom Package with Escape
           command: Escape react-native publish-custompackage
           environment:
-            DASHBOARD_TOKEN: ${<< parameters.dashboard_token_env >>}
+            DASHBOARD_TOKEN: << parameters.dashboard_token_env >>
             DASHBOARD_API_ENDPOINT: << parameters.api_endpoint >>
 
   publish:
