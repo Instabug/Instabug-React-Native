@@ -560,11 +560,18 @@ workflows:
               only: master
 
       - hold_release_nn:
+          requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_nn
           requires:
             - hold_release_nn
+          filters:
+            branches:
+              only: master
           prepare_steps:
             - prepare_custom_package:
                 npm_package: '@instabug/react-native-nn'
@@ -574,11 +581,18 @@ workflows:
           dashboard_token_env: NN_TOKEN
 
       - hold_release_injazat:
+          requires: *release_dependencies
           type: approval
+          filters:
+            branches:
+              only: master
       - release_custom_package:
           name: release_injazat
           requires:
             - hold_release_injazat
+          filters:
+            branches:
+              only: master
           prepare_steps:
             - prepare_custom_package:
                 npm_package: '@instabug/react-native-injazat'
