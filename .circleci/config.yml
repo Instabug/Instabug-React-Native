@@ -571,7 +571,7 @@ workflows:
                 android_package: nn
                 api_endpoint: st001009nn.instabug.com
           api_endpoint: st001009nn.instabug.com
-          dashboard_token_env: ${NN_TOKEN}
+          dashboard_token_env: NN_TOKEN
 
       - hold_release_injazat:
           type: approval
@@ -585,7 +585,7 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
           api_endpoint: st001013mec1.instabug.com
-          dashboard_token_env: ${INJAZAT_TOKEN}
+          dashboard_token_env: INJAZAT_TOKEN
 
       # Dream11 tests
       - hold_test_dream11:
@@ -628,4 +628,4 @@ workflows:
           prepare_steps:
             - prepare_dream11
           api_endpoint: st001012dream11.instabug.com
-          dashboard_token_env: ${DREAM11_TOKEN}
+          dashboard_token_env: DREAM11_TOKEN
