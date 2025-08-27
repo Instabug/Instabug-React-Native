@@ -3,20 +3,14 @@ import { createRunOncePlugin } from 'expo/config-plugins';
 
 import { withInstabugAndroid } from './withInstabugAndroid';
 import { withInstabugIOS } from './withInstabugIOS';
-
-export interface PluginProps {
-  name?: string;
-  forceUploadSourceMaps?: boolean;
-  addScreenRecordingBugReportingPermission?: boolean;
-  addBugReportingIosMediaPermission?: boolean;
-}
+import { PluginProps } from './pluginProps';
 
 const instabugPackage = require('../../package.json') as {
   name: string;
   version: string;
 };
 
-const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props = {}) => {
+const withInstabugPlugin: ConfigPlugin<PluginProps> = (config, props: PluginProps = {}) => {
   const {
     forceUploadSourceMaps = false,
     addScreenRecordingBugReportingPermission = false,

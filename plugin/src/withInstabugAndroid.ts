@@ -1,6 +1,6 @@
 import type { ConfigPlugin } from 'expo/config-plugins';
 import { withAppBuildGradle, withAndroidManifest } from 'expo/config-plugins';
-import type { PluginProps } from './withInstabug';
+import type { PluginProps } from './pluginProps';
 
 export const withInstabugAndroid: ConfigPlugin<PluginProps> = (config, props) => {
   config = withAppBuildGradle(config, (configAndroid) => {

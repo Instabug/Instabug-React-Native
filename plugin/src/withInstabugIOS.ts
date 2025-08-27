@@ -1,6 +1,6 @@
 import type { ConfigPlugin, XcodeProject } from 'expo/config-plugins';
 import { withXcodeProject, withInfoPlist } from 'expo/config-plugins';
-import type { PluginProps } from './withInstabug';
+import type { PluginProps } from './pluginProps';
 import * as path from 'path';
 import * as fs from 'fs';
 
