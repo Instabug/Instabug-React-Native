@@ -24,7 +24,6 @@
 
 - Masking private views on newer React native Versions ([#1403](https://github.com/Instabug/Instabug-React-Native/pull/1403))
 
-
 ## [15.0.3](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev) (August 22, 2025)
 
 ### Changed
