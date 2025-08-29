@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.2...dev)
+## [16.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev)
 
 ### Added
 
@@ -23,6 +23,12 @@
 ### Fixed
 
 - Masking private views on newer React native Versions ([#1403](https://github.com/Instabug/Instabug-React-Native/pull/1403))
+
+## [15.0.3](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev) (August 22, 2025)
+
+### Changed
+
+- Bump Instabug iOS SDK to v15.1.2 ([#1440](https://github.com/Instabug/Instabug-React-Native/pull/1440)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/15.1.2).
 
 ## [15.0.2](https://github.com/Instabug/Instabug-React-Native/compare/v15.2.0...dev)
 
