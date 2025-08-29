@@ -401,13 +401,14 @@ jobs:
       api_endpoint:
         type: string
       dashboard_token_env:
-        type: string
+        type: env_var_name
+    macos:
+      xcode: 15.4.0
+    resource_class: macos.m1.medium.gen1
     working_directory: ~/project
-    executor:
-      name: node/default
     steps:
       - advanced-checkout/shallow-checkout
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -433,7 +434,7 @@ jobs:
     working_directory: '~'
     steps:
       - advanced-checkout/shallow-checkout
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -461,7 +462,7 @@ jobs:
           files: package.json
           search: instabug-reactnative
           replace: '@instabug/react-native'
-      - run: git clone git@github.com:Instabug/Escape.git
+      - run: git clone -b master2 git@github.com:Instabug/Escape.git
       - run:
           working_directory: Escape
           command: swift build -c release
@@ -574,7 +575,7 @@ workflows:
                 android_package: nn
                 api_endpoint: st001009nn.instabug.com
           api_endpoint: st001009nn.instabug.com
-          dashboard_token_env: ${NN_TOKEN}
+          dashboard_token_env: NN_TOKEN
 
       - hold_release_injazat:
           requires: *release_dependencies
@@ -595,7 +596,7 @@ workflows:
                 android_package: injazat
                 api_endpoint: st001013mec1.instabug.com
           api_endpoint: st001013mec1.instabug.com
-          dashboard_token_env: ${INJAZAT_TOKEN}
+          dashboard_token_env: INJAZAT_TOKEN
 
       # Dream11 tests
       - hold_test_dream11:
@@ -638,4 +639,4 @@ workflows:
           prepare_steps:
             - prepare_dream11
           api_endpoint: st001012dream11.instabug.com
-          dashboard_token_env: ${DREAM11_TOKEN}
+          dashboard_token_env: DREAM11_TOKEN
