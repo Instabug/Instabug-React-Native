@@ -213,18 +213,6 @@ export const SettingsScreen: React.FC = () => {
             });
           }}
         />
-        <ListTile
-          title="Add Experiments"
-          onPress={() => {
-            Instabug.addExperiments(['exp1', 'exp2']);
-          }}
-        />
-        <ListTile
-          title="Remove Experiments"
-          onPress={() => {
-            Instabug.removeExperiments(['exp1', 'exp2']);
-          }}
-        />
 
         <VerticalListTile title="User Identification">
           <VStack>

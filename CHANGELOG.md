@@ -1,5 +1,30 @@
 # Changelog
 
+## [16.0.0](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev)
+
+### Added
+
+- Add support for App variant. ([#1409](https://github.com/Instabug/Instabug-React-Native/pull/1409))
+
+- Add Support Advanced UI customization. ([#1411](https://github.com/Instabug/Instabug-React-Native/pull/1411))
+
+- Add Support Eas updates. ([#1391](https://github.com/Instabug/Instabug-React-Native/pull/1391))
+
+- Add support for uploading sourcemap files in expo apps. ([#1392](https://github.com/Instabug/Instabug-React-Native/pull/1392))
+
+### Changed
+
+- **BREAKING** Remove deprecated APIs ([#1424](https://github.com/Instabug/Instabug-React-Native/pull/1424)). See migration guide for more details.
+
+- Bump Instabug iOS SDK to v16.0.2 ([#1436](https://github.com/Instabug/Instabug-React-Native/pull/1436)). [See release notes](https://github.com/Instabug/Instabug-iOS/releases/tag/16.0.1).
+
+- Bump Instabug Android SDK to v16.0.0 ([#1436](https://github.com/Instabug/Instabug-React-Native/pull/1436)). [See release notes](https://github.com/Instabug/Instabug-Android/releases/tag/v16.0.1).
+
+### Fixed
+
+- Masking private views on newer React native Versions ([#1403](https://github.com/Instabug/Instabug-React-Native/pull/1403))
+
+
 ## [15.0.3](https://github.com/Instabug/Instabug-React-Native/compare/v15.0.3...dev) (August 22, 2025)
 
 ### Changed

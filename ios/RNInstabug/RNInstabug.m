@@ -61,6 +61,11 @@ useNativeNetworkInterception:(BOOL)useNativeNetworkInterception {
     [Instabug setCodePushVersion:codePushVersion];
 }
 
++ (void)setOverAirVersion:(NSDictionary *)overAirVersion {
+    [Instabug setOverAirVersion:overAirVersion[@"version"] withType:[overAirVersion[@"service"] intValue]];
+}
+
+
 // Note: This function is used to bridge IBGNSLog with RCTLogFunction.
 // This log function should not be used externally and is only an implementation detail.
 void RNIBGLog(IBGLogLevel logLevel, NSString *format,  ...) {
