@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(sendNativeFatalCrash) {
     @throw exception;
 }
 RCT_EXPORT_METHOD(sendFatalHang) {
-    [NSThread sleepForTimeInterval:3.0f];
+    [NSThread sleepForTimeInterval:6.0f];
 }
 
 RCT_EXPORT_METHOD(sendOOM) {

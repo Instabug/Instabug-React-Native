@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-gradle.projectsEvaluated {
+project.afterEvaluate {
     // Works for both `bundleReleaseJsAndAssets` and `createBundleReleaseJsAndAssets` and product flavors
     def suffix = 'ReleaseJsAndAssets'
     def bundleTasks = project(':app').tasks.findAll {
@@ -15,11 +15,13 @@ gradle.projectsEvaluated {
         def flavor = name.substring(start, end).uncapitalize()
         def defaultVersion = getDefaultVersion(flavor)
 
-        task.finalizedBy createUploadSourcemapsTask(flavor, defaultVersion.name, defaultVersion.code)
+
+
+        task.finalizedBy createUploadSourcemapsTask(flavor, defaultVersion.name, defaultVersion.code,task)
     }
 }
 
-Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String defaultVersionCode) {
+Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String defaultVersionCode, Task task) {
     def name = 'uploadSourcemaps' + flavor.capitalize()
 
     // Don't recreate the task if it already exists.
@@ -39,17 +41,25 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
             try {
                 def appProject = project(':app')
                 def appDir = appProject.projectDir
-                def sourceMapFile = getSourceMapFile(appDir, flavor)
+                def sourceMapFile = getSourceMapFile(appDir, flavor,task)
+                println "✅ Resolved sourcemap file path: ${sourceMapFile.absolutePath}"
 
                 def jsProjectDir = rootDir.parentFile
                 def instabugDir = new File(['node', '-p', 'require.resolve("instabug-reactnative/package.json")'].execute(null, rootDir).text.trim()).getParentFile()
 
-                def tokenShellFile = new File(instabugDir, 'scripts/find-token.sh')
-                def inferredToken = executeShellScript(tokenShellFile, jsProjectDir)
+              def tokenJsFile = new File(instabugDir, 'scripts/find-token.js')
+              def inferredToken = executeNodeScript(tokenJsFile, jsProjectDir)
+
+                if (!inferredToken) {
+                    throw new GradleException("❌ Unable to infer Instabug token from script: ${tokenShellFile.absolutePath}")
+                }
+
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
 
                 def versionName = resolveVar('Version Name', 'INSTABUG_VERSION_NAME', defaultVersionName)
                 def versionCode = resolveVar('Version Code', 'INSTABUG_VERSION_CODE', defaultVersionCode)
+
+                println "📦 Uploading with versionName=${versionName}, versionCode=${versionCode}, appToken=${appToken.take(5)}..."
 
                 exec {
                     def osCompatibility = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : []
@@ -67,6 +77,8 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
             } catch (exception) {
                 project.logger.error "Failed to upload source map file.\n" +
                         "Reason: ${exception.message}"
+                           throw exception
+
             }
         }
     }
@@ -74,27 +86,48 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
     return provider.get()
 }
 
-File getSourceMapFile(File appDir, String flavor) {
+File getSourceMapFile(File appDir, String flavor, Task task) {
     def defaultFlavorPath = flavor.empty ? 'release' : "${flavor}Release"
     def defaultSourceMapDest = "build/generated/sourcemaps/react/${defaultFlavorPath}/index.android.bundle.map"
     def defaultSourceMapFile = new File(appDir, defaultSourceMapDest)
+    def props = task.getProperties()
+
+    def bundleAssetName = props.containsKey("bundleAssetName") ? props.bundleAssetName?.getOrNull() : null
+    def jsSourceMapsDir = props.containsKey("jsSourceMapsDir") ? props.jsSourceMapsDir?.getOrNull() : null
+    def jsIntermediateSourceMapsDir = props.containsKey("jsIntermediateSourceMapsDir") ? props.jsIntermediateSourceMapsDir?.getOrNull() : null
+
+    if (bundleAssetName && jsSourceMapsDir) {
+        def outputSourceMap = new File(jsSourceMapsDir.asFile.absolutePath, "${bundleAssetName}.map")
+        if (outputSourceMap.exists()) {
+            return outputSourceMap
+        }
+    }
+
+    if (bundleAssetName && jsIntermediateSourceMapsDir) {
+        def packagerOutputSourceMap = new File(jsIntermediateSourceMapsDir.asFile.absolutePath, "${bundleAssetName}.packager.map")
+        if (packagerOutputSourceMap.exists()) {
+            return packagerOutputSourceMap
+        }
+    }
 
     if (defaultSourceMapFile.exists()) {
         return defaultSourceMapFile
     }
 
     if (flavor.empty) {
-        throw new InvalidUserDataException("Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.")
+         println"Source map file not found at: ${defaultSourceMapFile.absolutePath}. Skipping."
+        return null
     }
 
     def fallbackSourceMapDest = "build/generated/sourcemaps/react/${flavor}/release/index.android.bundle.map"
     def fallbackSourceMapFile = new File(appDir, fallbackSourceMapDest)
 
-    project.logger.info "Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.\n" +
+  println "Unable to find source map file at: ${defaultSourceMapFile.absolutePath}.\n" +
             "Falling back to ${fallbackSourceMapFile.absolutePath}."
 
     if (!fallbackSourceMapFile.exists()) {
-        throw new InvalidUserDataException("Unable to find source map file at: ${fallbackSourceMapFile.absolutePath} either.")
+    println "Fallback source map file not found at: ${fallbackSourceMapFile.absolutePath}. Skipping."
+        return null
     }
 
     return fallbackSourceMapFile
@@ -155,14 +188,56 @@ String resolveVar(String name, String envKey, String defaultValue) {
     return value
 }
 
+static String executeNodeScript(File script, File workingDir) {
+    if (!script.exists()) {
+        println "Script not found: ${script.absolutePath}"
+        return null
+    }
+
+    def output = new StringBuffer()
+    def error = new StringBuffer()
+
+    try {
+        def process = ['node', script.getAbsolutePath()].execute(null, workingDir)
+        process.waitForProcessOutput(output, error)
+
+        if (process.exitValue() != 0) {
+            println "Script failed with exit code ${process.exitValue()}"
+            println "Standard Error:\n${error.toString().trim()}"
+            println "Standard Output:\n${output.toString().trim()}"
+            return null
+        }
+
+        return output.toString().trim()
+
+    } catch (Exception e) {
+        println "Exception while executing Node.js script: ${e.message}"
+        e.printStackTrace()
+        return null
+    }
+}
+
 static String executeShellScript(File script, File workingDir) {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         return null
     }
 
-    def output = new StringBuffer()
-    def process = ['sh', script.getAbsolutePath()].execute(null, workingDir)
-    process?.waitForProcessOutput(output, new StringBuffer())
+    if (!script.canExecute()) {
+        // Try to set executable permission
+        script.setExecutable(true)
+    }
 
-    return process?.exitValue() == 0 ? output.toString().trim() : null
+    def output = new StringBuffer()
+    def error = new StringBuffer()
+
+    // Using 'sh' instead of './' to avoid needing exec permission, but keeping chmod above just in case
+    def process = ['sh', script.getAbsolutePath()].execute(null, workingDir)
+    process?.waitForProcessOutput(output, error)
+
+    if (process.exitValue() != 0) {
+        println "Error running script: ${error.toString().trim()}"
+        return null
+    }
+
+    return output.toString().trim()
 }
