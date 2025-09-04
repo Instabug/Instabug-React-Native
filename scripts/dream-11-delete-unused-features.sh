@@ -45,8 +45,8 @@ for file in "${iosTestFiles[@]}"; do
 	node scripts/replace.js --pattern ".*$file.*" "" examples/default/ios/InstabugExample.xcodeproj/project.pbxproj
 done
 
-node scripts/replace.js "#import <Instabug/IBGSurveys.h>" "" ios/RNInstabug/InstabugReactBridge.m
-node scripts/replace.js "#import <Instabug/IBGSurveys.h>" "" ios/RNInstabug/InstabugReactBridge.h
+node scripts/replace.js "#import <InstabugSDK/IBGSurveys.h>" "" ios/RNInstabug/InstabugReactBridge.m
+node scripts/replace.js "#import <InstabugSDK/IBGSurveys.h>" "" ios/RNInstabug/InstabugReactBridge.h
 
 # Remove all locales except for English
 # This ugly regular expression matches all lines not containing "english" and containing "constants.locale"
