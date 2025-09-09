@@ -34,6 +34,8 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
   const [userData, setUserData] = useState('')
   const [userEvent, setUserEvent] = useState('')
   const [tag, setTag] = useState('')
+  const [instabugLogLevel, setInstabugLogLevel] = useState<'verbose' | 'debug' | 'info' | 'warn' | 'error'>('debug');
+  const [instabugLog, setInstabugLog] = useState('')
   const [featureFlagName, setFeatureFlagName] = useState('');
   const [featureFlagVariant, setfeatureFlagVariant] = useState('');
   const [isUserStepEnabled, setIsUserStepEnabled] = useState<boolean>(true);
@@ -201,6 +203,34 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
       description: 'User identified successfully',
     });
   };
+  const logToInstabug = () => {
+    if (!instabugLog.trim()) {
+      toast.show({ description: 'Please enter a log message' });
+      return;
+    }
+  
+    switch (instabugLogLevel) {
+      case 'verbose':
+        Instabug.logVerbose(instabugLog);
+        break;
+      case 'debug':
+        Instabug.logDebug(instabugLog);
+        break;
+      case 'info':
+        Instabug.logInfo(instabugLog);
+        break;
+      case 'warn':
+        Instabug.logWarn(instabugLog);
+        break;
+      case 'error':
+        Instabug.logError(instabugLog);
+        break;
+    }
+  
+    toast.show({ description: `Logged ${instabugLogLevel} message` });
+    setInstabugLog('');
+  };
+  
 
   return (
     <ScrollView>
@@ -552,33 +582,33 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
             />
           </VStack>
         </VerticalListTile>
-        <VerticalListTile title="Logs Section ">
+        <VerticalListTile title="Instabug Logs">
           <VStack>
-            <ListTile
-              testID="log_verbose"
-              title="Log Verbose message"
-              onPress={() => Instabug.logVerbose('log Verbose message')}
+            <Select
+              label="Select Log Level"
+              items={[
+                { label: 'Verbose', value: 'verbose' },
+                { label: 'Debug', value: 'debug' },
+                { label: 'Info', value: 'info' },
+                { label: 'Warn', value: 'warn' },
+                { label: 'Error', value: 'error' },
+              ]}
+              onValueChange={(value) => setInstabugLogLevel(value as any)}
             />
-            <ListTile
-              testID="log_debug"
-              title="Log Debug message"
-              onPress={() => Instabug.logDebug('log Debug message')}
-            />
-            <ListTile
-              testID="log_warn"
-              title="Log Warn message"
-              onPress={() => Instabug.logWarn('log Warn message')}
-            />
-            <ListTile
-              testID="log_error"
-              title="Log Error message"
-              onPress={() => Instabug.logError('log Error message')}
-            />
-            <ListTile
-              testID="log_info"
-              title="Log Info message"
-              onPress={() => Instabug.logInfo('log Info message')}
-            />
+
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="Enter log message"
+                  onChangeText={(text) => setInstabugLog(text)}
+                  value={instabugLog}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={logToInstabug}>
+              Log Message
+            </Button>
           </VStack>
         </VerticalListTile>
       </Screen>
