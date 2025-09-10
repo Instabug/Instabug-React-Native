@@ -280,7 +280,8 @@ export const BugReportingScreen: React.FC<
 
                 addItem('Invoke Handler', {
                   id: `event-${Math.random()}`,
-                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() }, { key: 'status value', value: 'triggered' },
+                  ],
                 });
               })
             }
@@ -309,13 +310,18 @@ export const BugReportingScreen: React.FC<
             testID="enable_on_dismiss_handler"
             title="Enable on Did-Dismiss Callback Handler"
             onPress={() =>
-              BugReporting.onSDKDismissedHandler(function () {
+              BugReporting.onSDKDismissedHandler(function (dismissType, reportType) {
                 toast.show({
                   description: 'onSDKDismissedHandler Callback Handler',
                 });
                 addItem('onSDKDismissedHandler', {
                   id: `event-${Math.random()}`,
-                  fields: [{ key: 'Date', value: new Date().toLocaleString() }],
+                  fields: [{ key: 'Date', value: new Date().toLocaleString() },
+                    { key: 'issue type', value: dismissType.toString()},
+                    { key: 'report type', value: reportType.toString()},
+                    { key: 'status value', value: 'triggered'},
+
+                  ],
                 });
               })
             }
