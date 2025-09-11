@@ -48,7 +48,6 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
 
               def tokenJsFile = new File(instabugDir, 'scripts/find-token.js')
               def inferredToken = executeNodeScript(tokenJsFile, jsProjectDir)
-       X
                 def appToken = resolveVar('App Token', 'INSTABUG_APP_TOKEN', inferredToken)
 
                   if (!appToken) {
@@ -75,8 +74,6 @@ Task createUploadSourcemapsTask(String flavor, String defaultVersionName, String
             } catch (exception) {
                 project.logger.error "Failed to upload source map file.\n" +
                         "Reason: ${exception.message}"
-                           throw exception
-
             }
         }
     }
