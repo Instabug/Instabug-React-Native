@@ -17,6 +17,7 @@ export const VerticalListTile: React.FC<ListTileProps> = ({ title, onPress, chil
       borderBottomWidth="1"
       borderColor="coolGray.300"
       bg="coolGray.100"
+      accessible={false}
       _pressed={{ bg: 'coolGray.200' }}>
       <VStack justifyContent="stretch">
         <Text>{title}</Text>

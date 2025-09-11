@@ -6,6 +6,7 @@ import Instabug, {
   InvocationEvent,
   Locale,
   NetworkLogger,
+  WelcomeMessageMode,
   ReproStepsMode,
 } from 'instabug-reactnative';
 import { InputGroup, InputLeftAddon, useToast, VStack, Button } from 'native-base';
@@ -30,12 +31,21 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
   const [userID, setUserID] = useState('');
   const [userAttributeKey, setUserAttributeKey] = useState('');
   const [userAttributeValue, setUserAttributeValue] = useState('');
+  const [userData, setUserData] = useState('')
+  const [userEvent, setUserEvent] = useState('')
+  const [tag, setTag] = useState('')
+  const [instabugLogLevel, setInstabugLogLevel] = useState<'verbose' | 'debug' | 'info' | 'warn' | 'error'>('debug');
+  const [instabugLog, setInstabugLog] = useState('')
   const [featureFlagName, setFeatureFlagName] = useState('');
   const [featureFlagVariant, setfeatureFlagVariant] = useState('');
   const [isUserStepEnabled, setIsUserStepEnabled] = useState<boolean>(true);
+  const [isSessionProfilerEnabled, setIsSessionProfilerEnabled] = useState<boolean>(true);
 
   const toast = useToast();
   const [userAttributesFormError, setUserAttributesFormError] = useState<any>({});
+  const [userDataFormError, setUserDataFormError] = useState<any>({})
+  const [userEventFormError, setUserEventFormError] = useState<any>({})
+  const [tagFormError, setTagFormError] = useState<any>({})
   const [featureFlagFormError, setFeatureFlagFormError] = useState<any>({});
   const { addItem } = useCallbackHandlers();
 
@@ -48,6 +58,30 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
       errors.userAttributeKey = 'Key is required';
     }
     setUserAttributesFormError(errors);
+    return Object.keys(errors).length === 0;
+  };
+  const validateUserDataForm = () => {
+    const errors: any = {};
+    if (userData.length === 0) {
+      errors.userDataValue = 'Value is required';
+    }
+    setUserDataFormError(errors);
+    return Object.keys(errors).length === 0;
+  };
+  const validateUserEventForm = () => {
+    const errors: any = {};
+    if (userData.length === 0) {
+      errors.userEventValue = 'Value is required';
+    }
+    setUserEventFormError(errors);
+    return Object.keys(errors).length === 0;
+  };
+  const validateTagForm = () => {
+    const errors: any = {};
+    if (userData.length === 0) {
+      errors.tagValue = 'Value is required';
+    }
+    setTagFormError(errors);
     return Object.keys(errors).length === 0;
   };
   const validateFeatureFlagForm = () => {
@@ -89,6 +123,35 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
       setUserAttributeValue('');
     }
   };
+
+  const saveUserData = () => {
+    if (validateUserDataForm()) {
+      Instabug.setUserData(userData);
+      toast.show({
+        description: 'User Data added successfully',
+      });
+      setUserData('')
+    }
+  };
+  const saveUserEvent = () => {
+    if (validateUserEventForm()) {
+      Instabug.logUserEvent(userEvent);
+      toast.show({
+        description: 'User Event added successfully',
+      });
+      setUserData('')
+    }
+  };
+  const saveTag = () => {
+    if (validateTagForm()) {
+      Instabug.appendTags([tag])
+      toast.show({
+        description: 'Tag added successfully',
+      });
+      setTag('')
+    }
+  };
+  
   const saveFeatureFlags = () => {
     if (validateFeatureFlagForm()) {
       Instabug.addFeatureFlag({
@@ -140,6 +203,34 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
       description: 'User identified successfully',
     });
   };
+  const logToInstabug = () => {
+    if (!instabugLog.trim()) {
+      toast.show({ description: 'Please enter a log message' });
+      return;
+    }
+  
+    switch (instabugLogLevel) {
+      case 'verbose':
+        Instabug.logVerbose(instabugLog);
+        break;
+      case 'debug':
+        Instabug.logDebug(instabugLog);
+        break;
+      case 'info':
+        Instabug.logInfo(instabugLog);
+        break;
+      case 'warn':
+        Instabug.logWarn(instabugLog);
+        break;
+      case 'error':
+        Instabug.logError(instabugLog);
+        break;
+    }
+  
+    toast.show({ description: `Logged ${instabugLogLevel} message` });
+    setInstabugLog('');
+  };
+  
 
   return (
     <ScrollView>
@@ -250,6 +341,31 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
             Instabug.removeExperiments(['exp1', 'exp2']);
           }}
         />
+            
+            <ListTile
+          title="Session Profiler"
+          subtitle={isSessionProfilerEnabled ? 'Enabled' : 'Disabled'}
+          onPress={() => {
+            navigation.navigate('SessionProfiler', {
+              isEnabled: isSessionProfilerEnabled,
+              setIsEnabled: (enabled: boolean) => {
+                setIsSessionProfilerEnabled(enabled);
+                Instabug.setSessionProfilerEnabled(enabled);
+                navigation.goBack();
+              },
+            });
+          }}
+          testID="id_session_profiler"
+        />
+
+        <ListTile
+          title="Welcome message Beta"
+          onPress={() => Instabug.showWelcomeMessage(WelcomeMessageMode.beta)}
+        />
+        <ListTile
+          title="Welcome message Live"
+          onPress={() => Instabug.showWelcomeMessage(WelcomeMessageMode.live)}
+        />
 
         <VerticalListTile title="User Identification">
           <VStack>
@@ -313,6 +429,60 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
 
             <Button mt="4" colorScheme="red" onPress={clearUserAttributes}>
               Clear user attributes
+            </Button>
+          </VStack>
+        </VerticalListTile>
+        <VerticalListTile title="User Data">
+          <VStack>
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="User data"
+                  onChangeText={(userData) => setUserData(userData)}
+                  value={userData}
+                  errorText={userDataFormError.userDataValue}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={saveUserData}>
+              Save user data
+            </Button>
+          </VStack>
+        </VerticalListTile>
+        <VerticalListTile title="User Event">
+          <VStack>
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="User event"
+                  onChangeText={(userEvent) => setUserEvent(userEvent)}
+                  value={userEvent}
+                  errorText={userEventFormError.userEventValue}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={saveUserEvent}>
+              Save user event
+            </Button>
+          </VStack>
+        </VerticalListTile>
+        <VerticalListTile title="Tags">
+          <VStack>
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="tag"
+                  onChangeText={(tag) => setTag(tag)}
+                  value={tag}
+                  errorText={tagFormError.tagValue}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={saveTag}>
+              Save tag
             </Button>
           </VStack>
         </VerticalListTile>
@@ -412,33 +582,34 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
             />
           </VStack>
         </VerticalListTile>
-        <VerticalListTile title="Logs Section ">
+        <ListTile title="Callback Handler" onPress={() => navigation.navigate('CallbackScreen')} />
+        <VerticalListTile title="Instabug Logs">
           <VStack>
-            <ListTile
-              testID="log_verbose"
-              title="Log Verbose message"
-              onPress={() => Instabug.logVerbose('log Verbose message')}
+            <Select
+              label="Select Log Level"
+              items={[
+                { label: 'Verbose', value: 'verbose' },
+                { label: 'Debug', value: 'debug' },
+                { label: 'Info', value: 'info' },
+                { label: 'Warn', value: 'warn' },
+                { label: 'Error', value: 'error' },
+              ]}
+              onValueChange={(value) => setInstabugLogLevel(value as any)}
             />
-            <ListTile
-              testID="log_debug"
-              title="Log Debug message"
-              onPress={() => Instabug.logDebug('log Debug message')}
-            />
-            <ListTile
-              testID="log_warn"
-              title="Log Warn message"
-              onPress={() => Instabug.logWarn('log Warn message')}
-            />
-            <ListTile
-              testID="log_error"
-              title="Log Error message"
-              onPress={() => Instabug.logError('log Error message')}
-            />
-            <ListTile
-              testID="log_info"
-              title="Log Info message"
-              onPress={() => Instabug.logInfo('log Info message')}
-            />
+
+            <View style={styles.formContainer}>
+              <View style={styles.inputWrapper}>
+                <InputField
+                  placeholder="Enter log message"
+                  onChangeText={(text) => setInstabugLog(text)}
+                  value={instabugLog}
+                />
+              </View>
+            </View>
+
+            <Button mt="4" onPress={logToInstabug}>
+              Log Message
+            </Button>
           </VStack>
         </VerticalListTile>
       </Screen>
