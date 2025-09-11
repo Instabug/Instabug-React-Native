@@ -347,6 +347,7 @@ export const BugReportingScreen: React.FC<
               })
             }
           />
+          <ListTile title="Callback Handler" onPress={() => navigation.navigate('CallbackScreen')} />
         </Section>
       </Screen>
     </ScrollView>

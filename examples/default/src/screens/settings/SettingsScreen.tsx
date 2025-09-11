@@ -582,6 +582,7 @@ export const SettingsScreen: React.FC<NativeStackScreenProps<HomeStackParamList,
             />
           </VStack>
         </VerticalListTile>
+        <ListTile title="Callback Handler" onPress={() => navigation.navigate('CallbackScreen')} />
         <VerticalListTile title="Instabug Logs">
           <VStack>
             <Select
