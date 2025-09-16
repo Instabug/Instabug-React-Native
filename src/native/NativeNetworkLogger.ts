@@ -8,7 +8,7 @@ export enum NetworkListenerType {
 }
 
 export interface NetworkLoggerNativeModule extends NativeModule {
-  isNativeInterceptionEnabled(): Promise<boolean>;
+  isNativeInterceptionEnabled(): boolean;
 
   registerNetworkLogsListener(type?: NetworkListenerType): void;
 

@@ -1,7 +1,7 @@
 {
   "name": "instabug-reactnative",
   "description": "React Native plugin for integrating the Instabug SDK",
-  "version": "15.0.1",
+  "version": "16.0.0",
   "author": "Instabug (https://instabug.com)",
   "repository": "github:Instabug/Instabug-React-Native",
   "homepage": "https://www.instabug.com/platforms/react-native",
@@ -54,7 +54,8 @@
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.8",
     "@types/react-native": "^0.72.2",
-    "axios": "^1.2.2",
+    "axios": "1.11.0",
+    "expo": "^50.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^29.6.2",
     "commander": "^11.0.0",
@@ -80,5 +81,10 @@
     "typescript": "^4.8.4",
     "wait-for-expect": "^3.0.2",
     "xhr2": "^0.2.1"
+  },
+  "peerDependenciesMeta": {
+    "expo": {
+      "optional": true
+    }
   }
 }
