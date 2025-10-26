@@ -354,8 +354,7 @@ jobs:
           no-window: true
           memory: 2048
           post-emulator-launch-assemble-command: |
-            rm -rf ~/.gradle/caches
-            cd ~/project/examples/default/android && ./gradlew androidDependencies
+            cd ~/project/examples/default/android
             cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
