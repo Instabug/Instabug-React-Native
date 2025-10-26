@@ -493,7 +493,6 @@ workflows:
       - validate_shell_files
       - sync_generated_files
       - e2e_ios
-      - e2e_android
       - hold_generate_snapshot:
           type: approval
           requires: *release_dependencies
