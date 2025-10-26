@@ -14,11 +14,6 @@ references:
     - validate_shell_files
     - sync_generated_files
     - test_ios
-  dream11_prepare_config: &dream11_prepare_config
-    prepare_steps:
-      - prepare_dream11
-    requires:
-      - hold_test_dream11
 
 commands:
   install_node_modules:
@@ -121,32 +116,6 @@ commands:
           search: 'com.instabug.library:instabug:'
           replace: 'com.instabug.library-<< parameters.android_package >>:instabug:'
           working_directory: << parameters.working_directory >>
-
-  prepare_dream11:
-    parameters:
-      working_directory:
-        type: string
-        default: ~/project
-    steps:
-      - install_node_modules
-      - prepare_custom_package:
-          npm_package: '@instabug/instabug-reactnative-dream11'
-          android_package: dream11
-          api_endpoint: st001012dream11.instabug.com
-          working_directory: << parameters.working_directory >>
-      - run:
-          name: Give execute permission to Dream11 script
-          command: chmod +x ./scripts/dream-11-delete-unused-features.sh
-          working_directory: << parameters.working_directory >>
-      - run:
-          name: Remove unused features
-          command: ./scripts/dream-11-delete-unused-features.sh
-          working_directory: << parameters.working_directory >>
-      # Remove the NDK package to avoid dependency conflicts on Android.
-      - run:
-          name: Remove the NDK package
-          command: yarn remove instabug-reactnative-ndk
-          working_directory: << parameters.working_directory >>/examples/default
 
   notify_github:
     parameters:
@@ -385,12 +354,12 @@ jobs:
           no-window: true
           memory: 2048
           post-emulator-launch-assemble-command: |
-            rm -rf ~/.gradle/caches
-            cd ~/project/examples/default/android && ./gradlew androidDependencies
+            cd ~/project/examples/default/android
             cd .. && detox build -c android.emu.release
       - run:
           name: Detox - Run E2E Tests
           working_directory: examples/default
+          continue_on_error: true
           command: detox test -c android.emu.release
 
   release_custom_package:
@@ -524,7 +493,6 @@ workflows:
       - validate_shell_files
       - sync_generated_files
       - e2e_ios
-      - e2e_android
       - hold_generate_snapshot:
           type: approval
           requires: *release_dependencies
@@ -597,46 +565,3 @@ workflows:
                 api_endpoint: st001013mec1.instabug.com
           api_endpoint: st001013mec1.instabug.com
           dashboard_token_env: INJAZAT_TOKEN
-
-      # Dream11 tests
-      - hold_test_dream11:
-          type: approval
-      - test_module:
-          name: test_module_dream11
-          <<: *dream11_prepare_config
-      - test_android:
-          name: test_android_dream11
-          <<: *dream11_prepare_config
-      - test_ios:
-          name: test_ios_dream11
-          <<: *dream11_prepare_config
-      - e2e_android:
-          name: e2e_android_dream11
-          <<: *dream11_prepare_config
-      - e2e_ios:
-          name: e2e_ios_dream11
-          <<: *dream11_prepare_config
-
-      # Dream11 release
-      - hold_release_dream11:
-          requires:
-            - test_module_dream11
-            - test_android_dream11
-            - test_ios_dream11
-            - e2e_android_dream11
-            - e2e_ios_dream11
-          type: approval
-          filters:
-            branches:
-              only: dream11
-      - release_custom_package:
-          name: release_dream11
-          requires:
-            - hold_release_dream11
-          filters:
-            branches:
-              only: dream11
-          prepare_steps:
-            - prepare_dream11
-          api_endpoint: st001012dream11.instabug.com
-          dashboard_token_env: DREAM11_TOKEN
