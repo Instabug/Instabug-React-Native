@@ -568,4 +568,3 @@ workflows:
                 api_endpoint: st001013mec1.instabug.com
           api_endpoint: st001013mec1.instabug.com
           dashboard_token_env: INJAZAT_TOKEN
-
