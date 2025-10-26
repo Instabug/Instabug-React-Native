@@ -353,8 +353,6 @@ jobs:
           avd-name: Nexus_6P_API_27
           no-window: true
           memory: 2048
-          continue_on_error: true
-
           post-emulator-launch-assemble-command: |
             rm -rf ~/.gradle/caches
             cd ~/project/examples/default/android && ./gradlew androidDependencies
