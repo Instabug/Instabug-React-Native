@@ -81,6 +81,18 @@ function reportCurrentViewForAndroid(screenName: string | null) {
  * @param config SDK configurations. See {@link InstabugConfig} for more info.
  */
 export const init = (config: InstabugConfig) => {
+  const equalsOriginal =
+    typeof (global as any).originalXMLHttpRequest !== 'undefined' &&
+    XMLHttpRequest === (global as any).originalXMLHttpRequest;
+  console.log('[Debug] init equals original XMLHttpRequest:', equalsOriginal);
+
+  setTimeout(() => {
+    const equalsOriginalLater =
+      typeof (global as any).originalXMLHttpRequest !== 'undefined' &&
+      XMLHttpRequest === (global as any).originalXMLHttpRequest;
+    console.log('[Debug] post-init equals original XMLHttpRequest:', equalsOriginalLater);
+  }, 5000);
+
   if (Platform.OS === 'android') {
     // Add android feature flags listener for android
     registerFeatureFlagsListener();
