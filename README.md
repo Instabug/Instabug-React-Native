@@ -1,3 +1,15 @@
+> ⚠️ Repository Archived
+>
+> This SDK has been rebranded from Instabug to Luciq.
+>
+> The new repo can be found [here →](https://github.com/luciqai/luciq-reactnative-sdk)
+>
+> This repository is no longer maintained. You can also check out our [Migration Guide](https://docs.luciq.ai/react-native/react-native-luciq-migration) for more detailed information about how to migrate to the new SDK.
+
+
+
+
+
 # Instabug for React Native
 
 [![npm](https://img.shields.io/npm/v/instabug-reactnative.svg)](https://www.npmjs.com/package/instabug-reactnative)
