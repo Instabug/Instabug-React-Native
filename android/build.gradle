@@ -83,7 +83,7 @@ dependencies {
 rootProject.allprojects {
 	repositories {
 		google()
-		jcenter()
+		mavenCentral()
 		maven {
 			url "https://mvn.instabug.com/nexus/repository/instabug-internal/"
 			credentials {
